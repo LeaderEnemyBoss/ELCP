@@ -335,8 +335,29 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		this.GatherReinforcement(attacker, defender, worldRect, ref availableTile2, false);
 		float num = 0f;
 		float num2 = 0f;
-		this.ComputeMPBasedOnBattleArea(attacker, this.attackerReinforcement, availableTile, ref num);
-		this.ComputeMPBasedOnBattleArea(defender, this.defenderReinforcement, availableTile2, ref num2);
+		if (BattleSimulation.ELCPFortification())
+		{
+			City city = null;
+			if (BattleSimulation.IsELCPCityBattle(new List<IGarrison>
+			{
+				attacker,
+				defender
+			}, out city))
+			{
+				this.ComputeMPBasedOnBattleAreaELCP(attacker, this.attackerReinforcement, availableTile, ref num, city.Empire == attacker.Empire, city);
+				this.ComputeMPBasedOnBattleAreaELCP(defender, this.defenderReinforcement, availableTile2, ref num2, city.Empire == defender.Empire, city);
+			}
+			else
+			{
+				this.ComputeMPBasedOnBattleArea(attacker, this.attackerReinforcement, availableTile, ref num, false);
+				this.ComputeMPBasedOnBattleArea(defender, this.attackerReinforcement, availableTile, ref num, false);
+			}
+		}
+		else
+		{
+			this.ComputeMPBasedOnBattleArea(attacker, this.attackerReinforcement, availableTile, ref num, false);
+			this.ComputeMPBasedOnBattleArea(defender, this.defenderReinforcement, availableTile2, ref num2, true);
+		}
 		attackerMP = num;
 		defenderMP = num2;
 	}
@@ -1667,6 +1688,242 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 			}
 		}
 		return (float)num2 * num;
+	}
+
+	public void ComputeMPBasedOnBattleArea(IGarrison firstGarrison, List<IGarrison> reinforcements, int availableTile, ref float militaryPower, bool Defender = false)
+	{
+		int num = (int)firstGarrison.GetPropertyValue(SimulationProperties.ReinforcementPointCount);
+		float additionalHealthPoint = 0f;
+		City city = firstGarrison as City;
+		if (city == null)
+		{
+			IWorldPositionable worldPositionable = firstGarrison as IWorldPositionable;
+			District district = this.worldPositionningService.GetDistrict(worldPositionable.WorldPosition);
+			if (district != null && district.City.Empire == firstGarrison.Empire)
+			{
+				city = district.City;
+			}
+		}
+		if (city != null && Defender)
+		{
+			additionalHealthPoint = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
+		}
+		int num2 = 0;
+		if (firstGarrison.Hero != null)
+		{
+			militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.Hero, additionalHealthPoint);
+			availableTile--;
+			num2++;
+		}
+		int num3 = 0;
+		while (availableTile > 0 && num3 < firstGarrison.StandardUnits.Count)
+		{
+			militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.StandardUnits[num3], additionalHealthPoint);
+			availableTile--;
+			num2++;
+			num3++;
+		}
+		city = (firstGarrison as City);
+		if (city != null)
+		{
+			int num4 = 0;
+			while (availableTile > 0 && num4 < city.Militia.StandardUnits.Count)
+			{
+				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(city.Militia.StandardUnits[num4], additionalHealthPoint);
+				availableTile--;
+				num2++;
+				num4++;
+			}
+		}
+		militaryPower *= (float)num2;
+		if (availableTile <= 0)
+		{
+			return;
+		}
+		int num5 = 0;
+		int num6 = 0;
+		int num7 = 0;
+		while (num7 < this.numberOfBattleRound && reinforcements.Count > num5)
+		{
+			num2 = 0;
+			float num8 = 0f;
+			float num9;
+			if (this.reinforcementModifierByRound != null)
+			{
+				num9 = this.reinforcementModifierByRound.Evaluate((float)num7);
+			}
+			else
+			{
+				num9 = 1f - (float)num7 / (float)this.numberOfBattleRound;
+			}
+			int num10 = 0;
+			while (num10 < num && availableTile > 0)
+			{
+				if (num6 >= reinforcements[num5].StandardUnits.Count)
+				{
+					num5++;
+					if (num5 >= reinforcements.Count)
+					{
+						break;
+					}
+					num6 = 0;
+					if (reinforcements[num5].Hero != null)
+					{
+						num6 = -1;
+					}
+				}
+				if (num6 == -1)
+				{
+					num8 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].Hero, additionalHealthPoint);
+				}
+				else
+				{
+					num8 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].StandardUnits[num6], additionalHealthPoint);
+				}
+				num6++;
+				num2++;
+				availableTile--;
+				num10++;
+			}
+			if (num2 <= 0)
+			{
+				break;
+			}
+			num8 *= num9;
+			num8 *= (float)num2;
+			militaryPower += num8;
+			num7++;
+		}
+	}
+
+	public void ComputeMPBasedOnBattleAreaELCP(IGarrison firstGarrison, List<IGarrison> reinforcements, int availableTile, ref float militaryPower, bool IsCityOwner, City city)
+	{
+		int num = (int)firstGarrison.GetPropertyValue(SimulationProperties.ReinforcementPointCount);
+		float additionalHealthPoint = 0f;
+		if (city != null && IsCityOwner)
+		{
+			additionalHealthPoint = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
+		}
+		int num2 = 0;
+		bool flag = BattleSimulation.GetsFortificationBonus(firstGarrison, city);
+		if (firstGarrison.Hero != null)
+		{
+			if (flag)
+			{
+				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.Hero, additionalHealthPoint);
+			}
+			else
+			{
+				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.Hero, 0f);
+			}
+			availableTile--;
+			num2++;
+		}
+		int num3 = 0;
+		while (availableTile > 0 && num3 < firstGarrison.StandardUnits.Count)
+		{
+			if (flag)
+			{
+				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.StandardUnits[num3], additionalHealthPoint);
+			}
+			else
+			{
+				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.StandardUnits[num3], 0f);
+			}
+			availableTile--;
+			num2++;
+			num3++;
+		}
+		City city2 = firstGarrison as City;
+		if (city2 != null)
+		{
+			int num4 = 0;
+			while (availableTile > 0 && num4 < city2.Militia.StandardUnits.Count)
+			{
+				if (flag)
+				{
+					militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(city2.Militia.StandardUnits[num4], additionalHealthPoint);
+				}
+				else
+				{
+					militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(city2.Militia.StandardUnits[num4], 0f);
+				}
+				availableTile--;
+				num2++;
+				num4++;
+			}
+		}
+		militaryPower *= (float)num2;
+		if (availableTile <= 0)
+		{
+			return;
+		}
+		int num5 = 0;
+		int num6 = 0;
+		int num7 = 0;
+		while (num7 < this.numberOfBattleRound && reinforcements.Count > num5)
+		{
+			num2 = 0;
+			float num8 = 0f;
+			float num9;
+			if (this.reinforcementModifierByRound != null)
+			{
+				num9 = this.reinforcementModifierByRound.Evaluate((float)num7);
+			}
+			else
+			{
+				num9 = 1f - (float)num7 / (float)this.numberOfBattleRound;
+			}
+			int num10 = 0;
+			while (num10 < num && availableTile > 0)
+			{
+				if (num6 >= reinforcements[num5].StandardUnits.Count)
+				{
+					num5++;
+					if (num5 >= reinforcements.Count)
+					{
+						break;
+					}
+					num6 = 0;
+					if (reinforcements[num5].Hero != null)
+					{
+						num6 = -1;
+					}
+				}
+				flag = BattleSimulation.GetsFortificationBonus(reinforcements[num5], city);
+				if (num6 == -1)
+				{
+					if (flag)
+					{
+						num8 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].Hero, additionalHealthPoint);
+					}
+					else
+					{
+						num8 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].Hero, 0f);
+					}
+				}
+				else if (flag)
+				{
+					num8 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].StandardUnits[num6], additionalHealthPoint);
+				}
+				else
+				{
+					num8 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].StandardUnits[num6], 0f);
+				}
+				num6++;
+				num2++;
+				availableTile--;
+				num10++;
+			}
+			if (num2 <= 0)
+			{
+				break;
+			}
+			num8 *= num9;
+			num8 *= (float)num2;
+			militaryPower += num8;
+			num7++;
+		}
 	}
 
 	private List<UnitDesign> availableUnitDesignList;

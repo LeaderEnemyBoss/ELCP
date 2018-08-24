@@ -99,38 +99,34 @@ public class AILayer_Dissent : AILayer
 	{
 		this.whiteList.Clear();
 		int index;
-		for (index = 0; index < this.game.Empires.Length; index++)
+		Func<DissentTask_Empire, bool> <>9__0;
+		int index2;
+		for (index = 0; index < this.game.Empires.Length; index = index2 + 1)
 		{
-			if (base.AIEntity.Empire.Index != index)
+			if (base.AIEntity.Empire.Index != index && this.game.Empires[index] is MajorEmpire && !this.departmentOfForeignAffairs.IsFriend(this.game.Empires[index]) && (!this.departmentOfForeignAffairs.IsInWarWithSomeone() || this.departmentOfForeignAffairs.IsAtWarWith(this.game.Empires[index])) && this.warLayer.GetWarStatusWithEmpire(index) > AILayer_War.WarStatusType.None)
 			{
-				if (this.game.Empires[index] is MajorEmpire)
+				this.whiteList.Add(this.game.Empires[index]);
+				Func<DissentTask_Empire, bool> match2;
+				if ((match2 = <>9__0) == null)
 				{
-					if (!this.departmentOfForeignAffairs.IsFriend(this.game.Empires[index]))
-					{
-						if (this.warLayer.GetWarStatusWithEmpire(index) != AILayer_War.WarStatusType.None)
-						{
-							this.whiteList.Add(this.game.Empires[index]);
-							if (this.FindTask<DissentTask_Empire>((DissentTask_Empire match) => match.OtherEmpire == this.game.Empires[index]) == null)
-							{
-								DissentTask_Empire dissentTask_Empire = new DissentTask_Empire(base.AIEntity.Empire, this.game.Empires[index]);
-								this.dissentTasks.Add(dissentTask_Empire);
-								this.tickableRepository.Register(dissentTask_Empire);
-							}
-						}
-					}
+					match2 = (<>9__0 = ((DissentTask_Empire match) => match.OtherEmpire == this.game.Empires[index]));
+				}
+				if (this.FindTask<DissentTask_Empire>(match2) == null)
+				{
+					DissentTask_Empire dissentTask_Empire = new DissentTask_Empire(base.AIEntity.Empire, this.game.Empires[index]);
+					this.dissentTasks.Add(dissentTask_Empire);
+					this.tickableRepository.Register(dissentTask_Empire);
 				}
 			}
+			index2 = index;
 		}
 		for (int i = this.dissentTasks.Count - 1; i >= 0; i--)
 		{
 			DissentTask_Empire dissentTask_Empire2 = this.dissentTasks[i] as DissentTask_Empire;
-			if (dissentTask_Empire2 != null)
+			if (dissentTask_Empire2 != null && !this.whiteList.Contains(dissentTask_Empire2.OtherEmpire))
 			{
-				if (!this.whiteList.Contains(dissentTask_Empire2.OtherEmpire))
-				{
-					this.tickableRepository.Unregister(dissentTask_Empire2);
-					this.dissentTasks.RemoveAt(i);
-				}
+				this.tickableRepository.Unregister(dissentTask_Empire2);
+				this.dissentTasks.RemoveAt(i);
 			}
 		}
 	}

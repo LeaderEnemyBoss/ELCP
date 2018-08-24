@@ -673,4 +673,6 @@ public static class SimulationProperties
 	public static readonly StaticString VolcanicRegen = "VolcanicRegen";
 
 	public static readonly StaticString SeasonIntensityMultiplier = "SeasonIntensityMultiplier";
+
+	public static readonly StaticString AllayiBoosterDurationMultiplier = "AllayiBoosterDurationMultiplier";
 }

@@ -283,6 +283,7 @@ public class AILayer_Trade : AILayer, ITickable
 				service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_ProcessNextQueuedResourceTradingOrder));
 			}
 			service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_DoMagicSelloutOfProducedResources));
+			service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_ProcessStockpileSellingOrder));
 		}
 		if (this.departmentOfScience.CanTradeHeroes(false))
 		{
@@ -677,6 +678,89 @@ public class AILayer_Trade : AILayer, ITickable
 			this.queuedUnitBuyoutOrders[this.currentUnitBuyoutOrder].Message.SetObtained();
 		}
 		this.currentUnitBuyoutOrder++;
+	}
+
+	private SynchronousJobState SynchronousJob_ProcessStockpileSellingOrder()
+	{
+		float num = 0f;
+		if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num, false))
+		{
+			num = 0f;
+		}
+		if (num + base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireMoney) < 600f)
+		{
+			DepartmentOfEducation agency = base.AIEntity.Empire.GetAgency<DepartmentOfEducation>();
+			AILayer_ResourceManager layer = base.AIEntity.GetLayer<AILayer_ResourceManager>();
+			if (agency == null || layer == null)
+			{
+				return SynchronousJobState.Success;
+			}
+			List<VaultItem> vaultItems = agency.GetVaultItems<BoosterDefinition>();
+			int num2 = 0;
+			int num3 = 0;
+			int num4 = 0;
+			BoosterDefinition boosterDefinition = null;
+			int index = 0;
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				foreach (string text in layer.BoostersInUse)
+				{
+					Diagnostics.Log("ELCP: Empire {0} SynchronousJob_ProcessStockpileSellingOrder found boosters in use: {1}", new object[]
+					{
+						base.AIEntity.Empire.Index,
+						text
+					});
+				}
+			}
+			for (int i = 0; i < vaultItems.Count; i++)
+			{
+				if (layer.BoostersInUse.Contains(vaultItems[index].GUID.ToString()) && Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+				{
+					Diagnostics.Log("ELCP: Empire {1} SynchronousJob_ProcessStockpileSellingOrder booster {0} cant be sold", new object[]
+					{
+						vaultItems[i].GUID,
+						base.AIEntity.Empire.Index
+					});
+				}
+				else
+				{
+					BoosterDefinition boosterDefinition2 = vaultItems[i].Constructible as BoosterDefinition;
+					if (boosterDefinition2 != null && boosterDefinition2.Name == "BoosterFood")
+					{
+						num3++;
+					}
+					if (boosterDefinition2 != null && boosterDefinition2.Name == "BoosterScience")
+					{
+						num4++;
+					}
+					if (boosterDefinition2 != null && (boosterDefinition2.Name == "BoosterIndustry" || boosterDefinition2.Name == "FlamesIndustryBooster"))
+					{
+						num2++;
+					}
+					if (num3 > 4 || num4 > 4 || num2 > 4)
+					{
+						boosterDefinition = boosterDefinition2;
+						index = i;
+						break;
+					}
+				}
+			}
+			if (boosterDefinition != null)
+			{
+				OrderSelloutTradableBooster order = new OrderSelloutTradableBooster(base.AIEntity.Empire.Index, boosterDefinition.Name, new GameEntityGUID[]
+				{
+					vaultItems[index].GUID
+				});
+				if (layer.BoostersInUse == null)
+				{
+					layer.BoostersInUse = new List<string>();
+				}
+				layer.BoostersInUse.Add(vaultItems[index].GUID.ToString());
+				Ticket ticket;
+				base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out ticket, null);
+			}
+		}
+		return SynchronousJobState.Success;
 	}
 
 	public static string RegistryPath = string.Empty;

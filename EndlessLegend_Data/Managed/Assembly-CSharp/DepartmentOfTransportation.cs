@@ -1116,15 +1116,13 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 			});
 			flag = true;
 		}
-		float propertyValue = army.GetPropertyValue(SimulationProperties.Movement);
-		if (propertyValue <= 0f)
+		if (army.GetPropertyValue(SimulationProperties.Movement) <= 0f)
 		{
 			flag = true;
 		}
 		Diagnostics.Assert(this.GameService != null);
 		Diagnostics.Assert(this.GameService.Game != null);
-		Army armyAtPosition = this.WorldPositionningService.GetArmyAtPosition(order.To);
-		if (armyAtPosition != null)
+		if (this.WorldPositionningService.GetArmyAtPosition(order.To) != null)
 		{
 			flag = true;
 		}
@@ -1195,13 +1193,9 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 					});
 					flag = true;
 				}
-				else if (!flag2)
+				else if (!flag2 && unit2.GetPropertyValue(SimulationProperties.MovementRatio) - num2 <= 0f && armyGoToInstruction != null && armyGoToInstruction.Progress < armyGoToInstruction.WorldPositions.Length)
 				{
-					float num4 = unit2.GetPropertyValue(SimulationProperties.MovementRatio) - num2;
-					if (num4 <= 0f && armyGoToInstruction != null && armyGoToInstruction.Progress < armyGoToInstruction.WorldPositions.Length)
-					{
-						flag2 = true;
-					}
+					flag2 = true;
 				}
 			}
 			if (flag)
@@ -1244,18 +1238,32 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 					order.BreakSiege = true;
 					for (int j = 0; j < this.DepartmentOfDefense.Armies.Count; j++)
 					{
-						if (this.DepartmentOfDefense.Armies[j] != army)
+						District district = this.WorldPositionningService.GetDistrict(this.DepartmentOfDefense.Armies[j].WorldPosition);
+						if (district != null && district.City == region.City && district.Type == DistrictType.Exploitation && !this.WorldPositionningService.IsWaterTile(district.WorldPosition))
 						{
-							District district = this.WorldPositionningService.GetDistrict(this.DepartmentOfDefense.Armies[j].WorldPosition);
-							if (district != null && district.City == region.City && district.Type == DistrictType.Exploitation && !this.WorldPositionningService.IsWaterTile(district.WorldPosition))
+							int k = 0;
+							while (k < region.City.Districts.Count)
 							{
-								for (int k = 0; k < region.City.Districts.Count; k++)
+								if (region.City.Districts[k].Type == DistrictType.Extension || region.City.Districts[k].Type == DistrictType.Center)
 								{
-									if ((region.City.Districts[k].Type == DistrictType.Exploitation || region.City.Districts[k].Type == DistrictType.Center) && this.PathfindingService.IsTransitionPassable(order.To, region.City.Districts[k].WorldPosition, army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreDistrict, null))
+									if (this.DepartmentOfDefense.Armies[j] == army && !this.WorldPositionningService.IsWaterTile(order.To))
+									{
+										if (this.PathfindingService.IsTransitionPassable(order.To, region.City.Districts[k].WorldPosition, army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreDistrict, null))
+										{
+											order.BreakSiege = false;
+											break;
+										}
+									}
+									else if (this.DepartmentOfDefense.Armies[j] != army && this.PathfindingService.IsTransitionPassable(this.DepartmentOfDefense.Armies[j].WorldPosition, region.City.Districts[k].WorldPosition, army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreDistrict, null))
 									{
 										order.BreakSiege = false;
 										break;
 									}
+									k++;
+								}
+								else
+								{
+									k++;
 								}
 							}
 						}
@@ -1288,8 +1296,7 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 			region = this.WorldPositionningService.GetRegion(order.To);
 			if (region != null && region.City != null && region.City.Districts.Any((District match) => match.WorldPosition == order.To))
 			{
-				float num5 = army.Units.Sum((Unit unit) => unit.GetPropertyValue(SimulationProperties.CityDefensePointLossPerTurn));
-				if (num5 > 0f)
+				if (army.Units.Sum((Unit unit) => unit.GetPropertyValue(SimulationProperties.CityDefensePointLossPerTurn)) > 0f)
 				{
 					if (region.City.BesiegingSeafaringArmies.Exists((Army besiegingSeafaringArmy) => besiegingSeafaringArmy.Empire.Index == army.Empire.Index))
 					{

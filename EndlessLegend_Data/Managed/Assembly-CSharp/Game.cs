@@ -606,17 +606,18 @@ public class Game : Amplitude.Unity.Game.Game, IXmlSerializable, IDumpable
 		Diagnostics.Assert(this.World != null);
 		Diagnostics.Assert(this.World.HasBeenIgnited);
 		Diagnostics.Assert(this.World.HasBeenLoaded);
-		MemoryStream stream = null;
+		MemoryStream memoryStream = null;
 		string paletteName = Amplitude.Unity.Framework.Application.Registry.GetValue<string>("Settings/UI/EmpireColorPalette", "Standard");
 		IDatabase<Palette> palettes = Databases.GetDatabase<Palette>(false);
-		if (archive.TryGet(global::GameManager.GameFileName, out stream))
+		int num3;
+		if (archive.TryGet(global::GameManager.GameFileName, out memoryStream))
 		{
-			using (stream)
+			using (memoryStream)
 			{
-				using (Amplitude.Xml.XmlReader reader = Amplitude.Xml.XmlReader.Create(stream))
+				using (Amplitude.Xml.XmlReader xmlReader = Amplitude.Xml.XmlReader.Create(memoryStream))
 				{
-					reader.Reader.ReadToDescendant("Game");
-					this.ReadXml(reader);
+					xmlReader.Reader.ReadToDescendant("Game");
+					this.ReadXml(xmlReader);
 				}
 			}
 			Diagnostics.Log("Load game with difficulty {0} and speed {1}.", new object[]
@@ -627,21 +628,20 @@ public class Game : Amplitude.Unity.Game.Game, IXmlSerializable, IDumpable
 		}
 		else
 		{
-			ISessionService sessionService = Amplitude.Unity.Framework.Services.GetService<ISessionService>();
-			Diagnostics.Assert(sessionService != null);
-			Diagnostics.Assert(sessionService.Session != null);
-			Diagnostics.Assert(sessionService.Session.IsOpened);
-			this.GameDifficulty = sessionService.Session.GetLobbyData<string>("GameDifficulty", null);
-			this.GameSpeed = sessionService.Session.GetLobbyData<string>("GameSpeed", null);
-			this.MinorFactionDifficulty = sessionService.Session.GetLobbyData<string>("MinorFactionDifficulty", null);
+			ISessionService service = Amplitude.Unity.Framework.Services.GetService<ISessionService>();
+			Diagnostics.Assert(service != null);
+			Diagnostics.Assert(service.Session != null);
+			Diagnostics.Assert(service.Session.IsOpened);
+			this.GameDifficulty = service.Session.GetLobbyData<string>("GameDifficulty", null);
+			this.GameSpeed = service.Session.GetLobbyData<string>("GameSpeed", null);
+			this.MinorFactionDifficulty = service.Session.GetLobbyData<string>("MinorFactionDifficulty", null);
 			Diagnostics.Log("Starting new game with difficulty: {0}, speed: {1} and minor faction difficulty: {2}...", new object[]
 			{
 				this.GameDifficulty,
 				this.GameSpeed,
 				this.MinorFactionDifficulty
 			});
-			bool endlessDay = DownloadableContent8.EndlessDay.IsActive;
-			if (endlessDay)
+			if (DownloadableContent8.EndlessDay.IsActive)
 			{
 				if (!SimulationGlobal.GlobalTagsContains(DownloadableContent8.EndlessDay.ReadOnlyTag))
 				{
@@ -664,149 +664,150 @@ public class Game : Amplitude.Unity.Game.Game, IXmlSerializable, IDumpable
 					paletteName
 				});
 			}
-			Faction defaultFaction = null;
-			IDatabase<Faction> factionDatabase = Databases.GetDatabase<Faction>(false);
-			if (factionDatabase == null)
+			Faction faction = null;
+			IDatabase<Faction> database = Databases.GetDatabase<Faction>(false);
+			if (database == null)
 			{
 				Diagnostics.LogError("Failed to retrieve the faction database.");
 			}
 			else
 			{
-				factionDatabase.TryGetValue("FactionRandom", out defaultFaction);
-				if (defaultFaction == null)
+				database.TryGetValue("FactionRandom", out faction);
+				if (faction == null)
 				{
 					Diagnostics.LogWarning("Failed to retrieve the 'Random' faction.");
-					defaultFaction = factionDatabase.GetValues().FirstOrDefault((Faction iterator) => iterator.IsStandard);
-					if (defaultFaction == null)
+					faction = database.GetValues().FirstOrDefault((Faction iterator) => iterator.IsStandard);
+					if (faction == null)
 					{
 						Diagnostics.LogWarning("Failed to retrieve any single 'standard' faction from the database.");
 					}
 				}
 			}
-			IDatabase<SimulationDescriptor> simulationDescriptorDatatable = Databases.GetDatabase<SimulationDescriptor>(false);
+			IDatabase<SimulationDescriptor> database2 = Databases.GetDatabase<SimulationDescriptor>(false);
 			SimulationDescriptor empireClassDescriptor = null;
-			if (simulationDescriptorDatatable == null || simulationDescriptorDatatable.TryGetValue("ClassEmpire", out empireClassDescriptor))
+			if (database2 != null)
 			{
+				database2.TryGetValue("ClassEmpire", out empireClassDescriptor);
 			}
-			int numberOfMajorEmpires = 1;
-			int numberOfRegions = this.World.Regions.Length;
-			Map<WorldPosition> spawnLocations = this.World.Atlas.GetMap(WorldAtlas.Tables.SpawnLocations) as Map<WorldPosition>;
-			if (spawnLocations != null)
+			int num = 1;
+			int num2 = this.World.Regions.Length;
+			Map<WorldPosition> map = this.World.Atlas.GetMap(WorldAtlas.Tables.SpawnLocations) as Map<WorldPosition>;
+			if (map != null)
 			{
-				numberOfMajorEmpires = spawnLocations.Data.Length;
+				num = map.Data.Length;
 			}
-			int numberOfMajorFactions = sessionService.Session.GetLobbyData<int>("NumberOfMajorFactions", 0);
-			Diagnostics.Assert(numberOfMajorEmpires == numberOfMajorFactions);
-			List<global::Empire> empires = new List<global::Empire>();
-			for (int empireIndex = 0; empireIndex < numberOfMajorEmpires; empireIndex++)
+			int lobbyData = service.Session.GetLobbyData<int>("NumberOfMajorFactions", 0);
+			Diagnostics.Assert(num == lobbyData);
+			List<global::Empire> list = new List<global::Empire>();
+			for (int i = 0; i < num; i++)
 			{
-				string keyLobbyDataFactionDescriptor = string.Format("Faction{0}", empireIndex);
-				string lobbyDataFactionDescriptor = sessionService.Session.GetLobbyData<string>(keyLobbyDataFactionDescriptor, null);
-				Faction faction = Faction.Decode(lobbyDataFactionDescriptor);
-				if (faction == null)
+				string x = string.Format("Faction{0}", i);
+				string lobbyData2 = service.Session.GetLobbyData<string>(x, null);
+				Faction faction2 = Faction.Decode(lobbyData2);
+				if (faction2 == null)
 				{
-					throw new GameException(string.Format("Unable to decode faction from decsriptor (descriptor: '{0}')", lobbyDataFactionDescriptor));
+					throw new GameException(string.Format("Unable to decode faction from decsriptor (descriptor: '{0}')", lobbyData2));
 				}
-				string keyLobbyDataFactionColor = string.Format("Color{0}", empireIndex);
-				string lobbyDataFactionColor = sessionService.Session.GetLobbyData<string>(keyLobbyDataFactionColor, null);
-				int empireColorIndex = 0;
+				string x2 = string.Format("Color{0}", i);
+				string lobbyData3 = service.Session.GetLobbyData<string>(x2, null);
+				int color = 0;
 				try
 				{
-					empireColorIndex = int.Parse(lobbyDataFactionColor);
+					color = int.Parse(lobbyData3);
 				}
 				catch
 				{
 				}
-				MajorEmpire majorEmpire = new MajorEmpire("Empire#" + empireIndex, (Faction)faction.Clone(), empireColorIndex);
-				empires.Add(majorEmpire);
+				MajorEmpire item = new MajorEmpire("Empire#" + i, (Faction)faction2.Clone(), color);
+				list.Add(item);
 			}
 			NavalEmpire navalEmpire = null;
-			IDownloadableContentService downloadableContentService = Amplitude.Unity.Framework.Services.GetService<IDownloadableContentService>();
-			if (downloadableContentService.IsShared(DownloadableContent16.ReadOnlyName))
+			IDownloadableContentService service2 = Amplitude.Unity.Framework.Services.GetService<IDownloadableContentService>();
+			if (service2.IsShared(DownloadableContent16.ReadOnlyName))
 			{
-				Faction navalFaction = null;
-				if (factionDatabase != null && !factionDatabase.TryGetValue("Fomorians", out navalFaction))
+				Faction faction3 = null;
+				if (database != null && !database.TryGetValue("Fomorians", out faction3))
 				{
 					Diagnostics.LogError("Failed to retrieve the sea people faction from the database.");
 				}
-				if (navalFaction == null)
+				if (faction3 == null)
 				{
-					navalFaction = defaultFaction;
+					faction3 = faction;
 				}
-				int empireColorIndex2 = 0;
+				int colorIndex = 0;
 				if (palette != null && palette.Colors != null)
 				{
-					empireColorIndex2 = UnityEngine.Random.Range(0, palette.Colors.Length);
+					colorIndex = UnityEngine.Random.Range(0, palette.Colors.Length);
 					StaticString tag = "NavalEmpire";
 					XmlColorReference xmlColorReference = palette.Colors.FirstOrDefault((XmlColorReference iterator) => iterator.Tags != null && iterator.Tags.Contains(tag));
 					if (xmlColorReference != null)
 					{
-						empireColorIndex2 = Array.IndexOf<XmlColorReference>(palette.Colors, xmlColorReference);
+						colorIndex = Array.IndexOf<XmlColorReference>(palette.Colors, xmlColorReference);
 					}
 				}
-				navalEmpire = new NavalEmpire("NavalEmpire#0", (Faction)navalFaction.Clone(), empireColorIndex2);
-				empires.Add(navalEmpire);
+				navalEmpire = new NavalEmpire("NavalEmpire#0", (Faction)faction3.Clone(), colorIndex);
+				list.Add(navalEmpire);
 			}
-			for (int empireIndex2 = 0; empireIndex2 < numberOfRegions; empireIndex2++)
+			for (int j = 0; j < num2; j++)
 			{
-				Region region = this.World.Regions[empireIndex2];
-				if (downloadableContentService.IsShared(DownloadableContent16.ReadOnlyName) && region.IsOcean && navalEmpire != null && navalEmpire.Regions != null && !navalEmpire.Regions.Contains(region))
+				Region region = this.World.Regions[j];
+				if (service2.IsShared(DownloadableContent16.ReadOnlyName) && region.IsOcean && navalEmpire != null && navalEmpire.Regions != null && !navalEmpire.Regions.Contains(region))
 				{
 					navalEmpire.Regions.Add(region);
 					region.NavalEmpire = navalEmpire;
 				}
 				else
 				{
-					defaultFaction = null;
+					faction = null;
 					if (!StaticString.IsNullOrEmpty(region.MinorEmpireFactionName))
 					{
-						if (!factionDatabase.TryGetValue(region.MinorEmpireFactionName, out defaultFaction))
+						if (!database.TryGetValue(region.MinorEmpireFactionName, out faction))
 						{
 							Diagnostics.LogError("Unable to retrieve minor faction '{0}' for region #{1}.", new object[]
 							{
 								region.MinorEmpireFactionName,
-								empireIndex2
+								j
 							});
 						}
-						if (defaultFaction == null)
+						if (faction == null)
 						{
-							factionDatabase.TryGetValue("RandomMinor", out defaultFaction);
-							if (defaultFaction == null)
+							database.TryGetValue("RandomMinor", out faction);
+							if (faction == null)
 							{
 								Diagnostics.LogWarning("Failed to retrieve the 'RandomMinor' faction.");
-								defaultFaction = factionDatabase.GetValues().FirstOrDefault((Faction iterator) => iterator is MinorFaction && !iterator.IsStandard && !iterator.IsRandom);
-								if (defaultFaction == null)
+								faction = database.GetValues().FirstOrDefault((Faction iterator) => iterator is MinorFaction && !iterator.IsStandard && !iterator.IsRandom);
+								if (faction == null)
 								{
 									Diagnostics.LogWarning("Failed to retrieve any single 'minor' faction from the database.");
 								}
 							}
 						}
-						if (defaultFaction != null)
+						if (faction != null)
 						{
-							MinorFaction defaultMinorFaction = defaultFaction as MinorFaction;
-							if (defaultMinorFaction == null)
+							MinorFaction minorFaction = faction as MinorFaction;
+							if (minorFaction == null)
 							{
 								Diagnostics.LogError("The default faction is not a minor faction.");
 							}
 							else
 							{
-								MinorFaction empireFaction = (MinorFaction)defaultMinorFaction.Clone();
-								int empireColorIndex3 = 0;
+								MinorFaction minorFaction2 = (MinorFaction)minorFaction.Clone();
+								int colorIndex2 = 0;
 								if (palette != null && palette.Colors != null)
 								{
-									empireColorIndex3 = UnityEngine.Random.Range(0, palette.Colors.Length);
+									colorIndex2 = UnityEngine.Random.Range(0, palette.Colors.Length);
 									StaticString tag2 = "MinorFaction";
 									XmlColorReference xmlColorReference2 = palette.Colors.FirstOrDefault((XmlColorReference iterator) => iterator.Tags != null && iterator.Tags.Contains(tag2));
 									if (xmlColorReference2 != null)
 									{
-										empireColorIndex3 = Array.IndexOf<XmlColorReference>(palette.Colors, xmlColorReference2);
+										colorIndex2 = Array.IndexOf<XmlColorReference>(palette.Colors, xmlColorReference2);
 									}
 								}
-								MinorEmpire minorEmpire = new MinorEmpire("MinorEmpire#" + empireIndex2, empireFaction, empireColorIndex3);
-								empires.Add(minorEmpire);
+								MinorEmpire minorEmpire = new MinorEmpire("MinorEmpire#" + j, minorFaction2, colorIndex2);
+								list.Add(minorEmpire);
 								if (StaticString.IsNullOrEmpty(region.MinorEmpireFactionName))
 								{
-									region.MinorEmpireFactionName = empireFaction.Name;
+									region.MinorEmpireFactionName = minorFaction2.Name;
 								}
 								minorEmpire.Region = region;
 								region.MinorEmpire = minorEmpire;
@@ -815,32 +816,32 @@ public class Game : Amplitude.Unity.Game.Game, IXmlSerializable, IDumpable
 					}
 				}
 			}
-			Faction lesserFaction = null;
-			if (factionDatabase != null && !factionDatabase.TryGetValue("Lesser-NPCs", out lesserFaction))
+			Faction faction4 = null;
+			if (database != null && !database.TryGetValue("Lesser-NPCs", out faction4))
 			{
 				Diagnostics.LogError("Failed to retrieve the lesser npcs faction from the database.");
 			}
-			if (lesserFaction == null)
+			if (faction4 == null)
 			{
-				lesserFaction = defaultFaction;
+				faction4 = faction;
 			}
-			int empireColorIndex4 = 0;
+			int color2 = 0;
 			if (palette != null && palette.Colors != null)
 			{
-				empireColorIndex4 = UnityEngine.Random.Range(0, palette.Colors.Length);
+				color2 = UnityEngine.Random.Range(0, palette.Colors.Length);
 				StaticString tag3 = "LesserEmpire";
 				XmlColorReference xmlColorReference3 = palette.Colors.FirstOrDefault((XmlColorReference iterator) => iterator.Tags != null && iterator.Tags.Contains(tag3));
 				if (xmlColorReference3 != null)
 				{
-					empireColorIndex4 = Array.IndexOf<XmlColorReference>(palette.Colors, xmlColorReference3);
+					color2 = Array.IndexOf<XmlColorReference>(palette.Colors, xmlColorReference3);
 				}
 			}
-			LesserEmpire lesserEmpire = new LesserEmpire("LesserEmpire#0", (Faction)lesserFaction.Clone(), empireColorIndex4);
-			empires.Add(lesserEmpire);
-			this.Empires = empires.ToArray();
+			LesserEmpire item2 = new LesserEmpire("LesserEmpire#0", (Faction)faction4.Clone(), color2);
+			list.Add(item2);
+			this.Empires = list.ToArray();
 			IDatabase<SimulationDescriptor> simulationDescriptorDatabase = Databases.GetDatabase<SimulationDescriptor>(true);
-			SimulationDescriptor simulationDescriptor = null;
-			for (int empireIndex3 = 0; empireIndex3 < this.Empires.Length; empireIndex3++)
+			SimulationDescriptor descriptor = null;
+			for (int empireIndex3 = 0; empireIndex3 < this.Empires.Length; empireIndex3 = num3 + 1)
 			{
 				global::Empire empire = this.Empires[empireIndex3];
 				Diagnostics.Progress.SetProgress((float)empireIndex3 / (float)this.Empires.Length, string.Format("Initializing empire #{0} out of {1}...", empireIndex3, this.Empires.Length), "Loading...");
@@ -852,25 +853,24 @@ public class Game : Amplitude.Unity.Game.Game, IXmlSerializable, IDumpable
 				{
 					throw new InvalidOperationException();
 				}
-				List<FactionTrait> traits = new List<FactionTrait>(Faction.EnumerableTraits(empire.Faction));
-				int traitIndex = 0;
-				for (traitIndex = 0; traitIndex < traits.Count; traitIndex++)
+				List<FactionTrait> list2 = new List<FactionTrait>(Faction.EnumerableTraits(empire.Faction));
+				for (int k = 0; k < list2.Count; k++)
 				{
-					FactionTrait trait = traits[traitIndex];
-					if (trait != null && trait.SimulationDescriptorReferences != null)
+					FactionTrait factionTrait = list2[k];
+					if (factionTrait != null && factionTrait.SimulationDescriptorReferences != null)
 					{
-						for (int jndex = 0; jndex < trait.SimulationDescriptorReferences.Length; jndex++)
+						for (int l = 0; l < factionTrait.SimulationDescriptorReferences.Length; l++)
 						{
-							if (simulationDescriptorDatabase.TryGetValue(trait.SimulationDescriptorReferences[jndex], out simulationDescriptor))
+							if (simulationDescriptorDatabase.TryGetValue(factionTrait.SimulationDescriptorReferences[l], out descriptor))
 							{
-								empire.SimulationObject.AddDescriptor(simulationDescriptor);
+								empire.SimulationObject.AddDescriptor(descriptor);
 							}
 							else
 							{
 								Diagnostics.LogWarning("Failed to find the descriptor for descriptor reference (name: '{1}') on trait (name: '{0}').", new object[]
 								{
-									trait.Name,
-									trait.SimulationDescriptorReferences[jndex]
+									factionTrait.Name,
+									factionTrait.SimulationDescriptorReferences[l]
 								});
 							}
 						}
@@ -881,20 +881,25 @@ public class Game : Amplitude.Unity.Game.Game, IXmlSerializable, IDumpable
 				{
 					empireIndex3
 				});
+				num3 = empireIndex3;
 			}
-			for (int index = 0; index < this.Empires.Length; index++)
+			for (int m = 0; m < this.Empires.Length; m++)
 			{
-				if (this.Empires[index].Faction != null)
+				if (this.Empires[m].Faction != null)
 				{
-					foreach (FactionTrait trait2 in Faction.EnumerableTraits(this.Empires[index].Faction))
+					foreach (FactionTrait trait in Faction.EnumerableTraits(this.Empires[m].Faction))
 					{
-						this.ExecuteFactionTraitCommands(this.Empires[index], trait2);
+						this.ExecuteFactionTraitCommands(this.Empires[m], trait);
 					}
 				}
 			}
+			empireClassDescriptor = null;
+			simulationDescriptorDatabase = null;
+			empireClassDescriptor = null;
+			simulationDescriptorDatabase = null;
 		}
 		Palette palette2;
-		if (palettes != null && palettes.TryGetValue(paletteName, out palette2) && palette2.Colors != null && palette2.Colors.Length > 0)
+		if (palettes != null && palettes.TryGetValue(paletteName, out palette2) && palette2.Colors != null && palette2.Colors.Length != 0)
 		{
 			StaticString tag4 = "MinorFaction";
 			XmlColorReference xmlColorReference4 = palette2.Colors.FirstOrDefault((XmlColorReference iterator) => iterator.Tags != null && iterator.Tags.Contains(tag4));
@@ -903,13 +908,46 @@ public class Game : Amplitude.Unity.Game.Game, IXmlSerializable, IDumpable
 				global::Game.PrivateersColor = xmlColorReference4.ToColor();
 			}
 		}
-		for (int index2 = 0; index2 < this.Empires.Length; index2++)
+		for (int empireIndex3 = 0; empireIndex3 < this.Empires.Length; empireIndex3 = num3 + 1)
 		{
-			Diagnostics.Progress.SetProgress((float)index2 / (float)this.Empires.Length, string.Format("Loading empire #{0} out of {1}...", index2, this.Empires.Length), "Loading...");
-			yield return this.Empires[index2].Load();
-			yield return this.Empires[index2].LoadGame(this);
+			Diagnostics.Progress.SetProgress((float)empireIndex3 / (float)this.Empires.Length, string.Format("Loading empire #{0} out of {1}...", empireIndex3, this.Empires.Length), "Loading...");
+			yield return this.Empires[empireIndex3].Load();
+			yield return this.Empires[empireIndex3].LoadGame(this);
+			num3 = empireIndex3;
 		}
 		Diagnostics.Progress.Clear();
+		IAchievementService service3 = Amplitude.Unity.Framework.Services.GetService<IAchievementService>();
+		if (service3 != null)
+		{
+			AchievementManager achievementManager = service3 as AchievementManager;
+			ISessionService service4 = Amplitude.Unity.Framework.Services.GetService<ISessionService>();
+			if (service4 != null && service4.Session != null)
+			{
+				bool flag = false;
+				for (int n = 0; n < this.Empires.Length; n++)
+				{
+					string x3 = string.Format("Handicap{0}", n);
+					if (service4.Session.GetLobbyData<int>(x3, 5) > 5)
+					{
+						if (!achievementManager.IsDisabled)
+						{
+							achievementManager.Disable(true);
+							Diagnostics.Log("ELCP: Empire {0} has a positive Handicap, disabling Achievements", new object[]
+							{
+								n
+							});
+						}
+						flag = true;
+						break;
+					}
+				}
+				if (!flag && !Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && achievementManager.IsDisabled)
+				{
+					achievementManager.Disable(false);
+					Diagnostics.Log("ELCP: Reenabling Achievements");
+				}
+			}
+		}
 		yield break;
 	}
 

@@ -214,27 +214,35 @@ public class UnitListPanel : GuiCollapsingPanel
 
 	public void OnUnitToggle(GameObject obj)
 	{
-		AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
-		List<UnitGuiItem> children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
-		for (int i = 0; i < children.Count; i++)
+		if (Input.GetKey(KeyCode.Mouse0))
 		{
-			bool flag = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-			if (children[i].UnitToggle == component)
+			AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
+			List<UnitGuiItem> children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
+			for (int i = 0; i < children.Count; i++)
 			{
-				if (!flag)
+				bool flag = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+				if (children[i].UnitToggle == component)
 				{
-					children[i].UnitToggle.State = true;
+					if (!flag)
+					{
+						children[i].UnitToggle.State = true;
+					}
+				}
+				else if (!flag)
+				{
+					children[i].UnitToggle.State = false;
 				}
 			}
-			else if (!flag)
+			this.ComputeSelection();
+			if (this.parent != null)
 			{
-				children[i].UnitToggle.State = false;
+				this.parent.SendMessage("OnUnitToggle");
+				return;
 			}
 		}
-		this.ComputeSelection();
-		if (this.parent != null)
+		else
 		{
-			this.parent.SendMessage("OnUnitToggle");
+			this.OnELCPRightClick(obj);
 		}
 	}
 
@@ -1067,6 +1075,30 @@ public class UnitListPanel : GuiCollapsingPanel
 		if (e.Result == MessagePanelResult.Yes)
 		{
 			this.DisbandSelectedUnits();
+		}
+	}
+
+	public void OnELCPRightClick(GameObject obj)
+	{
+		if (!this.IsOtherEmpire)
+		{
+			UnitListPanel.<>c__DisplayClass0_0 CS$<>8__locals1 = new UnitListPanel.<>c__DisplayClass0_0();
+			AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
+			CS$<>8__locals1.children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
+			int j;
+			int i;
+			for (i = 0; i < CS$<>8__locals1.children.Count; i = j + 1)
+			{
+				if (CS$<>8__locals1.children[i].UnitToggle == component && CS$<>8__locals1.children[i].GuiUnit.UnitDesign != null && this.departmentOfDefense.AvailableUnitDesigns.Find((UnitDesign unitDesign) => unitDesign.Model == CS$<>8__locals1.children[i].GuiUnit.UnitDesign.Model) != null)
+				{
+					base.GuiService.GetGuiPanel<UnitDesignModalPanel>().CreateMode = false;
+					base.GuiService.GetGuiPanel<UnitDesignModalPanel>().Show(new object[]
+					{
+						CS$<>8__locals1.children[i].GuiUnit.UnitDesign
+					});
+				}
+				j = i;
+			}
 		}
 	}
 

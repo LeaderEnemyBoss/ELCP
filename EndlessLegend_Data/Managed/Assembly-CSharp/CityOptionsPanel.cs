@@ -440,6 +440,20 @@ public class CityOptionsPanel : GuiCollapsingPanel
 	{
 	}
 
+	private void OnRightClick(GameObject obj)
+	{
+		DepartmentOfIndustry.ConstructibleElement constructibleElement = obj.GetComponent<AgeControlButton>().OnActivateDataObject as DepartmentOfIndustry.ConstructibleElement;
+		Diagnostics.Assert(constructibleElement != null);
+		if (constructibleElement is UnitDesign)
+		{
+			base.GuiService.GetGuiPanel<UnitDesignModalPanel>().CreateMode = false;
+			base.GuiService.GetGuiPanel<UnitDesignModalPanel>().Show(new object[]
+			{
+				constructibleElement as UnitDesign
+			});
+		}
+	}
+
 	public AgeControlScrollView OptionsScrollview;
 
 	public AgeTransform OptionsTable;

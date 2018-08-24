@@ -542,6 +542,10 @@ public class RuntimeState_Lobby : RuntimeState
 					string factionNameOrDescriptor = text.Substring(array[0].Length + 1);
 					flag = this.TryChangeFaction(array[0], array[1], factionNameOrDescriptor);
 				}
+				else if (array[0].StartsWith("Handicap"))
+				{
+					flag = this.TryChangeHandicap(array[0], array[1]);
+				}
 				else if (array[0].StartsWith("LockEmpire"))
 				{
 					string x = array[0];
@@ -1735,6 +1739,12 @@ public class RuntimeState_Lobby : RuntimeState
 		default:
 			throw new ArgumentOutOfRangeException();
 		}
+	}
+
+	private bool TryChangeHandicap(string HandicapKey, string HandicapValue)
+	{
+		this.Session.SetLobbyData(HandicapKey, HandicapValue, true);
+		return true;
 	}
 
 	private global::Session session;

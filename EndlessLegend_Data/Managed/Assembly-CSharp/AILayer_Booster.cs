@@ -8,6 +8,7 @@ public class AILayer_Booster : AILayer
 	private float GenerateMessagePriorityForFood()
 	{
 		float num = 0f;
+		float num2 = float.MaxValue;
 		float propertyValue;
 		for (int i = 0; i < this.departmentOfTheInterior.Cities.Count; i++)
 		{
@@ -16,60 +17,125 @@ public class AILayer_Booster : AILayer
 			{
 				num = propertyValue;
 			}
+			if (propertyValue < num2)
+			{
+				num2 = propertyValue;
+			}
+		}
+		bool flag = false;
+		if ((double)(num2 / num) > 0.8)
+		{
+			flag = true;
 		}
 		propertyValue = this.aiEntityCity.City.GetPropertyValue(SimulationProperties.Workers);
-		return 1f - propertyValue / num;
+		float num3 = 1f - propertyValue / num;
+		if (propertyValue == num2 && flag)
+		{
+			num3 = AILayer.Boost(num3, 0.5f);
+		}
+		return num3;
 	}
 
 	private float GenerateMessageScoreForIndustry()
 	{
+		float result;
 		if (!AILayer_Colonization.IsAbleToColonize(base.AIEntity.Empire))
 		{
-			return 1f;
+			result = 1f;
 		}
-		float num = 0f;
-		float num2;
-		for (int i = 0; i < this.departmentOfTheInterior.Cities.Count; i++)
+		else
 		{
-			num2 = (float)this.departmentOfTheInterior.Cities[i].CityImprovements.Count;
-			if (num2 > num)
+			float num = 0f;
+			float num2;
+			for (int i = 0; i < this.departmentOfTheInterior.Cities.Count; i++)
 			{
-				num = num2;
-			}
-		}
-		num2 = (float)this.aiEntityCity.City.CityImprovements.Count;
-		float num3 = 1f - num2 / num;
-		float num4 = 0f;
-		if (!this.departmentOfTheTreasury.TryGetNetResourceValue(this.aiEntityCity.City, "Production", out num4, false))
-		{
-			num4 = 0f;
-		}
-		if (num4 == 0f)
-		{
-			num4 = 1f;
-		}
-		for (int j = 0; j < this.constructionQueue.Length; j++)
-		{
-			Construction construction = this.constructionQueue.PeekAt(j);
-			if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, construction.ConstructibleElement, new string[]
-			{
-				ConstructionFlags.Prerequisite
-			}))
-			{
-				float num5 = 0f;
-				for (int k = 0; k < construction.CurrentConstructionStock.Length; k++)
+				num2 = (float)this.departmentOfTheInterior.Cities[i].CityImprovements.Count;
+				if (num2 > num)
 				{
-					if (construction.CurrentConstructionStock[k].PropertyName == "Production")
-					{
-						num5 += construction.CurrentConstructionStock[k].Stock;
-					}
+					num = num2;
 				}
-				float productionCostWithBonus = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, construction.ConstructibleElement, "Production");
-				float num6 = productionCostWithBonus - num5;
-				num3 = AILayer.Boost(num3, this.ComputeCostBoost(num6 / num4));
 			}
+			num2 = (float)this.aiEntityCity.City.CityImprovements.Count;
+			float num3 = 1f - num2 / num;
+			float num4 = 0f;
+			if (!this.departmentOfTheTreasury.TryGetNetResourceValue(this.aiEntityCity.City, "Production", out num4, false))
+			{
+				num4 = 0f;
+			}
+			if (num4 == 0f)
+			{
+				num4 = 1f;
+			}
+			bool flag = false;
+			bool flag2 = false;
+			float num5 = 0f;
+			if (!this.departmentOfTheTreasury.TryGetResourceStockValue(this.aiEntityCity.City, DepartmentOfTheTreasury.Resources.Production, out num5, false))
+			{
+				num5 = 0f;
+			}
+			num5 += this.aiEntityCity.City.GetPropertyValue(SimulationProperties.NetCityProduction);
+			num5 = Math.Max(1f, num5);
+			for (int j = 0; j < this.constructionQueue.Length; j++)
+			{
+				Construction construction = this.constructionQueue.PeekAt(j);
+				if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, construction.ConstructibleElement, new string[]
+				{
+					ConstructionFlags.Prerequisite
+				}))
+				{
+					if (!flag2)
+					{
+						float num6 = 0f;
+						for (int k = 0; k < construction.CurrentConstructionStock.Length; k++)
+						{
+							if (construction.CurrentConstructionStock[k].PropertyName == "Production")
+							{
+								num6 += construction.CurrentConstructionStock[k].Stock;
+								if (construction.IsBuyout)
+								{
+									num6 = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, construction.ConstructibleElement, "Production");
+								}
+							}
+						}
+						float num7 = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, construction.ConstructibleElement, "Production") - num6;
+						num5 -= num7;
+						if (num5 < 0f && !construction.ConstructibleElementName.ToString().Contains("BoosterGenerator"))
+						{
+							flag = true;
+							flag2 = true;
+						}
+						if (construction.ConstructibleElementName.ToString().Contains("BoosterGenerator"))
+						{
+							flag2 = true;
+						}
+					}
+					float num8 = 0f;
+					for (int l = 0; l < construction.CurrentConstructionStock.Length; l++)
+					{
+						if (construction.CurrentConstructionStock[l].PropertyName == "Production")
+						{
+							num8 += construction.CurrentConstructionStock[l].Stock;
+						}
+					}
+					float num9 = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, construction.ConstructibleElement, "Production") - num8;
+					num3 = AILayer.Boost(num3, this.ComputeCostBoost(num9 / num4));
+				}
+			}
+			if (this.aiEntityCity.City.BesiegingEmpire != null)
+			{
+				num3 = AILayer.Boost(num3, 0.5f);
+			}
+			if (!flag && !flag2)
+			{
+				flag = true;
+			}
+			if (!flag)
+			{
+				num3 = 0f;
+			}
+			result = num3;
 		}
-		return num3;
+		return result;
 	}
 
 	public float GetPriority(StaticString boosterDefinitionName)
@@ -147,13 +213,10 @@ public class AILayer_Booster : AILayer
 		for (int i = this.boosterDefinitionWrappers.Count - 1; i >= 0; i--)
 		{
 			CityBoosterNeeds cityBoosterNeeds;
-			if (base.AIEntity.AIPlayer.Blackboard.TryGetMessage<CityBoosterNeeds>(this.boosterDefinitionWrappers[i].CurrentMessageId, out cityBoosterNeeds))
+			if (base.AIEntity.AIPlayer.Blackboard.TryGetMessage<CityBoosterNeeds>(this.boosterDefinitionWrappers[i].CurrentMessageId, out cityBoosterNeeds) && cityBoosterNeeds.AvailabilityState == CityBoosterNeeds.CityBoosterState.Available)
 			{
-				if (cityBoosterNeeds.AvailabilityState == CityBoosterNeeds.CityBoosterState.Available)
-				{
-					this.synchronousJobRepository.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_StartBooster));
-					return;
-				}
+				this.synchronousJobRepository.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_StartBooster));
+				return;
 			}
 		}
 	}
@@ -196,33 +259,44 @@ public class AILayer_Booster : AILayer
 
 	private SynchronousJobState SynchronousJob_StartBooster()
 	{
+		SynchronousJobState result;
 		if (this.boosterDefinitionWrappers == null || base.AIEntity == null || base.AIEntity.AIPlayer == null)
 		{
-			return SynchronousJobState.Failure;
+			result = SynchronousJobState.Failure;
 		}
-		for (int i = this.boosterDefinitionWrappers.Count - 1; i >= 0; i--)
+		else
 		{
-			CityBoosterNeeds cityBoosterNeeds;
-			if (this.boosterDefinitionWrappers[i] != null && base.AIEntity.AIPlayer.Blackboard.TryGetMessage<CityBoosterNeeds>(this.boosterDefinitionWrappers[i].CurrentMessageId, out cityBoosterNeeds))
+			DepartmentOfScience agency = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
+			bool flag = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>().IsInWarWithSomeone();
+			if (agency.GetResearchPropertyValue("UnlockedTechnologyCount") > 16f && agency.GetTechnologyState("TechnologyDefinitionAllBoosterLevel1") != DepartmentOfScience.ConstructibleElement.State.Researched && agency.GetTechnologyState("TechnologyDefinitionAllBoosterLevel2") != DepartmentOfScience.ConstructibleElement.State.Researched && !flag)
 			{
-				if (cityBoosterNeeds.AvailabilityState == CityBoosterNeeds.CityBoosterState.Available)
+				result = SynchronousJobState.Success;
+			}
+			else
+			{
+				for (int i = this.boosterDefinitionWrappers.Count - 1; i >= 0; i--)
 				{
-					StaticString x = this.boosterDefinitionWrappers[i].BoosterDefinitionName;
-					if (cityBoosterNeeds.BoosterGuid.IsValid && this.departmentOfEducation[cityBoosterNeeds.BoosterGuid] != null && this.departmentOfEducation[cityBoosterNeeds.BoosterGuid].Constructible != null)
+					CityBoosterNeeds cityBoosterNeeds = null;
+					if (this.boosterDefinitionWrappers[i] != null && base.AIEntity.AIPlayer.Blackboard.TryGetMessage<CityBoosterNeeds>(this.boosterDefinitionWrappers[i].CurrentMessageId, out cityBoosterNeeds) && cityBoosterNeeds.AvailabilityState == CityBoosterNeeds.CityBoosterState.Available)
 					{
-						x = this.departmentOfEducation[cityBoosterNeeds.BoosterGuid].Constructible.Name;
+						StaticString x = this.boosterDefinitionWrappers[i].BoosterDefinitionName;
+						if (cityBoosterNeeds.BoosterGuid.IsValid && this.departmentOfEducation[cityBoosterNeeds.BoosterGuid] != null && this.departmentOfEducation[cityBoosterNeeds.BoosterGuid].Constructible != null)
+						{
+							x = this.departmentOfEducation[cityBoosterNeeds.BoosterGuid].Constructible.Name;
+						}
+						OrderBuyoutAndActivateBooster orderBuyoutAndActivateBooster = new OrderBuyoutAndActivateBooster(base.AIEntity.Empire.Index, x, cityBoosterNeeds.BoosterGuid, false);
+						orderBuyoutAndActivateBooster.TargetGUID = this.aiEntityCity.City.GUID;
+						base.AIEntity.Empire.PlayerControllers.AI.PostOrder(orderBuyoutAndActivateBooster);
+						this.boosterDefinitionWrappers[i].CurrentMessageId = 0UL;
+						cityBoosterNeeds.BoosterGuid = 0UL;
+						cityBoosterNeeds.AvailabilityState = CityBoosterNeeds.CityBoosterState.Success;
+						base.AIEntity.AIPlayer.Blackboard.CancelMessage(cityBoosterNeeds);
 					}
-					OrderBuyoutAndActivateBooster orderBuyoutAndActivateBooster = new OrderBuyoutAndActivateBooster(base.AIEntity.Empire.Index, x, cityBoosterNeeds.BoosterGuid, false);
-					orderBuyoutAndActivateBooster.TargetGUID = this.aiEntityCity.City.GUID;
-					base.AIEntity.Empire.PlayerControllers.AI.PostOrder(orderBuyoutAndActivateBooster);
-					this.boosterDefinitionWrappers[i].CurrentMessageId = 0UL;
-					cityBoosterNeeds.BoosterGuid = 0UL;
-					cityBoosterNeeds.AvailabilityState = CityBoosterNeeds.CityBoosterState.Success;
-					base.AIEntity.AIPlayer.Blackboard.CancelMessage(cityBoosterNeeds);
 				}
+				result = SynchronousJobState.Success;
 			}
 		}
-		return SynchronousJobState.Success;
+		return result;
 	}
 
 	private AIEntity_City aiEntityCity;
@@ -241,18 +315,18 @@ public class AILayer_Booster : AILayer
 
 	private ISynchronousJobRepositoryAIHelper synchronousJobRepository;
 
+	[InfluencedByPersonality]
 	[PersonalityRegistryPath("AI/MajorEmpire/AIEntity_City/AILayer_Production/", new object[]
 	{
 
 	})]
-	[InfluencedByPersonality]
 	private float maximalTurnDuration = 30f;
 
+	[InfluencedByPersonality]
 	[PersonalityRegistryPath("AI/MajorEmpire/AIEntity_City/AILayer_Production/", new object[]
 	{
 
 	})]
-	[InfluencedByPersonality]
 	private float maximalTurnDurationBoost = 0.5f;
 
 	private class BoosterDefinitionWrapper

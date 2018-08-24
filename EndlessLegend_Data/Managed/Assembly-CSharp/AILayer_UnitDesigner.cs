@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Amplitude;
 using Amplitude.Unity.AI;
 using Amplitude.Unity.AI.Decision;
@@ -285,6 +286,7 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 		minimumValue = 0f;
 		maximumValue = 1f;
 		AIParameter.AIModifier[] array = this.modifierMaximalValue;
+		AIParameter.AIModifier[] array2 = this.modifierMinimalValue;
 		if (this.isCurrentDesignSeafaring)
 		{
 			array = this.modifierNavalMaximalValue;
@@ -294,6 +296,7 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 			if (array[i].Name == aiParameterName)
 			{
 				maximumValue = array[i].Value;
+				minimumValue = array2[i].Value;
 				break;
 			}
 		}
@@ -304,7 +307,7 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 				if (this.modifierBoost[j].Name == aiParameterName)
 				{
 					maximumValue = AILayer.Boost(maximumValue, this.modifierBoost[j].Value);
-					break;
+					return;
 				}
 			}
 		}
@@ -324,9 +327,11 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 
 	private float ItemScoreTransferFunction(AIItemData element, float currentScore)
 	{
+		float num;
+		this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num, false);
 		if (!element.IsNaval)
 		{
-			if (element.ResourceName == "Iron" && this.bestTierByResourceName[element.ResourceName] != element.Tier)
+			if (element.ResourceName == "Iron" && (this.bestTierByResourceName[element.ResourceName] != element.Tier || (this.bestTierByResourceName.ContainsKey("Dust") && num > 400f && !element.ToString().Contains("Ring") && !element.ToString().Contains("Talisman"))))
 			{
 				currentScore = -2f;
 				return currentScore;
@@ -334,26 +339,113 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 			float registryValue = this.personalityHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/TierModifier/{1}", AILayer_UnitDesigner.RegistryPath, element.Tier), 1f);
 			currentScore *= registryValue;
 		}
-		float num = 0f;
-		for (int i = 0; i < element.ItemDefinition.Costs.Length; i++)
+		if (this.HeroIsSlowpoke && element.ToString() == "ItemTalismanIronTier3")
 		{
-			bool flag = false;
-			for (int j = 0; j < this.resourcePolicy.Count; j++)
+			currentScore *= 2f;
+		}
+		float num2 = 0f;
+		bool flag = this.IgnoreCostForCurrentDesign;
+		AIUnitDesignData aiunitDesignData;
+		if (!flag && this.Hero != null && this.HeroDesign && this.unitDesignRepository.TryGetUnitDesignData(base.AIEntity.Empire.Index, this.Hero.UnitDesign.Model, out aiunitDesignData) && aiunitDesignData.OldUnitDesignScoring.ItemNamePerSlot.Contains(element.ToString()))
+		{
+			flag = true;
+		}
+		if (!flag)
+		{
+			for (int i = 0; i < element.ItemDefinition.Costs.Length; i++)
 			{
-				if (this.resourcePolicy[j].Name == element.ItemDefinition.Costs[i].ResourceName)
+				bool flag2 = false;
+				for (int j = 0; j < this.resourcePolicy.Count; j++)
 				{
-					num = Mathf.Min(1f, Mathf.Max(num, element.ItemDefinition.Costs[i].GetValue(base.AIEntity.Empire) / this.resourcePolicy[j].Value));
-					flag = true;
+					if (this.resourcePolicy[j].Name == element.ItemDefinition.Costs[i].ResourceName)
+					{
+						float num3;
+						float num4;
+						if (element.ItemDefinition.Costs[i].ResourceName == "EmpireMoney" && num > 200f)
+						{
+							num3 = this.resourcePolicy[j].Value + num / 25f;
+						}
+						else if (((this.HeroDesign && !this.Governorhero && !this.Spyhero) || ((this.Governorhero || this.Spyhero) && element.ItemDefinition.Slots[0].SlotType == "Accessory")) && element.ItemDefinition.Costs[i].ResourceName.ToString().Contains("Strategic") && this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, element.ItemDefinition.Costs[i].ResourceName, out num4, false))
+						{
+							num3 = this.resourcePolicy[j].Value;
+							if (num4 > 4f * element.ItemDefinition.Costs[i].GetValue(base.AIEntity.Empire) && num4 / 2f > num3)
+							{
+								num3 = num4 / 2f;
+							}
+						}
+						else
+						{
+							num3 = this.resourcePolicy[j].Value;
+						}
+						num2 = Mathf.Min(1f, Mathf.Max(num2, element.ItemDefinition.Costs[i].GetValue(base.AIEntity.Empire) / num3));
+						flag2 = true;
+						break;
+					}
+				}
+				if (!flag2)
+				{
+					num2 = 2f;
 					break;
 				}
 			}
-			if (!flag)
+		}
+		currentScore -= num2 * this.costModifier;
+		bool flag3 = false;
+		bool flag4 = false;
+		bool flag5 = false;
+		if (this.Hero != null && this.HeroDesign)
+		{
+			for (int k = 0; k < element.AIParameters.Length; k++)
 			{
-				num = 2f;
-				break;
+				if (!flag3 && (element.AIParameters[k].Name.ToString().Contains("Governor") || element.AIParameters[k].Name.ToString().Contains("AIItem")))
+				{
+					flag3 = (element.AIParameters[k].GetValue(new InterpreterContext(this.Hero.SimulationObject)) > 0f);
+				}
+				if (!flag4 && (element.AIParameters[k].Name.ToString().Contains("AIEquipment") || element.AIParameters[k].Name.ToString().Contains("AIUnit") || element.AIParameters[k].Name.ToString().Contains("Army")))
+				{
+					flag4 = (element.AIParameters[k].GetValue(new InterpreterContext(this.Hero.SimulationObject)) > 0f);
+				}
+				if (!flag5 && element.AIParameters[k].Name.ToString().Contains("Spy"))
+				{
+					flag5 = (element.AIParameters[k].GetValue(new InterpreterContext(this.Hero.SimulationObject)) > 0f);
+				}
+			}
+			if (this.Governorhero)
+			{
+				if (flag3)
+				{
+					currentScore *= 3f;
+				}
+				else if (element.ItemDefinition.Slots[0].SlotType == "Accessory" && currentScore > 0.1f)
+				{
+					currentScore = 0.1f;
+				}
+				else
+				{
+					currentScore *= 0.5f;
+				}
+			}
+			if (!this.Governorhero && !this.Spyhero && currentScore > 0f && !flag4)
+			{
+				currentScore = 0f;
+			}
+			if (this.Spyhero)
+			{
+				if (flag5)
+				{
+					currentScore *= 10f;
+				}
+				else if (element.ItemDefinition.Slots[0].SlotType == "Accessory")
+				{
+					currentScore = 0f;
+				}
+				else
+				{
+					currentScore *= 0.5f;
+				}
 			}
 		}
-		return currentScore - num * this.costModifier;
+		return currentScore;
 	}
 
 	public override void ReadXml(XmlReader reader)
@@ -494,20 +586,28 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 	{
 		yield return base.Load();
 		this.modifierMaximalValue = new AIParameter.AIModifier[this.empireModifiers.AfterBattleDefinition.AIModifiers.Length];
-		for (int index = 0; index < this.empireModifiers.AfterBattleDefinition.AIModifiers.Length; index++)
+		for (int i = 0; i < this.empireModifiers.AfterBattleDefinition.AIModifiers.Length; i++)
 		{
-			this.itemDataDecisionMaker.RegisterOutput(this.empireModifiers.AfterBattleDefinition.AIModifiers[index].Name);
-			this.modifierMaximalValue[index] = new AIParameter.AIModifier();
-			this.modifierMaximalValue[index].Name = this.empireModifiers.AfterBattleDefinition.AIModifiers[index].Name;
-			this.modifierMaximalValue[index].Value = this.personalityHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/MaximumModifierValues/{1}", AILayer_UnitDesigner.RegistryPath, this.empireModifiers.AfterBattleDefinition.AIModifiers[index].Name), 1f);
+			this.itemDataDecisionMaker.RegisterOutput(this.empireModifiers.AfterBattleDefinition.AIModifiers[i].Name);
+			this.modifierMaximalValue[i] = new AIParameter.AIModifier();
+			this.modifierMaximalValue[i].Name = this.empireModifiers.AfterBattleDefinition.AIModifiers[i].Name;
+			this.modifierMaximalValue[i].Value = this.personalityHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/MaximumModifierValues/{1}", AILayer_UnitDesigner.RegistryPath, this.empireModifiers.AfterBattleDefinition.AIModifiers[i].Name), 1f);
+		}
+		this.modifierMinimalValue = new AIParameter.AIModifier[this.empireModifiers.AfterBattleDefinition.AIModifiers.Length];
+		for (int j = 0; j < this.empireModifiers.AfterBattleDefinition.AIModifiers.Length; j++)
+		{
+			this.itemDataDecisionMaker.RegisterOutput(this.empireModifiers.AfterBattleDefinition.AIModifiers[j].Name);
+			this.modifierMinimalValue[j] = new AIParameter.AIModifier();
+			this.modifierMinimalValue[j].Name = this.empireModifiers.AfterBattleDefinition.AIModifiers[j].Name;
+			this.modifierMinimalValue[j].Value = this.personalityHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/MinimumModifierValues/{1}", AILayer_UnitDesigner.RegistryPath, this.empireModifiers.AfterBattleDefinition.AIModifiers[j].Name), 0f);
 		}
 		this.modifierNavalMaximalValue = new AIParameter.AIModifier[this.empireModifiers.AfterBattleDefinition.AIModifiers.Length];
-		for (int index2 = 0; index2 < this.empireModifiers.AfterBattleDefinition.AIModifiers.Length; index2++)
+		for (int k = 0; k < this.empireModifiers.AfterBattleDefinition.AIModifiers.Length; k++)
 		{
-			this.itemDataDecisionMaker.RegisterOutput(this.empireModifiers.AfterBattleDefinition.AIModifiers[index2].Name);
-			this.modifierNavalMaximalValue[index2] = new AIParameter.AIModifier();
-			this.modifierNavalMaximalValue[index2].Name = this.empireModifiers.AfterBattleDefinition.AIModifiers[index2].Name;
-			this.modifierNavalMaximalValue[index2].Value = this.personalityHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/NavalMaximumModifierValues/{1}", AILayer_UnitDesigner.RegistryPath, this.empireModifiers.AfterBattleDefinition.AIModifiers[index2].Name), 1f);
+			this.itemDataDecisionMaker.RegisterOutput(this.empireModifiers.AfterBattleDefinition.AIModifiers[k].Name);
+			this.modifierNavalMaximalValue[k] = new AIParameter.AIModifier();
+			this.modifierNavalMaximalValue[k].Name = this.empireModifiers.AfterBattleDefinition.AIModifiers[k].Name;
+			this.modifierNavalMaximalValue[k].Value = this.personalityHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/NavalMaximumModifierValues/{1}", AILayer_UnitDesigner.RegistryPath, this.empireModifiers.AfterBattleDefinition.AIModifiers[k].Name), 1f);
 		}
 		this.RunBattleAnalzer();
 		yield break;
@@ -686,40 +786,39 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 		this.availableItemData.Clear();
 		foreach (AIItemData aiitemData in this.itemDataRepository)
 		{
-			if (!aiitemData.ItemDefinition.Hidden)
+			if (!aiitemData.ItemDefinition.Hidden && aiitemData.IsResearched(base.AIEntity.Empire.Index))
 			{
-				if (aiitemData.IsResearched(base.AIEntity.Empire.Index))
+				AIUnitDesignData aiunitDesignData;
+				if (this.Hero != null && this.HeroDesign && this.unitDesignRepository.TryGetUnitDesignData(base.AIEntity.Empire.Index, this.Hero.UnitDesign.Model, out aiunitDesignData) && aiunitDesignData.OldUnitDesignScoring.ItemNamePerSlot.Contains(aiitemData.ToString()))
 				{
-					if (this.CheckItemDefinitionAgainstResourceAvailability(aiitemData.ItemDefinition))
+					this.availableItemData.Add(aiitemData);
+				}
+				else if (this.CheckItemDefinitionAgainstResourceAvailability(aiitemData.ItemDefinition))
+				{
+					bool flag = false;
+					for (int i = 0; i < aiitemData.ItemDefinition.Slots.Length; i++)
 					{
-						bool flag = false;
-						for (int i = 0; i < aiitemData.ItemDefinition.Slots.Length; i++)
+						bool flag2 = true;
+						for (int j = 0; j < aiitemData.ItemDefinition.Slots[i].SlotTypes.Length; j++)
 						{
-							bool flag2 = true;
-							for (int j = 0; j < aiitemData.ItemDefinition.Slots[i].SlotTypes.Length; j++)
+							if (!this.HasSlotType(unitEquipmentSet, aiitemData.ItemDefinition.Slots[i].SlotTypes[j]))
 							{
-								if (!this.HasSlotType(unitEquipmentSet, aiitemData.ItemDefinition.Slots[i].SlotTypes[j]))
-								{
-									flag2 = false;
-									break;
-								}
-							}
-							if (flag2)
-							{
-								flag = true;
+								flag2 = false;
 								break;
 							}
 						}
-						if (flag)
+						if (flag2)
 						{
-							if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(unit, aiitemData.ItemDefinition, new string[]
-							{
-								"SlotPrerequisite"
-							}))
-							{
-								this.availableItemData.Add(aiitemData);
-							}
+							flag = true;
+							break;
 						}
+					}
+					if (flag && DepartmentOfTheTreasury.CheckConstructiblePrerequisites(unit, aiitemData.ItemDefinition, new string[]
+					{
+						"SlotPrerequisite"
+					}))
+					{
+						this.availableItemData.Add(aiitemData);
 					}
 				}
 			}
@@ -862,8 +961,11 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 				this.unitAssignationParameterModifier.Add(new AIParameter.AIModifier(AILayer_HeroAssignation.HeroAssignationTypeNames[i], unitData.HeroData.LongTermSpecialtyFitness[i]));
 			}
 		}
+		float num = 0.4f;
 		if (hero.Garrison != null)
 		{
+			this.HeroDesign = true;
+			num = 0.75f;
 			AIData_GameEntity aidata_GameEntity;
 			if (this.aiDataRepositoryHelper.TryGetAIData(hero.Garrison.GUID, out aidata_GameEntity) && aidata_GameEntity is ICommanderMissionProvider)
 			{
@@ -875,29 +977,58 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 			}
 			if (hero.Garrison is City)
 			{
+				this.Governorhero = true;
 				AIEntity_City entity = base.AIEntity.AIPlayer.GetEntity<AIEntity_City>((AIEntity_City match) => match.City.GUID == hero.Garrison.GUID);
 				if (entity != null && entity.AICityState != null)
 				{
 					this.unitAssignationParameterModifier.AddRange(entity.AICityState.GetParameterModiferByName("HeroItem"));
 				}
 			}
+			if (hero.Garrison is Army)
+			{
+				this.HeroIsSlowpoke = true;
+				float num2 = hero.GetPropertyValue(SimulationProperties.Movement);
+				for (int j = 0; j < hero.UnitDesign.UnitEquipmentSet.Slots.Length; j++)
+				{
+					StaticString itemName = hero.UnitDesign.UnitEquipmentSet.Slots[j].ItemName.ToString().Split(DepartmentOfDefense.ItemSeparators)[0];
+					AIItemData aiitemData;
+					if (this.itemDataRepository.TryGet(itemName, out aiitemData) && aiitemData.ToString() == "ItemTalismanIronTier3")
+					{
+						num2 -= 3f;
+						break;
+					}
+				}
+				foreach (Unit unit in (hero.Garrison as Army).StandardUnits)
+				{
+					if (num2 - unit.GetPropertyValue(SimulationProperties.Movement) > -1f)
+					{
+						this.HeroIsSlowpoke = false;
+						break;
+					}
+				}
+			}
+			if (hero.Garrison is SpiedGarrison)
+			{
+				this.Spyhero = true;
+			}
 		}
-		float num = 0.5f;
-		float num2 = hero.GetPropertyValue(SimulationProperties.MaximumAssignmentCooldown) - hero.GetPropertyValue(SimulationProperties.AssignmentCooldown);
-		if (num2 <= 1f)
-		{
-			num = 0.75f;
-		}
+		this.IgnoreCostForCurrentDesign = true;
+		this.Hero = hero;
 		float num3 = this.ComputeUnitDesignScore(hero.UnitDesign);
+		this.IgnoreCostForCurrentDesign = false;
 		UnitDesign unitDesign;
 		float num4 = this.GenerateNewUnitDesign(hero.UnitDesign, out unitDesign);
-		num4 *= num;
-		if (num3 < num4)
+		this.Hero = null;
+		this.Governorhero = false;
+		this.HeroDesign = false;
+		this.HeroIsSlowpoke = false;
+		this.Spyhero = false;
+		if (num3 < num4 * num)
 		{
 			bool flag = false;
-			for (int j = 0; j < unitDesign.UnitEquipmentSet.Slots.Length; j++)
+			for (int k = 0; k < unitDesign.UnitEquipmentSet.Slots.Length; k++)
 			{
-				if (unitDesign.UnitEquipmentSet.Slots[j].ItemName != hero.UnitDesign.UnitEquipmentSet.Slots[j].ItemName)
+				if (unitDesign.UnitEquipmentSet.Slots[k].ItemName != hero.UnitDesign.UnitEquipmentSet.Slots[k].ItemName)
 				{
 					flag = true;
 					break;
@@ -914,14 +1045,14 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 					base.AIEntity.AIPlayer.Blackboard.AddMessage(evaluableMessage_RetrofitUnit);
 				}
 				float num5 = 0f;
-				for (int k = 0; k < unitData.RetrofitData.RetrofitCosts.Length; k++)
+				for (int l = 0; l < unitData.RetrofitData.RetrofitCosts.Length; l++)
 				{
-					if (unitData.RetrofitData.RetrofitCosts[k].ResourceName == DepartmentOfTheTreasury.Resources.EmpireMoney)
+					if (unitData.RetrofitData.RetrofitCosts[l].ResourceName == DepartmentOfTheTreasury.Resources.EmpireMoney)
 					{
-						num5 += unitData.RetrofitData.RetrofitCosts[k].Value;
+						num5 += unitData.RetrofitData.RetrofitCosts[l].Value;
 					}
 				}
-				float globalMotivation = 0.8f;
+				float globalMotivation = 0.9f;
 				float num6 = 0f;
 				if (num4 > 0f)
 				{
@@ -929,9 +1060,10 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 				}
 				if (num6 > 1f)
 				{
-					globalMotivation = 0.9f;
+					globalMotivation = 1f;
 				}
 				num6 = Mathf.Clamp01(num6);
+				num6 = num6 * 0.5f + 0.5f;
 				float num7 = 0.5f;
 				num7 = AILayer.Boost(num7, num6);
 				evaluableMessage_RetrofitUnit.SetInterest(globalMotivation, num7);
@@ -1138,6 +1270,13 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 
 	private bool CheckAgainstResourceItemNeed(AIItemData currentItemData)
 	{
+		float num;
+		this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num, false);
+		AIUnitDesignData aiunitDesignData;
+		if (this.Hero != null && this.HeroDesign && this.unitDesignRepository.TryGetUnitDesignData(base.AIEntity.Empire.Index, this.Hero.UnitDesign.Model, out aiunitDesignData) && aiunitDesignData.OldUnitDesignScoring.ItemNamePerSlot.Contains(currentItemData.ToString()))
+		{
+			return true;
+		}
 		for (int i = 0; i < currentItemData.ItemDefinition.Costs.Length; i++)
 		{
 			int j = 0;
@@ -1145,8 +1284,25 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 			{
 				if (currentItemData.ItemDefinition.Costs[i].ResourceName == this.resourcePolicy[j].Name)
 				{
-					float value = currentItemData.ItemDefinition.Costs[i].GetValue(base.AIEntity.Empire);
-					if (value + this.currentResources[j] >= this.resourcePolicy[j].Value)
+					float num2;
+					float num3;
+					if (this.resourcePolicy[j].Name == "EmpireMoney" && num > 200f)
+					{
+						num2 = this.resourcePolicy[j].Value + num / 25f;
+					}
+					else if (((this.HeroDesign && !this.Governorhero) || (this.Governorhero && currentItemData.ItemDefinition.Slots[0].SlotType == "Accessory")) && currentItemData.ItemDefinition.Costs[i].ResourceName.ToString().Contains("Strategic") && this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, currentItemData.ItemDefinition.Costs[i].ResourceName, out num3, false))
+					{
+						num2 = this.resourcePolicy[j].Value;
+						if (num3 > 4f * currentItemData.ItemDefinition.Costs[i].GetValue(base.AIEntity.Empire) && num3 / 2f > num2)
+						{
+							num2 = num3 / 2f;
+						}
+					}
+					else
+					{
+						num2 = this.resourcePolicy[j].Value;
+					}
+					if (currentItemData.ItemDefinition.Costs[i].GetValue(base.AIEntity.Empire) + this.currentResources[j] >= num2)
 					{
 						return false;
 					}
@@ -1293,24 +1449,36 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 			OrderEditHeroUnitDesign orderEditHeroUnitDesign = this.currentEditHeroOrderTicket.Order as OrderEditHeroUnitDesign;
 			if (orderEditHeroUnitDesign != null)
 			{
-				int index;
-				for (index = 0; index < this.departmentOfEducation.Heroes.Count; index++)
+				int index = 0;
+				Func<EvaluableMessage_RetrofitUnit, bool> <>9__0;
+				while (index < this.departmentOfEducation.Heroes.Count)
 				{
 					if (this.departmentOfEducation.Heroes[index].UnitDesign.Model == orderEditHeroUnitDesign.UnitDesignModel)
 					{
-						EvaluableMessage_RetrofitUnit firstMessage = base.AIEntity.AIPlayer.Blackboard.GetFirstMessage<EvaluableMessage_RetrofitUnit>(BlackboardLayerID.Empire, (EvaluableMessage_RetrofitUnit match) => match.ElementGuid == this.departmentOfEducation.Heroes[index].GUID);
-						if (firstMessage != null)
+						Blackboard<BlackboardLayerID, BlackboardMessage> blackboard = base.AIEntity.AIPlayer.Blackboard;
+						BlackboardLayerID layerID = BlackboardLayerID.Empire;
+						Func<EvaluableMessage_RetrofitUnit, bool> filter;
+						if ((filter = <>9__0) == null)
 						{
-							if (this.currentEditHeroOrderTicket.PostOrderResponse == PostOrderResponse.Processed)
-							{
-								firstMessage.SetObtained();
-							}
-							else
-							{
-								firstMessage.SetFailedToObtain();
-							}
+							filter = (<>9__0 = ((EvaluableMessage_RetrofitUnit match) => match.ElementGuid == this.departmentOfEducation.Heroes[index].GUID));
 						}
+						EvaluableMessage_RetrofitUnit firstMessage = blackboard.GetFirstMessage<EvaluableMessage_RetrofitUnit>(layerID, filter);
+						if (firstMessage == null)
+						{
+							break;
+						}
+						if (this.currentEditHeroOrderTicket.PostOrderResponse == PostOrderResponse.Processed)
+						{
+							firstMessage.SetObtained();
+							break;
+						}
+						firstMessage.SetFailedToObtain();
 						break;
+					}
+					else
+					{
+						int index2 = index;
+						index = index2 + 1;
 					}
 				}
 			}
@@ -1338,11 +1506,27 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 				}
 				else
 				{
-					DepartmentOfDefense.CheckRetrofitPrerequisitesResult checkRetrofitPrerequisitesResult = agency.CheckRetrofitPrerequisites(aidata_Unit.Unit, agency.GetRetrofitCosts(aidata_Unit.Unit, unitDesign));
-					if (checkRetrofitPrerequisitesResult == DepartmentOfDefense.CheckRetrofitPrerequisitesResult.Ok)
+					DepartmentOfDefense departmentOfDefense = agency;
+					Unit unit = aidata_Unit.Unit;
+					IConstructionCost[] retrofitCosts = agency.GetRetrofitCosts(aidata_Unit.Unit, unitDesign);
+					IConstructionCost[] costs = retrofitCosts;
+					bool flag = false;
+					if (base.AIEntity.Empire.SimulationObject.Tags.Contains("FactionTraitCultists7") && unit.Garrison is Army && !DepartmentOfEducation.IsLocked(unit))
 					{
-						OrderEditHeroUnitDesign order = new OrderEditHeroUnitDesign(base.AIEntity.Empire.Index, unitDesign);
-						base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out this.currentEditHeroOrderTicket, null);
+						flag = true;
+					}
+					if (unit.Garrison != null && unit.Garrison is SpiedGarrison && !DepartmentOfEducation.IsCaptured(unit))
+					{
+						flag = true;
+					}
+					if (departmentOfDefense.CheckRetrofitPrerequisites(unit, costs) == DepartmentOfDefense.CheckRetrofitPrerequisitesResult.Ok || flag)
+					{
+						OrderEditHeroUnitDesign orderEditHeroUnitDesign2 = new OrderEditHeroUnitDesign(base.AIEntity.Empire.Index, unitDesign);
+						if (flag)
+						{
+							orderEditHeroUnitDesign2.ForceEdit = true;
+						}
+						base.AIEntity.Empire.PlayerControllers.AI.PostOrder(orderEditHeroUnitDesign2, out this.currentEditHeroOrderTicket, null);
 						return SynchronousJobState.Running;
 					}
 					evaluableMessage_RetrofitUnit.SetFailedToObtain();
@@ -1427,4 +1611,18 @@ public class AILayer_UnitDesigner : AILayer, ISimulationAIEvaluationHelper<AIIte
 	private List<UnitDesign> unitDesignToImprove = new List<UnitDesign>();
 
 	private float newUnitDesignScoreModifier = 0.8f;
+
+	private AIParameter.AIModifier[] modifierMinimalValue;
+
+	private bool Governorhero;
+
+	private bool HeroDesign;
+
+	private bool HeroIsSlowpoke;
+
+	private bool IgnoreCostForCurrentDesign;
+
+	private Unit Hero;
+
+	private bool Spyhero;
 }

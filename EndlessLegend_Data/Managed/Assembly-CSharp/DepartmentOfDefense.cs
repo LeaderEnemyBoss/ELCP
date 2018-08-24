@@ -1711,7 +1711,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 	}
 
-	private List<UnitDesign> AvailableUnitDesigns
+	public List<UnitDesign> AvailableUnitDesigns
 	{
 		get
 		{
@@ -3174,20 +3174,20 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			return false;
 		}
 		IConstructionCost[] retrofitCosts = this.GetRetrofitCosts(unit, unitDesign);
-		for (int i = 0; i < retrofitCosts.Length; i++)
+		IConstructionCost[] array = retrofitCosts;
+		for (int i = 0; i < array.Length; i++)
 		{
-			float num = -retrofitCosts[i].GetValue(base.Empire);
-			if (!this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.Empire, retrofitCosts[i].ResourceName, ref num))
+			float num = -array[i].GetValue(base.Empire);
+			if (!this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.Empire, array[i].ResourceName, ref num))
 			{
 				return false;
 			}
 		}
-		DepartmentOfDefense.CheckRetrofitPrerequisitesResult checkRetrofitPrerequisitesResult = this.CheckRetrofitPrerequisites(unit, retrofitCosts);
-		if (checkRetrofitPrerequisitesResult != DepartmentOfDefense.CheckRetrofitPrerequisitesResult.Ok)
+		if (this.CheckRetrofitPrerequisites(unit, array) != DepartmentOfDefense.CheckRetrofitPrerequisitesResult.Ok && !order.ForceEdit)
 		{
 			return false;
 		}
-		order.RetrofitCosts = retrofitCosts;
+		order.RetrofitCosts = array;
 		return true;
 	}
 

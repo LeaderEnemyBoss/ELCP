@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -79,7 +80,7 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		Region region = this.ChooseNeighbourgRegion();
 		if (region == null)
 		{
-			return this.ChooseOverseaRegion();
+			region = this.ChooseOverseaRegion();
 		}
 		return region;
 	}
@@ -108,30 +109,32 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 
 	private Region ChooseOverseaRegion()
 	{
+		Region result;
 		if (this.departmentOfDefense.TechnologyDefinitionShipState != DepartmentOfScience.ConstructibleElement.State.Researched)
 		{
-			return null;
+			result = null;
 		}
-		Region region = this.ChooseNeutralIsland();
-		if (region != null)
+		else
 		{
-			return region;
-		}
-		this.potentialRegions.Clear();
-		for (int i = 0; i < this.continentData.Length; i++)
-		{
-			if (!this.continentData[i].EmpireWithRegion.Contains(base.AIEntity.Empire))
+			Region region = this.ChooseNeutralIsland();
+			if (region != null)
 			{
-				if (this.continentData[i].LandRegionCount != 0)
+				result = region;
+			}
+			else
+			{
+				this.potentialRegions.Clear();
+				for (int i = 0; i < this.continentData.Length; i++)
 				{
-					if (this.continentData[i].OverallColonizationPercent <= 0.34f)
+					if (!this.continentData[i].EmpireWithRegion.Contains(base.AIEntity.Empire) && this.continentData[i].LandRegionCount != 0 && this.continentData[i].OverallColonizationPercent <= 0.5f)
 					{
 						this.continentData[i].FillPotentialRegion(this.potentialRegions);
 					}
 				}
+				result = this.GetClosestRegion(this.potentialRegions);
 			}
 		}
-		return this.GetClosestRegion(this.potentialRegions);
+		return result;
 	}
 
 	private Region ChooseNeighbourgRegion()
@@ -342,20 +345,55 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		}
 		if (this.departmentOfTheInterior.Cities.Count == 0 && this.globalObjectiveMessages.Count == 0)
 		{
-			Region region2 = this.ChooseLastHopeRegion();
-			if (region2 == null)
+			Region region3 = this.ChooseLastHopeRegion();
+			if (region3 == null)
 			{
 				return;
 			}
-			this.CreateObjectiveFor(region2);
+			this.CreateObjectiveFor(region3);
 			num--;
 		}
+		Region region2 = null;
 		for (int j = 0; j < num; j++)
 		{
-			Region nextRegionToColonize = this.GetNextRegionToColonize();
-			if (nextRegionToColonize != null)
+			region2 = this.GetNextRegionToColonize();
+			if (region2 != null)
 			{
-				this.CreateObjectiveFor(nextRegionToColonize);
+				this.CreateObjectiveFor(region2);
+			}
+		}
+		DepartmentOfScience.ConstructibleElement constructibleElement;
+		if (region2 == null && num > 0 && this.worldPositionningService.World.Continents.Length > 1 && base.AIEntity.Empire.GetAgency<DepartmentOfScience>().TechnologyDatabase.TryGetValue("TechnologyDefinitionShip", out constructibleElement) && base.AIEntity.Empire.GetAgency<DepartmentOfScience>().GetTechnologyState(constructibleElement) == DepartmentOfScience.ConstructibleElement.State.Available)
+		{
+			bool flag = false;
+			using (IEnumerator<City> enumerator = this.departmentOfTheInterior.Cities.GetEnumerator())
+			{
+				while (enumerator.MoveNext())
+				{
+					if (enumerator.Current.Districts.Any((District match) => this.worldPositionningService.IsOceanTile(match.WorldPosition)))
+					{
+						flag = true;
+						break;
+					}
+				}
+			}
+			if (flag)
+			{
+				if (!DepartmentOfScience.CanBuyoutResearch(base.AIEntity.Empire))
+				{
+					OrderQueueResearch order = new OrderQueueResearch(base.AIEntity.Empire.Index, constructibleElement, true);
+					base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
+				}
+				else
+				{
+					float num2 = -base.AIEntity.Empire.GetAgency<DepartmentOfScience>().GetBuyOutTechnologyCost(constructibleElement) * 1.5f;
+					if (base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().IsTransferOfResourcePossible(base.AIEntity.Empire, DepartmentOfTheTreasury.Resources.TechnologiesBuyOut, ref num2))
+					{
+						OrderBuyOutTechnology order2 = new OrderBuyOutTechnology(base.AIEntity.Empire.Index, "TechnologyDefinitionShip");
+						Ticket ticket;
+						base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order2, out ticket, null);
+					}
+				}
 			}
 		}
 		this.WantToColonizeOversea = false;
@@ -363,11 +401,10 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		{
 			GlobalObjectiveMessage globalObjectiveMessage2 = this.globalObjectiveMessages[k];
 			Region region = this.worldPositionningService.GetRegion(globalObjectiveMessage2.RegionIndex);
-			AILayer_Colonization.ContinentData continentData = Array.Find<AILayer_Colonization.ContinentData>(this.continentData, (AILayer_Colonization.ContinentData match) => match.ContinentId == region.ContinentID);
-			if (!continentData.EmpireWithRegion.Contains(base.AIEntity.Empire))
+			if (!Array.Find<AILayer_Colonization.ContinentData>(this.continentData, (AILayer_Colonization.ContinentData match) => match.ContinentId == region.ContinentID).EmpireWithRegion.Contains(base.AIEntity.Empire))
 			{
 				this.WantToColonizeOversea = true;
-				break;
+				return;
 			}
 		}
 	}
@@ -489,6 +526,16 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 			{
 				base.GlobalPriority.Boost(0.2f, "I am sure you want more than one city...", new object[0]);
 			}
+		}
+		if (!this.aiLayerStrategy.IsAtWar() && this.departmentOfTheInterior.Cities.Count < 6 && base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireApproval) > 70f)
+		{
+			global::Game game = Services.GetService<IGameService>().Game as global::Game;
+			float num = 0.01f * Mathf.Min((float)game.Turn / base.AIEntity.Empire.SimulationObject.GetPropertyValue(SimulationProperties.GameSpeedMultiplier), 90f);
+			if (num <= 0f)
+			{
+				num = 0.01f;
+			}
+			base.GlobalPriority.Boost(num, "I am sure you want more than one city...", new object[0]);
 		}
 	}
 

@@ -76,6 +76,12 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 	public override IEnumerator BindServices()
 	{
 		yield return base.BindServices();
+		this.capacityColor1 = 0;
+		this.capacityColor1 = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(new StaticString("Settings/ELCP/UI/CapacityColor1"), 0);
+		this.capacityColor2 = 2;
+		this.capacityColor2 = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(new StaticString("Settings/ELCP/UI/CapacityColor2"), 2);
+		this.capacityColor3 = 8;
+		this.capacityColor3 = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(new StaticString("Settings/ELCP/UI/CapacityColor3"), 8);
 		this.simulationEffectParser = new SimulationEffectParser();
 		this.simulationEffectParser.GuiService = this;
 		Services.AddService<global::IGuiService>(this);
@@ -463,6 +469,54 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 		}
 	}
 
+	public int CapacityColor1
+	{
+		get
+		{
+			return this.capacityColor1;
+		}
+		set
+		{
+			if (this.capacityColor1 != value)
+			{
+				this.capacityColor1 = value;
+				Amplitude.Unity.Framework.Application.Registry.SetValue(new StaticString("Settings/ELCP/UI/CapacityColor1"), value.ToString());
+			}
+		}
+	}
+
+	public int CapacityColor2
+	{
+		get
+		{
+			return this.capacityColor2;
+		}
+		set
+		{
+			if (this.capacityColor2 != value)
+			{
+				this.capacityColor2 = value;
+				Amplitude.Unity.Framework.Application.Registry.SetValue(new StaticString("Settings/ELCP/UI/CapacityColor2"), value.ToString());
+			}
+		}
+	}
+
+	public int CapacityColor3
+	{
+		get
+		{
+			return this.capacityColor3;
+		}
+		set
+		{
+			if (this.capacityColor3 != value)
+			{
+				this.capacityColor3 = value;
+				Amplitude.Unity.Framework.Application.Registry.SetValue(new StaticString("Settings/ELCP/UI/CapacityColor3"), value.ToString());
+			}
+		}
+	}
+
 	public static readonly int MinimumResolutionWidthForHighDefinitionUI = 1920;
 
 	public static readonly int MinimumResolutionHeightForHighDefinitionUI = 1080;
@@ -474,6 +528,12 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 	private SimulationEffectParser simulationEffectParser;
 
 	private IKeyMappingService keyMapperService;
+
+	private int capacityColor1;
+
+	private int capacityColor2;
+
+	private int capacityColor3;
 
 	public static class Registers
 	{

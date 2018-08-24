@@ -459,7 +459,7 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 
 	public static bool CanFreeEmbark(global::Empire empire)
 	{
-		return empire.SimulationObject.Tags.Contains("AffinitySeaDemons");
+		return empire.SimulationObject.Tags.Contains("FactionTraitSeaDemons1");
 	}
 
 	public bool IsTilePassable(WorldPosition tilePosition, IPathfindingContextProvider pathfindingContextProvider, PathfindingFlags flags = (PathfindingFlags)0, PathfindingWorldContext worldContext = null)
