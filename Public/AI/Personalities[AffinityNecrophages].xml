@@ -83,7 +83,7 @@
               <!-- WAR -->
               <!-- #### -->
               <!-- Positive (towards asking for peace) -->
-              <AttitudeScoreWarFatigue>0.1</AttitudeScoreWarFatigue>
+              <AttitudeScoreWarFatigue>0.3</AttitudeScoreWarFatigue>
               <AttitudeScoreMyEmpireUnitsKilledDuringWar>0.4</AttitudeScoreMyEmpireUnitsKilledDuringWar>
               <AttitudeScoreMyEmpireCitiesBesiegedDuringWar>0.7</AttitudeScoreMyEmpireCitiesBesiegedDuringWar>
               <AttitudeScoreMyEmpireCitiesTakenDuringWar>0.7</AttitudeScoreMyEmpireCitiesTakenDuringWar>
@@ -131,12 +131,18 @@
               <AttitudeScoreOtherEmpireHasUniqueFacility>1.4</AttitudeScoreOtherEmpireHasUniqueFacility>
               <AttitudeScoreOtherEmpireLeadNavalRegionCount>1</AttitudeScoreOtherEmpireLeadNavalRegionCount>
             </AILayer_Attitude>
-
+	
+	    <!-- ELCP\LeaderEnemyBoss: Bugs dont spy! -->		
+	    <AILayer_HeroAssignation>
+              <MaximumFractionOfHeroesSpy>0.5</MaximumFractionOfHeroesSpy>
+              <MinimalTurnBeforeSpying>1.5</MinimalTurnBeforeSpying>
+            </AILayer_HeroAssignation>
+	    <!-- End ELCP-->		
             <AILayer_Strategy>
               
               <ResearchScoreFactor>0.5</ResearchScoreFactor>
               <EconomicScoreFactor>0.7</EconomicScoreFactor>
-              <DiplomaticScoreFactor>0.0</DiplomaticScoreFactor>
+              <DiplomaticScoreFactor>0.2</DiplomaticScoreFactor>
               <PrepareWarScoreFactor>1.7</PrepareWarScoreFactor>
 
               <!--

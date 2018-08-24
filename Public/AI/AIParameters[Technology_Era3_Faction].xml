@@ -26,6 +26,7 @@
 
   <!-- "Endless Recycling" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionVaulters4">
+	<AIParameter Name="AITechMustHave" Value="0.40 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 4)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyVaulters4)))"/>
     <!-- "Endless Recycling": 20 holy resource required -->
     <AIParameter Name="DistrictScienceLevelUpExtension" Value="14
         * (0.4 max (1 min ((   
@@ -60,9 +61,10 @@
 
   <!-- "Learn from Others" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionReplicants5">
+	<AIParameter Name="AITechMustHave" Value="0.10 * (($Count(ClassEmpire/Garrison/UnitHero))+$Count(ClassEmpire/UnitHero))"/>
     <AIParameter Name="EmpireHeroExperienceGainPerTurn"        Value="5"  />
   </AIParameterDatatableElement>
-
+  
   <!-- "Cargo Docks" (Flames later version) -->
   <AIParameterDatatableElement Name="TechnologyFlamesDefinitionShip">
     <AIParameter Name="EmpireUnlockSeaTrade" Value="$Property(EmpireTypeMajor:AIHasAnyCoastalCity)"  />
@@ -70,12 +72,14 @@
 
   <!-- "Tribal Council" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionAssimilationLimitMax2Drakkens">
-    <AIParameter Name="EmpireUnlockAssimilation" Value="1"  />
+    <AIParameter Name="EmpireUnlockAssimilation" Value="1 + (0 max (($Count(ClassEmpire/ClassCity/PacifiedVillage) - 9)/2)) + (0 max (($Count(ClassEmpire/ClassCity/ConvertedVillage) - 9)/2))" />
+	<AIParameter Name="AITechMustHave" Value="0.2 * ((0 max ($Count(ClassEmpire/ClassCity/PacifiedVillage) - 9)) + (0 max ($Count(ClassEmpire/ClassCity/ConvertedVillage) - 9)))"/>
   </AIParameterDatatableElement>
-
-  <!-- "Tribal Council" -->
+  
   <AIParameterDatatableElement Name="TechnologyDefinitionFlames9">
     <AIParameter Name="CityIndustry"          Value="5"/>
+	<AIParameter Name="AITechMustHave" Value="1.5 * ($Property(ClassEmpire:WarCount))"/>
+	
   </AIParameterDatatableElement>
   
 </Datatable>

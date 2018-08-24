@@ -22,7 +22,10 @@
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
 				</Include>
-
+				
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				<Include SubTreeName="ParleyWithVillage"/>
+				<Include SubTreeName="ExploreNearbyQuestRuin"/>
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<!--IF City need vision for spy THEN move to get a look at the city -->
@@ -93,7 +96,9 @@
 			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
 			<Controller_Selector>
-
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				<Include SubTreeName="ParleyWithVillage"/>
+				<Include SubTreeName="ExploreNearbyQuestRuin"/>
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<!--IF we could collect orbs THEN Change path -->

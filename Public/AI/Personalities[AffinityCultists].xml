@@ -5,6 +5,15 @@
     <Multipliers>
       <!-- AI Registry -->
       <AI>
+		<IndustryReferenceTurnCountAgent>
+        <MaximumTurnCount>0.75</MaximumTurnCount>
+        <ProductionStressMinimumValue>1.2</ProductionStressMinimumValue>
+		</IndustryReferenceTurnCountAgent>
+		
+		<TechnologyReferenceTurnCountAgent>
+			<IdealTechnologyUnlockPeriod>1.2</IdealTechnologyUnlockPeriod>
+		</TechnologyReferenceTurnCountAgent>
+	  
         <MajorEmpire>
           <AIEntity_Empire>
 
@@ -54,9 +63,9 @@
               <!-- WAR -->
               <!-- #### -->
               <!-- Positive (towards asking for peace) -->
-              <AttitudeScoreWarFatigue>0.4</AttitudeScoreWarFatigue>
-              <AttitudeScoreMyEmpireUnitsKilledDuringWar>0.6</AttitudeScoreMyEmpireUnitsKilledDuringWar>
-              <AttitudeScoreMyEmpireCitiesBesiegedDuringWar>1.4</AttitudeScoreMyEmpireCitiesBesiegedDuringWar>
+              <AttitudeScoreWarFatigue>0.5</AttitudeScoreWarFatigue>
+              <AttitudeScoreMyEmpireUnitsKilledDuringWar>0.3</AttitudeScoreMyEmpireUnitsKilledDuringWar>
+              <AttitudeScoreMyEmpireCitiesBesiegedDuringWar>1.2</AttitudeScoreMyEmpireCitiesBesiegedDuringWar>
               <AttitudeScoreMyEmpireCitiesTakenDuringWar>1.4</AttitudeScoreMyEmpireCitiesTakenDuringWar>
               <AttitudeScoreMyEmpireFortressesTakenDuringWar>1.1</AttitudeScoreMyEmpireFortressesTakenDuringWar>
               <AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>1.1</AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>
@@ -101,6 +110,19 @@
               <AttitudeScoreOtherEmpireHasUniqueFacility>1.5</AttitudeScoreOtherEmpireHasUniqueFacility>
               <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.1</AttitudeScoreOtherEmpireLeadNavalRegionCount>
             </AILayer_Attitude>
+			
+			<!-- ELCP\LeaderEnemyBoss Cultists are more likely to offer nice deals -->
+			<AILayer_Diplomacy>
+			  <SweetenDealThreshold>1.25</SweetenDealThreshold>
+			</AILayer_Diplomacy>
+			
+			<AILayer_HeroAssignation>
+			  <!-- ELCP\LeaderEnemyBoss Cultists need less heroes, -->
+              <MaximumHeroCount>0.8</MaximumHeroCount>
+              <MaximumTurnForHero>0.6</MaximumTurnForHero>
+              <MaximumFractionOfHeroesSpy>1.5</MaximumFractionOfHeroesSpy>
+			  <!-- End ELCP -->
+            </AILayer_HeroAssignation>
             
             <AILayer_Strategy>
               
@@ -115,26 +137,26 @@
 
               <Network>
                 <MilitaryEmpireNeedAgent>
-                  <GlobalUnitCountMultiplier>1.5</GlobalUnitCountMultiplier>
+                  <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
 
                   <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
-                  <CityUnitNeedStartTurn>0.5</CityUnitNeedStartTurn>
-                  <CityUnitNeedTurnRatio>0.75</CityUnitNeedTurnRatio>
+                  <CityUnitNeedStartTurn>1.5</CityUnitNeedStartTurn>
+                  <CityUnitNeedTurnRatio>1.5</CityUnitNeedTurnRatio>
                   <MinimumNumberOfUnitPerCity>0</MinimumNumberOfUnitPerCity>
                   <MaximumNumberOfUnitPerCity>1.6</MaximumNumberOfUnitPerCity>
 
                   <!-- Roaming unit need: NumberOfRoamingUnit = CLAMP((turn - RoamingUnitNeedStartTurn) / RoamingUnitNeedTurnRatio, MinimumNumberOfRoamingUnit, MaximumNumberOfRoamingUnit) -->
-                  <RoamingUnitNeedStartTurn>0</RoamingUnitNeedStartTurn>
-                  <RoamingUnitNeedTurnRatio>1.2</RoamingUnitNeedTurnRatio>
-                  <MinimumNumberOfRoamingUnit>1.2</MinimumNumberOfRoamingUnit>
-                  <MaximumNumberOfRoamingUnit>1.2</MaximumNumberOfRoamingUnit>
+                  <RoamingUnitNeedStartTurn>1</RoamingUnitNeedStartTurn>
+                  <RoamingUnitNeedTurnRatio>1.7</RoamingUnitNeedTurnRatio>
+                  <MinimumNumberOfRoamingUnit>1</MinimumNumberOfRoamingUnit>
+                  <MaximumNumberOfRoamingUnit>1</MaximumNumberOfRoamingUnit>
 
                   <!-- War unit need: NumberOfWarUnit = CLAMP(WarUnitNeedOffset + (turn - WarUnitNeedStartTurn) / WarUnitNeedTurnRatio, MinimumNumberOfWarUnit, MaximumNumberOfWarUnit) -->
-                  <WarUnitNeedOffset>0.8</WarUnitNeedOffset>
+                  <WarUnitNeedOffset>0.7</WarUnitNeedOffset>
                   <WarUnitNeedStartTurn>1.5</WarUnitNeedStartTurn>
-                  <WarUnitNeedTurnRatio>1.5</WarUnitNeedTurnRatio>
-                  <MinimumNumberOfWarUnit>0.9</MinimumNumberOfWarUnit>
-                  <MaximumNumberOfWarUnit>0.9</MaximumNumberOfWarUnit>
+                  <WarUnitNeedTurnRatio>1.7</WarUnitNeedTurnRatio>
+                  <MinimumNumberOfWarUnit>0.5</MinimumNumberOfWarUnit>
+                  <MaximumNumberOfWarUnit>1</MaximumNumberOfWarUnit>
 
                   <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
                 </MilitaryEmpireNeedAgent>
@@ -167,63 +189,66 @@
               </ElementEvaluatorContextMultiplier>
             </AILayer_Altar>
             
+	    <!-- ELCP/LeaderEnemyBoss Cultist focus more on Resource gain and Diplomacy to keep pace -->
             <AILayer_Research>
               <ElementEvaluatorContextMultiplier>
-                <AIEmpireApproval>1.2</AIEmpireApproval>
-                <AIEmpireGrowth>0.8</AIEmpireGrowth>
-                <AIEmpireProduction>0.8</AIEmpireProduction>
-                <AIEmpireResearch>1.5</AIEmpireResearch>
-                <AIEmpireMoney>1.5</AIEmpireMoney>
+                <AIEmpireApproval>0.8</AIEmpireApproval>
+                <AIEmpireGrowth>1</AIEmpireGrowth>
+                <AIEmpireProduction>2</AIEmpireProduction>
+                <AIEmpireResearch>1.8</AIEmpireResearch>
+                <AIEmpireMoney>1.8</AIEmpireMoney>
                 <AIEmpireEmpirePoint>2</AIEmpireEmpirePoint>
                 <AIEmpirePillageDefense>0.6</AIEmpirePillageDefense>
-                <AIEmpireAntiSpy>2</AIEmpireAntiSpy>
-                <AIEmpireMilitaryPower>1.5</AIEmpireMilitaryPower>
-                <AIEmpireCityDefense>2</AIEmpireCityDefense>
-                <AIEmpireVision>0.9</AIEmpireVision>
+                <AIEmpireAntiSpy>1</AIEmpireAntiSpy>
+                <AIEmpireMilitaryPower>1.7</AIEmpireMilitaryPower>
+                <AIEmpireCityDefense>0.5</AIEmpireCityDefense>
+                <AIEmpireVision>0.7</AIEmpireVision>
                 <AIEmpireBuyout>1.3</AIEmpireBuyout>
-                <AIEmpireImprovedRuinSearch>1.5</AIEmpireImprovedRuinSearch>
-                <AIEmpireStrategicResource>0.9</AIEmpireStrategicResource>
-                <AIEmpireLuxuryResource>1.6</AIEmpireLuxuryResource>
+                <AIEmpireImprovedRuinSearch>0.5</AIEmpireImprovedRuinSearch>
+                <AIEmpireStrategicResource>3</AIEmpireStrategicResource>
+                <AIEmpireLuxuryResource>3</AIEmpireLuxuryResource>
                 <AIEmpireUnlockShip>1</AIEmpireUnlockShip>
                 <AIEmpireUnlockUnit>0.9</AIEmpireUnlockUnit>
                 <AIEmpireUnlockAssimilation>2</AIEmpireUnlockAssimilation>
                 <AIEmpireUnlockBribe>2</AIEmpireUnlockBribe>
-                <AIEmpireUnlockPillage>1.4</AIEmpireUnlockPillage>
-                <AIEmpireUnlockPrivateers>1.4</AIEmpireUnlockPrivateers>
-                <AIEmpireUnlockMarketUnit>1.8</AIEmpireUnlockMarketUnit>
-                <AIEmpireUnlockMarketResource>0.8</AIEmpireUnlockMarketResource>
-                <AIEmpireUnlockBooster>1.8</AIEmpireUnlockBooster>
-                <AIEmpireUnlockBoosterCultist>1</AIEmpireUnlockBoosterCultist>
-                <AIEmpireUnlockDiplomacyPositive>0.8</AIEmpireUnlockDiplomacyPositive>
+                <AIEmpireUnlockPillage>0.8</AIEmpireUnlockPillage>
+                <AIEmpireUnlockPrivateers>1</AIEmpireUnlockPrivateers>
+                <AIEmpireUnlockMarketUnit>6</AIEmpireUnlockMarketUnit>
+                <AIEmpireUnlockMarketResource>1.8</AIEmpireUnlockMarketResource>
+                <AIEmpireUnlockBooster>3</AIEmpireUnlockBooster>
+                <AIEmpireUnlockBoosterCultist>5</AIEmpireUnlockBoosterCultist>
+                <AIEmpireUnlockDiplomacyPositive>3</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>
           </AIEntity_Empire>
 
           <AIEntity_City>
-            <AILayer_Production>              
+            <AILayer_Production>
+			  <MinimalTurnDuration>0.8</MinimalTurnDuration>
+			  <MaximalTurnDuration>0.8</MaximalTurnDuration>
               <ElementEvaluatorContextMultiplier>
-                <AICityApproval>1.3</AICityApproval>
-                <AICityGrowth>0.8</AICityGrowth>
-                <AICityProduction>1.1</AICityProduction>
-                <AICityResearch>1.1</AICityResearch>
-                <AICityMoney>1.0</AICityMoney>
-                <AICityEmpirePoint>1.2</AICityEmpirePoint>
+                <AICityApproval>0.5</AICityApproval>
+                <AICityGrowth>1.2</AICityGrowth>
+                <AICityProduction>1.5</AICityProduction>
+                <AICityResearch>1.4</AICityResearch>
+                <AICityMoney>1.4</AICityMoney>
+                <AICityEmpirePoint>1.5</AICityEmpirePoint>
                 <AICityMoneyUpkeep>0.9</AICityMoneyUpkeep>
-                <AICityDefense>1.4</AICityDefense>
+                <AICityDefense>0.5</AICityDefense>
                 <AICityPillageDefense>0.5</AICityPillageDefense>
-                <AICityLuxuryResource>0.6</AICityLuxuryResource>
-                <AICityStrategicResource>0.6</AICityStrategicResource>
-                <AICityAntiSpy>2.0</AICityAntiSpy>
-                <AIEmpireMilitaryPower>1.3</AIEmpireMilitaryPower>
+                <AICityLuxuryResource>1.5</AICityLuxuryResource>
+                <AICityStrategicResource>1.5</AICityStrategicResource>
+                <AICityAntiSpy>0.5</AICityAntiSpy>
+                <AIEmpireMilitaryPower>1</AIEmpireMilitaryPower>
                 <AIEmpireVision>0.9</AIEmpireVision>
-                <AIEmpireWonderVictory>1.2</AIEmpireWonderVictory>
-                <AIEmpireUnlockAltarOfAuriga>0.9</AIEmpireUnlockAltarOfAuriga>
+                <AIEmpireWonderVictory>3</AIEmpireWonderVictory>
+                <AIEmpireUnlockAltarOfAuriga>1.3</AIEmpireUnlockAltarOfAuriga>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Production>
           </AIEntity_City>
         </MajorEmpire>
       </AI>
-
+	<!-- End ELCP-->
       <!-- AIStrategicPlanDefinition Database -->
       <AIStrategicPlanDefinition>
       </AIStrategicPlanDefinition>

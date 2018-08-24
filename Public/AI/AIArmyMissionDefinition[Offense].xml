@@ -15,6 +15,7 @@
 			<Decorator_GetTargetPosition TargetVarName="$TargetCity" Output_DestinationVarName="$WorldPositionDestination"/>
 
 			<Controller_Selector Debug="AttackCity_Selector">
+				<Include SubTreeName="OpportunityConvertVillage"/>
 				<Include SubTreeName="OpportunitySearchRuin">
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>                
@@ -177,7 +178,8 @@
 
 				<!--IF EnnemyDetected AND I can defeat him THEN Engage him-->
 				<Include SubTreeName="TryToAttackEnemyInRange"/>
-                
+				
+                <Include SubTreeName="OpportunityConvertVillage"/>
 				<!--IF RuinDetected THEN explore Ruin-->
 				<Include SubTreeName="OpportunitySearchRuin">
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
@@ -222,11 +224,15 @@
 
 			<Controller_Selector Debug="FreeCity_Selector">
 
-				<!--IF Ennemy sieging the city is detected THEN Engage him-->
-				<Include SubTreeName="TryToAttackEnemyInRange"/>
-
+				<!--IF Enemy sieging the city is detected THEN Engage him-->
+				<Controller_Sequence Debug="FreeCity_Attack">
+					<Decorator_CanDefeatTarget StrongestAttacker="true"/> <!-- ELCP: Modified decorator that checks, if the army is the strongest potential attacker -->
+					<Include SubTreeName="TryToAttackEnemyInRange"/>
+				</Controller_Sequence>
+				
 				<Controller_Sequence Debug="FreeCity_MoveTowardCity">
-					<Decorator_SelectSiegingArmyPosition CityUnderSiege="$TargetCity" Output_DestinationVarName="$WorldPositionDestination"/>
+					<!-- ELCP: Modified Decorator_SelectSiegingArmyPosition, now only sends strongest army towards besieger, rest stays nearby to reinforce -->
+					<Decorator_SelectSiegingArmyPosition CityUnderSiege="$TargetCity" Output_DestinationVarName="$WorldPositionDestination"/> 
 					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" Output_PathVarName="$Path"/>
 					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
 					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
@@ -238,7 +244,6 @@
 					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
 					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
 				</Controller_Sequence>
-
 			</Controller_Selector>
 
 		</Controller_Sequence>
@@ -388,6 +393,7 @@
 					<Action_GeneratePath DestinationVarName="$VillagePosition" TypeOfPath="Regular" Output_PathVarName="$PathToVillage"/>
 
 					<Controller_Selector>
+					
 						<Controller_Sequence Debug="ConvertVillage_AtDestinationToConvertVillage_1">
 							<Decorator_DestinationReached DestinationVarName="$VillagePosition" TypeOfCheck="Regular"/>
 							<Controller_Selector Debug="ConvertOrBribe">
@@ -397,7 +403,6 @@
 						</Controller_Sequence>
 
 						<Controller_Sequence Debug="ConvertVillage_ConvertVillage">
-
 							<Decorator_VariableCheck VarName="$PathToVillage" CheckOperation="Exists"/>
 							<Action_Move PathVarName="$PathToVillage" TypeOfMove="Regular"/>
 							<Decorator_MoveEnded PathVarName="$PathToVillage"/>
@@ -406,23 +411,31 @@
 								<Action_Bribe TargetVarName="$VillageToConvert"/>
 								<Action_ConvertVillage TargetVarName="$VillageToConvert"/>
 							</Controller_Selector>
-
 						</Controller_Sequence>
 
 					</Controller_Selector>
 
 				</Controller_Sequence>
-
-				<Controller_Sequence Debug="ConvertVillage_AtDestinationToConvertVillage_2">
-					<Decorator_GetTargetPosition TargetVarName="$VillageToConvert" Output_DestinationVarName="$VillagePosition"/>
-					<Decorator_DestinationReached DestinationVarName="$VillagePosition" TypeOfCheck="Regular"/>
-					<Controller_Selector Debug="ConvertOrBribe">
-						<Action_Bribe TargetVarName="$VillageToConvert"/>
+				
+				<Controller_Selector>
+					<Controller_Sequence Debug="ConvertVillage_AtDestinationToConvertVillage_2">
+						<Decorator_GetTargetPosition TargetVarName="$VillageToConvert" Output_DestinationVarName="$VillagePosition"/>
+						<Decorator_DestinationReached DestinationVarName="$VillagePosition" TypeOfCheck="Regular"/>
+						<Controller_Selector Debug="ConvertOrBribe">
+							<Action_Bribe TargetVarName="$VillageToConvert"/>
+							<Action_ConvertVillage TargetVarName="$VillageToConvert"/>
+						</Controller_Selector>
+					</Controller_Sequence>
+					
+					<Controller_Sequence Debug="ConvertVillage_EngageVillage">
+						<Decorator_GetTargetPosition TargetVarName="$VillageToConvert" Output_DestinationVarName="$VillagePosition"/>
+						<Decorator_DestinationReached DestinationVarName="$VillagePosition" TypeOfCheck="Regular"/>
+						<Decorator_CanDefeatTarget TargetVarName="$VillageToConvert"/>
+						<Action_ShiftUnits TargetVarName="$VillageToConvert"/>
+						<Action_Attack TargetVarName="$VillageToConvert"/>
 						<Action_ConvertVillage TargetVarName="$VillageToConvert"/>
-					</Controller_Selector>
-
-				</Controller_Sequence>
-
+					</Controller_Sequence>
+				</Controller_Selector>
 			</Controller_Selector>
 
 		</Controller_Sequence>
@@ -460,6 +473,7 @@
 				</Include>
 
 				<!--IF RuinDetected THEN explore Ruin-->
+				<Include SubTreeName="ExploreNearbyQuestRuin"/>
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<Include SubTreeName="TryToAttackEnemyInRange"/>

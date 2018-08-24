@@ -16,6 +16,9 @@
 			<Controller_Selector>
 
 				<Include SubTreeName="TryToAttackEnemyInRange"/>
+				<Include SubTreeName="ParleyWithVillage"/>
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				<Include SubTreeName="ExploreNearbyQuestRuin"/>
 				<Include SubTreeName="ExploreNearbyRuin"/>                
 				<Include SubTreeName="OrbsOpportunity">
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
@@ -169,7 +172,8 @@
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
 				</Include>
-
+				
+				<Include SubTreeName="ExploreNearbyQuestRuin"/>
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<Include SubTreeName="OpportunityPillageOrFlee">
@@ -178,11 +182,14 @@
 				</Include>
 
 				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
-
+				
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				
 				<Include SubTreeName="TryAttackNearbyVillages">
 					<VariableConverter ToVariable="$TargetList" FromVariable="$TargetList"/>
-				</Include>        
+				</Include>  
 
+				<Include SubTreeName="ParleyWithVillage"/>
 				<!-- Actual Raoming behavior -->
 				<Controller_Sequence Debug="MajorFactionRoaming_GoToDestination">
 
@@ -230,14 +237,21 @@
 			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
 			<Controller_Selector>
-				<Include SubTreeName="TryToAttackEnemyInRange"/>
+				<!--IF Enemy sieging the city is detected THEN Engage him-->
+				<Controller_Sequence Debug="TryWarAttack">
+					<Decorator_CanDefeatTarget StrongestAttacker="true"/> <!-- ELCP: Modified decorator that checks, if the army is the strongest potential attacker -->
+					<Include SubTreeName="TryToAttackEnemyInRange"/>
+				</Controller_Sequence>
+				
+				<Include SubTreeName="OpportunityConvertVillage"/>
 
 				<!--IF we could collect orbs THEN Change path -->
 				<Include SubTreeName="OrbsOpportunity">
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
 				</Include>
-
+				
+				<Include SubTreeName="ExploreNearbyQuestRuin"/>
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<!--IF we could Pillage something THEN try to pillage it -->

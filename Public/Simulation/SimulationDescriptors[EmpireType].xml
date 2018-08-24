@@ -52,7 +52,7 @@
       <!-- Diplomatic victory -->
       <SimulationPropertyDescriptor Name="EmpirePeacePointStock"          IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetEmpirePeacePoint"/>
-      <SimulationPropertyDescriptor Name="EmpirePointToPeacePointFactor"  BaseValue="0.2"/>
+      <SimulationPropertyDescriptor Name="EmpirePointToPeacePointFactor"  BaseValue="0.1"/>
       <SimulationPropertyDescriptor Name="AffinityRelationScoreSum"       MinValue="Negative" IsSealed="true"/>
       <SimulationPropertyDescriptor Name="RelationScoreSumFactor"         BaseValue="0.1"/>
       <SimulationPropertyDescriptor Name="ClampedRelationScoreSum"        MinValue="0"        BaseValue="0"/>
@@ -242,9 +242,12 @@
       <SimulationPropertyDescriptor Name="PacifiedVillages_Dorgeshi"        BaseValue="0" MaxValue="6"/>
 
       <!-- Misc -->
-      <SimulationPropertyDescriptor Name="CurrentEra"                     BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="CurrentEra"           BaseValue="1"/>
 
-      <SimulationPropertyDescriptor Name="BoosterDurationMultiplier"      BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="BoosterDurationMultiplier"           BaseValue="1"/>
+	  <!-- ELCP/LeaderEnemyBoss: New unique AllayiBoosterDurationMultiplier for Luxury Alchemists -->
+	  <SimulationPropertyDescriptor Name="AllayiBoosterDurationMultiplier"     BaseValue="1"/>
+	  <!-- End ELCP -->
 
       <SimulationPropertyDescriptor Name="BonusMovementOnEnemySpotted"/>
 

@@ -238,7 +238,7 @@
   <!-- Mad Fairies - Empire Bonus (Ending Reward) -->
   <SimulationDescriptor Name="TechnologyMadFairies6"                            Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"        Value="0.25" Operation="Addition"  Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true"  Value="0.25" Operation="Addition"  Path="../EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -438,8 +438,8 @@
   <SimulationDescriptor Name="TechnologyMilitaryRecruitmentBonus1"              Type="Technology" />
   <SimulationDescriptor Name="TechnologyConstructionBuyout"                     Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true" Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true" Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <!--<SimulationDescriptor Name="TechnologyUnitCostReduction1"             Type="Technology"/>-->
@@ -619,12 +619,16 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
+  <!-- ELCP/LeaderEnemyBoss: New unique AllayiBoosterDurationMultiplier for Luxury Alchemists since BoosterDurationMultiplier multiplies everything from stockpiles to infiltration effects -->
+  
   <!-- Winter Shifters Quest Reward: Luxury Booster bonus -->
   <SimulationDescriptor Name="TechnologyWinterShifters7"                        Type="Technology">
     <SimulationModifierDescriptors>
-      <BinarySimulationModifierDescriptor TargetProperty="BoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>
-    </SimulationModifierDescriptors>
+      <!--<BinarySimulationModifierDescriptor TargetProperty="BoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>-->
+	  <BinarySimulationModifierDescriptor TargetProperty="AllayiBoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>
+	</SimulationModifierDescriptors>
   </SimulationDescriptor>
+  <!-- End ELCP -->
 
   <!-- Sea Demons Quest Reward: City Improvement giving XP at seafaring unit creation -->
   <SimulationDescriptor Name="TechnologySeaDemons10"                            Type="Technology">
@@ -1165,10 +1169,10 @@
 
   <SimulationDescriptor Name="TechnologyUnitImproved1"                          Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
