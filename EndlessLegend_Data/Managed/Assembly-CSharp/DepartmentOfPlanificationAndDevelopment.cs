@@ -59,9 +59,12 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			throw new ArgumentNullException("boosterDefinition");
 		}
 		float duration = boosterDefinition.GetDuration(context);
-		float propertyValue = empire.GetPropertyValue(SimulationProperties.BoosterDurationMultiplier);
-		int a = Mathf.RoundToInt(duration * propertyValue);
-		return Mathf.Max(a, 1);
+		float num = empire.GetPropertyValue(SimulationProperties.BoosterDurationMultiplier);
+		if (boosterDefinition.ToString().Contains("Luxury"))
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.AllayiBoosterDurationMultiplier);
+		}
+		return Mathf.Max(Mathf.RoundToInt(duration * num), 1);
 	}
 
 	public void ActivateBooster(BoosterDefinition boosterDefinition, GameEntityGUID boosterGuid, int boosterDuration, SimulationObjectWrapper context, GameEntityGUID targetGuid, int instigatorEmpireIndex)

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Amplitude;
+using Amplitude.Unity.Framework;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
@@ -302,6 +303,18 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 				{
 					account.EstimatedBalance = 0f;
 				}
+			}
+		}
+		if (account.PromisedAmount > 0f && this.workingMessages.Count == 0)
+		{
+			account.PromisedAmount = 0f;
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				Diagnostics.Log("ELCP: Empire {0} ApplyExecutedMessages workaround fix, resetting PromisedAmount of {1} to 0.", new object[]
+				{
+					base.AIEntity.Empire.Index,
+					account.AccountTag
+				});
 			}
 		}
 	}

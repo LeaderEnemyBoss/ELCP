@@ -275,47 +275,45 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 	private void PopulateBesiegingCityMission(Tags tags, Region region)
 	{
 		float armyMaxPower = this.GetArmyMaxPower();
-		float num = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Empire, region.City, 0);
-		num *= this.cityMilitaryPowerFactor;
-		int num2 = Mathf.CeilToInt(num / armyMaxPower);
-		if (num2 == 0)
+		int num = Mathf.CeilToInt(this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Empire, region.City, 0) * this.cityMilitaryPowerFactor / armyMaxPower);
+		if (num == 0)
 		{
-			num2 = 1;
+			num = 1;
 		}
-		else if (num2 > 3)
+		else if (num > 5)
 		{
-			num2 = 3;
+			num = 5;
 		}
+		int num2 = 0;
 		int num3 = 0;
-		int num4 = 0;
 		for (int i = 0; i < base.Missions.Count; i++)
 		{
 			AICommanderMission_BesiegeCityDefault aicommanderMission_BesiegeCityDefault = base.Missions[i] as AICommanderMission_BesiegeCityDefault;
 			if (aicommanderMission_BesiegeCityDefault != null)
 			{
-				if (num3 < num2)
+				if (num2 < num)
 				{
 					aicommanderMission_BesiegeCityDefault.IsReinforcement = false;
 					if (!aicommanderMission_BesiegeCityDefault.AIDataArmyGUID.IsValid)
 					{
-						num4++;
+						num3++;
 					}
 				}
 				else
 				{
-					if (num3 >= num2 + 2)
+					if (num2 >= num + 2)
 					{
 						this.CancelMission(aicommanderMission_BesiegeCityDefault);
-						goto IL_C1;
+						goto IL_9C;
 					}
 					aicommanderMission_BesiegeCityDefault.IsReinforcement = true;
 				}
-				num3++;
+				num2++;
 			}
-			IL_C1:;
+			IL_9C:;
 		}
 		GlobalObjectiveMessage globalObjectiveMessage2;
-		if (num3 - num4 >= num2)
+		if (num2 - num3 >= num)
 		{
 			GlobalObjectiveMessage globalObjectiveMessage;
 			if (base.AIPlayer.Blackboard.TryGetMessage<GlobalObjectiveMessage>(base.GlobalObjectiveID, out globalObjectiveMessage))
@@ -327,7 +325,7 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 		{
 			globalObjectiveMessage2.ObjectiveState = "Preparing";
 		}
-		for (int j = num3; j < num2; j++)
+		for (int j = num2; j < num; j++)
 		{
 			tags.AddTag("BesiegeCity");
 			base.PopulationFirstMissionFromCategory(tags, new object[]

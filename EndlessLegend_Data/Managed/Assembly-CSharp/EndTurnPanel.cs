@@ -1122,6 +1122,32 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		yield break;
 	}
 
+	private void OnRightClick(GameObject obj)
+	{
+		if (!base.IsVisible)
+		{
+			return;
+		}
+		MajorEmpire majorEmpire = obj.GetComponent<EmpirePlayersStatusItem>().MajorEmpire;
+		if (majorEmpire == null)
+		{
+			return;
+		}
+		GameNegotiationScreen guiPanel = base.GuiService.GetGuiPanel<GameNegotiationScreen>();
+		if (guiPanel != null)
+		{
+			if (guiPanel.IsVisible)
+			{
+				guiPanel.ReShow(majorEmpire);
+				return;
+			}
+			guiPanel.Show(new object[]
+			{
+				majorEmpire
+			});
+		}
+	}
+
 	public const float DisableAlpha = 0.7f;
 
 	public const float EmpireStartAngle = 180f;

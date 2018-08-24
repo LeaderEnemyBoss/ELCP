@@ -217,6 +217,7 @@ public class MenuCompetitorSlot : MonoBehaviour
 			}
 		}
 		this.RefreshColorDropList(colorsList);
+		this.RefreshHandicapDroplist(lobbyData);
 		bool flag2 = !this.empireLocked && !guiLocked;
 		if (!this.CompetitorIsHuman && this.Session.SessionMode != SessionMode.Single)
 		{
@@ -439,6 +440,112 @@ public class MenuCompetitorSlot : MonoBehaviour
 			});
 			string message = string.Format("k:/{0}/{1}", gameObject.GetComponent<AgeControlButton>().OnActivateData, "%KickReasonByHost");
 			this.Session.SendLobbyChatMessage(message);
+		}
+	}
+
+	private void OnChangeHandicapCB(GameObject gameObject)
+	{
+		if (this.Session.IsHosting)
+		{
+			AgeControlDropList component = gameObject.GetComponent<AgeControlDropList>();
+			if (component != null)
+			{
+				int selectedItem = component.SelectedItem;
+				string message = string.Format("q:/Handicap{0}/{1}", this.EmpireIndex, selectedItem);
+				this.Session.SendLobbyChatMessage(message);
+			}
+		}
+	}
+
+	private void RefreshHandicapDroplist(string lobbyData5)
+	{
+		if (!this.CompetitorIsHuman)
+		{
+			this.AiDifficultyDroplist.ReadOnly = true;
+			this.AiDifficultyDroplist.AgeTransform.Visible = false;
+			return;
+		}
+		if (this.Session.IsHosting && this.CompetitorIsHuman && this.canModifyOwnEmpireSettings)
+		{
+			if (this.Session.SessionMode == SessionMode.Single)
+			{
+				this.AiDifficultyDroplist.ReadOnly = false;
+			}
+			if (this.Session.SessionMode != SessionMode.Single)
+			{
+				string[] array = lobbyData5.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
+				Steamworks.SteamID steamID = Steamworks.SteamID.Zero;
+				if (Steamworks.SteamAPI.IsSteamRunning)
+				{
+					try
+					{
+						steamID = new Steamworks.SteamID(Convert.ToUInt64(array[0], 16));
+					}
+					catch
+					{
+						this.AiDifficultyDroplist.ReadOnly = true;
+						return;
+					}
+				}
+				if (steamID == Steamworks.SteamID.Zero || !Steamworks.SteamAPI.IsSteamRunning)
+				{
+					this.AiDifficultyDroplist.ReadOnly = true;
+					return;
+				}
+				if (this.Session.GetLobbyMemberData<bool>(steamID, "Ready", false))
+				{
+					this.AiDifficultyDroplist.ReadOnly = true;
+				}
+				else
+				{
+					this.AiDifficultyDroplist.ReadOnly = false;
+				}
+			}
+		}
+		else
+		{
+			this.AiDifficultyDroplist.ReadOnly = true;
+		}
+		List<string> list = new List<string>();
+		List<string> list2 = new List<string>();
+		for (int i = 0; i < 11; i++)
+		{
+			string key = "%Handicap" + i.ToString() + "Title";
+			string key2 = "%Handicap" + i.ToString() + "Tooltip";
+			list.Add(AgeLocalizer.Instance.LocalizeString(key));
+			list2.Add(AgeLocalizer.Instance.LocalizeString(key2));
+		}
+		this.AiDifficultyDroplist.ItemTable = list.ToArray();
+		this.AiDifficultyDroplist.TooltipTable = list2.ToArray();
+		this.AiDifficultyDroplist.OnSelectionMethod = "OnChangeHandicapCB";
+		this.AiDifficultyDroplist.OnSelectionObject = base.gameObject;
+		this.AiDifficultyDroplist.AgeTransform.Visible = true;
+		this.AiDifficultyDroplist.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%HandicapTooltip");
+		AgeTransform[] array2 = this.AiDifficultyDroplist.AgeTransform.GetChildren().ToArray();
+		if (!this.AiDifficultyDroplist.ReadOnly)
+		{
+			array2[0].Alpha = 1f;
+			array2[1].Visible = true;
+			array2[3].Visible = true;
+		}
+		else
+		{
+			array2[0].Alpha = 0.5f;
+			array2[1].Visible = false;
+			array2[3].Visible = false;
+		}
+		string x = string.Format("Handicap{0}", this.EmpireIndex);
+		string lobbyData6 = this.Session.GetLobbyData<string>(x, "5");
+		if (!string.IsNullOrEmpty(lobbyData6))
+		{
+			try
+			{
+				this.AiDifficultyDroplist.SelectedItem = int.Parse(lobbyData6);
+			}
+			catch
+			{
+				Diagnostics.LogWarning("Failed to parse the lobbyDataHandicap");
+			}
 		}
 	}
 

@@ -974,8 +974,7 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 		Diagnostics.Assert(constructibleElement != null);
 		global::Empire empire = base.Empire as global::Empire;
-		DepartmentOfScience departmentOfScience = empire.GetAgency<DepartmentOfScience>();
-		DepartmentOfScience.ConstructibleElement.State technologyState = departmentOfScience.GetTechnologyState(constructibleElement);
+		DepartmentOfScience.ConstructibleElement.State technologyState = empire.GetAgency<DepartmentOfScience>().GetTechnologyState(constructibleElement);
 		if (technologyState != DepartmentOfScience.ConstructibleElement.State.Available)
 		{
 			Diagnostics.LogError("Skipping queue construction process because the constructible element {0} is not available ({1}).", new object[]
@@ -991,46 +990,47 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		{
 			Diagnostics.Assert(empire != null && empire.Faction != null && empire.Faction.AffinityMapping != null);
 			construction = new Construction(constructibleElement, order.ConstructionGameEntityGUID, empire.Faction.AffinityMapping.Name, empire);
-			IDatabase<SimulationDescriptor> simulationDescriptorDatatable = Databases.GetDatabase<SimulationDescriptor>(false);
-			SimulationDescriptor classImprovementDescriptor;
-			if (simulationDescriptorDatatable != null && simulationDescriptorDatatable.TryGetValue("ClassConstruction", out classImprovementDescriptor))
+			IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
+			SimulationDescriptor descriptor;
+			if (database != null && database.TryGetValue("ClassConstruction", out descriptor))
 			{
-				construction.AddDescriptor(classImprovementDescriptor, false);
+				construction.AddDescriptor(descriptor, false);
 			}
 		}
 		Diagnostics.Assert(this.departmentOfTheTreasury != null);
-		if (constructibleElement.Costs != null && constructibleElement.Costs.Length > 0)
+		if (constructibleElement.Costs != null && constructibleElement.Costs.Length != 0)
 		{
 			Diagnostics.Assert(construction.CurrentConstructionStock != null && construction.CurrentConstructionStock.Length == constructibleElement.Costs.Length);
 			Diagnostics.Assert(order.ResourceStocks != null && order.ResourceStocks.Length == constructibleElement.Costs.Length);
-			for (int index = 0; index < constructibleElement.Costs.Length; index++)
+			for (int i = 0; i < constructibleElement.Costs.Length; i++)
 			{
-				Diagnostics.Assert(constructibleElement.Costs[index] != null);
-				Diagnostics.Assert(construction.CurrentConstructionStock[index] != null);
-				Diagnostics.Assert(order.ResourceStocks[index] != null);
-				construction.CurrentConstructionStock[index].Stock = order.ResourceStocks[index].Stock;
-				if (constructibleElement.Costs[index].Instant)
+				Diagnostics.Assert(constructibleElement.Costs[i] != null);
+				Diagnostics.Assert(construction.CurrentConstructionStock[i] != null);
+				Diagnostics.Assert(order.ResourceStocks[i] != null);
+				construction.CurrentConstructionStock[i].Stock = order.ResourceStocks[i].Stock;
+				if (constructibleElement.Costs[i].Instant && order.ResourceStocks[i].Stock > 0f && !this.departmentOfTheTreasury.TryTransferResources(base.Empire.SimulationObject, constructibleElement.Costs[i].ResourceName, -order.ResourceStocks[i].Stock))
 				{
-					if (order.ResourceStocks[index].Stock > 0f && !this.departmentOfTheTreasury.TryTransferResources(base.Empire.SimulationObject, constructibleElement.Costs[index].ResourceName, -order.ResourceStocks[index].Stock))
+					Diagnostics.LogError("Order preprocessing failed because the constructible element '{0}' ask for instant resource '{1}' that can't be retrieve.", new object[]
 					{
-						Diagnostics.LogError("Order preprocessing failed because the constructible element '{0}' ask for instant resource '{1}' that can't be retrieve.", new object[]
-						{
-							constructibleElement.Name,
-							constructibleElement.Costs[index].ResourceName
-						});
-						yield break;
-					}
+						constructibleElement.Name,
+						constructibleElement.Costs[i].ResourceName
+					});
+					yield break;
 				}
 			}
 		}
-		ConstructionQueue selectedQueue = this.ResearchQueue;
+		ConstructionQueue constructionQueue = this.ResearchQueue;
 		TechnologyDefinition technologyDefinition = construction.ConstructibleElement as TechnologyDefinition;
 		if (technologyDefinition != null && technologyDefinition.HasTechnologyFlag(DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock))
 		{
-			selectedQueue = this.OrbUnlockQueue;
+			constructionQueue = this.OrbUnlockQueue;
 		}
-		Diagnostics.Assert(selectedQueue != null);
-		selectedQueue.Enqueue(construction);
+		Diagnostics.Assert(constructionQueue != null);
+		constructionQueue.Enqueue(construction);
+		if (order.InsertAtFirstPlace && constructionQueue.Length > 1)
+		{
+			constructionQueue.Move(construction, 0);
+		}
 		Diagnostics.Assert(this.researchInProgress != null);
 		if (!this.researchInProgress.Any((Construction match) => match.GUID == construction.GUID))
 		{

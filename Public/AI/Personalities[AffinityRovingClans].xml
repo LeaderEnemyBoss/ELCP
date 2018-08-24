@@ -111,7 +111,11 @@
               <AttitudeScoreOtherEmpireHasUniqueFacility>1.1</AttitudeScoreOtherEmpireHasUniqueFacility>
               <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.0</AttitudeScoreOtherEmpireLeadNavalRegionCount>
             </AILayer_Attitude>
-            
+            <!-- ELCP\LeaderEnemyBoss Clans are more likely to offer nice deals -->
+			<AILayer_Diplomacy>
+			  <SweetenDealThreshold>1.5</SweetenDealThreshold>
+			</AILayer_Diplomacy>
+			
             <AILayer_Strategy>
 
               <ResearchScoreFactor>0.8</ResearchScoreFactor>
@@ -124,7 +128,7 @@
               -->
               <Network>
                 <MilitaryEmpireNeedAgent>
-                  <GlobalUnitCountMultiplier>0.75</GlobalUnitCountMultiplier>
+                  <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
 
                   <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
                   <CityUnitNeedStartTurn>1</CityUnitNeedStartTurn>

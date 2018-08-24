@@ -153,6 +153,10 @@
   <AICommanderMissionDefinition Name="ConvertAndPacifyVillage" Type="AICommanderMission_Village, Assembly-CSharp" Category="Convert,Village,Pacification,Hardway">
     <AIArmyPattern>
       <AIUnitDescription AIUnitPatternCategory="Killer" Tags="!UnitFactionTypeMinorFaction,!Mercenary" Priority="1" MinimalQuantity="1" Ratio="0.0"/>
+	  <AIUnitDescription AIUnitPatternCategory="Killer" Priority="2"  MinimalQuantity="2" Ratio="0.0"/>
+	  <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Priority="3"  MinimalQuantity="2" Ratio="0.0"/>
+	  <AIUnitDescription AIUnitPatternCategory="Artillery" Priority="4"  MinimalQuantity="0" Ratio="0.25"/>
+	  <AIUnitDescription AIUnitPatternCategory="Harasser" Priority="5"  MinimalQuantity="0" Ratio="0.25"/>
     </AIArmyPattern>
   </AICommanderMissionDefinition>
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Serialization;
 using Amplitude.WorldGenerator.Tasks;
@@ -617,6 +618,10 @@ namespace Amplitude.WorldGenerator
 		[WorldGeneratorConfigurationProperty]
 		public bool GeometryDisableTripleTransition { get; set; }
 
+		[XmlElement("ReplaceInlandSeas")]
+		[WorldGeneratorConfigurationProperty]
+		public bool ReplaceInlandSeas { get; set; }
+
 		private List<ITask> tasks = new List<ITask>();
 
 		[XmlType("TerrainAnomaly")]
@@ -709,6 +714,7 @@ namespace Amplitude.WorldGenerator
 		}
 
 		[XmlType("FIDS")]
+		[StructLayout(LayoutKind.Sequential, Size = 1)]
 		public struct xmlFIDS
 		{
 			[XmlAttribute("Name")]

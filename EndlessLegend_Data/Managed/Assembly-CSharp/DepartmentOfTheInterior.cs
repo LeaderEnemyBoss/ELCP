@@ -543,26 +543,6 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			}
 			return false;
 		}
-		DepartmentOfScience agency = army.Empire.GetAgency<DepartmentOfScience>();
-		if (agency.GetTechnologyState("TechnologyDefinitionCultists5") != DepartmentOfScience.ConstructibleElement.State.Researched)
-		{
-			if (!isOrderCheck)
-			{
-				Diagnostics.LogError("Order preprocessing failed because the conversion technology is not researched.");
-			}
-			return false;
-		}
-		if (army.IsInEncounter)
-		{
-			if (!isOrderCheck)
-			{
-				Diagnostics.LogError("Order preprocessing failed because the army is only made of minor units (guid: {0:X8}).", new object[]
-				{
-					army.GUID
-				});
-			}
-			return false;
-		}
 		if (!army.Units.Any((Unit unit) => !unit.SimulationObject.Tags.Contains("UnitFactionTypeMinorFaction") && !unit.SimulationObject.Tags.Contains(TradableUnit.ReadOnlyMercenary)))
 		{
 			if (!isOrderCheck)
@@ -574,7 +554,8 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			}
 			return false;
 		}
-		return true;
+		DepartmentOfTheInterior agency = army.Empire.GetAgency<DepartmentOfTheInterior>();
+		return agency.MainCity != null || agency.Cities.Count >= 1;
 	}
 
 	public static bool IsArmyAbleToTerraform(Army army)

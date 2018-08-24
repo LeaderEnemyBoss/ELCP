@@ -16,7 +16,7 @@
 
   <SimulationDescriptor Name="EmpirePlanEconomy2"                   Type="EmpirePlanEconomy">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction" Operation="Addition" Value="0.25" Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction" MultiplicativeStacking="true" Operation="Addition" Value="0.25" Path="../EmpireTypeMajor/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="EmpirePlanEconomyLevel"  Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -89,7 +89,7 @@
   
   <SimulationDescriptor Name="EmpirePlanMilitary1"                  Type="EmpirePlanMilitary">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction" Operation="Addition" Value="0.20"  Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction" MultiplicativeStacking="true" Operation="Addition" Value="0.20"  Path="../EmpireTypeMajor/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="EmpirePlanMilitaryLevel"     Operation="Addition" Value="1"     Path="../EmpireTypeMajor" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -141,7 +141,7 @@
 
   <SimulationDescriptor Name="EmpirePlanKnowledge2"                 Type="EmpirePlanKnowledge">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"       Operation="Addition" Value="0.33" Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition" Value="0.33" Path="../EmpireTypeMajor/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="EmpirePlanKnowledgeLevel"              Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>

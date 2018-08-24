@@ -745,15 +745,15 @@
 
   <SimulationDescriptor Name="SeasonEffectUnitProductionCost1"         Type="Winter">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="MajorTypeUnitProductionCostReduction" Value="-0.30" Operation="Addition" Path="../ClassEmpire/ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="MinorTypeUnitProductionCostReduction" Value="0.30"  Operation="Addition" Path="../ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="MajorTypeUnitProductionCostReduction" MultiplicativeStacking="true" Value="-0.30" Operation="Addition" Path="../ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="MinorTypeUnitProductionCostReduction" MultiplicativeStacking="true" Value="0.30"  Operation="Addition" Path="../ClassEmpire/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="SeasonEffectUnitProductionCost2"         Type="Winter">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="MajorTypeUnitProductionCostReduction" Value="0.30"  Operation="Addition" Path="../ClassEmpire/ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="MinorTypeUnitProductionCostReduction" Value="-0.30" Operation="Addition" Path="../ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="MajorTypeUnitProductionCostReduction" MultiplicativeStacking="true" Value="0.30"  Operation="Addition" Path="../ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="MinorTypeUnitProductionCostReduction" MultiplicativeStacking="true" Value="-0.30" Operation="Addition" Path="../ClassEmpire/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

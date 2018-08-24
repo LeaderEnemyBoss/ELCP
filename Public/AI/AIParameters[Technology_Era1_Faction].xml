@@ -3,12 +3,12 @@
 
   <!-- "Ryder" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionBrokenLordsUnit2">
-    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1"  />
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyBrokenLordsUnit3))"  />
   </AIParameterDatatableElement>
 
   <!-- "Shaman" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMadFairiesUnit2">
-    <AIParameter Name="EmpireUnlockUnitSupport" Value="0.75"  />
+    <AIParameter Name="EmpireUnlockUnitSupport" Value="0.75 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyMadFairiesUnit3))"  />
   </AIParameterDatatableElement>
 
   <!-- "Ateshi Zealot" -->
@@ -23,12 +23,12 @@
 
   <!-- "Dawn Officer" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionVaultersUnit2">
-    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1"  />
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyVaultersUnit3))"  />
   </AIParameterDatatableElement>
 
   <!-- "Dawn Officer" (Mezari) -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMezariUnit2">
-    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1"  />
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyMezariUnit3))"  />
   </AIParameterDatatableElement>
 
   <!-- "Dawn Officer" (Tutorial) -->
@@ -38,12 +38,12 @@
 
   <!-- "Kassai" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRovingClansUnit2">
-    <AIParameter Name="EmpireUnlockUnitRanged" Value="1"  />
+    <AIParameter Name="EmpireUnlockUnitRanged" Value="1 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyRovingClansUnit3))"  />
   </AIParameterDatatableElement>
 
   <!-- "Wyvern" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionDrakkensUnit2">
-    <AIParameter Name="EmpireUnlockUnitFlying" Value="1"  />
+    <AIParameter Name="EmpireUnlockUnitFlying" Value="1 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyDrakkensUnit3))"  />
   </AIParameterDatatableElement>
 
   <!-- "Fanatic" -->
@@ -53,7 +53,7 @@
 
   <!-- "Predator" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionReplicantsUnit2">
-    <AIParameter Name="EmpireUnlockUnitRanged" Value="2"  />
+    <AIParameter Name="EmpireUnlockUnitRanged" Value="2 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyReplicantsUnit3))"  />
   </AIParameterDatatableElement>
 
   <!-- "Manta" -->
@@ -68,7 +68,8 @@
   
   <!-- "Protectors of Auriga" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionAssimilationLimitMax1Drakkens">    
-    <AIParameter Name="EmpireUnlockAssimilation" Value="1" />
+    <AIParameter Name="AITechMustHave" Value="0.40 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 2))"/>
+	<AIParameter Name="EmpireUnlockAssimilation" Value="1" />
   </AIParameterDatatableElement>
 
   <!-- "Arcana of Matter" -->
@@ -101,11 +102,11 @@
   <AIParameterDatatableElement Name="TechnologyDefinitionSeaDemons8">
     <AIParameter Name="EmpireEmpirePoint"               Value="$Count(ClassEmpire/ClassFortress/PointOfInterestTypeCitadel)" />
     <AIParameter Name="EmpireEmpirePoint"               Value="$Count(ClassEmpire/ClassFortress/RevealedFacility,PointOfInterestTypeFacility)" />
+	<AIParameter Name="AITechMustHave" Value="0.10 * ($Count(ClassEmpire/ClassFortress/PointOfInterestTypeCitadel) + $Count(ClassEmpire/ClassFortress/RevealedFacility,PointOfInterestTypeFacility))"/>
   </AIParameterDatatableElement>
 
   <!-- Flame City Improvement: Golem Workers-->
   <AIParameterDatatableElement  Name="TechnologyDefinitionFlames2">
     <AIParameter Name="CityExtraWorker"                                 Value="$Count(ClassEmpire/ClassCity) * 3 * $Property(Strategic1Stock) / 5"/>
   </AIParameterDatatableElement>
-  
 </Datatable>

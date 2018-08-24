@@ -1005,7 +1005,8 @@
       <SimulationPropertyDescriptor Name="SpyCount"      BaseValue="0"/>
 
       <!--MinValue is considered only when the property is used. That's why here the base value is set at -1 even if the min value is 0-->
-      <SimulationPropertyDescriptor Name="ActivatedLuxuryBoosterCountMinusOne"      BaseValue="-1" MinValue="0"/>
+	  <!--ELCP/LeaderEnemyBoss changed BaseValue to 0 to match the ingame description (only activated after 2 boosters before) -->
+      <SimulationPropertyDescriptor Name="ActivatedLuxuryBoosterCountMinusOne"      BaseValue="0" MinValue="0"/>
 
     </SimulationPropertyDescriptors>
 

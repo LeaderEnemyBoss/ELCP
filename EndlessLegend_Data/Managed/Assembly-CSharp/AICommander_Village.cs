@@ -104,79 +104,91 @@ public class AICommander_Village : AICommanderWithObjective, IXmlSerializable
 		tags.AddTag(base.Category.ToString());
 		tags.AddTag("Village");
 		IGameEntity gameEntity;
-		if (!this.gameEntityRepositoryService.TryGetValue(base.SubObjectiveGuid, out gameEntity) || !(gameEntity is Village))
+		if (this.gameEntityRepositoryService.TryGetValue(base.SubObjectiveGuid, out gameEntity) && gameEntity is Village)
 		{
-			return;
-		}
-		Village village = gameEntity as Village;
-		bool flag = base.Empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait);
-		bool flag2 = this.departmentOfScience.CanBribe() && !village.HasBeenConverted && !village.HasBeenPacified;
-		if (flag)
-		{
-			this.SendConvertVillageAction(village);
-		}
-		if (flag2)
-		{
-			this.SendBribeVillageAction(village);
-		}
-		bool flag3 = false;
-		bool flag4 = false;
-		if (this.villageBribeActionMessageId != 0UL)
-		{
-			EvaluableMessage_VillageAction evaluableMessage_VillageAction = base.AIPlayer.Blackboard.GetMessage(this.villageBribeActionMessageId) as EvaluableMessage_VillageAction;
-			if (evaluableMessage_VillageAction != null && evaluableMessage_VillageAction.ChosenBuyEvaluation != null)
+			Village village = gameEntity as Village;
+			bool flag = base.Empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait);
+			bool flag2 = this.departmentOfScience.CanBribe() && !village.HasBeenConverted && !village.HasBeenPacified;
+			if (flag)
+			{
+				this.SendConvertVillageAction(village);
+			}
+			if (flag2)
+			{
+				this.SendBribeVillageAction(village);
+			}
+			bool flag3 = false;
+			bool flag4 = false;
+			if (this.villageBribeActionMessageId > 0UL)
+			{
+				EvaluableMessage_VillageAction evaluableMessage_VillageAction = base.AIPlayer.Blackboard.GetMessage(this.villageBribeActionMessageId) as EvaluableMessage_VillageAction;
+				if (evaluableMessage_VillageAction != null && evaluableMessage_VillageAction.ChosenBuyEvaluation != null)
+				{
+					flag4 = true;
+				}
+			}
+			if (village.HasBeenPacified && flag2 && !flag4)
 			{
 				flag4 = true;
 			}
-		}
-		if (this.villageConvertActionMessageId != 0UL)
-		{
-			EvaluableMessage_VillageAction evaluableMessage_VillageAction2 = base.AIPlayer.Blackboard.GetMessage(this.villageConvertActionMessageId) as EvaluableMessage_VillageAction;
-			if (evaluableMessage_VillageAction2 != null && evaluableMessage_VillageAction2.ChosenBuyEvaluation != null)
+			if (this.villageConvertActionMessageId > 0UL)
 			{
-				flag3 = true;
+				EvaluableMessage_VillageAction evaluableMessage_VillageAction2 = base.AIPlayer.Blackboard.GetMessage(this.villageConvertActionMessageId) as EvaluableMessage_VillageAction;
+				if (evaluableMessage_VillageAction2 != null && evaluableMessage_VillageAction2.ChosenBuyEvaluation != null)
+				{
+					flag3 = true;
+				}
 			}
-		}
-		if (flag)
-		{
-			tags.AddTag("Convert");
-			if (village.HasBeenConverted)
+			if (flag && !flag3)
 			{
-				tags.AddTag("Hardway");
+				float num;
+				base.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num, false);
+				if (AILayer_Village.GetVillageConversionCost(base.Empire as MajorEmpire, village) * 2f < num)
+				{
+					flag3 = true;
+				}
 			}
-			else if (village.HasBeenPacified)
+			if (flag)
 			{
-				if (!flag3)
+				tags.AddTag("Convert");
+				if (village.HasBeenConverted)
+				{
+					tags.AddTag("Hardway");
+				}
+				else if (village.HasBeenPacified)
+				{
+					if (!flag3)
+					{
+						return;
+					}
+				}
+				else if (flag2)
+				{
+					if (!flag3 || !flag4)
+					{
+						return;
+					}
+					tags.AddTag("Bribe");
+				}
+				else
+				{
+					tags.AddTag("Hardway");
+				}
+			}
+			for (int i = base.Missions.Count - 1; i >= 0; i--)
+			{
+				if (base.Missions[i].MissionDefinition.Category.Contains(tags))
 				{
 					return;
 				}
+				this.CancelMission(base.Missions[i]);
 			}
-			else if (flag2)
+			base.PopulationFirstMissionFromCategory(tags, new object[]
 			{
-				if (!flag3 || !flag4)
-				{
-					return;
-				}
-				tags.AddTag("Bribe");
-			}
-			else
-			{
-				tags.AddTag("Hardway");
-			}
+				this.RegionTarget,
+				base.SubObjectiveGuid
+			});
 		}
-		for (int i = base.Missions.Count - 1; i >= 0; i--)
-		{
-			if (base.Missions[i].MissionDefinition.Category.Contains(tags))
-			{
-				return;
-			}
-			this.CancelMission(base.Missions[i]);
-		}
-		base.PopulationFirstMissionFromCategory(tags, new object[]
-		{
-			this.RegionTarget,
-			base.SubObjectiveGuid
-		});
 	}
 
 	public override void RefreshMission()

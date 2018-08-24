@@ -21,34 +21,35 @@ public class DissentTask_Empire : DissentTask
 	{
 		if (base.AssociateRequest == null || base.AssociateRequest.EvaluationState != EvaluableMessage.EvaluableMessageState.Validate)
 		{
-			this.State = TickableState.NoTick;
+			base.State = TickableState.NoTick;
 			return;
 		}
 		if (this.villagePOI.Count == 0)
 		{
-			this.State = TickableState.NoTick;
+			base.State = TickableState.NoTick;
 			return;
 		}
 		float value = this.villagePOI[0].Score.Value;
-		for (int i = 0; i < this.villagePOI.Count; i++)
+		int num = 0;
+		while (num < this.villagePOI.Count && value <= this.villagePOI[num].Score.Value * 2f)
 		{
-			if (value > this.villagePOI[i].Score.Value * 2f)
+			if (this.visibilityService.IsWorldPositionVisibleFor(this.villagePOI[num].Village.WorldPosition, base.Owner))
 			{
-				break;
-			}
-			if (this.visibilityService.IsWorldPositionVisibleFor(this.villagePOI[i].Village.WorldPosition, base.Owner))
-			{
-				OrderDissentVillage order = new OrderDissentVillage(base.Owner.Index, this.villagePOI[i].Village.WorldPosition);
+				OrderDissentVillage order = new OrderDissentVillage(base.Owner.Index, this.villagePOI[num].Village.WorldPosition);
 				Ticket ticket;
 				base.Owner.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.DissentOrder_TicketRaised));
-				base.AssociateRequest.SetBeingObtained(this.villagePOI[i].Village.GUID);
-				this.State = TickableState.NoTick;
-				break;
+				base.AssociateRequest.SetBeingObtained(this.villagePOI[num].Village.GUID);
+				base.State = TickableState.NoTick;
+				if (!base.Owner.GetAgency<DepartmentOfForeignAffairs>().IsAtWarWith(this.OtherEmpire))
+				{
+					break;
+				}
 			}
+			num++;
 		}
-		if (this.State == TickableState.NeedTick)
+		if (base.State == TickableState.NeedTick)
 		{
-			this.State = TickableState.Optional;
+			base.State = TickableState.Optional;
 		}
 	}
 

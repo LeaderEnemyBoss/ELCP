@@ -1787,13 +1787,17 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 	private void ApplyFortificationLoss(Encounter encounter, out float siegePoints)
 	{
 		siegePoints = 0f;
-		for (int i = 0; i < encounter.Contenders.Count; i++)
+		if (encounter.Retreat)
 		{
-			Contender contender = encounter.Contenders[i];
-			Diagnostics.Assert(contender != null && contender.Garrison != null && contender.Garrison.Empire != null);
-			if (contender != null && contender.Garrison != null && contender.Garrison.Empire != null)
+			return;
+		}
+		if (!BattleSimulation.ELCPFortification())
+		{
+			for (int i = 0; i < encounter.Contenders.Count; i++)
 			{
-				if (contender.Garrison is EncounterCityGarrison && contender.Garrison.UnitsCount >= 1 && !contender.IsAttacking && contender.IsMainContender)
+				Contender contender = encounter.Contenders[i];
+				Diagnostics.Assert(contender != null && contender.Garrison != null && contender.Garrison.Empire != null);
+				if (contender != null && contender.Garrison != null && contender.Garrison.Empire != null && contender.Garrison is EncounterCityGarrison && contender.Garrison.UnitsCount >= 1 && !contender.IsAttacking && contender.IsMainContender)
 				{
 					float num = 0f;
 					if (contender.Garrison is EncounterCityGarrison)
@@ -1817,8 +1821,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 						float num4 = num / (float)contender.Garrison.UnitsCount;
 						if (propertyValue > 0f)
 						{
-							float num5 = propertyValue - num4;
-							if (num5 > 0f)
+							if (propertyValue - num4 > 0f)
 							{
 								siegePoints = Mathf.Round(num4 * 100f / num2);
 							}
@@ -1828,10 +1831,107 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 							}
 						}
 					}
-					float propertyBaseValue = (contender.Garrison as EncounterCityGarrison).City.GetPropertyBaseValue(SimulationProperties.CityDefensePoint);
-					float value = propertyBaseValue - num / (float)contender.Garrison.UnitsCount;
+					float value = (contender.Garrison as EncounterCityGarrison).City.GetPropertyBaseValue(SimulationProperties.CityDefensePoint) - num / (float)contender.Garrison.UnitsCount;
 					(contender.Garrison as EncounterCityGarrison).City.SetPropertyBaseValue(SimulationProperties.CityDefensePoint, value);
 				}
+			}
+			return;
+		}
+		List<Contender> list = encounter.Contenders.FindAll((Contender X) => X.IsMainContender);
+		bool flag = false;
+		City city2 = null;
+		if (list.Count == 2)
+		{
+			flag = BattleSimulation.IsELCPCityBattle(new List<IGarrison>
+			{
+				list[0].Garrison,
+				list[1].Garrison
+			}, out city2);
+		}
+		if (flag)
+		{
+			float propertyValue3 = city2.GetPropertyValue(SimulationProperties.CityDefensePoint);
+			float num5 = 1f;
+			if (DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve != null)
+			{
+				num5 = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(city2.Ownership[city2.Empire.Index]);
+			}
+			float num6 = propertyValue3 * num5;
+			int num7 = 0;
+			float num8 = 0f;
+			if (num6 > 0f)
+			{
+				float num9 = city2.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
+				if (num9 <= 0f)
+				{
+					num9 = propertyValue3;
+				}
+				for (int j = 0; j < encounter.Contenders.Count; j++)
+				{
+					Contender contender2 = encounter.Contenders[j];
+					Diagnostics.Assert(contender2 != null && contender2.Garrison != null && contender2.Garrison.Empire != null);
+					if (BattleSimulation.GetsFortificationBonus(contender2.Garrison, city2))
+					{
+						if (!contender2.IsTakingPartInBattle)
+						{
+							num8 += (float)contender2.EncounterUnits.Count * num6;
+							num7 += contender2.EncounterUnits.Count;
+						}
+						else
+						{
+							foreach (EncounterUnit encounterUnit2 in contender2.EncounterUnits)
+							{
+								if (encounterUnit2 != null && encounterUnit2.UnitDuplicatedSimulationObject != null)
+								{
+									if (encounterUnit2.IsOnBattlefield)
+									{
+										num8 += encounterUnit2.UnitDuplicatedSimulationObject.GetPropertyValue(SimulationProperties.Armor);
+									}
+									else
+									{
+										num8 += num6;
+									}
+									num7++;
+									if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+									{
+										Diagnostics.Log("ELCP ApplyFortificationLoss, total armorafter battle {0}, totalunits {1} {2} {3} {4} {5} {6} {7}", new object[]
+										{
+											num8,
+											num7,
+											encounterUnit2.LastActiveBattleActions.Count,
+											encounterUnit2.ActiveBattleActions.Count,
+											encounterUnit2.LineOfSightActive,
+											encounterUnit2.CanPlayBattleRound,
+											encounterUnit2.IsOnBattlefield,
+											encounterUnit2.Unit.GUID
+										});
+									}
+								}
+							}
+						}
+					}
+				}
+				if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+				{
+					Diagnostics.Log("ELCP ApplyFortificationLoss, total armor {0} with toal units {1}", new object[]
+					{
+						num8,
+						num7
+					});
+				}
+				float num10 = num6;
+				if (num7 > 0)
+				{
+					num10 = num8 / (float)num7;
+				}
+				float num11 = num6 - num10;
+				float num12 = 1f;
+				if (num11 > 0f)
+				{
+					siegePoints = Mathf.Round(num11 * 100f / num9);
+					num12 = 1f - num11 / num6;
+				}
+				city2.SetPropertyBaseValue(SimulationProperties.CityDefensePoint, propertyValue3 * num12);
 			}
 		}
 	}

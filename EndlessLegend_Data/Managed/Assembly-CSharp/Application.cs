@@ -15,11 +15,11 @@ public class Application : Amplitude.Unity.Framework.Application
 		Amplitude.Unity.Framework.Application.Name = "Endless Legend";
 		Amplitude.Unity.Framework.Application.Version = new Amplitude.Unity.Framework.Version
 		{
-			Major = 1,
-			Minor = 6,
-			Revision = 4,
+			Major = 2,
+			Minor = 1,
+			Revision = 5,
 			Serial = 3,
-			Label = string.Empty,
+			Label = "Community Patch",
 			Accessibility = Accessibility.Public
 		};
 		global::Application.SteamAppID = 289130;

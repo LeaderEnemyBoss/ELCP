@@ -120,25 +120,37 @@ public class AILayer_QuestSolver : AILayer
 		foreach (KeyValuePair<GameEntityGUID, AIQuestSolver> keyValuePair in this.solverByQuest)
 		{
 			Quest quest;
-			if (this.questRepositoryService.TryGetValue(keyValuePair.Key, out quest))
+			if (this.questRepositoryService.TryGetValue(keyValuePair.Key, out quest) && quest.QuestState == QuestState.InProgress && this.questManagementService.IsQuestRunningForEmpire(quest.QuestDefinition.Name, base.AIEntity.Empire))
 			{
-				if (quest.QuestState == QuestState.InProgress)
+				AIQuestSolver value = keyValuePair.Value;
+				if (this.endTurnService.Turn - quest.TurnWhenStarted >= value.ChosenDuration)
 				{
-					if (this.questManagementService.IsQuestRunningForEmpire(quest.QuestDefinition.Name, base.AIEntity.Empire))
+					if (this.CheckAgainstSuccesRate(value))
 					{
-						AIQuestSolver value = keyValuePair.Value;
-						int num = this.endTurnService.Turn - quest.TurnWhenStarted;
-						if (num >= value.ChosenDuration)
+						this.questManagementService.ForceQuestCompletion(keyValuePair.Key, QuestState.Completed);
+						if (quest.QuestDefinition.SubCategory == "Village")
 						{
-							if (this.CheckAgainstSuccesRate(value))
+							IGameService service = Services.GetService<IGameService>();
+							if (service != null && service.Game != null && service.Game.Services != null)
 							{
-								this.questManagementService.ForceQuestCompletion(keyValuePair.Key, QuestState.Completed);
-							}
-							else
-							{
-								this.questManagementService.ForceQuestCompletion(keyValuePair.Key, QuestState.Failed);
+								IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
+								IGameEntity gameEntity;
+								if (service2 != null && service2.TryGetValue(quest.QuestGiverGUID, out gameEntity))
+								{
+									MinorEmpire minorEmpire = (gameEntity as PointOfInterest).Region.MinorEmpire;
+									BarbarianCouncil agency = minorEmpire.GetAgency<BarbarianCouncil>();
+									if (minorEmpire != null && agency != null && !agency.HasAllVillagesBeenPacified)
+									{
+										OrderPacifyMinorFaction order = new OrderPacifyMinorFaction(base.AIEntity.Empire.Index, minorEmpire.Index, true);
+										base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
+									}
+								}
 							}
 						}
+					}
+					else
+					{
+						this.questManagementService.ForceQuestCompletion(keyValuePair.Key, QuestState.Failed);
 					}
 				}
 			}

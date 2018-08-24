@@ -21,7 +21,6 @@ using UnityEngine;
 })]
 public class AILayer_Research : AILayer
 {
-	// Note: this type is marked as 'beforefieldinit'.
 	static AILayer_Research()
 	{
 		AILayer_Research.NonFriendlyBordersPercent = "NonFriendlyBordersPercent";
@@ -357,27 +356,28 @@ public class AILayer_Research : AILayer
 			}
 		}
 		float cost = 0f;
-		IDatabase<DepartmentOfScience.ConstructibleElement> database = Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false);
 		DepartmentOfScience.ConstructibleElement technology;
-		if (database.TryGetValue(evaluableMessage_ResearchBuyout.TechnologyReference, out technology))
+		if (Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false).TryGetValue(evaluableMessage_ResearchBuyout.TechnologyReference, out technology))
 		{
 			cost = agency.GetBuyOutTechnologyCost(technology);
 		}
+		if (this.IdealBuyoutPeriod == 0f)
+		{
+			this.IdealBuyoutPeriod = 4f;
+		}
 		int maxValue = int.MaxValue;
-		float num = 5f * base.AIEntity.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-		IGameService service = Services.GetService<IGameService>();
-		float num2 = (float)(service.Game as global::Game).Turn;
-		float researchPropertyValue = agency.GetResearchPropertyValue("UnlockedTechnologyCount");
-		float num3 = researchPropertyValue * num;
-		float num4 = Mathf.Clamp((num2 - num3) / num, -1f, 1f);
-		num4 = (num4 + 1f) / 2f;
-		float num5 = 0.25f + num4 * 0.75f;
+		float idealBuyoutPeriod = this.IdealBuyoutPeriod;
+		float num = (float)(Services.GetService<IGameService>().Game as global::Game).Turn;
+		float num2 = agency.GetResearchPropertyValue("UnlockedTechnologyCount") * idealBuyoutPeriod;
+		float num3 = Mathf.Clamp((num - num2) / idealBuyoutPeriod, -1f, 1f);
+		num3 = (num3 + 1f) / 2f;
+		float num4 = 0.25f + num3 * 0.75f;
 		float globalMotivation = 0.8f;
-		if (num5 > 0.9f)
+		if (num4 > 0.9f)
 		{
 			globalMotivation = 0.9f;
 		}
-		evaluableMessage_ResearchBuyout.Refresh(globalMotivation, num5, cost, maxValue);
+		evaluableMessage_ResearchBuyout.Refresh(globalMotivation, num4, cost, maxValue);
 	}
 
 	private void EvaluateOrbUnlocks()
@@ -680,8 +680,31 @@ public class AILayer_Research : AILayer
 		}
 		float technologyUnlockedCount = agency.GetTechnologyUnlockedCount();
 		float a = (float)agency2.Cities.Count;
-		float a2 = technologyUnlockedCount / (15f * Mathf.Max(a, 1f));
-		float num = Mathf.Max(a2, b);
+		float num = Mathf.Max(technologyUnlockedCount / (15f * Mathf.Max(a, 1f)), b);
+		if (empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait))
+		{
+			List<StaticString> list = new List<StaticString>();
+			if (aiEvaluableElement.Name == "TechnologyDefinitionStrategicExtractionCommon")
+			{
+				list.Add("ResourceDeposit_Strategic1");
+				list.Add("ResourceDeposit_Strategic2");
+			}
+			if (aiEvaluableElement.Name == "TechnologyDefinitionStrategicExtractionUncommon")
+			{
+				list.Add("ResourceDeposit_Strategic3");
+				list.Add("ResourceDeposit_Strategic4");
+			}
+			if (aiEvaluableElement.Name == "TechnologyDefinitionStrategicExtractionRare")
+			{
+				list.Add("ResourceDeposit_Strategic5");
+				list.Add("ResourceDeposit_Strategic6");
+			}
+			if (list.Count > 0)
+			{
+				int num2 = AILayer_Research.CountVillageResources(empire, list);
+				aiParameterValue += (float)num2 * 0.25f;
+			}
+		}
 		return aiParameterValue * num;
 	}
 
@@ -703,8 +726,40 @@ public class AILayer_Research : AILayer
 		}
 		float technologyUnlockedCount = agency.GetTechnologyUnlockedCount();
 		float a = (float)agency2.Cities.Count;
-		float a2 = technologyUnlockedCount / (15f * Mathf.Max(a, 1f));
-		float num = Mathf.Max(a2, b);
+		float num = Mathf.Max(technologyUnlockedCount / (15f * Mathf.Max(a, 1f)), b);
+		if (empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait))
+		{
+			List<StaticString> list = new List<StaticString>();
+			if (aiEvaluableElement.Name == "TechnologyDefinitionLuxuryExtractionCommon")
+			{
+				list.Add("ResourceDeposit_Luxury1");
+				list.Add("ResourceDeposit_Luxury2");
+				list.Add("ResourceDeposit_Luxury3");
+				list.Add("ResourceDeposit_Luxury4");
+				list.Add("ResourceDeposit_Luxury5");
+			}
+			if (aiEvaluableElement.Name == "TechnologyDefinitionLuxuryExtractionUncommon")
+			{
+				list.Add("ResourceDeposit_Luxury6");
+				list.Add("ResourceDeposit_Luxury7");
+				list.Add("ResourceDeposit_Luxury8");
+				list.Add("ResourceDeposit_Luxury9");
+				list.Add("ResourceDeposit_Luxury10");
+			}
+			if (aiEvaluableElement.Name == "TechnologyDefinitionLuxuryExtractionRare")
+			{
+				list.Add("ResourceDeposit_Luxury11");
+				list.Add("ResourceDeposit_Luxury12");
+				list.Add("ResourceDeposit_Luxury13");
+				list.Add("ResourceDeposit_Luxury14");
+				list.Add("ResourceDeposit_Luxury15");
+			}
+			if (list.Count > 0)
+			{
+				int num2 = AILayer_Research.CountVillageResources(empire, list);
+				aiParameterValue += (float)num2 * 0.25f;
+			}
+		}
 		return aiParameterValue * num;
 	}
 
@@ -1029,12 +1084,72 @@ public class AILayer_Research : AILayer
 		{
 			return default(DecisionResult);
 		}
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			foreach (DecisionResult decisionResult in this.technologyDecisions)
+			{
+				Diagnostics.Log("ELCP: Empire {0} TechDecisionResult for {1} is {2}", new object[]
+				{
+					base.AIEntity.Empire.Index,
+					(decisionResult.Element as DepartmentOfScience.ConstructibleElement).Name.ToString(),
+					decisionResult.Score
+				});
+			}
+		}
+		DepartmentOfEducation agency = base.AIEntity.Empire.GetAgency<DepartmentOfEducation>();
+		if (agency != null)
+		{
+			int num = 0;
+			for (int i = 0; i < agency.VaultCount; i++)
+			{
+				BoosterDefinition boosterDefinition = agency.VaultItems[i].Constructible as BoosterDefinition;
+				if (boosterDefinition != null && (boosterDefinition.Name == "BoosterScience" || boosterDefinition.Name == "BoosterFood" || boosterDefinition.Name == "BoosterIndustry"))
+				{
+					num++;
+				}
+			}
+			if (num > 0)
+			{
+				List<DecisionResult> list = new List<DecisionResult>();
+				list.AddRange(this.technologyDecisions.FindAll((DecisionResult match) => (match.Element as DepartmentOfScience.ConstructibleElement).Name.ToString().Contains("TechnologyDefinitionAllBooster")));
+				if (list.Count > 0)
+				{
+					foreach (DecisionResult decisionResult2 in list)
+					{
+						if (decisionResult2.Score + 0.4f * (float)num >= this.technologyDecisions[0].Score)
+						{
+							return decisionResult2;
+						}
+					}
+				}
+			}
+		}
 		return this.technologyDecisions[0];
 	}
 
 	protected DecisionResult GetMostWantedOrbUnlockDecision()
 	{
 		Diagnostics.Assert(this.orbUnlockDecisions != null);
+		int i = 0;
+		while (i < this.orbUnlockDecisions.Count)
+		{
+			if ((this.orbUnlockDecisions[i].Element as DepartmentOfScience.ConstructibleElement).Name == "TechnologyDefinitionOrbUnlock12")
+			{
+				float num = 0f;
+				base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.Orb, out num, false);
+				DepartmentOfScience agency = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
+				if ((agency.GetTechnologyState("TechnologyDefinitionAllBoosterLevel1") != DepartmentOfScience.ConstructibleElement.State.Researched && agency.GetTechnologyState("TechnologyDefinitionAllBoosterLevel2") != DepartmentOfScience.ConstructibleElement.State.Researched) || num <= 150f)
+				{
+					this.orbUnlockDecisions.RemoveAt(i);
+					break;
+				}
+				break;
+			}
+			else
+			{
+				i++;
+			}
+		}
 		if (this.orbUnlockDecisions.Count == 0)
 		{
 			return default(DecisionResult);
@@ -1385,6 +1500,28 @@ public class AILayer_Research : AILayer
 		return SynchronousJobState.Success;
 	}
 
+	private static int CountVillageResources(global::Empire empire, List<StaticString> TemplateNames)
+	{
+		MajorEmpire majorEmpire = empire as MajorEmpire;
+		if (majorEmpire == null || TemplateNames.Count == 0)
+		{
+			return 0;
+		}
+		int num = 0;
+		foreach (Village village in majorEmpire.ConvertedVillages)
+		{
+			Region region = village.Region;
+			foreach (PointOfInterest pointOfInterest in GuiSimulation.Instance.FilterRegionResources(region))
+			{
+				if (TemplateNames.Contains(pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName))
+				{
+					num++;
+				}
+			}
+		}
+		return num;
+	}
+
 	public const string RegistryPath = "AI/MajorEmpire/AIEntity_Empire/AILayer_Research";
 
 	private static readonly StaticString NonFriendlyBordersPercent;
@@ -1464,6 +1601,9 @@ public class AILayer_Research : AILayer
 	private IPersonalityAIHelper personalityHelper;
 
 	private AILayer_Attitude aiLayerAttitude;
+
+	[InfluencedByPersonality]
+	private float IdealBuyoutPeriod;
 
 	private static class OutputAIParameterNames
 	{

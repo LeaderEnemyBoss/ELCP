@@ -1001,7 +1001,7 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 			Diagnostics.LogError("ContractGUID is invalid.");
 			return false;
 		}
-		IDiplomaticContractRepositoryService service = this.Game.Services.GetService<IDiplomaticContractRepositoryService>();
+		IDiplomaticContractRepositoryService service = base.Game.Services.GetService<IDiplomaticContractRepositoryService>();
 		Diagnostics.Assert(service != null);
 		DiplomaticContract diplomaticContract;
 		if (!service.TryGetValue(order.ContractGUID, out diplomaticContract))
@@ -1037,14 +1037,24 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 					{
 						if (!(diplomaticCost.ResourceName != DepartmentOfTheTreasury.Resources.EmpirePoint))
 						{
-							float valueFor = diplomaticCost.GetValueFor(diplomaticContract.EmpireWhichProposes, diplomaticTerm);
-							num += valueFor;
-							float valueFor2 = diplomaticCost.GetValueFor(diplomaticContract.EmpireWhichReceives, diplomaticTerm);
-							num2 += valueFor2;
+							float num5 = diplomaticCost.GetValueFor(diplomaticContract.EmpireWhichProposes, diplomaticTerm);
+							float factor;
+							if (diplomaticTerm is DiplomaticTermTechnologyExchange && num5 > 0f && DepartmentOfForeignAffairs.ProgressiveTechTradeCost(out factor))
+							{
+								num5 = this.AddProgressiveTechCost(diplomaticContract, diplomaticTerm, num5, factor);
+							}
+							num += num5;
+							float num6 = diplomaticCost.GetValueFor(diplomaticContract.EmpireWhichReceives, diplomaticTerm);
+							float factor2;
+							if (diplomaticTerm is DiplomaticTermTechnologyExchange && num6 > 0f && DepartmentOfForeignAffairs.ProgressiveTechTradeCost(out factor2))
+							{
+								num6 = this.AddProgressiveTechCost(diplomaticContract, diplomaticTerm, num6, factor2);
+							}
+							num2 += num6;
 							if (diplomaticCost.CanBeConvertedToPeacePoint)
 							{
-								num3 += valueFor;
-								num4 += valueFor2;
+								num3 += num5;
+								num4 += num6;
 							}
 						}
 					}
@@ -1055,27 +1065,27 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 			Diagnostics.Assert(diplomaticContract.EmpireWhichProposes != null && diplomaticContract.EmpireWhichReceives != null);
 			DepartmentOfTheTreasury agency = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfTheTreasury>();
 			Diagnostics.Assert(agency != null);
-			float num5 = -num;
-			if (!agency.IsTransferOfResourcePossible(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, ref num5))
+			float num7 = -num;
+			if (!agency.IsTransferOfResourcePossible(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, ref num7))
 			{
 				Diagnostics.LogError("Can't change the status of the diplomatic contract {0} to {1} because the empire which proposes can't afford the cost of {2} empire points.", new object[]
 				{
 					diplomaticContract.GUID,
 					order.DiplomaticContractNewState,
-					num5
+					num7
 				});
 				return false;
 			}
-			agency = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
-			Diagnostics.Assert(agency != null);
-			num5 = -num2;
-			if (!agency.IsTransferOfResourcePossible(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, ref num5))
+			DepartmentOfTheTreasury agency2 = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
+			Diagnostics.Assert(agency2 != null);
+			num7 = -num2;
+			if (!agency2.IsTransferOfResourcePossible(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, ref num7))
 			{
 				Diagnostics.LogError("Can't change the status of the diplomatic contract {0} to {1} because the empire which receives can't afford the cost of {2} empire points.", new object[]
 				{
 					diplomaticContract.GUID,
 					order.DiplomaticContractNewState,
-					num5
+					num7
 				});
 				return false;
 			}
@@ -1115,9 +1125,17 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 				order.DiplomaticContractNewState = DiplomaticContractState.Refused;
 			}
 		}
-		if (order.DiplomaticContractNewState == DiplomaticContractState.Negotiation)
+		if (order.DiplomaticContractNewState == DiplomaticContractState.Signed && diplomaticContract.IsTransitionPossible(DiplomaticContractState.Signed))
 		{
+			Diagnostics.Log("ELCP: Contract signed between {0}/{1} and {2}: {3}", new object[]
+			{
+				diplomaticContract.EmpireWhichInitiated,
+				diplomaticContract.EmpireWhichProposes,
+				diplomaticContract.EmpireWhichReceives,
+				diplomaticContract.ToString()
+			});
 		}
+		DiplomaticContractState diplomaticContractNewState = order.DiplomaticContractNewState;
 		if (order.DiplomaticContractNewState == DiplomaticContractState.Refused || order.DiplomaticContractNewState == DiplomaticContractState.Ignored)
 		{
 			order.EmpireWhichProposesEmpirePointCost = -diplomaticContract.EmpireWhichProposesEmpirePointInvestment;
@@ -3901,6 +3919,55 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 	private void IVictoryManagementService_VictoryConditionRaised(object sender, VictoryConditionRaisedEventArgs e)
 	{
 		base.Session.SetLobbyData("_GameHasEnded", true, true);
+	}
+
+	private float AddProgressiveTechCost(DiplomaticContract diplomaticContract, DiplomaticTerm diplomaticTerm, float cost, float factor)
+	{
+		IDiplomaticContractRepositoryService service = (Services.GetService<IGameService>().Game as global::Game).Services.GetService<IDiplomaticContractRepositoryService>();
+		int num = 0;
+		int num2 = 0;
+		Predicate<DiplomaticContract> match = (DiplomaticContract contract) => (contract.EmpireWhichProposes == diplomaticTerm.EmpireWhichProposes || contract.EmpireWhichReceives == diplomaticTerm.EmpireWhichProposes) && contract.State == DiplomaticContractState.Signed;
+		foreach (DiplomaticContract diplomaticContract2 in service.FindAll(match))
+		{
+			if (diplomaticContract2 != diplomaticContract)
+			{
+				bool flag = false;
+				if ((diplomaticContract2.EmpireWhichProposes == diplomaticContract.EmpireWhichProposes && diplomaticContract2.EmpireWhichReceives == diplomaticContract.EmpireWhichReceives) || (diplomaticContract2.EmpireWhichProposes == diplomaticContract.EmpireWhichReceives && diplomaticContract2.EmpireWhichReceives == diplomaticContract.EmpireWhichProposes))
+				{
+					flag = true;
+				}
+				using (IEnumerator<DiplomaticTerm> enumerator2 = diplomaticContract2.Terms.GetEnumerator())
+				{
+					while (enumerator2.MoveNext())
+					{
+						if (enumerator2.Current is DiplomaticTermTechnologyExchange)
+						{
+							num++;
+							if (flag)
+							{
+								num2++;
+							}
+						}
+					}
+				}
+			}
+		}
+		foreach (DiplomaticTerm diplomaticTerm2 in diplomaticContract.Terms)
+		{
+			DiplomaticTermTechnologyExchange diplomaticTermTechnologyExchange = diplomaticTerm2 as DiplomaticTermTechnologyExchange;
+			if (diplomaticTermTechnologyExchange != null)
+			{
+				if (diplomaticTermTechnologyExchange.Equals(diplomaticTerm) && diplomaticTermTechnologyExchange.Index > -1)
+				{
+					break;
+				}
+				num++;
+				num2++;
+			}
+		}
+		float num3 = factor * diplomaticTerm.EmpireWhichProposes.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+		cost += num3 * (float)num + 2f * num3 * (float)num2;
+		return cost;
 	}
 
 	private ISynchronizationService synchronizationService;

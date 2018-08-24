@@ -5,6 +5,7 @@ using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Xml;
 using Amplitude.Xml;
@@ -338,6 +339,17 @@ public class Empire : Amplitude.Unity.Game.Empire, IXmlSerializable, IDescriptor
 		this.Refresh(true);
 		this.ApplyGameModifier(GameModifierDefinition.GetMinorFactionDifficultyReference(game.MinorFactionDifficulty), playerType);
 		this.Refresh(true);
+		ISessionService service = Services.GetService<ISessionService>();
+		if (service != null && service.Session != null && !this.IsControlledByAI)
+		{
+			string x = string.Format("Handicap{0}", base.Index);
+			string lobbyData = service.Session.GetLobbyData<string>(x, "5");
+			if (lobbyData != "5")
+			{
+				this.ApplyGameModifier("Handicap" + lobbyData, playerType);
+				this.Refresh(true);
+			}
+		}
 		DepartmentOfHealth agency = base.GetAgency<DepartmentOfHealth>();
 		if (agency != null)
 		{

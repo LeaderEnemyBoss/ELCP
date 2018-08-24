@@ -342,8 +342,8 @@
 					<Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Attack"/>
 					<Action_SearchInRuin TargetVarName="$Target"/>
 				</Controller_Sequence>
-
-        <Controller_Sequence Debug="Explore_SearchRuin_DiveAtDestination">
+				
+				<Controller_Sequence Debug="Explore_SearchRuin_DiveAtDestination">
           <Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Regular"/>
           <Action_SearchInRuin TargetVarName="$Target"/>
         </Controller_Sequence>
@@ -358,6 +358,94 @@
 			</Controller_Selector>
 		</Controller_Sequence>
 	</AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: new quest ruin subtree -->
+	<!-- I modified Decorator_SelectTarget so AI's can visit ruins with quest markers-->
+	<!-- Each quest has to be coded manually tho -->
+	<!-- working quests: From Dust to Rust -->
+	<AIArmyMissionDefinition Name="ExploreNearbyQuestRuin">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+
+		<!--IF RuinDetected THEN explore the ruin -->
+		<Controller_Sequence Debug="Explore_SearchQuestRuin">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Ruin" QuestTarget="true" Output_TargetVarName="$Target"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$RuinWorldPositionDestination"/>
+
+			<Controller_Selector>            
+				<Controller_Sequence Debug="Explore_SearchRuin_AlreadyAtQuestDestination">
+					<Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+
+				<Controller_Sequence Debug="Explore_SearchQuestRuin_MoveToRuin">
+					<Action_GeneratePath DestinationVarName="$RuinWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$RuinPath"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$RuinWorldPositionDestination" PathVarName="$RuinPath"/>
+					<Action_Move PathVarName="$RuinPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$RuinPath"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: new parley village subtree -->
+	<!-- I modified the search ruin action to also work for accepting village quests (dont know how to create new BT-Actions yet) -->
+	<AIArmyMissionDefinition Name="ParleyWithVillage">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+
+		<!--IF valid Village detected THEN try to parley -->
+		<Controller_Sequence Debug="Parley_Village">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Village" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="VillageQuest"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$ParleyPositionDestination"/>
+
+			<Controller_Selector>            
+				<Controller_Sequence Debug="Parley_Village_AlreadyAtDestination">
+					<Decorator_DestinationReached DestinationVarName="$ParleyPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+
+				<Controller_Sequence Debug="Parley_Village_MoveToRuin">
+					<Action_GeneratePath DestinationVarName="$ParleyPositionDestination" TypeOfPath="Regular" Output_PathVarName="$ParleyPath"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$ParleyPositionDestination" PathVarName="$ParleyPath"/>
+					<Action_Move PathVarName="$ParleyPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$ParleyPath"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<AIArmyMissionDefinition Name="OpportunityConvertVillage">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+
+		<!--IF valid Village detected THEN try to parley -->
+		<Controller_Sequence Debug="Opportunity_ConvertVillage">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Village" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="VillageConvert"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$ConvertPositionDestination"/>
+
+			<Controller_Selector>            
+				<Controller_Sequence Debug="OpportunityConvertVillage_AlreadyAtDestination">
+					<Decorator_DestinationReached DestinationVarName="$ConvertPositionDestination" TypeOfCheck="Attack"/>
+					<Action_ConvertVillage TargetVarName="$Target"/>
+				</Controller_Sequence>
+
+				<Controller_Sequence Debug="OpportunityConvertVillage_MoveTo">
+					<Action_GeneratePath DestinationVarName="$ConvertPositionDestination" TypeOfPath="Regular" Output_PathVarName="$ConvertPath"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$ConvertPositionDestination" PathVarName="$ConvertPath"/>
+					<Action_Move PathVarName="$ConvertPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$ConvertPath"/>
+					<Action_ConvertVillage TargetVarName="$Target"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	<!-- End ELCP -->
 
 	<AIArmyMissionDefinition Name="OpportunitySearchRuin">
 		<Parameters>

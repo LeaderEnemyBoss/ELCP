@@ -123,6 +123,24 @@ public class AICommanderMission_BailToCity : AICommanderMissionWithRequestArmy
 				return base.TryCreateArmyMission("ReachTarget", list);
 			}
 		}
+		Diagnostics.Assert(AIScheduler.Services != null);
+		IIntelligenceAIHelper service = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
+		Diagnostics.Assert(service != null);
+		List<Region> list2 = new List<Region>();
+		if (service.TryGetListOfRegionToExplore(base.Commander.Empire, 0.95f, ref list2))
+		{
+			foreach (Region region in list2)
+			{
+				if (AILayer_Exploration.IsRegionValidForExploration(base.Commander.Empire, region))
+				{
+					return base.TryCreateArmyMission("ExploreAt", new List<object>
+					{
+						region.Index
+					});
+				}
+			}
+			return false;
+		}
 		return false;
 	}
 

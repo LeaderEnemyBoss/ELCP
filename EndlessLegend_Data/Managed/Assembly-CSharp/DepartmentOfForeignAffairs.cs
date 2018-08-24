@@ -11,6 +11,8 @@ using Amplitude.Extensions;
 using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using Amplitude.Unity.Gui;
+using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Xml;
 using Amplitude.Xml;
@@ -285,6 +287,90 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 					num += Math.Max(0f, valueFor);
 				}
 			}
+		}
+		float num2;
+		if (diplomaticTerm is DiplomaticTermTechnologyExchange && num > 0f && DepartmentOfForeignAffairs.ProgressiveTechTradeCost(out num2))
+		{
+			IDiplomaticContractRepositoryService service = (Services.GetService<IGameService>().Game as global::Game).Services.GetService<IDiplomaticContractRepositoryService>();
+			IDiplomacyService service2 = (Services.GetService<IGameService>().Game as global::Game).Services.GetService<IDiplomacyService>();
+			global::Empire empireA = diplomaticTerm.EmpireWhichProposes;
+			global::Empire empire = diplomaticTerm.EmpireWhichProvides;
+			if (empireA == empire)
+			{
+				empire = diplomaticTerm.EmpireWhichReceives;
+			}
+			DiplomaticContract diplomaticContract = null;
+			global::IGuiService service3 = Services.GetService<global::IGuiService>();
+			Amplitude.Unity.Gui.GuiPanel[] array2;
+			if (service != null && service3.TryGetGuiPanelByType(Type.GetType("ContractPanel"), out array2))
+			{
+				for (int j = 0; j < array2.Length; j++)
+				{
+					if (array2[j] is ContractPanel)
+					{
+						diplomaticContract = ((array2[j] as ContractPanel).DiplomaticContract as DiplomaticContract);
+					}
+					if (diplomaticContract != null && ((diplomaticContract.EmpireWhichProposes == empireA && diplomaticContract.EmpireWhichReceives == empire) || (diplomaticContract.EmpireWhichProposes == empire && diplomaticContract.EmpireWhichReceives == empireA)))
+					{
+						break;
+					}
+					diplomaticContract = null;
+				}
+			}
+			if (diplomaticContract == null && !service2.TryGetActiveDiplomaticContract(empireA, empire, out diplomaticContract))
+			{
+				service2.TryGetActiveDiplomaticContract(empire, empireA, out diplomaticContract);
+			}
+			if (diplomaticContract == null)
+			{
+				Diagnostics.Log("ELCP fitting contract {0}", new object[]
+				{
+					(diplomaticContract != null) ? diplomaticContract.GUID.ToString() : "not found"
+				});
+			}
+			int num3 = 0;
+			int num4 = 0;
+			Predicate<DiplomaticContract> match = (DiplomaticContract contract) => (contract.EmpireWhichProposes == empireA || contract.EmpireWhichReceives == empireA) && contract.State == DiplomaticContractState.Signed;
+			foreach (DiplomaticContract diplomaticContract2 in service.FindAll(match))
+			{
+				bool flag = false;
+				if ((diplomaticContract2.EmpireWhichProposes == empireA && diplomaticContract2.EmpireWhichReceives == empire) || (diplomaticContract2.EmpireWhichProposes == empire && diplomaticContract2.EmpireWhichReceives == empireA))
+				{
+					flag = true;
+				}
+				using (IEnumerator<DiplomaticTerm> enumerator2 = diplomaticContract2.Terms.GetEnumerator())
+				{
+					while (enumerator2.MoveNext())
+					{
+						if (enumerator2.Current is DiplomaticTermTechnologyExchange)
+						{
+							num3++;
+							if (flag)
+							{
+								num4++;
+							}
+						}
+					}
+				}
+			}
+			if (diplomaticContract != null)
+			{
+				foreach (DiplomaticTerm diplomaticTerm2 in diplomaticContract.Terms)
+				{
+					DiplomaticTermTechnologyExchange diplomaticTermTechnologyExchange = diplomaticTerm2 as DiplomaticTermTechnologyExchange;
+					if (diplomaticTermTechnologyExchange != null)
+					{
+						if (diplomaticTermTechnologyExchange.Equals(diplomaticTerm) && diplomaticTermTechnologyExchange.Index > -1)
+						{
+							break;
+						}
+						num3++;
+						num4++;
+					}
+				}
+			}
+			float num5 = num2 * diplomaticTerm.EmpireWhichProposes.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+			num += num5 * (float)num3 + 2f * num5 * (float)num4;
 		}
 		return num;
 	}
@@ -1470,10 +1556,6 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 				{
 					return true;
 				}
-				if (empire2.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim))
-				{
-					return true;
-				}
 				DiplomaticRelation diplomaticRelation2 = this.GetDiplomaticRelation(empire2);
 				Diagnostics.Assert(diplomaticRelation2 != null);
 				return diplomaticRelation2.HasActiveAbility(DiplomaticAbilityDefinition.AttackCities);
@@ -1539,10 +1621,6 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 						if (base.Empire == fortress.Occupant)
 						{
 							return false;
-						}
-						if (fortress.Occupant.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim))
-						{
-							return true;
 						}
 						DiplomaticRelation diplomaticRelation5 = this.GetDiplomaticRelation(fortress.Occupant);
 						if (fortress.Region != null && fortress.Region.BelongToEmpire(fortress.Occupant))
@@ -1953,6 +2031,31 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 		int turn = game.Turn;
 		float value = propertyValue2 * (float)(turn - abilityActivationTurn);
 		return Mathf.Clamp(value, 0f, propertyValue);
+	}
+
+	public static bool ProgressiveTechTradeCost(out float factor)
+	{
+		factor = 0f;
+		ISessionService service = Services.GetService<ISessionService>();
+		Diagnostics.Assert(service != null);
+		string lobbyData = service.Session.GetLobbyData<string>("TechTradeCost", "Vanilla");
+		if (lobbyData == "Vanilla")
+		{
+			return false;
+		}
+		if (lobbyData == "Light")
+		{
+			factor = 1f;
+		}
+		if (lobbyData == "Moderate")
+		{
+			factor = 2f;
+		}
+		if (lobbyData == "Harsh")
+		{
+			factor = 4f;
+		}
+		return true;
 	}
 
 	public static readonly StaticString[] DiplomaticCostReductionFromEmpirePropertyNames;
