@@ -1,0 +1,420 @@
+<p><strong>Note:</strong>&nbsp;Multiplayer saves from older versions are not compatible with newer versions (Singleplayer saves are fine)</p>
+<h3>Changelog for v2.1.5:</h3>
+<p><em>General</em></p>
+<ul>
+<li>Reintroduced my old Advanced World Setting "Replace Inland Seas", since AIs building ships in small ponds was NOT fixed in every case by the latest official patches -by default it is activated, which means ocean tiles without access to fortresses get transformed into inland water tiles on map generation (to prevent ships being build on them) -the feature can be deactivated in the world generation settings -if no fortresses are present, no tiles will be replaced</li>
+<li>Fixed Fortification HP not being correctly applied to reinforcements in spectator battles -The first turn of a spectator battle may take a while as a result of my "fix" (I'll try to find a better solution if enough people care about spectator battles)</li>
+<li>Fixed an issue where a City's Fortification would be reduces to zero if a contender retreated</li>
+<li>Fixed an issue where a unit not being able to join a battle would count a unit that lost all of its Armor when calculating the after-battle Fortification loss</li>
+<li>Players can now only dismantle buildings if they have full ownership over a (recently conquered) city</li>
+</ul>
+<p><em>UI</em></p>
+<ul>
+<li>Assimilation effects are now displayed in the tooltip of Villages as well
+<ul>
+<li>This should help new players, who have not yet memorized all the assimilation effects</li>
+</ul>
+</li>
+<li>Right- or Middle-Clicking a unit icon in an army list panel now also opens the Unit Designer</li>
+</ul>
+<p><em>Balance [Core files]</em></p>
+<ul>
+<li>Introduced a new optional rule-set for Fortification Armor and when it applies
+<ul>
+<li>When creating a lobby, a new game play option is available: "Fortification Rules"</li>
+<li>Players can choose between "Classic" (the old rule-set) or "ELCP" (the new default)</li>
+<li>Under the old rule-set, Fortification Bonus only got applied, if a city is directly attacked. The defending army and all reinforcements got the Bonus.</li>
+<li>Under the "ELCP" rule-set, Fortification gets applied as soon as at least one of the two main contenders is on a City Tile or an Exploitation Tile - it doesnt matter who attacked!</li>
+<li>But: Only Armies that are located on a City Tile (District) get the Fortification Bonus! Reinforcements that are not on a City Tile dont get the Bonus!</li>
+<li>Reinforcements for City Defenses are therefore weakened, but in turn offensive use of Fortification is now possible!</li>
+<li>All in all this should make defensive play a stronger option. Under classic rules, heaving lots of Fortification only delayed the inevitable when being besieged.</li>
+<li>Under the "ELCP" rule set, defenders with an inferior army can attack out of their city and turn the tides with that hefty Armor Bonus!</li>
+<li>Attackers on the other hand may decide that 400 fortification cultist city is too dangerous, some pillaging will have to do.</li>
+<li>See [<a href="https://imgur.com/a/5fAh681">here</a>] for a graphic explanation!</li>
+</ul>
+</li>
+<li>Removed the ability to conquer cities and fortresses (whose region are owned by the target) of blackspot victims without declaring war
+<ul>
+<li>The morgawr are one of the more powerful factions anyway, and especially roving clans players where essentially powerless against this action</li>
+</ul>
+</li>
+</ul>
+<p><em>Balance [XML]</em></p>
+<ul>
+<li>Introduced multiplicative stacking for Production Cost Reduction and Buyout Cost Reduction (Buildings and Units)
+<ul>
+<li>An example: Empire Plan Science and Industry Level 2 (33%), Behemoth Tamer Level 2 (Wild Walker Governore Skill) 2*12%, 2 assimilated Urces Villaged (10%)</li>
+<li>Under the old additive stacking rules, this would result in 33% + 2*12% + 10% = 67% reduction, Buildings only cost 33% of their original value</li>
+<li>Under the new multiplicative stacking rules, this results in 1-((1-0.33)<em>(1-0.12)</em>(1-0.12)*(1-0.10)) = 53% reduction, Buildings cost 47% of their original value</li>
+<li>This means that Stacking these bonuses is less effective the more you do it, and - first and foremost - reaching 100% reduction is no longer possible</li>
+<li>This change was implemented to combat the strength of stacking construction cost reduction and buyout cost reduction</li>
+</ul>
+</li>
+<li>Reverted the old nerfs to the Wild Walker governor Skill "Behemoth Tamer" and the "Growing Buildings" quest tech
+<ul>
+<li>With the new multiplicative stacking these nerfs are no longer necessary</li>
+</ul>
+</li>
+<li>Reduced the Cost of the "Endless Temple" Victory wonder from 90000 to 72000 (still nerfed compared to Vanilla, but less so)</li>
+<li>Reduced the needed amount of a random luxury resource for the second stage of the necrophage faction quest from 20 to 5 and the dust amount from 150 to 100
+<ul>
+<li>Necrophages are on the weaker side of the faction spectrum, while their units are strong, their growth and production is slow at the start, and they are dependent on getting some good early fights for boosters and later battleborn</li>
+<li>I have found in my games that the time it takes to get that second quest done for the free hero often dictates how succesfull the rest of the game is</li>
+<li>Making the quest easier (and more reliable) to achieve should give necros a boost in reliability when it comes to their early game</li>
+</ul>
+</li>
+</ul>
+<p><em>AI</em></p>
+<ul>
+<li>Improved Unit Designer logic for heroes
+<ul>
+<li>AI now ignores the Item Cost of the current design, when comparing with a hypothetical new design (since the cost has already been paid)</li>
+<li>AIs will heavily favor Iron Talisman on Generals that slow their army down</li>
+<li>Heros will now heavily favor Items that fit their current role (Governors will mostly ignore Army Items, Spies heavily favor scopes etc.)</li>
+<li>AIs now take their strategic resource stock into account, when deciding on unit designs, not just their income</li>
+</ul>
+</li>
+<li>AIs are now forced to research shipyard if they can no longer expand and there are multiple continents in the game</li>
+<li>AIs are now forced to buy heroes if they sit on money and could use them</li>
+<li>Camps are garrisoned more sensible
+<ul>
+<li>The AI was very eager to fully man all its Camps, even the ones that were secure in its heartland</li>
+<li>The AI now takes into account, how secure a position is so it doesnt waste so many units</li>
+</ul>
+</li>
+<li>fixed an issue where very weak starting units (cultists, morgawr) would sometimes do nothing because they were too scared of exploring</li>
+<li>AIs are less likely to join battles when defending empty Villages or Camps</li>
+<li>As always many smaller .xml related improvements, among them:
+<ul>
+<li>cultists will no longer think "Right of way" helps them connecting their villages with roads</li>
+<li>Kapaku now get a strong boost to their willingness to research Camps and their special Stockpiles (when at war)</li>
+<li>Forgotten are more likely to research "What's Mine is Mine" if they have active spies</li>
+</ul>
+</li>
+<li>made slight improvements to the offensive battle behavior of ranged units and driders (thanks morgoth!)</li>
+</ul>
+<p><em>Modding</em></p>
+<ul>
+<li>CanFreeEmbark now checks for "FactionTraitSeaDemons1" instead of "AffinitySeaDemons" in order to allow modders to use it for other factions</li>
+<li>Autoturn no longer stops on its own when assertions fail or error logs occur, making this command more useful for afk-AI testing (thanks morgoth!)</li>
+<li>The god cursor "Spawn allied Army" cheat now spawns an army of the currently selected empire instead of always the first one</li>
+</ul>
+<h3>Changelog for v2.1.31:</h3>
+<ul>
+<li>Hotfix for a bug in 2.1.3 that led to the AI locking up and massive logspam ... sorry :(</li>
+</ul>
+
+<h3>Changelog for v2.1.3:</h3>
+<ul>
+<li>Ports the Community patch to Endless Legend v1.6.4 S3</li>
+<li>Patch 1.6.4 partially solves the following issues:
+<ul>
+<li>stealth fixed a bug with coastal tile evaluation for colonization (but not expansion!)</li>
+<li>attempted to fix AIs colonization logic, change doesnt go far enough, so I keep my code in</li>
+</ul>
+</li>
+<li>Since I know that not everyone is a fan of my balance changes, I uploaded a mod, that reverses all the .xml changes I made!,&nbsp;<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=1473002612">Follow this Link!</a>
+<ul>
+<li>I will keep this mod up to date with every new release. So as long as you stay subscribed, you stay vanilla!</li>
+<li>Note: Hardcoded changes that I provide an ingame option for (like the progressive techtrade cost) are not affected by the mod, you'll need to deactivate them once in the pregame lobby.</li>
+</ul>
+</li>
+</ul>
+Changes in ELCP v2.1.3:
+
+<p><em>UI</em></p>
+<ul>
+<li>Selecting the Icon of a known living Empire on the End-Turn-Panel with the right or middle mouse button now opens the diplomatic Negotiation Screen with that Empire</li>
+<li>Capacity list icons are now colored depending on the Capacity Provider
+<ul>
+<li>This should make it easier to see at a glance, what hero and/or item specific abilities a hero or unit possesses</li>
+<li>Categories are: (1) Capacities provided by the unit design or the hero class + faction, (2) Capacities that are unique to that hero, (3) Capacities that are provided by items</li>
+<li>Colors can be customized in the game's UI-Options menu</li>
+<li>I also improved the sorting algorithm so the icons no longer shuffle around wildly, each team you change the equipment of the hero/unit design</li>
+<li>Icons are now sorted after category (1>2>3) and alphabetically</li>
+</ul></li>
+</ul>
+<p><em>Balance</em></p>
+<ul>
+<li>Increased the market value of Stockpiles (for buying and selling!)
+<ul>
+<li>Stockpiles in general are too cheap for their use. No one in their right mind sells 1600 industry for a bit over 100 gold.</li>
+<li>This also weakens early stockpile rushes a bit (but not by much, pearl stockpiles are unchanged for now)</li>
+</ul></li>
+<li>Reduced Damage and HP bonus of Serum of Iteru by 50%
+<ul>
+<li>This tech basically meant "game over", I think toning it down to "still very strong" is waranted</li>
+</ul></li>
+<li>Increased the wood based summer industry bonus of Living Towns (Wild Walkers) from 1 to 2
+<ul>
+<li>Wild Walkers got hit by a number of indirect and direct nerfs in my attempts to balance the Wonder Victory</li>
+<li>Since they don't have that much going for them besides this, I think buffing their early game potential makes them a bit more competitive with other explosive factions</li>
+</ul></li>
+</ul>
+<p><em>AI</em></p>
+<ul>
+<li>Improvements to the AIs tech and Wonder priorities inspired by community member CeltiK</li>
+<li>Further improvements to AIs booster usage, Production utilization, Unit Designs and Encounter logic</li>
+<li>AIs will now consider selling Stockpiles to the Market in times of need</li>
+<li>Golem Camp placement is no longer completely random</li>
+<li>Fixed a bug where AIs did not know how to use Industry boosters gained from the "Siege Engineering" tech</li>
+</ul>
+
+<h3>Changelog for v2.1.2:</h3>
+<ul>
+<li>Ports the Community patch to Endless Legend v1.6.2 S3 (Inferno)</li>
+<li>Inferno patch solves the following issues:
+<ul>
+<li>AIs building ships in "ponds", therefore I removed the Setting "Replace Inland seas" since it should no longer be necessary</li>
+<li>Idle army button</li>
+<li>Cultists aquiring more than one city</li>
+<li>Forgotten Techtrade bug</li>
+</ul>
+</li>
+<li>Everything else was not or only partially resolved by Inferno, so most of my old stuff stays in</li></ul>
+There is also some new stuff:
+
+<p><em>UI</em></p>
+<ul>
+<li>Selecting a Unit Design in a Cities construction menu with the right or middle mouse button now opens the Unit Designer</li>
+</ul>
+<p><em>Balance</em></p>
+<ul>
+<li>Increased HP reduction from retreating to 60% (up from 50%)
+<ul>
+<li>this means without some regeneration, you can only retreat savely once, reducing the power of stalling somewhat</li>
+</ul>
+</li>
+</ul>
+<p><em>AI</em></p>
+<ul>
+<li>Improved AI engagement logic
+<ul>
+<li>fixed an issue that lead to the AI thinking Fortification-HP also applies when it attacks out of its besieged City</li>
+<li>AIs can now assign more than one army to defend a besieged city</li>
+<li>When defending a besieged city, the AI tries to initiate the fight with its strongest army present</li>
+<li>Fixed an issue that lead to the AI not bringing reinforcements when defending a city</li>
+</ul>
+</li>
+<li>Implemented an experimental quest solving logic for the "From Dust to Rust" quest
+<ul>
+<li>AIs can now do this cooperative quests on their own and without cheating</li>
+<li>this should resolve annoying situations where the player is unable to reach any of the three quest ruins in order to get rid of the negative effect</li>
+<li>logic for other quests may follow in future updates</li>
+</ul>
+</li>
+<li>Improvements to the region evaluation for war, AIs are less likely to skip regions when attacking cities</li>
+<li>AIs are more likely to send stronger invading armies (or several of them)</li>
+<li>Small empires get an additional boost to their willingness to settle, depending on the game turn</li>
+<li>Fixed a bug were AIs of higher difficulty were less annoyed when being terraformed instead of more (Inferno)</li>
+</ul>
+<h3>Changelog for v2.1.0:</h3>
+<p><em>General</em></p>
+<ul>
+<li>Fixed an issue where hovering over the "End Turn"-Button would reveal the total score of other empires, even when score display was set to "partial" or "none"</li>
+<li>Hosts can now setup Handicaps for individual players, increasing or decreasing their FIDSI income in cities
+<ul>
+<li>This is intended to level the playing field in multiplayer games where people of vastly different skill levels may play together</li>
+<li>As soon as at least one player has a positive Handicap (i.e. gets bonus FIDSI), achievements are disabled</li>
+<li>The host can not modify the Handicap of players that changed their state to "ready" (to prevent "last second ninja handicap" trolling)</li>
+</ul>
+</li>
+</ul>
+<p><em>Balance</em></p>
+<ul>
+<li>Introduced a new optional feature: progressive tech trade costs
+<ul>
+<li>when creating a lobby, a new game play option is available: "Tech Trade Cost Progression"</li>
+<li>it offers the settings light, moderate (the new default), harsh and classic (this deactivates the feature and reverts everything to its old state)</li>
+<li>On moderate (normal speed), each past technology trade an empire was involved in raises the Influence cost of future tech trades by 2 Influence points</li>
+<li>this cost increase is tripled for each tech an empire traded with the current trading partner (to encourage "spreading the love" for avid tech traders)</li>
+<li>the progressive cost is not reduced by any effects (like infiltration actions or the allayi passive) and is only influenced by the game speed</li>
+</ul>
+</li>
+<li>Reduced Diplomatic Points gained via diplomatic treaties from 0.2 to 0.1 per influence point spent
+<ul>
+<li>This should make "explosive" diplomatic victories harder (players bunker a bunch of Influence and then cruise to victory without others being able to react in a matter of few turns)</li>
+</ul>
+</li>
+<li>Increased passive Diplomatic Point gain from alliances from 4 to 5
+<ul>
+<li>this should encourage building Alliances for Diplo Victory hunters a bit more (instead of only spamming mass treaties)</li>
+</ul>
+</li>
+<li>Increased the dust requirement for an Economic Victory by 20%</li>
+<li>Increased the cost of the "Endless Temple" Victory wonder by 150%
+<ul>
+<li>Any lategame city (especially in combination with building cost reduction and Boosters) could complete this wonder in a Matter of 5 - 10 turns, Wild Walkers even in 1 or 2</li>
+<li>this change was made to bring it more in line with the Quest Victory it directly competes with</li>
+</ul>
+</li>
+<li>Reduced Building Production Cost Reduction of "Growing Buildings" (Wild Walker quest tech) from 25% to 15%</li>
+<li>Reduced Building Production Cost Reduction of "Behemoth Tamer" (Wild Walker Governor skill) from 12% to 10% per level</li>
+</ul>
+<p><em>AI</em></p>
+<ul>
+<li>Improved the diplomatic AI significantly
+<ul>
+<li>Fixed an issue that would prevent AIs from making "third party requests" (like asking other empires to declare war on someone)</li>
+<li>When interacting amongst each other, AIs will now avoid proposing deals that the other party wont accept (will lead to more successfull deals amongst AI empires)</li>
+<li>AIs no longer overvalue the player offering war declarations on weak enemies (thanks Cornebre!)</li>
+<li>Many improvements to the Influence Accounting that should result in AIs pursuing more diplomatic interactions</li>
+<li>AIs will evaluate stockpiles better when trading (will take into account how many they have, how much they need them, if they have the techs)</li>
+</ul>
+</li>
+<li>AIs are now better at keeping their production queues busy (thanks Cornebre!)
+<ul>
+<li>they often had empty production queues in their cities or wasted large proportions of their industry stockpiles</li>
+<li>New "last resort" production logic overrrides the normal production AI if it detects cities not being used properly</li>
+<li>this may lead to a AI turns being a bit longer in the late game (but typically the player has a lot to do then anyway)</li>
+<li>AIs now immediatly queue up buildings on newly settled cities (thanks Cornebre!)</li>
+</ul>
+</li>
+<li>AIs will no longer waste Industry Stockpiles to produce further Stockpiles (thanks Cornebre!)</li>
+<li>Having Stockpiles will make the AI more likely to research Stockpile techs</li>
+<li>AIs will now switch to cheaper unit designs faster if they cant afford the current one</li>
+<li>Fixed an issue where AIs with low number of cities (cultists...) would sometimes refuse to use food stockpiles</li>
+<li>Fixed an issue where AIs would undervalue dust equipment heavily even when they have lots of dust (to the point of them prefering iron sometimes)</li>
+<li>Fixed an issue with the Account Manager that lead to the Morgawr AI not using its "Dissent" ability</li>
+<li>many minor bugfixes</li>
+</ul>
+<h3>Changelog for v2.0.4:</h3>
+<p><em>General</em></p>
+<ul>
+<li>resource stock and income values between 1000 and 10000 are now truncated to one decimal place (Implemented by fellow modder Cornebre)
+<ul>
+<li>previously it would only display values like "2k", now it displays more precise information like "2.6k"</li>
+</ul>
+</li>
+<li>included the Coastal Cultist mod by sudocrem (<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=972760821">Link</a>)
+<ul>
+<li>Cultists have a higher Chance to spawn near an Ocean, similar to the Morgawr</li>
+</ul>
+</li>
+<li>fixed an annoying issue where moving away a single army from a besieged city would end the siege, even if other armies are still next to the target city</li>
+<li>fixed a bug that led to endless sieges
+<ul>
+<li>it happened when a single besieging army would embark to a watertile that is still next to the besieged city. The army could then leave and the siege would continue indefinitly until broken otherwise</li>
+</ul>
+</li>
+</ul>
+<p><em>AI</em></p>
+<ul>
+<li>Improved the Cultist AI significantly,&nbsp;<a href="https://imgur.com/a/xreV4rZ">Deus Cult!</a>
+<ul>
+<li>heavily increased the value the AI places on converting villages</li>
+<li>previously they mostly ignored the free armies from converted villages since they had no routine to manage them, now they will use them or sell them</li>
+<li>they now take potential resources gained from villages into account, when deciding whether to research resource extractors (previously they ignored them if the resource wasnt in their home region)</li>
+<li>boosted their willingness to develop their city over spamming units</li>
+<li>they treat their City being besieged a bit more seriously</li>
+<li>they will now consider "colonizing" (i.e. converting villages on) islands and other continents</li>
+</ul>
+</li>
+<li>the AI can now parley with villages and accept their quests
+<ul>
+<li>this should mainly help AIs with weak starting units (cultists...) since others usually just fight them</li>
+<li>also fixed a bug that prevented villages from being pacified if a pacification quest was solved by the AI</li>
+<li>Note: the AI still doesnt actively solve objectives but uses a chance based auto questsolver</li>
+<li>"Real" quest solving AI for some quests (victory?) may follow in the future ...maybe ... if I'm insane enough</li>
+</ul>
+</li>
+<li>the AI will no longer research pearl hoarding, except when they got other booster techs and have a huge pile of pearls</li>
+<li>the AI will now release some garrison units when it cant finish unit production due to full garrison</li>
+<li>many smaller .xml related fixes (thanks Cornebre!)</li>
+</ul>
+<p><em>Modding Tools</em></p>
+<ul>
+<li>The god cursor ("G") now shows the current world position</li>
+</ul>
+<h3>Changelog for v2.0.3:</h3>
+<p><em>General</em></p>
+<ul>
+<li>fixed "Luxury Alchemists" increasing the duration of&nbsp;<em>everything</em>&nbsp;that used BoosterDurationMultiplier
+<ul>
+<li>previously stockpile boosters and even infiltration actions like "decrease fortification" and "poison governor" were affected</li>
+</ul>
+</li>
+<li>the effect of "Luxury Alchemists" now kicks in after the first booster is activated to match its description
+<ul>
+<li>previously it would only activate after at least 2 boosters were active</li>
+</ul>
+</li>
+</ul>
+<p><em>AI</em></p>
+<ul>
+<li>tackled a bunch of spy related issues
+<ul>
+<li>fixed an issue with AIs really wanting to infiltrate cities they dont have vision on (led to unemployed spies)</li>
+<li>fixed an issue where the AI really wants to spy on a city that already has a spy of the same empire in it (led to unemployed spies)</li>
+<li>lessened the AIs desire to shuffle spies around (so they can gain seniority)</li>
+<li>fixed an internal issues which lead to AIs overvaluing spies in general</li>
+<li>fixed a NullReferenceException that could lead to spies doing nothing during war</li>
+<li>fixed an issue where war with an infiltrated empire would lower the chance of hurtful actions (like decrease population) instead of increasing it</li>
+<li>improved technology steal routine (Forgotten shouldnt fall so far behind technologically now)</li>
+</ul>
+</li>
+<li>exposed a new .xml element "IdealBuyoutPeriod" that governs the Forgotten AI's willingness to buy tech, put in values that should make Forgotten AI more competitive on higher difficulties
+<ul>
+<li>The old TechnologyBuyoutReferenceRatioAgent seems to quite literally do nothing which lead to forgotten AI falling behind on higher difficulties (maybe a leftover from early development?)</li>
+</ul>
+</li>
+<li>The AI didnt know it could restore injured heroes for dust, thanks to a new routine it does now</li>
+<li>AIs now try to avoid assigning governors to cities that are under siege (led to unemployed governors)</li>
+<li>minor bugfixes in the .xml files</li>
+</ul>
+<h3>Changelog for v2.0.2:</h3>
+<p><em>General</em></p>
+<ul>
+<li>Fixed the idle army button sometimes not working correctly as the game progresses</li>
+<li>Cultists can no longer obtain multiple cities via trade.
+<ul>
+<li>Cities aquired via trade are immediatly razed, stockpiles are gained according to tech.</li>
+</ul>
+</li>
+<li>new cheat commando: ShowMeTheStockpiles (player gets the specified amount of each stockpile, 10 by default)</li>
+</ul>
+<p><em>AI</em></p>
+<ul>
+<li>AI now wants to build more units on higher difficulties (they often had many idle cities)</li>
+<li><a href="https://www.youtube.com/watch?v=gAYL5H46QnQ&amp;feature=youtu.be&amp;t=18">Did this</a>&nbsp;with large parts of the overly complicated and buggy colonization routines, replaced it with a simpler and more robust calculation
+<ul>
+<li>AIs should now choose better locations, no more "settling next to a rock"</li>
+<li>If you notice weird behavior, message me!</li>
+</ul>
+</li>
+<li>AI now assign a very low utility value to fortresses they get from trades, except when it helps them to control the respective ocean region
+<ul>
+<li>this is to prevent a fortress trade exploit (give the AI fortresses it cant defend for tech/resources, then immediatly reclaim them without triggering a war)</li>
+<li>utility values may receive further balancing in future patches, depending on feedback</li>
+<li>exposed a new value for modders in the corresponding xml file: $(RegionCompletion)</li>
+</ul>
+</li>
+<li>Slightly improved AI stockpile usage
+<ul>
+<li>Science stockpiles now will be used one at a time instead of all at once</li>
+<li>AIs that got stockpiles early on (Cultists, Necrophages) will refrain from using them if they are close to a tech upgrade (like "Unskilled Labor")</li>
+</ul>
+</li>
+</ul>
+<h3>Changelog for v2.0.1:</h3>
+<p><em>General</em></p>
+<ul>
+<li>Achievements are no longer disabled by mods</li>
+<li>the Debug command "/Autoturn" is now available for modders to use (useful for testing AI behaviour)</li>
+</ul>
+<p><em>AI</em></p>
+<ul>
+<li>AI Spies have a higher probability to "do nothing" and wait until their infiltration level raises higher (especially when they can steal tech)</li>
+<li>Exposed a new personality specific xml element for modders: "BoostThresholdForBetterTechsteal"</li>
+<li>Made AI a bit more likely to seek alliances when having a common foe</li>
+<li>Included the mod "Improved AI" by ninakoru (<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=851891695">link</a>)</li>
+<li>Included the mod "Forgotten Techtrade Workaround" by me (<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=1374834297">link</a>), proper fix may follow in the future</li>
+</ul>
+<p><em>World Generator</em></p>
+<ul>
+<li>Added a new Advanced World Setting "Replace Inland Seas"; activating this transforms Oceans without fortress access to lakes.</li>
+<li>This is a workaround to prevent the AI from building fleets into useless puddles</li>
+<li>does nothing without the Tempest DLC</li>
+<li>only affects newly generated worlds</li>
+<li>is activated by default</li>
+</ul>
