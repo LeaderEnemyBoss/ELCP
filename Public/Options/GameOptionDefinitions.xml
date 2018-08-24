@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Game Options -->
+  <GameOptionDefinition Name="NumberOfMajorFactions"          Default="6"        Category="Game" SubCategory="GamePace"          GuiControlType="DropList">
+    <ItemDefinition Name="2">
+      <KeyValuePair Key="NumberOfMajorFactions">2</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="3">
+      <KeyValuePair Key="NumberOfMajorFactions">3</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="4">
+      <KeyValuePair Key="NumberOfMajorFactions">4</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize" Type="Control">
+        <Key Name="Tiny"/>
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="5">
+      <KeyValuePair Key="NumberOfMajorFactions">5</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize" Type="Control">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="6">
+      <KeyValuePair Key="NumberOfMajorFactions">6</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize" Type="Control">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="7">
+      <KeyValuePair Key="NumberOfMajorFactions">7</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize" Type="Control">
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="8">
+      <KeyValuePair Key="NumberOfMajorFactions">8</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize" Type="Control">
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="GameDifficulty"                 Default="Normal"   Category="Game" SubCategory="GamePace"          GuiControlType="DropList">
+    <ItemDefinition Name="Newbie">
+      <KeyValuePair Key="GameDifficulty">Newbie</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldDifficulty" Type="Control">
+        <Key Name="Easy"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Easy">
+      <KeyValuePair Key="GameDifficulty">Easy</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldDifficulty" Type="Control">
+        <Key Name="Easy"/>
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="GameDifficulty">Normal</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Hard">
+      <KeyValuePair Key="GameDifficulty">Hard</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Serious">
+      <KeyValuePair Key="GameDifficulty">Serious</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Impossible">
+      <KeyValuePair Key="GameDifficulty">Impossible</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Endless">
+      <KeyValuePair Key="GameDifficulty">Endless</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldDifficulty" Type="Control">
+        <Key Name="Normal"/>
+        <Key Name="Hard"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="GameSpeed"                      Default="Normal"   Category="Game" SubCategory="GamePace"          GuiControlType="DropList">
+    <ItemDefinition Name="Fast">
+      <KeyValuePair Key="GameSpeed">Fast</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="GameSpeed">Normal</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Slow">
+      <KeyValuePair Key="GameSpeed">Slow</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Endless">
+      <KeyValuePair Key="GameSpeed">Endless</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="CustomFactions"                 Default="True"     Category="Game" SubCategory="GamePace"          GuiControlType="Toggle">
+    <ItemDefinition Name="False">
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="TimedTurn"                      Default="False"    Category="Game" SubCategory="GamePace"          GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="TimedEncounter">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="TimedEncounter">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EndTurnTimer"                   Default="0"        Category="Game" SubCategory="GamePace"          GuiControlType="DropList" EnableOn="TimedTurn">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="0">
+      <KeyValuePair Key="EndTurnTimer">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="30">
+      <KeyValuePair Key="EndTurnTimer">30</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="45">
+      <KeyValuePair Key="EndTurnTimer">45</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="60">
+      <KeyValuePair Key="EndTurnTimer">60</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="90">
+      <KeyValuePair Key="EndTurnTimer">90</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="120">
+      <KeyValuePair Key="EndTurnTimer">120</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="180">
+      <KeyValuePair Key="EndTurnTimer">180</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EndTurnTimerPerCity"            Default="0"        Category="Game" SubCategory="GamePace"          GuiControlType="DropList" EnableOn="TimedTurn">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="0">
+      <KeyValuePair Key="EndTurnTimerPerCity">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="15">
+      <KeyValuePair Key="EndTurnTimerPerCity">15</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="30">
+      <KeyValuePair Key="EndTurnTimerPerCity">30</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EndTurnTimerLastPlayer"         Default="0"        Category="Game" SubCategory="GamePace"          GuiControlType="DropList" EnableOn="TimedTurn">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="0">
+      <KeyValuePair Key="EndTurnTimerLastPlayer">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="30">
+      <KeyValuePair Key="EndTurnTimerLastPlayer">30</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="45">
+      <KeyValuePair Key="EndTurnTimerLastPlayer">45</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="60">
+      <KeyValuePair Key="EndTurnTimerLastPlayer">60</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="TimedEncounter"                 Default="False"    Category="Game" SubCategory="BattlePace"        GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="TimedEncounter">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="TimedEncounter">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EncounterNotificationTimer"     Default="0"        Category="Game" SubCategory="BattlePace"        GuiControlType="DropList" EnableOn="TimedEncounter">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="0">
+      <KeyValuePair Key="EncounterNotificationTimer">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="15">
+      <KeyValuePair Key="EncounterNotificationTimer">15</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="30">
+      <KeyValuePair Key="EncounterNotificationTimer">30</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="45">
+      <KeyValuePair Key="EncounterNotificationTimer">45</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EncounterDeploymentTimer"       Default="0"        Category="Game" SubCategory="BattlePace"        GuiControlType="DropList" EnableOn="TimedEncounter">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="0">
+      <KeyValuePair Key="EncounterDeploymentTimer">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="15">
+      <KeyValuePair Key="EncounterDeploymentTimer">15</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="30">
+      <KeyValuePair Key="EncounterDeploymentTimer">30</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="45">
+      <KeyValuePair Key="EncounterDeploymentTimer">45</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EncounterTargetingTimer"        Default="0"        Category="Game" SubCategory="BattlePace"        GuiControlType="DropList" EnableOn="TimedEncounter">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="0">
+      <KeyValuePair Key="EncounterTargetingTimer">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="15">
+      <KeyValuePair Key="EncounterTargetingTimer">15</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="30">
+      <KeyValuePair Key="EncounterTargetingTimer">30</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="45">
+      <KeyValuePair Key="EncounterTargetingTimer">45</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EncounterSequence"              Default="Normal"   Category="Game" SubCategory="BattlePace"        GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="EncounterSequence">Normal</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Advanced">
+      <KeyValuePair Key="EncounterSequence">Advanced</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EncounterSpeedScaleFactor"      Default="1"        Category="Game" SubCategory="BattlePace"        GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="1">
+      <KeyValuePair Key="EncounterSpeedScaleFactor">1</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="2">
+      <KeyValuePair Key="EncounterSpeedScaleFactor">2</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="3">
+      <KeyValuePair Key="EncounterSpeedScaleFactor">3</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="4">
+      <KeyValuePair Key="EncounterSpeedScaleFactor">4</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="5">
+      <KeyValuePair Key="EncounterSpeedScaleFactor">5</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="6">
+      <KeyValuePair Key="EncounterSpeedScaleFactor">6</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+
+
+  <!-- Victory Conditions -->
+  <GameOptionDefinition Name="GlobalScoreWhenLastTurnReached" Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="LastEmpireStanding"             Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="Expansion"                      Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="Economy"                        Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="Diplomacy"                      Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="Wonder"                         Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="MostTechnologiesDiscovered"     Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="Supremacy"                      Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="Quest"                          Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="Shared"                         Default="True"     Category="Game" SubCategory="VictoryConditions" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False"/>
+    <ItemDefinition Name="True"/>
+  </GameOptionDefinition>
+
+
+
+  <!-- Diagnostics -->
+  <GameOptionDefinition Name="DumpingMethod"                  Default="Binary"   Category="Game" SubCategory="Diagnostics"       GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Binary">
+      <KeyValuePair Key="DumpingMethod">Binary</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Text">
+      <KeyValuePair Key="DumpingMethod">Text</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="GlobalEvent"                    Default="True"     Category="Game" SubCategory="Diagnostics"       GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False">
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="EmpireInfoAccessibility"        Default="Default"  Category="Game" SubCategory="Diagnostics"       GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Default" />
+    <ItemDefinition Name="None" />
+    <ItemDefinition Name="Partial">
+      <OptionDefinitionConstraint OptionName="ReplicantsPack" Type="DownloadableContentConditional" />
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="AdvancedSeasons"                Default="True"     Category="Game" SubCategory="Diagnostics"       GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="AdvancedSeasons">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="AdvancedSeasons">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="SeasonDifficulty"               Default="Moderate" Category="Game" SubCategory="Diagnostics"       GuiControlType="DropList" EnableOn="AdvancedSeasons">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Light">
+      <KeyValuePair Key="SeasonDifficulty">Light</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Moderate">
+      <KeyValuePair Key="SeasonDifficulty">Moderate</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Harsh">
+      <KeyValuePair Key="SeasonDifficulty">Harsh</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Anarchic">
+      <KeyValuePair Key="SeasonDifficulty">Anarchic</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="PlayWithMadSeason"               Default="True" Category="Game" SubCategory="Diagnostics"       GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <OptionDefinitionConstraint OptionName="SummerFlamesPack" Type="DownloadableContentConditional" />
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="PlayWithMadSeason">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="PlayWithMadSeason">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="MadSeasonType"               Default="HighChanceShortDuration" Category="Game" SubCategory="Diagnostics"       GuiControlType="DropList" EnableOn="PlayWithMadSeason">
+    <Tags>Advanced</Tags>
+    <OptionDefinitionConstraint OptionName="SummerFlamesPack" Type="DownloadableContentConditional" />
+    <ItemDefinition Name="HighChanceShortDuration">
+      <KeyValuePair Key="MadSeasonType">HighChanceShortDuration</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="HighChanceLongDuration">
+      <KeyValuePair Key="MadSeasonType">HighChanceLongDuration</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="LowChanceShortDuration">
+      <KeyValuePair Key="MadSeasonType">LowChanceShortDuration</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="LowChanceLongDuration">
+      <KeyValuePair Key="MadSeasonType">LowChanceLongDuration</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="WeatherDifficulty"               Default="Normal" Category="Game" SubCategory="Diagnostics"       GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <OptionDefinitionConstraint OptionName="NavalPack" Type="DownloadableContentConditional" />
+    <ItemDefinition Name="Random">
+      <KeyValuePair Key="WeatherDifficulty">Random</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Easy">
+      <KeyValuePair Key="WeatherDifficulty">Easy</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="WeatherDifficulty">Normal</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Hard">
+      <KeyValuePair Key="WeatherDifficulty">Hard</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <GameOptionDefinition Name="FactionRandomizationMode"               Default="Decked" Category="Game" SubCategory="Diagnostics"       GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Decked">
+      <KeyValuePair Key="FactionRandomizationMode">Decked</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Weighted">
+      <KeyValuePair Key="FactionRandomizationMode">Weighted</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+
+  <!--GameOptionDefinition Name="SharedVictory"	Default="False"	Category="Game"	SubCategory="Diagnostics"	GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="SharedVictory">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="SharedVictory">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition-->
+
+</Datatable>

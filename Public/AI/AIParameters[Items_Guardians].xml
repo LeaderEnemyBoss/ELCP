@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--
+  Example item:
+  
+  <AIParameterDatatableElement Name="ItemIdentifier">
+    <AIParameter Name="AIEquipmentAttack"                  Value="0"/>
+    <AIParameter Name="AIEquipmentDefense"                 Value="0"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="0"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="0"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="0"/>
+
+    <AIParameter Name="AIUnitAttackPercent"           Value="0"/>
+    <AIParameter Name="AIUnitDefensePercent"          Value="0"/>
+    <AIParameter Name="AIUnitInitiativePercent"       Value="0"/>
+    <AIParameter Name="AIUnitDamagePercent"           Value="0"/>
+    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0"/>
+  </AIParameterDatatableElement>
+  -->
+
+  <!-- 
+  #########################################################
+  ############### GEMSTONES: ALL GUARDIANS ################
+  #########################################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemGemstoneAttackStrategic234">
+    <!-- "Crystal of Loyal Flame" (Shared Wisdom: increases ally morale) -->
+    <AIParameter Name="AIUnitAttackPercent"           Value="0.4"/>
+    <AIParameter Name="AIUnitDefensePercent"          Value="0.4"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemGemstoneDefenseStrategic123">
+    <!-- "Stone of the Core" (Intimidation Aura: reduces enemy initiative) -->
+    <AIParameter Name="AIEquipmentInitiativePercent"  Value="0.75"/>
+    <AIParameter Name="AIUnitInitiativePercent"       Value="0.75"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemGemstoneHealthStrategic124">
+    <!-- "Jewel of Wild Rivers" (Death or Glory 2: increase morale when nearby enemies) -->
+    <AIParameter Name="AIUnitAttackPercent"           Value="0.6"/>
+    <AIParameter Name="AIUnitDefensePercent"          Value="0.6"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemGemstoneDamageStrategic134">
+    <!-- "Shard of the Lost" (Free Counter: extra attack) -->
+    <AIParameter Name="AIEquipmentDamagePercent"           Value="0.75"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ######################################################
+  ############### EARTH GUARDIAN 'GIOS' ################
+  ######################################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemColossusEarthIron">
+    <AIParameter Name="AIEquipmentDefense"                 Value="50"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="180"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusEarthStrategic235">
+    <AIParameter Name="AIEquipmentDefense"                 Value="125"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="31"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="180"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusEarthStrategic146">
+    <AIParameter Name="AIEquipmentAttack"                  Value="60"/>
+    <AIParameter Name="AIEquipmentDefense"                 Value="50"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="450"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ######################################################
+  ############### FIRE GUARDIAN 'FOTIOS' ###############
+  ######################################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemColossusFireIron">
+    <AIParameter Name="AIEquipmentInitiative"              Value="42"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="50"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusFireStrategic246">
+    <AIParameter Name="AIEquipmentInitiative"              Value="62"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="50"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="260"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusFireStrategic135">
+    <AIParameter Name="AIEquipmentDefense"                 Value="70"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="42"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ######################################################
+  ############### WATER GUARDIAN 'NEROS' ###############
+  ######################################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemColossusWaterIron">
+    <AIParameter Name="AIEquipmentDamage"                  Value="50"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="180"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusWaterStrategic236">
+    <AIParameter Name="AIEquipmentAttack"                  Value="60"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="75"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="180"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusWaterStrategic145">
+    <AIParameter Name="AIEquipmentDefense"                 Value="70"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="50"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="270"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ######################################################
+  ############### AIR GUARDIAN 'ATMOS' ###############
+  ######################################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemColossusAirIron">
+    <AIParameter Name="AIEquipmentAttack"                  Value="40"/>
+    <AIParameter Name="AIEquipmentDefense"                 Value="50"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusAirStrategic245">
+    <AIParameter Name="AIEquipmentAttack"                  Value="40"/>
+    <AIParameter Name="AIEquipmentDefense"                 Value="125"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="31"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusAirStrategic136">
+    <AIParameter Name="AIEquipmentAttack"                  Value="100"/>
+    <AIParameter Name="AIEquipmentDefense"                 Value="50"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="30"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="0"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ######################################################
+  ############### DUST GUARDIAN 'SKOROS' ###############
+  ######################################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemColossusDustIron">
+    <AIParameter Name="AIEquipmentAttack"                  Value="40"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="42"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusDustStrategic124">
+    <AIParameter Name="AIEquipmentAttack"                  Value="40"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="62"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="260"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemColossusDustStrategic123">
+    <AIParameter Name="AIEquipmentAttack"                  Value="100"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="42"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="30"/>
+  </AIParameterDatatableElement>
+
+</Datatable>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Economy and Population -->
+  <SimulationDescriptor Name="EmpirePlanEconomy0"                   Type="EmpirePlanEconomy">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanEconomy1"                   Type="EmpirePlanEconomy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"   Operation="Addition" Value="3"    Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanEconomyLevel"  Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanEconomy2"                   Type="EmpirePlanEconomy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction" Operation="Addition" Value="0.25" Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanEconomyLevel"  Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanEconomy3"                   Type="EmpirePlanEconomy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteGain"          Operation="Percent"  Value="0.50" Path="../EmpireTypeMajor/ClassCity/ClassTradeRoute"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanEconomyLevel"  Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanEconomy4"                   Type="EmpirePlanEconomy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                Operation="Percent"  Value="0.25" Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanEconomyLevel"  Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- Empire and Expansion -->
+  <SimulationDescriptor Name="EmpirePlanForeignAffairs0"            Type="EmpirePlanForeignAffairs">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanForeignAffairs1"            Type="EmpirePlanForeignAffairs">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                     Operation="Addition" Value="2"    Path="../EmpireTypeMajor/ClassArmy/ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanForeignAffairsLevel"   Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanForeignAffairs2"            Type="EmpirePlanForeignAffairs">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                    Operation="Addition" Value="25"   Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanForeignAffairsLevel"   Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanForeignAffairs3"            Type="EmpirePlanForeignAffairs">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"                 Operation="Addition" Value="3"    Path="../EmpireTypeMajor/Garrison/ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"                Operation="Addition" Value="3"    Path="../EmpireTypeMajor/Garrison/ClassUnit" TooltipHidden="true" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanForeignAffairsLevel"   Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanForeignAffairs4"            Type="EmpirePlanForeignAffairs">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                      Operation="Percent"  Value="0.50" Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanForeignAffairsLevel"   Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanForeignAffairs4BrokenLords" Type="EmpirePlanForeignAffairs">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PopulationBuyoutGrowthReduction" Operation="Percent"  Value="0.50" Path="../EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanForeignAffairsLevel"   Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- Military -->
+  <SimulationDescriptor Name="EmpirePlanMilitary0"                  Type="EmpirePlanMilitary">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="EmpirePlanMilitary1"                  Type="EmpirePlanMilitary">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction" Operation="Addition" Value="0.20"  Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanMilitaryLevel"     Operation="Addition" Value="1"     Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanMilitary2"                  Type="EmpirePlanMilitary">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"             Operation="Percent"  Value="0.30"  Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"             Operation="Percent"  Value="0.30"  Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanMilitaryLevel"     Operation="Addition" Value="1"     Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanMilitary3"                  Type="EmpirePlanMilitary">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"              Operation="Percent"  Value="-0.50" Path="./EmpireTypeMajor/Garrison"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanMilitaryLevel"     Operation="Addition" Value="1"     Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanMilitary4"                  Type="EmpirePlanMilitary">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"               Operation="Percent"  Value="0.50"  Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"               Operation="Percent"  Value="0.50"  Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanMilitaryLevel"     Operation="Addition" Value="1"     Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- Science and Industry -->
+  <SimulationDescriptor Name="EmpirePlanKnowledge0"                 Type="EmpirePlanKnowledge">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="EmpirePlanKnowledge1"                 Type="EmpirePlanKnowledge">
+	<SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                           Operation="Percent"  Value="0.20" Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanKnowledgeLevel"              Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="EmpirePlanKnowledge1Replicants"       Type="EmpirePlanKnowledge">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TechnologyCostReductionFromEmpirePlan" Operation="Percent"  Value="0.2"  Path="../ClassEmpire/ClassResearch"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanKnowledgeLevel"              Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanKnowledge2"                 Type="EmpirePlanKnowledge">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"       Operation="Addition" Value="0.33" Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanKnowledgeLevel"              Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanKnowledge3"                 Type="EmpirePlanKnowledge">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                       Operation="Addition" Value="2"    Path="../EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanKnowledgeLevel"              Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpirePlanKnowledge3Replicants"       Type="EmpirePlanKnowledge">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era1ReductionCost"                     Operation="Percent"  Value="0.3"  Path="../ClassEmpire/ClassResearch,TechnologyEra2" TooltipHidden="false"/>
+      <SimulationModifierDescriptor TargetProperty="Era2ReductionCost"                     Operation="Percent"  Value="0.3"  Path="../ClassEmpire/ClassResearch,TechnologyEra3" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Era3ReductionCost"                     Operation="Percent"  Value="0.3"  Path="../ClassEmpire/ClassResearch,TechnologyEra4" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Era4ReductionCost"                     Operation="Percent"  Value="0.3"  Path="../ClassEmpire/ClassResearch,TechnologyEra5" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Era5ReductionCost"                     Operation="Percent"  Value="0.3"  Path="../ClassEmpire/ClassResearch,TechnologyEra6" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanKnowledgeLevel"              Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="EmpirePlanKnowledge4"                 Type="EmpirePlanKnowledge">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"                      Operation="Addition" Value="2"    Path="../EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanKnowledgeLevel"              Operation="Addition" Value="1"    Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

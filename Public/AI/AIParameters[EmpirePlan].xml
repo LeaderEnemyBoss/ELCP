@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- You must duplicate the AIParameters into the higher levels plans from the same branch -->
+  <!-- Each plan heuristic is divided by its cost. This is why heuristics must strictly return value into an interval depending on the plan's level -->
+  
+  <!-- Economy -->  
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionEconomy1">
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation1"  Value="200 * ($SumProperty(ClassEmpire/ClassCity:DustPopulation) / ($SumProperty(ClassEmpire/ClassCity:Population) max 1))"/> <!-- [0 ; 200] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionEconomy2"> 
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation1"  Value="200 * ($SumProperty(ClassEmpire/ClassCity:DustPopulation) / $SumProperty(ClassEmpire/ClassCity:Population))"/> <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation2"  Value="400 min $SumProperty(ClassEmpire/ClassCity:CityMoney)"/> <!-- [0 ; 400] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionEconomy3">
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation1"  Value="200 * ($SumProperty(ClassEmpire/ClassCity:DustPopulation) / $SumProperty(ClassEmpire/ClassCity:Population))"/> <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation2"  Value="400 min $SumProperty(ClassEmpire/ClassCity:CityMoney)"/> <!-- [0 ; 400] -->
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation3"  Value="900 min $SumProperty(ClassEmpire/ClassCity:LastOverrallTradeRoutesCityDustIncome)"/> <!-- [0 ; 900] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionEconomy4">
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation1"  Value="200 * ($SumProperty(ClassEmpire/ClassCity:DustPopulation) / $SumProperty(ClassEmpire/ClassCity:Population))"/> <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation2"  Value="400 min $SumProperty(ClassEmpire/ClassCity:CityMoney)"/> <!-- [0 ; 400] -->
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation3"  Value="900 min $SumProperty(ClassEmpire/ClassCity:LastOverrallTradeRoutesCityDustIncome)"/> <!-- [0 ; 900] -->
+    <AIParameter  Name="AIEmpirePlanEconomyAndPopulation4"  Value="2500 min $SumProperty(ClassEmpire/ClassCity:CityMoney)"/>  <!-- [0 ; 2500] -->
+  </AIParameterDatatableElement>
+
+  <!-- Exploration -->  
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionForeignAffairs1">
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion1" Value="200 min ($Count(ClassEmpire/ClassArmy) * 50)"/> <!-- [0 ; 200] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionForeignAffairs2">
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion1" Value="200 min ($Count(ClassEmpire/ClassArmy) * 50)"/> <!-- [0 ; 200] -->
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion2" Value="400 * (1 - ($Property(ClassEmpire:ApprovalAverage) / 100))"/> <!-- [0 ; 400] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionForeignAffairs3">
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion1" Value="200 min ($Count(ClassEmpire/ClassArmy) * 50)"/> <!-- [0 ; 200] -->
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion2" Value="400 * (1 - ($Property(ClassEmpire:ApprovalAverage) / 100))"/> <!-- [0 ; 400] -->
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion3" Value="900 min ($Count(ClassEmpire/ClassArmy) * 200)"/> <!-- [0 ; 900] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionForeignAffairs4">
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion1" Value="200 min ($Count(ClassEmpire/ClassArmy) * 50)"/> <!-- [0 ; 200] -->
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion2" Value="400 * (1 - ($Property(ClassEmpire:ApprovalAverage) / 100))"/> <!-- [0 ; 400] -->
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion3" Value="900 min ($Count(ClassEmpire/ClassArmy) * 200)"/> <!-- [0 ; 900] -->
+    <AIParameter Name="AIEmpirePlanEmpireAndExpansion4" Value="2500 min (($SumProperty(ClassEmpire/ClassCity:CityFood) * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)) * 5)"/>  <!-- [0 ; 2500] -->
+  </AIParameterDatatableElement>
+  
+  <!-- Military -->
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionMilitary1">
+    <AIParameter  Name="AIEmpirePlanMilitary1"  Value="200 - (($Count(ClassEmpire/ClassArmy/ClassUnit) min 4) * 50)"/> <!-- [0 ; 200] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionMilitary2">
+    <AIParameter  Name="AIEmpirePlanMilitary1"  Value="200 - (($Count(ClassEmpire/ClassArmy/ClassUnit) min 4) * 50)"/> <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanMilitary2"  Value="400 min ($Count(ClassEmpire/ClassArmy/ClassUnit) * 50)"/> <!-- [0 ; 400] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionMilitary3">
+    <AIParameter  Name="AIEmpirePlanMilitary1"  Value="200 - (($Count(ClassEmpire/ClassArmy/ClassUnit) min 4) * 50)"/> <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanMilitary2"  Value="400 min ($Count(ClassEmpire/ClassArmy/ClassUnit) * 50)"/> <!-- [0 ; 400] -->
+    <AIParameter  Name="AIEmpirePlanMilitary3"  Value="900 min ($SumProperty(ClassEmpire/Garrison/ClassUnit:MilitaryUpkeep) * 10)"/> <!-- [0 ; 900] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionMilitary4">
+    <AIParameter  Name="AIEmpirePlanMilitary1"  Value="200 - (($Count(ClassEmpire/ClassArmy/ClassUnit) min 4) * 50)"/> <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanMilitary2"  Value="400 min ($Count(ClassEmpire/ClassArmy/ClassUnit) * 50)"/> <!-- [0 ; 400] -->
+    <AIParameter  Name="AIEmpirePlanMilitary3"  Value="900 min ($SumProperty(ClassEmpire/Garrison/ClassUnit:MilitaryUpkeep) * 10)"/> <!-- [0 ; 900] -->
+    <AIParameter  Name="AIEmpirePlanMilitary4"  Value="2500 min ($Count(ClassEmpire/ClassArmy/ClassUnit) * 100)"/>  <!-- [0 ; 2500] -->
+  </AIParameterDatatableElement>
+
+  <!-- Knowledge -->
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionKnowledge1">
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry1"  Value="200 min $SumProperty(ClassEmpire/ClassCity:CityResearch)"/>  <!-- [0 ; 200] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionKnowledge2">
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry1"  Value="200 min $SumProperty(ClassEmpire/ClassCity:CityResearch)"/>  <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry2"  Value="400 - (($SumProperty(ClassEmpire/ClassCity:CityIndustry) / ($Count(ClassEmpire/ClassCity) max 1)) min 400)"/> <!-- [0 ; 400] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionKnowledge3">
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry1"  Value="200 min $SumProperty(ClassEmpire/ClassCity:CityResearch)"/>  <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry2"  Value="400 - (($SumProperty(ClassEmpire/ClassCity:CityIndustry) / ($Count(ClassEmpire/ClassCity) max 1)) min 400)"/> <!-- [0 ; 400] -->
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry3"  Value="900 min ($Count(ClassEmpire/ClassCity/ClassDistrict) * 100)"/> <!-- [0 ; 900] -->
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="EmpirePlanDefinitionKnowledge4">
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry1"  Value="200 min $SumProperty(ClassEmpire/ClassCity:CityResearch)"/>  <!-- [0 ; 200] -->
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry2"  Value="400 - (($SumProperty(ClassEmpire/ClassCity:CityIndustry) / ($Count(ClassEmpire/ClassCity) max 1)) min 400)"/> <!-- [0 ; 400] -->
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry3"  Value="900 min ($Count(ClassEmpire/ClassCity/ClassDistrict) * 100)"/> <!-- [0 ; 900] -->
+    <AIParameter  Name="AIEmpirePlanScienceAndIndustry4"  Value="2500 min ($Count(ClassEmpire/ClassCity/ClassDistrict) * 100)"/> <!-- [0 ; 2500] -->
+  </AIParameterDatatableElement>
+  
+</Datatable>

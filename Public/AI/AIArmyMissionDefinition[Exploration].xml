@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<!-- 100% opportunist -->
+	<AIArmyMissionDefinition Name="ExploreAt">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+		</Parameters>
+
+		<Controller_Sequence>
+
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+			<Controller_Selector>
+
+				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+
+				<!--IF we could collect orbs THEN Change path -->
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+				</Include>
+
+				<Include SubTreeName="ExploreNearbyRuin"/>
+
+				<!--IF City need vision for spy THEN move to get a look at the city -->
+				<Controller_Sequence Debug="Opportunity_CityToSpy">
+					<Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
+					<Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
+
+					<Controller_Selector>
+						<Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
+							<Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
+							<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
+							<Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>
+
+				<!--IF we could Pillage something THEN try to pillage it -->
+				<Include SubTreeName="OpportunityPillageOrFlee">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+				</Include>
+
+				<!--IF nothing else to do THEN Move to Destination-->
+				<Controller_Sequence Debug="Exploration_TryToFollowTheBorder">
+					<!-- Ask for a destination. -->
+					<Controller_Selector>
+						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_ChangeTarget">
+							<Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
+							<Decorator_DestinationReached DestinationVarName="$BorderDestination" TypeOfCheck="Regular"/>
+							<Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
+							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_GoToPreviousTarget">
+							<Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
+							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_FirstTime">
+							<Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
+							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						</Controller_Sequence>
+
+					</Controller_Selector>
+
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+					<Decorator_DestinationReached DestinationVarName="$BorderDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+
+			</Controller_Selector>
+
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
+
+	<!-- 100% opportunist-->
+	<AIArmyMissionDefinition Name="ScoutRegion">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
+		</Parameters>
+
+		<Controller_Sequence>
+
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+			<Controller_Selector>
+
+				<Include SubTreeName="ExploreNearbyRuin"/>
+
+				<!--IF we could collect orbs THEN Change path -->
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+				</Include>
+
+				<!--IF we could Pillage something THEN try to pillage it -->
+				<Include SubTreeName="OpportunityPillage">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+				</Include>
+
+				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+
+				<Controller_Sequence Debug="ScoutRegion_AlreadyAtDestination">
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>          
+
+				<!--Move to Destination-->
+				<Controller_Sequence Debug="ScoutRegion_Move">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+
+			</Controller_Selector>
+
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
+</Datatable>

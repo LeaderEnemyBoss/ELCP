@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!-- ###########################  Disinterested / Greedy  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityDisinterested">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <AllianceTermAgent>
+                        <GiftMultiplier>0.5</GiftMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityGreedy">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <AllianceTermAgent>
+                        <GiftMultiplier>2</GiftMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Hospitable / Inhospitable  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityHospitable">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <LivingspaceTenseMultiplier>0.5</LivingspaceTenseMultiplier>
+                        <CommonFrontierMultiplier>0.5</CommonFrontierMultiplier>
+                        <AggressiveColonizationMultiplier>0.5</AggressiveColonizationMultiplier>
+                        <UnitsInTerritoryMultiplier>0.5</UnitsInTerritoryMultiplier>
+                    </WarTermAgent>
+
+                    <ColdWarTermAgent>
+                        <LivingspaceTenseMultiplier>0.5</LivingspaceTenseMultiplier>
+                        <UnitsInTerritoryMultiplier>0.5</UnitsInTerritoryMultiplier>
+                    </ColdWarTermAgent>
+
+                    <PeaceTermAgent>
+                        <CommonFrontierMultiplier>2</CommonFrontierMultiplier>
+                    </PeaceTermAgent>
+
+                    <AllianceTermAgent>
+                        <CommonFrontierMultiplier>2</CommonFrontierMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+            
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityInhospitable">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <LivingspaceTenseMultiplier>2</LivingspaceTenseMultiplier>
+                        <CommonFrontierMultiplier>2</CommonFrontierMultiplier>
+                        <AggressiveColonizationMultiplier>2</AggressiveColonizationMultiplier>
+                        <UnitsInTerritoryMultiplier>2</UnitsInTerritoryMultiplier>
+                    </WarTermAgent>
+
+                    <ColdWarTermAgent>
+                        <LivingspaceTenseMultiplier>2</LivingspaceTenseMultiplier>
+                        <UnitsInTerritoryMultiplier>2</UnitsInTerritoryMultiplier>
+                    </ColdWarTermAgent>
+
+                    <PeaceTermAgent>
+                        <CommonFrontierMultiplier>0.5</CommonFrontierMultiplier>
+                    </PeaceTermAgent>
+
+                    <AllianceTermAgent>
+                        <CommonFrontierMultiplier>0.5</CommonFrontierMultiplier>
+                    </AllianceTermAgent>
+
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Arrogant / Humble  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityArrogant">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <MilitaryPowerMultiplier>2</MilitaryPowerMultiplier>
+                    </WarTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityHumble">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <MilitaryPowerMultiplier>0.5</MilitaryPowerMultiplier>
+                    </WarTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Brave / Coward  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityBrave">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <TruceTermAgent>
+                        <WarFatigueMultiplier>0.5</WarFatigueMultiplier>
+                    </TruceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityCoward">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <TruceTermAgent>
+                        <WarFatigueMultiplier>2</WarFatigueMultiplier>
+                    </TruceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Firm / Uncertain  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityFirm">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <UnitsInTerritoryMultiplier>0.5</UnitsInTerritoryMultiplier>
+                    </WarTermAgent>
+                    <ColdWarTermAgent>
+                        <UnitsInTerritoryMultiplier>0.5</UnitsInTerritoryMultiplier>
+                    </ColdWarTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityUncertain">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <UnitsInTerritoryMultiplier>2</UnitsInTerritoryMultiplier>
+                    </WarTermAgent>
+                    <ColdWarTermAgent>
+                        <UnitsInTerritoryMultiplier>2</UnitsInTerritoryMultiplier>
+                    </ColdWarTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Expansionist / Reserved  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityExpansionist">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <RegionCountMultiplier>2</RegionCountMultiplier>
+                    </WarTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityReserved">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <RegionCountMultiplier>0.5</RegionCountMultiplier>
+                    </WarTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Militarist / Pacifist  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityMilitarist">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <WarTermAgent>
+                        <Multiplier>2</Multiplier>
+                    </WarTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityPacifist">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <Multiplier>2</Multiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <Multiplier>2</Multiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Sociable / Asocial  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalitySociable">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <CommonFriendAllyMultiplier>2</CommonFriendAllyMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <CommonFriendAllyMultiplier>2</CommonFriendAllyMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityAsocial">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <CommonFriendAllyMultiplier>2</CommonFriendAllyMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <CommonFriendAllyMultiplier>2</CommonFriendAllyMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Opportunistic / Standing still  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityOpportunistic">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <CommonEnemyMultiplier>2</CommonEnemyMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <CommonEnemyMultiplier>2</CommonEnemyMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityStandingStill">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <CommonEnemyMultiplier>0.5</CommonEnemyMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <CommonEnemyMultiplier>0.5</CommonEnemyMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Bitter / Indulgent  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityBitter">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <LastWarMultiplier>2</LastWarMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <LastWarMultiplier>2</LastWarMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityIndulgent">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <LastWarMultiplier>0.5</LastWarMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <LastWarMultiplier>0.5</LastWarMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Suspicious / Naïve  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalitySuspicious">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <PeacefulMultiplier>0.5</PeacefulMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <PeacefulMultiplier>0.5</PeacefulMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityNaive">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <PeacefulMultiplier>2</PeacefulMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <PeacefulMultiplier>2</PeacefulMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <!-- ###########################  Negotiator / Bad talker  ########################### -->
+
+    <AIPersonalityDefinition Name="PersonalityNegotiator">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <PositiveNegativeContractMultiplier>2</PositiveNegativeContractMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <PositiveNegativeContractMultiplier>2</PositiveNegativeContractMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityBadTalker">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <AgentDefinition>
+                    <PeaceTermAgent>
+                        <PositiveNegativeContractMultiplier>0.5</PositiveNegativeContractMultiplier>
+                    </PeaceTermAgent>
+                    <AllianceTermAgent>
+                        <PositiveNegativeContractMultiplier>0.5</PositiveNegativeContractMultiplier>
+                    </AllianceTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIStrategicPlanDefinition Database -->
+            <AIStrategicPlanDefinition>
+            </AIStrategicPlanDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+</Datatable>

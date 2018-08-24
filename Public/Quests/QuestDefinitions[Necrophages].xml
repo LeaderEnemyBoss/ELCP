@@ -1,0 +1,1478 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://Necrophagesw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://Necrophagesw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ============ NECRO-CHAPTER 1 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter1" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter1,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityNecrophages</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter1Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter1Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter1Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter1-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+        
+        <Controller_Loop LoopCount="3">
+          <Decorator_KillArmy CountAllDeadEnemyArmiesForStepProgression="true" Output_WinnerVarName="$EmpireArmy" LinkedStepProgression="MainQuestNecrophages-Chapter1-Step1" TargetOption="Any" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$EmpireArmy">
+                <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassArmy/ClassUnit,!AffinityNecrophages</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_KillArmy>
+        </Controller_Loop>
+        
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestNecrophages-Chapter1-Step1"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter1-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter1-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistFallbackMainQuestRewardsEra1" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  
+   <!-- ======================================
+     ========== NECRO-CHAPTER 1Alt ==========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter1Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter1,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityNecrophages</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter1" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter1" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter1" QuestState="Unstarted"/>
+    </Prerequisites>
+    <Vars>
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+      <Var VarName="$EmpireCityRegionLocation">
+        <From Source="$EmpireCityRegion.$Position"/>
+      </Var>
+      <!--Get the list of all the regions excluding the first city region-->
+      <Var VarName="$AllRegionsButInitialCityRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByDistance PositionToCompareVarName="$EmpireCityRegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$NearestRegionsFromInitialCity">
+        <From Source="$AllRegionsButInitialCityRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityRegionLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+      
+      <Var VarName="$FirstNearestRegionFromInitialCity">
+        <First>
+          <From Source="$NearestRegionsFromInitialCity"/>
+        </First>
+      </Var>
+      
+      <!--Get the village to destroy-->
+      <Var VarName="$VillagesToDestroy">
+        <From Source="$FirstNearestRegionFromInitialCity.$Villages">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      
+      <Var VarName="$VillageToDestroy">
+        <Any>
+          <From Source="$VillagesToDestroy"/>
+        </Any>
+      </Var>
+
+      <!--Get the POI of the village to destroy for marker -->
+      <Var VarName="$VillageToDestroyPointOfInterest">
+        <From Source="$VillageToDestroy.$PointOfInterest"/>
+      </Var>
+      <!--Get the position of the village to destroy-->
+      <Var VarName="$VillageToDestroyLocation">
+        <From Source="$VillageToDestroyPointOfInterest.$Position" />
+      </Var>
+      <Var VarName="$VillageToDestroyRegion">
+        <From Source="$VillageToDestroyLocation.$Region" />
+      </Var>
+      <Var VarName="$VillageToDestroyMinorEmpire">
+        <From Source="$VillageToDestroyLocation.$Region.$MinorEmpire"/>
+      </Var>
+      <Var VarName="$InitialTribeName">
+        <From Source="$VillageToDestroyMinorEmpire.$FactionName"/>
+      </Var>
+
+      <!--Set the region positions to spawn the ArmyID1-->
+      <Var VarName="$VillageToDestroyRegionQuestPOI">
+        <Any>
+          <From Source="$VillageToDestroyRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$LocationToSpawnQuestPOIArmyID1">
+        <From Source="$VillageToDestroyRegionQuestPOI.$Position"/>
+      </Var>
+
+      <!--Set the positions to spawn ArmyID2-->
+      <Var VarName="$ArmyID2Region">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$NearestRegionsFromInitialCity"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID2">
+        <From Source="$VillageToDestroyRegion.$Positions"/>
+      </Var>
+      
+      
+      <!--To display through the GUI the Minor Faction Name and the Biome of the villageto destroy-->
+      <LocalizationVar LocalizationKey="$TargetMinorFaction" Source="$VillageToDestroyMinorEmpire"/>
+      <LocalizationVar LocalizationKey="$VillageToDestroyRegionName" Source="$VillageToDestroyRegion"/>
+      <LocalizationVar LocalizationKey="$CityName" Source="$EmpireCityRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter1Alt-Step1" State="InProgress" />
+      <Decorator_VillagesPacified VillagesVarName="$VillagesToDestroy" TargetOption="All" Initiator="AllEmpires"/>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter1Alt-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter1Alt-Step2" State="InProgress" />
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID2" ArmyDroplist="DroplistArmyDefinitionMainQuestNecrophagesChapter1Alt" ArmyDroplistSuffixVarName="$InitialTribeName" CanMoveOnSpawn="false" Output_EnemyArmyGUIDVarName="$ArmyID2" />
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter1Alt-Step2" State="Completed" />
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter1Alt-Step1">
+        <Reward Droplist="DroplistFallbackMainQuestRewardsEra1" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter1Alt-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+ 
+  <!-- ======================================
+     ============ NECRO-CHAPTER 2 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter2</Tags>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityLocation">
+        <From Source="$EmpireCity.$Region.$Position"/>
+      </Var>
+
+      <!--Set the Ruins to search-->
+      <Var VarName="$EmpireRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$EmpireRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the Strategic Resource to gather-->
+      <Var VarName="$StrategicPointOfInterest">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Inverted="false" Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeStrategic3</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeStrategic4</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeStrategic5</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeStrategic6</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$NameOfStrategicToGather">
+        <Any>
+          <From Source="$StrategicPointOfInterest.$ResourceName"/>
+        </Any>
+      </Var>
+
+      <!--Set the Luxury Resource to gather-->
+      <Var VarName="$AllRegionsButInitialCityRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByDistance PositionToCompareVarName="$EmpireCityLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$RegionsFromEmpireCity">
+        <From Source="$AllRegionsButInitialCityRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$LuxuryPointOfInterest">
+        <First>
+          <From Source="$RegionsFromEmpireCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Inverted="false" Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury6</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury7</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury8</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury9</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury11</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury12</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury13</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury14</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury15</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      <Var VarName="$NameOfLuxuryToGather">
+        <Any>
+          <From Source="$LuxuryPointOfInterest.$ResourceName"/>
+        </Any>
+      </Var>
+
+      <!--Set Dust as resource to gather-->
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestNecrophagesChapter2Step2ResourceName"/>
+
+      <!--Set the different amount of resource to gather and remove from player's empire-->
+      <Var VarName="$LuxuryResourceAmount" Value="20"/>
+      <Var VarName="$LuxuryResourceTransferAmount" Value="-20"/>
+      <Var VarName="$StrategicResourceAmount" Value="10"/>
+      <Var VarName="$StrategicResourceTransferAmount" Value="-10"/>
+      <Var VarName="$DustResourceAmount" Value="150"/>
+      <Var VarName="$DustTransferAmount" Value="-150"/>
+
+      <!--For localization purposes-->
+      <LocalizationVar LocalizationKey="$LuxuryName" Source="$LuxuryPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$LuxuryAmount" Source="$LuxuryResourceAmount"/>
+      <LocalizationVar LocalizationKey="$StrategicName" Source="$StrategicPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$StrategicAmount" Source="$StrategicResourceAmount"/>
+      <LocalizationVar LocalizationKey="$DustAmount" Source="$DustResourceAmount"/>
+      <LocalizationVar LocalizationKey="$QuestPOIName" Source="$PointOfInterestToInspect"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter2-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfLuxuryToGather" WantedAmountVarName="$LuxuryResourceAmount"/>
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+      </Decorator_Inspect>
+      <Action_TransferResource ResourceNameVarName="$NameOfLuxuryToGather" AmountVarName="$LuxuryResourceTransferAmount"/>
+      <Action_TransferResource ResourceNameVarName="$NameOfStrategicToGather" AmountVarName="$StrategicResourceTransferAmount"/>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter2-Step1" State="Completed" />
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter2-Step2" HideRewards="true" State="InProgress"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$DustResource" WantedAmountVarName="$DustResourceAmount"/>
+      </Decorator_Inspect>
+      <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="$DustTransferAmount"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter2-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter2-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter2-Step2">
+        <Reward Droplist="DroplistMainQuestNecrophagesChapter2Step2HeroReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ============ NECRO-CHAPTER 3 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter3" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter3,EventHeroCreated</Tags>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set the quest Necro Hero-->
+      <Var VarName="$NecroQuesthero">
+        <Any>
+          <From Source="$Empire.$Heroes">
+            <Where>
+              <PathPrerequisite>UnitProfileNecrophagesHero7</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the region of the POI to inspect-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityLocation">
+        <From Source="$EmpireCity.$Position"/>
+      </Var>
+      <Var VarName="$AllRegionsButMine">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$AllNearestRegionsFromEmpireCity">
+        <From Source="$AllRegionsButMine">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$NearestRegionsFromEmpireCity">
+        <Limit LimitMin="1" LimitMax="3">
+          <From Source="$AllNearestRegionsFromEmpireCity"/>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectRegion">
+        <First>
+          <From Source="$NearestRegionsFromEmpireCity"/>
+        </First>
+      </Var>
+
+      <!--Set the POI to inspect-->
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$PointOfInterestToInspectRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the POI position to inspect-->
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position"/>
+      </Var>
+
+      <Var VarName="$LocationsToSpawnArmyID">
+        <From Source="$PointOfInterestToInspectRegion.$Positions"/>
+      </Var>
+
+      <DropListVar VarName="$SkillToCheck1" DropList="DroplistMainQuestNecrophagesChapter3SkillToCheck1"/>
+      <DropListVar VarName="$SkillLevelToCheck1" DropList="DroplistMainQuestNecrophagesChapter3SkillLevelToCheck1"/>
+      <DropListVar VarName="$SkillToCheck2" DropList="DroplistMainQuestNecrophagesChapter3SkillToCheck2"/>
+      <DropListVar VarName="$SkillLevelToCheck2" DropList="DroplistMainQuestNecrophagesChapter3SkillLevelToCheck2"/>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$PointOfInterestToInspectRegion"/>
+      <LocalizationVar LocalizationKey="$QuestPOIName" Source="$PointOfInterestToInspect"/>
+      <LocalizationVar LocalizationKey="$SkillToCheck1Name" Source="$SkillToCheck1"/>
+      <LocalizationVar LocalizationKey="$SkillLevelToCheck1Number" Source="$SkillLevelToCheck1"/>
+      <LocalizationVar LocalizationKey="$SkillToCheck2Name" Source="$SkillToCheck2"/>
+      <LocalizationVar LocalizationKey="$SkillLevelToCheck2Number" Source="$SkillLevelToCheck2"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter3-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_UnitSkillUnlocked SkillNameVarName="$SkillToCheck1" SkillLevelVarName="$SkillLevelToCheck1" TargetUnitVarName="$NecroQuesthero"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_UnitSkillUnlocked SkillNameVarName="$SkillToCheck2" SkillLevelVarName="$SkillLevelToCheck2" TargetUnitVarName="$NecroQuesthero"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter3-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter3-Step2" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/UnitProfileNecrophagesHero7</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistArmyDefinitionMainQuestNecrophagesChapter4Step2" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1" Initiator="Empire"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="Roaming" TargetEmpireVarName="$InstigatorEmpire"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID" ArmyDroplist="DroplistArmyDefinitionMainQuestNecrophagesChapter3Step2" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID" Initiator="Empire"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" BehaviourName="Roaming" TargetEmpireVarName="$InstigatorEmpire"/>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter3-Step2" State="Completed"/>
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter3-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter3-Step2">
+        <Reward Droplist="DroplistMainQuestNecrophagesChapter3Step2TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter4</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ========================================
+     ============ NECRO-CHAPTER 4 =============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter4" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="-1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter4,OnFailChapter4</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite QuestDefinitionName="MainQuestNecrophages-Chapter3" QuestState="Completed"/>
+    </Prerequisites>
+   
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      
+      <Var VarName="$EmpireCity">
+        <First>
+          <From Source="$Empire.$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Descending" PropertyName="DistrictFood"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$QuestPOI">
+        <Any>
+          <From Source="$EmpireCityRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      
+      <Var VarName="$LocationToSpawnArmy">
+        <From Source="$QuestPOI.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$CityName" Source="$EmpireCityRegion"/>
+      <LocalizationVar LocalizationKey="$QuestPOIName" Source="$QuestPOI"/>
+      
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+        
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="MainQuestNecrophages-Chapter4-Step1" State="InProgress"/>
+          <Controller_Parallel CompletionPolicy="All">
+
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$EmpireCity">
+                    <PathPrerequisite Flags="Prerequisite">ClassCity/UnitProfileNecrophagesHero7</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_ConstructionEnded ConstructionName="CityImprovementNecrophages7" TargetCityVarName="$EmpireCity" Initiator="Empire"/>
+            </Controller_Sequence>
+
+          </Controller_Parallel>
+          <Action_UpdateStep StepName="MainQuestNecrophages-Chapter4-Step1" State="Completed" />
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="MainQuestNecrophages-Chapter4-Step2" HideRewards="true" State="InProgress"/>
+          <Controller_Sequence ResetPolicy="onFail">
+            <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+            <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+            <Controller_Parallel CompletionPolicy="All">
+          
+              <Controller_Sequence>
+                <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire">
+                  <ConditionCheck_Prerequisite IsFailureCondition="true">
+                    <Prerequisites Target="$EmpireCity">
+                      <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassCity/UnitRankStandard) ge 6</InterpreterPrerequisite>
+                    </Prerequisites>
+                  </ConditionCheck_Prerequisite>
+                </Decorator_TimerEnded>
+              </Controller_Sequence>
+
+              <Controller_Sequence>
+                <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire">
+                  <ConditionCheck_RegionContainsEnemy Inverted="true" IsFailureCondition="true" RegionVarName="$EmpireCityRegion"/>
+                </Decorator_TimerEnded>
+              </Controller_Sequence>
+          
+            </Controller_Parallel>
+          </Controller_Sequence>
+          <Action_UpdateStep StepName="MainQuestNecrophages-Chapter4-Step2" State="Completed" />
+
+          <!--Step 3-->
+          <Action_UpdateStep StepName="MainQuestNecrophages-Chapter4-Step3" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$QuestPOI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI"/>
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="MainQuestNecrophages-Chapter4-Step3" State="Completed" />
+          <Action_SpawnArmy SpawnLocationVarName="$LocationToSpawnArmy" ArmyDroplist="DroplistArmyDefinitionNecrophagesMainQuest4" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID" EmpireArmyOwnerVarName="$MyEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!-- Fail check -->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$EmpireCity">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+      
+      </Controller_Parallel>
+      
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter4-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter4-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter4-Step3">
+        <Reward LocalizationKey="%MainQuestNecrophages-Chapter4-Step3Reward"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter5</Tags>
+      </OnQuestCompleted>
+      <OnQuestFailed>
+        <Tags>OnFailChapter4</Tags>
+      </OnQuestFailed>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  
+  <!-- ======================================
+     =========== NECRO-CHAPTER 5 ============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter5" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter5</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter5-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="All">
+        
+        <Controller_Sequence>
+          <Controller_Parallel CompletionPolicy="Any">
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/Garrison/UnitTypeVaultersHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/UnitTypeVaultersHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+          </Controller_Parallel>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Controller_Parallel CompletionPolicy="Any">
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/Garrison/UnitTypeMadFairiesHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/UnitTypeMadFairiesHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+          </Controller_Parallel>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+      
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter5-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter5-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="All">
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="2">
+            <Decorator_KillArmy LinkedStepProgression="MainQuestNecrophages-Chapter5-Step2" CountAllDeadEnemyArmiesForStepProgression="false" Output_WinnerVarName="$EmpireArmy" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$EmpireArmy">
+                  <PathPrerequisite Inverted="false" Flags="Prerequisite">ClassArmy/UnitTypeVaultersHero</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_KillArmy>
+          </Controller_Loop>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="2">
+            <Decorator_KillArmy LinkedStepProgression="MainQuestNecrophages-Chapter5-Step2" CountAllDeadEnemyArmiesForStepProgression="false" Output_WinnerVarName="$EmpireArmy" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$EmpireArmy">
+                  <PathPrerequisite Inverted="false" Flags="Prerequisite">ClassArmy/UnitTypeMadFairiesHero</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_KillArmy>
+          </Controller_Loop>
+        </Controller_Sequence>
+      </Controller_Parallel>
+
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter5-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter5-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter5-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="4"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ========== NECRO-CHAPTER 5Alt ==========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter5Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter5</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter5Alt-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="All">
+
+        <Controller_Sequence>
+          <Controller_Parallel CompletionPolicy="Any">
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/Garrison/UnitTypeBrokenLordsHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/UnitTypeBrokenLordsHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+          </Controller_Parallel>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Controller_Parallel CompletionPolicy="Any">
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/Garrison/UnitTypeRageWizardsHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/UnitTypeRageWizardsHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+          </Controller_Parallel>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter5Alt-Step1" State="Completed"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter5Alt-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+        <Controller_Parallel CompletionPolicy="All">
+          <Controller_Sequence>
+            <Controller_Loop LoopCount="2">
+              <Decorator_KillArmy LinkedStepProgression="MainQuestNecrophages-Chapter5Alt-Step2" CountAllDeadEnemyArmiesForStepProgression="false" Output_WinnerVarName="$EmpireArmy" Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$EmpireArmy">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">ClassArmy/UnitTypeBrokenLordsHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_KillArmy>
+            </Controller_Loop>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Controller_Loop LoopCount="2">
+              <Decorator_KillArmy LinkedStepProgression="MainQuestNecrophages-Chapter5Alt-Step2" CountAllDeadEnemyArmiesForStepProgression="false" Output_WinnerVarName="$EmpireArmy" Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$EmpireArmy">
+                    <PathPrerequisite Inverted="false" Flags="Prerequisite">ClassArmy/UnitTypeRageWizardsHero</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_KillArmy>
+            </Controller_Loop>
+          </Controller_Sequence>
+        </Controller_Parallel>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestNecrophages-Chapter5Alt-Step2"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+      </Controller_Parallel>
+
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter5Alt-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter5Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter5Alt-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="4"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  <!-- ======================================
+     ============ NECRO-CHAPTER 6 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter6" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter6</Tags>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter6-Step1" State="InProgress"/>
+
+      <Controller_Loop LoopCount="3">
+        <Controller_Parallel CompletionPolicy="Any">
+
+          <Controller_Sequence>
+            <Decorator_Colonize LinkedStepProgression="MainQuestNecrophages-Chapter6-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_CaptureCity LinkedStepProgression="MainQuestNecrophages-Chapter6-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+      </Controller_Loop>
+
+    <Action_UpdateStep StepName="MainQuestNecrophages-Chapter6-Step1" State="Completed"/>
+    <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter6-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMainQuestNecrophagesChapter6Step1ItemReward" Picks="1"/>
+       </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  <!-- ======================================
+     ============ NECRO-CHAPTER 7 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter7" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="-1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter7,OnFailChapter7</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter7Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter7Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter7Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+    
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <From Source="$Empire.$Cities">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(Population) le 8</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$CityName" Source="$EmpireCityRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Parallel CompletionPolicy="Any">
+      
+      <Controller_Sequence>
+
+        <!--Step 1-->
+        <Action_UpdateStep StepName="MainQuestNecrophages-Chapter7-Step1" State="InProgress"/>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:MinorFactionAssimilatedCount) ge 2</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateStep StepName="MainQuestNecrophages-Chapter7-Step1" State="Completed" />
+
+        <!--Step 2-->
+        <Action_UpdateStep StepName="MainQuestNecrophages-Chapter7-Step2" State="InProgress"/>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$EmpireCity">
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(Population) eq 8</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateStep StepName="MainQuestNecrophages-Chapter7-Step2" State="Completed" />
+      
+        <Action_UpdateQuest State="Completed"/>      
+      </Controller_Sequence>
+
+      <!-- Fail check -->
+      <Controller_Sequence>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite Inverted="true">
+            <Prerequisites Target="$EmpireCity">
+              <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter7-Step1">
+        <Reward Droplist="DroplistMainQuestNecrophagesChapter7and7AltStep2TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter7-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter8</Tags>
+      </OnQuestCompleted>
+      <OnQuestFailed>
+        <Tags>OnFailChapter7</Tags>
+      </OnQuestFailed>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+
+  <!-- ======================================
+     ============ NECRO-CHAPTER 7Alt ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter7Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="-1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter7,OnFailChapter7</Tags>
+
+    
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter7" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter7" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter7" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <From Source="$Empire.$Cities">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(Population) gt 8</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$CityName" Source="$EmpireCityRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Parallel CompletionPolicy="Any">
+      
+      <Controller_Sequence>
+      
+        <!--Step 1-->
+        <Action_UpdateStep StepName="MainQuestNecrophages-Chapter7Alt-Step1" State="InProgress"/>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:MinorFactionAssimilatedCount) ge 2</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateStep StepName="MainQuestNecrophages-Chapter7Alt-Step1" State="Completed" />
+      
+        <!--Step 2-->
+        <Action_UpdateStep StepName="MainQuestNecrophages-Chapter7Alt-Step2" State="InProgress"/>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$EmpireCity">
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(Population) eq 8</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateStep StepName="MainQuestNecrophages-Chapter7Alt-Step2" State="Completed" />
+      
+        <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+
+      <!-- Fail check -->
+      <Controller_Sequence>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite Inverted="true">
+            <Prerequisites Target="$EmpireCity">
+              <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+    </Controller_Parallel>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter7Alt-Step1">
+        <Reward Droplist="DroplistMainQuestNecrophagesChapter7and7AltStep2TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter7Alt-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Necrophages,Chapter8</Tags>
+      </OnQuestCompleted>
+      <OnQuestFailed>
+        <Tags>OnFailChapter7</Tags>
+      </OnQuestFailed>
+    </Triggers>
+
+  </QuestDefinition>
+  
+  
+  
+
+  <!-- ======================================
+     ============ NECRO-CHAPTER 8 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestNecrophages-Chapter8" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Necrophages,Chapter8,FinalQuest</Tags>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$EmpireCityRegionLocation">
+        <From Source="$EmpireCityRegion.$Position"/>
+      </Var>
+
+      <!--Set the list of all the regions excluding the selected Empire city region-->
+      <Var VarName="$AllRegionsButInitialCityRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByDistance PositionToCompareVarName="$EmpireCityRegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Sort the list by distance from the selected Empire city region-->
+      <Var VarName="$NearestRegionsFromInitialCity">
+        <From Source="$AllRegionsButInitialCityRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityRegionLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$PointOfInterest1ToInspectChapter8">
+        <Limit LimitMin="1" LimitMax="2">
+          <From Source="$NearestRegionsFromInitialCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterest1ToInspectChapter8Location">
+        <From Source="$PointOfInterest1ToInspectChapter8.$Position"/>
+      </Var>
+      <Var VarName="$PointOfInterest1Region">
+        <From Source="$PointOfInterest1ToInspectChapter8.$Position.$Region"/>
+      </Var>
+
+      <Var VarName="$PointOfInterest2ToInspectChapter8">
+        <Limit LimitMin="3" LimitMax="4">
+          <From Source="$NearestRegionsFromInitialCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterest2ToInspectChapter8Location">
+        <From Source="$PointOfInterest2ToInspectChapter8.$Position"/>
+      </Var>
+      <Var VarName="$PointOfInterest2Region">
+        <From Source="$PointOfInterest2ToInspectChapter8.$Position.$Region"/>
+      </Var>
+
+      <Var VarName="$PointOfInterest3ToInspectChapter8">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$NearestRegionsFromInitialCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterest3ToInspectChapter8Location">
+        <From Source="$PointOfInterest3ToInspectChapter8.$Position"/>
+      </Var>
+      <Var VarName="$PointOfInterest3Region">
+        <From Source="$PointOfInterest3ToInspectChapter8.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$CityName" Source="$EmpireCityRegion"/>
+      <LocalizationVar LocalizationKey="$Region1Name" Source="$PointOfInterest1Region"/>
+      <LocalizationVar LocalizationKey="$Region2Name" Source="$PointOfInterest2Region"/>
+      <LocalizationVar LocalizationKey="$Region3Name" Source="$PointOfInterest3Region"/>
+      
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterest1ToInspectChapter8" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterest2ToInspectChapter8" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterest3ToInspectChapter8" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter8-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="All">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/CityImprovementNecrophages9</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter8-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter8-Step2" HideRewards="true" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+            
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(EmpireTypeMajor/Garrison/UnitProfileNecrophagesHero7:LevelDisplayed) ge 9</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+            
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(EmpireTypeMajor/UnitProfileNecrophagesHero7:LevelDisplayed) ge 9</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+            
+      </Controller_Parallel>
+      
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter8-Step2" State="Completed" />
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter8-Step3" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterest1ToInspectChapter8" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterest1ToInspectChapter8"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterest2ToInspectChapter8" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterest2ToInspectChapter8"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterest3ToInspectChapter8" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterest3ToInspectChapter8"/>
+
+      <Controller_Parallel CompletionPolicy="All">
+      
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$PointOfInterest1ToInspectChapter8" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" LinkedStepProgression="MainQuestNecrophages-Chapter8-Step3" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,AffinityNecrophages/ItemAttributesTomeNecrophagesMainQuest1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterest1ToInspectChapter8"/>
+          <Action_LockQuestTarget TargetVarName="$PointOfInterest1ToInspectChapter8" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$PointOfInterest2ToInspectChapter8" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" LinkedStepProgression="MainQuestNecrophages-Chapter8-Step3" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,AffinityNecrophages/ItemAttributesTomeNecrophagesMainQuest1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterest2ToInspectChapter8"/>
+          <Action_LockQuestTarget TargetVarName="$PointOfInterest2ToInspectChapter8" LockOption="Unlock"/>
+        </Controller_Sequence>
+        
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$PointOfInterest3ToInspectChapter8" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" LinkedStepProgression="MainQuestNecrophages-Chapter8-Step3" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,AffinityNecrophages/ItemAttributesTomeNecrophagesMainQuest1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterest3ToInspectChapter8"/>
+          <Action_LockQuestTarget TargetVarName="$PointOfInterest3ToInspectChapter8" LockOption="Unlock"/>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+          
+      <Action_UpdateStep StepName="MainQuestNecrophages-Chapter8-Step3" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+        
+        
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestNecrophages-Chapter8-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter8-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestNecrophages-Chapter8-Step3">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMainQuestNecrophagesChapter8Step2TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+</Datatable>

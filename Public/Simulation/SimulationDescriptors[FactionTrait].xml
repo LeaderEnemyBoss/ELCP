@@ -1,0 +1,1401 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ########################################## -->
+  <!-- ######        MAJOR FACTIONS        ###### -->
+  <!-- ########################################## -->
+
+  <!-- ########################################## -->
+  <!-- ######         BROKEN LORDS         ###### -->
+  <!-- ########################################## -->
+  
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitBrokenLordsHeatWave"      Type="FactionTrait" />
+  
+  <SimulationDescriptor Name="FactionTraitBrokenLords1"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagDust"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitBrokenLords2"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"         Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                  Operation="Multiplication" Value="0" Path="EmpireTypeMajor,AffinityBrokenLords/ClassCity/ClassDistrict" Priority="1"/>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                      Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowthUpkeepPerPopulation" Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <!--<BinarySimulationModifierDescriptor TargetProperty="DistrictFoodNet" Operation="Addition" Left="$(DistrictDustToDistrictFoodNetConversionFactor)" BinaryOperation="Multiplication" Right="$(DistrictDust)" Path="../EmpireTypeMajor/ClassCity" IsBindOnSource="false" priority="1"/>-->
+      <SimulationModifierDescriptor TargetProperty="DistrictDustToDistrictDustNetConversionFactor"                Operation="Force" Value="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityFoodToCityGrowthConversionFactor"                         Operation="Force" Value="0" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDustToDistrictFoodNetConversionFactor"                Operation="Force" Value="0" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulationToBaseFoodPerPopulationConversionFactor" Operation="Force" Value="0" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitBrokenLords3"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitBuyOutPopulation"         Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######         MAD FAIRIES          ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="FactionTraitMadFairiesTheSharing"     Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitMadFairiesHeatWave"   Type="FactionTrait" />
+  
+  <SimulationDescriptor Name="FactionTraitMadFairies1"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1" Path="EmpireTypeMajor,FactionTraitMadFairies1/ClassCity/ClassDistrict,#Summer,TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitMadFairiesMainQuest"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitMadFairies2"              Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitMadFairies3"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitMadFairies4"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+    <SimulationPropertyDescriptors>
+      <!-- given bonus depends on the construction's category, by using the following syntax: TraitBonusEmpirePointsOn{ConstructibleElement.Category}Complete -->
+      <SimulationPropertyDescriptor Name="TraitBonusEmpirePointsOnCityImprovementComplete"/>
+      <SimulationPropertyDescriptor Name="TraitBonusEmpirePointsOnDistrictImprovementComplete"/>
+      <SimulationPropertyDescriptor Name="TraitBonusEmpirePointsOnPointOfInterestImprovementComplete"/>
+      <SimulationPropertyDescriptor Name="TraitBonusEmpirePointsOnCategoryNationalBuildingComplete"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitMadFairiesUnit1"          Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitMadFairiesUnit2"          Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitMadFairiesUnit3"          Type="FactionTrait">
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######           VAULTERS           ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="FactionTraitVaulters1"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagScience"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+    
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitVaultersHeatWave"   Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitVaulters2"                Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitVaulters3"                Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitVaulters4"                Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitVaulters5"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus"        Operation="Addition"  Value="1"     Path="EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Strategic"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitAffinityStrategic"        Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Percent"   Value="2.00"  Path="EmpireTypeMajor,FactionTraitVaultersMezari/ClassCity,#Winter"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityResourceChosen"               Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityStrategic1"                   Type="AffinityStrategic">
+    <SimulationModifierDescriptors> 
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic1)" Path="EmpireTypeMajor/ClassCity"     IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic1)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic1"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityStrategic2"                   Type="AffinityStrategic">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic2)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic2)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic2"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityStrategic3"                   Type="AffinityStrategic">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic3)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic3)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic3"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityStrategic4"                   Type="AffinityStrategic">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic4)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic4)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic4"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic4"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityStrategic5"                   Type="AffinityStrategic">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic5)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic5)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic5"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic5"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityStrategic6"                   Type="AffinityStrategic">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic6)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic6)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic6"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic6"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VaultersMainQuestEnded"               Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Multiplication" Value="2" Path="ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterTeleport"                      Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitVaultersMezari"           Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+    
+
+  <!-- ########################################## -->
+  <!-- ######         NECROPHAGES          ###### -->
+  <!-- ########################################## -->
+
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitNecrophagesHeatWave"   Type="FactionTrait" />
+  
+  <SimulationDescriptor Name="FactionTraitNecrophagesRecycling"     Type="FactionTrait">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="CadaverCountNeededToObtainBooster" BaseValue="8"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitNecrophages1"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagFood"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitNecrophages2"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Left="0.1" BinaryOperation="Multiplication" Right="$(WarCount)" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Left="0.1" BinaryOperation="Multiplication" Right="$(WarCount)" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitNecrophages3"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Value="0.05" Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitNecrophages4"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation" Operation="Addition" BinaryOperation="Multiplication" Left="2" Right="$(NumberOfRebuildPacifiedVillage)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitNecrophages5"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitNecrophages6"             Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitNecrophages8"             Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitNecrophages12"            Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######         RAGE WIZARDS         ###### -->
+  <!-- ########################################## -->
+
+  <!-- "Arcana use" is used as reduction for pillar faction trait cost. -->
+  <SimulationDescriptor Name="FactionTraitRageWizardsArcanaUse"     Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitRageWizardsHeatWave"      Type="FactionTrait" />
+  
+  <SimulationDescriptor Name="FactionTraitPillarActivated"          Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards7"             Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards8"             Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards9"             Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards10"            Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards11"            Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards12"            Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards13"            Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards14"            Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitRageWizards15"            Type="FactionTrait" />
+
+
+
+  <!-- ########################################## -->
+  <!-- ######         ROVING CLANS         ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="FactionTraitRovingClans6"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CommercialAgreementCostMultiplier"  Operation="Multiplication" Value="0" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="ResearchAgreementCostMultiplier"    Operation="Multiplication" Value="0" Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitRovingClansHeatWave"   Type="FactionTrait" >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"       Operation="Addition" Value="0.20" Path="EmpireTypeMajor/#HeatWave,ClassCity" />
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier"      Operation="Addition" Value="0.20" Path="EmpireTypeMajor/#HeatWave,ClassCity" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth" Operation="Addition" Value="430" Path="EmpireTypeMajor/Garrison/UnitTypeRovingClansScarab,#HeatWave"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Addition" Value="80" Path="EmpireTypeMajor/Garrison/UnitTypeRovingClansScarab,#HeatWave"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Addition" Value="80" Path="EmpireTypeMajor/Garrison/UnitTypeRovingClansScarab,#HeatWave"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Operation="Addition" Value="70" Path="EmpireTypeMajor/Garrison/UnitTypeRovingClansScarab,#HeatWave"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative" Operation="Addition" Value="45" Path="EmpireTypeMajor/Garrison/UnitTypeRovingClansScarab,#HeatWave"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="FactionTraitRovingClans7"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"          Operation="Multiplication"   Value="2"       Path="EmpireTypeMajor/Garrison/Mercenary"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Addition"         Value="1"       Path="EmpireTypeMajor/Garrison/Mercenary"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition"         Value="1"       Path="EmpireTypeMajor/Garrison/Mercenary"    Priority="101"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"         Operation="Multiplication"   Value="0.667"   Path="EmpireTypeMajor/ClassArmy,Privateers"  Priority="3"    TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitRovingClans8"             Type="FactionTrait">
+    <SimulationPropertyDescriptors>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitRovingClans9"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--Roving Clans Tax-->
+  <SimulationDescriptor Name="FactionTraitRovingClans10"            Type="FactionTrait">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="TradersBuyoutMultiplier" BaseValue="0.08"/>
+      <SimulationPropertyDescriptor Name="TradersSelloutMultiplier" BaseValue="0.08"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitRovingClans11"            Type="FactionTrait">
+    <SimulationPropertyDescriptors>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitRovingClans12"            Type="FactionTrait">
+    <SimulationPropertyDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitRovingClans13"            Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityMoneyUpkeep"  Operation="Percent"  Value="0.50"   Path="EmpireTypeMajor/#Winter,ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteGain"   Operation="Percent"  Value="-0.25"  Path="EmpireTypeMajor/ClassCity/#Winter,ClassTradeRoute"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteGain"   Operation="Percent"  Value="0.15"   Path="EmpireTypeMajor/ClassCity/#Summer,ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######           DRAKKENS           ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="FactionTraitDrakkens6"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitDrakkensHeatWave"           Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticDeclarationFactor"     Operation="Percent"   Value="-0.50" Path="#HeatWave,EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticNegotiationFactor"     Operation="Percent"   Value="-0.50" Path="#HeatWave,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitDrakkens7Placeholder"     Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitDrakkens8"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked" Operation="Addition" Value="1" Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitDrakkens9"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="2" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"  Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######           CULTISTS           ###### -->
+  <!-- ########################################## -->
+
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitCultistsHeatWave" Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!--Converted units living in empire garrisons-->
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Left="0.1" BinaryOperation="Multiplication" Right="$(MainCityCenterLevelDisplayed)" Path="EmpireTypeMajor/Garrison/UnitFactionTypeMinorFaction,#HeatWave" Priority="9000"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDamage" Operation="Percent" Left="0.1" BinaryOperation="Multiplication" Right="$(MainCityCenterLevelDisplayed)" Path="EmpireTypeMajor/Garrison/UnitFactionTypeMinorFaction,#HeatWave" Priority="9000"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Left="0.1" BinaryOperation="Multiplication" Right="$(MainCityCenterLevelDisplayed)" Path="EmpireTypeMajor/Garrison/UnitFactionTypeMinorFaction,#HeatWave" Priority="9000"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumHealth" Operation="Percent" Left="0.1" BinaryOperation="Multiplication" Right="$(MainCityCenterLevelDisplayed)" Path="EmpireTypeMajor/Garrison/UnitFactionTypeMinorFaction,#HeatWave" Priority="9000"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="FactionTraitCultists7"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumDistrictLevel" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitCultists9"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitCultists11"               Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"    Operation="Addition"       Value="100"  Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumUnitSlotCount"       Operation="Addition"       Value="1"    Path="EmpireTypeMajor/ClassCity,MainCity/Militia"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitCultists12"               Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitCultists13"               Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitCultists14"               Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######          REPLICANTS          ###### -->
+  <!-- ########################################## -->
+  
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitReplicantsHeatWave"       Type="FactionTrait" />
+  
+  <SimulationDescriptor Name="FactionTraitReplicants1"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"                         Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                                  Operation="Multiplication" Value="0" Path="EmpireTypeMajor,AffinityReplicants/ClassCity/ClassDistrict" Priority="1"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                                      Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"                      Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"                      Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity/ClassTradeRoute" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="IntermediateTradeRoutesCityScienceIncome"         Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="TotalTradeRoutesCityScienceIncome"                Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="PercentOfLeechedTradeRouteCityScience"            Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="OverrallTradeRoutesCityScienceIncome"             Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="LeechedTradeRoutesCityScienceIncome"              Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitReplicants2"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitReplicants3"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"      Operation="Addition"       Value="2"   Path="EmpireTypeMajor/ClassArmy/!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                   Operation="Addition"       Value="-1"  Path="EmpireTypeMajor/ClassArmy/UnitRankStandard,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitReplicants4"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitReplicants5"              Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitReplicants6"              Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitReplicants7"              Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitReplicants12"             Type="FactionTrait" />
+
+
+
+  <!-- ########################################## -->
+  <!-- ######       WINTER SHIFTERS        ###### -->
+  <!-- ########################################## -->
+
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitWinterShiftersHeatWave"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Addition" Value="2" Path="EmpireTypeMajor/Garrison/ClassUnit,#HeatWave"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition" Value="2" Path="EmpireTypeMajor/Garrison/ClassUnit,#HeatWave" Priority="101" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumNumberOfActionPoints" Operation="Addition" Value="1"  Path="EmpireTypeMajor/Garrison/ClassUnit,#HeatWave"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- Affinity: Shifting -->
+  <SimulationDescriptor Name="FactionTraitWinterShifters1"          Type="FactionTrait" />
+
+  <!-- Orb Hunter -->
+  <SimulationDescriptor Name="FactionTraitWinterShifters2"          Type="FactionTrait" />
+
+  <!-- Feel The Earth -->
+  <SimulationDescriptor Name="FactionTraitWinterShifters3"          Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumSeasonPredictabilityError"      Operation="Percent"         Value="-1"      Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- We Chosen Few -->
+  <SimulationDescriptor Name="FactionTraitWinterShifters4"          Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"                     Operation="Percent"   Value="1.5"    Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="OwnershipRecoveryRate"                        Operation="Percent"   Value="1"      Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseGrowthRequiredPerPopulation"              Operation="Percent"   Value="1"      Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mercurial Diplomats -->
+  <SimulationDescriptor Name="FactionTraitWinterShifters5"          Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticDeclarationFactor"     Operation="Percent"   Value="-0.25" Path="#Winter,EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticNegotiationFactor"     Operation="Percent"    Value="-0.25"  Path="#Summer,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Battlefield Symbiosis -->
+  <SimulationDescriptor Name="FactionTraitWinterShifters6"          Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleInitiativeBonusPerMorale"     Operation="Addition"   Value="0.15" Path="../ClassEmpire/Garrison/ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="BattleInitiativeBonusPerMorale"     Operation="Addition"   Value="0.15" Path="../ClassEmpire/ClassCity/Militia/ClassUnit" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury Alchemists -->
+  <SimulationDescriptor Name="FactionTraitWinterShifters7"          Type="FactionTrait" />
+
+
+
+  <!-- ########################################## -->
+  <!-- ########        SEA DEMONS        ######## -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Neptunian -->
+  <SimulationDescriptor Name="FactionTraitSeaDemons1"               Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Heat wave effect -->
+  <SimulationDescriptor Name="FactionTraitSeaDemonsHeatWave"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition" Value="4" Path="EmpireTypeMajor/Garrison/ClassUnit,#HeatWave" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- Hydrophilic -->
+  <SimulationDescriptor Name="FactionTraitSeaDemons2"               Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Addition"   Value="2" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagWater"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"      Operation="Addition"   Value="2" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagWater"/>
+
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Addition"   Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagRiver"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"      Operation="Addition"   Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagRiver"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sea Traders -->
+  <SimulationDescriptor Name="FactionTraitSeaDemons3"               Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Waiting for localisation -->
+      <!--
+        <SimulationModifierDescriptor TargetProperty="TradeRouteGain"  Value="1"      Operation="Percent"        Path="EmpireTypeMajor/ClassCity/ClassTradeRoute,TradeRouteMovementCapacityWater,TradeRoutePassingThroughOceanicRegionOfMine"/>
+        <SimulationModifierDescriptor TargetProperty="TradeRouteGain"  Value="1"      Operation="Percent"        Path="EmpireTypeMajor/ClassCity/ClassTradeRoute,TradeRouteMovementCapacityWater,TradeRoutePassingThroughOceanicRegionOfSomeAllyOfMine" TooltipHidden="true"/>
+      -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Seeds of  Dissent -->
+  <SimulationDescriptor Name="FactionTraitSeaDemons4"               Type="FactionTrait">
+      <SimulationModifierDescriptors>
+      </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Catspaws -->
+  <SimulationDescriptor Name="FactionTraitSeaDemons5"               Type="FactionTrait">
+      <SimulationModifierDescriptors>
+      </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- The Black Spot -->
+  <SimulationDescriptor Name="FactionTraitSeaDemons6"               Type="FactionTrait">
+      <SimulationModifierDescriptors>
+      </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Fortress Commander -->
+  <SimulationDescriptor Name="FactionTraitSeaDemons8"               Type="FactionTrait" />
+
+
+  <!-- ########################################## -->
+  <!-- ######            FLAMES            ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="FactionTraitFlames1"      Type="FactionTrait"/>
+
+  <SimulationDescriptor Name="FactionTraitFlamesHeatWave"      Type="FactionTrait"/>
+
+  <SimulationDescriptor Name="FactionTraitFlamesMainQuest"          Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="FactionTraitFlamesUnit1"          	Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitFlamesUnit2"          	Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitFlamesUnit3"          	Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <!-- <SimulationDescriptor Name="FactionTraitFlames2"          	Type="FactionTrait">
+  </SimulationDescriptor>-->
+
+  <SimulationDescriptor Name="FactionTraitFlames3"          	Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity/ClassDistrict,!TerrainTagVolcanic" Priority="1" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="FactionTraitFlames8"          	Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="2" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- <SimulationDescriptor Name="FactionTraitFlames4"          	Type="FactionTrait">
+  </SimulationDescriptor>-->
+
+
+  <!--  <SimulationDescriptor Name="FactionTraitFlames5"          	Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitFlames6"          	Type="FactionTrait">
+  </SimulationDescriptor> -->
+
+  <!-- Concrete's Moon -->
+  <SimulationDescriptor Name="FactionTraitFlames7"          	Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <!-- Rubble Rousers -->
+  <SimulationDescriptor Name="FactionTraitFlames9"     Type="FactionTrait">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SiegeDamageNeededToObtainBooster" BaseValue="100"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Golem Camps -->
+  <SimulationDescriptor Name="FactionTraitFlames10"          	Type="FactionTrait">
+  </SimulationDescriptor>
+
+  <!-- Ben's Curse (No Food on Volcanic) -->
+  <SimulationDescriptor Name="FactionTraitToxicLands"          	Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagVolcanic" Priority="1" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- ########################################## -->
+  <!-- ######            CUSTOM            ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="FactionTraitVaulters2Custom"          Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitVaulters3Custom"          Type="FactionTrait" />
+
+  <SimulationDescriptor Name="FactionTraitVaulters4Custom"          Type="FactionTrait" />
+
+
+  <!-- DIPLOMACY -->
+
+  <!-- Naive -->
+  <SimulationDescriptor Name="FactionTraitDiplomacy1Level1"         Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition" Left="$(PeaceCount)" BinaryOperation="Multiplication" Right="4" Path="EmpireTypeMajor/ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition" Left="$(AllianceCount)" BinaryOperation="Multiplication" Right="4" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitDiplomacy1Level2"         Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition" Left="$(PeaceCount)" BinaryOperation="Multiplication" Right="8" Path="EmpireTypeMajor/ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition" Left="$(AllianceCount)" BinaryOperation="Multiplication" Right="8" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- ARMY -->
+
+  <!-- Meticulous Analysis -->
+  <SimulationDescriptor Name="FactionTraitArmy1Level1"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Addition" Value="1" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitArmy1Level2"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Addition" Value="2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Fragile Health -->
+  <SimulationDescriptor Name="FactionTraitArmy2Level1"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth" Operation="Percent" Value="-0.15" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth" Operation="Percent" Value="-0.15" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitArmy2Level2"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth" Operation="Percent" Value="-0.3" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth" Operation="Percent" Value="-0.3" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Big Armies -->
+  <SimulationDescriptor Name="FactionTraitArmy3PositiveLevel1"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyUnitSlot" Operation="Addition" Value="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityUnitSlot" Operation="Addition" Value="1" Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitArmy3PositiveLevel2"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyUnitSlot" Operation="Addition" Value="2" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityUnitSlot" Operation="Addition" Value="2" Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Anarchists -->
+  <SimulationDescriptor Name="FactionTraitArmy3NegativeLevel1"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyUnitSlot" Operation="Addition" Value="-1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityUnitSlot" Operation="Addition" Value="-1" Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitArmy3NegativeLevel2"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyUnitSlot" Operation="Addition" Value="-2" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityUnitSlot" Operation="Addition" Value="-2" Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Fast Travelers -->
+  <SimulationDescriptor Name="FactionTraitArmy4PositiveLevel1"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Addition" Value="1" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition" Value="1" Path="EmpireTypeMajor/Garrison/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitArmy4PositiveLevel2"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand" Operation="Addition" Value="2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition" Value="2" Path="EmpireTypeMajor/Garrison/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Slow Travelers -->
+  <SimulationDescriptor Name="FactionTraitArmy4NegativeLevel1"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand" Operation="Addition" Value="-1" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition" Value="-1" Path="EmpireTypeMajor/Garrison/ClassUnit" Priority="101"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitArmy4NegativeLevel2"      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand" Operation="Addition" Value="-2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition" Value="-2" Path="EmpireTypeMajor/Garrison/ClassUnit" Priority="101"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Offense Last -->
+  <SimulationDescriptor Name="FactionTraitArmy5"                    Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="-0.2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="-0.2" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Weak Defense -->
+  <SimulationDescriptor Name="FactionTraitArmy6"                    Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="-0.2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="-0.2" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Offense First -->
+  <SimulationDescriptor Name="FactionTraitArmy7"                    Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="0.2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="0.2" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Optimal Defense -->
+  <SimulationDescriptor Name="FactionTraitArmy8"                    Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="0.2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="0.2" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Settler cost reduction -->
+  <SimulationDescriptor Name="FactionTraitArmy9"                    Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitSettlerProductionCostReduction"  Operation ="Addition" Value="0.50"   Path="ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Unit regen bonus -->
+  <SimulationDescriptor Name="FactionTraitArmy10"                    Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InGarrisonRegenModifier"             Operation="Addition" Value="0.20"  Path="ClassEmpire/ClassCity" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Businessmen -->
+  <SimulationDescriptor Name="FactionTraitEconomy1PositiveLevel1"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust" Operation="Percent" Value="0.1" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitEconomy1PositiveLevel2"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust" Operation="Percent" Value="0.2" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitEconomy1PositiveLevel3"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust" Operation="Percent" Value="0.3" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Spendthrifts -->
+  <SimulationDescriptor Name="FactionTraitEconomy1NegativeLevel1"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust" Operation="Percent" Value="-0.1" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitEconomy1NegativeLevel2"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust" Operation="Percent" Value="-0.2" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitEconomy1NegativeLevel3"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust" Operation="Percent" Value="-0.3" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Archaeology -->
+  <SimulationDescriptor Name="FactionTraitEconomy2PositiveLevel1"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitEconomy2PositiveLevel2"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Starved -->
+  <SimulationDescriptor Name="FactionTraitEconomy2NegativeLevel1"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitEconomy2NegativeLevel2"   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Entrepreneur -->
+  <SimulationDescriptor Name="FactionTraitEconomy3"                 Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Merchants -->
+  <SimulationDescriptor Name="FactionTraitEconomy4Level1"           Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumNumberOfTradeRoutes" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="FactionTraitEconomy4Level2"           Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumNumberOfTradeRoutes" Operation="Addition" Value="2" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Titanium Legacy -->
+  <SimulationDescriptor Name="FactionTraitEconomy5"                 Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Glassteel Legacy -->
+  <SimulationDescriptor Name="FactionTraitEconomy6"                 Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Food Efficient -->
+  <SimulationDescriptor Name="FactionTraitEconomy7Positive"         Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagFood"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Industry Efficient -->
+  <SimulationDescriptor Name="FactionTraitEconomy8Positive"         Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagIndustry"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Industry Inefficient -->
+  <SimulationDescriptor Name="FactionTraitEconomy8Negative"         Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagIndustry"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Goods of Auriga -->
+  <SimulationDescriptor Name="FactionTraitEconomy9"                 Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus"        Operation="Addition"  Value="1"     Path="EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Inefficient -->
+  <SimulationDescriptor Name="FactionTraitEconomy10Negative"        Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagDust"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Science Inefficient -->
+  <SimulationDescriptor Name="FactionTraitEconomy11Negative"        Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagScience"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Landscapist -->
+  <SimulationDescriptor Name="FactionTraitEconomy12"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="2" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"  Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"  Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Research cost reduction -->
+  <SimulationDescriptor Name="FactionTraitEconomy13"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor      TargetProperty="Era1ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra2" TooltipHidden="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era2ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra3" TooltipHidden="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era3ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra4" TooltipHidden="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era4ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra5" TooltipHidden="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era5ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra6" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Expansion disapproval -->
+  <SimulationDescriptor Name="FactionTraitEconomy14"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"        Operation="Percent"   Value="-0.50" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Infiltration cost reduction -->
+  <SimulationDescriptor Name="FactionTraitEconomy15"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InfiltrationCostModifier"        Operation="Percent"         Value="-0.50"         Path="EmpireTypeMajor" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Unlocked Orb Unlocks at Start -->
+  <SimulationDescriptor Name="FactionTraitTechnologyDefinitionOrbUnlock2"                               Type="FactionTrait"/>
+  <SimulationDescriptor Name="FactionTraitTechnologyDefinitionOrbUnlock3"                               Type="FactionTrait"/>
+  <SimulationDescriptor Name="FactionTraitTechnologyDefinitionOrbUnlock18WinterShifters"                Type="FactionTrait"/>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######        MINOR FACTIONS        ###### -->
+  <!-- ########################################## -->
+
+  <!-- Assimilation Bonus -->
+  <SimulationDescriptor Name="AssimilationTraitBos"                 Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Bos)" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitCeratan"             Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDefense"                 Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Ceratan)" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDefense"                 Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Ceratan)" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitDelvers"             Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Delvers)" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitErycis"              Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"            Operation="Addition"  Left=".5"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Erycis)" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"           Operation="Addition"  Left=".5"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Erycis)" Path="EmpireTypeMajor/Garrison/ClassUnit" TooltipHidden="true" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitHaunts"              Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Haunts)" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitKazanji"             Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"                    Operation="Percent"  Left="0.05"      BinaryOperation="Multiplication" Right="$(PacifiedVillages_Kazanji)" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitSilics"              Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation="Addition"  Left=".5"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Silics)" Path="EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Strategic"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitSistersOfMercy"      Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement"       Operation="Addition"  Left="0.05"   BinaryOperation="Multiplication" Right="$(PacifiedVillages_SistersOfMercy)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitUrces"               Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- [FB]  TODO: Based on the previous comment, this bonus should be applied only on district improvement, but, by design, only one category exists for the building...
+                       Just make your mind and then come to me if you need some help to change it...      -->
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition" Value="1"      Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition" Left=".05"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Urces)" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitJotus"               Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition" Value="1"      Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="VisionRange"                      Operation="Addition" Left=".5"      BinaryOperation="Multiplication" Right="$(PacifiedVillages_Jotus)" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitGauran"              Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition" Value="1"      Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumHealth"                    Operation="Percent"  Left="0.05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Gauran)" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumHealth"                    Operation="Percent"  Left="0.05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Gauran)" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitHurnas"              Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack"                  Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Hurnas)" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack"                  Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Hurnas)" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitBirdhive"            Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeInitiative"              Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Birdhive)" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeInitiative"              Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Birdhive)" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitGeldirus"            Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Geldirus)" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Percent"   Left=".05"    BinaryOperation="Multiplication" Right="$(PacifiedVillages_Geldirus)" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitEyelessOnes"         Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval"                     Operation="Addition"   Left="5"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_EyelessOnes)" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AssimilationTraitDorgeshi"            Type="AssimilationFactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition"  Value="1"     Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation="Addition"  Left=".5"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Dorgeshi)" Path="EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- Bribe -->
+  <SimulationDescriptor Name="FactionTraitUrces"                    Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="16" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="1"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitErycis"                   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="18" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="2"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitCeratan"                  Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="14" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="1"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="1"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="0"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitKazanji"                  Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="22" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="7"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="3"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitBos"                      Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="14" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="1"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="1"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="0"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitSilics"                   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="20" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="3"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitDelvers"                  Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="16" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="1"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitSistersOfMercy"           Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="14" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="1"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="1"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="0"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitHaunts"                   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="24" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="7"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="8"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="7"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="5"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitJotus"                    Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="22" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="7"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="4"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitHurnas"                   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="14" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="1"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="1"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="0"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitGauran"                   Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="22" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="7"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="4"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitBirdhive"                 Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="16" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="2"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="0"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitGeldirus"                 Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="20" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="3"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitEyelessOnes"              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="18" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="3"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="2"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitDorgeshi"                 Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCost"              Operation="Addition" Value="20" Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertNeutralCost"     Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertHostileCost"     Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="ConvertDestructedCost"  Operation="Addition" Value="6"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="DissentDestroyedCost"   Operation="Addition" Value="4"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="DissentPacifiedCost"    Operation="Addition" Value="5"  Path="EmpireTypeMinor/ClassMinorEmpireGarrison"/>
+
+      <SimulationModifierDescriptor TargetProperty="CatspawCostModifier"    Operation="Addition" Value="3"  Path="EmpireTypeMinor/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitFomorians"                Type="FactionTrait">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######            MISC.             ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="FactionTraitLockedStartingTechnology" Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FactionTraitFounderPack1"             Type="FactionTrait">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Addition"    Value="2" Path="EmpireTypeMajor/Garrison/ClassUnit,#Winter" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition"    Value="2" Path="EmpireTypeMajor/Garrison/ClassUnit,#Winter" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

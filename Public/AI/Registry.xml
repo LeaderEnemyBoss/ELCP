@@ -1,0 +1,2219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Registry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AI>
+    <AIHelpers>
+      <CommunicationAIHelper>
+        <ProbabilityToSendAIAttitudeFeedbackFormula>$(TurnCountSinceLastFeedback) + $(TurnCountSinceLastFeedbackOfThisEmpire) + $(ProbabilityBonus)</ProbabilityToSendAIAttitudeFeedbackFormula>
+      </CommunicationAIHelper>
+      <PersonalityAIHelper>
+        <NumberOfRandomPersonalities>2</NumberOfRandomPersonalities>
+      </PersonalityAIHelper>
+      <Intelligence>
+        <ReinforcementModifierByRound>PutACurveNameHere</ReinforcementModifierByRound>
+      </Intelligence>
+      <AIDataRepository>
+        <!--
+        Maturity
+        // A city is considered mature if it has been mature as defined by at least "LimitOfMaturityCount" metrics amongst the following over a period of at least "LimitOfTurnForMaturity" * GameSpeedFactor
+        // IndustrialMaturity: true if all buildings from the current era (excluding wonders) could be produced in under (IndustryReferenceTurnCountAgent.MaximumTurnCount) turns.
+        Industry turn count is replaced by ProductionTurnLimitForIndustrialMaturity * GameSpeedFactor
+        // PopulationMaturity: true if the population count is above "PopulationFlatForPopulationMaturity" + NumberOfCities.      
+        // ApprovalMaturity: true if approval is at least "ApprovalLimitForApprovalMaturity".
+        // DustMaturity: true if the city produces at least 1/NumberOfCities of the empire’s net dust and NumberOfCities >= "NumberOfCitiesForDustMaturity".
+        // ScienceMaturity: true if the city produces at least 1/NumberOfCities of the empire’s net science and NumberOfCities >= "NumberOfCitiesForScienceMaturity".
+        // InfluenceMaturity: true if the city produces at least 1/NumberOfCities of the empire’s influence and NumberOfCities >= "NumberOfCitiesForPrestigeMaturity".
+        // Pacification : true if all the village have been pacified.
+        -->
+        <LimitOfTurnForMaturity>8</LimitOfTurnForMaturity>
+        <ProductionTurnLimitForIndustrialMaturity>8</ProductionTurnLimitForIndustrialMaturity>
+        <PopulationFlatForPopulationMaturity>4</PopulationFlatForPopulationMaturity>
+        <ApprovalLimitForApprovalMaturity>60</ApprovalLimitForApprovalMaturity>      
+        <NumberOfCitiesForDustMaturity>3</NumberOfCitiesForDustMaturity>
+        <NumberOfCitiesForScienceMaturity>3</NumberOfCitiesForScienceMaturity>
+        <NumberOfCitiesForPrestigeMaturity>4</NumberOfCitiesForPrestigeMaturity>
+        <LimitOfMaturityCount>2</LimitOfMaturityCount>
+      </AIDataRepository>
+
+      <OrbAIHelper>
+        <WantedOrbByTurnCurveName>WantedOrbByTurnCurve</WantedOrbByTurnCurveName>
+        <MaximumTurns>300</MaximumTurns>
+        <MaximumOrbs>900</MaximumOrbs>
+        <BaseOpportunisticOrbCollectionUtilityThreshold>1</BaseOpportunisticOrbCollectionUtilityThreshold>
+        <OrbCollectionForeignTerritoryFactor>6</OrbCollectionForeignTerritoryFactor>
+        <OrbCollectionHomeTerritoryFactor>2</OrbCollectionHomeTerritoryFactor>
+        <OrbCollectionQuantityExponent>4</OrbCollectionQuantityExponent>
+        <OrbCollectionDistanceExponent>7</OrbCollectionDistanceExponent>
+      </OrbAIHelper>
+    </AIHelpers>
+
+    <AgentDefinition>
+      <!-- Ressources -->
+      <ConversionNeedPrestigeRatioAgent>
+        <NumberOfTurnToReachObjective>5</NumberOfTurnToReachObjective>
+        <MinimumPriorityValue>0.25</MinimumPriorityValue>
+      </ConversionNeedPrestigeRatioAgent>
+      <DiplomacyNeedPrestigeRatioAgent>
+        <NumberOfTurnToReachObjective>5</NumberOfTurnToReachObjective>
+      </DiplomacyNeedPrestigeRatioAgent>
+      <EconomyAccountNeedMoneyRatioAgent>
+        <NumberOfTurnToReachObjective>10</NumberOfTurnToReachObjective>
+      </EconomyAccountNeedMoneyRatioAgent>
+      <EmpirePlanNeedPrestigeRatioAgent>
+        <!-- The AI will want to stock X% of the wanted empire plan cost. -->
+        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
+      </EmpirePlanNeedPrestigeRatioAgent>
+
+      <!-- Industry heuristic: criticity = (productionTurnCount * productionStress - 1) / (maximumTurnCount - 1) -->
+      <IndustryReferenceTurnCountAgent>
+        <!-- City production maximum turn count (the industry criticity is maximal when the current city production take more than X turn to complete). -->
+        <MaximumTurnCount>8</MaximumTurnCount>
+        <!-- Production stress minimum value E[0,1] -->
+        <ProductionStressMinimumValue>1</ProductionStressMinimumValue>
+      </IndustryReferenceTurnCountAgent>
+      <MoneyReferenceRatioAgent>
+        <!-- We want a bank account at least greater than X turns upkeep. -->
+        <MoneyStockToMaintainUpkeepTurnCount>10</MoneyStockToMaintainUpkeepTurnCount>
+        <!-- We want an income greater than X% of the bank account (positive snowball effect). -->
+        <MoneyIncomeGrowthPercent>0.10</MoneyIncomeGrowthPercent>
+      </MoneyReferenceRatioAgent>
+      <PopulationBuyoutReferenceRatioAgent>
+        <MoneyIncomeBuyoutPercent>0.33</MoneyIncomeBuyoutPercent>
+      </PopulationBuyoutReferenceRatioAgent>
+      <PopulationReferenceTurnCountAgent>
+        <!-- Define the maximum criticy point. MaximumNumberOfTurnToReachNextPopulation = RangeRatio *  IdealNumberOfTurnToReachNextPopulation -->
+        <RangeRatio>1</RangeRatio>
+      </PopulationReferenceTurnCountAgent>
+      <PopulationReferenceTurnCountForSettlerAgent>
+      </PopulationReferenceTurnCountForSettlerAgent>
+      <TechnologyBuyoutReferenceRatioAgent>
+        <IdealTechnologyUnlockPeriod>5</IdealTechnologyUnlockPeriod>
+        <MoneyIncomeBuyoutPercent>0.33</MoneyIncomeBuyoutPercent>
+      </TechnologyBuyoutReferenceRatioAgent>
+      <TechnologyReferenceTurnCountAgent>
+        <IdealTechnologyUnlockPeriod>5</IdealTechnologyUnlockPeriod>
+        <MaximumPeriodGap>15</MaximumPeriodGap>
+      </TechnologyReferenceTurnCountAgent>
+      
+      
+      <!-- Diplomatic term agents -->
+      <!-- You can enter here the attitude score that you want to influence each agent and their degree of importance -->
+      <AllianceTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>1.5</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>1.5</CommonAllyMultiplier>
+        <PositiveContractMultiplier>0.75</PositiveContractMultiplier>
+        <GiftMultiplier>0.25</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>0</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>0</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>0</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1.5</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-2</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.75</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>     
+        <OrbsStolenMultiplier>-0.75</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-1.5</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-1.5</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>1.5</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-1.5</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-1.5</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>1.5</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-1.5</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>1.5</LongTermPeaceMultiplier>
+        <LongTermAllianceMultiplier>0</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>1.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-1.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-1</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>0</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.25</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>0</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.75</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>0.75</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+        <BonusFromDesireForWarWithOthers>70</BonusFromDesireForWarWithOthers>
+        <OpenedTradeBonus>40</OpenedTradeBonus>
+      </AllianceTermAgent>
+      <AskToDeclareWarTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0</PeacefulMultiplier>
+        <CommonEnemyMultiplier>1.5</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>1.5</CommonFriendMultiplier>
+        <CommonAllyMultiplier>1.5</CommonAllyMultiplier>
+        <PositiveContractMultiplier>0.5</PositiveContractMultiplier>
+        <GiftMultiplier>0.5</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>0</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>0</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>0</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-2</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-2</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.75</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-0.75</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>1.5</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.5</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>1.5</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.5</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.5</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>1.5</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.5</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>1.5</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>1.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-1</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.15</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.4</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>0</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.5</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.5</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+      </AskToDeclareWarTermAgent>
+      <CloseBordersTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>-1</PeacefulMultiplier>
+        <CommonEnemyMultiplier>-0.25</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>-0.5</CommonFriendMultiplier>
+        <CommonAllyMultiplier>-0.5</CommonAllyMultiplier>
+        <PositiveContractMultiplier>-0.75</PositiveContractMultiplier>
+        <GiftMultiplier>-0.75</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>-1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>-1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>-1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>0.75</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>0.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>1.5</SpyMultiplier>
+        <PillagingMultiplier>1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>1.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>1.5</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>1.5</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>-0.25</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>1.5</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>1.5</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>-0.25</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>1.5</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>1</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>0.75</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>-1.5</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>-1.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>0.75</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>0.75</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.5</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>1</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>1.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>0</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-1</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>0.1</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0.5</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>0.1</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>0.1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>0.1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>0.1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>0.75</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>0.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>0.1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>0.1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>0.1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>0.1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.1</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>0.1</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>0.1</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>0.1</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+        <BlockedTradePenalty>20</BlockedTradePenalty>
+      </CloseBordersTermAgent>
+      <ColdWarTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>-0.25</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>-0.5</CommonFriendMultiplier>
+        <CommonAllyMultiplier>-0.5</CommonAllyMultiplier>
+        <PositiveContractMultiplier>-1</PositiveContractMultiplier>
+        <GiftMultiplier>-1</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>-1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>-1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>-1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>0.5</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-0.25</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-1</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>1.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-0.25</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-0.25</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>0.25</SpyMultiplier>
+        <PillagingMultiplier>-0.25</PillagingMultiplier>
+        <PillageSucceedMultiplier>-0.25</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-0.25</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>0.25</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-0.25</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.25</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>-0.25</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.25</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.25</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>-0.25</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.25</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-0.75</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-0.75</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>-1.5</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>-1.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.75</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.75</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-0.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.75</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.75</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>1.0</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>1.0</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>-1.5</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-1.5</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-0.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-0.25</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-0.25</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-0.25</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-0.25</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>0.75</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-0.25</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-0.25</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-0.25</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-0.25</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.75</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-1</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-1</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-0.5</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <BaseValue>35</BaseValue>
+        <Multiplier>1</Multiplier>
+        <BlockedTradePenalty>40</BlockedTradePenalty>
+      </ColdWarTermAgent>
+      <CommercialAgreementTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>1.25</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.1</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>1</PositiveContractMultiplier>
+        <GiftMultiplier>1</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.75</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-1</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-1.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-0.75</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.75</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.75</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.75</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.75</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.75</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.75</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-0.75</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-0.75</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0.75</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0.75</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.75</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.75</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.1</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.1</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>0.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.1</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.1</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.25</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-1</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-0.5</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-0.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1.5</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.25</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.75</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.75</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-0.5</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+      </CommercialAgreementTermAgent>
+      <ForceAllianceTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>-0.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>1.5</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.75</CommonFriendMultiplier>
+        <CommonAllyMultiplier>1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>-0.5</PositiveContractMultiplier>
+        <GiftMultiplier>-0.5</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>-0.5</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>-0.5</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>-0.5</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-0.5</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-0.25</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.25</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-0.25</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-0.25</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-0.75</SpyMultiplier>
+        <PillagingMultiplier>-0.25</PillagingMultiplier>
+        <PillageSucceedMultiplier>-0.25</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-0.25</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>0</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>0.25</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>0.25</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.25</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>0.25</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>0.25</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.25</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>0.25</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.75</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.75</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>-0.75</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.5</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>2</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>2</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.25</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>1.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>0</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-2</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.5</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>1</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+      </ForceAllianceTermAgent>
+      <ForcePeaceTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>-1</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.25</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.75</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.75</CommonAllyMultiplier>
+        <PositiveContractMultiplier>-0.5</PositiveContractMultiplier>
+        <GiftMultiplier>-0.5</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>-0.5</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>-0.5</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>-0.5</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>0.25</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>1</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>0.25</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>1</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>1</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-0.75</SpyMultiplier>
+        <PillagingMultiplier>1</PillagingMultiplier>
+        <PillageSucceedMultiplier>1</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>1</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>0</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-0.75</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.75</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.1</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.75</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.75</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.1</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.75</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.75</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>2</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>2</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.5</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>1.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1.5</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0.25</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-0.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-2</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.5</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>1</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+      </ForcePeaceTermAgent>
+      <ForceTruceTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>-1</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.25</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.75</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.75</CommonAllyMultiplier>
+        <PositiveContractMultiplier>-0.5</PositiveContractMultiplier>
+        <GiftMultiplier>-0.5</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>-0.5</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>-0.5</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>-0.5</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>0.25</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>1</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>0.25</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>1</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>1</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-0.75</SpyMultiplier>
+        <PillagingMultiplier>1</PillagingMultiplier>
+        <PillageSucceedMultiplier>1</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>1</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>0</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>0.35</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>0.35</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.35</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>0.35</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>0.35</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.35</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>0.35</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.25</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.25</BetrayedYourFriendMultiplier>
+        <!-- WAR  -->
+        <WarFatigueMultiplier>1</WarFatigueMultiplier>
+        <MyEmpireUnitsKilledDuringWarMultiplier>1</MyEmpireUnitsKilledDuringWarMultiplier>
+        <MyEmpireCitiesBesiegedDuringWarMultiplier>1</MyEmpireCitiesBesiegedDuringWarMultiplier>
+        <MyEmpireCitiesTakenDuringWarMultiplier>1</MyEmpireCitiesTakenDuringWarMultiplier>
+        <OtherEmpireUnitsKilledDuringWarMultiplier>-0.75</OtherEmpireUnitsKilledDuringWarMultiplier>
+        <OtherEmpireCitiesBesiegedDuringWarMultiplier>-0.75</OtherEmpireCitiesBesiegedDuringWarMultiplier>
+        <OtherEmpireCitiesTakenDuringWarMultiplier>-0.75</OtherEmpireCitiesTakenDuringWarMultiplier>
+        <MyEmpireFortressesTakenDuringWarMultiplier>1</MyEmpireFortressesTakenDuringWarMultiplier>
+        <MyEmpireLostNavalRegionControlDuringWarMultiplier>1</MyEmpireLostNavalRegionControlDuringWarMultiplier>
+        <OtherEmpireLostNavalRegionControlDuringWarMultiplier>-1</OtherEmpireLostNavalRegionControlDuringWarMultiplier>
+        <MyEmpireCitiesBombardedDuringWarMultiplier>1</MyEmpireCitiesBombardedDuringWarMultiplier>
+        <OtherEmpireCitiesBombardedDuringWarMultiplier>-1</OtherEmpireCitiesBombardedDuringWarMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.75</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>2</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>2</UnitsInMyTerritoryMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>0.5</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0.25</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-0.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.5</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.5</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+      </ForceTruceTermAgent>
+      <MapExchangeTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>1.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>1.25</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.75</CommonFriendMultiplier>
+        <CommonAllyMultiplier>1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>1</PositiveContractMultiplier>
+        <GiftMultiplier>1</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-1</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.5</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-0.75</SpyMultiplier>
+        <PillagingMultiplier>-1</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-1</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-1</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-1</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.75</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-1</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-1</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.75</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-1</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0.75</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0.75</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-1.25</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-1.25</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>0.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>-0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-0.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>0.25</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>-0.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>-0.75</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-0.2</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>1.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.75</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.75</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>1.5</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <ExplorationLeadBonus>100</ExplorationLeadBonus>
+        <Multiplier>1</Multiplier>
+      </MapExchangeTermAgent>
+      <MarketBanNullificationTermAgent>
+        <BonusPerMarketplaceTechnology>45</BonusPerMarketplaceTechnology>
+      </MarketBanNullificationTermAgent>
+      <MarketBanRemovalTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.1</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>0.5</PositiveContractMultiplier>
+        <GiftMultiplier>0.5</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>0.1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>0.1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>0.1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-0.75</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.25</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-0.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-0.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-0.5</SpyMultiplier>
+        <PillagingMultiplier>-0.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-0.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-0.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-0.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-0.5</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.5</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.5</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.5</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.5</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.5</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.5</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>1</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>1</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>0.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.25</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>1.75</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>0.1</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>0.1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.1</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-0.1</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-1</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-2</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.1</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.2</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.2</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-0.75</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <BaseValue>75</BaseValue>
+        <Multiplier>1</Multiplier>
+      </MarketBanRemovalTermAgent>
+      <MarketBanTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>-0.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>-0.1</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>-0.1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>-0.1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>-0.75</PositiveContractMultiplier>
+        <GiftMultiplier>-0.75</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>-0.75</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>-0.75</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>-0.75</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>1.5</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>0.75</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>0.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>1.5</SpyMultiplier>
+        <PillagingMultiplier>1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>1.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>1</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>1</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>-1.5</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>1</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>1</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>-1.5</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>1</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>-1.5</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>-1.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>0.75</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>0.75</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>1.75</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>-1.25</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-1.25</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>1</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>-0.75</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-1</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.75</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>-0.2</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>1.75</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0.75</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>0.75</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>1.5</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>1.5</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>1.5</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>2</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>1.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>1.5</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>1.5</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>1.5</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>0.75</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>0.75</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>0.75</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <PeacePenalty>30</PeacePenalty>
+        <Multiplier>1</Multiplier>
+      </MarketBanTermAgent>
+      <OpenBordersTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>1</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.25</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.5</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.5</CommonAllyMultiplier>
+        <PositiveContractMultiplier>0.75</PositiveContractMultiplier>
+        <GiftMultiplier>0.75</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.75</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1.5</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-1.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-1</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-1</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.25</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-1</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-1</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.25</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-1</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>1</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>1</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.75</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.75</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>0.5</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>-1</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-1.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>0.1</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>-0.2</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>1</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.75</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0.1</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-0.1</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-0.1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-0.1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-0.1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-0.75</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-0.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-0.1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-0.1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-0.1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-0.1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.1</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.2</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.2</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-0.1</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+        <OpenedTradeBonus>40</OpenedTradeBonus>
+      </OpenBordersTermAgent>
+      <PeaceTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0.75</PeacefulMultiplier>
+        <CommonEnemyMultiplier>1.5</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>1.5</CommonFriendMultiplier>
+        <CommonAllyMultiplier>1.5</CommonAllyMultiplier>
+        <PositiveContractMultiplier>1</PositiveContractMultiplier>
+        <GiftMultiplier>1</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.75</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1.5</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-1.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-1</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-1</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.25</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-1</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-1</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.25</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-1</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-1.0</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-1.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.5</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>0.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.5</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.25</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.25</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>0.5</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>0.25</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-1.5</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-0.25</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.25</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-1</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-1</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-0.25</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+        <OpenedTradeBonus>40</OpenedTradeBonus>
+      </PeaceTermAgent>
+      <PrisonerExchangeTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.1</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>0.5</PositiveContractMultiplier>
+        <GiftMultiplier>0.5</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>0.1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>0.1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>0.1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-0.75</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.25</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-0.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-0.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-0.5</SpyMultiplier>
+        <PillagingMultiplier>-0.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-0.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-0.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-0.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-0.5</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.5</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.5</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.5</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.5</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.5</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.5</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0.5</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.25</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.25</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>0.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.25</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>1.75</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>0.1</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>0.1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.1</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-0.1</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-1</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-2</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.1</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.2</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.2</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-1</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <BaseValue>75</BaseValue>
+        <Multiplier>1</Multiplier>
+      </PrisonerExchangeTermAgent>
+      <ResearchAgreementTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>1.25</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.1</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>1</PositiveContractMultiplier>
+        <GiftMultiplier>1</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.75</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-1</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-1.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-0.75</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.75</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.75</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.75</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.75</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.75</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.75</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-0.75</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-0.75</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0.75</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0.75</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.75</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.75</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.1</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.1</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>0.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.1</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.1</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.25</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-1</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-0.5</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-0.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1.5</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.25</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.75</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.75</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-0.5</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+      </ResearchAgreementTermAgent>
+      <TruceTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.25</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.75</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.75</CommonAllyMultiplier>
+        <PositiveContractMultiplier>0.1</PositiveContractMultiplier>
+        <GiftMultiplier>0.1</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>0.1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>0.1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>0.1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-0.1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-0.25</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.1</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.1</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-0.2</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-0.2</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-0.2</SpyMultiplier>
+        <PillagingMultiplier>-0.2</PillagingMultiplier>
+        <PillageSucceedMultiplier>-0.2</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-0.2</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-0.1</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-0.75</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.75</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.75</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.75</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.75</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.15</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.75</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.15</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.15</BetrayedYourFriendMultiplier>
+        <!-- WAR  -->
+        <WarFatigueMultiplier>1</WarFatigueMultiplier>
+        <MyEmpireUnitsKilledDuringWarMultiplier>1</MyEmpireUnitsKilledDuringWarMultiplier>
+        <MyEmpireCitiesBesiegedDuringWarMultiplier>1</MyEmpireCitiesBesiegedDuringWarMultiplier>
+        <MyEmpireCitiesTakenDuringWarMultiplier>1</MyEmpireCitiesTakenDuringWarMultiplier>
+        <OtherEmpireUnitsKilledDuringWarMultiplier>-1</OtherEmpireUnitsKilledDuringWarMultiplier>
+        <OtherEmpireCitiesBesiegedDuringWarMultiplier>-1</OtherEmpireCitiesBesiegedDuringWarMultiplier>
+        <OtherEmpireCitiesTakenDuringWarMultiplier>-1</OtherEmpireCitiesTakenDuringWarMultiplier>
+        <MyEmpireFortressesTakenDuringWarMultiplier>1</MyEmpireFortressesTakenDuringWarMultiplier>
+        <MyEmpireLostNavalRegionControlDuringWarMultiplier>1</MyEmpireLostNavalRegionControlDuringWarMultiplier>
+        <OtherEmpireLostNavalRegionControlDuringWarMultiplier>-1</OtherEmpireLostNavalRegionControlDuringWarMultiplier>
+        <MyEmpireCitiesBombardedDuringWarMultiplier>1</MyEmpireCitiesBombardedDuringWarMultiplier>
+        <OtherEmpireCitiesBombardedDuringWarMultiplier>-1</OtherEmpireCitiesBombardedDuringWarMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-1</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>1.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>1.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.75</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>1.25</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>0.5</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-0.25</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-0.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-1</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-1</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-0.5</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+      </TruceTermAgent>
+      <VisionAndMapExchangeTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>1.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>1.5</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>1.5</CommonFriendMultiplier>
+        <CommonAllyMultiplier>1.5</CommonAllyMultiplier>
+        <PositiveContractMultiplier>1.5</PositiveContractMultiplier>
+        <GiftMultiplier>1.25</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>1.25</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>1.25</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>1.25</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1.5</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.5</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1.25</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-1.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-1</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-1</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.3</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-1</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-1</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.3</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-1</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>0.75</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>0.75</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-1.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-1.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>0.5</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>-0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-0.75</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>0.5</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>-0.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-1.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>-0.75</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.75</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-0.75</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>1.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-1</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.75</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.25</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>1.5</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <ExplorationLeadBonus>50</ExplorationLeadBonus>
+        <Multiplier>1</Multiplier>
+      </VisionAndMapExchangeTermAgent>
+      <WarTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>-0.25</PeacefulMultiplier>
+        <CommonEnemyMultiplier>-0.25</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>-1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>-1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>-0.3</PositiveContractMultiplier>
+        <GiftMultiplier>-0.2</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>0</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>0</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>0</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>0.75</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>0.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>0.75</SpyMultiplier>
+        <PillagingMultiplier>1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>0.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>0.7</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>1.5</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>-0.2</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>0.9</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>1.5</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>-0.2</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>0.9</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>-1.5</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>-1.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>0.1</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>0.1</BetrayedYourFriendMultiplier>
+        <!-- WAR  -->
+        <WarFatigueMultiplier>-1</WarFatigueMultiplier>
+        <MyEmpireUnitsKilledDuringWarMultiplier>-1</MyEmpireUnitsKilledDuringWarMultiplier>
+        <MyEmpireCitiesBesiegedDuringWarMultiplier>-1</MyEmpireCitiesBesiegedDuringWarMultiplier>
+        <MyEmpireCitiesTakenDuringWarMultiplier>-1</MyEmpireCitiesTakenDuringWarMultiplier>
+        <OtherEmpireUnitsKilledDuringWarMultiplier>1</OtherEmpireUnitsKilledDuringWarMultiplier>
+        <OtherEmpireCitiesBesiegedDuringWarMultiplier>1</OtherEmpireCitiesBesiegedDuringWarMultiplier>
+        <OtherEmpireCitiesTakenDuringWarMultiplier>1</OtherEmpireCitiesTakenDuringWarMultiplier>
+        <MyEmpireFortressesTakenDuringWarMultiplier>-1</MyEmpireFortressesTakenDuringWarMultiplier>
+        <MyEmpireLostNavalRegionControlDuringWarMultiplier>-1</MyEmpireLostNavalRegionControlDuringWarMultiplier>
+        <OtherEmpireLostNavalRegionControlDuringWarMultiplier>1</OtherEmpireLostNavalRegionControlDuringWarMultiplier>
+        <MyEmpireCitiesBombardedDuringWarMultiplier>-1</MyEmpireCitiesBombardedDuringWarMultiplier>
+        <OtherEmpireCitiesBombardedDuringWarMultiplier>1</OtherEmpireCitiesBombardedDuringWarMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>1.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>-0.75</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-0.25</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>1.25</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>-0.75</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-0.25</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.25</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>0.75</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>1.5</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>0.5</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>0.5</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.25</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>1</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>0.75</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>0.5</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>0.8</Multiplier>
+        <BlockedTradePenalty>20</BlockedTradePenalty>
+        <OtherEmpireClosedBordersBonus>40</OtherEmpireClosedBordersBonus>
+      </WarTermAgent>
+      <BlackSpotNullificationTermAgent>
+        <BaseValue>90</BaseValue>
+      </BlackSpotNullificationTermAgent>
+      <BlackSpotRemovalTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>0.1</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>0.1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>0.1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>0.5</PositiveContractMultiplier>
+        <GiftMultiplier>0.5</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>0.1</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>0.1</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>0.1</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-1</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-0.75</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.25</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-0.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-0.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-0.5</SpyMultiplier>
+        <PillagingMultiplier>-0.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-0.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-0.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-0.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>-0.5</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.5</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>0.5</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.5</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.5</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>0.5</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.5</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>1</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>1</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>0.5</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.25</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>1.75</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>0.1</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>0.1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.1</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>-0.1</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>-1</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-2</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>-0.75</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-1.7</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-1.7</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-1</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <BaseValue>75</BaseValue>
+        <Multiplier>1</Multiplier>
+      </BlackSpotRemovalTermAgent>
+      <BlackSpotTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>-0.5</PeacefulMultiplier>
+        <CommonEnemyMultiplier>-0.1</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>-0.1</CommonFriendMultiplier>
+        <CommonAllyMultiplier>-0.1</CommonAllyMultiplier>
+        <PositiveContractMultiplier>-0.75</PositiveContractMultiplier>
+        <GiftMultiplier>-0.75</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>-0.75</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>-0.75</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>-0.75</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>1.5</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>0.75</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>0.5</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>1.5</SpyMultiplier>
+        <PillagingMultiplier>1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>1.5</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>1</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>1</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>-1.5</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>1</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>1</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>-1.5</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>1</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>-1.5</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>-1.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>0.75</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>0.75</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>1.75</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>-1.25</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-1.25</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>1.75</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>-1.25</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- WAR  -->
+        <WarFatigueMultiplier>-0.5</WarFatigueMultiplier>
+        <MyEmpireUnitsKilledDuringWarMultiplier>1.5</MyEmpireUnitsKilledDuringWarMultiplier>
+        <MyEmpireCitiesBesiegedDuringWarMultiplier>1.5</MyEmpireCitiesBesiegedDuringWarMultiplier>
+        <MyEmpireCitiesTakenDuringWarMultiplier>1.5</MyEmpireCitiesTakenDuringWarMultiplier>
+        <OtherEmpireUnitsKilledDuringWarMultiplier>-1</OtherEmpireUnitsKilledDuringWarMultiplier>
+        <OtherEmpireCitiesBesiegedDuringWarMultiplier>-1</OtherEmpireCitiesBesiegedDuringWarMultiplier>
+        <OtherEmpireCitiesTakenDuringWarMultiplier>-1</OtherEmpireCitiesTakenDuringWarMultiplier>
+        <MyEmpireFortressesTakenDuringWarMultiplier>1.5</MyEmpireFortressesTakenDuringWarMultiplier>
+        <MyEmpireLostNavalRegionControlDuringWarMultiplier>1.5</MyEmpireLostNavalRegionControlDuringWarMultiplier>
+        <OtherEmpireLostNavalRegionControlDuringWarMultiplier>-1</OtherEmpireLostNavalRegionControlDuringWarMultiplier>
+        <MyEmpireCitiesBombardedDuringWarMultiplier>1.5</MyEmpireCitiesBombardedDuringWarMultiplier>
+        <OtherEmpireCitiesBombardedDuringWarMultiplier>-1</OtherEmpireCitiesBombardedDuringWarMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>-1</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>-0.75</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>-0.2</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>1.75</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>1</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>0.75</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>1.5</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>1.5</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>1.5</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>2</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>1.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>1.5</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>1.5</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>1.5</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.75</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>1.7</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>1.7</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>1</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <OtherEmpireClosedBordersBonus>40</OtherEmpireClosedBordersBonus>
+        <Multiplier>1</Multiplier>
+      </BlackSpotTermAgent>
+      <AskToBlackSpotTermAgent>
+        <!-- TRUST -->
+        <PeacefulMultiplier>0</PeacefulMultiplier>
+        <CommonEnemyMultiplier>1.5</CommonEnemyMultiplier>
+        <CommonFriendMultiplier>1.5</CommonFriendMultiplier>
+        <CommonAllyMultiplier>1.5</CommonAllyMultiplier>
+        <PositiveContractMultiplier>0.5</PositiveContractMultiplier>
+        <GiftMultiplier>0.5</GiftMultiplier>
+        <MantaAspiratingInMyTerritoryMultiplier>0</MantaAspiratingInMyTerritoryMultiplier>
+        <TerraformedInMyTerritoryMultiplier>0</TerraformedInMyTerritoryMultiplier>
+        <TerraformedNearMyArmiesMultiplier>0</TerraformedNearMyArmiesMultiplier>
+        <LastWarMultiplier>-2</LastWarMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-2</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.75</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-0.75</OrbsStolenMultiplier>
+        <EliminatedAcquaintanceMultiplier>1.5</EliminatedAcquaintanceMultiplier>
+        <EliminatedAllyMultiplier>-0.5</EliminatedAllyMultiplier>
+        <EliminatedEnemyMultiplier>1.5</EliminatedEnemyMultiplier>
+        <EliminatedFriendMultiplier>-0.5</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.5</CityTakenFromAllyMultiplier>
+        <CityTakenFromEnemyMultiplier>1.5</CityTakenFromEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.5</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
+        <LongTermAllianceMultiplier>1.5</LongTermAllianceMultiplier>
+        <LongTermPeaceMultiplier>1.5</LongTermPeaceMultiplier>
+        <BetrayedYourAllyMultiplier>-0.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.5</BetrayedYourFriendMultiplier>
+        <!-- FEAR -->
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-1</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.25</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.5</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <!-- ENVY  -->
+        <MyEmpireLeadScoreMultiplier>0.5</MyEmpireLeadScoreMultiplier>
+        <MyEmpireLeadRegionCountMultiplier>0.5</MyEmpireLeadRegionCountMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
+        <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
+        <LivingSpaceTenseMultiplier>0</LivingSpaceTenseMultiplier>
+        <OtherEmpireLeadRegionCountMultiplier>0</OtherEmpireLeadRegionCountMultiplier>
+        <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
+        <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.25</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.25</OtherEmpireHasUniqueFacilityMultiplier>
+        <OtherEmpireLeadNavalRegionCountMultiplier>-0.5</OtherEmpireLeadNavalRegionCountMultiplier>
+        <!-- GLOBAL -->
+        <Multiplier>1</Multiplier>
+      </AskToBlackSpotTermAgent>
+    </AgentDefinition>
+
+    <MajorEmpire>
+      <!-- % of City improvement to become mature city-->
+      <LevelOfImprovmentForMatureCity>0.5</LevelOfImprovmentForMatureCity>
+      <!-- nb of City extension to become mature city-->
+      <NumberOfExtensionForMatureCity>1</NumberOfExtensionForMatureCity>
+      <!-- nb of City population to become mature city-->
+      <NumberOfPopulationForMatureCity>3</NumberOfPopulationForMatureCity>
+      <!-- nb of turn in Besiege before Attacking City-->
+      <NumberOfTurnInBesiege>3</NumberOfTurnInBesiege>
+      <DefaultUnitPatternCategory>Killer</DefaultUnitPatternCategory>
+      <MilitaryStressCoeff>1.0</MilitaryStressCoeff>
+      <EconomicStressCoeff>1.0</EconomicStressCoeff>
+      <AIEntity_Empire>
+        <AIContext>
+          <MaximalValueForAIParameters>
+            <AICityGrowth>20.0</AICityGrowth>
+            <AICityProduction>20.0</AICityProduction>
+            <AICityMoney>20.0</AICityMoney>
+            <AICityResearch>20.0</AICityResearch>
+            <AICityEmpirePoint>20.0</AICityEmpirePoint>
+            <AICityMoneyUpkeep>20.0</AICityMoneyUpkeep>
+            <AICityMilitary>20.0</AICityMilitary>
+            <AICityApproval>100.0</AICityApproval>
+
+            <AIEmpireProduction>20.0</AIEmpireProduction>
+            <AIBuildingProduction>20.0</AIBuildingProduction>
+            <AIEmpireExploration>25.0</AIEmpireExploration>
+            <AIEmpireColonization>25.0</AIEmpireColonization>
+            <AICityLuxuryResource>10.0</AICityLuxuryResource>
+            <AICityStrategicResource>10.0</AICityStrategicResource>
+
+            <!-- Colonization -->
+            <AIRegionEsperanceDistrictFood>20</AIRegionEsperanceDistrictFood>
+            <AIRegionEsperanceDistrictIndustry>20</AIRegionEsperanceDistrictIndustry>
+            <AIRegionEsperanceDistrictDust>20</AIRegionEsperanceDistrictDust>
+            <AIRegionEsperanceDistrictScience>20</AIRegionEsperanceDistrictScience>
+
+            <AIRegionDistance>1</AIRegionDistance>
+            <AIRegionConnectivity>1</AIRegionConnectivity>
+            <AIRegionStrategicResources>1</AIRegionStrategicResources>
+            <AIRegionLuxuryResources>1</AIRegionLuxuryResources>
+            <AIRegionSize>1</AIRegionSize>
+            <AIRegionNewContinent>1</AIRegionNewContinent>
+            <AIRegionNewContinentState>1</AIRegionNewContinentState>
+            <AIRegionCurrentContinentState>1</AIRegionCurrentContinentState>
+            <AIRegionCurrentVillageState>1</AIRegionCurrentVillageState>
+
+          </MaximalValueForAIParameters>
+        </AIContext>
+
+        <!-- The degree to which various attitude modifiers are taken into account -->
+        <AILayer_Attitude>
+          <!-- ##### -->
+          <!-- TRUST -->
+          <!-- ##### -->
+          <!-- Positive -->
+          <AttitudeScorePeaceful>1</AttitudeScorePeaceful>
+          <AttitudeScoreCommonEnemy>1</AttitudeScoreCommonEnemy>
+          <AttitudeScoreCommonFriend>1</AttitudeScoreCommonFriend>
+          <AttitudeScoreCommonAlly>1</AttitudeScoreCommonAlly>
+          <AttitudeScorePositiveContract>1</AttitudeScorePositiveContract>
+          <AttitudeScoreGift>1</AttitudeScoreGift>
+          <AttitudeScoreMantaAspiratingInMyTerritory>1</AttitudeScoreMantaAspiratingInMyTerritory>
+          <AttitudeScoreLongTermAlliance>1</AttitudeScoreLongTermAlliance>
+          <AttitudeScoreLongTermPeace>1</AttitudeScoreLongTermPeace>
+          <AttitudeScoreTerraformedInMyTerritoryPositive>1</AttitudeScoreTerraformedInMyTerritoryPositive>
+          <AttitudeScoreTerraformedNearMyArmiesPositive>1</AttitudeScoreTerraformedNearMyArmiesPositive>
+          <!-- Negative -->
+          <AttitudeScoreLastWar>1</AttitudeScoreLastWar>
+          <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
+          <AttitudeScoreAggressiveColonization>1</AttitudeScoreAggressiveColonization>
+          <AttitudeScoreNegativeContract>1</AttitudeScoreNegativeContract>
+          <AttitudeScoreVillageConverted>1</AttitudeScoreVillageConverted>
+          <AttitudeScoreRegionalBuildingDestroyed>1</AttitudeScoreRegionalBuildingDestroyed>
+          <AttitudeScoreSpy>1</AttitudeScoreSpy>
+          <AttitudeScorePillaging>1</AttitudeScorePillaging>
+          <AttitudeScorePillageSucceed>1</AttitudeScorePillageSucceed>
+          <AttitudeScoreDismantleDeviceSuffered>1</AttitudeScoreDismantleDeviceSuffered>     
+          <AttitudeScoreOrbsStolen>1</AttitudeScoreOrbsStolen>
+          <AttitudeScoreEliminatedAcquaintance>1</AttitudeScoreEliminatedAcquaintance>
+          <AttitudeScoreEliminatedAlly>1</AttitudeScoreEliminatedAlly>
+          <AttitudeScoreEliminatedEnemy>1</AttitudeScoreEliminatedEnemy>
+          <AttitudeScoreEliminatedFriend>1</AttitudeScoreEliminatedFriend>
+          <AttitudeScoreCityTakenFromAlly>1</AttitudeScoreCityTakenFromAlly>
+          <AttitudeScoreCityTakenFromEnemy>1</AttitudeScoreCityTakenFromEnemy>
+          <AttitudeScoreCityTakenFromFriend>1</AttitudeScoreCityTakenFromFriend>
+          <AttitudeScoreAtWarWithMyAlly>1</AttitudeScoreAtWarWithMyAlly>
+          <AttitudeScoreAlliedWithMyEnemy>1</AttitudeScoreAlliedWithMyEnemy>
+          <AttitudeScoreTerraformedInMyTerritoryNegative>1</AttitudeScoreTerraformedInMyTerritoryNegative>
+          <AttitudeScoreTerraformedNearMyArmiesNegative>1</AttitudeScoreTerraformedNearMyArmiesNegative>
+
+          <!-- #### -->
+          <!-- WAR -->
+          <!-- #### -->
+          <!-- Positive (towards asking for peace) -->
+          <AttitudeScoreWarFatigue>1</AttitudeScoreWarFatigue>
+          <AttitudeScoreMyEmpireUnitsKilledDuringWar>1</AttitudeScoreMyEmpireUnitsKilledDuringWar>
+          <AttitudeScoreMyEmpireCitiesBesiegedDuringWar>1</AttitudeScoreMyEmpireCitiesBesiegedDuringWar>
+          <AttitudeScoreMyEmpireCitiesTakenDuringWar>1</AttitudeScoreMyEmpireCitiesTakenDuringWar>
+          <AttitudeScoreMyEmpireFortressesTakenDuringWar>1</AttitudeScoreMyEmpireFortressesTakenDuringWar>
+          <AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>1</AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>
+          <AttitudeScoreMyEmpireCitiesBombardedDuringWar>1</AttitudeScoreMyEmpireCitiesBombardedDuringWar>
+          <!-- Negative (towards remaining at war) -->
+          <AttitudeScoreOtherEmpireUnitsKilledDuringWar>1</AttitudeScoreOtherEmpireUnitsKilledDuringWar>
+          <AttitudeScoreOtherEmpireCitiesBesiegedDuringWar>1</AttitudeScoreOtherEmpireCitiesBesiegedDuringWar>
+          <AttitudeScoreOtherEmpireCitiesTakenDuringWar>1</AttitudeScoreOtherEmpireCitiesTakenDuringWar>
+          <AttitudeScoreOtherEmpireFortressesTakenDuringWar>1</AttitudeScoreOtherEmpireFortressesTakenDuringWar>
+          <AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>1</AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>
+          <AttitudeScoreOtherEmpireCitiesBombardedDuringWar>1</AttitudeScoreOtherEmpireCitiesBombardedDuringWar>
+          <!-- #### -->
+          <!-- FEAR -->
+          <!-- #### -->
+          <!-- Positive (towards avoiding war) -->
+          <AttitudeScoreMyEmpireLeadMilitaryPower>1</AttitudeScoreMyEmpireLeadMilitaryPower>
+          <AttitudeScoreMyEmpireLeadNavalMilitaryPower>1</AttitudeScoreMyEmpireLeadNavalMilitaryPower>
+          <!-- Negative (towards declaring war) -->
+          <AttitudeScoreOtherEmpireLeadMilitaryPower>1</AttitudeScoreOtherEmpireLeadMilitaryPower>
+          <AttitudeScoreUnitsInMyTerritory>1</AttitudeScoreUnitsInMyTerritory>
+          <AttitudeScoreOtherEmpireLeadNavalMilitaryPower>1</AttitudeScoreOtherEmpireLeadNavalMilitaryPower>
+          <!-- #### -->
+          <!-- ENVY -->
+          <!-- #### -->
+          <!-- Positive (towards avoiding war) -->
+          <AttitudeScoreMyEmpireLeadScore>1</AttitudeScoreMyEmpireLeadScore>
+          <AttitudeScoreMyEmpireLeadRegionCount>1</AttitudeScoreMyEmpireLeadRegionCount>
+          <AttitudeScoreMyEmpireLeadNavalRegionCount>1</AttitudeScoreMyEmpireLeadNavalRegionCount>
+          <!-- Negative (towards declaring war) -->
+          <AttitudeScoreCommonFrontier>1</AttitudeScoreCommonFrontier>
+          <AttitudeScoreOtherEmpireLeadScore>1</AttitudeScoreOtherEmpireLeadScore>
+          <AttitudeScoreLivingSpaceTense>1</AttitudeScoreLivingSpaceTense>
+          <AttitudeScoreOtherEmpireLeadRegionCount>1</AttitudeScoreOtherEmpireLeadRegionCount>
+          <AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
+          <AttitudeScoreVictoryAlertLastEmpireStanding>1</AttitudeScoreVictoryAlertLastEmpireStanding>
+          <AttitudeScoreVictoryAlertExpansion>1</AttitudeScoreVictoryAlertExpansion>
+          <AttitudeScoreVictoryAlertEconomy>1</AttitudeScoreVictoryAlertEconomy>
+          <AttitudeScoreVictoryAlertDiplomacy>1</AttitudeScoreVictoryAlertDiplomacy>
+          <AttitudeScoreVictoryAlertWonder>1</AttitudeScoreVictoryAlertWonder>
+          <AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
+          <AttitudeScoreVictoryAlertSupremacy>1</AttitudeScoreVictoryAlertSupremacy>
+          <AttitudeScoreVictoryAlertQuest>1</AttitudeScoreVictoryAlertQuest>
+          <AttitudeScoreFortressesOwnedInTheSameRegion>1</AttitudeScoreFortressesOwnedInTheSameRegion>
+          <AttitudeScoreOtherEmpireHasUniqueFacility>1</AttitudeScoreOtherEmpireHasUniqueFacility>
+          <AttitudeScoreOtherEmpireLeadNavalRegionCount>1</AttitudeScoreOtherEmpireLeadNavalRegionCount>
+
+          <Facilities>
+           <FacilityUnique1>1</FacilityUnique1>
+           <FacilityUnique2>1</FacilityUnique2>
+           <FacilityUnique3>1</FacilityUnique3>
+           <FacilityUnique4>1</FacilityUnique4>
+           <FacilityUnique5>1</FacilityUnique5>
+           <FacilityUnique6>1</FacilityUnique6>
+           <FacilityUnique7>1</FacilityUnique7>
+           <FacilityUnique8>1</FacilityUnique8>
+           <FacilityUnique9>1</FacilityUnique9>
+           <FacilityUnique10>1</FacilityUnique10>
+           <FacilityUnique11>1</FacilityUnique11>
+           <FacilityUnique12>1</FacilityUnique12>
+           <FacilityUnique13>1</FacilityUnique13>
+          </Facilities>
+        
+      </AILayer_Attitude>
+
+          <AILayer_Altar>
+            <!-- 
+            ################################################
+            PERSONALITY BASE VALUES FOR SEASON EFFECT VOTING
+            ################################################
+            -->
+            <MaximumGainFromXml>10</MaximumGainFromXml>
+            <ElementEvaluatorContextMultiplier>
+              <AIEmpireGrowth>1</AIEmpireGrowth>
+              <AIEmpireProduction>1</AIEmpireProduction>
+              <AIEmpireMoney>1</AIEmpireMoney>           
+              <AIEmpireResearch>1</AIEmpireResearch>
+              <AIEmpireEmpirePoint>1</AIEmpireEmpirePoint>
+              <AIEmpireApproval>1</AIEmpireApproval>          
+
+              <AIEmpireMilitaryPower>1</AIEmpireMilitaryPower>
+              <AIEmpireAntiSpy>1</AIEmpireAntiSpy>
+              <AIEmpirePillageDefense>1</AIEmpirePillageDefense>
+              <AIEmpireCityDefense>1</AIEmpireCityDefense>
+              <AIEmpireStrategicResource>1</AIEmpireStrategicResource>
+              <AIEmpireLuxuryResource>1</AIEmpireLuxuryResource>
+
+              <AIWorldSpy>1</AIWorldSpy>
+              <AIWorldWar>1</AIWorldWar>
+              <AIWorldPeace>1</AIWorldPeace>
+              <AIWorldStrategicMarketPrice>1</AIWorldStrategicMarketPrice>
+              <AIWorldLuxuryMarketPrice>1</AIWorldLuxuryMarketPrice>
+              <AIWorldMercenaryMarketPrice>1</AIWorldMercenaryMarketPrice>
+            </ElementEvaluatorContextMultiplier>
+          </AILayer_Altar>
+
+          <AILayer_Research>        
+          <!-- 
+          #############################################
+          PERSONALITY BASE VALUES FOR TECHNOLOGY CHOICE
+          #############################################
+          -->
+          <MaximumUnlockScore>5</MaximumUnlockScore>  
+          <ElementEvaluatorContextMultiplier>
+            <AIEmpireApproval></AIEmpireApproval>
+            <AIEmpireGrowth>1</AIEmpireGrowth>
+            <AIEmpireProduction>1</AIEmpireProduction>
+            <AIEmpireResearch>1</AIEmpireResearch>
+            <AIEmpireMoney>1</AIEmpireMoney>
+            <AIEmpireEmpirePoint>1</AIEmpireEmpirePoint>
+            <AIEmpirePillageDefense>1</AIEmpirePillageDefense>
+            <AIEmpireAntiSpy>1</AIEmpireAntiSpy>
+            <AIEmpireMilitaryPower>1</AIEmpireMilitaryPower>
+            <AIEmpireCityDefense>1</AIEmpireCityDefense>
+            <AIEmpireVision>1</AIEmpireVision>
+            <AIEmpireBuyout>1</AIEmpireBuyout>
+            <AIEmpireImprovedRuinSearch>1</AIEmpireImprovedRuinSearch>
+            <AIEmpireStrategicResource>1</AIEmpireStrategicResource>
+            <AIEmpireLuxuryResource>1</AIEmpireLuxuryResource>
+            <AIEmpireUnlockShip>1</AIEmpireUnlockShip>
+            <AIEmpireUnlockUnit>1</AIEmpireUnlockUnit>
+            <AIEmpireUnlockSeafaringUnit>1</AIEmpireUnlockSeafaringUnit>
+            <AIEmpireUnlockAssimilation>1</AIEmpireUnlockAssimilation>
+            <AIEmpireUnlockBribe>1</AIEmpireUnlockBribe>
+            <AIEmpireUnlockPillage>1</AIEmpireUnlockPillage>
+            <AIEmpireUnlockPrivateers>1</AIEmpireUnlockPrivateers>
+            <AIEmpireUnlockMarketUnit>1</AIEmpireUnlockMarketUnit>
+            <AIEmpireUnlockMarketResource>1</AIEmpireUnlockMarketResource>
+            <AIEmpireUnlockBooster>1</AIEmpireUnlockBooster>
+            <AIEmpireUnlockBoosterCultist>1</AIEmpireUnlockBoosterCultist>
+            <AIEmpireUnlockDiplomacyPositive>1</AIEmpireUnlockDiplomacyPositive>
+          </ElementEvaluatorContextMultiplier>
+        </AILayer_Research>
+        
+        <AILayer_ResourceManager>
+          <MoneyFactor>0.5</MoneyFactor>
+          <ProductionFactor>10</ProductionFactor>
+          
+          <StrategicResourceMinimumStockPerCity>10</StrategicResourceMinimumStockPerCity>
+          <MaxDeviationFromResourceMinimumStock>0.5</MaxDeviationFromResourceMinimumStock>
+          <AffinityBooster>
+           <CostFactorFromRegistry>0.5</CostFactorFromRegistry>
+          </AffinityBooster>
+          <CityBooster>
+            <GlobalPriority>0.5</GlobalPriority>
+          </CityBooster>
+        </AILayer_ResourceManager>
+                
+        <AILayer_AccountManager>
+          <PercentRetainWhenNotEnough>0.8</PercentRetainWhenNotEnough>
+        </AILayer_AccountManager>
+
+        <AILayer_Diplomacy>
+          <WantedDiplomaticRelationStateMessageRevaluationPeriod>10</WantedDiplomaticRelationStateMessageRevaluationPeriod>
+          <MinimumNumberOfTurnsBetweenPropositions>5</MinimumNumberOfTurnsBetweenPropositions>
+          <MaximumNumberOfTurnsBetweenPropositions>10</MaximumNumberOfTurnsBetweenPropositions>
+          <MaximumNumberOfTurnsBetweenStatusAndForceStatus>25</MaximumNumberOfTurnsBetweenStatusAndForceStatus>
+          <DiplomaticRelationStateAgentCriticityThreshold>0.3</DiplomaticRelationStateAgentCriticityThreshold>
+          <DiplomaticTermAgentCriticityThreshold>0.5</DiplomaticTermAgentCriticityThreshold>
+          <DiplomaticRelationStateAgentCriticityEpsilon>0.05</DiplomaticRelationStateAgentCriticityEpsilon>
+          <MaximumContractPropositionEvaluationScore>3</MaximumContractPropositionEvaluationScore>
+          <MinimumContractPropositionEvaluationScore>0</MinimumContractPropositionEvaluationScore>
+          <MinimumExchangeAmountRatio>0.05</MinimumExchangeAmountRatio>
+          <MaximumExchangeAmountRatio>0.8</MaximumExchangeAmountRatio>
+        </AILayer_Diplomacy>
+
+        <AILayer_EmpirePlan>
+          <MaximumPopulationPercentToReachObjective>0.2</MaximumPopulationPercentToReachObjective>
+        </AILayer_EmpirePlan>
+
+        <AILayer_HealUnits>
+          <UnassignedHeroesLocalPriority>0.2</UnassignedHeroesLocalPriority>
+          <CitiesUnitsLocalPriority>0.2</CitiesUnitsLocalPriority>
+          <ConvertedVillageUnitsLocalPriority>0.2</ConvertedVillageUnitsLocalPriority>
+
+          <HealUnitsGlobalPriority>1</HealUnitsGlobalPriority>
+          <MinimalHealthRatio>0.66</MinimalHealthRatio>
+
+          <HealthRatioBoost>0.2</HealthRatioBoost>
+        </AILayer_HealUnits>
+        
+          <AILayer_Manta>
+            <MaxMantaCount>5</MaxMantaCount>
+            <MaxMantaTurnCount>300</MaxMantaTurnCount>
+            <MaxMantaCountCurveName>none</MaxMantaCountCurveName>
+          </AILayer_Manta>
+
+        <AILayer_Military>
+          <UnitInGarrisonTurnLimit>17</UnitInGarrisonTurnLimit>
+          <UnitInGarrisonTurnLimitForMaxPercent>35</UnitInGarrisonTurnLimitForMaxPercent>
+
+          <UnitInGarrisonPercent>0.4</UnitInGarrisonPercent>
+          <UnitInGarrisonMaxPercent>0.8</UnitInGarrisonMaxPercent>
+          <MinimumUnitsToKeepInGarrison>1</MinimumUnitsToKeepInGarrison>
+
+          <UnitInGarrisonPriorityMultiplierPerSlot>0.3</UnitInGarrisonPriorityMultiplierPerSlot>
+          <UnitRatioBoost>1</UnitRatioBoost>
+
+          <VillageDefenseRatioDeboost>0.4</VillageDefenseRatioDeboost>
+
+          <UnitMaxMilitaryPower>1000</UnitMaxMilitaryPower>
+          <!-- Hard value, must be set after each update of data -->
+          <ArmyMaxMilitaryPower>100000</ArmyMaxMilitaryPower>
+          <!-- Action points, Spent action points reset each turn -->
+
+          <!-- Define the global need for retrofit unit of Military mission. The local priority will be the mission interest.-->
+          <RetrofitGlobalPriority>0.6</RetrofitGlobalPriority>
+        </AILayer_Military>
+
+        <AILayer_Navy>
+          <BasedOnOtherFactor>0.3</BasedOnOtherFactor>
+          <BasedOnGameProgressFactor>0.3</BasedOnGameProgressFactor>
+          <BasedOnSeaPercentageFactor>0.3</BasedOnSeaPercentageFactor>
+          <GameProgressMinTurn>10</GameProgressMinTurn>
+          <GameProgressMaxTurn>200</GameProgressMaxTurn>
+          <GameProgressCurveName>NavalPriorityDefaultCurve</GameProgressCurveName>
+        </AILayer_Navy>
+
+        <AILayer_Strategy>
+          <!-- Focus score factor -->
+          <ResearchScoreFactor>1</ResearchScoreFactor>
+          <EconomicScoreFactor>1</EconomicScoreFactor>
+          <DiplomaticScoreFactor>1</DiplomaticScoreFactor>
+          <PrepareWarScoreFactor>1</PrepareWarScoreFactor>
+          
+          <AIStrategicPlan>
+            <PeaceAdvanced>
+              <MaxBestFocusCooldown>5</MaxBestFocusCooldown>
+            </PeaceAdvanced>
+          </AIStrategicPlan>
+
+          <Network>
+            <MilitaryEmpireNeedAgent>
+              <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
+
+              <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
+              <CityUnitNeedStartTurn>50</CityUnitNeedStartTurn>
+              <CityUnitNeedTurnRatio>50</CityUnitNeedTurnRatio>
+              <MinimumNumberOfUnitPerCity>0</MinimumNumberOfUnitPerCity>
+              <MaximumNumberOfUnitPerCity>5</MaximumNumberOfUnitPerCity>
+
+              <!-- Roaming unit need: NumberOfRoamingUnit = CLAMP((turn - RoamingUnitNeedStartTurn) / RoamingUnitNeedTurnRatio, MinimumNumberOfRoamingUnit, MaximumNumberOfRoamingUnit) -->
+              <RoamingUnitNeedStartTurn>0</RoamingUnitNeedStartTurn>
+              <RoamingUnitNeedTurnRatio>10</RoamingUnitNeedTurnRatio>
+              <MinimumNumberOfRoamingUnit>2</MinimumNumberOfRoamingUnit>
+              <MaximumNumberOfRoamingUnit>8</MaximumNumberOfRoamingUnit>
+
+              <!-- War unit need: NumberOfWarUnit = CLAMP(WarUnitNeedOffset + (turn - WarUnitNeedStartTurn) / WarUnitNeedTurnRatio, MinimumNumberOfWarUnit, MaximumNumberOfWarUnit) -->
+              <WarUnitNeedOffset>4</WarUnitNeedOffset>
+              <WarUnitNeedStartTurn>100</WarUnitNeedStartTurn>
+              <WarUnitNeedTurnRatio>10</WarUnitNeedTurnRatio>
+              <MinimumNumberOfWarUnit>6</MinimumNumberOfWarUnit>
+              <MaximumNumberOfWarUnit>12</MaximumNumberOfWarUnit>
+
+              <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
+            </MilitaryEmpireNeedAgent>
+          </Network>
+        </AILayer_Strategy>
+
+        <AILayer_Village>
+          <TurnLimitBeforeHardPacification>20</TurnLimitBeforeHardPacification>
+          <RetrofitGlobalPriority>0.8</RetrofitGlobalPriority>
+        </AILayer_Village>
+
+        <AILayer_War>
+          <NumberOfMyRegionAroundMultiplier>0.5</NumberOfMyRegionAroundMultiplier>
+          <NumberOfAlliedRegionAroundMultiplier>0.5</NumberOfAlliedRegionAroundMultiplier>
+          <NumberOfPeaceRegionAroundMultiplier>0.5</NumberOfPeaceRegionAroundMultiplier>
+          <NumberOfNeutralRegionAroundMultiplier>0.5</NumberOfNeutralRegionAroundMultiplier>
+          <NumberOfColdWarRegionAroundMultiplier>0.5</NumberOfColdWarRegionAroundMultiplier>
+          <NumberOfWarRegionAroundMultiplier>0.5</NumberOfWarRegionAroundMultiplier>
+
+          <NumberOfVillageUnpacifiedMultiplier>0.5</NumberOfVillageUnpacifiedMultiplier>
+          <NumberOfVillageDestroyedMultiplier>0.5</NumberOfVillageDestroyedMultiplier>
+          <NumberOfVillagePacifiedAndBuiltMultiplier>0.5</NumberOfVillagePacifiedAndBuiltMultiplier>
+
+          <GeostraticScoreMultiplier>0.5</GeostraticScoreMultiplier>
+          <ResourceScoreMultiplier>0.5</ResourceScoreMultiplier>
+          <VillageScoreMultiplier>0.5</VillageScoreMultiplier>
+          <CityQualityScoreMultiplier>0.5</CityQualityScoreMultiplier>
+
+          <RetrofitGlobalPriority>0.8</RetrofitGlobalPriority>
+          <AICommander>
+            <CityMilitaryPowerFactor>1.2</CityMilitaryPowerFactor>
+          </AICommander>
+        </AILayer_War>
+
+        <AILayer_Patrol>
+          <UnitRatioBoost>0.7</UnitRatioBoost>
+        </AILayer_Patrol>
+
+        <AILayer_UnitDesigner>
+          <MaximumModifierValues>
+            <AIEquipmentAttack>84</AIEquipmentAttack>
+            <AIEquipmentDefense>16</AIEquipmentDefense>
+            <AIEquipmentInitiative>21</AIEquipmentInitiative>
+            <AIEquipmentDamage>56</AIEquipmentDamage>
+            <AIEquipmentMaximumHealth>20</AIEquipmentMaximumHealth>
+
+            <AIEquipmentAttackPercent>1</AIEquipmentAttackPercent>
+            <AIEquipmentDefensePercent>1</AIEquipmentDefensePercent>
+            <AIEquipmentInitiativePercent>1</AIEquipmentInitiativePercent>
+            <AIEquipmentDamagePercent>1</AIEquipmentDamagePercent>
+            <AIEquipmentMaximumHealthPercent>1</AIEquipmentMaximumHealthPercent>
+
+            <AIUnitAttackPercent>1</AIUnitAttackPercent>
+            <AIUnitDefensePercent>1</AIUnitDefensePercent>
+            <AIUnitInitiativePercent>1</AIUnitInitiativePercent>
+            <AIUnitDamagePercent>1</AIUnitDamagePercent>
+            <AIUnitMaximumHealthPercent>1</AIUnitMaximumHealthPercent>
+
+            <AIEquipmentMaximumMovement>3</AIEquipmentMaximumMovement>
+
+            <AIItemFood>1</AIItemFood>
+            <AIItemIndustry>1</AIItemIndustry>
+            <AIItemDust>1</AIItemDust>
+            <AIItemScience>1</AIItemScience>
+            <AIItemEmpirePoint>1</AIItemEmpirePoint>
+
+            <GovernorCity>1</GovernorCity>
+            <GovernorEmpire>1</GovernorEmpire>
+            <ArmySupport>1</ArmySupport>
+            <ArmyHero>1</ArmyHero>
+            <Spy>1</Spy>
+
+          </MaximumModifierValues>
+          <NavalMaximumModifierValues>
+            <AIEquipmentAttack>35</AIEquipmentAttack>
+            <AIEquipmentDefense>40</AIEquipmentDefense>
+            <AIEquipmentInitiative>28</AIEquipmentInitiative>
+            <AIEquipmentDamage>20</AIEquipmentDamage>
+            <AIEquipmentMaximumHealth>92</AIEquipmentMaximumHealth>
+
+            <AIEquipmentAttackPercent>1</AIEquipmentAttackPercent>
+            <AIEquipmentDefensePercent>1</AIEquipmentDefensePercent>
+            <AIEquipmentInitiativePercent>1</AIEquipmentInitiativePercent>
+            <AIEquipmentDamagePercent>1</AIEquipmentDamagePercent>
+            <AIEquipmentMaximumHealthPercent>1</AIEquipmentMaximumHealthPercent>
+
+            <AIUnitAttackPercent>1</AIUnitAttackPercent>
+            <AIUnitDefensePercent>1</AIUnitDefensePercent>
+            <AIUnitInitiativePercent>1</AIUnitInitiativePercent>
+            <AIUnitDamagePercent>1</AIUnitDamagePercent>
+            <AIUnitMaximumHealthPercent>1</AIUnitMaximumHealthPercent>
+
+            <AIEquipmentMaximumMovement>3</AIEquipmentMaximumMovement>
+
+            <AIItemFood>1</AIItemFood>
+            <AIItemIndustry>1</AIItemIndustry>
+            <AIItemDust>1</AIItemDust>
+            <AIItemScience>1</AIItemScience>
+            <AIItemEmpirePoint>1</AIItemEmpirePoint>
+
+            <GovernorCity>1</GovernorCity>
+            <GovernorEmpire>1</GovernorEmpire>
+            <ArmySupport>1</ArmySupport>
+            <ArmyHero>1</ArmyHero>
+            <Spy>1</Spy>
+
+          </NavalMaximumModifierValues>
+
+          <ItemCostRatioBoost>0.5</ItemCostRatioBoost>
+          <ItemScoreLimit>0.05</ItemScoreLimit>
+          <NewUnitDesignScoreModifier>0.5</NewUnitDesignScoreModifier>
+
+          <TierModifier>
+            <ItemTier0>0.8</ItemTier0>
+            <ItemTier1>1</ItemTier1>
+            <ItemTier2>1.2</ItemTier2>
+            <ItemTier3>1.4</ItemTier3>
+            <ItemTier4>1.8</ItemTier4>
+          </TierModifier>
+        </AILayer_UnitDesigner>
+
+        <AILayer_EmpireAntiSpy>
+          <ThriftyFactor>0.25</ThriftyFactor>
+          <CarefulnessFactor>0.5</CarefulnessFactor>
+          <!-- The following formula:
+          (1 min 5*($Property(NetCityAntiSpy) max ($Property(NetCityApproval) - 50))/50)
+          Should cause roundups to be less frequent when approval and security are low (and therefore the roundup is unlikely to succeed).
+          In essence it requires a security of at least 20% or an approval rating of at least 70% to not decrease the chance of launching a roundup.
+          -->
+          <RoundUpDesireFormula>$(SpyPresenceProbability) * (1 - ($(ThriftyFactor) * (($Property(Population) / 10) min 1))) * (1 min 5*($Property(NetCityAntiSpy) max ($Property(NetCityApproval) - 50))/50) </RoundUpDesireFormula>
+          <ResearchAntiSpyDesireFormula>2 * $(SpyPresenceProbability) * (1 - ($Property(NetCityAntiSpy) / 100)) * $(CarefulnessFactor)</ResearchAntiSpyDesireFormula>
+        </AILayer_EmpireAntiSpy>
+
+        <AILayer_HeroAssignation>
+          <MaximumHeroCount>15</MaximumHeroCount>
+          <MaximumTurnForHero>150</MaximumTurnForHero>
+          <MaximumFractionOfHeroesSpy>0.3</MaximumFractionOfHeroesSpy>
+          <MinimalTurnBeforeSpying>40</MinimalTurnBeforeSpying>
+          <LimitToExfiltrate>0.2</LimitToExfiltrate>
+          <Utility>
+            <PoisonGovernor>
+              <AssignationCurveName>InfiltrationActionUtilityDefaultCurve</AssignationCurveName>
+              <HeroLevelMaximum>100</HeroLevelMaximum>
+              <HeroLevelAnimationCurveName>InfiltrationActionUtilityDefaultCurve</HeroLevelAnimationCurveName>
+            </PoisonGovernor>
+            <Leech>
+              <MaximumNumberOfTradeRoute>10</MaximumNumberOfTradeRoute>
+              <NumberOfTradeRouteCurve>InfiltrationActionUtilityDefaultCurve</NumberOfTradeRouteCurve>
+            </Leech>
+            <DamageFortification>
+              <BesiegedByMe>0.8</BesiegedByMe>
+              <BesiegedByAlly>0.5</BesiegedByAlly>
+            </DamageFortification>
+            <DecreasePopulation>
+              <MissedPopulationFactor>-0.2</MissedPopulationFactor>
+              <MaximumPopulation>30</MaximumPopulation>
+              <PopulationCurve>InfiltrationActionUtilityDefaultCurve</PopulationCurve>
+              <MaximumYieldPerPopulation>20</MaximumYieldPerPopulation>
+              <YieldCurve>InfiltrationActionUtility_DecreasePopulation_Yield</YieldCurve>
+            </DecreasePopulation>
+            <DecreaseVision>
+              <ArmyVisibleCurveName>InfiltrationActionUtilityDefaultCurve</ArmyVisibleCurveName>
+            </DecreaseVision>
+            <HurtingAllies>
+              <WantWarCurve>InfiltrationActionUtilityDefaultCurve</WantWarCurve>
+              <WantWarFactor>1</WantWarFactor>
+              <!-- should yield boost values between 0 and 1/2 = 0.5 -->
+            </HurtingAllies>
+            <Common>
+              <ActionLevelMaximum>5</ActionLevelMaximum>
+              <ActionLevelFactor>0.2</ActionLevelFactor>
+              <InfiltrationLevelReferenceTurnCount>5</InfiltrationLevelReferenceTurnCount>
+              <InfiltrationLevelFactor>0.3</InfiltrationLevelFactor>
+              <EmpireActionWhenLowCityCount>-0.2</EmpireActionWhenLowCityCount>
+              <BoostThresholdByHeroHealth>1.5</BoostThresholdByHeroHealth>
+              <!-- this will generate boost values over 1 for health below 33% hitpoints -->
+            </Common>
+            <DecreaseMoral>
+              <AtWarWithMe>0.8</AtWarWithMe>
+              <AtWarWithAlly>0.5</AtWarWithAlly>
+              <AtWarWithSomeone>0.3</AtWarWithSomeone>
+
+              <!-- UnitCount boost is computed as it:
+                  boost = UnitCountFactor * InfiltratedEmpire.UnitCount / UnitCountMaximum
+                  -->
+              <UnitCountMaximum>50</UnitCountMaximum>
+              <UnitCountFactor>0.8</UnitCountFactor>
+              <UnitCountCurve>none</UnitCountCurve>
+
+              <!-- MilitaryPower boost is computed as it:
+                  ratio = Min(TheirPower / myPower, MilitaryPowerClamp)
+                  boost = MilitaryPowerFactor * ratio
+                  -->
+              <MilitaryPowerFactor>0.5</MilitaryPowerFactor>
+              <MilitaryPowerClamp>2</MilitaryPowerClamp>
+              <MilitaryPowerCurve>none</MilitaryPowerCurve>
+            </DecreaseMoral>
+            <DecreaseProduction>
+              <!-- IndustryScore boost is computed as it:
+                  ratio = Min(TheirIndustryScore / myIndustryScore, IndustryScoreRatioClamp)
+                  boost = IndustryScoreFactor * ratio
+                  -->
+              <IndustryScoreFactor>0.5</IndustryScoreFactor>
+              <IndustryScoreRatioClamp>2</IndustryScoreRatioClamp>
+              <IndustryScoreCurve>none</IndustryScoreCurve>
+
+              <SameWonderBoost>0.5</SameWonderBoost>
+              <UnitDuringWarBoost>0.5</UnitDuringWarBoost>
+            </DecreaseProduction>
+            <StealTechnology>
+              <NotAtMaxEraFactor>-0.2</NotAtMaxEraFactor>
+            </StealTechnology>
+          </Utility>
+        </AILayer_HeroAssignation>
+
+        <AILayer_ArmyManagement>
+          <PillageOpportunityBoost>0</PillageOpportunityBoost>
+          <PillageOpportunityBoostByTurn>
+            <CurveName>NoCurve</CurveName>
+            <MaximumTurn>200</MaximumTurn>
+          </PillageOpportunityBoostByTurn>
+        </AILayer_ArmyManagement>
+
+        <AILayer_Colonization>
+          <EmpireApprovalNeededToEngageColonization>40</EmpireApprovalNeededToEngageColonization>
+          <AcceptedNumberOfUnPacifiedRegion>2</AcceptedNumberOfUnPacifiedRegion>
+        </AILayer_Colonization>
+
+        <AILayer_Trade>
+          <!-- [0,1] proportion of produced lux and strat AI will magically sell to market: AI's resources won't be ponctionned, and AI won't earn any money for it ! -->
+          <MagicResourceSellingProportion>0.05</MagicResourceSellingProportion>
+          <MinimalMagicTimeRange>4</MinimalMagicTimeRange>
+          <MaximalMagicTimeRange>10</MaximalMagicTimeRange>
+        </AILayer_Trade>
+      </AIEntity_Empire>
+
+      <AIEntity_City>
+        <AIContext>
+          <MaximalValueForAIParameters>
+            <AICityGrowth>20.0</AICityGrowth>
+            <AICityProduction>15.0</AICityProduction>
+            <AICityMoney>20.0</AICityMoney>
+            <AICityResearch>20.0</AICityResearch>
+            <AICityEmpirePoint>15.0</AICityEmpirePoint>
+            <AICityMoneyUpkeep>20.0</AICityMoneyUpkeep>
+            <AICityMilitary>20.0</AICityMilitary>
+            <AICityDefense>400.0</AICityDefense>
+
+            <AICityAntiSpy>100</AICityAntiSpy>
+
+            <AIEmpireExploration>25.0</AIEmpireExploration>
+            <AIEmpireColonization>25.0</AIEmpireColonization>
+            <AICityLuxuryResource>15.0</AICityLuxuryResource>
+            <AICityStrategicResource>15.0</AICityStrategicResource>
+            <AIEmpireMilitaryDefense>50.0</AIEmpireMilitaryDefense>
+            <AIEmpireMilitaryOffense>50.0</AIEmpireMilitaryOffense>
+          </MaximalValueForAIParameters>
+        </AIContext>
+
+        <AILayer_Population>
+          <PopulationThresholdForSacrifice>8</PopulationThresholdForSacrifice>
+          <ApprovalThresholdForSacrifice>40</ApprovalThresholdForSacrifice>
+        </AILayer_Population>
+
+        <AILayer_Production>
+          <SettlerEconomicalStress>-0.2</SettlerEconomicalStress>
+          <MinimalTurnDuration>5</MinimalTurnDuration>
+          <MaximalTurnDuration>30</MaximalTurnDuration>
+          <MaximalTurnDurationBoost>-0.95</MaximalTurnDurationBoost>
+          <MaximalUnitDistance>10</MaximalUnitDistance>
+          <MaximalUnitDistanceBoost>-0.5</MaximalUnitDistanceBoost>
+          <MinimalDevelopmentRatioForUnit>0.6</MinimalDevelopmentRatioForUnit>
+          <MaximalDevelopmentRatioBoost>0.6</MaximalDevelopmentRatioBoost>
+
+          <!-- 
+          ########################################
+          PERSONALITY BASE VALUES IMPROVEMENT CHOICE
+          ########################################
+          -->
+          <ElementEvaluatorContextMultiplier>
+            <AICityApproval></AICityApproval>
+            <AICityGrowth>1</AICityGrowth>
+            <AICityProduction>1</AICityProduction>
+            <AICityResearch>1</AICityResearch>
+            <AICityMoney>1</AICityMoney>
+            <AICityEmpirePoint>1</AICityEmpirePoint>
+            <AICityMoneyUpkeep>1</AICityMoneyUpkeep>
+            <AICityDefense>1</AICityDefense>
+            <AICityPillageDefense>1</AICityPillageDefense>
+            <AICityLuxuryResource>1</AICityLuxuryResource>
+            <AICityStrategicResource>1</AICityStrategicResource>
+            <AICityAntiSpy>1</AICityAntiSpy>
+            <AIEmpireMilitaryPower>1</AIEmpireMilitaryPower>
+            <AIEmpireVision>1</AIEmpireVision>
+          </ElementEvaluatorContextMultiplier>
+        </AILayer_Production>
+
+        <AILayer_CityAntiSpy>
+          <SpyPresenceProbabilityDecreasePercent>0.05</SpyPresenceProbabilityDecreasePercent>
+          <ProductionAntiSpyDesireFormula>2 * $(SpyPresenceProbability) * (1 - ($Property(NetCityAntiSpy) / 100)) * $(CarefulnessFactor)</ProductionAntiSpyDesireFormula>
+        </AILayer_CityAntiSpy>
+      </AIEntity_City>
+    </MajorEmpire>
+
+    <MinorEmpire>
+      <EraLevelFactor>0.5</EraLevelFactor>
+      <TurnLevelFactor>0.0</TurnLevelFactor>
+      <!--  level>era * eraFactor + turn * turnFactor -->
+      <MaxArmySpawnedPerTurn>1</MaxArmySpawnedPerTurn>
+    </MinorEmpire>
+    
+    <NavalEmpire>
+      <AILayer_NavalProduction>
+        <EraLevelFactor>0.5</EraLevelFactor>
+        <TurnLevelFactor>0.0</TurnLevelFactor>
+      </AILayer_NavalProduction>
+      <!--  level>era * eraFactor + turn * turnFactor -->
+    </NavalEmpire>
+
+    <UnitAttributesBoundaries>
+      <AIUnitAttributeAttack_MaxValue>450</AIUnitAttributeAttack_MaxValue>
+      <!-- includes initial stats, leveling, item efficiency, EP & Luxury, Moral, and arbitrary 30% from capacity -->
+      <AIUnitAttributeDamage_MaxValue>350</AIUnitAttributeDamage_MaxValue>
+      <AIUnitAttributeDefense_MaxValue>450</AIUnitAttributeDefense_MaxValue>
+      <AIUnitAttributeMaxHealth_MaxValue>600</AIUnitAttributeMaxHealth_MaxValue>
+      <AIUnitAttributeInitiative_MaxValue>250</AIUnitAttributeInitiative_MaxValue>
+      <AIUnitAttributeMovement_MaxValue>14</AIUnitAttributeMovement_MaxValue>
+      <AIUnitAttributeRange_MaxValue>7</AIUnitAttributeRange_MaxValue>
+    </UnitAttributesBoundaries>
+
+    <BuyoutBoundaries>
+      <AIMaxTurnGain>42</AIMaxTurnGain>
+    </BuyoutBoundaries>
+
+    <Battle>
+      <AILayer_Encounter>
+        <!-- Fearfulness value in [-1,inf[. -1: AI is fearless.  0: AI will get satisfied with a draw (everybody dead both sides).  1: AI is fearful, it will tend attack only in case where it largely dominate. -->
+        <Fearfulness>0.20</Fearfulness>
+        <!-- >=0 higher values means the AI will more easily decrease the perceived MP of units that it has defeated more easily than expected -->
+        <BalanceOfPowerDecreaseFactor>1.00</BalanceOfPowerDecreaseFactor>
+        <!-- >=0 higher values means the AI will more easily increase the perceived MP of units that it was unexpectedly defeated by -->
+        <BalanceOfPowerIncreaseFactor>0.75</BalanceOfPowerIncreaseFactor>
+      </AILayer_Encounter>
+    </Battle>
+    
+    <Behavior>
+      <GlobalSafePathOpportunity>1.25</GlobalSafePathOpportunity>
+    </Behavior>
+  </AI>
+</Registry>

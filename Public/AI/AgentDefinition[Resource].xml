@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!--RESEARCH-->
+
+    <SimulationAgent Name="TechnologyReferenceTurnCount" AssemblyQualifiedName="TechnologyReferenceTurnCountAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>-1</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="TechnologyReferenceTurnCount_Default" />
+
+        <InfluencesReceived>
+
+            <SimulationInfluence Path="ResourceEvaluationAmas/CityAgentGroup" OriginAgentReference="NetCityResearch" Value="-40">
+                <OriginPrerequisites>
+                    <PathPrerequisite Inverted="true">ClassCity,EnableAIOnPlayerCity</PathPrerequisite>
+                </OriginPrerequisites>
+            </SimulationInfluence>
+
+        </InfluencesReceived>
+    </SimulationAgent>
+
+
+    <SimulationAgent Name="TechnologyBuyoutReferenceRatio" AssemblyQualifiedName="TechnologyBuyoutReferenceRatioAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="TechnologyBuyoutReferenceRatio_Default" />
+
+        <InfluencesReceived>
+
+            <ConstantInfluence Path="ResourceEvaluationAmas" OriginAgentReference="NetEmpireMoney" Value="80" />
+
+        </InfluencesReceived>
+    </SimulationAgent>
+
+
+    <!--MONEY-->
+
+    <SimulationNormalizedComputedAgent Name="NetEmpireMoney" AssemblyQualifiedName="NetEmpireMoneyAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="Flat0" />
+
+        <InfluencesReceived>
+
+            <SimulationInfluence Path="ResourceEvaluationAmas/CityAgentGroup" OriginAgentReference="NetCityMoney" Value="100">
+                <OriginPrerequisites>
+                    <PathPrerequisite Inverted="true">ClassCity,EnableAIOnPlayerCity</PathPrerequisite>
+                </OriginPrerequisites>
+            </SimulationInfluence>
+
+        </InfluencesReceived>
+    </SimulationNormalizedComputedAgent>
+
+
+    <SimulationAgent Name="MoneyReferenceRatio" AssemblyQualifiedName="MoneyReferenceRatioAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="MoneyReference_Default" />
+
+        <InfluencesReceived>
+
+            <ConstantInfluence Path="ResourceEvaluationAmas" OriginAgentReference="NetEmpireMoney" Value="100" />
+
+        </InfluencesReceived>
+    </SimulationAgent>
+
+
+    <SimulationAgent Name="EconomyAccountNeedMoneyRatio" AssemblyQualifiedName="EconomyAccountNeedMoneyRatioAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="AccountNeedMoneyRatio_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence Path="ResourceEvaluationAmas" OriginAgentReference="NetEmpireMoney" Value="-40" />
+        </InfluencesReceived>
+    </SimulationAgent>
+
+
+    <!--PRESTIGE-->
+
+    <SimulationNormalizedComputedAgent Name="NetEmpirePrestige" AssemblyQualifiedName="NetEmpirePrestigeAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <!--TODO : set with correct value-->
+        <CurveReference Name="Flat0" />
+
+        <InfluencesReceived>
+
+            <SimulationInfluence Path="ResourceEvaluationAmas/CityAgentGroup" OriginAgentReference="NetCityEmpirePoint" Value="90" >
+                <OriginPrerequisites>
+                    <PathPrerequisite Inverted="true">ClassCity,EnableAIOnPlayerCity</PathPrerequisite>
+                </OriginPrerequisites>
+            </SimulationInfluence>
+
+        </InfluencesReceived>
+    </SimulationNormalizedComputedAgent>
+
+
+    <SimulationAgent Name="EmpirePlanNeedPrestigeRatio" AssemblyQualifiedName="EmpirePlanNeedPrestigeRatioAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="EmpirePlanNeedPrestigeRatio_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence Path="ResourceEvaluationAmas" OriginAgentReference="NetEmpirePrestige" Value="-100" />
+        </InfluencesReceived>
+    </SimulationAgent>
+
+
+    <SimulationAgent Name="DiplomacyNeedPrestigeRatio" AssemblyQualifiedName="DiplomacyNeedPrestigeRatioAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="DiplomacyNeedPrestigeRatio_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence Path="ResourceEvaluationAmas" OriginAgentReference="NetEmpirePrestige" Value="-100" />
+        </InfluencesReceived>
+    </SimulationAgent>
+
+
+    <!-- Agent enabled only when the faction trait FactionTraitCultists14 is in the empire faction. -->
+    <SimulationAgent Name="ConversionNeedPrestigeRatio" AssemblyQualifiedName="ConversionNeedPrestigeRatioAgent, Assembly-CSharp" DisableAdjustValueTracker="true" IsSimulationObjectNotRequired="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="ConversionNeedPrestigeRatio_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence Path="ResourceEvaluationAmas" OriginAgentReference="NetEmpirePrestige" Value="-100" />
+        </InfluencesReceived>
+    </SimulationAgent>
+
+    <!--FOOD-->
+
+    <SimulationNormalizedAgent Name="FoodPopulation">
+
+        <PathPrerequisite Inverted="true">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+
+        <ValueInit>
+            <InterpreterValue>$Property(ClassCity:FoodPopulation)</InterpreterValue>
+        </ValueInit>
+
+        <MaximumValue>
+            <InterpreterValue>$Property(ClassCity:Workers)</InterpreterValue>
+        </MaximumValue>
+
+        <!-- In percentage of total city population. -->
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="Flat0" />
+
+        <InfluencesReceived>
+        </InfluencesReceived>
+    </SimulationNormalizedAgent>
+
+    <PopulationReferenceTurnCountAgent Name="PopulationReferenceTurnCount" DisableAdjustValueTracker="true">
+
+        <PathPrerequisite Inverted="true">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+        <PathPrerequisite Inverted="true">ClassCity,CityStatusProducingSettler</PathPrerequisite>
+
+        <!--<AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>-->
+
+        <ValueMin>-1</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <!--<IdealNumberOfTurnToReachNextPopulation>(3 + ($Property(ClassCity:Population) * 1.8)) * (1+ ($Count(../ClassEmpire,#Winter) * 4) ) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>-->
+        <IdealNumberOfTurnToReachNextPopulation>(5 + ($Property(ClassCity:Population) * $Property(ClassCity:Population) * $Property(ClassCity:Population))) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>
+
+        <CurveReference Name="PopulationReferenceTurnCount_Default" />
+
+        <InfluencesReceived>
+            <!--FunctionInfluence AssemblyQualifiedName="FoodToPopulationInfluence, Assembly-CSharp" OriginAgentReference="FoodPopulation" Value="-100" -->
+            <ConstantInfluence OriginAgentReference="FoodPopulation" Value="-21" />
+            <ConstantInfluence OriginAgentReference="IndustryPopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="SciencePopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="DustPopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="CityPointPopulation" Value="20" />
+        </InfluencesReceived>
+    </PopulationReferenceTurnCountAgent>
+
+    <PopulationReferenceTurnCountForSettlerAgent Name="PopulationReferenceTurnCountForSettler" DisableAdjustValueTracker="true">
+
+        <PathPrerequisite Inverted="true">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+        <PathPrerequisite Inverted="false">ClassCity,CityStatusProducingSettler</PathPrerequisite>
+
+        <!--<AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>-->
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <PopulationReference>($Count(ClassCity/DistrictTypeExtension) + 1) * 2</PopulationReference>
+
+        <CurveReference Name="PopulationReferenceTurnCountForSettler_Default"/>
+
+        <InfluencesReceived>
+            <!--FunctionInfluence AssemblyQualifiedName="FoodToPopulationInfluence, Assembly-CSharp" OriginAgentReference="FoodPopulation" Value="-100" -->
+            <ConstantInfluence OriginAgentReference="FoodPopulation" Value="-21" />
+            <ConstantInfluence OriginAgentReference="IndustryPopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="SciencePopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="DustPopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="CityPointPopulation" Value="20" />
+        </InfluencesReceived>
+    </PopulationReferenceTurnCountForSettlerAgent>
+
+    <!--INDUSTRY-->
+
+    <SimulationNormalizedAgent Name="IndustryPopulation">
+        <ValueInit>
+            <InterpreterValue>$Property(ClassCity:IndustryPopulation)</InterpreterValue>
+        </ValueInit>
+
+        <MaximumValue>
+            <InterpreterValue>$Property(ClassCity:Workers)</InterpreterValue>
+        </MaximumValue>
+
+        <!-- In percentage of total city population. -->
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="Flat0" />
+
+        <InfluencesReceived>
+        </InfluencesReceived>
+    </SimulationNormalizedAgent>
+
+
+    <SimulationAgent Name="IndustryReferenceTurnCount" AssemblyQualifiedName="IndustryReferenceTurnCountAgent, Assembly-CSharp" DisableAdjustValueTracker="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="IndustryReferenceTurnCount_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence OriginAgentReference="FoodPopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="IndustryPopulation" Value="-21" />
+            <ConstantInfluence OriginAgentReference="SciencePopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="DustPopulation" Value="20" />
+            <ConstantInfluence OriginAgentReference="CityPointPopulation" Value="20" />
+        </InfluencesReceived>
+    </SimulationAgent>
+
+
+    <!--SCIENCE-->
+
+    <SimulationNormalizedAgent Name="SciencePopulation">
+        <ValueInit>
+            <InterpreterValue>$Property(ClassCity:SciencePopulation)</InterpreterValue>
+        </ValueInit>
+
+        <MaximumValue>
+            <InterpreterValue>$Property(ClassCity:Workers)</InterpreterValue>
+        </MaximumValue>
+
+        <!-- In percentage of total city population. -->
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="Flat0" />
+
+        <InfluencesReceived>
+        </InfluencesReceived>
+    </SimulationNormalizedAgent>
+
+
+    <SimulationNormalizedComputedAgent Name="NetCityResearch" DisableAdjustValueTracker="true">
+        <ValueInit>
+            <InterpreterValue>$Property(ClassCity:NetCityResearch)</InterpreterValue>
+        </ValueInit>
+
+        <MinimumValue>
+            <InterpreterValue>$Property(ClassCity:NetCityResearch) - ($Property(ClassCity:SciencePopulation) * $Property(ClassCity:BaseSciencePerPopulation))</InterpreterValue>
+        </MinimumValue>
+
+        <MaximumValue>
+            <InterpreterValue>$Property(ClassCity:NetCityResearch) + ($Property(ClassCity:Workers) - $Property(ClassCity:SciencePopulation)) * $Property(ClassCity:BaseSciencePerPopulation)</InterpreterValue>
+        </MaximumValue>
+
+        <Value>
+            <!--$(Input) == FoodPopulation estimated by amas.-->
+            <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+            <InterpreterValue>$Property(ClassCity:NetCityResearch) + ($(Input) - $Property(ClassCity:SciencePopulation)) * $Property(ClassCity:BaseSciencePerPopulation)</InterpreterValue>
+        </Value>
+
+        <!-- In percentage of maximum science point producible by the city if the total population is allowed in science. -->
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="NetCityResearch_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence OriginAgentReference="FoodPopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="IndustryPopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="SciencePopulation" Value="21" />
+            <ConstantInfluence OriginAgentReference="DustPopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="CityPointPopulation" Value="-20" />
+        </InfluencesReceived>
+    </SimulationNormalizedComputedAgent>
+
+
+    <!--DUST-->
+
+    <SimulationNormalizedAgent Name="DustPopulation">
+        <ValueInit>
+            <InterpreterValue>$Property(ClassCity:DustPopulation)</InterpreterValue>
+        </ValueInit>
+
+        <MaximumValue>
+            <InterpreterValue>$Property(ClassCity:Workers)</InterpreterValue>
+        </MaximumValue>
+
+        <!-- In percentage of total city population. -->
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="Flat0" />
+
+        <InfluencesReceived>
+        </InfluencesReceived>
+    </SimulationNormalizedAgent>
+
+
+    <SimulationNormalizedComputedAgent Name="NetCityMoney" DisableAdjustValueTracker="true">
+        <ValueInit>
+            <InterpreterValue>$Property(ClassCity:NetCityMoney)</InterpreterValue>
+        </ValueInit>
+
+        <MinimumValue>
+            <InterpreterValue>$Property(ClassCity:NetCityMoney) - ($Property(ClassCity:DustPopulation) * $Property(ClassCity:BaseDustPerPopulation))</InterpreterValue>
+        </MinimumValue>
+
+        <MaximumValue>
+            <InterpreterValue>$Property(ClassCity:NetCityMoney) + ($Property(ClassCity:Workers) - $Property(ClassCity:DustPopulation)) * $Property(ClassCity:BaseDustPerPopulation)</InterpreterValue>
+        </MaximumValue>
+
+        <Value>
+            <!--$(Input) == FoodPopulation estimated by amas.-->
+            <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+            <InterpreterValue>$Property(ClassCity:NetCityMoney) + ($(Input) - $Property(ClassCity:DustPopulation)) * $Property(ClassCity:BaseDustPerPopulation)</InterpreterValue>
+        </Value>
+
+        <!-- In percentage of maximum science point producible by the city if the total population is allowed in science. -->
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="NetCityMoney_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence OriginAgentReference="FoodPopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="IndustryPopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="SciencePopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="DustPopulation" Value="21" />
+            <ConstantInfluence OriginAgentReference="CityPointPopulation" Value="-20" />
+        </InfluencesReceived>
+    </SimulationNormalizedComputedAgent>
+
+
+    <SimulationAgent Name="PopulationBuyoutReferenceRatio" AssemblyQualifiedName="PopulationBuyoutReferenceRatioAgent, Assembly-CSharp" DisableAdjustValueTracker="true">
+
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="PopulationBuyoutReferenceRatio_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence OriginAgentReference="NetCityMoney" Value="100" />
+        </InfluencesReceived>
+    </SimulationAgent>
+
+
+    <!--CITY POINT-->
+
+    <SimulationNormalizedAgent Name="CityPointPopulation">
+        <ValueInit>
+            <InterpreterValue>$Property(ClassCity:CityPointPopulation)</InterpreterValue>
+        </ValueInit>
+
+        <MaximumValue>
+            <InterpreterValue>$Property(ClassCity:Workers)</InterpreterValue>
+        </MaximumValue>
+
+        <!-- In percentage of total city population. -->
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="Flat0" />
+
+        <InfluencesReceived>
+        </InfluencesReceived>
+    </SimulationNormalizedAgent>
+
+
+    <SimulationNormalizedComputedAgent Name="NetCityEmpirePoint" DisableAdjustValueTracker="true">
+        <ValueInit>
+            <InterpreterValue>$Property(ClassCity:NetCityEmpirePoint)</InterpreterValue>
+        </ValueInit>
+
+        <MinimumValue>
+            <InterpreterValue>$Property(ClassCity:NetCityEmpirePoint) - ($Property(ClassCity:CityPointPopulation) * $Property(ClassCity:BaseCityPointPerPopulation))</InterpreterValue>
+        </MinimumValue>
+
+        <MaximumValue>
+            <InterpreterValue>$Property(ClassCity:NetCityEmpirePoint) + ($Property(ClassCity:Workers) - $Property(ClassCity:CityPointPopulation)) * $Property(ClassCity:BaseCityPointPerPopulation)</InterpreterValue>
+        </MaximumValue>
+
+        <Value>
+            <!--$(Input) == FoodPopulation estimated by amas.-->
+            <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+            <InterpreterValue>$Property(ClassCity:NetCityEmpirePoint) + ($(Input) - $Property(ClassCity:CityPointPopulation)) * $Property(ClassCity:BaseCityPointPerPopulation)</InterpreterValue>
+        </Value>
+
+        <!-- In percentage of maximum empire point producible by the city if the total population is allowed in City Point. -->
+        <ValueMin>0</ValueMin>
+        <ValueMax>1</ValueMax>
+
+        <CurveReference Name="NetCityEmpirePoint_Default" />
+
+        <InfluencesReceived>
+            <ConstantInfluence OriginAgentReference="FoodPopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="IndustryPopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="SciencePopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="DustPopulation" Value="-20" />
+            <ConstantInfluence OriginAgentReference="CityPointPopulation" Value="21" />
+        </InfluencesReceived>
+    </SimulationNormalizedComputedAgent>
+
+</Datatable>

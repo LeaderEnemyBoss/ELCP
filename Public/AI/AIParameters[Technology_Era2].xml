@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- "Aquacultural Science" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionFood1">
+    <!-- "Irrigation Networks": 5 Glassteel required -->
+    <AIParameter Name="DistrictFoodRiver"     Value="3 
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
+    <!-- "Fish Farm": 5 Glassteel required -->
+    <AIParameter Name="DistrictFoodWater"     Value="3 
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Public Granary" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionFood2">
+    <!-- "Public Granary": 5 Glassteel required -->
+    <AIParameter Name="CityFood"              Value="15 
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
+    <AIParameter Name="BaseFoodPerPopulation" Value="2 
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Management Sciences" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionIndustry1">
+    <!-- "Lumber Mill": 5 Titanium required -->
+    <AIParameter Name="DistrictIndustryForest"        Value="1
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
+    <!-- "Apprenticeship Registry": 5 Titanium required -->
+    <AIParameter Name="DistrictIndustryExploitation"  Value="1
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Hydrology" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionIndustry2">
+    <!-- "Canal System" -->
+    <AIParameter Name="DistrictIndustryIndustrySummer"      Value="1"/>
+    <!-- "Canal Locks": 5 Titanium required -->
+    <AIParameter Name="BaseIndustryPerPopulation_NationalBuilding"     Value="5
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Alchemy Workshop" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionScience3">
+    <!-- "Alchemy Workshop": 5 Titanium required -->
+    <AIParameter Name="CityScience"             Value="15
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
+    <AIParameter Name="CitySciencePercent"      Value="0.2
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Central Market" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionApproval2">
+    <!-- "Central Market": 2 Glassteel required -->
+    <AIParameter Name="CityApproval"              Value="25
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 2)))"/>
+    <AIParameter Name="CityFoodPercentEcstatic"   Value="0.1
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 2)))"/>
+    <AIParameter Name="CityMoneyPercentEcstatic"  Value="0.1
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 2)))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Citizen Armies" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionMilitaryRecruitmentBonus1">
+    <!-- "Conscription Center" -->
+    <AIParameter Name="CityRecruitInitialExperience"            Value="40"/>
+    <!-- "Defensive Wards": 5 Glassteel required -->
+    <AIParameter Name="CityDefensePerPop_NationalBuilding"      Value="30
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Prisoners, Slaves and Volunteers" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionConstructionBuyout">
+    <AIParameter Name="EmpireBuyout" Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Meritocratic Promotion" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionArmySize1">
+    <AIParameter Name="CityMilitia" Value="1"/>
+    <AIParameter Name="EmpireArmySize" Value="2"/>
+    <AIParameter Name="EmpireUnitEquipmentSlot" Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Shipyard" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionShip">
+    <AIParameter Name="EmpireUnlockShip" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Glory of Empire" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionEmpirePoint1">
+    <!-- "Glory of Empire" -->
+    <AIParameter Name="CityCityPoint"               Value="5"  />
+    <AIParameter Name="BaseCityPointPerPopulation"  Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Diplomat's Manse" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionDiplomacyPeace">
+    <AIParameter Name="EmpireUnlockPeace" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Alchemical Alloys"-->
+  <AIParameterDatatableElement Name="TechnologyDefinitionWeaponCommonTier2">
+    <AIParameter Name="EmpireUnlockWeaponCommon" Value="1.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Alchemical Armor" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionArmorCommonTier2">
+    <AIParameter Name="EmpireUnlockArmorCommon" Value="1.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Imperial Coinage" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionMarketplaceResources">
+    <AIParameter Name="EmpireUnlockMarketResource"     Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Right of Way" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRoad">
+    <AIParameter Name="EmpireUnlockLandTrade" Value="1"/>
+    <AIParameter Name="EmpireFasterMovement" Value="0.2 * $Property(EmpireTypeMajor:EmpireScaleFactor)"/>
+    <AIParameter Name="EmpireUnlockWatchTowers"  Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Native District" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionAssimilationLimitMax1">
+    <AIParameter Name="EmpireUnlockAssimilation" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Fomorian Fireship" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionNavalUnit2">
+    <AIParameter Name="EmpireUnlockUnitFrigate" Value="1"/>
+  </AIParameterDatatableElement>
+</Datatable>

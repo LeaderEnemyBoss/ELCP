@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!-- 
+    ###################
+    AVAILABLE VARIABLES
+    ###################
+
+    Actors:
+    * Provider: Empire which provide simulation object
+    * Receiver: Empire which receive simulation object
+    * MyEmpire: The AI's empire simulation object
+    * OtherEmpire: The empire the AI is negociating with
+    
+    Desire to propose various diplomatic terms
+    * WarTermAgentCriticity
+    * TruceTermAgentCriticity
+    * ColdWarTermAgentCriticity 
+    * PeaceTermAgentCriticity
+    * AllianceTermAgentCriticity
+    * MapExchangeTermAgentCriticity
+    * MapEmbargoTermAgentCriticity
+    * VisionAndMapExchangeTermAgentCriticity
+    * VisionAndMapEmbargoTermAgentCriticity
+    * VisionEmbargoTermAgentCriticity
+    * CommercialAgreementTermAgentCriticity
+    * ResearchAgreementTermAgentCriticity        
+    * CloseBordersTermAgentCriticity
+    * OpenBordersTermAgentCriticity
+    * MarketBanTermAgentCriticity
+    * MarketBanNullificationTermAgentCriticity
+    * MarketBanRemovalTermAgentCriticity
+  
+    Other useful values:
+    * GlobalWarTermAgentCriticity: The AI's (receiver or provider) desire for war
+    * MoneyReferenceRatioAgentCriticity: The AI's (receiver or provider) desire for money
+    * TechnologyReferenceTurnCountAgentCriticity: The AI's (receiver or provider) desire for technology
+    -->
+
+    <!--
+    ###########
+    ### WAR ###
+    ###########
+    -->
+
+    <AIParameterDatatableElement Name="WarToTruce">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="8 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="8 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="WarToTruceDeclaration">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="4 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="4* ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 1.2"/>
+    </AIParameterDatatableElement>
+
+    <!--
+    #############
+    ### TRUCE ###
+    #############
+    -->
+ 
+    <AIParameterDatatableElement Name="TruceToWar">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="3 * ($(WarTermAgentCriticity) - $(ColdWarTermAgentCriticity))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="3 * ($(WarTermAgentCriticity) - $(ColdWarTermAgentCriticity))"/>
+    </AIParameterDatatableElement>
+    
+    <AIParameterDatatableElement Name="TruceToColdWar">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(ColdWarTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * ($(ColdWarTermAgentCriticity) - 0.5)"/>
+    </AIParameterDatatableElement>
+    
+    <AIParameterDatatableElement Name="TruceToPeace">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(3 * ($(PeaceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 0.25"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(3 * ($(PeaceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 0.25"/>
+    </AIParameterDatatableElement>
+    
+    <AIParameterDatatableElement Name="TruceToAlliance">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(4 * ($(AllianceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 0.5"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(4 * ($(AllianceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 0.5"/>
+    </AIParameterDatatableElement>
+
+
+    <!--
+    ################
+    ### COLD WAR ###
+    ################
+    -->
+    
+    <AIParameterDatatableElement Name="ColdWarToWar">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="3 * ($(WarTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(PeaceTermAgentCriticity)))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="3 * ($(WarTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(PeaceTermAgentCriticity)))"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="ColdWarToPeace">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(3 * ($(PeaceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 0.2"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(3 * ($(PeaceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 0.2"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="ColdWarToPeaceDeclaration">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(3 * ($(PeaceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 1"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(3 * ($(PeaceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 1"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="ColdWarToAlliance">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(8 * ($(AllianceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 4.5"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(8 * ($(AllianceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 4.5"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="ColdWarToAllianceDeclaration">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(8 * ($(AllianceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 4.5"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(8 * ($(AllianceTermAgentCriticity) - ($(ColdWarTermAgentCriticity) max $(WarTermAgentCriticity)))) - 5.5"/>
+    </AIParameterDatatableElement>
+
+
+    <!--
+    #############
+    ### PEACE ###
+    #############
+    -->
+
+    <AIParameterDatatableElement Name="PeaceToWar">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="4 * ($(WarTermAgentCriticity) - ($(PeaceTermAgentCriticity) max $(AllianceTermAgentCriticity)))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * ($(WarTermAgentCriticity) - ($(PeaceTermAgentCriticity) max $(AllianceTermAgentCriticity)))"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="PeaceToColdWar">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="3 * ($(ColdWarTermAgentCriticity) - ($(PeaceTermAgentCriticity) max $(AllianceTermAgentCriticity)))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="3 * ($(ColdWarTermAgentCriticity) - ($(PeaceTermAgentCriticity) max $(AllianceTermAgentCriticity)))"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="PeaceToAlliance">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(6 * ($(AllianceTermAgentCriticity) - ($(PeaceTermAgentCriticity) max $(ColdWarTermAgentCriticity)))) - 3.25"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(6 * ($(AllianceTermAgentCriticity) - ($(PeaceTermAgentCriticity) max $(ColdWarTermAgentCriticity)))) - 3.25"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="PeaceToAllianceDeclaration">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(6 * ($(AllianceTermAgentCriticity) - ($(PeaceTermAgentCriticity) max $(ColdWarTermAgentCriticity)))) - 3.25"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(6 * ($(AllianceTermAgentCriticity) - ($(PeaceTermAgentCriticity) max $(ColdWarTermAgentCriticity)))) - 4.25"/>
+    </AIParameterDatatableElement>
+
+
+    <!--
+    ################
+    ### ALLIANCE ###
+    ################
+    -->
+    
+    <AIParameterDatatableElement Name="AllianceToWar">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="5 * ($(WarTermAgentCriticity) - $(AllianceTermAgentCriticity))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="5 * ($(WarTermAgentCriticity) - $(AllianceTermAgentCriticity))"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="AllianceToColdWar">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="4 * ($(ColdWarTermAgentCriticity) - $(AllianceTermAgentCriticity))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * ($(ColdWarTermAgentCriticity) - $(AllianceTermAgentCriticity))"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="AllianceToPeace">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="3 * ($(PeaceTermAgentCriticity) - $(AllianceTermAgentCriticity))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="3 * ($(PeaceTermAgentCriticity) - $(AllianceTermAgentCriticity))"/>
+    </AIParameterDatatableElement>
+
+
+    <!--
+    ###############################
+    ### MAP AND VISION EXCHANGE ###
+    ###############################
+    -->
+    
+    <AIParameterDatatableElement Name="MapExchange">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(MapExchangeTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * ($(MapExchangeTermAgentCriticity) - 0.5)"/>
+    </AIParameterDatatableElement>
+  
+    <AIParameterDatatableElement Name="MapEmbargo">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(MapEmbargoTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * ($(MapEmbargoTermAgentCriticity) - 0.5)"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="VisionAndMapExchange">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(VisionAndMapExchangeTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * ($(VisionAndMapExchangeTermAgentCriticity) - 0.5)"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="VisionAndMapEmbargo">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(VisionAndMapEmbargoTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * ($(VisionAndMapEmbargoTermAgentCriticity) - 0.5)"/>
+    </AIParameterDatatableElement>
+    
+    <AIParameterDatatableElement Name="VisionEmbargo">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(VisionEmbargoTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * ($(VisionEmbargoTermAgentCriticity) - 0.5)"/>
+    </AIParameterDatatableElement>
+
+    <!--
+    ###############################
+    ########### BORDERS ###########
+    ###############################
+    -->
+
+    <AIParameterDatatableElement Name="CloseBorders">
+      <!-- Provider's territory can no longer be entered -->
+      <AIParameter Name="DiplomacyUtilityProvider" Value="3 * ($(CloseBordersTermAgentCriticity) + 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(0 - 3) * $(OpenBordersTermAgentCriticity)"/>
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="OpenBorders">
+      <!-- Provider's territory can now be entered -->
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 3) * ($(CloseBordersTermAgentCriticity) + 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="3 * $(OpenBordersTermAgentCriticity)"/>
+    </AIParameterDatatableElement>
+
+    <!--
+    #################################
+    ### MARKET BAN (ROVING CLANS) ###
+    #################################
+    -->
+
+    <!--
+    * "Nullification": used on self to remove market ban without the permission of the Roving Clans empire (costs a lot of influence).
+    * "Removal": used on the banned empire to remove market ban. Can only be offered by the Roving Clans empire.
+    
+    Banning can be assumed to be a provocation of war, so we can artificially give it a corresponding military access bonus and military security penalty.
+    This value should be somewhere between Cold War (25% at the time of writing) and War (100% at the time of writing)
+    * Market ban provokes the player, giving a further 30% military access.
+    * The provocation only "works" if the target player has access to the market: empires without market access should not be banned.
+    
+    Technology that gives access to the market:
+    * ClassEmpire/ClassResearch,TechnologyMarketplaceResources
+    * ClassEmpire/ClassResearch,TechnologyMarketplaceHeroes
+    * ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries
+    -->
+
+    <!-- 
+    ## FROM THE ROVING CLANS POINT OF VIEW ##
+    The effect of a ban on the provider is:
+    * Increased offensive potential (if mercenaries were previously available to the receiver)
+    * Increased security (if mercenaries were previously available to the receiver)
+    * An economic advantage (if resources and stockpiles were previously available to the receiver) 
+
+    ## FROM OF THE EMPIRE BEING BANNED ##
+    The effect of a ban on the receiver is:
+    * A penalty to offensive potential (if mercenaries were previously available)
+    * A penalty to offensive security (if mercenaries were previously available)
+    * A penalty to the economy (if resources and stockpiles were previously available)  
+    -->
+    
+    <AIParameterDatatableElement Name="MarketBan">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(MarketBanTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(0 - 1) * (0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(0 - 1) * (0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources))"/>
+    </AIParameterDatatableElement>
+
+    <!-- Provider is always the Roving Clans empire in the case of a removal -->
+
+    <AIParameterDatatableElement Name="MarketBanRemoval">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - 1 - $(MarketBanTermAgentCriticity)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources)"/>
+    </AIParameterDatatableElement>
+
+    <!-- Receiver is always the Roving Clans empire in the case of a nullification -->
+
+    <AIParameterDatatableElement Name="MarketBanNullification">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries)"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 * $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0 - 1 - $(MarketBanTermAgentCriticity)"/>
+    </AIParameterDatatableElement>
+
+
+    <!--
+    #####################
+    ### CITY EXCHANGE ###
+    #####################
+    -->
+
+    <!--
+    The provider loses:
+    * Offensive potential from production
+    * Defensive potential from number of cities ("lives" so to speak)
+    * Economy potential from city dust income
+
+    The provider gains:
+    * Offensive potential from production
+    * Defensive potential from a loss of enemy production
+    * Defensive potential from more cities (extra "lives" so to speak)
+    * Economy potential from city dust income
+
+    Capitals count double in terms of strategic value
+    -->
+
+    <!-- Available values:
+    * The length of the shared frontier: BorderLengthCommonWithMyEmpire
+    * IsCapital is equal to 0 if it's a normal city, 1 if it's the empire's capital
+    * The interpreter context simulation object is the city
+    -->
+
+    <AIParameterDatatableElement Name="CityExchange">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (0 max (5 * (1 + (2*$(IsCapital))) / $Link(Provider|Count|ClassEmpire/ClassCity)))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (0 max (5 * $Property(NetCityProduction) / (1 max $Link(Provider|MaxProperty|../ClassEmpire/ClassCity:NetCityProduction))))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (0 max (5 * $Property(NetCityMoney) / (1 max $Link(Provider|MaxProperty|../ClassEmpire/ClassCity:NetCityMoney))))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="5 * (0 max (1 + (0.5*$(IsCapital))) / $Link(Receiver|Count|ClassEmpire/ClassCity))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="5 * (0 max ($Property(NetCityProduction) / (1 max $Link(Receiver|MaxProperty|../ClassEmpire/ClassCity:NetCityProduction))))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="5 * (0 max $Property(NetCityMoney) / (1 max $Link(Provider|MaxProperty|../ClassEmpire/ClassCity:NetCityMoney)))"/>
+    </AIParameterDatatableElement>
+  
+    <!--
+    #####################################################
+    ### ASKING EMPIRE TO DECLARE WAR ON A THIRD PARTY ###
+    #####################################################
+    -->
+
+    <!--
+    ## PROVIDER ##
+    I am asking another empire to declare war on a third party. 
+    -->
+
+    <!--
+    ## RECEIVER ##
+    Another empire is asking me to declare war on somebody called 'ThirdParty'. 
+    -->
+
+    <!--
+    You want me to fight someone for you?
+    $(WarTermAgentCriticity) gives the desire (between 0 and 1) of the AI to declare war on the third party.
+    -->
+
+    <AIParameterDatatableElement Name="AskToDeclareWar">
+      <AIParameter Name="DiplomacyMilitarySupportProvider" Value="2 * (0 - 1) * (1.5 - $(WarTermAgentCriticity)) * (100 max $Link(ThirdParty|Property|MilitaryPower)) / (100 max $Link(Provider|Property|MilitaryPower))"/>
+      <AIParameter Name="DiplomacyMilitarySupportReceiver" Value="1.25 * (0.1 + $(WarTermAgentCriticity)) * (100 max $Link(Provider|Property|MilitaryPower)) / (100 max $Link(ThirdParty|Property|MilitaryPower))"/>
+    </AIParameterDatatableElement>
+
+    <!--
+    ###############################
+    ### BLACK SPOT (SEA DEMONS) ###
+    ###############################
+    -->
+
+    <!--
+    $(BlackSpotTermAgentCriticity) gives the desire (between 0 and 1) of the AI to declare a Black Spot on the other empire.
+    $(BlackSpotNullificationTermAgentCriticity) gives the desire (between 0 and 1) of the AI to remove its own Black Spot.
+    $(BlackSpotRemovalTermAgentCriticity) gives the desire (between 0 and 1) of the AI to offer to remove a Black Spot.
+ 
+    * "Nullification": used on self to remove market ban without the permission of the Sea Demons empire (costs a lot of influence).
+    * "Removal": used on the cursed empire to remove Black Spot. Can only be offered by the Sea Demons empire.
+    -->
+
+    <AIParameterDatatableElement Name="BlackSpot">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(BlackSpotTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(0.5 - 1 - (0.4 * $Link(Receiver|Property|../ClassEmpire:WarCount)))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(0.5 - 1 - (0.1 * $Link(Receiver|Property|../ClassEmpire:ColdWarCount)))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(0.5 - 1 - (0.3 * $Link(Receiver|Property|../ClassEmpire:PeaceCount)))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(0.5 - 1 - (0.5 * $Link(Receiver|Property|../ClassEmpire:AllianceCount)))"/>
+    </AIParameterDatatableElement>
+
+  <!-- Provider is always the Sea Demons empire in the case of a removal -->
+
+    <AIParameterDatatableElement Name="BlackSpotRemoval">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (2 * ($(BlackSpotTermAgentCriticity) - 0.5))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.5 + (0.4 * $Link(Receiver|Property|../ClassEmpire:WarCount))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.5 + (0.1 * $Link(Receiver|Property|../ClassEmpire:ColdWarCount))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.5 + (0.3 * $Link(Receiver|Property|../ClassEmpire:PeaceCount))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.5 + (0.5 * $Link(Receiver|Property|../ClassEmpire:AllianceCount))"/>
+    </AIParameterDatatableElement>
+
+    <!-- Receiver is always the Sea Demons empire in the case of a nullification -->
+
+    <AIParameterDatatableElement Name="BlackSpotNullification">
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0 - (2 * ($(BlackSpotTermAgentCriticity) - 0.5))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.5 + (0.4 * $Link(Receiver|Property|../ClassEmpire:WarCount))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.5 + (0.1 * $Link(Receiver|Property|../ClassEmpire:ColdWarCount))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.5 + (0.3 * $Link(Receiver|Property|../ClassEmpire:PeaceCount))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.5 + (0.5 * $Link(Receiver|Property|../ClassEmpire:AllianceCount))"/>
+    </AIParameterDatatableElement>
+  
+    <!--
+    You want me to curse someone for you?
+    
+    Here all the Criticity values apply not to the other empire but to the 'ThirdParty' empire.
+    
+    ## PROVIDER ##
+    I am asking another empire to place the Black Spot on a third party. 
+    
+    ## RECEIVER ##
+    Another empire is asking me to place the Black Spot on somebody called 'ThirdParty'. 
+    -->
+
+    <AIParameterDatatableElement Name="AskToBlackSpot">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 1) * (8 - $(BlackSpotTermAgentCriticity))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="7 * (0.1 + $(WarTermAgentCriticity))"/>
+    </AIParameterDatatableElement>
+
+    <!--
+    #####################
+    ### CITY EXCHANGE ###
+    #####################
+    -->
+
+    <!-- Available values:
+    TODO
+    * IsRegionControlled is equal to 1 if the region is controlled by Provider, 0 otherwise
+    * TotalNumberOfFortressesInRegion is the number of fortresses in the region
+    * ProviderNumberOfFortressesInRegion is the number of fortresses the provider controls in the region
+    * ReceiverNumberOfFortressesInRegion is the number of fortresses the receiver controls in the region
+    * MyRegionScore is a heuristic calculated by the Navy - it is between 0 (don't care) and 1 (do want)
+    * The interpreter context simulation object is the fortress
+    -->
+
+    <AIParameterDatatableElement Name="FortressExchange">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - 0.5"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (3 * $(IsRegionControlled))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (5 * $(MyRegionScore))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (3 * ($(ProviderNumberOfFortressesInRegion) / $(TotalNumberOfFortressesInRegion)))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.5"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * $(IsRegionControlled)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * $(MyRegionScore)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * ($(ReceiverNumberOfFortressesInRegion) / $(TotalNumberOfFortressesInRegion))"/>
+    </AIParameterDatatableElement>
+
+</Datatable>

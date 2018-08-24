@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- "Ryder" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionBrokenLordsUnit2">
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Shaman" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionMadFairiesUnit2">
+    <AIParameter Name="EmpireUnlockUnitSupport" Value="0.75"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Ateshi Zealot" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRageWizardsUnit2">
+    <AIParameter Name="EmpireUnlockUnitRanged" Value="1.5"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Necrodrone"-->
+  <AIParameterDatatableElement Name="TechnologyDefinitionNecrophagesUnit2">
+    <AIParameter Name="EmpireUnlockUnitFlying" Value="2"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Dawn Officer" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionVaultersUnit2">
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Dawn Officer" (Mezari) -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionMezariUnit2">
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Dawn Officer" (Tutorial) -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionTutorialUnit2">
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Kassai" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRovingClansUnit2">
+    <AIParameter Name="EmpireUnlockUnitRanged" Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Wyvern" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionDrakkensUnit2">
+    <AIParameter Name="EmpireUnlockUnitFlying" Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Fanatic" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionCultistsUnit2">
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1.75"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Predator" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionReplicantsUnit2">
+    <AIParameter Name="EmpireUnlockUnitRanged" Value="2"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Manta" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionWinterShiftersUnit2">
+    <AIParameter Name="EmpireUnlockUnitRanged" Value="2"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Geomancer" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionFlamesUnit2">
+    <AIParameter Name="EmpireUnlockUnitSupport" Value="1"  />
+  </AIParameterDatatableElement>
+  
+  <!-- "Protectors of Auriga" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionAssimilationLimitMax1Drakkens">    
+    <AIParameter Name="EmpireUnlockAssimilation" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Arcana of Matter" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards7">
+    <!-- Provides between +2 and +16 science on up to 6 tiles... most of the time it will only affect about 3 though  -->
+    <AIParameter Name="CityScience"       Value="3 * (2 + 14*$Property(ClassEmpire:PillarsLevel)) * $Count(ClassEmpire/ClassCity)"  />
+    <!-- Provides defense in combat -->
+    <AIParameter Name="EmpireBattleMagic" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Arcana of Agility" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards8">
+    <!-- Provides speed bonuses on the map -->
+    <AIParameter Name="EmpireFasterMovement" Value="0.2 * (1 + $Property(ClassEmpire:PillarsLevel)) * $Count(ClassEmpire/ClassCity)"  />
+    <!-- Provides attack in combat -->
+    <AIParameter Name="EmpireBattleMagic" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Dust sense" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionReplicants7">
+    <AIParameter Name="EmpirePercentDustFromPillage" Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Turtle Ship" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionSeaDemonsUnit2">
+    <AIParameter Name="EmpireUnlockUnitFrigate" Value="2"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Fortress Commander" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionSeaDemons8">
+    <AIParameter Name="EmpireEmpirePoint"               Value="$Count(ClassEmpire/ClassFortress/PointOfInterestTypeCitadel)" />
+    <AIParameter Name="EmpireEmpirePoint"               Value="$Count(ClassEmpire/ClassFortress/RevealedFacility,PointOfInterestTypeFacility)" />
+  </AIParameterDatatableElement>
+
+  <!-- Flame City Improvement: Golem Workers-->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionFlames2">
+    <AIParameter Name="CityExtraWorker"                                 Value="$Count(ClassEmpire/ClassCity) * 3 * $Property(Strategic1Stock) / 5"/>
+  </AIParameterDatatableElement>
+  
+</Datatable>

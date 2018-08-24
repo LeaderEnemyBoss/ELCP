@@ -1,0 +1,1838 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- #################################### -->
+  <!-- #####   HERO GOVERNOR SKILLS   ##### -->
+  <!-- #################################### -->
+
+  <!-- Necrotic Agriculture -->
+  <SimulationDescriptor Name="HeroSkillGovernor01Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Addition"  Value="8" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor01Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Addition"  Value="8" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor01Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Addition"  Value="14" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Natural Resources -->
+  <SimulationDescriptor Name="HeroSkillGovernor02Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Addition"  Value="6" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor02Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Addition"  Value="6" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor02Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Addition"  Value="10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Renaissance Thinker -->
+  <SimulationDescriptor Name="HeroSkillGovernor03Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Addition"  Value="8" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor03Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Addition"  Value="8" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor03Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Addition"  Value="14" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cultural Ambassador -->
+  <SimulationDescriptor Name="HeroSkillGovernor04Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                     Operation="Addition"  Value="10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor04Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                     Operation="Addition"  Value="10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor04Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                     Operation="Addition"  Value="10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Approval Bonus -->
+  <SimulationDescriptor Name="HeroSkillGovernor04SistersOfMercyLevel1"     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"       Operation="Addition"  Value="10"    Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor04SistersOfMercyLevel2"     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"       Operation="Addition"  Value="10"    Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor04SistersOfMercyLevel3"     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"       Operation="Addition"  Value="10"    Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Narrative Master -->
+  <SimulationDescriptor Name="HeroSkillGovernor05Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor05Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor05Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Irrigation Expert -->
+  <SimulationDescriptor Name="HeroSkillGovernor06Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                     Operation="Addition"  Value="1" Path="../ClassCity/TerrainTagRiver"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor06Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                     Operation="Addition"  Value="2" Path="../ClassCity/TerrainTagRiver"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor06Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                     Operation="Addition"  Value="2" Path="../ClassCity/TerrainTagRiver"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Woodland Forager -->
+  <SimulationDescriptor Name="HeroSkillGovernor07Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"                 Operation="Addition"  Value="1" Path="../ClassCity/TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Diviner -->
+  <SimulationDescriptor Name="HeroSkillGovernor08Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="1" Path="../ClassCity/TerrainTagDust"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor08Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="1" Path="../ClassCity/TerrainTagDust"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor08Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="1" Path="../ClassCity/TerrainTagDust"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Aquatic Dust -->
+  <SimulationDescriptor Name="HeroSkillGovernor09Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="1" Path="../ClassCity/TerrainTagRiver"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor09Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="2" Path="../ClassCity/TerrainTagRiver"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor09Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="2" Path="../ClassCity/TerrainTagRiver"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Travelling Salesman -->
+  <SimulationDescriptor Name="HeroSkillGovernor10Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="2" Path="../ClassCity/TerrainTagAnomaly"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor10Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="3" Path="../ClassCity/TerrainTagAnomaly"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor10Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="3" Path="../ClassCity/TerrainTagAnomaly"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Scientific Literacy -->
+  <SimulationDescriptor Name="HeroSkillGovernor11Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="2" Path="../ClassCity/TerrainTagAnomaly"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor11Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="3" Path="../ClassCity/TerrainTagAnomaly"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor11Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="3" Path="../ClassCity/TerrainTagAnomaly"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Alchemical Genius -->
+  <SimulationDescriptor Name="HeroSkillGovernor12Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor12Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor12Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cadaverous Pesticides -->
+  <SimulationDescriptor Name="HeroSkillGovernor13Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor13Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor13Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Natural Architect -->
+  <SimulationDescriptor Name="HeroSkillGovernor14Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor14Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor14Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Trickery -->
+  <SimulationDescriptor Name="HeroSkillGovernor15Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor15Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor15Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Trickery -->
+  <SimulationDescriptor Name="HeroSkillGovernor15CultistsLevel1"           Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor15CultistsLevel2"           Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor15CultistsLevel3"           Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Firestarter -->
+  <SimulationDescriptor Name="HeroSkillGovernor16Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor16Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor16Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Will of Akili -->
+  <SimulationDescriptor Name="HeroSkillGovernor16CultistsLevel1"           Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor16CultistsLevel2"           Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor16CultistsLevel3"           Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Persuasive Methods -->
+  <SimulationDescriptor Name="HeroSkillGovernor17Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireExpansionDisapproval"       Operation="Percent"   Value="-0.50" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor17Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireExpansionDisapproval"       Operation="Percent"   Value="-0.50" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Living Walls -->
+  <SimulationDescriptor Name="HeroSkillGovernor18Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityMoneyUpkeep"                  Operation="Percent"   Value="-0.30" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor18Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityMoneyUpkeep"                  Operation="Percent"   Value="-0.30" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor18Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityMoneyUpkeep"                  Operation="Percent"   Value="-0.30" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Slave Driver -->
+  <SimulationDescriptor Name="HeroSkillGovernor19NecrophagesLevel1"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor19NecrophagesLevel2"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Game Theory -->
+  <SimulationDescriptor Name="HeroSkillGovernor19RovingClansLevel1"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor19RovingClansLevel2"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Behemoth Tamer -->
+  <SimulationDescriptor Name="HeroSkillGovernor20Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor20Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mining Authority -->
+  <SimulationDescriptor Name="HeroSkillGovernor21Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor21Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor21Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Safe Passage -->
+  <SimulationDescriptor Name="HeroSkillGovernor22Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteGain"                   Operation ="Percent"  Value="0.25" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor22Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteGain"                   Operation ="Percent"  Value="0.25" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor22Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteGain"                   Operation ="Percent"  Value="0.50" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Fast Trader -->
+  <SimulationDescriptor Name="HeroSkillGovernor23Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome"         Operation ="Percent"  Value="0.50" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor23Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome"         Operation ="Percent"  Value="0.50" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor23Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome"         Operation ="Percent"  Value="1.00" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mechanical Exhibitionist -->
+  <SimulationDescriptor Name="HeroSkillGovernor24Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"      Operation ="Percent"  Value="0.50" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor24Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"      Operation ="Percent"  Value="0.50" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor24Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"      Operation ="Percent"  Value="1.00" Path="../ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Black Marketeer -->
+  <SimulationDescriptor Name="HeroSkillGovernor25Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Defender -->
+  <SimulationDescriptor Name="HeroSkillGovernor26Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"          Operation="Addition"  Value="50" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor26Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"          Operation="Addition"  Value="50" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor26Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"          Operation="Addition"  Value="100" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Subterranean Networker -->
+  <SimulationDescriptor Name="HeroSkillGovernor27Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointRecoveryPerTurn"  Operation="Addition"  Value="4" Path="../ClassCity" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor27Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointRecoveryPerTurn"  Operation="Addition"  Value="8" Path="../ClassCity" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor27Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointRecoveryPerTurn"  Operation="Addition"  Value="8" Path="../ClassCity" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Tunnel Rat -->
+  <SimulationDescriptor Name="HeroSkillGovernor28Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictBesiegedMultiplier"       Operation="Force"  Value="1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BesiegedMultiplier"               Operation="Force"  Value="1" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Inspirational Leader -->
+  <SimulationDescriptor Name="HeroSkillGovernor29Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Percent"   Value="0.05" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Percent"   Value="0.05" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.05" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.05" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor29Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Percent"   Value="0.05" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Percent"   Value="0.05" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.05" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.05" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor29Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                         Operation="Percent"   Value="0.10" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Percent"   Value="0.10" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                         Operation="Percent"   Value="0.10" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Proselytizer -->
+  <SimulationDescriptor Name="HeroSkillGovernor30Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                    Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor30Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                    Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor30Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                    Operation="Percent"   Value="0.20" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Feet on the Street  -->
+  <SimulationDescriptor Name="HeroSkillGovernor31Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnershipRecoveryRate"            Operation="Percent"         Value="1.00" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor31Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnershipRecoveryRate"            Operation="Percent"         Value="0.50" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"         Operation="Multiplication"  Value="0"    Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Impassioned Preacher -->
+  <SimulationDescriptor Name="HeroSkillGovernor32Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"            Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"        Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"            Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"         Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"       Operation="Addition"  Value="1"     Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor32Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"            Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"        Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"            Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"         Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"       Operation="Addition"  Value="1"     Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor32Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"            Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"        Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"            Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"         Operation="Addition"  Value="1"     Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"       Operation="Addition"  Value="1"     Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Wisdom of Ages: science on ruins -->
+  <SimulationDescriptor Name="HeroSkillGovernor33Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition" Value="3" Path="../ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor33Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition" Value="3" Path="../ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor33Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                  Operation="Addition" Value="4" Path="../ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cold Fusion -->
+  <SimulationDescriptor Name="HeroSkillGovernor34Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.3"   Path="../ClassCity,#Winter"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor34Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.3"   Path="../ClassCity,#Winter"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Arboreal Dust Dowser: Replicants Governor Dust skill (Replicants) -->
+  <SimulationDescriptor Name="HeroSkillGovernor35Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="1"     Path="../ClassCity/TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor35Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="2"     Path="../ClassCity/TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor35Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                     Operation="Addition"  Value="2"     Path="../ClassCity/TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Counter-espionage -->
+  <SimulationDescriptor Name="HeroSkillGovernor36Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityAntiSpy"                      Operation="Addition"  Value="15"    Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor36Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityAntiSpy"                      Operation="Addition"  Value="15"    Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Garrison upkeep -->
+  <SimulationDescriptor Name="HeroSkillGovernor37Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                   Operation="Percent"   Value="-0.50" Path="../ClassCity,Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor37Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                   Operation="Percent"   Value="-0.50" Path="../ClassCity,Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Negative food/money immunity on city -->
+  <SimulationDescriptor Name="HeroSkillGovernor38Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetCityGrowth"                    Operation="Maximum" Value="0"         Path="../ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityMoney"                     Operation="Maximum" Value="0"          Path="../ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor38Level1TooltipEffect"      Type="SkillHero">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- City Orb Cost Reduction (Winter Shifters) -->
+  <SimulationDescriptor Name="HeroSkillGovernor39Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BuildingOrbCostReduction"        Operation="Addition"   Value="0.2"         Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor39Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BuildingOrbCostReduction"        Operation="Addition"   Value="0.2"         Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cult of Tides (Sea Demons) -->
+  <SimulationDescriptor Name="HeroSkillGovernor40Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Left="10"   Right="$(CityHasAnyCoastalDistrict)" BinaryOperation="Multiplication"   Path="./ClassCity" IsBindOnSource="false" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Value="10"  Path="./ClassCity,CityHasAnyCoastalDistrict"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor40Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Left="10"   Right="$(CityHasAnyCoastalDistrict)" BinaryOperation="Multiplication"   Path="./ClassCity" IsBindOnSource="false" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Value="10"  Path="./ClassCity,CityHasAnyCoastalDistrict"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor40Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Left="15"   Right="$(CityHasAnyCoastalDistrict)" BinaryOperation="Multiplication"   Path="./ClassCity" IsBindOnSource="false" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Value="15"  Path="./ClassCity,CityHasAnyCoastalDistrict"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ship Builder (Sea Demons) -->
+  <SimulationDescriptor Name="HeroSkillGovernor41Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"      Operation="Addition"  Value="0.10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor41Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"      Operation="Addition"  Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- Keen Prospector (Flames) -->
+  <SimulationDescriptor Name="HeroSkillGovernor42Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"         Operation="Addition"  Value="2"     Path="../ClassCity/TerrainTagVolcanic"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor42Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"        Operation="Addition"  Value="1"     Path="../ClassCity/TerrainTagVolcanic"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"            Operation="Addition"  Value="1"     Path="../ClassCity/TerrainTagVolcanic"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- Extracting tricks (flames) -->
+  <SimulationDescriptor Name="HeroSkillGovernor43Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="1" Path="../ClassCity/PointOfInterestTypeResourceDeposit, ResourceTypeStrategic"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor43Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="1" Path="../ClassCity/PointOfInterestTypeResourceDeposit, ResourceTypeStrategic"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Hearth's warmth -->
+  <SimulationDescriptor Name="HeroSkillGovernor44Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter,TerrainTagVolcanic" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension,TerrainTagVolcanic" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor44Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter,TerrainTagVolcanic" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension,TerrainTagVolcanic" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- Restless Ingenuity -->
+  <SimulationDescriptor Name="HeroSkillGovernor45Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor45Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor45Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                      Operation="Percent"   Value="0.15" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- ####################################### -->
+  <!-- ##### HERO LEADER (battle) SKILLS ##### -->
+  <!-- ####################################### -->
+
+  <!-- Berserker Pheromone -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle01Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.25"  Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Army HP regen -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap01SistersOfMercyLevel1"    Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap01SistersOfMercyLevel2"    Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap01SistersOfMercyLevel3"    Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Deadly Anatomy -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle02Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="15"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle02Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="20"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle02Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.20"  Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strength of the Wild -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle03Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="10"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle03Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="10"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle03Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Percent"   Value="0.20"  Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Thick Skinned -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle04Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="15"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle04Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="20"    Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle04Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="20"    Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Perfectly Balanced -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle05Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleRange"                          Operation="Addition"  Value="1"     Path="../Garrison/UnitClassRanged" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Garb of Battle -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle06Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="5"     Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="5"     Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle06Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="10"     Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="10"     Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle06Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="10"     Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="10"     Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Defensive Tactician -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle07Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="5"     Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="5"     Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle07Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="5"     Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Addition"  Value="5"     Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle07Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Percent"   Value="0.15"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Percent"   Value="0.15"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Concentrated Fire -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle08Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="6" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="6" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle08Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="8" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="8" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle08Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.15"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.15"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Staggered Blows -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle09Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="12" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="12" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle09Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="12" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="12" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle09Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="26" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="26" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Iron Taskmaster -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle10InfantryLevel1"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="25" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="25" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle10InfantryLevel2"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="25" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="25" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle10InfantryLevel3"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="50" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="50" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Last Reserves -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle10SupportLevel1"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="30" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="30" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle10SupportLevel2"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="30" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Addition"  Value="30" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle10SupportLevel3"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Percent"   Value="0.15"  Path="../Garrison/ClassUnit" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                        Operation="Percent"   Value="0.15"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Practiced Strike -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle11Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"                  Operation="Addition"  Value="5" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"                  Operation="Addition"  Value="5" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle11Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"                  Operation="Addition"  Value="7" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"                  Operation="Addition"  Value="7" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle11Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"                  Operation="Percent"   Value="0.15"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"                  Operation="Percent"   Value="0.15"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Distributed Defenses -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle12Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle12Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle12Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Will of Isiver -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle12CultistsLevel1"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle12CultistsLevel2"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle12CultistsLevel3"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Seething Fire -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Will of Cilginka -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13CultistsLevel1"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13CultistsLevel2"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13CultistsLevel3"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Attack boost (Replicants) -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13ReplicantsLevel1"     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13ReplicantsLevel2"     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle13ReplicantsLevel3"     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Battlesaur -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle14Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle14Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle14Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rallying Call -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle15InfantryLevel1"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReinforcementPointCount"        Operation="Addition"  Value="2"     Path="../Garrison" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Keen Observer -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle15SupportLevel1"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReinforcementPointCount"          Operation="Addition"  Value="1"     Path="../Garrison" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle15SupportLevel2"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReinforcementPointCount"          Operation="Addition"  Value="1"     Path="../Garrison" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Armor Engineer -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle16InfantryLevel1"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AccessoriesSlotCount"           Operation="Addition"  Value="1"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dark Materials -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle16RangedLevel1"         Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                    Operation="Addition"  Value="15" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                    Operation="Addition"  Value="15" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle16RangedLevel2"         Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                    Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                    Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle16RangedLevel3"         Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                    Operation="Percent"   Value="0.10"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                    Operation="Percent"   Value="0.10"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Spare Quiver -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle17RangedLevel1"         Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AccessoriesSlotCount"                 Operation="Addition"  Value="1" Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Armor Ergonomics -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle17SupportLevel1"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AccessoriesSlotCount"                 Operation="Addition"  Value="1" Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ice in the Veins -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle18Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle18Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"   Operation="Percent"  Value="0.2" Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Perfect Timing -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle19Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"   Operation="Addition"  Value="5" Path="UnitHero" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle19Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"   Operation="Addition"  Value="7" Path="UnitHero" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle19Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"   Operation="Percent"  Value="0.15" Path="UnitHero" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Energized Lightning -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle20Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle20Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sepulcher Sickness -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle21Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strike from Above -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle23Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Addition"  Value="5" Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle23Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Addition"  Value="7" Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle23Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Percent"   Value="0.15"  Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Hero damage bonus -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle23SistersOfMercyLevel1" Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Percent"   Value="0.10"  Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle23SistersOfMercyLevel2" Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Percent"   Value="0.10"  Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle23SistersOfMercyLevel3" Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Percent"   Value="0.10"  Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Armor Ergonomics -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle24Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AccessoriesSlotCount"                 Operation="Addition"  Value="1" Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Battle Perspective -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle25Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Addition"  Value="5" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Addition"  Value="5" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle25Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Addition"  Value="10" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Addition"  Value="10" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle25Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Addition"   Value="15"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                  Operation="Addition"   Value="15"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Debuff Immunity -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle26SistersOfMercyLevel1" Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle26SistersOfMercyLevel2" Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Safe Retreat (Winter Shifters) -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle27Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="RetreatPenaltyReduction"    Operation="Addition" Value="0.50" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle27Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="RetreatPenaltyReduction"    Operation="Addition" Value="0.50" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Killer Instinct (Winter Shifters) -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle28Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ironclad (Sea Demons) -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle29Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater_AdvancedTransport"          Operation="Addition" Value="50"   Path="UnitHero" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthOnWater_AdvancedTransport"             Operation="Addition" Value="100"  Path="UnitHero" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater"                            Operation="Addition" Value="50"   Path="UnitHero" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthOnWater"                               Operation="Addition" Value="100"  Path="UnitHero" TooltipHidden="true"/>   
+      <!--Just for GUI-->
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseIfTransport"                        Operation="Addition" Value="50"   Path="UnitHero" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthIfTransport"                           Operation="Addition" Value="100"  Path="UnitHero" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle29Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttackOnWater_AdvancedTransport"           Operation="Addition" Value="50"   Path="UnitHero" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthOnWater_AdvancedTransport"             Operation="Addition" Value="150"  Path="UnitHero" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeAttackOnWater"                             Operation="Addition" Value="50"   Path="UnitHero" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthOnWater"                               Operation="Addition" Value="150"  Path="UnitHero" TooltipHidden="true"/>
+      <!--Just for GUI-->
+      <SimulationModifierDescriptor TargetProperty="AttributeAttackIfTransport"                         Operation="Addition" Value="50"   Path="UnitHero" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthIfTransport"                           Operation="Addition" Value="150"  Path="UnitHero" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle29Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater_AdvancedTransport"       Operation="Addition" Value="20"   Path="UnitHero" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamageOnWater_AdvancedTransport"           Operation="Addition" Value="30"   Path="UnitHero" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthOnWater_AdvancedTransport"             Operation="Addition" Value="250"  Path="UnitHero" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater"                         Operation="Addition" Value="20"   Path="UnitHero" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamageOnWater"                             Operation="Addition" Value="30"   Path="UnitHero" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthOnWater"                               Operation="Addition" Value="250"  Path="UnitHero" TooltipHidden="true"/>
+      <!--Just for GUI-->
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeIfTransport"                     Operation="Addition" Value="20"   Path="UnitHero" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamageIfTransport"                         Operation="Addition" Value="30"   Path="UnitHero" />
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthIfTransport"                           Operation="Addition" Value="250"  Path="UnitHero" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+   <!-- Ingenious Admiral (Sea Demons) -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle30Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater"                                    Operation="Percent"  Value="0.2"   Path="../Garrison/ClassUnit,TransportShipUnit" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater"                                 Operation="Percent"  Value="0.2"   Path="../Garrison/ClassUnit,TransportShipUnit" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"                                     Operation="Addition" Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovement"                                            Operation="Addition" Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" /> <!-- For tooltip-->
+      
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater_AdvancedTransport"                  Operation="Percent"  Value="0.2"    Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater_AdvancedTransport"               Operation="Percent"  Value="0.2"    Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater_AdvancedTransport"                   Operation="Addition"  Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle30Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater"                                    Operation="Percent"  Value="0.2"   Path="../Garrison/ClassUnit,TransportShipUnit" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater"                                 Operation="Percent"  Value="0.2"   Path="../Garrison/ClassUnit,TransportShipUnit" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"                                     Operation="Addition" Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovement"                                            Operation="Addition" Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" /> <!-- For tooltip-->
+      
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater_AdvancedTransport"                  Operation="Percent"  Value="0.2"    Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater_AdvancedTransport"               Operation="Percent"  Value="0.2"    Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater_AdvancedTransport"                   Operation="Addition"  Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle30Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater"                                    Operation="Percent"  Value="0.2"   Path="../Garrison/ClassUnit,TransportShipUnit" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater"                                 Operation="Percent"  Value="0.2"   Path="../Garrison/ClassUnit,TransportShipUnit" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"                                     Operation="Addition" Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovement"                                            Operation="Addition" Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" /> <!-- For tooltip-->
+      
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater_AdvancedTransport"                  Operation="Percent"  Value="0.2"    Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater_AdvancedTransport"               Operation="Percent"  Value="0.2"    Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater_AdvancedTransport"                   Operation="Addition"  Value="1"     Path="../Garrison/ClassUnit,TransportShipUnit" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Aiming modifications -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle31Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="3" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="3" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle31Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="3" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Addition"  Value="3" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle31Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.15"  Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.15"  Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- extra-large saddle -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle32CavalryLevel1"       Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AccessoriesSlotCount"           Operation="Addition"  Value="1"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Aggresive Impacts -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle33Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                     Operation="Addition"  Value="5"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle33Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                     Operation="Addition"  Value="5"     Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle33Level3"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                     Operation="Percent"   Value="0.15"  Path="UnitHero" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mounted Leader -->
+  <SimulationDescriptor Name="HeroSkillLeaderBattle35Level1"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus"                      Operation="Addition"  Value="1" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus"                      Operation="Addition"  Value="1" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderBattle35Level2"               Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus"                      Operation="Addition"  Value="1" Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus"                      Operation="Addition"  Value="1" Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- #################################### -->
+  <!-- ##### HERO LEADER (map) SKILLS ##### -->
+  <!-- #################################### -->
+
+  <!-- Roadside Picnic -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap01Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap01Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap01Level3"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Iron Constitution -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap02Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap02Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap02Level3"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- No Idle Hands -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap03Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Addition"    Value="1"    Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Addition"    Value="1"    Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap03Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Addition"    Value="1"    Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Addition"    Value="1"    Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap03Level3"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Addition"    Value="1"    Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Addition"    Value="1"    Path="../ClassCity/Militia/ClassUnit" Priority="101" TooltipHidden="true"  />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Thrifty -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap04Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Percent"     Value="-0.20" Path="../Garrison" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                           Operation="Percent"     Value="-0.20" Path="UnitHero" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap04Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Percent"     Value="-0.20" Path="../Garrison" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                           Operation="Percent"     Value="-0.20" Path="UnitHero" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Indiana Bones -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap05Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest" Operation="Addition"    Value="5"  Path="../ClassArmy" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"          Operation="Addition"    Value="5"  Path="../ClassArmy" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLootingNothing"   Operation="Subtraction" Value="10" Path="../ClassArmy" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap05Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest" Operation="Addition"    Value="5"  Path="../ClassArmy" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"          Operation="Addition"    Value="5"  Path="../ClassArmy" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLootingNothing"   Operation="Subtraction" Value="10" Path="../ClassArmy" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Friendly Banner -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap07Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Farsighted -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap08Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                          Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Raptor's Eye -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap09Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                          Operation="Addition"    Value="1"   Path="../Garrison/UnitClassFlying" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Agile Mover -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap10Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"                      Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"                      Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap10Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"                      Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"                      Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Siege Engine -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap12Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"          Operation="Addition"    Value="2"   Path="../ClassArmy/!AdvancedTransportShipUnit,!TransportShipUnit,!SeafaringUnit,ClassUnit" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap12Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"          Operation="Addition"    Value="2"   Path="../ClassArmy/!AdvancedTransportShipUnit,!TransportShipUnit,!SeafaringUnit,ClassUnit" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap12Level3"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"          Operation="Addition"    Value="4"   Path="../ClassArmy/!AdvancedTransportShipUnit,!TransportShipUnit,!SeafaringUnit,ClassUnit" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Siege Mentality  -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap14Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"     Value="0.15"  Path="../Garrison,CityStatusSiege/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"     Value="0.15"  Path="../ClassCity,CityStatusSiege/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"     Value="0.15"  Path="../ClassArmy,ArmyStatusBesieger/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"     Value="0.15"  Path="../ClassArmy,ArmyStatusCityDefender/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap14Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"     Value="0.15"  Path="../Garrison,CityStatusSiege/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"     Value="0.15"  Path="../ClassCity,CityStatusSiege/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"     Value="0.15"  Path="../ClassArmy,ArmyStatusBesieger/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"     Value="0.15"  Path="../ClassArmy,ArmyStatusCityDefender/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Siege Engine -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap15Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"          Operation="Addition"    Value="2"   Path="../ClassArmy/!AdvancedTransportShipUnit,!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap15Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"          Operation="Addition"    Value="2"   Path="../ClassArmy/!AdvancedTransportShipUnit,!TransportShipUnit,!SeafaringUnit,ClassUnit" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap15Level3"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"          Operation="Addition"    Value="4"   Path="../ClassArmy/!AdvancedTransportShipUnit,!TransportShipUnit,!SeafaringUnit,ClassUnit" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Flight Master -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap16Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"          Operation="Addition"    Value="2"   Path="../ClassArmy/ClassUnit,UnitClassFlying" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap16Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"          Operation="Addition"    Value="2"   Path="../ClassArmy/ClassUnit,UnitClassFlying" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Stealth on army (Replicants) -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap17Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor     TargetProperty="LevelOfStealth"     Value="1"     Operation="Addition"    Path="../ClassArmy/ClassUnit" TooltipHidden="true" Priority="101"/>
+      <SimulationModifierDescriptor     TargetProperty="LevelOfCamouflage"  Value="1"     Operation="Addition"    Path="../ClassArmy/ClassUnit" TooltipHidden="true" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Pathfinder (Winter Shifters) -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap18Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Auriga Affinity (Winter Shifters) -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap19Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap19Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Bribe Cost Reduction (Winter Shifters) -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap20Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCostReduction"    Operation="Addition" Value="0.25" Path="../ClassArmy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap20Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BribeCostReduction"    Operation="Addition" Value="0.25" Path="../ClassArmy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Spy Glass (Sea Demons) -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap21Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+      <!-- <SimulationModifierDescriptor TargetProperty="VisionRange"    Operation="Addition"  Value="2"              Path="../ClassArmy"  IsBindOnSource="false" Priority="4"/> -->
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"   Operation="Addition"  Value="100"            Path="../ClassArmy"  IsBindOnSource="false" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange" Operation="Force"     Value="$(VisionRange)" Path="../ClassArmy"  IsBindOnSource="false" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="IgnoreFog"      Operation="Addition"  Value="1"              Path="../ClassArmy"  IsBindOnSource="false" Priority="101" TooltipHidden="true"/>
+      
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Lord of the sea (Sea Demons) -->
+  <SimulationDescriptor Name="HeroSkillLeaderMap22Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="WeatherImmunity" Operation="Force"     Value="1" Path="../ClassArmy/ClassUnit"   IsBindOnSource="false" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Agile Mover (cavalry version)-->
+  <SimulationDescriptor Name="HeroSkillLeaderMap23Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"                      Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"                      Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap23Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"                      Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"                      Operation="Addition"    Value="1"   Path="../Garrison/ClassUnit" Priority="101" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Portable Forge-->
+  <SimulationDescriptor Name="HeroSkillLeaderMap24Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyRetrofitCostMultiplier" Operation="Force"   Value="0.75"  Path="UnitHero" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap24Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Bloodboiler-->
+  <SimulationDescriptor Name="HeroSkillLeaderMap25Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.50"   Path="../Garrison/ClassUnit,#HeatWave" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap25Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.50"   Path="../Garrison/ClassUnit,#HeatWave" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- #################################### -->
+  <!-- #####    HERO COMMON SKILLS    ##### -->
+  <!-- #################################### -->
+
+  <!-- Fast Healer -->
+  <SimulationDescriptor Name="HeroSkillCommon01Level1"                     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InjuredRecoveryPerTurn"               Operation="Multiplication"  Value="2"     Path="UnitHero"  Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="InjuredValueToEmpireMoneyConversion"  Operation="Percent"         Value="-0.20" Path="UnitHero"  Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillCommon01Level2"                     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InjuredRecoveryPerTurn"               Operation="Multiplication"  Value="2"     Path="UnitHero"  Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="InjuredValueToEmpireMoneyConversion"  Operation="Percent"         Value="-0.40" Path="UnitHero"  Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Functioning Insomniac -->
+  <!-- reduce turns to change assignment -->
+  <SimulationDescriptor Name="HeroSkillCommon02Level1"                     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumAssignmentCooldown"        Operation="Addition"        Value="-2"  Path="UnitHero"  Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillCommon02Level2"                     Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumAssignmentCooldown"        Operation="Addition"        Value="-2"  Path="UnitHero"  Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Escape Artist -->
+  <SimulationDescriptor Name="HeroSkillCommon03Level1"                     Type="SkillHero">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cold Operator -->
+  <SimulationDescriptor Name="HeroSkillCommon04Level1"                     Type="SkillHero">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- #####    ESPIONNAGE SKILLS     ##### -->
+  <!-- #################################### -->
+
+  <!-- Espionage Boost -->
+  <SimulationDescriptor Name="HeroSkillEspionage01Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="5"  Path="../SpiedGarrison"  Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillEspionage01Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="5"  Path="../SpiedGarrison"  Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Espionage (Replicants) -->
+  <SimulationDescriptor Name="HeroSkillEspionage02ReplicantsLevel1"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InfiltrationSeniorityFactor"  Operation="Percent" Value="0.5"   Path="../SpiedGarrison/UnitHero" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillEspionage02ReplicantsLevel2"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InfiltrationSeniorityFactor"  Operation="Percent" Value="0.5"   Path="../SpiedGarrison/UnitHero" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Reduced time of capture -->
+  <SimulationDescriptor Name="HeroSkillEspionage03ReplicantsLevel1"        Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="JailHeroGainPerTurn"        Operation="Percent" Value="1" Path="HeroStatusCaptured" Priority="101"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <!-- Cannot be captured (Replicants) -->
+  <SimulationDescriptor Name="HeroSkillEspionage03ReplicantsLevel2"        Type="SkillHero">
+    <SimulationModifierDescriptors/>
+  </SimulationDescriptor>
+
+</Datatable>

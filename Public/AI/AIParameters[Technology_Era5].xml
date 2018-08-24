@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- "Advanced Quarry" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionIndustry6">
+    <!-- "Advanced Quarry": required 10 Titanium and 20 Adamantian -->
+    <AIParameter Name="DistrictIndustryStrategicResources_NationalBuilding"  Value="50
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)) / 20))))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Improved Dust alchemics" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionDust4">
+    <!-- "Dust Revitalizer": 30 Glasteel and 5 Mithrite -->
+    <AIParameter Name="DistrictDustDust"      Value="5
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 30)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 5))))"/>
+    <!-- "Advanced Extraction": 40 Glasteel -->
+    <AIParameter Name="LuxuryBonusPerLuxury"  Value="4
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 40)))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Town Criers"  -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionDust5">
+    <!-- "Town Criers": 25 Glasteel and 10 Mithrite -->
+    <AIParameter Name="CityMoney"             Value="50
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 25)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+    <AIParameter Name="CityMoneyPercent"      Value="0.4
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 25)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Scientific Specialisation" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionScience5">
+    <!-- "Living Lab tools" -->
+    <AIParameter Name="CitySciencePercent"        Value="1"/>
+    <!-- "Climatology Guild" -->
+    <AIParameter Name="DistrictScienceLevelUpExtension_NationalBuilding" Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Enlightened trade" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionTradeRouteBonus3">
+    <!-- "Scientific Envoy": 20 Titanium required -->
+    <AIParameter Name="CityTradeRouteResearchGainPercent" Value="0.5
+      * (0.4 max (1 min ((($Property(ClassEmpire:Strategic1Stock)/8) + $Property(ClassEmpire:NetStrategic1)) / 20)))" />
+    <!-- "Remotuscope factory" -->
+    <AIParameter Name="CityAdditionalTradeRoute"          Value="1"  />
+    <AIParameter Name="EmpireWatchTowerUpgrade"           Value="1" />
+  </AIParameterDatatableElement>
+  
+
+  <!-- "Commercial espionage" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionTradeRouteBonus3Replicants">
+    <!-- "Surreptitious Research": 20 Titanium required -->
+    <AIParameter Name="CityTradeRouteMoneyGainPercent"  Value="0.5
+      * (0.4 max (1 min ((($Property(ClassEmpire:Strategic1Stock)/8) + $Property(ClassEmpire:NetStrategic1)) / 20)))" />
+    <!-- "Remotuscope factory" -->
+    <AIParameter Name="CityAdditionalTradeRoute"        Value="1"  />
+    <AIParameter Name="EmpireWatchTowerUpgrade"           Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Arts Council" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionApproval3">
+    <!-- "Arts Council": 10 Glassteel and 5 Mithrite required -->
+    <AIParameter Name="CityApproval"                  Value="30
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 5))))"/>
+    <AIParameter Name="CitySciencePercentEcstatic"    Value="0.1
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 5))))"/>
+    <AIParameter Name="CityCityPointPercentEcstatic"  Value="0.1
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 5))))"/>
+  </AIParameterDatatableElement>
+
+  <!--"Imperial News Network" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionApproval4">
+    <!--"Imperial News Network": 5 Glassteel and 10 Mithrite required -->
+    <AIParameter Name="CityApproval"                      Value="20
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+    <AIParameter Name="BaseFoodPerPopulationHappy"        Value="2
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+    <AIParameter Name="BaseIndustryPerPopulationHappy"    Value="2
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+    <AIParameter Name="BaseDustPerPopulationHappy"        Value="2
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+    <AIParameter Name="BaseSciencePerPopulationHappy"     Value="2
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+    <AIParameter Name="BaseEmpirePointPerPopulationHappy" Value="1
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "State Sponsored Threatre" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionExpansionDisapprovalReduction2">
+    <AIParameter Name="CityApproval" Value="5 * $Property(EmpireTypeMajor:EmpireScaleFactor)"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Modernized Administration" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionEmpirePoint3">
+    <!-- "Aura of Empire": 10 Adamantian and 10 Palladian required -->
+    <AIParameter Name="DistrictCityPointLevelUpExtension"           Value="15
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)) / 10))))"/>
+    <AIParameter Name="BaseEmpirePointPerPopulation"                Value="4
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)) / 10))))"/>
+    <!-- "Customs Ministry": 20 Hyperium required -->
+    <AIParameter Name="CityAdditionalTradeRoute_NationalBuilding"   Value="7
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic6Stock) + ($Property(ClassEmpire:NetStrategic6)*8)) / 30)))" />
+  </AIParameterDatatableElement>
+
+  <!-- "Dust-enhanced Buildings" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionEmpirePoint4">
+    <!-- "Arena of Champions": 10 Adamantian and 10 Palladian required -->
+    <AIParameter Name="CityEmpirePointPercent"      Value="1
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)) / 10))))"/>
+    <!-- "The Octogon": 20 Mithrite required -->
+    <AIParameter Name="CityGovernorExperienceGainPerTurn_NationalBuilding" Value="20
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 30)))" />
+  </AIParameterDatatableElement>
+
+  <!-- "Military Reserves" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionDefense3">
+    <!-- "Military Reserves": 10 Titanium and 5 Adamantian required -->
+    <AIParameter Name="CityDefense"     Value="400
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)) / 5))))"/>
+    <AIParameter Name="CityMilitia"     Value="1
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)) / 5))))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Inoculation Station" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionLifeRegeneration2">
+    <!-- "Inoculation Station": 15 Palladian and 5 Hyperium required -->
+    <AIParameter Name="CityUnitRegenPercent"       Value="15
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)) / 15)) * (1 min (($Property(ClassEmpire:Strategic6Stock) + ($Property(ClassEmpire:NetStrategic6)*8)) / 5))))"/>
+    <AIParameter Name="CityRecruitInitialExperience"  Value="150
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)) / 15)) * (1 min (($Property(ClassEmpire:Strategic6Stock) + ($Property(ClassEmpire:NetStrategic6)*8)) / 5))))"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Marvelous Alloys" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionWeaponUncommonTier2">
+    <AIParameter Name="EmpireUnlockWeaponUncommon" Value="1.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Marvelous Armor" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionArmorUncommonTier2">
+    <AIParameter Name="EmpireUnlockArmorUncommon" Value="1.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Guardian of Water" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionColossusWater">
+    <AIParameter Name="EmpireNumberOfGuardiansAllowed" Value="1" />
+    <!-- "Neros": 30 Hyperium required per unit -->
+    <AIParameter Name="EmpireUnlockUnitGuardian" Value="1.3
+      * (0.1 max (1 min ((($Property(ClassEmpire:Strategic6Stock)/8) + $Property(ClassEmpire:NetStrategic6)) / 30)))" />
+  </AIParameterDatatableElement>
+
+  <!-- "Guardian of Air" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionColossusAir">
+    <AIParameter Name="EmpireNumberOfGuardiansAllowed" Value="1" />
+    <!-- "Atmos": 30 Mithrite required per unit -->
+    <AIParameter Name="EmpireUnlockUnitGuardian" Value="1.3
+      * (0.1 max (1 min ((($Property(ClassEmpire:Strategic5Stock)/8) + $Property(ClassEmpire:NetStrategic5)) / 30)))" />
+  </AIParameterDatatableElement>
+
+  <!-- "Security Theory" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionAntiSpy2">
+    <!-- "Traitor's Lottery" 10 Glassteel and 5 Hyperium required -->
+    <AIParameter Name="CityAntiSpy"         Value="40
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic6Stock) + ($Property(ClassEmpire:NetStrategic6)*8)) / 5))))"/>
+    <!-- "Razor Pallisades" 5 Titanium, 10 Mithrite required -->
+    <AIParameter Name="CityPillageDefense"  Value="30
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)) * (1 min (($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)) / 10))))"/>
+  </AIParameterDatatableElement>
+  
+  <!-- "volcanic upgrade 1" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionVolcanic1">
+    <!-- "Advanced Quarry": required 10 Titanium, 10 Glasssteel, 10 Palladian and 10 Adamantian -->
+    <AIParameter Name="DistrictIndustryStrategicResources_NationalBuilding"  Value="50
+      * (0.4 max ((1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 10)) *(1 min (($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)) / 10)) * (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 10)) *(1 min (($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)) / 10))  * (1 min (($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)) / 10))))"/>
+  </AIParameterDatatableElement>
+</Datatable>

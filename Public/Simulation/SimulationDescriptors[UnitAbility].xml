@@ -1,0 +1,2629 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="UnitCanDebuff"                                      Type="UnitAbilityDescriptor"/>
+
+  <SimulationDescriptor Name="UnitAbilityInstantHeal"                             Type="UnitAbilityDescriptor"/>
+
+  <SimulationDescriptor Name="UnitAbilityDiseaseImmunity"                         Type="UnitAbilityDescriptor"/>
+
+  <SimulationDescriptor Name="UnitAbilitySharedWisdomDescriptor"                  Type="UnitAbilityDescriptor"/>
+
+  <SimulationDescriptor Name="UnitAbilityForestResonanceDescriptor"               Type="UnitAbilityDescriptor"/>
+
+  <SimulationDescriptor Name="UnitAbilityHealingHaloDescriptor"                   Type="UnitAbilityDescriptor"/>
+
+  <SimulationDescriptor Name="UnitAbilityElusiveDescriptor"                       Type="UnitAbilityDescriptor"/>
+
+
+  <!-- Descriptor to check presence of abilities used by AI archetypes -->
+  <SimulationDescriptor Name="WithUnitAbilityColonization"                        Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityBarkSkin"                            Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityCocoon"                              Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityDebuffImmunity"                      Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityLifeSiphon"                          Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LifeSiphonHealAmount"                       BaseValue="0" IsSealed="true"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>/>
+  <SimulationDescriptor Name="WithUnitAbilityLowDamage"                           Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityIncreasedFire"                       Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityUnleashedPotential"                  Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityHealingHalo"                         Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityHeal"                                Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityLightHeal"                           Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilitySharedWisdom"                        Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityChainLightning"                      Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilitySharpSense"                          Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="WithUnitAbilityConfidence"                          Type="UnitAbilityDescriptor"/>
+  <!-- end of the block-->
+
+  <!-- ### Descriptors to increase the Military Power when a unit has an ability
+
+  To use these military power descriptors, you have to add them into unit abilities (UnitAbility.xml) depending on the ability's efficiency.
+  The more an ability is powerful, the higher its descriptor should be.
+
+  ### -->
+
+  <SimulationDescriptor Name="MalusUnitAbilityOffensiveMilitaryPower1"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="-0.1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MalusUnitAbilityOffensiveMilitaryPower2"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="-0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MalusUnitAbilityOffensiveMilitaryPower3"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="-0.3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MalusUnitAbilityOffensiveMilitaryPower4"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="-0.4"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityOffensiveMilitaryPower1"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="0.1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityOffensiveMilitaryPower2"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityOffensiveMilitaryPower3"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="0.3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityOffensiveMilitaryPower4"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="0.4"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityOffensiveMilitaryPower5"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"    Operation="Percent" Value="0.8"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityDefensiveMilitaryPower1"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"    Operation="Percent" Value="0.1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityDefensiveMilitaryPower2"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"    Operation="Percent" Value="0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityDefensiveMilitaryPower3"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"    Operation="Percent" Value="0.3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityDefensiveMilitaryPower4"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"    Operation="Percent" Value="0.4"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusUnitAbilityDefensiveMilitaryPower5"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"    Operation="Percent" Value="0.8"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <!-- ### end of the block ### -->
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorAdvancedRankUpBonus"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"    Operation="Percent" Value="0.2"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Percent" Value="0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorMasterRankUpBonus"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"    Operation="Percent" Value="0.4"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Percent" Value="0.4"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorEliteRankUpBonus"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"    Operation="Percent" Value="0.6"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Percent" Value="0.6"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorReduceBesiegedCityMalus"       Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictBesiegedMultiplier"           Operation="Force" Value="1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BesiegedMultiplier"                   Operation="Force" Value="1" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDetection"                               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange" Operation="Force"     Value="$(VisionRange)" Path="../ClassArmy" IsBindOnSource="false" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ############################################# -->
+  <!-- ####     HEROES ABILITIES ARMY/CITY      #### -->
+  <!-- ############################################# -->
+
+  <!-- Inspiring Leader -->
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityInspiringLeader1"   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"    Operation="Percent"    Value="0.50"   Path="../Garrison/ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"    Operation="Percent"    Value="0.50"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityInspiringLeader2"   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"    Operation="Percent"    Value="0.75"   Path="../Garrison/ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"    Operation="Percent"    Value="0.75"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true" />
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityInspiringLeader3"   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"    Operation="Percent"    Value="1"   Path="../Garrison/ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"    Operation="Percent"    Value="1"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFriendlyBannerDescriptor"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ############################################# -->
+  <!-- ####         HEROES ABILITIES SPY        #### -->
+  <!-- ############################################# -->
+
+  <!-- SPY -->
+  <SimulationDescriptor Name="UnitAbilitySpyDescriptor1"                          Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="4"      Path="../SpiedGarrison" />
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                  Operation="Percent"         Value="-0.4"   Path="../SpiedGarrison/UnitHero" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"       Operation="Addition"        Value="4"      Path="../SpiedGarrison/UnitHero" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilitySpyDescriptor2"                          Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="6"      Path="../SpiedGarrison" />
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                  Operation="Percent"         Value="-0.5"   Path="../SpiedGarrison/UnitHero" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"       Operation="Addition"        Value="4"      Path="../SpiedGarrison/UnitHero"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilitySpyDescriptor3"                          Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="8"      Path="../SpiedGarrison" />
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                  Operation="Percent"         Value="-0.6"   Path="../SpiedGarrison/UnitHero" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"       Operation="Addition"        Value="4"      Path="../SpiedGarrison/UnitHero"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilitySpyDescriptor4"                          Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="12"     Path="../SpiedGarrison" />
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                  Operation="Percent"         Value="-0.8"   Path="../SpiedGarrison/UnitHero" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"       Operation="Addition"        Value="4"      Path="../SpiedGarrison/UnitHero"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ############################################# -->
+  <!-- ####          HEROES ABILITIES CITY      #### -->
+  <!-- ############################################# -->
+
+  <!-- food: initial boost -->
+  <SimulationDescriptor Name="UnitAbilityInitialBoostFoodDescriptor1"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"         Operation="Addition" BinaryOperation="Multiplication" Left="2" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"         Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostFoodDescriptor2"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"         Operation="Addition" BinaryOperation="Multiplication" Left="4" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"         Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostFoodDescriptor3"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"         Operation="Addition" BinaryOperation="Multiplication" Left="6" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"         Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- industry: initial boost -->
+  <SimulationDescriptor Name="UnitAbilityInitialBoostIndustryDescriptor1"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"     Operation="Addition" BinaryOperation="Multiplication" Left="2" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"     Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostIndustryDescriptor2"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"     Operation="Addition" BinaryOperation="Multiplication" Left="4" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"     Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostIndustryDescriptor3"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"     Operation="Addition" BinaryOperation="Multiplication" Left="6" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"     Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- science: initial boost -->
+  <SimulationDescriptor Name="UnitAbilityInitialBoostScienceDescriptor1"          Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"      Operation="Addition" BinaryOperation="Multiplication" Left="4" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"      Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostScienceDescriptor2"          Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"      Operation="Addition" BinaryOperation="Multiplication" Left="8" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"      Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostScienceDescriptor3"          Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"      Operation="Addition" BinaryOperation="Multiplication" Left="12" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"      Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- dust: initial boost -->
+  <SimulationDescriptor Name="UnitAbilityInitialBoostDustDescriptor1"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"         Operation="Addition" BinaryOperation="Multiplication" Left="2" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"         Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostDustDescriptor2"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"         Operation="Addition" BinaryOperation="Multiplication" Left="4" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"         Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostDustDescriptor3"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"         Operation="Addition" BinaryOperation="Multiplication" Left="6" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"         Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- prestige: initial boost -->
+  <SimulationDescriptor Name="UnitAbilityInitialBoostPrestigeDescriptor1"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"    Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"    Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostPrestigeDescriptor2"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"    Operation="Addition" BinaryOperation="Multiplication" Left="2" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"    Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostPrestigeDescriptor3"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"    Operation="Addition" BinaryOperation="Multiplication" Left="3" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"    Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- food: progressive boost -->
+  <SimulationDescriptor Name="UnitAbilityProgressiveBoostFoodDescriptor1"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"         Operation="Percent"  BinaryOperation="Multiplication" Left="0.02" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- industry: progressive boost -->
+  <SimulationDescriptor Name="UnitAbilityProgressiveBoostIndustryDescriptor1"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"     Operation="Percent"  BinaryOperation="Multiplication" Left="0.02" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- science: progressive boost -->
+  <SimulationDescriptor Name="UnitAbilityProgressiveBoostScienceDescriptor1"      Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"      Operation="Percent"  BinaryOperation="Multiplication" Left="0.02" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- dust: progressive boost -->
+  <SimulationDescriptor Name="UnitAbilityProgressiveBoostDustDescriptor1"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"         Operation="Percent"  BinaryOperation="Multiplication" Left="0.02" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- prestige: progressive boost -->
+  <SimulationDescriptor Name="UnitAbilityProgressiveBoostPrestigeDescriptor1"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- tbd: use current era -->
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"    Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- food: increase pop productivity -->
+  <SimulationDescriptor Name="UnitAbilityFoodPopulationEfficiencyDescriptor1"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"        Operation="Addition" Value="1" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"               Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFoodPopulationEfficiencyDescriptor2"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"        Operation="Addition" Value="2" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"               Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFoodPopulationEfficiencyDescriptor3"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"        Operation="Addition" Value="3" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityFood"               Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- industry: increase pop productivity -->
+  <SimulationDescriptor Name="UnitAbilityIndustryPopulationEfficiencyDescriptor1" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"    Operation="Addition" Value="1" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"           Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityIndustryPopulationEfficiencyDescriptor2" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"    Operation="Addition" Value="2" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"           Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityIndustryPopulationEfficiencyDescriptor3" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"    Operation="Addition" Value="3" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityIndustry"           Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- dust: increase pop productivity -->
+  <SimulationDescriptor Name="UnitAbilityDustPopulationEfficiencyDescriptor1"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"        Operation="Addition" Value="1" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"               Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDustPopulationEfficiencyDescriptor2"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"        Operation="Addition" Value="2" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"               Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDustPopulationEfficiencyDescriptor3"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"        Operation="Addition" Value="3" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityDust"               Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- science: increase pop productivity -->
+  <SimulationDescriptor Name="UnitAbilitySciencePopulationEfficiencyDescriptor1"  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"     Operation="Addition" Value="2" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"            Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySciencePopulationEfficiencyDescriptor2"  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"     Operation="Addition" Value="3" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"            Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySciencePopulationEfficiencyDescriptor3"  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"     Operation="Addition" Value="4" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityScience"            Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Slavery: + 1 FI / Village -->
+  <SimulationDescriptor Name="UnitAbilitySlaveryDescriptor1"                      Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"            Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"        Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Buyout Bonus -->
+  <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor1"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.1" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor2"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.2" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.2" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor3"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.3" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.3" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Golden Arborist -->
+  <SimulationDescriptor Name="UnitAbilityGoldenArboristDescriptor1"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"               Operation="Addition"     Value="1"   Path="../ClassCity/TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGoldenArboristDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"               Operation="Addition"     Value="2"   Path="../ClassCity/TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGoldenArboristDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"               Operation="Addition"     Value="3"   Path="../ClassCity/TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- Expansion Disapproval Reduction -->
+  <SimulationDescriptor Name="UnitAbilityExpansionDisapprovalReductionDescriptor1" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireExpansionDisapproval"       Operation="Percent"   Value="-0.25" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityExpansionDisapprovalReductionDescriptor2" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireExpansionDisapproval"       Operation="Percent"   Value="-0.50" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityExpansionDisapprovalReductionDescriptor3" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireExpansionDisapproval"       Operation="Percent"   Value="-0.75" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+
+  <!-- ############################################# -->
+  <!-- ####          HEROES ABILITIES ARMY      #### -->
+  <!-- ############################################# -->
+
+  <!-- GENERAL BOOST OVERALL -->
+  <SimulationDescriptor Name="UnitAbilityGeneralOverallDescriptor1"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.05" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.05" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.05" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.05" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="2"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="2"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="3"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="3"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralOverallDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.10" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.10" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.10" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.10" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="4"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="4"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="6"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="6"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralOverallDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.15" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.15" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.15" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.15" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="6"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="6"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="10"   Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="10"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- GENERAL BOOST RESISTANCE -->
+  <SimulationDescriptor Name="UnitAbilityGeneralResistanceDescriptor1"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="6" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="6" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="4" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="4" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralResistanceDescriptor2"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="10" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="10" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="8" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="8" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralResistanceDescriptor3"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="14" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="14" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="12" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="12" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- GENERAL BOOST PIERCING -->
+  <SimulationDescriptor Name="UnitAbilityGeneralPiercingDescriptor1"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="8" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="8" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="6" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="6" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralPiercingDescriptor2"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="12" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="12" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="9" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="9" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralPiercingDescriptor3"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="18" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="18" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="14" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="14" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- GENERAL BOOST HP -->
+  <SimulationDescriptor Name="UnitAbilityGeneralHealthDescriptor1"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Addition" Value="15"   Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Addition" Value="15"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Percent"  Value="0.05" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Percent"  Value="0.05" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralHealthDescriptor2"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Addition" Value="25"   Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Addition" Value="25"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Percent"  Value="0.10" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Percent"  Value="0.10" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralHealthDescriptor3"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Addition" Value="35"   Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Addition" Value="35"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Percent"  Value="0.15" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Percent"  Value="0.15" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- GENERAL BOOST ATK -->
+  <SimulationDescriptor Name="UnitAbilityGeneralAttackDescriptor1"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="5"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="5"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.15" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.15" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralAttackDescriptor2"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="10"   Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="10"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.3" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.3" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralAttackDescriptor3"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="15"   Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Addition" Value="15"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.4" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.4" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- GENERAL BOOST DEF -->
+  <SimulationDescriptor Name="UnitAbilityGeneralDefenseDescriptor1"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="5"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="5"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.15" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.15" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralDefenseDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="10"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="10"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.3" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.3" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralDefenseDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="15"   Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Addition" Value="15"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.4" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.4" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- GENERAL BOOST INI -->
+  <SimulationDescriptor Name="UnitAbilityGeneralInitiativeDescriptor1"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="2"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="2"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Percent"  Value="0.05" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Percent"  Value="0.05" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralInitiativeDescriptor2"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="4"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="4"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Percent"  Value="0.10" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Percent"  Value="0.10" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralInitiativeDescriptor3"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="8"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Addition" Value="8"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Percent"  Value="0.15" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Percent"  Value="0.15" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- GENERAL BOOST CRIT -->
+  <!-- deprecated -->
+  <SimulationDescriptor Name="UnitAbilityGeneralCriticalDescriptor1"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical"            Operation="Addition" Value="1" Path="../Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralCriticalDescriptor2"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical"            Operation="Addition" Value="3" Path="../Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralCriticalDescriptor3"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical"            Operation="Addition" Value="5" Path="../Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- GENERAL BOOST DMG -->
+  <SimulationDescriptor Name="UnitAbilityGeneralDamageDescriptor1"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="4"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="4"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Percent"  Value="0.05" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Percent"  Value="0.05" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralDamageDescriptor2"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="8"    Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="8"    Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Percent"  Value="0.10" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Percent"  Value="0.10" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralDamageDescriptor3"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="12"   Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Addition" Value="12"   Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Percent"  Value="0.15" Path="../Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Percent"  Value="0.15" Path="../ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--  GENERAL BOOST VISION RANGE -->
+  <SimulationDescriptor Name="UnitAbilityGeneralVisionRangeDescriptor1"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"        Operation="Addition" Value="1" Path="../Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralVisionRangeDescriptor2"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"        Operation="Addition" Value="2" Path="../Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityGeneralVisionRangeDescriptor3"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"        Operation="Addition" Value="3" Path="../Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- FASTER PILLAGE -->
+  <SimulationDescriptor Name="UnitAbilityFasterPillageDescriptor1"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"      Value="1"    Operation ="Addition"   Path="../ClassArmy/!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFasterPillageDescriptor2"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"      Value="2"    Operation ="Addition"   Path="../ClassArmy/!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFasterPillageDescriptor3"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"      Value="3"    Operation ="Addition"   Path="../ClassArmy/!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################### -->
+  <!-- ####          UNIT   ABILITIES         #### -->
+  <!-- ########################################### -->
+
+  <!-- Ranged -->
+  <SimulationDescriptor Name="UnitAbilityRangedDescriptor"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerEnemy"        Operation="Subtraction" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Short Ranged -->
+  <SimulationDescriptor Name="UnitAbilityShortRangedDescriptor"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseBattleRange"       Operation="Addition" Value="-1"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerEnemy"        Operation="Subtraction" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- High Ranged -->
+  <SimulationDescriptor Name="UnitAbilityHighRangedDescriptor"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseBattleRange"       Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerEnemy"        Operation="Subtraction" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Defense -->
+  <SimulationDescriptor Name="UnitAbilityImprovedDefenseDescriptor1"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"       Operation="Percent" Value="0.25"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedDefenseDescriptor2"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"       Operation="Percent" Value="0.5"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedDefenseDescriptor3"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"       Operation="Percent" Value="0.75"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Attack -->
+  <SimulationDescriptor Name="UnitAbilityImprovedAttackDescriptor1"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"       Operation="Percent" Value="0.25"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedAttackDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"       Operation="Percent" Value="0.5"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedAttackDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"       Operation="Percent" Value="0.75"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Critical -->
+  <SimulationDescriptor Name="UnitAbilityImprovedCriticalDescriptor1"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical"       Operation="Percent" Value="0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedCriticalDescriptor2"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical"       Operation="Percent" Value="0.4"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedCriticalDescriptor3"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical"       Operation="Percent" Value="0.6"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Damage -->
+  <SimulationDescriptor Name="UnitAbilityImprovedDamageDescriptor1"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"       Operation="Percent" Value="0.10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedDamageDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"       Operation="Percent" Value="0.20"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedDamageDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"       Operation="Percent" Value="0.30"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Initiative -->
+  <SimulationDescriptor Name="UnitAbilityImprovedInitiativeDescriptor1"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"       Operation="Percent" Value="0.1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedInitiativeDescriptor2"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"       Operation="Percent" Value="0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedInitiativeDescriptor3"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"       Operation="Percent" Value="0.3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Life -->
+  <SimulationDescriptor Name="UnitAbilityImprovedLifeDescriptor1"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"          Operation="Percent" Value="0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedLifeDescriptor2"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"          Operation="Percent" Value="0.4"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedLifeDescriptor3"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"          Operation="Percent" Value="0.6"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Movement -->
+  <SimulationDescriptor Name="UnitAbilityImprovedMovementDescriptor1"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"        Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"        Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Addition" Value="3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedMovementDescriptor2"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"        Operation="Addition" Value="2"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"        Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Addition" Value="5"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedMovementDescriptor3"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"        Operation="Addition" Value="3"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"        Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Addition" Value="7"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedMovementOnWaterDescriptor1"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"       Operation="Addition" Value="1" Priority="101" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"        Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Addition" Value="3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedMovementOnWaterDescriptor2"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"       Operation="Addition" Value="2" Priority="101" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"        Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Addition" Value="5"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedMovementOnWaterDescriptor3"             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"       Operation="Addition" Value="3" Priority="101" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"        Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Addition" Value="7"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Improved Vision -->
+  <SimulationDescriptor Name="UnitAbilityImprovedVisionDescriptor1"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"        Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedVisionDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"        Operation="Addition" Value="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityImprovedVisionDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"        Operation="Addition" Value="3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Master of the Dark -->
+  <SimulationDescriptor Name="UnitAbilityMasterOfTheDarkDescriptor1"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="0.2"    Operation="Percent"  Path="ClassUnit,#Winter"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.2"    Operation="Percent"  Path="ClassUnit,#Winter"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMasterOfTheDarkDescriptor2"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="0.4"    Operation="Percent"  Path="ClassUnit,#Winter"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.4"    Operation="Percent"  Path="ClassUnit,#Winter"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMasterOfTheDarkDescriptor3"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="0.6"    Operation="Percent"  Path="ClassUnit,#Winter"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.6"    Operation="Percent"  Path="ClassUnit,#Winter"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMasterOfTheDarkDescriptor4"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="0.8"    Operation="Percent"  Path="ClassUnit,#Winter"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.8"    Operation="Percent"  Path="ClassUnit,#Winter"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Children of the Light -->
+  <SimulationDescriptor Name="UnitAbilityChildrenOfTheLightDescriptor1"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="0.1"    Operation="Percent"  Path="ClassUnit,#Summer"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.1"    Operation="Percent"  Path="ClassUnit,#Summer"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityChildrenOfTheLightDescriptor2"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="0.2"    Operation="Percent"  Path="ClassUnit,#Summer"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.2"    Operation="Percent"  Path="ClassUnit,#Summer"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityChildrenOfTheLightDescriptor3"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="0.3"    Operation="Percent"  Path="ClassUnit,#Summer"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.3"    Operation="Percent"  Path="ClassUnit,#Summer"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityChildrenOfTheLightDescriptor4"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="0.4"    Operation="Percent"  Path="ClassUnit,#Summer"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.4"    Operation="Percent"  Path="ClassUnit,#Summer"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- High Ground  -->
+  <SimulationDescriptor Name="UnitAbilityHighGroundDescriptor1"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialHighGroundEfficiency"  Value="0.3"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityHighGroundDescriptor2"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialHighGroundEfficiency"  Value="0.6"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityHighGroundDescriptor3"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialHighGroundEfficiency"  Value="0.9"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Death or Glory  -->
+  <SimulationDescriptor Name="UnitAbilityDeathOrGloryDescriptor1"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerEnemy"  Value="0.5"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDeathOrGloryDescriptor2"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerEnemy"  Value="1"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDeathOrGloryDescriptor3"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerEnemy"  Value="1.5"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Morale bonus per ally-  -->
+  <SimulationDescriptor Name="UnitAbilityMoraleBonusDescriptor1"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerAlly"  Value="0.5"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMoraleBonusDescriptor2"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerAlly"  Value="1"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMoraleBonusDescriptor3"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonusPerAlly"  Value="1.5"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- City Breaker -->
+  <SimulationDescriptor Name="UnitAbilityCityBreakerDescriptor1"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"  Value="4"    Operation="Addition"  Path="!TransportShipUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityCityBreakerDescriptor2"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"  Value="8"    Operation="Addition"  Path="!TransportShipUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityCityBreakerDescriptor3"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"  Value="12"    Operation="Addition"  Path="!TransportShipUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityCityBreakerDescriptor4"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"  Value="24"    Operation="Addition"  Path="!TransportShipUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- City Guard -->
+  <SimulationDescriptor Name="UnitAbilityCityGuardDescriptor1"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExtraMoraleBonusFromCity"  Value="2"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityCityGuardDescriptor2"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExtraMoraleBonusFromCity"  Value="4"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityCityGuardDescriptor3"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExtraMoraleBonusFromCity"  Value="6"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Last Resort -->
+  <SimulationDescriptor Name="UnitAbilityLastResortDescriptor1"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossToHealthLossRatio"  Value="-0.1"    Operation="Percent"  Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityLastResortDescriptor2"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossToHealthLossRatio"  Value="-0.2"    Operation="Percent"  Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityLastResortDescriptor3"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossToHealthLossRatio"  Value="-0.3"    Operation="Percent"  Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Forest Resonance -->
+  <SimulationDescriptor Name="UnitAbilityForestResonanceDescriptor1"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus"  Value="0.5"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityForestResonanceDescriptor2"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus"  Value="1"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityForestResonanceDescriptor3"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus"  Value="1.5"    Operation="Addition"  Path="ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Confidence -->
+  <SimulationDescriptor Name="UnitAbilityConfidenceDescriptor1"                   Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ConfidenceEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialConfidenceEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialConfidenceEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityConfidenceDescriptor2"                   Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ConfidenceEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialConfidenceEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialConfidenceEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityConfidenceDescriptor3"                   Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ConfidenceEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialConfidenceEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialConfidenceEfficiency" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sharp sense -->
+  <SimulationDescriptor Name="UnitAbilitySharpSenseDescriptor1"                   Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SharpSenseEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialSharpSenseEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialSharpSenseEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySharpSenseDescriptor2"                   Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SharpSenseEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialSharpSenseEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialSharpSenseEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySharpSenseDescriptor3"                   Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SharpSenseEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialSharpSenseEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialSharpSenseEfficiency" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Unstoppable -->
+  <SimulationDescriptor Name="UnitAbilityUnstoppableDescriptor1"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CantBeDebuffed" Value="2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Immune Debuff -->
+  <SimulationDescriptor Name="UnitAbilityImmuneDebuffDescriptor1"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CantBeDebuffed" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Winter Wind -->
+  <SimulationDescriptor Name="UnitAbilityWinterWindDescriptor"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"         Operation="Addition" Value="2" Path="#Winter"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"        Operation="Addition" Value="2" Path="#Winter" Priority="101" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Camouflage -->
+  <SimulationDescriptor Name="UnitAbilityCamouflage"                              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="LevelOfCamouflage" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################################## -->
+  <!-- ####          UNLOCKING BATTLE ACTIONS        #### -->
+  <!-- ################################################## -->
+
+  <!--Chain Lightning -->
+  <SimulationDescriptor Name="UnitAbilityChainLightningDescriptor1"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ChainLightningMultiplier"   Operation="Addition"  Value="0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityChainLightningDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ChainLightningMultiplier"   Operation="Addition"  Value="0.3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityChainLightningDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ChainLightningMultiplier"   Operation="Addition"  Value="0.5"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--Debuff Immunity  -->
+  <SimulationDescriptor Name="UnitAbilityDebuffImmunityDescriptor1"               Type="UnitAbilityDescriptor"/>
+  <SimulationDescriptor Name="UnitAbilityDebuffImmunityDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilityDebuffImmunityDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Bark Skin -->
+  <SimulationDescriptor Name="UnitAbilityBarkSkinDescriptor1"                     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialBarkSkinEfficiency" Value="0.25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBarkSkinDescriptor2"                     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialBarkSkinEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBarkSkinDescriptor3"                     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialBarkSkinEfficiency" Value="0.75" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Shock -->
+  <SimulationDescriptor Name="UnitAbilityShockDescriptor1"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialShockEfficiency" Value="-2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityShockDescriptor2"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialShockEfficiency" Value="-4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityShockDescriptor3"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialShockEfficiency" Value="-6" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Increased Fire -->
+  <SimulationDescriptor Name="UnitAbilityIncreasedFireDescriptor1"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialIncreasedFireEfficiency" Value="0.25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityIncreasedFireDescriptor2"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialIncreasedFireEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityIncreasedFireDescriptor3"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialIncreasedFireEfficiency" Value="0.75" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Override Default Attack-->
+  <SimulationDescriptor Name="UnitAbilityOverrideAttackDescriptor"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ModifyDefaultAttack" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Override Default Defense -->
+  <SimulationDescriptor Name="UnitAbilityOverrideDefenseDescriptor"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ModifyDefaultDefense" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Active Charge VFX-->
+  <SimulationDescriptor Name="UnitAbilityActiveChargeDescriptor"                  Type="UnitAbilityDescriptor" />
+
+  <!-- Exhaustion -->
+  <SimulationDescriptor Name="UnitAbilityExhaustionDescriptor1"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialExhaustionEfficiency" Value="-0.1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityExhaustionDescriptor2"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialExhaustionEfficiency" Value="-0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityExhaustionDescriptor3"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialExhaustionEfficiency" Value="-0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityExhaustionDescriptor4"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialExhaustionEfficiency" Value="-0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Unsteady -->
+  <SimulationDescriptor Name="UnitAbilityUnsteadyDescriptor1"                     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialUnsteadyEfficiency" Value="-0.1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityUnsteadyDescriptor2"                     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialUnsteadyEfficiency" Value="-0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityUnsteadyDescriptor3"                     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialUnsteadyEfficiency" Value="-0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityUnsteadyDescriptor4"                     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialUnsteadyEfficiency" Value="-0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Feebleness -->
+  <SimulationDescriptor Name="UnitAbilityFeeblenessDescriptor1"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialFeeblenessEfficiency" Value="-0.1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFeeblenessDescriptor2"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialFeeblenessEfficiency" Value="-0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFeeblenessDescriptor3"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialFeeblenessEfficiency" Value="-0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFeeblenessDescriptor4"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialFeeblenessEfficiency" Value="-0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Halt -->
+  <SimulationDescriptor Name="UnitAbilityHaltDescriptor1"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialHaltEfficiency" Value="-0.1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityHaltDescriptor2"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialHaltEfficiency" Value="-0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityHaltDescriptor3"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialHaltEfficiency" Value="-0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityHaltDescriptor4"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialHaltEfficiency" Value="-0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Swiftness -->
+  <SimulationDescriptor Name="UnitAbilitySwiftnessDescriptor1"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialSwiftnessEfficiency" Value="0.15" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySwiftnessDescriptor2"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialSwiftnessEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySwiftnessDescriptor3"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialSwiftnessEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySwiftnessDescriptor4"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialSwiftnessEfficiency" Value="0.8" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Retaliation -->
+  <SimulationDescriptor Name="UnitAbilityRetaliationDescriptor1"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialRetaliationEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityRetaliationDescriptor2"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialRetaliationEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityRetaliationDescriptor3"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialRetaliationEfficiency" Value="0.7" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Regeneration -->
+  <SimulationDescriptor Name="UnitAbilityRegenerationDescriptor1"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="RegenerationBonus" Value="2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityRegenerationDescriptor2"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="RegenerationBonus" Value="4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityRegenerationDescriptor3"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="RegenerationBonus" Value="6" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Life Drain -->
+  <SimulationDescriptor Name="UnitAbilityLifeDrainDescriptor1"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="LifeDrainBonus" Operation="Addition" Left="1" BinaryOperation="Multiplication" Right="$(LevelDisplayed)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityLifeDrainDescriptor2"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="LifeDrainBonus" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(LevelDisplayed)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityLifeDrainDescriptor3"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="LifeDrainBonus" Operation="Addition" Left="4" BinaryOperation="Multiplication" Right="$(LevelDisplayed)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityLifeDrainDescriptor4"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="LifeDrainBonus" Operation="Addition" Left="8" BinaryOperation="Multiplication" Right="$(LevelDisplayed)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Block -->
+  <SimulationDescriptor Name="UnitAbilityBlockDescriptor1"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BlockDefenseBonus" Value="0.1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBlockDescriptor2"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BlockDefenseBonus" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBlockDescriptor3"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BlockDefenseBonus" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBlockDescriptor4"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BlockDefenseBonus" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Charge -->
+  <SimulationDescriptor Name="UnitAbilityChargePowerDescriptor1"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ChargeIncrease" Value="0.25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityChargePowerDescriptor2"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ChargeIncrease" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityChargePowerDescriptor3"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ChargeIncrease" Value="0.75" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- PointblankPower -->
+  <SimulationDescriptor Name="UnitAbilityPointblankPowerDescriptor1"              Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="PointblankPowerEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialPointblankPowerEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialPointblankPowerEfficiency" Value="0.1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityPointblankPowerDescriptor2"              Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="PointblankPowerEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialPointblankPowerEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialPointblankPowerEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityPointblankPowerDescriptor3"              Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="PointblankPowerEfficiency"        BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialPointblankPowerEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialPointblankPowerEfficiency" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- WarriorSlayer -->
+  <SimulationDescriptor Name="UnitAbilityWarriorSlayerDescriptor1"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMeleeEfficiency" Value="0.20" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityWarriorSlayerDescriptor2"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMeleeEfficiency" Value="0.30" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityWarriorSlayerDescriptor3"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMeleeEfficiency" Value="0.40" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityWarriorSlayerDescriptor4"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMeleeEfficiency" Value="0.50" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- KnightSlayer -->
+  <SimulationDescriptor Name="UnitAbilityKnightSlayerDescriptor1"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstCavalryEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityKnightSlayerDescriptor2"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstCavalryEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityKnightSlayerDescriptor3"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstCavalryEfficiency" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityKnightSlayerDescriptor4"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstCavalryEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- RangeSlayer -->
+  <SimulationDescriptor Name="UnitAbilityRangeSlayerDescriptor1"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstRangeEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityRangeSlayerDescriptor2"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstRangeEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityRangeSlayerDescriptor3"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstRangeEfficiency" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityRangeSlayerDescriptor4"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstRangeEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- MageSlayer -->
+  <SimulationDescriptor Name="UnitAbilityMageSlayerDescriptor1"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMageEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMageSlayerDescriptor2"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMageEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMageSlayerDescriptor3"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMageEfficiency" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMageSlayerDescriptor4"                   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMageEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- FlyingSlayer -->
+  <SimulationDescriptor Name="UnitAbilityFlyingSlayerDescriptor1"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstFlyingEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFlyingSlayerDescriptor2"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstFlyingEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFlyingSlayerDescriptor3"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstFlyingEfficiency" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFlyingSlayerDescriptor4"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstFlyingEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Minor Faction Slayer -->
+  <SimulationDescriptor Name="UnitAbilityMinorSlayerDescriptor1"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMinorEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMinorSlayerDescriptor2"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMinorEfficiency" Value="0.3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityMinorSlayerDescriptor3"                  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstMinorEfficiency" Value="0.4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Wood Burner -->
+  <SimulationDescriptor Name="InitialAgainstForestEfficiencyDescriptor"           Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstForestEfficiency" Value="0.25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Colossus Slayer -->
+  <SimulationDescriptor Name="InitialAgainstColossusEfficiencyDescriptor"         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstColossusEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="InitialAgainstColossusEfficiencyDescriptor2"        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstColossusEfficiency" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="InitialAgainstColossusEfficiencyDescriptor3"        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstColossusEfficiency" Value="1.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Guardian Killer Slayer -->
+  <SimulationDescriptor Name="InitialAgainstGuardianKillerEfficiencyDescriptor"   Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstGuardianKillerEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="InitialAgainstGuardianKillerEfficiencyDescriptor2"  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstGuardianKillerEfficiency" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="InitialAgainstGuardianKillerEfficiencyDescriptor3"  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstGuardianKillerEfficiency" Value="1.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Fast -->
+  <SimulationDescriptor Name="UnitAbilityFastDescriptor1"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFastDescriptor2"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityFastDescriptor3"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Slow -->
+  <SimulationDescriptor Name="UnitAbilitySlowDescriptor1"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="-1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySlowDescriptor2"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="-2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySlowDescriptor3"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="-3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Precision -->
+  <SimulationDescriptor Name="UnitAbilityPrecisionDescriptor1"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleRange" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityPrecisionDescriptor2"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleRange" Value="2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityPrecisionDescriptor3"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleRange" Value="3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityPrecisionDescriptor4"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleRange" Value="4" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Blind -->
+  <SimulationDescriptor Name="UnitAbilityBlindDescriptor1"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleRange" Value="-1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBlindDescriptor2"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleRange" Value="-2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityBlindDescriptor3"                        Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleRange" Value="-3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Expert -->
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityExpert1"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation" Value="10" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityExpert2"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation" Value="20" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityExpert3"            Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation" Value="30" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sweep -->
+  <SimulationDescriptor Name="UnitAbilitySweepDescriptor1"                        Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SweepEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SweepEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySweepDescriptor2"                        Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SweepEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SweepEfficiency" Value="0.75" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySweepDescriptor3"                        Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SweepEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SweepEfficiency" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySweepDescriptor4"                        Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SweepEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SweepEfficiency" Value="1.25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sweep Strike Back -->
+  <SimulationDescriptor Name="UnitAbilitySweepStrikeBackDescriptor1"              Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SweepStrikeBackEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SweepStrikeBackEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySweepStrikeBackDescriptor2"              Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SweepStrikeBackEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SweepStrikeBackEfficiency" Value="0.75" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySweepStrikeBackDescriptor3"              Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SweepStrikeBackEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SweepStrikeBackEfficiency" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilitySweepStrikeBackDescriptor4"              Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="SweepStrikeBackEfficiency" BaseValue="0" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SweepStrikeBackEfficiency" Value="1.25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Stun -->
+  <SimulationDescriptor Name="UnitAbilityStunDescriptor1"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="StunEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityStunDescriptor2"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="StunEfficiency" Value="0.75" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityStunDescriptor3"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="StunEfficiency" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityStunDescriptor4"                         Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="StunEfficiency" Value="1.25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Fly -->
+  <SimulationDescriptor Name="UnitAbilityDescriptorVisionHeightUp"                Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight" Value="100" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Free Counter -->
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityFreeCounter1"       Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttackPerRound" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Low Damage-->
+  <SimulationDescriptor Name="UnitAbilityDescriptorLowDamage1"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="-0.75" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorLowDamage2"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="-0.5" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorLowDamage3"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="-0.25" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Faster Than Shadows  -->
+  <SimulationDescriptor Name="UnitAbilityFasterThanShadows"                       Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors />
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDiseaseDescriptor1"                      Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiseaseEfficiency" Value="0.1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDiseaseDescriptor2"                      Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiseaseEfficiency" Value="0.15" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDiseaseDescriptor3"                      Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiseaseEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ######################################################### -->
+  <!-- ################### FACTION SPECIFICS ################### -->
+  <!-- ######################################################### -->
+
+  <!-- Forest Rage -->
+  <SimulationDescriptor Name="UnitAbilityForestRageDescriptor"                    Type="UnitAbilityDescriptor"/>
+
+  <!-- Technolover -->
+  <SimulationDescriptor Name="UnitAbilityTechnoloverDescriptor"                   Type="UnitAbilityDescriptor"/>
+
+  <!-- Ardent Fire -->
+  <SimulationDescriptor Name="UnitAbilityArdentFireDescriptor"                    Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ArdentFireEfficiency" BaseValue="0" IsSealed="true"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rising Fire -->
+  <SimulationDescriptor Name="UnitAbilityRisingFireDescriptor"                    Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="RisingFireEfficiency" BaseValue="0" IsSealed="true"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Fast Learner -->
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityFastLearner1"       Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainModifier" Value="0.25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityFastLearner2"       Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainModifier" Value="0.50" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorUnitAbilityFastLearner3"       Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainModifier" Value="0.75" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Stealth -->
+  <SimulationDescriptor Name="UnitAbilityStealth"                                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="LevelOfStealth" Value="1" Operation="Addition" />
+      <SimulationModifierDescriptor TargetProperty="LevelOfCamouflage" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Army Stealth -->
+  <SimulationDescriptor Name="UnitAbilityArmyStealth"                             Type="UnitAbilityDescriptor">
+      <SimulationModifierDescriptors>
+        <SimulationModifierDescriptor TargetProperty="LevelOfStealth"    Value="1" Operation="Addition" Path="../ClassArmy/ClassUnit"/>
+        <SimulationModifierDescriptor TargetProperty="LevelOfCamouflage" Value="1" Operation="Addition" Path="../ClassArmy/ClassUnit"/>
+      </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dual Wield -->
+  <SimulationDescriptor Name="UnitAbilityDualWield"                               Type="UnitAbilityDescriptor" >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EquipmentAttack"        Operation="Percent" Value="-0.5" Path="../ClassUnit/ItemCategoryWeapon,!MainHand,OffHand" Priority="2" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"       Operation="Percent" Value="-0.5" Path="../ClassUnit/ItemCategoryWeapon,!MainHand,OffHand" Priority="2" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="EquipmentDamage"        Operation="Percent" Value="-0.5" Path="../ClassUnit/ItemCategoryWeapon,!MainHand,OffHand" Priority="2" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="EquipmentInitiative"    Operation="Percent" Value="-0.5" Path="../ClassUnit/ItemCategoryWeapon,!MainHand,OffHand" Priority="2" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth" Operation="Percent" Value="-0.5" Path="../ClassUnit/ItemCategoryWeapon,!MainHand,OffHand" Priority="2" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Acrobat -->
+  <SimulationDescriptor Name="UnitAbilityAcrobat"                                 Type="UnitAbilityDescriptor" />
+
+  <!-- Twin Blades 1 -->
+  <SimulationDescriptor Name="UnitAbilityTwinBlades1"                             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TwinBladesMultiplier1" Value="1" Operation="Addition" TooltipHidden="true"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BaseAttributeAttack" Operation="Percent" Left="$(TwinBladesMultiplier2)" BinaryOperation="Multiplication" Right="0.3" Priority="2" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Twin Blades 2 -->
+  <SimulationDescriptor Name="UnitAbilityTwinBlades2"                             Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TwinBladesMultiplier2" Value="1" Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################################ -->
+  <!-- ######         SHIFTERS EXPANSION         ###### -->
+  <!-- ################################################ -->
+
+  <!-- Auriga Affinity -->
+  <SimulationDescriptor Name="UnitAbilityAurigaAffinityDescriptor1"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OrbCollectCapacity"    Operation="Percent"    Value="0.10"   Path="../ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceOnOrbCollect"          Operation="Addition" Value="1" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityAurigaAffinityDescriptor2"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OrbCollectCapacity"    Operation="Percent"    Value="0.20"   Path="../ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceOnOrbCollect"          Operation="Addition" Value="2" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityAurigaAffinityDescriptor3"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OrbCollectCapacity"    Operation="Percent"    Value="0.30"   Path="../ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="ExperienceOnOrbCollect"          Operation="Addition" Value="3" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Killer Instinct -->
+  <SimulationDescriptor Name="UnitAbilityKillerInstinctDescriptor"                Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="KillerInstinctBonus" BaseValue="0" IsSealed="true" />
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Shifting Nova -->
+  <SimulationDescriptor Name="WithUnitAbilityShiftingNova"                        Type="UnitAbilityDescriptor" />
+
+  <!-- Shifting Combo -->
+  <SimulationDescriptor Name="UnitAbilityShiftingCombo2"                          Type="UnitAbilityDescriptor" />
+
+  <!-- City damage boost -->
+  <SimulationDescriptor Name="UnitAbilityCityDamageBoostDescriptor1"              Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DefensivePower"         Operation="Percent"  Left="0.1" BinaryOperation="Multiplication" Right="$(LevelDisplayed)" Path="../ClassCity" Priority="2"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DefensivePower"         Operation="Percent"  Left="0.1" BinaryOperation="Multiplication" Right="$(LevelDisplayed)" Path="../ClassCity/!PointOfInterestStatusPillaged,ExploitedPointOfInterest,PointOfInterestTypeDefensiveTower" Priority="2" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Attrition Damage from Defensive Towers and Cities is reduced-->
+  <SimulationDescriptor Name="UnitAbilityAttritionDamageDeflectorDescriptor1"     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DefensivePowerDamageReceived"      Operation="Percent" Value="-0.5"  Path="../ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ice Walker -->
+  <SimulationDescriptor Name="UnitAbilityIceWalkerDescriptor1"                    Type="UnitAbilityDescriptor" />
+
+  <!-- Shifter Nature -->
+  <SimulationDescriptor Name="UnitAbilityShifterNatureDescriptor"                 Type="UnitAbilityDescriptor">
+
+    <SimulationPropertyDescriptors>
+      <!-- Shifting Form is equal to 0 in Light Form and 1 in Dark Form (Light by default) -->
+      <SimulationPropertyDescriptor Name="ShiftingForm"         BaseValue="0" MinValue="0" MaxValue="1" IsSealed="false"/>
+      <SimulationPropertyDescriptor Name="ShiftingFormIsLight"  BaseValue="0" MinValue="0" MaxValue="1" IsSealed="false"/>
+      <SimulationPropertyDescriptor Name="ShiftingFormIsDark"   BaseValue="0" MinValue="0" MaxValue="1" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+
+      <BinarySimulationModifierDescriptor TargetProperty="ShiftingFormIsLight"          Operation="Addition"   BinaryOperation="Subtraction" Left="1" Right="$(ShiftingForm)" />
+      <SimulationModifierDescriptor       TargetProperty="ShiftingFormIsDark"           Operation="Addition"   Value="$(ShiftingForm)" />
+
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   BinaryOperation="Multiplication" Left="0.2"   Right="$(ShiftingFormIsDark)" />
+      <BinarySimulationModifierDescriptor TargetProperty="VisionRange"                          Operation="Addition"  BinaryOperation="Multiplication" Left="1"     Right="$(ShiftingFormIsDark)" Priority="101"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"               Operation="Addition"  BinaryOperation="Multiplication" Left="1"     Right="$(ShiftingFormIsDark)" />
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"                Operation="Addition"  BinaryOperation="Multiplication" Left="1"     Right="$(ShiftingFormIsDark)" />
+      <BinarySimulationModifierDescriptor TargetProperty="BattleMaximumMovement"                Operation="Addition"  BinaryOperation="Multiplication" Left="1"     Right="$(ShiftingFormIsDark)" />
+
+      <!-- Light form -->
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Percent"   BinaryOperation="Multiplication" Left="0.2"   Right="$(ShiftingFormIsLight)" />
+      <BinarySimulationModifierDescriptor TargetProperty="UnitRegen"                            Operation="Addition"  BinaryOperation="Multiplication" Left="0.1"   Right="$(ShiftingFormIsLight)" />
+      <BinarySimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Percent"   BinaryOperation="Multiplication" Left="-0.5"  Right="$(ShiftingFormIsLight)" />
+      <BinarySimulationModifierDescriptor TargetProperty="HeroUpkeep"                           Operation="Percent"   BinaryOperation="Multiplication" Left="-0.5"  Right="$(ShiftingFormIsLight)" Path="UnitHero" Priority="2" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Immolation -->
+  <SimulationDescriptor Name="UnitAbilityImmolationDescriptor"                 Type="UnitAbilityDescriptor">
+
+    <SimulationPropertyDescriptors>
+      <!-- ImmolationState is equal to 0 off 1 on -->
+      <SimulationPropertyDescriptor Name="ImmolationState"         BaseValue="0" MinValue="0" MaxValue="1" IsSealed="false"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   BinaryOperation="Multiplication" Left="0.3"   Right="$(ImmolationState)" />            
+    </SimulationModifierDescriptors>
+    
+  </SimulationDescriptor>
+
+  <!-- Harbinger / Manta Nature / Aspiration (resource extraction) -->
+  <SimulationDescriptor Name="UnitAbilityHarbingerDescriptor"                     Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="AspirateValueAddition"              BaseValue="0.5" MinValue="0"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"          Operation="Addition" Value="4" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"           Operation="Addition" Value="4" />
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"           Operation="Addition" Value="2" />
+      <BinarySimulationModifierDescriptor TargetProperty="AspirateValueAddition"     Operation="Addition" Left="$(LevelDisplayed)" BinaryOperation="Multiplication" Right="0.5" />
+      <SimulationModifierDescriptor TargetProperty="AspirateValue"                   Operation="Addition" Value="$(AspirateValueAddition)" Path="../ClassArmy" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--Military Power Bonuses on abilities depending on the shifting form-->
+  <SimulationDescriptor Name="MalusShiftingUnitAbilityOffensiveMilitaryPower1"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="-0.1"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MalusShiftingUnitAbilityOffensiveMilitaryPower2"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="-0.2"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MalusShiftingUnitAbilityOffensiveMilitaryPower3"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="-0.3"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MalusShiftingUnitAbilityOffensiveMilitaryPower4"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="-0.4"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityOffensiveMilitaryPower1"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.1"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityOffensiveMilitaryPower2"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.2"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityOffensiveMilitaryPower3"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.3"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityOffensiveMilitaryPower4"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.4"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityOffensiveMilitaryPower5"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Dark form -->
+      <BinarySimulationModifierDescriptor TargetProperty="OffensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.5"    Right="$(ShiftingFormIsDark)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityDefensiveMilitaryPower1"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Light form -->
+      <BinarySimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.1"     Right="$(ShiftingFormIsLight)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityDefensiveMilitaryPower2"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Light form -->
+      <BinarySimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.2"     Right="$(ShiftingFormIsLight)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityDefensiveMilitaryPower3"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Light form -->
+      <BinarySimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.3"     Right="$(ShiftingFormIsLight)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityDefensiveMilitaryPower4"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Light form -->
+      <BinarySimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.4"     Right="$(ShiftingFormIsLight)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BonusShiftingUnitAbilityDefensiveMilitaryPower5"    Type="ShiftingUnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <!-- Light form -->
+      <BinarySimulationModifierDescriptor TargetProperty="DefensiveMilitaryPower"     Operation="Addition"  BinaryOperation="Percent" Left="0.8"     Right="$(ShiftingFormIsLight)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################################ -->
+  <!-- ######           NAVAL EXPANSION          ###### -->
+  <!-- ################################################ -->
+
+  <SimulationDescriptor Name="UnitAbilityMarkOfTheDamnedDescriptor"               Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitRegenModifier"                Operation="Multiplication"  Value="0"       Path="ClassUnit" Priority="99"/>
+      <SimulationModifierDescriptor TargetProperty="UnitPoison"                       Operation="Addition"        Value="-0.05"   Path="ClassUnit" Priority="99"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityTrueSightDescriptor"                     Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                      Operation="Addition" Value="2" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"                     Operation="Addition" Value="100"/>
+      <SimulationModifierDescriptor TargetProperty="IgnoreFog"                        Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"                   Operation="Force"    Value="$(VisionRange)" Path="../ClassArmy" IsBindOnSource="false" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityAmphibiousDescriptor"                    Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"            Operation="Subtraction" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"            Operation="Subtraction" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Prestige: increase pop productivity -->
+  <SimulationDescriptor Name="UnitAbilityPrestigePopulationEfficiencyDescriptor1" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"   Operation="Addition" Value="1" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"          Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityPrestigePopulationEfficiencyDescriptor2" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"   Operation="Addition" Value="2" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"          Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityPrestigePopulationEfficiencyDescriptor3" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"   Operation="Addition" Value="3" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"          Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- City Defense Point: initial boost -->
+  <SimulationDescriptor Name="UnitAbilityInitialBoostCityDefensePointDescriptor1" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint" Operation="Addition" BinaryOperation="Multiplication" Left="10" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint" Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityInitialBoostCityDefensePointDescriptor2" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint" Operation="Addition" BinaryOperation="Multiplication" Left="20" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint" Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="UnitAbilityInitialBoostCityDefensePointDescriptor3" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint" Operation="Addition" BinaryOperation="Multiplication" Left="30" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint" Operation="Percent"  BinaryOperation="Multiplication" Left="0.01" Right="$(LevelDisplayed)" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- ################################################ -->
+  <!-- ######           FLAMES EXPANSION         ###### -->
+  <!-- ################################################ -->
+
+  <!-- Weatherfaring -->
+  <SimulationDescriptor Name="UnitAbilityWeatherfaringDescriptor" Type="UnitAbilityDescriptor"/>
+
+  <!--  Map Boost Adquisition -->
+  <SimulationDescriptor Name="UnitAbilityMapBoostsDescriptor" Type="UnitAbilityDescriptor"/>
+  
+  <SimulationDescriptor Name="UnitAbilityInnerFireDescriptor" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReceivedTerrainDamageMultiplier" Operation="Force" Value="0"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+    
+  <SimulationDescriptor Name="UnitAbilityGeomancyDescriptor" Type="UnitAbilityDescriptor"/>
+
+  <SimulationDescriptor Name="UnitAbilityEssenceHarvestDescriptor" Type="UnitAbilityDescriptor"/>
+  
+  <SimulationDescriptor Name="UnitAbilityPortableForgeDescriptor" Type="UnitAbilityDescriptor"/>
+
+  <!-- Volcanic Regen -->
+  <SimulationDescriptor Name="UnitAbilityVolcanicRegenDescriptor" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VolcanicRegen" Operation="Force" Value="1" Path="../ClassUnit" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Lava Flow Immunity -->
+  <SimulationDescriptor Name="UnitAbilityFlamewalkerDescriptor" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReceivedTerrainDamageMultiplier" Operation="Force" Value="0" Path="../ClassUnit" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Battle Terrain Damage -->
+  <SimulationDescriptor Name="UnitAbilityTerrainDamageDescriptor" Type="UnitAbilityDescriptor"/>
+
+  <!-- ######################################################### -->
+  <!-- ########################## TEMP ######################### -->
+  <!-- ######################################################### -->
+   
+</Datatable>

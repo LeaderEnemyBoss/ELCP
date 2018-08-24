@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- "Dust Bishop" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionBrokenLordsUnit3">
+    <AIParameter Name="EmpireUnlockUnitSupport" Value="1.25" />
+  </AIParameterDatatableElement>
+
+  <!-- "Tenei Walker" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionMadFairiesUnit3">
+    <AIParameter Name="EmpireUnlockUnitInfantry" Value="1.5" />
+  </AIParameterDatatableElement>
+
+  <!-- "Eneqa Wing" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRageWizardsUnit3">
+    <AIParameter Name="EmpireUnlockUnitFlying" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Proliferator" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionNecrophagesUnit3">
+    <AIParameter Name="EmpireUnlockUnitSupport" Value="2" />
+  </AIParameterDatatableElement>
+
+  <!-- "Titan" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionVaultersUnit3">
+    <AIParameter Name="EmpireUnlockUnitInfantry" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Titan" (Mezari) -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionMezariUnit3">
+    <AIParameter Name="EmpireUnlockUnitInfantry" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Yirmark" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRovingClansUnit3">
+    <AIParameter Name="EmpireUnlockUnitInfantry" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Ancient" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionDrakkensUnit3">
+    <AIParameter Name="EmpireUnlockUnitSupport" Value="1.25" />
+  </AIParameterDatatableElement>
+
+  <!-- "Nameless Guard" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionCultistsUnit3">
+    <AIParameter Name="EmpireUnlockUnitRanged" Value="1.25" />
+  </AIParameterDatatableElement>
+
+  <!-- "Myst" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionReplicantsUnit3">
+    <AIParameter Name="EmpireUnlockUnitFlying" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Dark Angels" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionWinterShiftersUnit3">
+    <AIParameter Name="EmpireUnlockUnitFlying" Value="1.5" />
+  </AIParameterDatatableElement>
+  
+  <!-- "Gorilla" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionFlamesUnit3">
+    <AIParameter Name="EmpireUnlockUnitCavalry" Value="1.75" />
+  </AIParameterDatatableElement>
+  
+  <!-- TechnologyDefinitionBrokenLords5 : quest reward -->
+
+  <!-- TechnologyDefinitionBrokenLords6 : quest reward -->
+
+  <!-- "Cannon Fodder" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionNecrophages6">
+    <AIParameter Name="EmpireMilitaryUpkeepPercent"   Value="0.5"  />
+    <AIParameter Name="EmpireHeroUpkeepPercent"       Value="0.2"  />
+  </AIParameterDatatableElement>
+  
+  <!-- "Demanding Gods" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionNecrophages8">
+    <AIParameter Name="CityApproval"        Value="30"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Deep Generator" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionVaulters2">
+    <!-- "Deep Generator": 20 holy resource required -->
+    <AIParameter Name="CityFoodPercent"       Value="0.1
+      * (0.4 max (1 min ((   
+        (((((($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) 
+        max ($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)))
+        max ($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)))
+        max ($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)))
+        max ($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)))
+        max ($Property(ClassEmpire:Strategic6Stock) + ($Property(ClassEmpire:NetStrategic6)*8)))
+      )/20)))" />
+    <AIParameter Name="CityMoneyPercent"      Value="0.1
+      * (0.4 max (1 min ((   
+        (((((($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) 
+        max ($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)))
+        max ($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)))
+        max ($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)))
+        max ($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)))
+        max ($Property(ClassEmpire:Strategic6Stock) + ($Property(ClassEmpire:NetStrategic6)*8)))
+      )/20)))" />
+    <AIParameter Name="CityProductionPercent" Value="0.1
+      * (0.4 max (1 min ((   
+        (((((($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) 
+        max ($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)))
+        max ($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)))
+        max ($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)))
+        max ($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)))
+        max ($Property(ClassEmpire:Strategic6Stock) + ($Property(ClassEmpire:NetStrategic6)*8)))
+      )/20)))" />
+    <AIParameter Name="CitySciencePercent"    Value="0.1
+      * (0.4 max (1 min ((   
+        (((((($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) 
+        max ($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)))
+        max ($Property(ClassEmpire:Strategic3Stock) + ($Property(ClassEmpire:NetStrategic3)*8)))
+        max ($Property(ClassEmpire:Strategic4Stock) + ($Property(ClassEmpire:NetStrategic4)*8)))
+        max ($Property(ClassEmpire:Strategic5Stock) + ($Property(ClassEmpire:NetStrategic5)*8)))
+        max ($Property(ClassEmpire:Strategic6Stock) + ($Property(ClassEmpire:NetStrategic6)*8)))
+      )/20)))" />
+  </AIParameterDatatableElement>
+
+  <!-- "Arcana of Authority" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards9">
+    <!-- Provides between +1 and +5 influence on up to 6 tiles... most of the time it will only affect about 3 though  -->
+    <AIParameter Name="CityCityPoint"       Value="3 * (1 + 4*$Property(ClassEmpire:PillarsLevel)) * $Count(ClassEmpire/ClassCity)"  />
+    <!-- Provides enemy defense reduction in combat -->
+    <AIParameter Name="EmpireBattleMagic" Value="1.5"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Dust Purifier" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards12">
+    <AIParameter Name="EmpirePillarArcana"        Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Freelance Guards" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionPrivateersRovingClans">
+    <AIParameter Name="EmpireUnlockPrivateers"       Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "We are Legion" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionCultists13">
+    <AIParameter Name="CityRecruitInitialExperience"       Value="40 * ($Property(ClassEmpire/ClassCity:NumberOfConvertedVillages) + 1)"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Destructive Analysis" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionCultists12">
+    <AIParameter Name="EmpireUnlockBoosterCultist" Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "What's Mine is Mine" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionReplicants6">
+    <AIParameter Name="EmpireAntiSpy" Value="10"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Caudata Sanctuary" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionReplicants12">
+    <AIParameter Name="EmpireSpy" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Luxury Alchemists" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionWinterShifters7">
+    <AIParameter Name="LuxuryBonusPerLuxury" Value="1" />
+  </AIParameterDatatableElement>
+
+  <!-- "Leviathan" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionSeaDemonsUnit3">
+    <AIParameter Name="EmpireUnlockUnitSubmersible" Value="2"/>
+  </AIParameterDatatableElement>
+
+  <!-- "Cargo Docks" (Sea Demons early version) -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionDocksSeaDemons">
+    <AIParameter Name="EmpireUnlockSeaTrade" Value="$Property(EmpireTypeMajor:AIHasAnyCoastalCity)"  />
+
+    <!-- 
+      The gain from having access to the cargo docks is the difference between what a normal borough provides and what the docks provide:
+      * food: +1 instead of -1, so +2
+      * dust: +1 instead of +1, so +0
+      * science: +0 instead of +1, so -1
+      * industry: +5 instead of +0, so +5
+      * approval: +10 instead of -10, so +20
+    -->
+
+    <AIParameter Name="CityFood"              Value="2 * $SumProperty(EmpireTypeMajor/ClassCity:AIHasWaterTileInCity) / $Property(../EmpireTypeMajor:EmpireScaleFactor)"/>
+    <AIParameter Name="CityApproval"          Value="20 * $SumProperty(EmpireTypeMajor/ClassCity:AIHasWaterTileInCity) / $Property(../EmpireTypeMajor:EmpireScaleFactor)"/>
+    <AIParameter Name="CityIndustry"          Value="5 * ($SumProperty(EmpireTypeMajor/ClassCity:AIHasWaterTileInCity) + $Count(ClassEmpire/ClassCity/TerrainTagWater)) / $Property(../EmpireTypeMajor:EmpireScaleFactor)"/>
+
+    <!--
+    Disembark speed provides faster movement on empire proportional to the fraction of cities which can build the docks. It also requires the ship technology, obviously!
+    -->
+    <AIParameter Name="EmpireFasterMovement"    Value="($Count(ClassEmpire/ClassResearch,TechnologyShip) - $Count(AffinitySeaDemons)) * 0.1 * $SumProperty(EmpireTypeMajor/ClassCity:AIHasWaterTileInCity)" />
+
+  </AIParameterDatatableElement>
+
+  <!-- "Golem Camps"  5 Glassteel/titanium required-->
+  <AIParameterDatatableElement Name="TechnologyDefinitionFlames14">
+    <AIParameter Name="CityFood"              Value="15 
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
+    <AIParameter Name="CityIndustry"          Value="15 
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
+    <AIParameter Name="CityScience"           Value="15 
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
+    <AIParameter Name="CityCityPoint"         Value="15 
+      * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
+  </AIParameterDatatableElement>
+  
+</Datatable>

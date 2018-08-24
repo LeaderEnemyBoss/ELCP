@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################################################## -->
+  <!-- ################ INTERACTIONS WITH MINOR FACTIONS ################ -->
+  <!-- ################################################################## -->
+
+    <!-- Parley and bribe (AI only knows how to bribe though) -->
+  <AIParameterConverter Name="EmpireUnlockBribe">
+    <ToAIParameter AIParameter="AIEmpireUnlockBribe">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Assimilation one extra minor faction -->
+  <AIParameterConverter Name="EmpireUnlockAssimilation">
+    <ToAIParameter AIParameter="AIEmpireUnlockAssimilation">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ############################################################ -->
+  <!-- ################ ACCESS TO THE MARKET PLACE ################ -->
+  <!-- ############################################################ -->
+  
+  <!-- Unlock mercenaries/heroes -->
+  <AIParameterConverter Name="EmpireUnlockMarketUnit">
+    <ToAIParameter AIParameter="AIEmpireUnlockMarketUnit">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Unlock resources/stockpiles section of the market -->
+  <AIParameterConverter Name="EmpireUnlockMarketResource">
+    <ToAIParameter AIParameter="AIEmpireUnlockMarketResource">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Unlock or improve the pillage ability -->
+  <AIParameterConverter Name="EmpireUnlockPillage">
+    <ToAIParameter AIParameter="AIEmpireUnlockPillage">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpirePercentDustFromPillage">
+    <ToAIParameter AIParameter="AIEmpireMoney">$(Input) * $Count(ClassEmpire/ClassResearch,TechnologyMapActionPillage) * $Property(ClassEmpire:MilitaryPower) * 0.001</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) * $Count(ClassEmpire/ClassResearch,TechnologyMapActionPillage) * $Property(ClassEmpire:MilitaryPower) * 0.001</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ############################################ -->
+  <!-- ################ STOCKPILES ################ -->
+  <!-- ############################################ -->
+
+  <!-- Unlock the Cultists' booster creation abilities (from destroying enemy cities) -->
+  <AIParameterConverter Name="EmpireUnlockBoosterCultist">
+    <ToAIParameter AIParameter="AIEmpireUnlockBoosterCultist">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockBooster">
+    <ToAIParameter AIParameter="AIEmpireUnlockBooster">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ########################################### -->
+  <!-- ################ DIPLOMACY ################ -->
+  <!-- ########################################### -->
+
+  <!-- Peace and alliance -->
+  <AIParameterConverter Name="EmpireUnlockPeace">
+    <ToAIParameter AIParameter="AIEmpireUnlockDiplomacyPositive">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+  <AIParameterConverter Name="EmpireUnlockAlliance">
+    <ToAIParameter AIParameter="AIEmpireUnlockDiplomacyPositive">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Ships, to cross the ocean -->
+  <AIParameterConverter Name="EmpireUnlockShip">
+    <ToAIParameter AIParameter="AIEmpireUnlockShip">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Privateers: mercenaries in disguise! -->
+  <AIParameterConverter Name="EmpireUnlockPrivateers">
+    <ToAIParameter AIParameter="AIEmpireUnlockPrivateers">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################### -->
+  <!-- ################## BETTER CHANCE OF LOOT IN RUINS  ################ -->
+  <!-- ################################################################### -->
+
+  <AIParameterConverter Name="EmpireImprovedRuinSearch">
+    <ToAIParameter AIParameter="AIEmpireImprovedRuinSearch">$(Input) * 0.1 * $Count(ClassEmpire/ClassCity/PointOfInterestTypeQuestLocation)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ########################################################## -->
+  <!-- ################## BUYOUT COST REDUCTION  ################ -->
+  <!-- ########################################################## -->
+
+  <!-- Reduce buyout cost reduction -->
+  <AIParameterConverter Name="EmpireBuyout">
+    <ToAIParameter AIParameter="AIEmpireBuyout">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- #################################### -->
+  <!-- ######    VICTORY BUILDING    ###### -->
+  <!-- #################################### -->
+
+  <AIParameterDatatableElement Name="WonderVictory">
+    <AIParameter Name="AIEmpireWonderVictory"     Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- ###################################################### -->
+  <!-- ################ ARDENT MAGES FACTION ################ -->
+  <!-- ###################################################### -->
+
+  <!-- == Arcana == 
+  Improves the Ardent Mages' pillar and battle spells, making their economy stronger and also boosting their combat abilities
+  -->
+  <AIParameterConverter Name="EmpirePillarArcana">
+    <!-- Pillar of knowledge provides extra research production: total increase of +14 for 4 pillar levels => +3.5 per pillar level over 6 tiles => +21  -->
+    <ToAIParameter AIParameter="AIEmpireResearch">21 * $(Input) * $Count(ClassEmpire/ClassResearch,TechnologyRageWizards7) * $Count(ClassEmpire/ClassCity)</ToAIParameter>
+    <!-- Pillar of influence provides extra influence production: total increase of +4 for 4 pillar levels => +1 per pillar level over 6 tiles => +6 -->
+    <ToAIParameter AIParameter="AIEmpireEmpirePoint">6 * $(Input) * $Count(ClassEmpire/ClassResearch,TechnologyRageWizards9) * $Count(ClassEmpire/ClassCity)</ToAIParameter>
+    <!-- Pillar of extraction provides extra dust production: total increase of +14 for 4 pillar levels => +3.5 per pillar level over 6 tiles => +21 -->
+    <ToAIParameter AIParameter="AIEmpireMoney">21 * $(Input) * $Count(ClassEmpire/ClassResearch,TechnologyRageWizards10) * $Count(ClassEmpire/ClassCity)</ToAIParameter>
+    <!-- Pillar of regeneration extra food production:  total increase of +14 for 4 pillar levels => +3.5 per pillar level over 6 tiles => +21 -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">21 * $(Input) * $Count(ClassEmpire/ClassResearch,TechnologyRageWizards11) * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireBattleMagicArcana">
+    <!-- Battle magic provides military power -->
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input) * 1500 * $Count(ClassEmpire/ClassCity) *
+      (
+      $Count(ClassEmpire/ClassResearch,TechnologyRageWizards7)
+      + $Count(ClassEmpire/ClassResearch,TechnologyRageWizards8)
+      + $Count(ClassEmpire/ClassResearch,TechnologyRageWizards9)
+      + $Count(ClassEmpire/ClassResearch,TechnologyRageWizards10)
+      + $Count(ClassEmpire/ClassResearch,TechnologyRageWizards11)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Battle magic == 
+  Spells that can be cast in battle, at a cost
+  -->
+  <AIParameterConverter Name="EmpireBattleMagic">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 1500 *  $Count(ClassEmpire/ClassCity) * (1 + $Property(SpellsLevel))</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################ -->
+  <!-- ######     "WINTER SHIFTERS" EXPANSION    ###### -->
+  <!-- ################################################ -->
+
+  <AIParameterConverter Name="EmpireUnlockForceShift">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">1000 * $Property(OrbStock) / 10</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockAltarOfAuriga">
+    <ToAIParameter AIParameter="AIEmpireUnlockAltarOfAuriga">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+  
+
+</Datatable>

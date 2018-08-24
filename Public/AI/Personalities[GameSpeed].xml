@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!-- ################# FAST ################# -->
+    <AIPersonalityDefinition Name="PersonalityMajorFactionGameSpeedFast">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <MajorEmpire>
+                    <NumberOfTurnInBesiege>0.5</NumberOfTurnInBesiege>
+                    <AIEntity_Empire>
+                        <AILayer_Military>
+                            <UnitInGarrisonTurnLimit>0.5</UnitInGarrisonTurnLimit>
+                            <UnitInGarrisonTurnLimitForMaxPercent>0.5</UnitInGarrisonTurnLimitForMaxPercent>
+                        </AILayer_Military>
+                        <AILayer_Village>
+                            <TurnLimitBeforeHardPacification>0.5</TurnLimitBeforeHardPacification>
+                        </AILayer_Village>
+                        <AILayer_HeroAssignation>
+                            <MaximumTurnForHero>0.5</MaximumTurnForHero>
+                        </AILayer_HeroAssignation>
+                    </AIEntity_Empire>
+
+                    <AIEntity_City>
+                        <AILayer_Production>
+                            <MinimalTurnDuration>0.5</MinimalTurnDuration>
+                            <MaximalTurnDuration>0.5</MaximalTurnDuration>
+                        </AILayer_Production>
+                        <AILayer_CityAntiSpy>
+                            <SpyPresenceProbabilityDecreasePercent>2</SpyPresenceProbabilityDecreasePercent>
+                        </AILayer_CityAntiSpy>
+                    </AIEntity_City>
+                </MajorEmpire>
+
+                <AgentDefinition>
+                    <TechnologyReferenceTurnCountAgent>
+                        <IdealTechnologyUnlockPeriod>0.75</IdealTechnologyUnlockPeriod>
+                        <MaximumPeriodGap>0.5</MaximumPeriodGap>
+                    </TechnologyReferenceTurnCountAgent>
+
+                    <DiplomacyNeedPrestigeRatioAgent>
+                        <NumberOfTurnToReachObjective>0.5</NumberOfTurnToReachObjective>
+                    </DiplomacyNeedPrestigeRatioAgent>
+
+                    <EmpirePlanNeedPrestigeRatioAgent>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
+                        <!-- The AI will want to stock X% of the wanted empire plan cost. -->
+                    </EmpirePlanNeedPrestigeRatioAgent>
+
+                    <IndustryReferenceTurnCountAgent>
+                        <MaximumTurnCount>0.5</MaximumTurnCount>
+                    </IndustryReferenceTurnCountAgent>
+
+                    <TechnologyBuyoutReferenceRatioAgent>
+                        <IdealTechnologyUnlockPeriod>0.5</IdealTechnologyUnlockPeriod>
+                    </TechnologyBuyoutReferenceRatioAgent>
+
+                    <MoneyReferenceRatioAgent>
+                        <MoneyStockToMaintainUpkeepTurnCount>0.5</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyIncomeGrowthPercent>1</MoneyIncomeGrowthPercent>
+                    </MoneyReferenceRatioAgent>
+
+                    <PopulationBuyoutReferenceRatioAgent>
+                        <MoneyIncomeBuyoutPercent>1</MoneyIncomeBuyoutPercent>
+                    </PopulationBuyoutReferenceRatioAgent>
+
+                    <PopulationReferenceTurnCountAgent>
+                        <RangeRatio>1</RangeRatio>
+                    </PopulationReferenceTurnCountAgent>
+
+                    <MapExchangeTermAgent>
+                        <ExplorationRatioScoreMultiplier>1</ExplorationRatioScoreMultiplier>
+                    </MapExchangeTermAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIQuestSolverDefinition -->
+            <AIQuestSolverDefinition>
+                <MinimalTurnDuration>0.5</MinimalTurnDuration>
+                <MaximalTurnDuration>0.5</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityMinorFactionGameSpeedFast">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <MinorEmpire>
+                    <EraLevelFactor>1</EraLevelFactor>
+                    <TurnLevelFactor>2</TurnLevelFactor>
+                </MinorEmpire>
+            </AI>
+
+            <!-- DeploymentStepDefinition Database -->
+            <DeploymentStepDefinition>
+                <StartTurn>0.5</StartTurn>
+                <CitySiegeDuration>0.5</CitySiegeDuration>
+            </DeploymentStepDefinition>
+
+            <!-- AIMinorEmpireDefConDefinition Database -->
+            <AIMinorEmpireDefConDefinition>
+                <ArmyProductionCooldown>0.5</ArmyProductionCooldown>
+                <GarrisonGrowthCooldown>0.5</GarrisonGrowthCooldown>
+            </AIMinorEmpireDefConDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+
+    <!-- ################# NORMAL ################# -->
+    <AIPersonalityDefinition Name="PersonalityMajorFactionGameSpeedNormal">
+        <Multipliers>
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityMinorFactionGameSpeedNormal">
+        <Multipliers>
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+
+    <!-- ################# SLOW ################# -->
+    <AIPersonalityDefinition Name="PersonalityMajorFactionGameSpeedSlow">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <MajorEmpire>
+                    <NumberOfTurnInBesiege>1.5</NumberOfTurnInBesiege>
+                    <AIEntity_Empire>
+                        <AILayer_Military>
+                            <UnitInGarrisonTurnLimit>1.5</UnitInGarrisonTurnLimit>
+                            <UnitInGarrisonTurnLimitForMaxPercent>1.5</UnitInGarrisonTurnLimitForMaxPercent>
+                        </AILayer_Military>
+                        <AILayer_Village>
+                            <TurnLimitBeforeHardPacification>1.5</TurnLimitBeforeHardPacification>
+                        </AILayer_Village>
+                        <AILayer_HeroAssignation>
+                            <MaximumTurnForHero>1.5</MaximumTurnForHero>
+                        </AILayer_HeroAssignation>
+                    </AIEntity_Empire>
+                    <AIEntity_City>
+                        <AILayer_Production>
+                            <MinimalTurnDuration>1.5</MinimalTurnDuration>
+                            <MaximalTurnDuration>1.5</MaximalTurnDuration>
+                        </AILayer_Production>
+                        <AILayer_CityAntiSpy>
+                            <SpyPresenceProbabilityDecreasePercent>0.667</SpyPresenceProbabilityDecreasePercent>
+                        </AILayer_CityAntiSpy>
+                    </AIEntity_City>
+                </MajorEmpire>
+
+                <AgentDefinition>
+                    <TechnologyReferenceTurnCountAgent>
+                        <IdealTechnologyUnlockPeriod>1.5</IdealTechnologyUnlockPeriod>
+                        <MaximumPeriodGap>1.5</MaximumPeriodGap>
+                    </TechnologyReferenceTurnCountAgent>
+
+                    <DiplomacyNeedPrestigeRatioAgent>
+                        <NumberOfTurnToReachObjective>1.5</NumberOfTurnToReachObjective>
+                    </DiplomacyNeedPrestigeRatioAgent>
+
+                    <EmpirePlanNeedPrestigeRatioAgent>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
+                        <!-- The AI will want to stock X% of the wanted empire plan cost. -->
+                    </EmpirePlanNeedPrestigeRatioAgent>
+
+                    <IndustryReferenceTurnCountAgent>
+                        <MaximumTurnCount>1.5</MaximumTurnCount>
+                    </IndustryReferenceTurnCountAgent>
+
+                    <TechnologyBuyoutReferenceRatioAgent>
+                        <IdealTechnologyUnlockPeriod>1.5</IdealTechnologyUnlockPeriod>
+                    </TechnologyBuyoutReferenceRatioAgent>
+
+                    <MoneyReferenceRatioAgent>
+                        <MoneyStockToMaintainUpkeepTurnCount>1.5</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyIncomeGrowthPercent>1</MoneyIncomeGrowthPercent>
+                    </MoneyReferenceRatioAgent>
+
+                    <PopulationBuyoutReferenceRatioAgent>
+                        <MoneyIncomeBuyoutPercent>1</MoneyIncomeBuyoutPercent>
+                    </PopulationBuyoutReferenceRatioAgent>
+
+                    <PopulationReferenceTurnCountAgent>
+                        <RangeRatio>1</RangeRatio>
+                    </PopulationReferenceTurnCountAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIQuestSolverDefinition -->
+            <AIQuestSolverDefinition>
+                <MinimalTurnDuration>1.5</MinimalTurnDuration>
+                <MaximalTurnDuration>1.5</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityMinorFactionGameSpeedSlow">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <MinorEmpire>
+                    <EraLevelFactor>1</EraLevelFactor>
+                    <TurnLevelFactor>0.75</TurnLevelFactor>
+                </MinorEmpire>
+            </AI>
+
+            <!-- DeploymentStepDefinition Database -->
+            <DeploymentStepDefinition>
+                <StartTurn>1.5</StartTurn>
+                <CitySiegeDuration>1.5</CitySiegeDuration>
+            </DeploymentStepDefinition>
+
+            <!-- AIMinorEmpireDefConDefinition Database -->
+            <AIMinorEmpireDefConDefinition>
+                <ArmyProductionCooldown>1.5</ArmyProductionCooldown>
+                <GarrisonGrowthCooldown>1.5</GarrisonGrowthCooldown>
+            </AIMinorEmpireDefConDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+
+    <!-- ################# ENDLESS ################# -->
+    <AIPersonalityDefinition Name="PersonalityMajorFactionGameSpeedEndless">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <MajorEmpire>
+                    <NumberOfTurnInBesiege>2</NumberOfTurnInBesiege>
+                    <AIEntity_Empire>
+                        <AILayer_Military>
+                            <UnitInGarrisonTurnLimit>2</UnitInGarrisonTurnLimit>
+                            <UnitInGarrisonTurnLimitForMaxPercent>2</UnitInGarrisonTurnLimitForMaxPercent>
+                        </AILayer_Military>
+                        <AILayer_Village>
+                            <TurnLimitBeforeHardPacification>2</TurnLimitBeforeHardPacification>
+                        </AILayer_Village>
+                    </AIEntity_Empire>
+                    <AIEntity_City>
+                        <AILayer_Production>
+                            <MinimalTurnDuration>2</MinimalTurnDuration>
+                            <MaximalTurnDuration>2</MaximalTurnDuration>
+                        </AILayer_Production>
+                        <AILayer_HeroAssignation>
+                            <MaximumTurnForHero>1</MaximumTurnForHero>
+                        </AILayer_HeroAssignation>
+                        <AILayer_CityAntiSpy>
+                            <SpyPresenceProbabilityDecreasePercent>0.5</SpyPresenceProbabilityDecreasePercent>
+                        </AILayer_CityAntiSpy>
+                    </AIEntity_City>
+                </MajorEmpire>
+
+                <AgentDefinition>
+                    <TechnologyReferenceTurnCountAgent>
+                        <IdealTechnologyUnlockPeriod>2</IdealTechnologyUnlockPeriod>
+                        <MaximumPeriodGap>2</MaximumPeriodGap>
+                    </TechnologyReferenceTurnCountAgent>
+
+                    <DiplomacyNeedPrestigeRatioAgent>
+                        <NumberOfTurnToReachObjective>2</NumberOfTurnToReachObjective>
+                    </DiplomacyNeedPrestigeRatioAgent>
+
+                    <EmpirePlanNeedPrestigeRatioAgent>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
+                        <!-- The AI will want to stock X% of the wanted empire plan cost. -->
+                    </EmpirePlanNeedPrestigeRatioAgent>
+
+                    <IndustryReferenceTurnCountAgent>
+                        <MaximumTurnCount>2</MaximumTurnCount>
+                    </IndustryReferenceTurnCountAgent>
+
+                    <TechnologyBuyoutReferenceRatioAgent>
+                        <IdealTechnologyUnlockPeriod>2</IdealTechnologyUnlockPeriod>
+                    </TechnologyBuyoutReferenceRatioAgent>
+
+                    <MoneyReferenceRatioAgent>
+                        <MoneyStockToMaintainUpkeepTurnCount>2</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyIncomeGrowthPercent>1</MoneyIncomeGrowthPercent>
+                    </MoneyReferenceRatioAgent>
+
+                    <PopulationBuyoutReferenceRatioAgent>
+                        <MoneyIncomeBuyoutPercent>1</MoneyIncomeBuyoutPercent>
+                    </PopulationBuyoutReferenceRatioAgent>
+
+                    <PopulationReferenceTurnCountAgent>
+                        <RangeRatio>1</RangeRatio>
+                    </PopulationReferenceTurnCountAgent>
+                </AgentDefinition>
+            </AI>
+
+            <!-- AIQuestSolverDefinition -->
+            <AIQuestSolverDefinition>
+                <MinimalTurnDuration>2</MinimalTurnDuration>
+                <MaximalTurnDuration>2</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+    <AIPersonalityDefinition Name="PersonalityMinorFactionGameSpeedEndless">
+        <Multipliers>
+            <!-- AI Registry -->
+            <AI>
+                <MinorEmpire>
+                    <EraLevelFactor>1</EraLevelFactor>
+                    <TurnLevelFactor>0.5</TurnLevelFactor>
+                </MinorEmpire>
+            </AI>
+
+            <!-- DeploymentStepDefinition Database -->
+            <DeploymentStepDefinition>
+                <StartTurn>2</StartTurn>
+                <CitySiegeDuration>2</CitySiegeDuration>
+            </DeploymentStepDefinition>
+
+            <!-- AIMinorEmpireDefConDefinition Database -->
+            <AIMinorEmpireDefConDefinition>
+                <ArmyProductionCooldown>2</ArmyProductionCooldown>
+                <GarrisonGrowthCooldown>2</GarrisonGrowthCooldown>
+            </AIMinorEmpireDefConDefinition>
+
+        </Multipliers>
+    </AIPersonalityDefinition>
+
+</Datatable>

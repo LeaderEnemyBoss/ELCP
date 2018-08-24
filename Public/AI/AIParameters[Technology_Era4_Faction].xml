@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <!-- "Way of the Woodlands" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionMadFairies2">
+    <AIParameter Name="EmpireUnitDefensePercent" Value="0.25" />
+  </AIParameterDatatableElement>
+
+  <!-- "Painosphere" (upgrade pillars) -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards13">
+    <AIParameter Name="EmpirePillarArcana"      Value="1"  />
+  </AIParameterDatatableElement>
+
+  <!-- "Arcana of Renewal" -->
+  <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards11">
+    <!-- Provides between +2 and +16 food on up to 6 tiles... most of the time it will only affect about 3 though  -->
+    <AIParameter Name="CityFood"       Value="3 * (2 + 14*$Property(ClassEmpire:PillarsLevel)) * $Count(ClassEmpire/ClassCity)"  />
+    <!-- Provides spell which heals units in combat -->
+    <AIParameter Name="EmpireBattleMagic" Value="1"  />
+  </AIParameterDatatableElement>
+
+</Datatable>

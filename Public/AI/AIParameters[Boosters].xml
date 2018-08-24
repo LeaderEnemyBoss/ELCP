@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################# -->
+  <!-- ######   LUXURY RESOURCES   ##### -->
+  <!-- ################################# -->
+
+  <!-- Dye -->
+  <AIParameterDatatableElement Name="BoosterLuxury1">
+    <AIParameter Name="CityCityPointPercent"          Value="0.5"/>
+    <AIParameter Name="CityApproval"                  Value="5"/>
+  </AIParameterDatatableElement>
+
+  <!-- Emmeralds -->
+  <AIParameterDatatableElement Name="BoosterLuxury2">
+    <AIParameter Name="CityDefensePercent"              Value="0.3"/>
+    <AIParameter Name="CityApproval"                    Value="5"/>
+  </AIParameterDatatableElement>
+
+  <!-- Gold -->
+  <AIParameterDatatableElement Name="BoosterLuxury3">
+    <AIParameter Name="CityMoneyUpkeepPercent"          Value="0 - 0.5" />
+    <AIParameter Name="CityApproval"                    Value="5"/>
+  </AIParameterDatatableElement>
+
+  <!-- Spice -->
+  <AIParameterDatatableElement Name="BoosterLuxury4">
+    <AIParameter Name="CityFoodPercent"                 Value="0.50"/>
+    <AIParameter Name="CityApproval"                    Value="5"/>
+  </AIParameterDatatableElement>
+
+  <!-- Wine -->
+  <AIParameterDatatableElement Name="BoosterLuxury5">
+      <AIParameter Name="CityApproval"                  Value="30"/>
+  </AIParameterDatatableElement>
+
+  <!-- Blood Crystal -->
+  <AIParameterDatatableElement Name="BoosterLuxury6">
+    <AIParameter Name="EmpireUnitAttackPercent"         Value="0.25"/>
+    <AIParameter Name="CityApproval"                    Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Grassilk -->
+  <AIParameterDatatableElement Name="BoosterLuxury7">
+    <AIParameter Name="CityTradeRouteMoneyGainPercent"  Value="1"/>
+    <AIParameter Name="CityApproval"                    Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Moonleaf -->
+  <AIParameterDatatableElement Name="BoosterLuxury8">
+    <AIParameter Name="CitySciencePercent"              Value="0.50"/>
+    <AIParameter Name="CityApproval"                    Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Quicksilver -->
+  <AIParameterDatatableElement Name="BoosterLuxury9">
+    <AIParameter Name="EmpireUnitExperienceGainPercent"     Value="1"/>
+    <AIParameter Name="CityApproval"                        Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Titan Bones -->
+  <AIParameterDatatableElement Name="BoosterLuxury10">
+    <AIParameter Name="CityProductionPercent"           Value="0.50"/>
+    <AIParameter Name="CityApproval"                    Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Dust Orchid -->
+  <AIParameterDatatableElement Name="BoosterLuxury11">
+    <AIParameter Name="CityFoodPercent"       Value="0.2"/>
+    <AIParameter Name="CityProductionPercent" Value="0.2"/>
+    <AIParameter Name="CityDustPercent"       Value="0.2"/>
+    <AIParameter Name="CitySciencePercent"    Value="0.2"/>
+    <AIParameter Name="CityApproval"          Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Dust Water -->
+  <AIParameterDatatableElement Name="BoosterLuxury12">
+    <AIParameter Name="CityDustPercent"                     Value="0.50"/>
+    <AIParameter Name="CityApproval"                        Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Hydromiel -->
+  <AIParameterDatatableElement Name="BoosterLuxury13">
+    <AIParameter Name="HeroUpkeepPercent"                  Value="1.00"  />
+    <AIParameter Name="CityApproval"                       Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Pixie Blood -->
+  <AIParameterDatatableElement Name="BoosterLuxury14">
+    <AIParameter Name="CityUnitRegenPercent"                Value="0.2" />
+    <AIParameter Name="CityApproval"                        Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Redsang -->
+  <AIParameterDatatableElement Name="BoosterLuxury15">
+    <AIParameter Name="EmpireHeroExperienceGainPercent"     Value="1"/>
+    <AIParameter Name="CityApproval"                        Value="10"/>
+  </AIParameterDatatableElement>
+
+  <!-- #################################################### -->
+  <!-- ######   STRATEGIC RESOURCES (VAULTERS ONLY)  ###### -->
+  <!-- #################################################### -->
+
+  <!-- Titanium -->
+  <AIParameterDatatableElement Name="BoosterStrategic1">
+    <AIParameter Name="CitySciencePercent"   Value="0.20 * (1 min $Count(../ClassEmpire,AffinityVaulters))"/>
+  </AIParameterDatatableElement>
+
+  <!-- Glassteel -->
+  <AIParameterDatatableElement Name="BoosterStrategic2">
+    <AIParameter Name="CityDustPercent"   Value="0.20 * (1 min $Count(../ClassEmpire,AffinityVaulters))"/>
+  </AIParameterDatatableElement>
+
+  <!-- Adamantian -->
+  <AIParameterDatatableElement Name="BoosterStrategic3">
+    <AIParameter Name="CityProductionPercent" Value="0.20 * (1 min $Count(../ClassEmpire,AffinityVaulters))"/>
+  </AIParameterDatatableElement>
+
+  <!-- Palladian -->
+  <AIParameterDatatableElement Name="BoosterStrategic4">
+    <AIParameter Name="CityFoodPercent"   Value="0.20 * (1 min $Count(../ClassEmpire,AffinityVaulters))"/>
+  </AIParameterDatatableElement>
+
+  <!-- Mithrite -->
+  <AIParameterDatatableElement Name="BoosterStrategic5">
+    <AIParameter Name="CityProductionPercent" Value="0.15 * (1 min $Count(../ClassEmpire,AffinityVaulters))"/>
+    <AIParameter Name="CityDustPercent"       Value="0.15 * (1 min $Count(../ClassEmpire,AffinityVaulters))"/>
+  </AIParameterDatatableElement>
+
+  <!-- Hyperium -->
+  <AIParameterDatatableElement Name="BoosterStrategic6">
+    <AIParameter Name="CityFoodPercent"      Value="0.15 * (1 min $Count(../ClassEmpire,AffinityVaulters))"/>
+    <AIParameter Name="CitySciencePercent"   Value="0.15 * (1 min $Count(../ClassEmpire,AffinityVaulters))"/>
+  </AIParameterDatatableElement>
+
+  <!-- ############################ -->
+  <!-- ######   STOCKPILES   ###### -->
+  <!-- ############################ -->
+
+  <AIParameterDatatableElement Name="BoosterGeneratorFoodBonus1">
+    <AIParameter Name="CityFood"      Value="10"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="BoosterGeneratorFoodBonus2">
+    <AIParameter Name="CityFood"      Value="15"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="BoosterGeneratorFoodBonus3">
+    <AIParameter Name="CityFood"      Value="20"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="BoosterGeneratorIndustryBonus1">
+    <AIParameter Name="CityProduction"      Value="10"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="BoosterGeneratorIndustryBonus2">
+    <AIParameter Name="CityProduction"      Value="15"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="BoosterGeneratorIndustryBonus3">
+    <AIParameter Name="CityProduction"      Value="20"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="BoosterGeneratorScienceBonus1">
+    <AIParameter Name="CityScience"      Value="10"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="BoosterGeneratorScienceBonus2">
+    <AIParameter Name="CityScience"      Value="15"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="BoosterGeneratorScienceBonus3">
+    <AIParameter Name="CityScience"      Value="20"/>
+  </AIParameterDatatableElement>
+  
+</Datatable>

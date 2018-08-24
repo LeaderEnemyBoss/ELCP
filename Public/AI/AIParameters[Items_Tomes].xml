@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--
+  Example hero item:
+  
+  <AIParameterDatatableElement Name="ItemIdentifier">
+    <AIParameter Name="AIItemFood"        Value="0"/>
+    <AIParameter Name="AIItemIndustry"    Value="0"/>
+    <AIParameter Name="AIItemDust"        Value="0"/>
+    <AIParameter Name="AIItemScience"     Value="0"/>
+    <AIParameter Name="AIItemEmpirePoint" Value="0"/>
+
+    <AIParameter Name="GovernorCity"   Value="0"/>
+    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="ArmySupport"    Value="0"/>
+    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+  -->
+  
+  <!-- 
+  ##############################################
+  TITANIUM: SCIENCE PER POPULATION
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic1Tier1">
+    <AIParameter Name="AIItemScience"     Value="0.1"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.3"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic1Tier2">
+    <AIParameter Name="AIItemScience"     Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.5"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic1Tier3">
+    <AIParameter Name="AIItemScience"     Value="0.4"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.9"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ##############################################
+  GLASSTEEL: DUST PER POPULATION
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic2Tier1">
+    <AIParameter Name="AIItemDust"        Value="0.1"/>
+    <AIParameter Name="GovernorCity"      Value="0.1"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.2"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic2Tier2">
+    <AIParameter Name="AIItemDust"        Value="0.2"/>
+    <AIParameter Name="GovernorCity"      Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.4"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic2Tier3">
+    <AIParameter Name="AIItemDust"        Value="0.3"/>
+    <AIParameter Name="GovernorCity"      Value="0.4"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.8"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ##############################################
+  ADAMANTIAN: INDUSTRY PER POPULATION
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic3Tier1">
+    <AIParameter Name="AIItemIndustry"    Value="0.1"/>
+    <AIParameter Name="GovernorCity"      Value="0.3"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.2"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic3Tier2">
+    <AIParameter Name="AIItemIndustry"    Value="0.2"/>
+    <AIParameter Name="GovernorCity"      Value="0.5"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.4"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic3Tier3">
+    <AIParameter Name="AIItemIndustry"    Value="0.4"/>
+    <AIParameter Name="GovernorCity"      Value="0.9"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.6"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ##############################################
+  PALLADIAN: FOOD PER POPULATION
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic4Tier1">
+    <AIParameter Name="AIItemFood"      Value="0.1"/>
+    <AIParameter Name="GovernorCity"    Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"  Value="0.1"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic4Tier2">
+    <AIParameter Name="AIItemFood"      Value="0.2"/>
+    <AIParameter Name="GovernorCity"    Value="0.4"/>
+    <AIParameter Name="GovernorEmpire"  Value="0.2"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic4Tier3">
+    <AIParameter Name="AIItemFood"      Value="0.4"/>
+    <AIParameter Name="GovernorCity"    Value="0.8"/>
+    <AIParameter Name="GovernorEmpire"  Value="0.3"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ##############################################
+  MITHRITE: APPROVAL PER UNIT IN GARRISON
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic5Tier1">
+    <AIParameter Name="AIItemFood"        Value="0.1"/>
+    <AIParameter Name="AIItemIndustry"    Value="0.1"/>
+    <AIParameter Name="AIItemDust"        Value="0.1"/>
+    <AIParameter Name="AIItemScience"     Value="0.1"/>
+    <AIParameter Name="AIItemEmpirePoint" Value="0.1"/>
+    <AIParameter Name="GovernorCity"      Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.15"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic5Tier2">
+    <AIParameter Name="AIItemFood"        Value="0.2"/>
+    <AIParameter Name="AIItemIndustry"    Value="0.2"/>
+    <AIParameter Name="AIItemDust"        Value="0.2"/>
+    <AIParameter Name="AIItemScience"     Value="0.2"/>
+    <AIParameter Name="AIItemEmpirePoint" Value="0.2"/>
+    <AIParameter Name="GovernorCity"      Value="0.45"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.3"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic5Tier3">
+    <AIParameter Name="AIItemFood"        Value="0.3"/>
+    <AIParameter Name="AIItemIndustry"    Value="0.3"/>
+    <AIParameter Name="AIItemDust"        Value="0.3"/>
+    <AIParameter Name="AIItemScience"     Value="0.3"/>
+    <AIParameter Name="AIItemEmpirePoint" Value="0.3"/>
+    <AIParameter Name="GovernorCity"      Value="1.0"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.6"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ##############################################
+  HYPERIUM: INFLUENCE PER LEVEL
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic6Tier1">
+    <AIParameter Name="AIItemEmpirePoint" Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.2"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic6Tier2">
+    <AIParameter Name="AIItemEmpirePoint" Value="0.4"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.35"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic6Tier3">
+    <AIParameter Name="AIItemEmpirePoint" Value="0.8"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.5"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ##############################################
+  DUST: UNIT INITIAL EXPERIENCE
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeDustTier1">
+    <AIParameter Name="GovernorCity"      Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.2"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeDustTier2">
+    <AIParameter Name="GovernorCity"      Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.4"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeDustTier3">
+    <AIParameter Name="GovernorCity"      Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.6"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ############################################################################################
+  ######################################## SHADOWS DLC #######################################
+  ############################################################################################
+  -->
+
+  <!-- 
+  ##############################################
+  TITANIUM: PILLAGE DEFENSE
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic1Tier1ReplicantsPack">
+    <AIParameter Name="GovernorCity"      Value="0.1"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.1"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic1Tier2ReplicantsPack">
+    <AIParameter Name="GovernorCity"      Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.2"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic1Tier3ReplicantsPack">
+    <AIParameter Name="GovernorCity"      Value="0.3"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.3"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ##############################################
+  PALLADIAN: SECURITY
+  ##############################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic4Tier1ReplicantsPack">
+    <AIParameter Name="GovernorCity"      Value="0.5"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.5"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic4Tier2ReplicantsPack">
+    <AIParameter Name="GovernorCity"      Value="0.7"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.7"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTomeStrategic4Tier3ReplicantsPack">
+    <AIParameter Name="GovernorCity"      Value="0.9"/>
+    <AIParameter Name="GovernorEmpire"    Value="0.9"/>
+    <AIParameter Name="ArmySupport"       Value="-1"/>
+    <AIParameter Name="ArmyHero"          Value="-1"/>
+    <AIParameter Name="Spy"               Value="-0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ####################################################################################
+  ############################ WINTER SHIFTERS EXPANSION #############################
+  ####################################################################################
+  -->
+
+  <AIParameterDatatableElement Name="ItemTomeOrb">
+    <!-- City retaliation damage boost: AI is not able to choose governor based on improvements or vice-versa, so isn't really able to take advantage of this ability-->
+    <AIParameter Name="GovernorCity"      Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ####################################################################################
+  ###################################### QUEST #######################################
+  ####################################################################################
+  -->
+
+  <!-- Roads of dust -->
+  <!-- TODO
+  <AIParameterDatatableElement Name="???">
+    <AIParameter Name="???"       Value="0"/>
+  </AIParameterDatatableElement>
+  -->
+
+  <!-- Tome of Endless Savagery -->
+  <!-- TODO
+  <AIParameterDatatableElement Name="???">
+    <AIParameter Name="???"       Value="0"/>
+  </AIParameterDatatableElement>
+  -->
+
+</Datatable>

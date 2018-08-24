@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Defensive Tower : costs 15 orbs to build -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock1">
+    <AIParameter Name="EmpireUnlockDefensiveTowers"                     Value="$Property(OrbStock) / 15"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb City Improvement Minor Villages : costs 10 orbs to build -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock2">
+    <AIParameter Name="CityExtraWorker"                                 Value="$Count(ClassEmpire/ClassCity/RebuiltVillage) * $Property(OrbStock) / 10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb City Improvement Nyctalopian Lenses : costs 10 orbs to build -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock3"> 
+    <AIParameter Name="CityWinterVisionPenaltyImmunity"                 Value="$Property(OrbStock) / 10"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb City Improvement Ice-works : costs 10 to unlock -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock4">
+    <AIParameter Name="CityProduction"                                  Value="$Count(#FrozenWaterTile) * ($Count(ClassEmpire/ClassCity/TerrainTagWater) + $Count(ClassEmpire/ClassCity/TerrainTagRiver)) * $Property(OrbStock) / 10" />
+  </AIParameterDatatableElement>
+
+  <!-- Defensive Improvement : cost 30 orbs to build -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock5">
+    <AIParameter Name="EmpireUnlockDefensiveImprovement"                Value="$Property(OrbStock) / 30"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb District Anomaly intensifier : costs 10 to build -->
+  <!-- NB- anomalies generally provide a total of 6 FIDSI (except for rare ones) we can assume 1 of each plus 5 approval -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock6">
+    <AIParameter Name="CityFood"                                        Value="$SumProperty(ClassEmpire/ClassCity:AICanAnomalyIntensifierBeBuilt) * $Property(OrbStock) / 10" />
+    <AIParameter Name="CityProduction"                                  Value="$SumProperty(ClassEmpire/ClassCity:AICanAnomalyIntensifierBeBuilt) * $Property(OrbStock) / 10" />
+    <AIParameter Name="CityMoney"                                       Value="$SumProperty(ClassEmpire/ClassCity:AICanAnomalyIntensifierBeBuilt) * $Property(OrbStock) / 10" />
+    <AIParameter Name="CityScience"                                     Value="$SumProperty(ClassEmpire/ClassCity:AICanAnomalyIntensifierBeBuilt) * $Property(OrbStock) / 10" />
+    <AIParameter Name="CityCityPoint"                                   Value="$SumProperty(ClassEmpire/ClassCity:AICanAnomalyIntensifierBeBuilt) * $Property(OrbStock) / 10" />
+    <AIParameter Name="CityApproval"                                    Value="$SumProperty(ClassEmpire/ClassCity:AICanAnomalyIntensifierBeBuilt) * 5 * $Property(OrbStock) / 10" />
+  </AIParameterDatatableElement>
+
+  <!-- Orb District Strategic intensifier : costs 10 to build -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock7">
+    <AIParameter Name="CityStrategicResource"                           Value="$SumProperty(ClassEmpire/ClassCity:AICanStrategicIntensifierBeBuilt) * $Property(OrbStock) / 10"/>
+    <AIParameter Name="CityScience"                                     Value="10 * $SumProperty(ClassEmpire/ClassCity:AICanLuxuryIntensifierBeBuilt) * $Property(OrbStock) / 10" />
+  </AIParameterDatatableElement>
+
+  <!-- Orb District Luxury intensifier : costs 10 to build -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock8">
+    <AIParameter Name="CityLuxuryResource"                              Value="$SumProperty(ClassEmpire/ClassCity:AICanLuxuryIntensifierBeBuilt) / 10"/>
+    <AIParameter Name="CityMoney"                                       Value="10 * $SumProperty(ClassEmpire/ClassCity:AICanLuxuryIntensifierBeBuilt) / 10" />
+  </AIParameterDatatableElement>
+
+  <!-- Orb District Winter Borough : costs 10 to build -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock9">
+    <AIParameter Name="DistrictFood"                                    Value="$Count(ClassEmpire/ClassCity/DistrictTypeExtension,#Winter) * $Property(OrbStock) / 10" />
+    <AIParameter Name="DistrictIndustry"                                Value="$Count(ClassEmpire/ClassCity/DistrictTypeExtension,#Winter) * $Property(OrbStock) / 10" />
+    <AIParameter Name="DistrictDust"                                    Value="$Count(ClassEmpire/ClassCity/DistrictTypeExtension,#Winter) * $Property(OrbStock) / 10" />
+  </AIParameterDatatableElement>
+
+  <!-- Defensive Tower 2 -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock10">
+    <AIParameter Name="EmpireUnlockDefensiveTowers"                     Value="2 * $Property(OrbStock) / 15"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb Empire Bonus Zombie Unit Capacity (TechnologyDefinitionOrbUnlock11) DEPRECATED -->
+
+  <!-- Orb Empire Improvement Orb stockpiles : cost 10 to build -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock12">
+    <AIParameter Name="EmpireUnlockBooster" Value="(1 min ($Property(OrbStock) / 20))"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb Empire Improvement Orb arcana (TechnologyDefinitionOrbUnlock13) DEPRECATED -->
+
+  <!-- Orb Empire Improvement Orb Hero Item Set -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock14">
+    <AIParameter Name="EmpireUnlockAccessoriesOrb" Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb Empire Improvement Orb Unit Item Set -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock15">
+    <AIParameter Name="EmpireUnlockArmorOrb" Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- Force Shift -->
+  <AIParameterDatatableElement  Name="TechnologyDefinitionOrbUnlock17WinterShifters" >
+    <AIParameter Name="EmpireUnlockForceShift" Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb District Orb Architecture (TechnologyDefinitionOrbUnlock18WinterShifters) DEPRECATED -->
+
+  <!-- Orb Unlock Cost Reduction (TechnologyDefinitionOrbUnlock19WinterShifters) QUEST REWARD -->
+
+</Datatable>

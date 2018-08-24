@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- 
+    ###################
+    AVAILABLE VARIABLES
+    ###################
+
+    Actors:
+    * Provider: Empire which provide simulation object
+    * Receiver: Empire which receive simulation object
+    * MyEmpire: The AI's empire simulation object
+    * OtherEmpire: The empire the AI is negociating with
+    
+    Desire to propose various diplomatic terms
+    * WarTermAgentCriticity
+    * TruceTermAgentCriticity
+    * ColdWarTermAgentCriticity 
+    * PeaceTermAgentCriticity
+    * AllianceTermAgentCriticity
+    * MapExchangeTermAgentCriticity
+    * MapEmbargoTermAgentCriticity
+    * VisionAndMapExchangeTermAgentCriticity
+    * VisionAndMapEmbargoTermAgentCriticity
+    * VisionEmbargoTermAgentCriticity
+    * CommercialAgreementTermAgentCriticity
+    * ResearchAgreementTermAgentCriticity        
+    * CloseBordersTermAgentCriticity
+    * OpenBordersTermAgentCriticity
+    * MarketBanTermAgentCriticity
+    * MarketBanNullificationTermAgentCriticity
+    * MarketBanRemovalTermAgentCriticity
+  
+    Other useful values:
+    * GlobalWarTermAgentCriticity: The AI's (receiver or provider) desire for war
+    * MoneyReferenceRatioAgentCriticity: The AI's (receiver or provider) desire for money
+    * TechnologyReferenceTurnCountAgentCriticity: The AI's (receiver or provider) desire for technology
+    -->
+
+    <!--
+    #############################
+    ### COMMERICAL AGREEMENTS ###
+    #############################
+    -->
+
+    <!-- 
+    Commercial agreement provide up to a 20% increase in dust income from trade over 20 turns (+1% per turn).
+    -->
+
+    <AIParameterDatatableElement Name="CommercialAgreement">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="2 * ($(CommercialAgreementTermAgentCriticity) - 0.5)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * ($(CommercialAgreementTermAgentCriticity) - 0.5)"/>
+    </AIParameterDatatableElement>
+
+    <!--
+    ################
+    ##### DUST #####
+    ################
+    -->
+
+    <!-- The interpreter context simulation object is the empire who analyse the term -->
+
+    <!-- Available variables:
+    Provider: Empire which provide simulation object
+    Receiver: Empire which receive simulation object
+    MoneyReferenceRatioAgentCriticity
+    -->
+
+    <!-- Dust -->
+    <AIParameterDatatableElement Name="ResourceExchangeEmpireMoney">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount)" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount)" />
+    </AIParameterDatatableElement>
+ 
+    <!--
+    ##################
+    ### STOCKPILES ###
+    ##################
+    -->
+
+    <AIParameterDatatableElement Name="BoosterExchangeBoosterFood">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue)" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue)" />
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="BoosterExchangeBoosterIndustry">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue)" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue)" />
+    </AIParameterDatatableElement>
+
+    <AIParameterDatatableElement Name="BoosterExchangeBoosterScience">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue)" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue)" />
+    </AIParameterDatatableElement>
+
+    <!--
+    ################
+    ### LUXURIES ###
+    ################
+    -->
+    
+    <!-- Dye : provides extra influence -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury1">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Emmeralds : fortification on cities -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury2">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Gold : reduces upkeep -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury3">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Spices : provides extra food -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury4">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Wine : provides extra approval -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury5">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Blood Crystal : extra attack of units -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury6">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Grassilk : provides extra dust -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury7">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Moonleaf : provides extra science -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury8">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Quick silver : provides extra XP on units -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury9">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Titan Bones : more industry -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury10">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Dust Orchid : more everything -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury11">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Dustwater : more dust -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury12">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Hydromiel : lower hero upkeep -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury13">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Pixie blood : regen on cities -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury14">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+    <!-- Redsang : XP on heros -->
+    <AIParameterDatatableElement Name="ResourceExchangeLuxury15">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.8 + 0.2*($(ResourceAmount) / $(ProviderResourceStock)))" />
+    </AIParameterDatatableElement>
+
+
+    <!--
+    ##################
+    ### STRATEGICS ###
+    ##################
+    -->
+
+    <!-- Titanium -->
+    <AIParameterDatatableElement Name="ResourceExchangeStrategic1">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.5 + (0.5 * ($(ResourceAmount) / $(ProviderResourceStock))))" />
+    </AIParameterDatatableElement>
+
+    <!-- Glass steel -->
+    <AIParameterDatatableElement Name="ResourceExchangeStrategic2">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.5 + (0.5 * ($(ResourceAmount) / $(ProviderResourceStock))))" />
+    </AIParameterDatatableElement>
+
+    <!-- Adamantium -->
+    <AIParameterDatatableElement Name="ResourceExchangeStrategic3">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.5 + (0.5 * ($(ResourceAmount) / $(ProviderResourceStock))))" />
+    </AIParameterDatatableElement>
+
+    <!-- Palladian -->
+    <AIParameterDatatableElement Name="ResourceExchangeStrategic4">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.5 + (0.5 * ($(ResourceAmount) / $(ProviderResourceStock))))" />
+    </AIParameterDatatableElement>
+
+    <!-- Mithrite -->
+    <AIParameterDatatableElement Name="ResourceExchangeStrategic5">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.5 + (0.5 * ($(ResourceAmount) / $(ProviderResourceStock))))" />
+    </AIParameterDatatableElement>
+
+    <!-- Hyperium -->
+    <AIParameterDatatableElement Name="ResourceExchangeStrategic6">
+        <AIParameter Name="DiplomacyEconomyReceiver" Value="$(ResourceAmount) * $(MarketPlaceValue) * (0.2 max (1 - 0.01*$(ReceiverResourceStock)))" />
+        <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(ResourceAmount) * $(MarketPlaceValue) * (0.5 + (0.5 * ($(ResourceAmount) / $(ProviderResourceStock))))" />
+    </AIParameterDatatableElement>
+
+    <!--
+    #######################
+    ###### HERO TRADE #####
+    #######################
+    -->
+    
+    <!--
+    NB - this only occurs when we capture an enemy hero!
+    -->
+
+    <AIParameterDatatableElement Name="PrisonerDeal">
+      <AIParameter Name="DiplomacyEconomyReceiver" Value="$(MarketPlaceValue)" />
+      <AIParameter Name="DiplomacyEconomyProvider" Value="(0 - 1) * $(MarketPlaceValue)" />
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 0.2) * ($Link(Hero|Property|Level) + 1)"/>
+    </AIParameterDatatableElement>
+
+  <!--
+    #############################
+    ###### PEARLS OF AURIGA #####
+    #############################
+    -->
+
+  <AIParameterDatatableElement Name="ResourceExchangeOrb">
+    <AIParameter Name="DiplomacyOrbReceiver" Value="$(ResourceAmount)" />
+    <AIParameter Name="DiplomacyOrbProvider" Value="(0 - 1) * $(ResourceAmount)" />
+  </AIParameterDatatableElement>
+
+
+</Datatable>

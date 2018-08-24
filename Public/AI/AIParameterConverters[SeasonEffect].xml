@@ -1,0 +1,1162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################################################################ -->
+  <!-- ##################################### FOOD ##################################### -->
+  <!-- ################################################################################ -->
+
+  <!-- Food lost from terrain with food -->
+  <AIParameterConverter Name="WinterTerrainFoodPenalty"> 
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity/TerrainTagFood)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity/TerrainTagFood)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Percent city food lost -->
+  <AIParameterConverter Name="WinterPercentFoodPenalty">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity:CityFood)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity:CityFood)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Food lost from terrain with river -->
+  <AIParameterConverter Name="WinterRiverFoodPenalty">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity/TerrainTagRiver)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity/TerrainTagRiver)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Food lost per population -->
+  <AIParameterConverter Name="WinterPercentPerPopulationFoodBonus">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      $(Input) 
+      *  $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor) 
+      * 
+      (
+        (0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) 
+        max $SumProperty(ClassEmpire/ClassCity:FoodPopulation)
+      )
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      $(Input)
+      *  $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)
+      *
+      (
+        (0.2 * $SumProperty(ClassEmpire/ClassCity:Population))
+        max $SumProperty(ClassEmpire/ClassCity:FoodPopulation)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPerPopulationFoodPenalty">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      *  $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)
+      *
+      (
+        (0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity:Population))
+        max $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity:FoodPopulation)
+      )
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      *  $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)
+      *
+      (
+        (0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity:Population))
+        max $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity:FoodPopulation)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterAnomalyFoodPenalty">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity/TerrainTagAnomaly)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity/TerrainTagAnomaly)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterWaterFoodPenalty">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity/TerrainTagWater)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityBrokenLords)))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFoodReductionImmunity,!WinterFIDSReductionImmunity/TerrainTagWater)
+      * $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+
+  <!-- ################################################################################ -->
+  <!-- ################################### INDUSTRY ################################### -->
+  <!-- ################################################################################ -->
+
+  <AIParameterConverter Name="WinterPercentIndustryPenalty">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:CityProduction)
+      * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:CityProduction)
+      * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:CityProduction)
+      * $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:CityProduction)
+      * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterExploitationIndustryPenalty">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/DistrictTypeExploitation)
+      * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/DistrictTypeExploitation)
+      * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/DistrictTypeExploitation)
+      * $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/DistrictTypeExploitation)
+      * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentPerPopulationIndustryBonus">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      $(Input) 
+      *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) 
+      * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      $(Input)  
+      * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) 
+      * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      $(Input)
+      *  $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor)
+      * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      $(Input)  
+      * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor)
+      * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPerPopulationIndustryPenalty">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      $(Input)
+      *  $Property(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:CityIndustryToCityGrowthConversionFactor)
+      * ((0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:Population)) max $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:IndustryPopulation))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      $(Input)
+      * $Property(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:CityIndustryToCityProductionConversionFactor)
+      * ((0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:Population)) max $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:IndustryPopulation))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      $(Input)
+      *  $Property(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:NetCityProductionToCityMoneyConversionFactor)
+      * ((0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:Population)) max $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:IndustryPopulation))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      $(Input)
+      * $Property(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:NetCityProductionToCityResearchConversionFactor)
+      * ((0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:Population)) max $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:IndustryPopulation))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterAnomalyIndustryBonus">
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagAnomaly)
+      * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagAnomaly)
+      * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagAnomaly)
+      * $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagAnomaly)
+      * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################################ -->
+  <!-- ##################################### DUST ##################################### -->
+  <!-- ################################################################################ -->
+
+  <AIParameterConverter Name="WinterPercentDustPenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:CityDust)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:CityDust)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentDustTradeBonus">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire/ClassCity:LastOverrallTradeRoutesCityDustIncome)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $SumProperty(ClassEmpire/ClassCity:LastOverrallTradeRoutesCityDustIncome)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentDustTradePenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,!WinterEffectImmunity))
+      * $SumProperty(ClassEmpire/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:LastOverrallTradeRoutesCityDustIncome)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,!WinterEffectImmunity))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $SumProperty(ClassEmpire/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:LastOverrallTradeRoutesCityDustIncome)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUpkeepPenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $Property(ClassEmpire,!WinterEffectImmunity:EmpireMoneyUpkeep)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $Property(ClassEmpire,!WinterEffectImmunity:EmpireMoneyUpkeep)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterRiverDustPenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagDust)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagDust)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterExploitationDustPenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/DistrictTypeExploitation)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/DistrictTypeExploitation)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentPerPopulationDustBonus">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      $(Input)  
+      * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:DustPopulation))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      $(Input)  
+      * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:DustPopulation)) 
+      * $Count(ClassEmpire,AffinityBrokenLords)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPerPopulationDustPenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      $(Input)
+      * ((0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:Population)) max $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:DustPopulation))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      $(Input)
+      * ((0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:Population)) max $SumProperty(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity:DustPopulation))
+      * $Count(ClassEmpire,AffinityBrokenLords)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterAnomalyDustBonus">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagAnomaly)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagAnomaly)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterWaterDustPenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagWater)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/TerrainTagWater)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterRegionalBuildingDustPenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterDustReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/ExploitedPointOfInterest)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterIndustryReductionImmunity,!WinterFIDSReductionImmunity,ClassCity/ExploitedPointOfInterest)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentGeneralUpkeepPenalty">
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassArmy/UnitHero:HeroUpkeep)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      (0 - $(Input))
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassArmy/UnitHero:HeroUpkeep)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentSpyUpkeepBonus">
+    <ToAIParameter AIParameter="AIEmpireSpy">
+      $(Input)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">
+      $(Input)
+      * $SumProperty(ClassEmpire/SpiedGarrison/UnitHero:HeroUpkeep)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">
+      $(Input)
+      * (1 min $Count(ClassEmpire,AffinityBrokenLords))
+      * $SumProperty(ClassEmpire/SpiedGarrison/UnitHero:HeroUpkeep)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################################ -->
+  <!-- ################################### SCIENCE #################################### -->
+  <!-- ################################################################################ -->
+
+  <AIParameterConverter Name="WinterExploitationSciencePenalty">
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityReplicants)))
+      * (1 min $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFIDSReductionImmunity,!WinterScienceReductionImmunity/DistrictTypeExploitation))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentPerPopulationScienceBonus">
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      $(Input)
+      * (1 - (1 min $Count(ClassEmpire,AffinityReplicants)))
+      * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:SciencePopulation))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPerPopulationSciencePenalty">
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      $(Input)
+      * (1 - (1 min $Count(ClassEmpire,AffinityReplicants)))
+      * ((0.2 * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFIDSReductionImmunity,!WinterScienceReductionImmunity:Population)) max $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFIDSReductionImmunity,!WinterScienceReductionImmunity:SciencePopulation))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentScienceTradeBonus">
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      $(Input)
+      * (1 - (1 min $Count(ClassEmpire,AffinityReplicants)))
+      * $SumProperty(ClassEmpire/ClassCity:LastOverrallTradeRoutesCityScienceIncome)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentScienceTradePenalty">
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      (0 - $(Input))
+      * (1 - (1 min $Count(ClassEmpire,AffinityReplicants)))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterFIDSReductionImmunity,!WinterScienceReductionImmunity:LastOverrallTradeRoutesCityScienceIncome)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentCurrentEraResearchCostPenalty">
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      $Property(ClassEmpire:NetEmpireResearch) *
+      (
+        0 - ((1 - $Count(ClassEmpire/ClassResearch,TechnologyEra1)) * $Property(ClassEmpire/ClassResearch:Era1CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount)))
+        - ((1 - $Count(ClassEmpire/ClassResearch,TechnologyEra2)) * $Property(ClassEmpire/ClassResearch:Era2CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era2UnlockedTechnologyCount)))
+        - ((1 - $Count(ClassEmpire/ClassResearch,TechnologyEra3)) * $Property(ClassEmpire/ClassResearch:Era3CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era3UnlockedTechnologyCount)))
+        - ((1 - $Count(ClassEmpire/ClassResearch,TechnologyEra4)) * $Property(ClassEmpire/ClassResearch:Era4CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era4UnlockedTechnologyCount)))
+        - ((1 - $Count(ClassEmpire/ClassResearch,TechnologyEra5)) * $Property(ClassEmpire/ClassResearch:Era5CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era5UnlockedTechnologyCount)))
+        - ((1 - $Count(ClassEmpire/ClassResearch,TechnologyEra6)) * $Property(ClassEmpire/ClassResearch:Era6CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era6UnlockedTechnologyCount)))
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentPreviousEraResearchCostBonus">
+    <ToAIParameter AIParameter="AIEmpireResearch">
+      $Property(ClassEmpire:NetEmpireResearch) *
+      (
+        ($Count(ClassEmpire/ClassResearch,TechnologyEra1) * $Property(ClassEmpire/ClassResearch:Era1CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount)))
+        + ($Count(ClassEmpire/ClassResearch,TechnologyEra2) * $Property(ClassEmpire/ClassResearch:Era2CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era2UnlockedTechnologyCount)))
+        + ($Count(ClassEmpire/ClassResearch,TechnologyEra3) * $Property(ClassEmpire/ClassResearch:Era3CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era3UnlockedTechnologyCount)))
+        + ($Count(ClassEmpire/ClassResearch,TechnologyEra4) * $Property(ClassEmpire/ClassResearch:Era4CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era4UnlockedTechnologyCount)))
+        + ($Count(ClassEmpire/ClassResearch,TechnologyEra5) * $Property(ClassEmpire/ClassResearch:Era5CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era5UnlockedTechnologyCount)))
+        + ($Count(ClassEmpire/ClassResearch,TechnologyEra6) * $Property(ClassEmpire/ClassResearch:Era6CostMultiplier) / (1 + $Property(ClassEmpire/ClassResearch:Era6UnlockedTechnologyCount)))
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################################ -->
+  <!-- ################################## INFLUENCE ################################### -->
+  <!-- ################################################################################ -->
+
+  <AIParameterConverter Name="WinterPercentEmpirePlanCostPenalty">
+    <ToAIParameter AIParameter="AIEmpireEmpirePoint">
+      (0 - $(Input))
+      * 50
+      * $Property(ClassEmpire,!WinterEffectImmunity:EmpireScaleFactor)
+      * $Property(ClassEmpire,!WinterEffectImmunity:EmpirePlanCostModifier)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentAssimilationCostBonus">
+    <ToAIParameter AIParameter="AIEmpireEmpirePoint">
+      $(Input) 
+      * ($Property(ClassEmpire:MinorFactionSlotCount) - $Property(ClassEmpire:MinorFactionAssimilationSlotCount))
+      * (((($Property(ClassEmpire:MinorFactionAssimilatedCount) + 1) ^ 3) * 10) + 20) * $Property(ClassEmpire:MinorFactionAssimilationCostModifier) * $Property(ClassEmpire:GameSpeedMultiplier)
+      / 20
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################################ -->
+  <!-- ################################## APPROVAL #################################### -->
+  <!-- ################################################################################ -->
+
+  <AIParameterConverter Name="WinterApprovalPenalty">
+    <ToAIParameter AIParameter="AIEmpireApproval">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/!WinterApprovalReductionImmunity,ClassCity)
+      / $Count(ClassEmpire/ClassCity)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterAnomalyApprovalPenalty">
+    <ToAIParameter AIParameter="AIEmpireApproval">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterApprovalReductionImmunity/ClassDistrict,!TerrainTagCommonAnomaly,TerrainTagAnomaly)
+      / $Count(ClassEmpire/ClassCity)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentExpansionDisapprovalBonus">
+    <ToAIParameter AIParameter="AIEmpireApproval">
+      $(Input)
+      * $SumProperty(ClassEmpire/ClassCity:CityExpansionDisapproval)
+      / $Count(ClassEmpire/ClassCity)
+    </ToAIParameter>
+  </AIParameterConverter>
+  
+  <AIParameterConverter Name="WinterPercentExpansionDisapprovalPenalty">
+    <ToAIParameter AIParameter="AIEmpireApproval">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterApprovalReductionImmunity:CityExpansionDisapproval)
+      / $Count(ClassEmpire/ClassCity)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################################ -->
+  <!-- ################################# RESOURCES #################################### -->
+  <!-- ################################################################################ -->
+
+  <AIParameterConverter Name="WinterNetStrategicPenalty">
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">
+      (0 - $(Input)) *
+      (
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetStrategic1) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetStrategic2) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetStrategic3) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetStrategic4) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetStrategic5) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetStrategic6)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterNetStrategicBonus">
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">
+      $(Input) *
+      (
+        $SumProperty(ClassEmpire:NetStrategic1) +
+        $SumProperty(ClassEmpire:NetStrategic2) +
+        $SumProperty(ClassEmpire:NetStrategic3) +
+        $SumProperty(ClassEmpire:NetStrategic4) +
+        $SumProperty(ClassEmpire:NetStrategic5) +
+        $SumProperty(ClassEmpire:NetStrategic6)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterNetLuxuryPenalty">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">
+      (0 - $(Input)) *
+      (
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury1) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury2) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury3) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury4) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury5) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury6) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury7) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury8) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury9) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury10) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury11) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury12) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury13) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury14) +
+        $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity,!WinterResourceReductionImmunity:NetLuxury15)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterNetLuxuryBonus">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">
+      $(Input) *
+      (
+        $Property(ClassEmpire:NetLuxury1) +
+        $Property(ClassEmpire:NetLuxury2) +
+        $Property(ClassEmpire:NetLuxury3) +
+        $Property(ClassEmpire:NetLuxury4) +
+        $Property(ClassEmpire:NetLuxury5) +
+        $Property(ClassEmpire:NetLuxury6) +
+        $Property(ClassEmpire:NetLuxury7) +
+        $Property(ClassEmpire:NetLuxury8) +
+        $Property(ClassEmpire:NetLuxury9) +
+        $Property(ClassEmpire:NetLuxury10) +
+        $Property(ClassEmpire:NetLuxury11) +
+        $Property(ClassEmpire:NetLuxury12) +
+        $Property(ClassEmpire:NetLuxury13) +
+        $Property(ClassEmpire:NetLuxury14) +
+        $Property(ClassEmpire:NetLuxury15)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ############################################################################# -->
+  <!-- ################################# MARKET #################################### -->
+  <!-- ############################################################################# -->
+
+  <AIParameterConverter Name="WinterPercentStrategicMarketPrice">
+    <ToAIParameter AIParameter="AIWorldStrategicMarketPrice">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentLuxuryMarketPrice">
+    <ToAIParameter AIParameter="AIWorldLuxuryMarketPrice">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentMercenaryMarketPrice">
+    <ToAIParameter AIParameter="AIWorldMercenaryMarketPrice">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################################ -->
+  <!-- ############################# UNIT ATTRIBUTES ################################## -->
+  <!-- ################################################################################ -->
+
+
+  <AIParameterConverter Name="WinterPercentUnitRegenPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * 12
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,!WinterAttributeReductionImmunity:MaximumHealth)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUnitAttackPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * 4
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,!WinterAttributeReductionImmunity:AttributeAttack)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUnitDefensePenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * 4
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,!WinterAttributeReductionImmunity:AttributeDefense)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUnitLifePenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,!WinterAttributeReductionImmunity:MaximumHealth)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUnitMovementPenalty">
+    <ToAIParameter AIParameter="AIWorldPeace">
+      $(Input)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldWar">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterMovementReductionImmunity,!WinterEffectImmunity/!WinterMovementReductionImmunity,Garrison/!WinterMovementReductionImmunity,ClassUnit:MaximumMovement)
+      / (1 max $Count(ClassEmpire/ClassArmy/ClassUnit))
+      / 6
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUnitBattleMovementPenalty">
+    <ToAIParameter AIParameter="AIWorldPeace">
+      $(Input)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldWar">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterMovementReductionImmunity,!WinterEffectImmunity/!WinterMovementReductionImmunity,Garrison/!WinterMovementReductionImmunity,ClassUnit:BattleMaximumMovement)
+      / (1 max $Count(ClassEmpire/ClassArmy/ClassUnit))
+      / 3
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentShipMovementBonus">
+    <ToAIParameter AIParameter="AIWorldPeace">
+      $(Input) * 0.5
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldWar">
+      $(Input)
+      * $Count(ClassEmpire/ClassResearch,TechnologyShip)
+      * $SumProperty(ClassEmpire,!WinterMovementReductionImmunity,!WinterEffectImmunity/!WinterMovementReductionImmunity,Garrison/!WinterMovementReductionImmunity,ClassUnit:MaximumMovement)
+      / (1 max $Count(ClassEmpire/ClassArmy/ClassUnit))
+      / 5
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ######################################################################## -->
+  <!-- ############################# DEFENSE ################################## -->
+  <!-- ######################################################################## -->
+
+  <AIParameterConverter Name="WinterCityUnitMoralePenalty">
+    <ToAIParameter AIParameter="AIEmpireCityDefense">
+      (0 - ($(Input) / 6))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity:CityDefensePoint)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentCityDefensePenalty">
+    <ToAIParameter AIParameter="AIEmpireCityDefense">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity:CityDefensePoint)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentPillageDefensePenalty">
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest:PillageDefense)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ############################################################################# -->
+  <!-- ############################# UNIT CLASSES ################################## -->
+  <!-- ############################################################################# -->
+
+  <AIParameterConverter Name="WinterInfantryUnitBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 1000
+      * $SumProperty(ClassEmpire/Garrison/ClassUnit,UnitClassInfantry:MilitaryPower)
+      * (1 + $(NumberOfAvailableInfantryBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterInfantryUnitPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * 1000
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,UnitClassInfantry,!WinterAttributeReductionImmunity:MilitaryPower)
+      * (1 + $(NumberOfAvailableInfantryBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterCavalryUnitBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 1000
+      * $SumProperty(ClassEmpire/Garrison/ClassUnit,UnitClassCavalry:MilitaryPower)
+      * (1 + $(NumberOfAvailableCavalryBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterCavalryUnitPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * 1000
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,UnitClassCavalry,!WinterAttributeReductionImmunity:MilitaryPower)
+      * (1 + $(NumberOfAvailableCavalryBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterFlyingUnitBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 1000
+      * $SumProperty(ClassEmpire/Garrison/ClassUnit,UnitClassFlying:MilitaryPower)
+      * (1 + $(NumberOfAvailableFlyingBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterFlyingUnitPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * 1000
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,UnitClassFlying,!WinterAttributeReductionImmunity:MilitaryPower)
+      * (1 + $(NumberOfAvailableFlyingBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterRangedUnitBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 1000
+      * $SumProperty(ClassEmpire/Garrison/ClassUnit,UnitClassRanged:MilitaryPower)
+      * (1 + $(NumberOfAvailableRangedBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterRangedUnitPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * 1000
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,UnitClassRanged,!WinterAttributeReductionImmunity:MilitaryPower)
+      * (1 + $(NumberOfAvailableRangedBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterSupportUnitBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 1000
+      * $SumProperty(ClassEmpire/Garrison/ClassUnit,UnitClassSupport:MilitaryPower)
+      * (1 + $(NumberOfAvailableSupportBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterSupportUnitPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * 1000
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/Garrison/ClassUnit,UnitClassSupport,!WinterAttributeReductionImmunity:MilitaryPower)
+      * (1 + $(NumberOfAvailableSupportBodies))
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ####################################################################### -->
+  <!-- ############################# HEROES ################################## -->
+  <!-- ####################################################################### -->
+
+  <AIParameterConverter Name="WinterPercentGeneralXPBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * $Count(../ClassEmpire/ClassCity/UnitHero)
+      * 3000
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentGeneralXPPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity/UnitHero)
+      * 3000
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentGovernorXPBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input) 
+      * $Count(ClassEmpire/ClassCity/UnitHero) 
+      * 3000
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentGovernorXPPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity/UnitHero)
+      * 3000
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentHeroRecoveryPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * $SumProperty(ClassEmpire,!WinterEffectImmunity/UnitHero:CurrentInjuredValue)
+      / (1 max $Count(ClassEmpire,!WinterEffectImmunity/UnitHero))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################################ -->
+  <!-- ############################### EQUIPMENT ###################################### -->
+  <!-- ################################################################################ -->
+
+  <AIParameterConverter Name="WinterPercentCommonItemCostPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+    (0 - $(Input))
+    * $Count(ClassEmpire/!WinterResourceReductionImmunity,!WinterEffectImmunity)
+    * 40
+    * $Count(../ClassEmpire/Garrison/ClassUnit)
+    * 
+    (
+      $Property(ClassEmpire:Strategic1Stock)
+      + $Property(ClassEmpire:Strategic2Stock)
+      + ($Property(ClassEmpire:NetStrategic1)*8*$Property(ClassEmpire:GameSpeedMultiplier))
+      + ($Property(ClassEmpire:NetStrategic2)*8*$Property(ClassEmpire:GameSpeedMultiplier))
+    )
+    * 
+    (
+      $Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1)
+      + $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier1)
+      + (1.5*$Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2))
+      + (1.5*$Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier2))
+      + (2.5*$Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3))
+      + (2.5*$Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier3))
+    )
+    * 
+    (0 max (
+      1
+      - (0.1*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1))
+      - (0.2*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2))
+      - (0.3*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3))
+      - (0.1*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1))
+      - (0.2*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2))
+      - (0.3*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3))
+      - (0.2*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier1))
+      - (0.3*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier2))
+      - (0.4*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier3))
+      - (0.2*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier1))
+      - (0.3*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier2))
+      - (0.4*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier3))
+    ))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUncommonItemCostBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 40
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * 
+      (
+        $Property(ClassEmpire:Strategic3Stock) 
+        + $Property(ClassEmpire:Strategic4Stock) 
+        + ($Property(ClassEmpire:NetStrategic3)*8*$Property(ClassEmpire:GameSpeedMultiplier)) 
+        + ($Property(ClassEmpire:NetStrategic4)*8*$Property(ClassEmpire:GameSpeedMultiplier))
+      )
+      * 
+      (
+        $Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1) 
+        + $Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1) 
+        + (1.5*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2))
+        + (1.5*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2))
+        + (2.5*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3)) 
+        + (2.5*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3))
+      )
+      * 
+      (0 max (
+        1
+        - (0.1*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier1))
+        - (0.2*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier2))
+        - (0.3*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier3))
+        - (0.1*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier1))
+        - (0.2*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier2))
+        - (0.3*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier3))
+      ))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUncommonItemCostPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * $Count(ClassEmpire/!WinterResourceReductionImmunity,!WinterEffectImmunity)
+      * 40
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * 
+      (
+        $Property(ClassEmpire:Strategic3Stock) 
+        + $Property(ClassEmpire:Strategic4Stock) 
+        + ($Property(ClassEmpire:NetStrategic3)*8*$Property(GameSpeedMultiplier)) 
+        + ($Property(ClassEmpire:NetStrategic4)*8*$Property(GameSpeedMultiplier))
+      )
+      * 
+      (
+        $Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1) 
+        + $Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1) 
+        + (1.5*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2))
+        + (1.5*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2))
+        + (2.5*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3)) 
+        + (2.5*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3))
+      )
+      * 
+      (0 max (
+        1
+        - (0.1*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier1))
+        - (0.2*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier2))
+        - (0.3*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier3))
+        - (0.1*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier1))
+        - (0.2*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier2))
+        - (0.3*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier3))
+      ))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentRareItemCostBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 60
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * 
+      (
+        $Property(ClassEmpire:Strategic5Stock) 
+        + $Property(ClassEmpire:Strategic6Stock) 
+        + ($Property(ClassEmpire:NetStrategic5)*8*$Property(ClassEmpire:GameSpeedMultiplier)) 
+        + ($Property(ClassEmpire:NetStrategic6)*8*$Property(ClassEmpire:GameSpeedMultiplier))
+      )
+      * 
+      (
+        $Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier1) 
+        + $Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier1) 
+        + (1.5*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier2))
+        + (1.5*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier2))
+        + (2.5*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier3)) 
+        + (2.5*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier3))
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ###################################################################################### -->
+  <!-- ############################### UNIT PRODUCTION ###################################### -->
+  <!-- ###################################################################################### -->
+
+  <AIParameterConverter Name="WinterPercentMajorFactionUnitProductionCostBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * $Property(ClassEmpire:MilitaryPower)
+      * $(NumberOfAvailableMajorFactionBodies) 
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentMajorFactionUnitProductionCostPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * $Property(ClassEmpire,!WinterEffectImmunity:MilitaryPower)
+      * $(NumberOfAvailableMajorFactionBodies)
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentMinorFactionUnitProductionCostBonus">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * $Property(ClassEmpire:MilitaryPower)
+      * $(NumberOfAvailableMinorFactionBodies)
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentMinorFactionUnitProductionCostPenalty">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input))
+      * $Property(ClassEmpire,!WinterEffectImmunity:MilitaryPower)
+      * $(NumberOfAvailableMinorFactionBodies)
+      / (1 max $(NumberOfAvailableUnitBodies))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################################################ -->
+  <!-- ############################### ESPIONAGE ###################################### -->
+  <!-- ################################################################################ -->
+
+  <AIParameterConverter Name="WinterSecurityPenalty">
+    <ToAIParameter AIParameter="AIWorldSpy">
+      $(Input) / 50
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireAntiSpy">
+      (1 - $(Input))
+      * $Count(ClassEmpire,!WinterEffectImmunity/ClassCity)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ######################################################################### -->
+  <!-- ############################## WAR  ##################################### -->
+  <!-- ######################################################################### -->
+
+  <AIParameterConverter Name="WinterPercentPeacePointsPenalty">
+    <ToAIParameter AIParameter="AIWorldPeace">
+      (0 - $(Input)) * $Count(ClassEmpire,!WinterEffectImmunity)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldWar">
+      $(Input)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentPeacePointsBonus">
+    <ToAIParameter AIParameter="AIWorldPeace">
+      $(Input)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldWar">
+      (0 - 0.25* $(Input))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentDeclarationCostBonus">
+    <ToAIParameter AIParameter="AIWorldWar">
+      $(Input)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldPeace">
+      0 - $(Input)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ######################################################################### -->
+  <!-- ############################# PEACE ##################################### -->
+  <!-- ######################################################################### -->
+
+  <AIParameterConverter Name="WinterPercentUnitOnFriendlyTerritoryRegenBonus">
+    <ToAIParameter AIParameter="AIWorldWar">
+      0 - $(Input)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldPeace">
+      $(Input) * 0.5
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterPercentUnitOnEnemyTerritoryRegenPenalty">
+    <ToAIParameter AIParameter="AIWorldWar">
+      (0 - $(Input)) * $Count(ClassEmpire,!WinterEffectImmunity)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldPeace">
+      $(Input) * 0.5
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ############################################################################## -->
+  <!-- ################################# WORLD ###################################### -->
+  <!-- ############################################################################## -->
+
+  <AIParameterConverter Name="WinterIceShelf">
+    <ToAIParameter AIParameter="AIWorldWar">
+      $(Input) * (1 - 1.5*$Count(ClassEmpire/ClassResearch,TechnologyShip))
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldPeace">
+      (0 - $(Input)) * 0.15
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldNavy">
+      (0 - $(Input)) * 1.0
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="WinterOpenBorders">
+    <ToAIParameter AIParameter="AIWorldWar">
+      $(Input)
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIWorldPeace">
+      (0 - $(Input)) * 0.25
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Assume 2 village per region and 800 military power per village -->
+  <AIParameterConverter Name="WinterPercentHostileMinorAttributes">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      (0 - $(Input)) * 800 * (2 - (2 max $Count(ClassEmpire/ClassCity/PacifiedVillage)))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+
+</Datatable>

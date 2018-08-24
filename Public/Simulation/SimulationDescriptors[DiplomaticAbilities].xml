@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="UnknownCount" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnknownCount"         Operation="Addition"  Value="1"   Path="../ClassEmpire" TooltipHidden="true"/>
+      <!--
+      <SimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint"  Operation="Addition"  Value="1"   Path="../ClassEmpire" />
+      -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WarCount" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="WarCount" Operation="Addition"  Value="1" Path="../ClassEmpire" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint"  Operation="Addition"  Value="1" Path="../ClassEmpire" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TruceCount" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TruceCount"           Operation="Addition"  Value="1"   Path="../ClassEmpire" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint"  Operation="Addition"  Value="1" Path="../ClassEmpire" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ColdWarCount" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ColdWarCount"       Operation="Addition"  Value="1"     Path="../ClassEmpire" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint"  Operation="Addition"  Value="1" Path="../ClassEmpire" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PeaceCount" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PeaceCount"     Operation="Addition"  Value="1"     Path="../ClassEmpire" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint"  Operation="Addition"  Value="2" Path="../ClassEmpire" />
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AllianceCount" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AllianceCount"  Operation="Addition"  Value="1"     Path="../ClassEmpire" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint"  Operation="Addition"  Value="4" Path="../ClassEmpire" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BlackSpotCount" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BlackSpotCount"  Operation="Addition"  Value="1"     Path="../ClassEmpire" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BlackSpotVictim" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DiplomaticAbilityBountyRewardOnKill" Operation="Addition" Left="10"  BinaryOperation="Multiplication" Right="$(CurrentEra)" Path="../ClassEmpire" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PrestigeForKillBonus" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DiplomaticAbilityPrestigeRewardOnKill" Operation="Addition" Left="5" BinaryOperation="Multiplication" Right="$(CurrentEra)" Path="../ClassEmpire" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MoneyPrint" Type="Diplomacy">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome"               Operation="Percent"   Value="-0.50"  Path="../ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"            Operation="Percent"   Value="-0.50"  Path="../ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

@@ -1,0 +1,1359 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="TechnologyEra1"                                   Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyCountIncreaseEra1"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era1UnlockedTechnologyCount" Value="1"  Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="UnlockedTechnologyCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyEra2"                                   Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardFromEra"    Value="40" Operation="Addition" Path="../ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value=".5" Operation="Addition" Path="../ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyCountIncreaseEra2"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era2UnlockedTechnologyCount" Value="1"  Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="UnlockedTechnologyCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyEra3"                                   Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardFromEra"    Value="80" Operation="Addition" Path="../ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value="1"  Operation="Addition" Path="../ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyCountIncreaseEra3"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era3UnlockedTechnologyCount" Value="1"  Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="UnlockedTechnologyCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyEra4"                                   Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardFromEra"    Value="120" Operation="Addition" Path="../ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value="1.5" Operation="Addition" Path="../ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyCountIncreaseEra4"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era4UnlockedTechnologyCount" Value="1"  Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="UnlockedTechnologyCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyEra5"                                   Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardFromEra"    Value="160" Operation="Addition" Path="../ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value="2"   Operation="Addition" Path="../ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyCountIncreaseEra5"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era5UnlockedTechnologyCount" Value="1"  Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="UnlockedTechnologyCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyEra6"                                   Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardFromEra"    Value="200" Operation="Addition"  Path="../ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value="2.5" Operation="Addition"  Path="../ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyCountIncreaseEra6"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era6UnlockedTechnologyCount" Value="1"  Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="UnlockedTechnologyCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MainQuestCompletedCountIncrement"                 Type="Quest">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MainQuestChapterCount" Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VictoryQuestChapterCountIncrease1"                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VictoryQuestChapterCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VictoryQuestChapterCountIncrease2"                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VictoryQuestChapterCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VictoryQuestChapterCountIncrease3"                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VictoryQuestChapterCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VictoryQuestChapterCountIncrease4"                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VictoryQuestChapterCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VictoryQuestChapterCountIncrease5"                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VictoryQuestChapterCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VictoryQuestChapterCountIncrease6"                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VictoryQuestChapterCount"     Value="1"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--<SimulationDescriptor Name="Technology1" Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetMoney" Value="2" Operation="Multiplication" Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="NetResearch" Value="2" Operation="Multiplication" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>-->
+
+
+
+  <!-- ############################# -->
+  <!-- ########  AT START  ######### -->
+  <!-- ############################# -->
+
+  <SimulationDescriptor Name="TechnologySettler"                                Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterFood"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterFoodValue"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterIndustry"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterIndustryValue"                   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterScience"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterScienceValue"                    Type="Technology" />
+
+
+
+  <!-- ############################# -->
+  <!-- ##########  ERA 1  ########## -->
+  <!-- ############################# -->
+
+  <SimulationDescriptor Name="TechnologyFood0"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyIndustry0"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDust0"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDust1"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyScience0"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyScience8"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyApproval1"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDefense1"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyLuxuryExtractionCommon"                 Type="Technology" />
+  <SimulationDescriptor Name="TechnologyStrategicExtractionCommon"              Type="Technology" />
+  <SimulationDescriptor Name="TechnologySearchBonus"                            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest" Operation="Addition"      Value="5"  Path="./EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"          Operation="Addition"      Value="5"  Path="./EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLootingNothing"   Operation="Subtraction"   Value="10" Path="./EmpireTypeMajor/ClassArmy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyWeaponCommonTier1"                      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmorCommonTier1"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAccessoryCommonTier1"                   Type="Technology" />
+
+  <!--Strategic Resource Mastery Bonus-->
+  <SimulationDescriptor Name="TechnologyMasteryCommonBonus1"                    Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryCommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryCommonBonus2"                    Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryCommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMapActionParley"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMapActionBribe"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMapActionPillage"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMarketplaceHeroes"                      Type="Technology">
+    <SimulationModifierDescriptors>
+            <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyMarketplaceMercenaries"                 Type="Technology">
+    <SimulationModifierDescriptors>
+            <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyBrokenLordsUnit2"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMadFairiesUnit2"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyRageWizardsUnit2"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyNecrophagesUnit2"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVaultersUnit2"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMezariUnit2"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyRovingClansUnit2"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDrakkensUnit2"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyCultistsUnit2"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyReplicantsUnit2"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyWinterShiftersUnit2"                    Type="Technology" />
+  <SimulationDescriptor Name="TechnologySeaDemonsUnit2"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFlamesUnit2"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTutorialUnit2"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTutorialUnit1"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTutorialSettler"                        Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: Trait -->
+  <SimulationDescriptor Name="TechnologyBrokenLords4"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era1ReductionCost" Value="0.2" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mad Fairies - Empire Bonus (Ending Reward) -->
+  <SimulationDescriptor Name="TechnologyMadFairies6"                            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"        Value="0.25" Operation="Addition"  Path="../EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mad Fairies trait - Empire Bonus (Prestige at construction) -->
+  <SimulationDescriptor Name="TechnologyMadFairies4"                            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TraitBonusEmpirePointsOnCityImprovementComplete"            Operation="Addition" Value="4" Path="./EmpireTypeMajor,AffinityMadFairies"/>
+      <SimulationModifierDescriptor TargetProperty="TraitBonusEmpirePointsOnDistrictImprovementComplete"        Operation="Addition" Value="4" Path="./EmpireTypeMajor,AffinityMadFairies"/>
+      <SimulationModifierDescriptor TargetProperty="TraitBonusEmpirePointsOnPointOfInterestImprovementComplete" Operation="Addition" Value="4" Path="./EmpireTypeMajor,AffinityMadFairies"/>
+      <SimulationModifierDescriptor TargetProperty="TraitBonusEmpirePointsOnCategoryNationalBuildingComplete"   Operation="Addition" Value="4" Path="./EmpireTypeMajor,AffinityMadFairies" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards Starting tech: Pillar 1 / Spell 1 -->
+  <SimulationDescriptor Name="TechnologyRageWizards7"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Pillar1Level" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="Spell1Level"  Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards Starting tech: Pillar 2 / Spell 2 -->
+  <SimulationDescriptor Name="TechnologyRageWizards8"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Pillar2Level" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="Spell2Level"  Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Roving Clans Quest reward: Item blueprint (manuscript) -->
+  <SimulationDescriptor Name="TechnologyRovingClans1"                           Type="Technology" />
+
+  <!-- Roving Clans Quest reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyRovingClans2"                           Type="Technology" />
+
+  <!-- Mad Fairies Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyMadFairies7"                            Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyBrokenLords9"                           Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyBrokenLords10"                          Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyBrokenLords11"                          Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyBrokenLords12"                          Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyBrokenLords13"                          Type="Technology" />
+
+  <!-- Necrophages Quest Reward: Unique Item Incubator -->
+  <SimulationDescriptor Name="TechnologyNecrophages13"                          Type="Technology" />
+
+  <!-- Rage Wizards Quest Reward: Unique Item Magic Scepter -->
+  <SimulationDescriptor Name="TechnologyRageWizards1"                           Type="Technology" />
+
+  <!-- Drakkens Quest reward: Item blueprint (pendant) -->
+  <SimulationDescriptor Name="TechnologyDrakkens3"                              Type="Technology" />
+
+  <!-- Cultists Quest Reward: Unique Item Torso -->
+  <SimulationDescriptor Name="TechnologyCultists1"                              Type="Technology" />
+
+  <!-- Cultists Quest Reward: Unique Item Torso -->
+  <SimulationDescriptor Name="TechnologyCultists2"                              Type="Technology" />
+
+  <!-- Replicants Quest Reward: Unique Items Swords 1 -->
+  <SimulationDescriptor Name="TechnologyReplicants8"                            Type="Technology" />
+
+  <!-- Winter Shifters Quest Reward: Pilgrims of The End -->
+  <SimulationDescriptor Name="TechnologyWinterShifters9"                        Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityPointPerOrbCluster" Operation="Addition" Value="3" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Winter Shifters Quest Reward: Item -->
+  <SimulationDescriptor Name="TechnologyWinterShifters13"                       Type="Technology" />
+
+  <!-- Victory Quest Reward -->
+  <SimulationDescriptor Name="TechnologyVictory2"                               Type="Technology" />
+
+  <!-- Free Weekend Reward: Dust Ring -->
+  <SimulationDescriptor Name="TechnologyItemRingDustTier4"                      Type="Technology" />
+
+  <!-- Free Weekend Reward: Dust Insignia -->
+  <SimulationDescriptor Name="TechnologyItemInsigniaDustTier4"                  Type="Technology" />
+
+
+  <SimulationDescriptor Name="TechnologyQuestReward2"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Addition" Value="1" Path="./EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury1"/>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Addition" Value="1" Path="./EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury2"/>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Addition" Value="1" Path="./EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury3"/>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Addition" Value="1" Path="./EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury4"/>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Addition" Value="1" Path="./EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury5"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Side Quest Reward: Item -->
+  <SimulationDescriptor Name="TechnologyItemSword1Strategic4Tier4SideQuest1"    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemSword2Strategic2Tier4SideQuest1"    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemBow2Strategic4Tier4SideQuest1"      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemBow2Strategic3Tier4SideQuest1"      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemCrossbow1Strategic1Tier4SideQuest1" Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemCrossbow1Strategic2Tier4SideQuest1" Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemShield1Strategic1Tier4SideQuest1"   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemShield1Strategic3Tier4SideQuest1"   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemStaff2Strategic1Tier4SideQuest1"    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemScepter2Strategic3Tier4SideQuest1"  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemScepter2Strategic4Tier4SideQuest1"  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemAxe2Strategic5Tier4SideQuest1"      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemSword1Strategic6Tier4SideQuest1"    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemStaff2Strategic6Tier4SideQuest1"    Type="Technology" />
+  <!-- Halloween Side Quest Reward: Item -->
+  <SimulationDescriptor Name="TechnologyItemRingStrategic4Tier4SideQuest1"      Type="Technology" />
+  <!-- Guardian Content Reward-->
+  <SimulationDescriptor Name="TechnologyItemTomeColossusQuest1"                 Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemSword2DustTier4"                    Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyItemHeadStrategic1Tier2SideQuest1"      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemHeadStrategic2Tier2SideQuest1"      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemTorsoStrategic1Tier2SideQuest1"     Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemTorsoStrategic2Tier2SideQuest1"     Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemLegsStrategic1Tier2SideQuest1"      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemLegsStrategic2Tier2SideQuest1"      Type="Technology" />
+
+  <!-- Tutorial Quest unlock -->
+  <SimulationDescriptor Name="TechnologyTutorialUnlockResearch"                 Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTutorialUnlockQuest"                    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTutorialUnlockEmpire"                   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTutorialUnlockMilitary"                 Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTutorialUnlockAcademy"                  Type="Technology" />
+
+  <!-- Quest rewards: naval equipment -->
+  <SimulationDescriptor Name="TechnologyItemSatchelChargesQuest"                Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemEndlessFlamesQuest"                 Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemTrebuchetQuest"                     Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemPlatingQuest"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemHydrofoilsQuest"                    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemProwQuest"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemEngineerQuest"                      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemEngineerQuest2"                     Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemOrdinatorQuest"                     Type="Technology" />
+
+  <!-- Naval Pack: Pikou's Blade -->
+  <SimulationDescriptor Name="TechnologyItemSword1Strategic5Tier4Quest1"        Type="Technology" />
+
+  <!-- Naval Pack: Dragon Teeth Shield -->
+  <SimulationDescriptor Name="TechnologyItemShield1Strategic2Tier4Quest1"       Type="Technology" />
+
+  <!-- [Hidden] Medal military unlock -->
+  <SimulationDescriptor Name="TechnologyMedalEra1MilitaryReward"                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Percent"   Value="0.15"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Percent"   Value="0.15"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Replicants : Advanced Guerrilla -->
+  <SimulationDescriptor Name="TechnologyReplicants7"                            Type="Technology" >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PillageBoost"    Operation="Percent"       Value="1"  Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Fortress Commander -->
+  <SimulationDescriptor Name="TechnologySeaDemons8"                             Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"    Operation="Addition"       Value="1"  Path="./EmpireTypeMajor/ClassFortress/PointOfInterestTypeCitadel"/>
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"    Operation="Addition"       Value="1"  Path="./EmpireTypeMajor/ClassFortress/PointOfInterestTypeFacility,RevealedFacility"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Flames : Golem Workers -->
+  <SimulationDescriptor Name="TechnologyFlames2"                            Type="Technology" >
+  </SimulationDescriptor>
+  
+  <!-- Flames Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyFlames11"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemHammerFlamesQuestReward"       Type="Technology" />
+
+
+  <!-- ############################# -->
+  <!-- ##########  ERA 2  ########## -->
+  <!-- ############################# -->
+
+  <SimulationDescriptor Name="TechnologyFood1"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFood2"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyIndustry1"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyIndustry2"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyRoad"                                   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyScience3"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyApproval2"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMilitaryRecruitmentBonus1"              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyConstructionBuyout"                     Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <!--<SimulationDescriptor Name="TechnologyUnitCostReduction1"             Type="Technology"/>-->
+  <SimulationDescriptor Name="TechnologyOutpost0"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmySize1"                              Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyUnitSlot"               Operation="Addition" Value="2"  Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityUnitSlot"               Operation="Addition" Value="2"  Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyArmySize1MilitaryUpkeep"                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"             Operation="Addition" Value="2"  Path="./EmpireTypeMajor/ClassArmy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyAccessorySlotBonus1"                    Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AccessoriesSlotCount" Operation="Addition" Value="1" Path="./EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AccessoriesSlotCount" Operation="Addition" Value="1" Path="./EmpireTypeMajor/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyShip"                                   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMarketplaceResources"                   Type="Technology">
+    <SimulationModifierDescriptors>
+            <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyDiplomacyPeace"                         Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyWeaponCommonTier2"                      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmorCommonTier2"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAccessoryCommonTier2"                   Type="Technology" />
+
+  <!--Strategic Resource Mastery Bonus-->
+  <SimulationDescriptor Name="TechnologyMasteryCommonBonus3"                    Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryCommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryCommonBonus4"                    Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryCommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryCommonBonus5"                    Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryCommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryCommonBonus6"                    Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryCommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyWeaponCommonTier3"                      Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyArmorCommonTier3"                       Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyAccessoryCommonTier3"                   Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyCultists12"                             Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyBrokenLordsUnit3"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMadFairiesUnit3"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyRageWizardsUnit3"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyNecrophagesUnit3"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVaultersUnit3"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMezariUnit3"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyRovingClansUnit3"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDrakkensUnit3"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyCultistsUnit3"                          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyReplicantsUnit3"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyWinterShiftersUnit3"                    Type="Technology" />
+  <SimulationDescriptor Name="TechnologySeaDemonsUnit3"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFlamesUnit3"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTutorialUnit3"                          Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: Empire Bonus -->
+  <SimulationDescriptor Name="TechnologyBrokenLords5"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BrokenLordsUnitRegenPerPacifiedVillage" Value="0.01" Operation="Addition" Path="./EmpireTypeMajor/Garrison/ClassUnit,AffinityBrokenLords"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Broken Lords Quest Reward: Trait -->
+  <!-- 100% of the total Experience gain is also given as Dust bonus (this is not a conversion : player earns both xp and dust) -->
+  <SimulationDescriptor Name="TechnologyBrokenLords6"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TraitBonusExperienceToDustConversionFactor"   Operation="Addition"   Value="1"    Path="./EmpireTypeMajor" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cannon Fodder -->
+  <SimulationDescriptor Name="TechnologyNecrophages6"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"   Operation="Percent"   Value="-0.50"    Path="./EmpireTypeMajor/Garrison" />
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"       Operation="Percent"   Value="-0.20"    Path="./EmpireTypeMajor/Garrison/UnitHero"           Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"       Operation="Percent"   Value="-0.20"    Path="./EmpireTypeMajor/UnitRankHero"                Priority="2"   TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"       Operation="Percent"   Value="-0.20"    Path="./EmpireTypeMajor/SpiedGarrison/UnitRankHero"  Priority="2"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyNecrophages8"                           Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyVaulters2"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVaulters6"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMadFairies3"                            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BonusMovementOnEnemySpotted" Operation="Addition" Value="2" Path="./EmpireTypeMajor,AffinityMadFairies"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyRageWizards2"                           Type="Technology" />
+
+  <!-- Rage Wizards tech: Pillar 3 / Spell 3 -->
+  <SimulationDescriptor Name="TechnologyRageWizards9"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Pillar3Level" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="Spell3Level"  Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards : All spells' level increase -->
+  <SimulationDescriptor Name="TechnologyRageWizards12"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SpellsLevel" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyDrakkens1"                              Type="FactionTrait">
+    <SimulationModifierDescriptors>
+            <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"   Operation="Addition"   Left="3"    BinaryOperation="Multiplication" Right="$(NumberOfRebuildPacifiedVillage)" Path="../EmpireTypeMajor/ClassCity" IsBindOnSource="false"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Drakkens Quest reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyDrakkens2"                              Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyQuestReward1"                           Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyPrivateersRovingClans"                  Type="Technology" />
+
+  <!-- Cultists Quest Reward, Empire Bonus: +40 XP at creation of Converted Minor Faction units-->
+  <SimulationDescriptor Name="TechnologyCultists13"                             Type="Technology" >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"   Operation="Addition" Value="40" Path="../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Medal Diplomacy unlock -->
+  <SimulationDescriptor Name="TechnologyMedalEra2DiplomacyReward"               Type="Technology" />
+
+  <!-- [Hidden] Medal Military unlock -->
+  <SimulationDescriptor Name="TechnologyMedalEra2MilitaryReward"                Type="Technology" />
+
+  <!-- Quest Reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyReplicants9"                            Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyReplicants12"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumSeasonPredictabilityError"      Operation="Percent"         Value="-0.80"      Path="../EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="InfiltrationCostModifier"              Operation="Percent"         Value="-1"         Path="./EmpireTypeMajor,#Winter" />
+      <SimulationModifierDescriptor TargetProperty="SpyActionCostModifier"                 Operation="Percent"         Value="-0.30"      Path="../EmpireTypeMajor/SpiedGarrison/UnitHero"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Replicants: antispy bonus -->
+  <SimulationDescriptor Name="TechnologyReplicants6"                            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityAntiSpy"                 Operation="Addition"        Value="15"         Path="../ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="3"          Path="../EmpireTypeMajor/SpiedGarrison"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Winter Shifters Quest Reward: Luxury Booster bonus -->
+  <SimulationDescriptor Name="TechnologyWinterShifters7"                        Type="Technology">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sea Demons Quest Reward: City Improvement giving XP at seafaring unit creation -->
+  <SimulationDescriptor Name="TechnologySeaDemons10"                            Type="Technology">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Flames Quest Reward: remove upkeep to golems -->
+  <SimulationDescriptor Name="TechnologyFlames6"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep" Value="-1" Operation="Percent" Path="./EmpireTypeMajor/Garrison/ClassUnit,UnitTypeFlamesGolem"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Flames : Golem Camp-->
+  <SimulationDescriptor Name="TechnologyFlames14"                            Type="Technology" >
+  </SimulationDescriptor>
+  <!-- ############################# -->
+  <!-- ##########  ERA 3  ########## -->
+  <!-- ############################# -->
+
+  <SimulationDescriptor Name="TechnologyLavaRivers1"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVolcanicItems1"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVolcanicItems2"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVolcanicItems3"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAllBoosterLevel1"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFood8"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDust2"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDust3"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyScience1"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyScience2"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyEmpirePoint1"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyEmpirePoint2"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterFoodBonus1"                      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterIndustryBonus1"                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterScienceBonus1"                   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterFoodBonus1Value"                 Type="Technology">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyBoosterIndustryBonus1Value"             Type="Technology">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyBoosterScienceBonus1Value"              Type="Technology">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyTradeRouteBonus1"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDefense2"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDefenseRecovery1"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyLifeRegeneration1"                      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyOutpost1"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyLuxuryExtractionUncommon"               Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Addition" Value="1" Path="./EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyStrategicExtractionUncommon"            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDocks"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDocks2"                                 Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyExpansionDisapprovalReduction1"         Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval" Operation="Percent" Value="-0.25" Path="./EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyAssimilationLimitMax1"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MinorFactionSlotCount"    Operation="Addition" Value="1"    Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyWeaponUncommonTier1"                    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmorUncommonTier1"                     Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAccessoryUncommonTier1"                 Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyAntiSpy1"                               Type="Technology" />
+
+  <!--Strategic Resource Mastery Bonus-->
+  <SimulationDescriptor Name="TechnologyMasteryUncommonBonus1"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryUncommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryUncommonBonus2"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryUncommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyVaulters3"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVaulters4"                              Type="Technology" />
+
+  <!-- Necrophages Quest Reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyNecrophages7"                           Type="Technology" />
+
+  <!-- Necrophages Quest Reward -->
+  <SimulationDescriptor Name="TechnologyNecrophages11"                          Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyRageWizards3"                           Type="Technology">
+    <SimulationModifierDescriptors>
+            <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards tech: Pillar 4 / Spell 4 -->
+  <SimulationDescriptor Name="TechnologyRageWizards10"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Pillar4Level" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="Spell4Level"  Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards: All pillars' level increase -->
+  <SimulationDescriptor Name="TechnologyRageWizards14"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PillarsLevel" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Roving Clans Quest reward: Empire Bonus -->
+  <SimulationDescriptor Name="TechnologyRovingClans3"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustRevenue" Operation="Percent" Value="0.50" Path="./EmpireTypeMajor/ClassCity/ClassTradeRoute"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cultists Quest Reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyCultists3"                              Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyColossusDust"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumNumberOfColossi" Operation="Addition" Value="1" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Replicants Quest Reward: Empire Bonus -->
+  <SimulationDescriptor Name="TechnologyReplicants10"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era3ReductionCost" Value="0.3" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- [Hidden] Medal Heroes unlock -->
+  <SimulationDescriptor Name="TechnologyMedalEra3HeroesReward"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Value="0.20" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Replicants: Hero xp Bonus -->
+  <SimulationDescriptor Name="TechnologyReplicants5"                            Type="Technology">
+    <SimulationModifierDescriptors>
+          <SimulationModifierDescriptor         TargetProperty="ExperienceGainPerTurn"          Operation="Addition"      Value="3"         Path="./EmpireTypeMajor/Garrison/ClassUnit,UnitHero"/>
+          <BinarySimulationModifierDescriptor   TargetProperty="ExperienceGainPerTurn"          Operation="Addition"      BinaryOperation ="Multiplication"  Left="3"  Right ="$(SpyCount)" Path="./EmpireTypeMajor/Garrison/UnitHero" IsBindOnSource="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyGuardianKiller"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyGuardianKillerPrerequisite"             Type="Technology" />
+
+  <!-- Sea Demons Quest Reward: Mark of the Damned equipment -->
+  <SimulationDescriptor Name="TechnologySeaDemons9"                             Type="Technology">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Flames : Golem Workers 2-->
+  <SimulationDescriptor Name="TechnologyFlames3"                            Type="Technology" >
+  </SimulationDescriptor>
+
+  <!-- Flames : Rubber Rousers -->
+  <SimulationDescriptor Name="TechnologyFlames9"                            Type="Technology" >
+  </SimulationDescriptor>
+
+  <!-- Flames Quest Reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyFlames10"                              Type="Technology" />
+
+  <!-- ############################# -->
+  <!-- ##########  ERA 4  ########## -->
+  <!-- ############################# -->
+
+  <SimulationDescriptor Name="TechnologyAllBoosterLevel2"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyScience4"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFood3"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFood4"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyIndustry3"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyIndustry4"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterFoodBonus2"                      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterFoodBonus2Value"                 Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterIndustryBonus2"                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterIndustryBonus2Value"             Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyMilitaryRecruitmentBonus3"              Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyStrategicExtractionRare"                Type="Technology" />
+  <SimulationDescriptor Name="TechnologyLuxuryExtractionRare"                   Type="Technology" />
+  
+  <SimulationDescriptor Name="TechnologyVolcanic2"                              Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyMapActionArchaeology"                   Type="Technology">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyRoadSpeedBonus1"                        Type="Technology">
+    <SimulationModifierDescriptors>
+      <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyMilitaryBonus1"                         Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="0.20" Path="./EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="0.20" Path="./EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyDiplomacyAlliance"                      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmySize2"                              Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyUnitSlot"               Operation="Addition"  Value="2"     Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityUnitSlot"               Operation="Addition"  Value="2"     Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyArmySize2MilitaryUpkeep"            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"             Operation="Addition"  Value="2"     Path="./EmpireTypeMajor/ClassArmy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyPrivateers"                             Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyWeaponRareTier1"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmorRareTier1"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAccessoryRareTier1"                     Type="Technology" />
+
+  <!--Strategic Resource Mastery Bonus-->
+  <SimulationDescriptor Name="TechnologyMasteryRareBonus1"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryRare" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryRareBonus2"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryRare" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mad Fairies Trait / Way of the Woodlands (defense bonus on forests) -->
+  <SimulationDescriptor Name="TechnologyMadFairies2"                            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus" Operation="Addition" Value="0.25" Path="./EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus" Operation="Addition" Value="0.25" Path="./EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyNecrophages9"                           Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyNecrophages10"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Addition" Value="30" Path="./EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Addition" Value="30" Path="./EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards Quest City impvt: Altar of transcendence -->
+  <SimulationDescriptor Name="TechnologyRageWizards4Strategic46"                Type="Technology" />
+  <SimulationDescriptor Name="TechnologyRageWizards4Strategic35"                Type="Technology" />
+
+  <!-- Rage Wizards end Quest reward: Bonus pillars/spells -->
+  <SimulationDescriptor Name="TechnologyRageWizards6"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PillarsLevel" Operation="Addition" Value="2" Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="SpellsLevel" Operation="Addition" Value="2" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards tech: Pillar 5 / Spell 5 -->
+  <SimulationDescriptor Name="TechnologyRageWizards11"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Pillar5Level" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="Spell5Level"  Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Roving Clans Quest reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyRovingClans4"                           Type="Technology" />
+
+  <!-- Roving Clans Quest reward: Empire Bonus -->
+  <SimulationDescriptor Name="TechnologyRovingClans5"                           Type="Technology" />
+
+  <!-- Drakkens -->
+  <SimulationDescriptor Name="TechnologyDrakkens4"                              Type="Technology" />
+
+  <!-- Drakkens Quest Ending reward: Empire Bonus -->
+  <SimulationDescriptor Name="TechnologyDrakkens5"                              Type="Technology" />
+
+  <!-- Cultists Quest Reward, Empire Bonus: +100 XP at creation of Converted Minor Faction units -->
+  <SimulationDescriptor Name="TechnologyCultists4"                              Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"   Operation="Addition" Value="100" Path="../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cultists Quest Ending Reward: Empire Bonus: Instant conversion  + 3 additional Minor Faction units at village conversions -->
+  <SimulationDescriptor Name="TechnologyCultists5"                              Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitSpawnCountOnConvert"   Operation="Addition" Value="3" Path="../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Replicants Quest Ending Reward: Empire Bonus: Instant Level 3 Infiltration -->
+  <SimulationDescriptor Name="TechnologyReplicants11"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"  Operation="Percent"  Value="-1" Path="./EmpireTypeMajor/Garrison/AffinityReplicants,UnitRankHero"          Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"  Operation="Percent"  Value="-1" Path="./EmpireTypeMajor/AffinityReplicants,UnitRankHero"                   Priority="2"   TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"  Operation="Percent"  Value="-1" Path="./EmpireTypeMajor/SpiedGarrison/AffinityReplicants,UnitRankHero"     Priority="2"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Winter Shifters Quest Reward: Pearl Replication -->
+  <SimulationDescriptor Name="TechnologyWinterShifters10"                       Type="Technology" />
+
+  <!-- Sea Demons Quest Ending Reward:  Eco bonus on exploited land tiles -->
+  <SimulationDescriptor Name="TechnologySeaDemons11"                            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"         Operation="Addition"   Value="1" Path="./EmpireTypeMajor/ClassCity/ClassDistrict,!TerrainTagWater"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"          Operation="Addition"   Value="1" Path="./EmpireTypeMajor/ClassCity/ClassDistrict,!TerrainTagWater"/>
+
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"         Operation="Addition"   Value="1" Path="./EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict,!TerrainTagWater"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"          Operation="Addition"   Value="1" Path="./EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict,!TerrainTagWater"/>
+
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"    Operation="Addition"   Value="2"   Path="./EmpireTypeMajor/Garrison/!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"    Operation="Addition"   Value="1"   Path="./EmpireTypeMajor/Garrison/!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyColossusEarth"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumNumberOfColossi" Operation="Addition" Value="1" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyColossusFire"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumNumberOfColossi" Operation="Addition" Value="1" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- [Hidden] Medal Economy unlock -->
+  <SimulationDescriptor Name="TechnologyMedalEra4EconomyReward"                 Type="Technology" />
+
+  <!-- [Hidden] Medal Military unlock -->
+  <SimulationDescriptor Name="TechnologyMedalEra4MilitaryReward"                Type="Technology" />
+
+  <!-- Flames : Golem Workers 3-->
+  <SimulationDescriptor Name="TechnologyFlames4"                            Type="Technology" >
+  </SimulationDescriptor>
+
+  <!-- ############################# -->
+  <!-- ##########  ERA 5  ########## -->
+  <!-- ############################# -->
+
+  <SimulationDescriptor Name="TechnologyIndustry6"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDust4"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDust5"                                  Type="Technology" />
+  <SimulationDescriptor Name="TechnologyScience5"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterScienceBonus2"                   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyBoosterScienceBonus2Value"              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyEmpirePoint3"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyEmpirePoint4"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyApproval3"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyApproval4"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTradeRouteBonus3"                       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyTradeRouteBonus3Replicants"             Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMilitaryRecruitmentBonus5"              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDefense3"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyLifeRegeneration2"                      Type="Technology" />
+  <SimulationDescriptor Name="TechnologyWeaponUncommonTier2"                    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmorUncommonTier2"                     Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAccessoryUncommonTier2"                 Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAntiSpy2"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVolcanic1"                              Type="Technology" />
+
+  <!--Strategic Resource Mastery Bonus-->
+  <SimulationDescriptor Name="TechnologyMasteryUncommonBonus3"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryUncommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryUncommonBonus4"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryUncommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyWeaponUncommonTier3"                    Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmorUncommonTier3"                     Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAccessoryUncommonTier3"                 Type="Technology" />
+
+  <!--Strategic Resource Mastery Bonus-->
+  <SimulationDescriptor Name="TechnologyMasteryUncommonBonus5"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryUncommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryUncommonBonus6"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryUncommon" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyAssimilationLimitMax2"                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MinorFactionSlotCount"      Operation="Addition"  Value="1"     Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyExpansionDisapprovalReduction2"         Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval" Operation="Percent"   Value="-0.25" Path="./EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards: All spells' level increase -->
+  <SimulationDescriptor Name="TechnologyRageWizards13"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SpellsLevel" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyColossusWater"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumNumberOfColossi" Operation="Addition" Value="1" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyColossusAir"                            Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumNumberOfColossi" Operation="Addition" Value="1" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Medal Economy unlock -->
+  <SimulationDescriptor Name="TechnologyMedalEra5EconomyReward"                 Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval" Operation="Percent"   Value="-0.50" Path="./EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- [Hidden] Medal Heroes unlock -->
+  <SimulationDescriptor Name="TechnologyMedalEra5HeroesReward"                  Type="Technology" />
+
+  <!-- Flames Quest Reward: Endless Memorial -->
+  <SimulationDescriptor Name="TechnologyFlames12"                              Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyFlames13"                              Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"          Operation="Addition"   Value="15"  Path="../EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- ############################# -->
+  <!-- ##########  ERA 6  ########## -->
+  <!-- ############################# -->
+
+  <SimulationDescriptor Name="TechnologyUnitCostReduction3"                     Type="Technology" />
+  <SimulationDescriptor Name="TechnologyIndustry5"                              Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"     Operation ="Percent"  Value="1"  Path="../EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyFood6"                                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"         Operation ="Percent"  Value="1"  Path="../EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyDust6"                                  Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"         Operation ="Percent"  Value="1"  Path="../EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyScience6"                               Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"      Operation ="Percent"  Value="1"  Path="../EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyDefense4"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyEndlessTemple"                          Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyWeaponRareTier2"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmorRareTier2"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAccessoryRareTier2"                     Type="Technology" />
+
+  <!--Strategic Resource Mastery Bonus-->
+  <SimulationDescriptor Name="TechnologyMasteryRareBonus3"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryRare" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryRareBonus4"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryRare" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyWeaponRareTier3"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyArmorRareTier3"                         Type="Technology" />
+  <SimulationDescriptor Name="TechnologyAccessoryRareTier3"                     Type="Technology" />
+
+  <!--Strategic Resource Mastery Bonus-->
+  <SimulationDescriptor Name="TechnologyMasteryRareBonus5"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryRare" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMasteryRareBonus6"                      Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ReductionCostFromMasteryRare" Operation="Subtraction" Value="0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyEmpire1"                                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="PeacePointGainMultiplier" Operation="Percent"   Value="1"     Path="../ClassEmpire,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyUnitImproved1"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyArmySize3"                              Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyUnitSlot"             Operation="Addition"  Value="2"     Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityUnitSlot"             Operation="Addition"  Value="2"     Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"          Operation="Percent"   Value="0.20"  Path="./EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"          Operation="Percent"   Value="0.20"  Path="./EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyExpansionDisapprovalReduction3"         Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval" Operation="Percent"   Value="-0.40" Path="./EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Percent"   Value="0.20"  Path="./EmpireTypeMajor/ClassCity,ApprovalStatusTagCityHappy"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Percent"   Value="0.20"  Path="./EmpireTypeMajor/ClassCity,ApprovalStatusTagCityHappy"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                 Operation="Percent"   Value="0.20"  Path="./EmpireTypeMajor/ClassCity,ApprovalStatusTagCityHappy"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Percent"   Value="0.20"  Path="./EmpireTypeMajor/ClassCity,ApprovalStatusTagCityHappy"/>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"            Operation="Percent"   Value="0.20"  Path="./EmpireTypeMajor/ClassCity,ApprovalStatusTagCityHappy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mad Fairies Quest Reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyMadFairies5"                            Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyBrokenLords7"                           Type="Technology" />
+
+  <!-- Broken Lords Quest Reward: Trait Instant Heal - Hard Coded Effect-->
+  <SimulationDescriptor Name="TechnologyBrokenLords8"                           Type="Technology" />
+
+  <!-- Vaulters Quest Reward: Extreme Yields -->
+  <SimulationDescriptor Name="TechnologyVaulters7"                              Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Percent" Value="2" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Vaulters Quest Unlock: Resource Magnetron -->
+  <SimulationDescriptor Name="TechnologyVaulters9"                              Type="Technology" />
+
+  <!-- Vaulters Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyVaulters8"                              Type="Technology" />
+
+  <!-- Rage Wizards: All pillars' level increase -->
+  <SimulationDescriptor Name="TechnologyRageWizards15"                          Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PillarsLevel" Operation="Addition" Value="1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Drakkens Ancient Knowledge -->
+  <SimulationDescriptor  Name="TechnologyDrakkens7"                             Type="Technology" />
+
+  <!-- Tutorial 2 units limit -->
+  <SimulationDescriptor Name="TechnologyMezari1"                                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ArmyUnitSlot"               Operation="Subtraction"  Value="2"     Path="./EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityUnitSlot"               Operation="Subtraction"  Value="2"     Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Tutorial unlock of founder's memorial when needed -->
+  <SimulationDescriptor Name="TechnologyUnlockFounderTutorial"                  Type="Technology" />
+  <!-- Tutorial unlock of Luxury Extractor when needed -->
+  <SimulationDescriptor Name="TechnologyUnlockLuxuryExtractorTutorial"          Type="Technology" />
+  <!-- Tutorial unlock of Strategic Extractor when needed -->
+  <SimulationDescriptor Name="TechnologyUnlockStrategicExtractorTutorial"       Type="Technology" />
+
+  <SimulationDescriptor Name="ScientificVictoryCount"                           Type="Technology">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######            WONDERS           ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="TechnologyWonder1"                                Type="Technology" />
+  <SimulationDescriptor Name="TechnologyWonder2"                                Type="Technology" />
+  <SimulationDescriptor Name="TechnologyWonder3"                                Type="Technology" />
+  <SimulationDescriptor Name="TechnologyWonder4"                                Type="Technology" />
+  <SimulationDescriptor Name="TechnologyWonder5"                                Type="Technology" />
+
+
+
+  <!-- ########################################## -->
+  <!-- ######          ORB UNLOCKS         ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="TechnologyOrbUnlockCountIncrease"                 Type="OrbUnlock">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnlockedTechnologyOrbUnlockCount" Value="1"  Operation="Addition" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyOrbUnlock1"                             Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock2"                             Type="OrbUnlock">
+    <SimulationModifierDescriptors />
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyOrbUnlock3"                             Type="OrbUnlock">
+    <SimulationModifierDescriptors />
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyOrbUnlock4"                             Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock5"                             Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock6"                             Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock7"                             Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock8"                             Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock9"                             Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock10"                            Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock11"                            Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock12"                            Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock13"                            Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock14"                            Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock15"                            Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock16WinterShifters"              Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock17WinterShifters"              Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock18WinterShifters"              Type="OrbUnlock" />
+  <SimulationDescriptor Name="TechnologyOrbUnlock19WinterShifters"              Type="OrbUnlock">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OrbUnlockOrbCostModifier" Value="-0.2" Operation="Percent" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WinterTier1"                                      Type="WinterTier">
+      <SimulationModifierDescriptors />
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="WinterTier2"                                      Type="WinterTier">
+      <SimulationModifierDescriptors />
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="WinterTier3"                                      Type="WinterTier">
+      <SimulationModifierDescriptors />
+  </SimulationDescriptor>
+
+
+  <!-- ################################################ -->
+  <!-- ######           NAVAL EXPANSION          ###### -->
+  <!-- ################################################ -->
+
+  <SimulationDescriptor Name="TechnologyNavalUnit1"                             Type="Technology" />
+  <SimulationDescriptor Name="TechnologyNavalUnit2"                             Type="Technology" />
+  <SimulationDescriptor Name="TechnologyNavalUnit3"                             Type="Technology" />
+  <SimulationDescriptor Name="TechnologyNavalUnit4"                             Type="Technology" />
+
+
+
+  <!-- ########################################## -->
+  <!-- ######            CUSTOM            ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="TechnologyVaulters2Custom"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVaulters3Custom"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVaulters4Custom"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyVaulters6Custom"                        Type="Technology" />
+
+
+
+  <!-- ########################################## -->
+  <!-- ######          DEPRECATED          ###### -->
+  <!-- ########################################## -->
+
+  <!-- Mad Fairies Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyMadFairiesItem1"                        Type="Technology" />
+  <SimulationDescriptor Name="TechnologyCustomTrait3"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyCustomTrait4"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyCustomTrait5"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BonusMovementOnEnemySpotted" Operation="Addition" Value="2" Path="./EmpireTypeMajor,AffinityMadFairies"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyCustomTrait7"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyCustomTrait8"                           Type="Technology" />
+  <!-- Broken Lords Quest Reward: Trait -->
+  <SimulationDescriptor Name="TechnologyCustomTrait1"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Era1ReductionCost" Value="0.1" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <!-- Broken Lords Quest Reward: Empire Bonus -->
+  <SimulationDescriptor Name="TechnologyCustomTrait6"                           Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BrokenLordsUnitRegenPerPacifiedVillage" Value="0.1" Operation="Addition" Path="./EmpireTypeMajor/Garrison/ClassUnit,AffinityBrokenLords"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

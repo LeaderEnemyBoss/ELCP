@@ -1,0 +1,1168 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+  <!-- ################################ -->
+  <!-- #######   FIRST STEPS    ####### -->
+  <!-- ################################ -->
+
+  <AICityState 
+    Name="FirstSteps" 
+    IsAmasRequired="true" 
+    NetPopulationForSettlerPreRequisit="3" 
+    UnitBoost="-0.5" 
+    ExtensionGlobalPriority="0.6">
+    
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+    </AgentModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityApproval"           Value="0.3"/>
+      <AIModifier Name="AICityGrowth"             Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint"        Value="0.4"/>
+      <AIModifier Name="AICityProduction"         Value="1"/>
+      <AIModifier Name="AICityResearch"           Value="0.2"/>
+      <AIModifier Name="AICityMoney"              Value="0.8"/>
+      <AIModifier Name="AICityMoneyUpkeep"        Value="0.5"/>
+      
+      <AIModifier Name="AICityDefense"            Value="0.01"/>
+      <AIModifier Name="AICityPillageDefense"     Value="0.01"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.1"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.2"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.01"/>
+      
+      <!-- empire need -->
+      <AIModifier Name="AIEmpireMilitaryPower"        Value="0.01"/>
+      <AIModifier Name="AIEmpireVision"               Value="0.01"/>
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0.001" />
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.2"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityGrowth"      Value="1.3"/>
+      <AIModifier Name="AICityApproval"    Value="0.8"/>
+      <AIModifier Name="AICityProduction"  Value="1.1"/>
+      <AIModifier Name="AICityMoney"       Value="0.3"/>
+      <AIModifier Name="AICityResearch"    Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.1"/>
+      <AIModifier Name="AICityLevelUp"     Value="1"/>
+      <AIModifier Name="AICityDistrictNeighbours"     Value="0.5"/>
+    </ParameterModifiers>
+    
+    <ParameterModifiers Name="HeroItem">
+      <AIModifier Name="AIItemFood"         Value="1"/>
+      <AIModifier Name="AIItemIndustry"     Value="1"/>
+      <AIModifier Name="AIItemDust"        Value="0"/>
+      <AIModifier Name="AIItemScience"     Value="0"/>
+      <AIModifier Name="AIItemEmpirePoint" Value="0"/>
+    </ParameterModifiers>
+
+  </AICityState>
+
+  <!-- ############################ -->
+  <!-- #######   BALANCE    ####### -->
+  <!-- ############################ -->
+  
+  <AICityState 
+    Name="Balance" 
+    IsAmasRequired="true" 
+    NetPopulationForSettlerPreRequisit="2" 
+    ExtensionProductionFrequency="2" 
+    UnitBoost="0" 
+    ExtensionGlobalPriority="0.8">
+    
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityApproval"     Value="0.9"/>
+      <AIModifier Name="AICityGrowth"       Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint"  Value="0.5"/>
+      <AIModifier Name="AICityProduction"   Value="0.8"/>
+      <AIModifier Name="AICityResearch"     Value="0.5"/>
+      <AIModifier Name="AICityMoney"        Value="0.8"/>
+      <AIModifier Name="AICityMoneyUpkeep"  Value="0.5"/>
+      <AIModifier Name="AICityDefense"      Value="0.2"/>
+
+      <AIModifier Name="AICityPillageDefense"     Value="0.2"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.6"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.8"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.2"/>
+      
+      <!-- empire need -->
+      <AIModifier Name="AIEmpireMilitaryPower"        Value="0.1"/>
+      <AIModifier Name="AIEmpireVision"               Value="0.2"/>
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0.5"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.8"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityApproval"    Value="0.5"/>
+      <AIModifier Name="AICityGrowth"      Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.5"/>
+      <AIModifier Name="AICityProduction"  Value="1.0"/>
+      <AIModifier Name="AICityMoney"       Value="0.8"/>
+      <AIModifier Name="AICityResearch"    Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.1"/>
+      <AIModifier Name="AICityLevelUp"     Value="1.0"/>
+      <AIModifier Name="AICityDistrictNeighbours"     Value="0.5"/>
+    </ParameterModifiers>
+        
+    <ParameterModifiers Name="HeroItem">
+      <AIModifier Name="AIItemFood"        Value="0.5"/>
+      <AIModifier Name="AIItemIndustry"    Value="0.5"/>
+      <AIModifier Name="AIItemDust"        Value="0.5"/>
+      <AIModifier Name="AIItemScience"     Value="0.5"/>
+      <AIModifier Name="AIItemEmpirePoint" Value="0.1"/>
+    </ParameterModifiers>
+  </AICityState>
+
+  <!-- ############################ -->
+  <!-- #######  WAR BORDER  ####### -->
+  <!-- ############################ -->
+  
+  <AICityState 
+    Name="WarBorder" 
+    IsAmasRequired="true" 
+    NetPopulationForSettlerPreRequisit="4" 
+    ExtensionProductionFrequency="4"  
+    UnitBoost="0.2" 
+    ExtensionGlobalPriority="0.4">
+    
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+       <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityApproval"     Value="0.5"/>
+      <AIModifier Name="AICityGrowth"       Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint"  Value="0.1"/>
+      <AIModifier Name="AICityProduction"   Value="1"/>
+      <AIModifier Name="AICityResearch"     Value="0.1"/>
+      <AIModifier Name="AICityMoney"        Value="0.4"/>
+      <AIModifier Name="AICityMoneyUpkeep"  Value="0.5"/>
+      <AIModifier Name="AICityDefense"      Value="1.0"/>
+      <AIModifier Name="AICityPillageDefense"     Value="0.8"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.05"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.1"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.7"/>
+      
+      <!-- empire need -->
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.9"/>
+      <AIModifier Name="AIEmpireVision"           Value="1.0"/>
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0.01"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.1"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityApproval"    Value="0.5"/>
+      <AIModifier Name="AICityGrowth"      Value=".50"/>
+      <AIModifier Name="AICityProduction"  Value=".8"/>
+      <AIModifier Name="AICityMoney"       Value="1"/>
+      <AIModifier Name="AICityResearch"    Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.1"/>
+      <AIModifier Name="AICityLevelUp"     Value="1"/>
+      <AIModifier Name="AICityDistrictNeighbours"     Value="0.5"/>
+    </ParameterModifiers>
+    
+    <ParameterModifiers Name="HeroItem">
+      <AIModifier Name="AIItemFood"        Value="0.2"/>
+      <AIModifier Name="AIItemIndustry"    Value="0.8"/>
+      <AIModifier Name="AIItemDust"        Value="0"/>
+      <AIModifier Name="AIItemScience"     Value="0"/>
+      <AIModifier Name="AIItemEmpirePoint" Value="0"/>
+    </ParameterModifiers>
+  </AICityState>
+
+  <!-- ########################## -->
+  <!-- #######  BESIEGED  ####### -->
+  <!-- ########################## -->
+
+  <AICityState 
+    Name="Besieged" 
+    IsAmasRequired="true" 
+    NetPopulationForSettlerPreRequisit="6" 
+    UnitBoost="0.7" 
+    ExtensionGlobalPriority="0.1">
+    
+    <AgentModifiers>
+      
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityApproval"     Value="0.1"/>
+      <AIModifier Name="AICityGrowth"       Value="0.1"/>
+      <AIModifier Name="AICityEmpirePoint"  Value="0.0"/>
+      <AIModifier Name="AICityProduction"   Value="1"/>
+      <AIModifier Name="AICityResearch"     Value="0.0"/>
+      <AIModifier Name="AICityMoney"        Value="0.4"/>
+      <AIModifier Name="AICityMoneyUpkeep"  Value="0.2"/>
+      <AIModifier Name="AICityDefense"      Value="0.8"/>
+
+      <AIModifier Name="AICityPillageDefense"     Value="0.6"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.0"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.0"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.8"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="1.0"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.0"/>
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0.001"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityApproval"    Value="0.5"/>
+      <AIModifier Name="AICityGrowth"      Value="0.5"/>
+      <AIModifier Name="AICityProduction"  Value="1.0"/>
+      <AIModifier Name="AICityMoney"       Value="0.8"/>
+      <AIModifier Name="AICityResearch"    Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.1"/>
+      <AIModifier Name="AICityLevelUp"     Value="1.0"/>
+      <AIModifier Name="AICityDistrictNeighbours"     Value="0.5"/>
+    </ParameterModifiers>
+    
+    <ParameterModifiers Name="HeroItem">
+      <AIModifier Name="AIItemFood"        Value="0"/>
+      <AIModifier Name="AIItemIndustry"    Value="1"/>
+      <AIModifier Name="AIItemDust"        Value="0"/>
+      <AIModifier Name="AIItemScience"     Value="0"/>
+      <AIModifier Name="AIItemEmpirePoint" Value="0"/>
+    </ParameterModifiers>
+  </AICityState>
+
+  <!-- ####################################### -->
+  <!-- #######  SPECIALISATION: FORGE  ####### -->
+  <!-- ####################################### -->
+
+  <AICityState 
+    Name="Forge" 
+    IsAmasRequired="true" 
+    NetPopulationForSettlerPreRequisit="2" 
+    UnitBoost="0.4" 
+    ExtensionGlobalPriority="0.6">
+    
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityApproval"     Value="0.7"/>
+      <AIModifier Name="AICityGrowth"       Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint"  Value="0.5"/>
+      <AIModifier Name="AICityProduction"   Value="1"/>
+      <AIModifier Name="AICityResearch"     Value="0.5"/>
+      <AIModifier Name="AICityMoney"        Value="0.8"/>
+      <AIModifier Name="AICityMoneyUpkeep"  Value="0.5"/>
+      <AIModifier Name="AICityDefense"      Value="0.2"/>
+
+      <AIModifier Name="AICityPillageDefense"     Value="0.2"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.3"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.8"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.2"/>
+      
+      <!-- empire need -->
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0.8"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.8"/>
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.1"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.2"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityApproval"    Value="0.6"/>
+      <AIModifier Name="AICityGrowth"      Value="0.5"/>
+      <AIModifier Name="AICityProduction"  Value="1"/>
+      <AIModifier Name="AICityMoney"       Value="0.4"/>
+      <AIModifier Name="AICityResearch"    Value="0.1"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.1"/>
+      <AIModifier Name="AICityLevelUp"     Value="0.8"/>
+      <AIModifier Name="AICityDistrictNeighbours"     Value="0.5"/>
+    </ParameterModifiers>
+    
+    <ParameterModifiers Name="HeroItem">
+      <AIModifier Name="AIItemFood"        Value="0.2"/>
+      <AIModifier Name="AIItemIndustry"    Value="0.4"/>
+      <AIModifier Name="AIItemDust"        Value="0.4"/>
+      <AIModifier Name="AIItemScience"     Value="0"/>
+      <AIModifier Name="AIItemEmpirePoint" Value="0"/>
+    </ParameterModifiers>
+  </AICityState>
+
+  <!-- ############################################ -->
+  <!-- #######  SPECIALISATION: UNIVERSITY  ####### -->
+  <!-- ############################################ -->
+
+  <AICityState
+    Name="University"
+    IsAmasRequired="true"
+    NetPopulationForSettlerPreRequisit="4"
+    UnitBoost="-0.3"
+    ExtensionGlobalPriority="0.9">
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityApproval"     Value="0.5"/>
+      <AIModifier Name="AICityGrowth"       Value="0.3"/>
+      <AIModifier Name="AICityEmpirePoint"  Value="0.3"/>
+      <AIModifier Name="AICityProduction"   Value="0.6"/>
+      <AIModifier Name="AICityResearch"     Value="1.0"/>
+      <AIModifier Name="AICityMoney"        Value="0.6"/>
+      <AIModifier Name="AICityMoneyUpkeep"  Value="0.5"/>
+      <AIModifier Name="AICityDefense"      Value="0.1"/>
+
+      <AIModifier Name="AICityPillageDefense"     Value="0.1"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.3"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.5"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.1"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.1"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.1"/>
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0.9"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.9"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityApproval"    Value="0.5"/>
+      <AIModifier Name="AICityGrowth"      Value="0.4"/>
+      <AIModifier Name="AICityProduction"  Value="0.7"/>
+      <AIModifier Name="AICityMoney"       Value="0.3"/>
+      <AIModifier Name="AICityResearch"    Value="0.9"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.1"/>
+      <AIModifier Name="AICityLevelUp"     Value="1.2"/>
+      <AIModifier Name="AICityDistrictNeighbours"     Value="0.5"/>
+    </ParameterModifiers>
+    
+    <ParameterModifiers Name="HeroItem">
+      <AIModifier Name="AIItemFood"        Value="0.5"/>
+      <AIModifier Name="AIItemIndustry"    Value="0"/>
+      <AIModifier Name="AIItemDust"        Value="0"/>
+      <AIModifier Name="AIItemScience"     Value="0.5"/>
+      <AIModifier Name="AIItemEmpirePoint" Value="0"/>
+    </ParameterModifiers>
+  </AICityState>
+
+  <!-- ######################################### -->
+  <!-- #######  SPECIALISATION: CONSULATE  ##### -->
+  <!-- ######################################### -->
+
+  <AICityState
+    Name="Consulate"
+    IsAmasRequired="true"
+    NetPopulationForSettlerPreRequisit="4"
+    UnitBoost="-0.3"
+    ExtensionGlobalPriority="0.9">
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityApproval"     Value="0.5"/>
+      <AIModifier Name="AICityGrowth"       Value="0.3"/>
+      <AIModifier Name="AICityEmpirePoint"  Value="1.0"/>
+      <AIModifier Name="AICityProduction"   Value="0.5"/>
+      <AIModifier Name="AICityResearch"     Value="0.2"/>
+      <AIModifier Name="AICityMoney"        Value="0.8"/>
+      <AIModifier Name="AICityMoneyUpkeep"  Value="0.5"/>
+      <AIModifier Name="AICityDefense"      Value="0.1"/>
+      <AIModifier Name="AICityPillageDefense"     Value="0.2"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.6"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.6"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.1"/>
+      
+      <!-- empire need -->
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.1"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.1"/>
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0.6"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.6"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityApproval"    Value="0.5"/>
+      <AIModifier Name="AICityGrowth"      Value="0.4"/>
+      <AIModifier Name="AICityProduction"  Value="0.7"/>
+      <AIModifier Name="AICityMoney"       Value="0.3"/>
+      <AIModifier Name="AICityResearch"    Value="0.1"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.9"/>
+      <AIModifier Name="AICityLevelUp"     Value="1.2"/>
+      <AIModifier Name="AICityDistrictNeighbours"     Value="0.5"/>
+    </ParameterModifiers>
+    
+    <ParameterModifiers Name="HeroItem">
+      <AIModifier Name="AIItemFood"        Value="0.2"/>
+      <AIModifier Name="AIItemIndustry"    Value="0"/>
+      <AIModifier Name="AIItemDust"        Value="0"/>
+      <AIModifier Name="AIItemScience"     Value="0"/>
+      <AIModifier Name="AIItemEmpirePoint" Value="0.8"/>
+    </ParameterModifiers>
+  </AICityState>
+
+  <!-- #################################### -->
+  <!-- #######  SPECIALISATION: BANK  ##### -->
+  <!-- #################################### -->
+
+  <AICityState
+    Name="Bank"
+    IsAmasRequired="true"
+    NetPopulationForSettlerPreRequisit="4"
+    UnitBoost="-0.3"
+    ExtensionGlobalPriority="0.9">
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityApproval"     Value="0.5"/>
+      <AIModifier Name="AICityGrowth"       Value="0.3"/>
+      <AIModifier Name="AICityEmpirePoint"  Value="0.3"/>
+      <AIModifier Name="AICityProduction"   Value="0.3"/>
+      <AIModifier Name="AICityResearch"     Value="0.3"/>
+      <AIModifier Name="AICityMoney"        Value="1.0"/>
+      <AIModifier Name="AICityMoneyUpkeep"  Value="0.5"/>
+      <AIModifier Name="AICityDefense"      Value="0.1"/>
+
+      <AIModifier Name="AICityPillageDefense"     Value="0.4"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.7"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.6"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.2"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.1"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.1"/>
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0.6"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.6"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityApproval"    Value="0.5"/>
+      <AIModifier Name="AICityGrowth"      Value="0.4"/>
+      <AIModifier Name="AICityProduction"  Value="0.7"/>
+      <AIModifier Name="AICityMoney"       Value="1.2"/>
+      <AIModifier Name="AICityResearch"    Value="0.1"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.1"/>
+      <AIModifier Name="AICityLevelUp"     Value="1.2"/>
+      <AIModifier Name="AICityDistrictNeighbours"     Value="0.5"/>
+    </ParameterModifiers>
+    
+    <ParameterModifiers Name="HeroItem">
+      <AIModifier Name="AIItemFood"        Value="0.2"/>
+      <AIModifier Name="AIItemIndustry"    Value="0"/>
+      <AIModifier Name="AIItemDust"        Value="0.8"/>
+      <AIModifier Name="AIItemScience"     Value="0"/>
+      <AIModifier Name="AIItemEmpirePoint" Value="0"/>
+    </ParameterModifiers>
+  </AICityState>
+
+<!-- ################################################################################################################## -->
+<!-- ########################################## AUTOMATIC AI 'GOVERNORS' ############################################## -->
+<!-- ################################################################################################################## -->
+
+  
+  <!-- ########################################## -->
+  <!-- #######     PLAYER AI BALANCED     ####### -->
+  <!-- ########################################## -->
+
+  <AICityState 
+    Name="AdministrationSpecialization_Balanced" 
+    IsAmasRequired="true" 
+    IsGuiCompliant="true" 
+    NetPopulationForSettlerPreRequisit="2" 
+    IncreaseUnitProductionUrgenceByTurn="0" 
+    ExtensionGlobalPriority="0.8">
+    
+    <ParameterModifiers Name="Population">
+      <AIModifier Name="AICityGrowth"      Value="0.5"/>
+      <AIModifier Name="AICityProduction"  Value="1"/>
+      <AIModifier Name="AICityMoney"       Value="0.5"/>
+      <AIModifier Name="AICityResearch"    Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.5"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need-->
+      <AIModifier Name="AICityApproval"    Value="0.7"/>
+      <AIModifier Name="AICityGrowth"      Value="0.5"/>
+      <AIModifier Name="AICityProduction"  Value="0.5"/>
+      <AIModifier Name="AICityMoney"       Value="0.5"/>
+      <AIModifier Name="AICityResearch"    Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.5"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AICityPillageDefense"     Value="0.1"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.1"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.2"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.1"/>
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.2"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.2"/>
+
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.3"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityApproval"    Value="0.5"/>
+      <AIModifier Name="AICityGrowth"      Value="0.5"/>
+      <AIModifier Name="AICityProduction"  Value="1"/>
+      <AIModifier Name="AICityMoney"       Value="0.5"/>
+      <AIModifier Name="AICityResearch"    Value="0.5"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.5"/>
+      <AIModifier Name="AICityLevelUp"     Value="1.0"/>
+    </ParameterModifiers>
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+    </AgentModifiers>
+
+  </AICityState>
+
+  <!-- ########################################## -->
+  <!-- #######     PLAYER AI PRODUCTION   ####### -->
+  <!-- ########################################## -->
+  
+  <AICityState Name="AdministrationSpecialization_Production" IsAmasRequired="true" IsGuiCompliant="true" NetPopulationForSettlerPreRequisit="2" IncreaseUnitProductionUrgenceByTurn="0" ExtensionGlobalPriority="0.8">
+    <ParameterModifiers Name="Population">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="1.0"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="1.0"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AICityPillageDefense"     Value="0.01"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.01"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.01"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.01"/>
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.01"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.01"/>
+
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="1.0"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+      <AIModifier Name="AICityLevelUp"     Value="0.3"/>
+      <AIModifier Name="AICityApproval"    Value="0.01"/>
+    </ParameterModifiers>
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_Default">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+    </AgentModifiers>
+      
+  </AICityState>
+
+  <!-- ###################################### -->
+  <!-- #######     PLAYER AI GROWTH   ####### -->
+  <!-- ###################################### -->
+  
+  <AICityState Name="AdministrationSpecialization_Growth" IsAmasRequired="true" IsGuiCompliant="true" NetPopulationForSettlerPreRequisit="2" IncreaseUnitProductionUrgenceByTurn="0" ExtensionGlobalPriority="0.8">
+    <PathPrerequisite Inverted="true">.../ClassEmpire,FactionTraitBrokenLords2</PathPrerequisite>
+    
+    <ParameterModifiers Name="Population">
+      <AIModifier Name="AICityGrowth"      Value="1.0"/>
+      <AIModifier Name="AICityProduction"  Value="0.5"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityGrowth"      Value="1.0"/>
+      <AIModifier Name="AICityProduction"  Value="0.5"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AICityPillageDefense"     Value="0.01"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.01"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.01"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.01"/>
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.01"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.01"/>
+
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityGrowth"      Value="1.0"/>
+      <AIModifier Name="AICityProduction"  Value="0.5"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+      <AIModifier Name="AICityLevelUp"     Value="0.3"/>
+    </ParameterModifiers>
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_AdministrationSpecialized">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_AdministrationSpecialized">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_AdministrationSpecialized">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+    </AgentModifiers>
+    
+  </AICityState>
+
+  <!-- ######################################## -->
+  <!-- #######     PLAYER AI RESEARCH   ####### -->
+  <!-- ######################################## -->
+  
+  <AICityState Name="AdministrationSpecialization_Research" IsAmasRequired="true" IsGuiCompliant="true" NetPopulationForSettlerPreRequisit="2" IncreaseUnitProductionUrgenceByTurn="0" ExtensionGlobalPriority="0.8">
+    <PathPrerequisite Inverted="true">.../ClassEmpire,FactionTraitReplicants1</PathPrerequisite>
+    
+    <ParameterModifiers Name="Population">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="1.0"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="1.0"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AICityPillageDefense"     Value="0.01"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.01"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.01"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.01"/>
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.01"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.01"/>
+
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="1.0"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+      <AIModifier Name="AICityLevelUp"     Value="0.5"/>
+      <AIModifier Name="AICityApproval"    Value="0.01"/>
+    </ParameterModifiers>
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_AdministrationSpecialized">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="AdministrationSpecialized_UP">
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+    
+  </AICityState>
+
+  <!-- ##################################### -->
+  <!-- #######     PLAYER AI MONEY   ####### -->
+  <!-- ##################################### -->
+  
+  <AICityState Name="AdministrationSpecialization_Money" IsAmasRequired="true" IsGuiCompliant="true" NetPopulationForSettlerPreRequisit="2" IncreaseUnitProductionUrgenceByTurn="0" ExtensionGlobalPriority="0.8">
+    <ParameterModifiers Name="Population">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="1.0"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="1.0"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AICityPillageDefense"     Value="0.01"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.01"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.01"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.01"/>
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.01"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.01"/>
+
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="1.0"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+      <AIModifier Name="AICityLevelUp"     Value="0.3"/>
+    </ParameterModifiers>
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_AdministrationSpecialized">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="AdministrationSpecialized_UP">
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+      </AgentModifier>
+    </AgentModifiers>
+    
+  </AICityState>
+
+  <!-- ############################################# -->
+  <!-- #######     PLAYER AI EMPIRE POINT    ####### -->
+  <!-- ############################################# -->
+
+  <AICityState Name="AdministrationSpecialization_EmpirePoint" IsAmasRequired="true" IsGuiCompliant="true" NetPopulationForSettlerPreRequisit="2" IncreaseUnitProductionUrgenceByTurn="0" ExtensionGlobalPriority="0.8">
+    <ParameterModifiers Name="Population">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="1.0"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Production">
+      <!-- local need -->
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="1.0"/>
+
+      <!-- empire need -->
+      <AIModifier Name="AICityPillageDefense"     Value="0.01"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.01"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.01"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.01"/>
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="0.01"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.01"/>
+
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="0.3"/>
+      <AIModifier Name="AICityMoney"       Value="0.01"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="1.0"/>
+      <AIModifier Name="AICityLevelUp"     Value="1.0"/>
+    </ParameterModifiers>
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_AdministrationSpecialized">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+      <AgentModifier CurveReference="AdministrationSpecialized_UP">
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+    </AgentModifiers>
+    
+  </AICityState>
+
+  <!-- ######################################### -->
+  <!-- #######     PLAYER AI MILITARY    ####### -->
+  <!-- ######################################### -->
+  
+  <!-- TBD -->
+
+  <!--
+  <AICityState Name="AdministrationSpecialization_Military" IsGuiCompliant="true" NetPopulationForSettlerPreRequisit="2" IncreaseUnitProductionUrgenceByTurn="2" ExtensionGlobalPriority="0.8">
+    <ParameterModifiers Name="Population">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="1.0"/>
+      <AIModifier Name="AICityMoney"       Value="0.1"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="1.0"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Production">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="1.0"/>
+      <AIModifier Name="AICityMoney"       Value="0.3"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+
+      <AIModifier Name="AICityPillageDefense"     Value="0.3"/>
+      <AIModifier Name="AICityLuxuryResource"     Value="0.01"/>
+      <AIModifier Name="AICityStrategicResource"  Value="0.01"/>
+      <AIModifier Name="AICityAntiSpy"            Value="0.3"/>
+      <AIModifier Name="AIEmpireMilitaryPower"    Value="1.0"/>
+      <AIModifier Name="AIEmpireVision"           Value="0.3"/>
+
+      <AIModifier Name="AIEmpireWonderVictory"        Value="0"/>
+      <AIModifier Name="AIEmpireUnlockAltarOfAuriga"  Value="0.01"/>
+    </ParameterModifiers>
+
+    <ParameterModifiers Name="Expansion">
+      <AIModifier Name="AICityGrowth"      Value="0.3"/>
+      <AIModifier Name="AICityProduction"  Value="1.0"/>
+      <AIModifier Name="AICityMoney"       Value="0.3"/>
+      <AIModifier Name="AICityResearch"    Value="0.01"/>
+      <AIModifier Name="AICityEmpirePoint" Value="0.01"/>
+      <AIModifier Name="AICityLevelUp"     Value="0.2"/>
+    </ParameterModifiers>
+
+    <AgentModifiers>
+      <AgentModifier CurveReference="Flat0">
+        <AmasPath AgentReference="FoodPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="IndustryPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="SciencePopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="DustPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="CityPointPopulation">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityMoney">CityAgentGroup</AmasPath>
+        <AmasPath AgentReference="NetCityResearch">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+      <AgentModifier CurveReference="IndustryReferenceTurnCount_AdministrationSpecialized">
+        <AmasPath AgentReference="IndustryReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationReferenceTurnCount_Default">
+        <AmasPath AgentReference="PopulationReferenceTurnCount">CityAgentGroup</AmasPath>
+      </AgentModifier>
+
+      <AgentModifier CurveReference="PopulationBuyoutReferenceRatio_Default">
+        <AmasPath AgentReference="PopulationBuyoutReferenceRatio">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+      <AgentModifier CurveReference="AdministrationSpecialized_UP">
+        <AmasPath AgentReference="NetCityEmpirePoint">CityAgentGroup</AmasPath>
+      </AgentModifier>
+      
+    </AgentModifiers>
+  </AICityState>
+  -->
+
+</Datatable>
+

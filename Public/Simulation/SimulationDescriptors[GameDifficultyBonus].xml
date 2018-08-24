@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################################## AI ################################################## -->
+  <SimulationDescriptor Name="GameDifficultyNewbieAIMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="AIResearchCostReduction"   MinValue="Negative"/>
+      <SimulationPropertyDescriptor Name="AIEmpirePlanCostReduction" MinValue="Negative"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <!-- Approval -->
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"         Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"         Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="0.25"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="-0.1"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="-0.1"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="-0.1"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <!--<SimulationModifierDescriptor TargetProperty="CityApproval"                   Operation="Subtraction"     Value="2.5"   Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>-->
+      <!-- City Modifier -->
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="-0.1"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingProductionCostReduction"    Operation="Addition"        Value="-0.1"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingBuyoutCostReduction"        Operation="Addition"        Value="-0.1"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitBuyoutCostReduction"            Operation="Addition"        Value="-0.1"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"                Operation="Subtraction"     Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"            Operation="Subtraction"     Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"             Operation="Subtraction"     Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"                Operation="Subtraction"     Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"           Operation="Subtraction"     Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!-- Search Modifier : no quests until the AI can do them correctly -->
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="GameDifficultyEasyAIMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+      <!-- Approval -->
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"         Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"         Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
+
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0"  Priority="1" Path="ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AIMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultyNormalAIMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+      <!-- REmove the quest for the AI and increase the loot. So searching a ruins for the AI is only rewards... 
+           I will remove it for test purpose...
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
+           -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultyHardAIMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="AIResearchCostReduction"   MinValue="Negative"/>
+      <SimulationPropertyDescriptor Name="AIEmpirePlanCostReduction" MinValue="Negative"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <!-- Empire Modifier -->
+      <SimulationModifierDescriptor TargetProperty="TotalCityMoneyUpkeep"                 Operation="Percent"         Value="-0.2" Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpireMoneyUpkeep"                    Operation="Percent"         Value="-0.2" Priority="1" Path="EmpireTypeMajor"/>
+      <!-- Approval -->
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"         Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"         Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.2" Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.15"   Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.2"   Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.2"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <!-- City Modifier -->
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.2"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingProductionCostReduction"    Operation="Addition"        Value="0.2"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingBuyoutCostReduction"        Operation="Addition"        Value="0.2"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitBuyoutCostReduction"            Operation="Addition"        Value="0.2"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!--  City Modifier :  Bonus Per Pop -->
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"                Operation="Addition"        Value="0.25"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"            Operation="Addition"        Value="0.25"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"             Operation="Addition"        Value="0.25"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"                Operation="Addition"        Value="0.25"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"           Operation="Addition"        Value="0.25"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!-- Strategic Resrouce Bonus -->
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
+      <!-- Search Modifier : no quests until the AI can do them correctly -->
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
+      <!-- Army Modifier -->
+      <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI" Operation="Addition" Value="0.25" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI" Operation="Addition" Value="0.25" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit"             TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Addition"        Value="-1"    Priority="10" Path="ClassEmpire/ClassArmy/UnitRankStandard"/>
+      
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultySeriousAIMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="AIResearchCostReduction"   MinValue="Negative"/>
+      <SimulationPropertyDescriptor Name="AIEmpirePlanCostReduction" MinValue="Negative"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <!-- Empire Modifier -->
+      <SimulationModifierDescriptor TargetProperty="TotalCityMoneyUpkeep"                    Operation="Percent"         Value="-0.35" Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpireMoneyUpkeep"                       Operation="Percent"         Value="-0.35" Priority="1" Path="EmpireTypeMajor"/>
+      <!-- Approval -->
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"         Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"         Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.35" Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.2"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.35"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.35"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <!-- City Modifier -->
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingProductionCostReduction"    Operation="Addition"        Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingBuyoutCostReduction"        Operation="Addition"        Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitBuyoutCostReduction"            Operation="Addition"        Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!--  City Modifier :  Bonus Per Pop -->
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"                Operation="Addition"        Value="0.5"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"            Operation="Addition"        Value="0.5"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"             Operation="Addition"        Value="0.5"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"                Operation="Addition"        Value="0.5"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"           Operation="Addition"        Value="0.5"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!-- Strategic Resrouce Bonus -->
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
+      <!-- Search Modifier : no quests until the AI can do them correctly -->
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
+      <!-- Army Modifier -->
+      <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI" Operation="Addition" Value="0.5" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI" Operation="Addition" Value="0.5" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit"                    TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Addition"        Value="-1"    Priority="10" Path="ClassEmpire/ClassArmy/UnitRankStandard"/>
+      
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultyImpossibleAIMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="AIResearchCostReduction"   MinValue="Negative"/>
+      <SimulationPropertyDescriptor Name="AIEmpirePlanCostReduction" MinValue="Negative"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <!-- Empire Modifier -->
+      <SimulationModifierDescriptor TargetProperty="TotalCityMoneyUpkeep"                 Operation="Percent"         Value="-0.5" Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="EmpireMoneyUpkeep"                    Operation="Percent"         Value="-0.5" Priority="1" Path="EmpireTypeMajor"/>
+      <!-- Approval -->
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"        Value="10"    Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"        Value="10"    Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.5"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.25"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.5"   Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.5"   Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <!-- City Modifier -->
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.5"   Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.6"   Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingProductionCostReduction"    Operation="Addition"        Value="0.5"   Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingBuyoutCostReduction"        Operation="Addition"        Value="0.5"   Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitBuyoutCostReduction"            Operation="Addition"        Value="0.5"   Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!--  City Modifier:  Bonus Per Pop -->
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"                Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"            Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"             Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"                Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"           Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!-- Strategic Resrouce Bonus -->
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
+      <!-- Search Modifier : no quests until the AI can do them correctly -->
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Addition"        Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
+      <!-- Army Modifier -->
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"           Operation="Addition"        Value="10"    Priority="1" Path="ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"           Operation="Percent"         Value="0.5"   Priority="1" Path="ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Percent"         Value="0.5"   Priority="1" Path="ClassEmpire/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Percent"         Value="0.5"   Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"      TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI"                  Operation="Addition"        Value="0.75"               Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI"                  Operation="Addition"        Value="0.75"               Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Addition"        Value="-1"    Priority="10" Path="ClassEmpire/ClassArmy/UnitRankStandard"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultyEndlessAIMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="AIResearchCostReduction"   MinValue="Negative"/>
+      <SimulationPropertyDescriptor Name="AIEmpirePlanCostReduction" MinValue="Negative"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <!-- Empire Modifier -->
+      <SimulationModifierDescriptor TargetProperty="EmpireMoneyUpkeep"                       Operation="Percent"         Value="-0.7" Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="TotalCityMoneyUpkeep"                    Operation="Percent"         Value="-0.7" Priority="1" Path="EmpireTypeMajor"/>
+      <!-- Approval -->
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"        Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeCenter"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"        Value="10" Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.6" Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.3"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.6"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.6"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <!-- City Modifier -->
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.6"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.7"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingProductionCostReduction"    Operation="Addition"        Value="0.6"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIBuildingBuyoutCostReduction"        Operation="Addition"        Value="0.6"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AIUnitBuyoutCostReduction"            Operation="Addition"        Value="0.6"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!-- City Modifier: Bonus Per Pop -->
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"                Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"            Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"             Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"                Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"           Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!-- Strategic Resrouce Bonus -->
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>    
+      
+      <!-- Search Modifier : no quests until the AI can do them correctly -->
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Addition"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
+      <!-- Army Modifier -->
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"           Operation="Addition"        Value="10"    Priority="1" Path="ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"           Operation="Percent"         Value="1"   Priority="1" Path="ClassEmpire/ClassCity/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Percent"         Value="1"     Priority="1" Path="ClassEmpire/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"                Operation="Percent"         Value="1"     Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"   TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI"                  Operation="Addition"       Value="1"                  Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI"                  Operation="Addition"       Value="1"                  Path="ClassEmpire/ClassCity/Militia/ClassUnit"    TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Addition"        Value="-1"    Priority="10" Path="ClassEmpire/ClassArmy/UnitRankStandard"/>
+      
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  
+
+  <!-- ################################################# HUMAN ################################################# -->
+  <SimulationDescriptor Name="GameDifficultyNewbieHumanMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+      <!-- Approval -->
+      <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"       Operation="Percent"         Value="-0.25" Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                   Operation="Addition"        Value="5"     Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>
+      <!-- City Modifier -->
+      <SimulationModifierDescriptor TargetProperty="CityFood"                       Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                   Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                    Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                       Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                  Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                       Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                   Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                    Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                       Operation="Addition"        Value="2"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"          Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"      Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"       Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"          Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"     Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!-- Garrison/Army -->
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                 Operation="Percent"         Value="-0.50" Priority="1" Path="ClassEmpire/Garrison"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                     Operation="Percent"         Value="-0.25" Priority="2" Path="ClassEmpire/Garrison/UnitHero"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                     Operation="Percent"         Value="-0.25" Priority="2" Path="ClassEmpire/UnitRankHero"                  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                     Operation="Percent"         Value="-0.25" Priority="2" Path="ClassEmpire/SpiedGarrison/UnitRankHero"    TooltipHidden="true"/>
+      <!-- Army Modifier -->
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"   TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"   TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="GameDifficultyEasyHumanMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+      <!-- City Modifier -->
+      <SimulationModifierDescriptor TargetProperty="CityFood"                       Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                   Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                    Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                       Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"                  Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                       Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                   Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                    Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                       Operation="Addition"        Value="1"     Priority="1" Path="ClassEmpire/ClassCity"/>
+      <!-- Garrison/Army -->
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                 Operation="Percent"         Value="-0.25" Priority="1" Path="ClassEmpire/Garrison"/>
+      <!-- Army Modifier -->
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"     TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultyNormalHumanMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultyHardHumanMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultySeriousHumanMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+      <!-- Approval -->
+      <!--<SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"       Operation="Percent"         Value="0.15"  Priority="1" Path="EmpireTypeMajor"/>-->
+      <!-- Garrison/Army 
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                 Operation="Percent"         Value="0.25"  Priority="1" Path="ClassEmpire/Garrison"/>-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultyImpossibleHumanMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+      <!-- Approval -->
+      <!--<SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"       Operation="Percent"         Value="0.30"  Priority="1" Path="EmpireTypeMajor"/>-->
+      <!-- Garrison/Army 
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                 Operation="Percent"         Value="0.50"  Priority="1" Path="ClassEmpire/Garrison"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                     Operation="Percent"         Value="0.25"  Priority="2" Path="ClassEmpire/Garrison/UnitHero"/>-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="GameDifficultyEndlessHumanMajorEmpire" Type="GameDifficultyBonus">
+    <SimulationModifierDescriptors>
+      <!-- Approval -->
+      <!--<SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"       Operation="Percent"         Value="0.45"  Priority="1" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                   Operation="Subtraction"     Value="5"     Priority="1" Path="EmpireTypeMajor/ClassCity/DistrictTypeExtension"/>-->
+      <!-- Garrison/Army 
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                 Operation="Percent"         Value="1.00"  Priority="1" Path="ClassEmpire/Garrison"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                     Operation="Percent"         Value="0.50"  Priority="2" Path="ClassEmpire/Garrison/UnitHero"/>-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+</Datatable>

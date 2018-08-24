@@ -1,0 +1,1271 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Advanced parameters allowed by the generator
+
+    <ClimateStructure> Globe, Northern, Southern
+
+    <MinLakeArea> et <MaxLakeArea>
+    <MaxLakeBottomElevation>
+    <LakePresencePercent>
+
+    <MinRidgeSize>
+    <MaxRidgeSize>
+    <RidgeMinElevation>
+    <RidgePresencePercent>
+
+    <RiverMinLength>
+    <RiverPresencePercent>
+
+    <StrategicResourcesAbundancePercent> standard 100
+    <LuxuryResourcesAbundancePercent> standard 100
+
+    <GlobalAnomalyMultiplier> standard 100
+
+    <ContinentShaping> and <ContinentSpreading> can be Regular or Chaotic
+
+    <IslandsPresencePercent> can vary from 0 (no island) to 100 (all that can be generated)
+
+    Bonne chance !
+
+    JL
+  -->
+  <!-- Unused -->
+  <!--<WorldGeneratorOptionDefinition Name="MinorRaceAllocation" Default="Randomized" GuiControlType="DropList">
+    <ItemDefinition Name="Sequential">
+      <KeyValuePair Key="MinorRaceAllocation">Sequential</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Randomized">
+      <KeyValuePair Key="MinorRaceAllocation">Randomized</KeyValuePair>
+    </ItemDefinition>
+  </WorldGeneratorOptionDefinition>-->
+  <!--<WorldGeneratorOptionDefinition Name="MinorFactionsDistribution" Default="Random" GuiControlType="DropList">
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="TimedEncounter">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="TimedEncounter">true</KeyValuePair>
+    </ItemDefinition>
+  </WorldGeneratorOptionDefinition>-->
+
+
+
+  <!-- ########################################## -->
+  <!-- ######   WORLD GENERATOR OPTIONS    ###### -->
+  <!-- ########################################## -->
+
+  <WorldGeneratorOptionDefinition Name="WorldSize"                     Default="Normal"         Category="World" SubCategory="WorldSize"       GuiControlType="DropList">
+    <ItemDefinition Name="Tiny">
+      <KeyValuePair Key="Width">50</KeyValuePair>
+      <KeyValuePair Key="Height">30</KeyValuePair>
+      <KeyValuePair Key="MaxDifferentLuxuryTypes">6</KeyValuePair>
+      <KeyValuePair Key="MaxResourcesPerRegion">9</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="NumberOfMajorFactions" Type="Conditional">
+        <Key Name="2"/>
+        <Key Name="3"/>
+        <Key Name="4"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldShape" Type="Control">
+        <Key Name="NoOceans"/>
+        <Key Name="2LargeContinents"/>
+        <Key Name="4Continents"/>
+        <Key Name="FewContinents"/>
+        <Key Name="Supercontinent"/>
+        <Key Name="LargeSupercontinent"/>
+        <Key Name="Custom"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="50"/>
+        <Key Name="60"/>
+        <Key Name="70"/>
+        <Key Name="80"/>
+        <Key Name="90"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents" Type="Control">
+        <Key Name="1"/>
+        <Key Name="2"/>
+        <Key Name="3"/>
+        <Key Name="4"/>
+        <Key Name="1to3"/>
+        <Key Name="2to4"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
+        <Key Name="Tiny"/>
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Small">
+      <KeyValuePair Key="Width">70</KeyValuePair>
+      <KeyValuePair Key="Height">50</KeyValuePair>
+      <KeyValuePair Key="MaxDifferentLuxuryTypes">9</KeyValuePair>
+      <KeyValuePair Key="MaxResourcesPerRegion">8</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="NumberOfMajorFactions" Type="Conditional">
+        <Key Name="2"/>
+        <Key Name="3"/>
+        <Key Name="4"/>
+        <Key Name="5"/>
+        <Key Name="6"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="40"/>
+        <Key Name="50"/>
+        <Key Name="60"/>
+        <Key Name="70"/>
+        <Key Name="80"/>
+        <Key Name="90"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
+        <Key Name="Tiny"/>
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="Width">90</KeyValuePair>
+      <KeyValuePair Key="Height">60</KeyValuePair>
+      <KeyValuePair Key="MaxDifferentLuxuryTypes">12</KeyValuePair>
+      <KeyValuePair Key="MaxResourcesPerRegion">7</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Large">
+      <KeyValuePair Key="Width">100</KeyValuePair>
+      <KeyValuePair Key="Height">70</KeyValuePair>
+      <KeyValuePair Key="MaxDifferentLuxuryTypes">15</KeyValuePair>
+      <KeyValuePair Key="MaxResourcesPerRegion">6</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Huge">
+      <KeyValuePair Key="Width">120</KeyValuePair>
+      <KeyValuePair Key="Height">80</KeyValuePair>
+      <KeyValuePair Key="MaxDifferentLuxuryTypes">15</KeyValuePair>
+      <KeyValuePair Key="MaxResourcesPerRegion">5</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldShape" Type="Control">
+        <Key Name="2LargeContinents"/>
+        <Key Name="4Continents"/>
+        <Key Name="FewContinents"/>
+        <Key Name="ManyContinents"/>
+        <Key Name="Supercontinent"/>
+        <Key Name="LargeSupercontinent"/>
+        <Key Name="LargeIslands"/>
+        <Key Name="Islands"/>
+        <Key Name="Custom"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Random"/>
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="WorldShape"                    Default="Supercontinent" Category="World" SubCategory="WorldShape"      GuiControlType="DropList">
+    <ItemDefinition Name="NoOceans">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="90"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="1"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="No"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="None"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Tiny"/>
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="2LargeContinents">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="40"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="2"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="Yes"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="4Continents">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="50"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="4"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="Yes"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="FewContinents">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="60"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="2to4"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="No"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="ManyContinents">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="70"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="4to6"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="No"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Supercontinent">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="50"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="1"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="Yes"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="LargeSupercontinent">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="70"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="1"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="Yes"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="LargeIslands">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="60"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="5to8"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="No"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Islands">
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
+        <Key Name="30"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="NumberOfContinents"            Type="Control">
+        <Key Name="5to8"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ForceOceansOnMapEdges"         Type="Control">
+        <Key Name="No"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"                   Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldWrap"                     Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldHemispheres"              Type="Control">
+        <Key Name="Both"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Random"/>
+    <ItemDefinition Name="Custom"/>
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="ContinentShape"                Default="Regular"        Category="World" SubCategory="ContinentShape"  GuiControlType="DropList">
+    <ItemDefinition Name="Regular">
+      <OptionDefinitionConstraint OptionName="ContinentSpread" Type="Control">
+        <Key Name="Regular"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ContinentForm" Type="Control">
+        <Key Name="Regular"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="InternalSea" Type="Control">
+        <Key Name="No"/>
+      </OptionDefinitionConstraint>-->
+      <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
+        <Key Name="None"/>
+      </OptionDefinitionConstraint>-->
+    </ItemDefinition>
+    <ItemDefinition Name="Disturbed">
+      <OptionDefinitionConstraint OptionName="ContinentSpread" Type="Control">
+        <Key Name="Regular"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ContinentForm" Type="Control">
+        <Key Name="Chaotic"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="InternalSea" Type="Control">
+        <Key Name="Yes"/>
+      </OptionDefinitionConstraint>-->
+      <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>-->
+    </ItemDefinition>
+    <ItemDefinition Name="Chaotic">
+      <OptionDefinitionConstraint OptionName="ContinentSpread" Type="Control">
+        <Key Name="Chaotic"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="ContinentForm" Type="Control">
+        <Key Name="Chaotic"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="InternalSea" Type="Control">
+        <Key Name="Yes"/>
+      </OptionDefinitionConstraint>-->
+      <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
+        <Key Name="Many"/>
+      </OptionDefinitionConstraint>-->
+    </ItemDefinition>
+    <ItemDefinition Name="Random"/>
+    <ItemDefinition Name="Custom"/>
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="Temperature"                   Default="Terran"         Category="World" SubCategory="Temperature"     GuiControlType="DropList">
+    <ItemDefinition Name="Arctic">
+      <KeyValuePair Key="SelectedGlobalClimate">PlanetArctic</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Tundra">
+      <KeyValuePair Key="SelectedGlobalClimate">PlanetTundra</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Terran">
+      <KeyValuePair Key="SelectedGlobalClimate">PlanetTerran</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Arid">
+      <KeyValuePair Key="SelectedGlobalClimate">PlanetArid</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Desert">
+      <KeyValuePair Key="SelectedGlobalClimate">PlanetDesert</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random"/>
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="Topography"                    Default="Average"        Category="World" SubCategory="Topography"      GuiControlType="DropList">
+    <ItemDefinition Name="Flattened">
+      <OptionDefinitionConstraint OptionName="LakeOdds" Type="Control">
+        <Key Name="Many"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="LakeSize" Type="Control">
+        <Key Name="Average"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="Rivers" Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="RidgesAndCliffs" Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="Forests" Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>-->
+      <OptionDefinitionConstraint OptionName="Geometry" Type="Control">
+        <Key Name="Default"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Average">
+      <OptionDefinitionConstraint OptionName="LakeOdds" Type="Control">
+        <Key Name="Many"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="LakeSize" Type="Control">
+        <Key Name="Average"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="Rivers" Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="RidgesAndCliffs" Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="Forests" Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>-->
+      <OptionDefinitionConstraint OptionName="Geometry" Type="Control">
+        <Key Name="Default"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Hilly">
+      <OptionDefinitionConstraint OptionName="LakeOdds" Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="LakeSize" Type="Control">
+        <Key Name="Small"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="Rivers" Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="RidgesAndCliffs" Type="Control">
+        <Key Name="Many"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="Forests" Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>-->
+      <OptionDefinitionConstraint OptionName="Geometry" Type="Control">
+        <Key Name="Default"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Mountainous">
+      <OptionDefinitionConstraint OptionName="LakeOdds" Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="LakeSize" Type="Control">
+        <Key Name="Small"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="Rivers" Type="Control">
+        <Key Name="Many"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="RidgesAndCliffs" Type="Control">
+        <Key Name="Everywhere"/>
+      </OptionDefinitionConstraint>
+      <!--<OptionDefinitionConstraint OptionName="Forests" Type="Control">
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>-->
+      <OptionDefinitionConstraint OptionName="Geometry" Type="Control">
+        <Key Name="Default"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Random"/>
+    <ItemDefinition Name="Custom"/>
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="WorldDifficulty"               Default="Normal"         Category="World" SubCategory="WorldDifficulty" GuiControlType="DropList">
+    <ItemDefinition Name="Easy">
+      <OptionDefinitionConstraint OptionName="SeedChoice" Type="Control">
+        <Key Name="Zero"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="EmpireSpawn" Type="Control">
+        <Key Name="Spread"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="StrategicResourceAbundance" Type="Control">
+        <Key Name="Many"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="LuxuryResourceAbundance" Type="Control">
+        <Key Name="Many"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="AnomalyOdds" Type="Control">
+        <Key Name="Many"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="MinorFactionDifficulty" Type="Control">
+        <Key Name="Easy"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="GameDifficulty"                     Type="Conditional">
+        <Key Name="Newbie"/>
+        <Key Name="Easy"/>
+        <Key Name="Normal"/>
+        <Key Name="Hard"/>
+        <Key Name="Serious"/>
+        <Key Name="Impossible"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <OptionDefinitionConstraint OptionName="SeedChoice" Type="Control">
+        <Key Name="Zero"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="EmpireSpawn" Type="Control">
+        <Key Name="Average"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="StrategicResourceAbundance" Type="Control">
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="LuxuryResourceAbundance" Type="Control">
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="AnomalyOdds" Type="Control">
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="MinorFactionDifficulty" Type="Control">
+        <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="GameDifficulty"                     Type="Conditional">
+        <Key Name="Easy"/>
+        <Key Name="Normal"/>
+        <Key Name="Hard"/>
+        <Key Name="Serious"/>
+        <Key Name="Impossible"/>
+        <Key Name="Endless"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Hard">
+      <OptionDefinitionConstraint OptionName="SeedChoice" Type="Control">
+        <Key Name="Zero"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="EmpireSpawn" Type="Control">
+        <Key Name="Average"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="StrategicResourceAbundance" Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="LuxuryResourceAbundance" Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="AnomalyOdds" Type="Control">
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="MinorFactionDifficulty" Type="Control">
+        <Key Name="Hard"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="GameDifficulty"                     Type="Conditional">
+        <Key Name="Normal"/>
+        <Key Name="Hard"/>
+        <Key Name="Serious"/>
+        <Key Name="Impossible"/>
+        <Key Name="Endless"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Custom"/>
+  </WorldGeneratorOptionDefinition>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######       ADVANCED OPTIONS       ###### -->
+  <!-- ########################################## -->
+
+  <!-- Advanced Options, subcategory of 'WorldShape' -->
+  <WorldGeneratorOptionDefinition Name="PercentageOfLandmassOverWater" Default="50"             Category="World" SubCategory="WorldShape"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="30">
+      <KeyValuePair Key="LandPrevalence">30</KeyValuePair>
+      <KeyValuePair Key="OceanPrevalence">70</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="40">
+      <KeyValuePair Key="LandPrevalence">40</KeyValuePair>
+      <KeyValuePair Key="OceanPrevalence">60</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="50">
+      <KeyValuePair Key="LandPrevalence">50</KeyValuePair>
+      <KeyValuePair Key="OceanPrevalence">50</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="60">
+      <KeyValuePair Key="LandPrevalence">60</KeyValuePair>
+      <KeyValuePair Key="OceanPrevalence">40</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="70">
+      <KeyValuePair Key="LandPrevalence">70</KeyValuePair>
+      <KeyValuePair Key="OceanPrevalence">30</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"            Type="Control">
+        <Key Name="None"/>
+        <Key Name="Few"/>
+        <Key Name="Some"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="80">
+      <KeyValuePair Key="LandPrevalence">80</KeyValuePair>
+      <KeyValuePair Key="OceanPrevalence">20</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"            Type="Control">
+        <Key Name="None"/>
+        <Key Name="Few"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="90">
+      <KeyValuePair Key="LandPrevalence">90</KeyValuePair>
+      <KeyValuePair Key="OceanPrevalence">10</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="IslandsOdds"            Type="Control">
+        <Key Name="None"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldSize"              Type="Conditional">
+        <Key Name="Tiny"/>
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="NumberOfContinents"            Default="1"              Category="World" SubCategory="WorldShape"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="1">
+      <KeyValuePair Key="MinLandMasses">1</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">1</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="2">
+      <KeyValuePair Key="MinLandMasses">2</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">2</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="3">
+      <KeyValuePair Key="MinLandMasses">3</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">3</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="4">
+      <KeyValuePair Key="MinLandMasses">4</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">4</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="5">
+      <KeyValuePair Key="MinLandMasses">5</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">5</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="6">
+      <KeyValuePair Key="MinLandMasses">6</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">6</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="7">
+      <KeyValuePair Key="MinLandMasses">7</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">7</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="8">
+      <KeyValuePair Key="MinLandMasses">8</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">8</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="1to3">
+      <KeyValuePair Key="MinLandMasses">1</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">3</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="2to4">
+      <KeyValuePair Key="MinLandMasses">2</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">4</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="4to6">
+      <KeyValuePair Key="MinLandMasses">3</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">6</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="5to8">
+      <KeyValuePair Key="MinLandMasses">5</KeyValuePair>
+      <KeyValuePair Key="MaxLandMasses">8</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="IslandsOdds"                   Default="Few"            Category="World" SubCategory="WorldShape"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="None">
+      <KeyValuePair Key="IslandsPresencePercent">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Few">
+      <KeyValuePair Key="IslandsPresencePercent">10</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Conditional">
+        <Key Name="30"/>
+        <Key Name="40"/>
+        <Key Name="50"/>
+        <Key Name="60"/>
+        <Key Name="70"/>
+        <Key Name="80"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Some">
+      <KeyValuePair Key="IslandsPresencePercent">20</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Conditional">
+        <Key Name="30"/>
+        <Key Name="40"/>
+        <Key Name="50"/>
+        <Key Name="60"/>
+        <Key Name="70"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Many">
+      <KeyValuePair Key="IslandsPresencePercent">30</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Conditional">
+        <Key Name="30"/>
+        <Key Name="40"/>
+        <Key Name="50"/>
+        <Key Name="60"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="ForceOceansOnMapEdges"         Default="Yes"            Category="World" SubCategory="WorldShape"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Yes">
+      <KeyValuePair Key="ForceOceansOnMapEdges">true</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="No">
+      <KeyValuePair Key="ForceOceansOnMapEdges">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="WorldWrap"                     Default="True"           Category="World" SubCategory="WorldShape"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="Wraps">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="Wraps">true</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="WorldHemispheres"              Default="Both"           Category="World" SubCategory="WorldShape"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Both">
+      <KeyValuePair Key="ClimateStructure">Globe</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Northern">
+      <KeyValuePair Key="ClimateStructure">Northern</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Southern">
+      <KeyValuePair Key="ClimateStructure">Southern</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+
+  <!-- Advanced Options, subcategory of 'ContinentShape' -->
+  <WorldGeneratorOptionDefinition Name="ContinentSpread"               Default="Regular"        Category="World" SubCategory="ContinentShape"  GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Regular">
+      <KeyValuePair Key="ContinentSpreading">Regular</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Chaotic">
+      <KeyValuePair Key="ContinentSpreading">Chaotic</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="ContinentForm"                 Default="Regular"        Category="World" SubCategory="ContinentShape"  GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Regular">
+      <KeyValuePair Key="ContinentShaping">Regular</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Chaotic">
+      <KeyValuePair Key="ContinentShaping">Chaotic</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="RegionSize"                    Default="Normal"         Category="World" SubCategory="ContinentShape"  GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Tiny">
+      <KeyValuePair Key="ExpectedRegionArea">50</KeyValuePair>
+      <KeyValuePair Key="ExpectedOceanRegionArea">110</KeyValuePair>
+       <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Tiny"/>
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Small">
+      <KeyValuePair Key="ExpectedRegionArea">58</KeyValuePair>
+      <KeyValuePair Key="ExpectedOceanRegionArea">115</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Tiny"/>
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="ExpectedRegionArea">65</KeyValuePair>
+      <KeyValuePair Key="ExpectedOceanRegionArea">120</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Large">
+      <KeyValuePair Key="ExpectedRegionArea">72</KeyValuePair>
+      <KeyValuePair Key="ExpectedOceanRegionArea">125</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Small"/>
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Huge">
+      <KeyValuePair Key="ExpectedRegionArea">80</KeyValuePair>
+      <KeyValuePair Key="ExpectedOceanRegionArea">130</KeyValuePair>
+      <OptionDefinitionConstraint OptionName="WorldSize"                     Type="Conditional">
+        <Key Name="Normal"/>
+        <Key Name="Large"/>
+        <Key Name="Huge"/>
+        <Key Name="Random"/>
+      </OptionDefinitionConstraint>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+
+  <!-- Advanced Options, subcategory of 'Topography' -->
+  <WorldGeneratorOptionDefinition Name="LakeOdds"                      Default="Many"           Category="World" SubCategory="Topography"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="None">
+      <KeyValuePair Key="MinLakeArea">5</KeyValuePair>
+      <KeyValuePair Key="LakePresencePercent">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Few">
+      <KeyValuePair Key="MinLakeArea">5</KeyValuePair>
+      <KeyValuePair Key="LakePresencePercent">40</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Many">
+      <KeyValuePair Key="MinLakeArea">2</KeyValuePair>
+      <KeyValuePair Key="LakePresencePercent">100</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="LakeSize"                      Default="Average"        Category="World" SubCategory="Topography"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Small">
+      <KeyValuePair Key="MaxLakeArea">10</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Average">
+      <KeyValuePair Key="MaxLakeArea">14</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Big">
+      <KeyValuePair Key="MaxLakeArea">18</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="Rivers"                        Default="Some"           Category="World" SubCategory="Topography"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Few">
+      <KeyValuePair Key="MaxRiverElevation">4</KeyValuePair>
+      <KeyValuePair Key="RiverMinLength">7</KeyValuePair>
+      <KeyValuePair Key="RiverPresencePercent">25</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Some">
+      <KeyValuePair Key="MaxRiverElevation">5</KeyValuePair>
+      <KeyValuePair Key="RiverMinLength">5</KeyValuePair>
+      <KeyValuePair Key="RiverPresencePercent">50</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Many">
+      <KeyValuePair Key="MaxRiverElevation">6</KeyValuePair>
+      <KeyValuePair Key="RiverMinLength">3</KeyValuePair>
+      <KeyValuePair Key="RiverPresencePercent">75</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="RidgesAndCliffs"               Default="Some"           Category="World" SubCategory="Topography"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Few">
+      <KeyValuePair Key="MaxLandElevation">6</KeyValuePair>
+      <KeyValuePair Key="MaxOceanDepth">-5</KeyValuePair>
+      <KeyValuePair Key="MountainRangeAreaSize">1200</KeyValuePair>
+      <KeyValuePair Key="MountainDownwardSlopePercent">35</KeyValuePair>
+      <KeyValuePair Key="ElevationNoisePercent">15</KeyValuePair>
+      <KeyValuePair Key="CoastalCliffPercent">10</KeyValuePair>
+      <KeyValuePair Key="MaxCliffDeltaElevation">2</KeyValuePair>
+      <KeyValuePair Key="PassablePrevalence">5</KeyValuePair>
+      <KeyValuePair Key="CliffPrevalence">1</KeyValuePair>
+      <KeyValuePair Key="MaxLakeBottomElevation">2</KeyValuePair>
+      <KeyValuePair Key="RidgePresencePercent">5</KeyValuePair>
+      <KeyValuePair Key="MinRidgeSize">1</KeyValuePair>
+      <KeyValuePair Key="MaxRidgeSize">5</KeyValuePair>
+      <KeyValuePair Key="RidgeMinElevation">2</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Some">
+      <KeyValuePair Key="MaxLandElevation">7</KeyValuePair>
+      <KeyValuePair Key="MaxOceanDepth">-5</KeyValuePair>
+      <KeyValuePair Key="MountainRangeAreaSize">300</KeyValuePair>
+      <KeyValuePair Key="MountainDownwardSlopePercent">60</KeyValuePair>
+      <KeyValuePair Key="ElevationNoisePercent">60</KeyValuePair>
+      <KeyValuePair Key="CoastalCliffPercent">20</KeyValuePair>
+      <KeyValuePair Key="MaxCliffDeltaElevation">3</KeyValuePair>
+      <KeyValuePair Key="PassablePrevalence">3</KeyValuePair>
+      <KeyValuePair Key="CliffPrevalence">1</KeyValuePair>
+      <KeyValuePair Key="MaxLakeBottomElevation">3</KeyValuePair>
+      <KeyValuePair Key="RidgePresencePercent">20</KeyValuePair>
+      <KeyValuePair Key="MinRidgeSize">2</KeyValuePair>
+      <KeyValuePair Key="MaxRidgeSize">5</KeyValuePair>
+      <KeyValuePair Key="RidgeMinElevation">1</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Many">
+      <KeyValuePair Key="MaxLandElevation">7</KeyValuePair>
+      <KeyValuePair Key="MaxOceanDepth">-5</KeyValuePair>
+      <KeyValuePair Key="MountainRangeAreaSize">100</KeyValuePair>
+      <KeyValuePair Key="MountainDownwardSlopePercent">90</KeyValuePair>
+      <KeyValuePair Key="ElevationNoisePercent">80</KeyValuePair>
+      <KeyValuePair Key="CoastalCliffPercent">20</KeyValuePair>
+      <KeyValuePair Key="MaxCliffDeltaElevation">3</KeyValuePair>
+      <KeyValuePair Key="PassablePrevalence">3</KeyValuePair>
+      <KeyValuePair Key="CliffPrevalence">1</KeyValuePair>
+      <KeyValuePair Key="MaxLakeBottomElevation">4</KeyValuePair>
+      <KeyValuePair Key="RidgePresencePercent">20</KeyValuePair>
+      <KeyValuePair Key="MinRidgeSize">2</KeyValuePair>
+      <KeyValuePair Key="MaxRidgeSize">6</KeyValuePair>
+      <KeyValuePair Key="RidgeMinElevation">1</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Everywhere">
+      <KeyValuePair Key="MaxLandElevation">7</KeyValuePair>
+      <KeyValuePair Key="MaxOceanDepth">-5</KeyValuePair>
+      <KeyValuePair Key="MountainRangeAreaSize">300</KeyValuePair>
+      <KeyValuePair Key="MountainDownwardSlopePercent">60</KeyValuePair>
+      <KeyValuePair Key="ElevationNoisePercent">80</KeyValuePair>
+      <KeyValuePair Key="CoastalCliffPercent">40</KeyValuePair>
+      <KeyValuePair Key="MaxCliffDeltaElevation">4</KeyValuePair>
+      <KeyValuePair Key="PassablePrevalence">1</KeyValuePair>
+      <KeyValuePair Key="CliffPrevalence">1</KeyValuePair>
+      <KeyValuePair Key="MaxLakeBottomElevation">4</KeyValuePair>
+      <KeyValuePair Key="RidgePresencePercent">20</KeyValuePair>
+      <KeyValuePair Key="MinRidgeSize">2</KeyValuePair>
+      <KeyValuePair Key="MaxRidgeSize">6</KeyValuePair>
+      <KeyValuePair Key="RidgeMinElevation">1</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="Geometry"                      Default="Default"        Category="World" SubCategory="Topography"      GuiControlType="Hidden">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Default">
+      <KeyValuePair Key="GeometryTranslationPerStep">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerStepUnderWater">0.35</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerTransitionNoStep">0.3</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerTransitionNoStepUnderWater">0.3</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerSmallCliff">0.05</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerSmallCliffUnderWater">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountSteps">2</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountNoStep">1</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountRivers">2</KeyValuePair>
+      <KeyValuePair Key="GeometryBreakUpProbabilityMultiplier">0.86</KeyValuePair>
+      <KeyValuePair Key="GeometrySmoothGroupAngle">30</KeyValuePair>
+      <KeyValuePair Key="GeometryLowResNoiseFrequencyMultiplier">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometryLowResNoiseIntensity">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometryHighResNoiseFrequencyMultiplier">1</KeyValuePair>
+      <KeyValuePair Key="GeometryHighResNoiseIntensity">0.05</KeyValuePair>
+      <KeyValuePair Key="GeometryOffsetYOfRegionLineAboveCliff">0.066</KeyValuePair>
+      <KeyValuePair Key="GeometryMinRiverWidth">0.05f</KeyValuePair>
+      <KeyValuePair Key="GeometryMaxRiverWidth">0.5f</KeyValuePair>
+      <KeyValuePair Key="GeometryMinRiverDepth">0.01f</KeyValuePair>
+      <KeyValuePair Key="GeometryMaxRiverDepth">0.1f</KeyValuePair>
+      <KeyValuePair Key="GeometryLengthRiverToBeMaxWidthDepth">10.0f</KeyValuePair>
+      <KeyValuePair Key="GeometryRiverBorderFactor">0.3f</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Hexagonal">
+      <KeyValuePair Key="GeometryTranslationPerStep">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerStepUnderWater">0.35</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerTransitionNoStep">0.3</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerTransitionNoStepUnderWater">0.3</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerSmallCliff">0.05</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerSmallCliffUnderWater">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountSteps">0</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountNoStep">0</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountRivers">0</KeyValuePair>
+      <KeyValuePair Key="GeometryBreakUpProbabilityMultiplier">0</KeyValuePair>
+      <KeyValuePair Key="GeometrySmoothGroupAngle">30</KeyValuePair>
+      <KeyValuePair Key="GeometryLowResNoiseFrequencyMultiplier">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometryLowResNoiseIntensity">0</KeyValuePair>
+      <KeyValuePair Key="GeometryHighResNoiseFrequencyMultiplier">1</KeyValuePair>
+      <KeyValuePair Key="GeometryHighResNoiseIntensity">0</KeyValuePair>
+      <KeyValuePair Key="GeometryOffsetYOfRegionLineAboveCliff">0.066</KeyValuePair>
+      <KeyValuePair Key="GeometryMinRiverWidth">0.05f</KeyValuePair>
+      <KeyValuePair Key="GeometryMaxRiverWidth">0.5f</KeyValuePair>
+      <KeyValuePair Key="GeometryMinRiverDepth">0.01f</KeyValuePair>
+      <KeyValuePair Key="GeometryMaxRiverDepth">0.08f</KeyValuePair>
+      <KeyValuePair Key="GeometryLengthRiverToBeMaxWidthDepth">10.0f</KeyValuePair>
+      <KeyValuePair Key="GeometryRiverBorderFactor">0.05f</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Chaotic">
+      <KeyValuePair Key="GeometryTranslationPerStep">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerStepUnderWater">0.3</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerTransitionNoStep">0.3</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerTransitionNoStepUnderWater">0.3</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerSmallCliff">0.05</KeyValuePair>
+      <KeyValuePair Key="GeometryTranslationPerSmallCliffUnderWater">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountSteps">3</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountNoStep">1</KeyValuePair>
+      <KeyValuePair Key="GeometrySmallBreakUpCountRivers">1</KeyValuePair>
+      <KeyValuePair Key="GeometryBreakUpProbabilityMultiplier">1.5</KeyValuePair>
+      <KeyValuePair Key="GeometrySmoothGroupAngle">30</KeyValuePair>
+      <KeyValuePair Key="GeometryLowResNoiseFrequencyMultiplier">0.2</KeyValuePair>
+      <KeyValuePair Key="GeometryLowResNoiseIntensity">0.35</KeyValuePair>
+      <KeyValuePair Key="GeometryHighResNoiseFrequencyMultiplier">1</KeyValuePair>
+      <KeyValuePair Key="GeometryHighResNoiseIntensity">0.1</KeyValuePair>
+      <KeyValuePair Key="GeometryOffsetYOfRegionLineAboveCliff">0.066</KeyValuePair>
+      <KeyValuePair Key="GeometryMinRiverWidth">0.05f</KeyValuePair>
+      <KeyValuePair Key="GeometryMaxRiverWidth">0.4f</KeyValuePair>
+      <KeyValuePair Key="GeometryMinRiverDepth">0.01f</KeyValuePair>
+      <KeyValuePair Key="GeometryMaxRiverDepth">0.08f</KeyValuePair>
+      <KeyValuePair Key="GeometryLengthRiverToBeMaxWidthDepth">10.0f</KeyValuePair>
+      <KeyValuePair Key="GeometryRiverBorderFactor">0.05f</KeyValuePair>
+    </ItemDefinition>
+
+  </WorldGeneratorOptionDefinition>
+
+
+  <!-- Advanced Options, subcategory of 'WorldDifficulty' -->
+  <WorldGeneratorOptionDefinition Name="EmpireSpawn"                   Default="Average"        Category="World" SubCategory="WorldDifficulty" GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Spread">
+      <KeyValuePair Key="SpawnDesirabilityFIDS">1.0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityShape">1.0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityLocation">4.0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Average">
+      <KeyValuePair Key="SpawnDesirabilityFIDS">1.0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityShape">1.0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityLocation">1.5</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Close">
+      <KeyValuePair Key="SpawnDesirabilityFIDS">1.0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityShape">1.0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityLocation">-1.0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="BetterStartingRegion">
+      <KeyValuePair Key="SpawnDesirabilityFIDS">6.0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityShape">3.0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityLocation">0.5</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Chaotic">
+      <KeyValuePair Key="SpawnDesirabilityFIDS">0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityShape">0</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityLocation">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="StrategicResourceAbundance"    Default="Normal"         Category="World" SubCategory="WorldDifficulty" GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Few">
+      <KeyValuePair Key="StrategicResourcesAbundancePercent">70</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="StrategicResourcesAbundancePercent">120</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Many">
+      <KeyValuePair Key="StrategicResourcesAbundancePercent">200</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="LuxuryResourceAbundance"       Default="Normal"         Category="World" SubCategory="WorldDifficulty" GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Few">
+      <KeyValuePair Key="LuxuryResourcesAbundancePercent">70</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="LuxuryResourcesAbundancePercent">120</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Many">
+      <KeyValuePair Key="LuxuryResourcesAbundancePercent">200</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="AnomalyOdds"                   Default="Normal"         Category="World" SubCategory="WorldDifficulty" GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Few">
+      <KeyValuePair Key="GlobalAnomalyMultiplier">50</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+      <KeyValuePair Key="GlobalAnomalyMultiplier">100</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Many">
+      <KeyValuePair Key="GlobalAnomalyMultiplier">200</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="MinorFactionDifficulty"        Default="Normal"         Category="World" SubCategory="WorldDifficulty" GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Easy">
+    </ItemDefinition>
+    <ItemDefinition Name="Normal">
+    </ItemDefinition>
+    <ItemDefinition Name="Hard">
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="SeedChoice"                    Default="Zero"           Category="World" SubCategory="WorldDifficulty" GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Zero">
+      <!-- random -->
+      <KeyValuePair Key="Seed">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="User" />
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="SeedNumber"                    Default="User"           Category="World" SubCategory="WorldDifficulty" GuiControlType="TextField">
+    <Tags>Advanced</Tags>
+    <ValidChars>0123456789</ValidChars>
+    <TextMaxLength>10</TextMaxLength>
+    <ItemDefinition Name="User">
+      <OptionDefinitionConstraint OptionName="SeedChoice" Type="Conditional">
+        <Key Name="User"/>
+      </OptionDefinitionConstraint>
+      <OptionDefinitionConstraint OptionName="WorldDifficulty" Type="Conditional">
+        <Key Name="Easy"/>
+        <Key Name="Normal"/>
+        <Key Name="Hard"/>
+      </OptionDefinitionConstraint>
+      <KeyValuePair Key="Seed">0</KeyValuePair>
+    </ItemDefinition>
+  </WorldGeneratorOptionDefinition>
+
+  <WorldGeneratorOptionDefinition Name="VolcanicActivity"                        Default="Some"           Category="World" SubCategory="Topography"      GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="None">
+      <KeyValuePair Key="MinVolvanicRegions">0</KeyValuePair>
+      <KeyValuePair Key="WeightMultiplier">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Some">
+      <KeyValuePair Key="MinVolvanicRegions">1</KeyValuePair>
+      <KeyValuePair Key="WeightMultiplier">1</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Many">
+      <KeyValuePair Key="MinVolvanicRegions">1</KeyValuePair>
+      <KeyValuePair Key="WeightMultiplier">2</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Random" />
+  </WorldGeneratorOptionDefinition>
+
+</Datatable>

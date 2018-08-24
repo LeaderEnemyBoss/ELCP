@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- AIUnitDescription -->
+    <!-- AIUnitPatternCategory : reference of AIUnitPatternDefinition.Category-->
+    <!-- Priority : priority of current AIUnitDescription regarding other one. The higher, the more chance to have a slot in army -->
+    <!-- MinimalQuantity : minimal quantity of current AIUnitDescription need in army. If superior to 0 then army will wait for creation of current AIUnitDescription -->
+    <!-- Priority : priority of current AIUnitDescription regarding other one. The higher, the more chance to have a slot in army -->
+    <!-- Ratio : balance between AIUnitDescription of current AIArmyPattern. The sum must be 1.0. Ratio and Priority fix the composition of ArmyPattern depending of army's number of slot -->
+  <!-- AIUnitDescription -->
+
+  <AICommanderMissionDefinition Name="ColonizationDefault" Type="AICommanderMission_ColonizationDefault, Assembly-CSharp" Category="Colonization">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Settler" Priority="1" MinimalQuantity="1" Ratio="0.0"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <!-- ExplorationDefault is used to handle unassigned army -->
+  <AICommanderMissionDefinition Name="ExplorationDefault" Type="AICommanderMission_ExplorationDefault, Assembly-CSharp" Category="Exploration"/>
+
+  <AICommanderMissionDefinition Name="PacifyVillage" Type="AICommanderMission_PacifyVillage, Assembly-CSharp" Category="Pacification,Village">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Killer"     Priority="1" MinimalQuantity="2" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Protector"  Priority="2" MinimalQuantity="0" Ratio="0.0"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <AICommanderMissionDefinition Name="PacifyFirstRegion" Type="AICommanderMission_Pacification, Assembly-CSharp" Category="Pacification,Army">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Killer"     Priority="2" MinimalQuantity="2" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Protector"  Priority="1" MinimalQuantity="1" Ratio="0.0"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+  
+  <!--AICommanderMissionDefinition Name="ScoutDefault" Type="AICommanderMission_ScoutDefault, Assembly-CSharp" Category="War,Scout"/-->
+  <!--AICommanderMissionDefinition Name="DefensePacification" Type="AICommanderMission_PacificationFirstRegion, Assembly-CSharp" Category="Defense,Pacification"/ -->
+  <!--AICommanderMissionDefinition Name="BribeVillage" Type="AICommanderMission_BribeVillage, Assembly-CSharp" Category="Bribe,Village"/-->
+  <!--<AICommanderMissionDefinition Name="AttackArmy" Type="AICommanderMission_AttackArmyDefault, Assembly-CSharp" Category="Offense,Army"/>-->
+  
+  <!-- Normal War Missions-->
+  <AICommanderMissionDefinition Name="FrontierHarass" Type="AICommanderMission_FrontierHarass, Assembly-CSharp" Category="War,FrontierHarass">
+  <AIArmyPattern>
+    <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+    <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+    <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+    <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+  </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <AICommanderMissionDefinition Name="AttackCampDefault" Type="AICommanderMission_AttackCampDefault, Assembly-CSharp" Category="War,AttackCamp">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+      <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+  
+  <AICommanderMissionDefinition Name="BesiegeCityDefault" Type="AICommanderMission_BesiegeCityDefault, Assembly-CSharp" Category="War,BesiegeCity">
+  <AIArmyPattern>
+    <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+    <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+    <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+    <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+  </AIArmyPattern>
+  </AICommanderMissionDefinition>
+  
+  <AICommanderMissionDefinition Name="AttackCityDefault" Type="AICommanderMission_AttackCityDefault, Assembly-CSharp" Category="War,AttackCity">
+  <AIArmyPattern>
+    <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+    <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+    <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+    <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+  </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <!-- Privateers War Missions-->
+  <AICommanderMissionDefinition Name="PrivateersHarass" Type="AICommanderMission_PrivateersHarass, Assembly-CSharp" Category="War,PrivateersHarass">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+      <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <!-- Patrol Roaming during peace/war-->
+  <AICommanderMissionDefinition Name="DefenseRoaming" Type="AICommanderMission_DefenseRoaming, Assembly-CSharp" Category="Roaming,Patrol,WarPatrol"/>
+  
+  <!-- City defense -->
+  <AICommanderMissionDefinition Name="DefenseDefault" Type="AICommanderMission_DefenseDefault, Assembly-CSharp" Category="Defense,Roaming,War"/>
+  <AICommanderMissionDefinition Name="Garrison" Type="AICommanderMission_Garrison, Assembly-CSharp" Category="Defense,Garrison">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+      <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <!-- camp defense -->
+  <AICommanderMissionDefinition Name="GarrisonCamp" Type="AICommanderMission_GarrisonCamp, Assembly-CSharp" Category="Defense,GarrisonCamp">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+      <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <AICommanderMissionDefinition Name="GarrisonBreakSiege" Type="AICommanderMission_GarrisonBreakSiege, Assembly-CSharp" Category="Defense,BreakSiege"/>
+  
+  <AICommanderMissionDefinition Name="SettlerBail" Type="AICommanderMission_BailToCity, Assembly-CSharp" Category="SettlerBail"/>
+
+  <AICommanderMissionDefinition Name="RegroupArmies" Type="AICommanderMission_RegroupArmyAt, Assembly-CSharp" Category="Regroup,Armies"/>    
+  
+  <AICommanderMissionDefinition Name="ConvertVillage" Type="AICommanderMission_ConvertVillage, Assembly-CSharp" Category="Convert,Village,Pacification">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Killer" Tags="!UnitFactionTypeMinorFaction,!Mercenary" Priority="1" MinimalQuantity="1" Ratio="0.0"/>
+    </AIArmyPattern>
+    <HeroItemBoosts>
+      <Boost Name="Toto" Value="0.2"/>
+    </HeroItemBoosts>
+  </AICommanderMissionDefinition>
+
+  <AICommanderMissionDefinition Name="ConvertAndBribeVillage" Type="AICommanderMission_ConvertVillage, Assembly-CSharp" Category="Convert,Village,Pacification,Bribe">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Killer" Tags="!UnitFactionTypeMinorFaction,!Mercenary" Priority="1" MinimalQuantity="1" Ratio="0.0"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <AICommanderMissionDefinition Name="ConvertAndPacifyVillage" Type="AICommanderMission_Village, Assembly-CSharp" Category="Convert,Village,Pacification,Hardway">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Killer" Tags="!UnitFactionTypeMinorFaction,!Mercenary" Priority="1" MinimalQuantity="1" Ratio="0.0"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
+  <AICommanderMissionDefinition Name="Terraformation" Type="AICommanderMission_Terraform, Assembly-CSharp" Category="Terraformation"/>
+
+  <AICommanderMissionDefinition Name="AttackCity" Type="AICommanderMission_AttackCityDefault, Assembly-CSharp" Category="Offense,City"/>  
+
+  <AICommanderMissionDefinition Name="SiegeBreaker" Type="AICommanderMission_SiegeBreaker, Assembly-CSharp" Category="Offense,SiegeBreaker"/>
+
+  <AICommanderMissionDefinition Name="AutoExplore" Type="AICommanderMission_AutoExplore, Assembly-CSharp" Category="AutoExplore" />
+
+  <AICommanderMissionDefinition Name="Colossus_Defensive"   Type="AICommanderMission_ColossusDefensive, Assembly-CSharp" Category="Colossus,CityDefense" />
+  <AICommanderMissionDefinition Name="Colossus_ArmySupport" Type="AICommanderMission_ColossusArmySupport, Assembly-CSharp" Category="Colossus,ArmySupport" />
+  <AICommanderMissionDefinition Name="Colossus_Harassing"   Type="AICommanderMission_ColossusHarassing, Assembly-CSharp" Category="Colossus,Harassing" />
+  
+  <!-- Manta -->
+  <AICommanderMissionDefinition Name="Manta_Exploring"   Type="AICommanderMission_MantaExploration, Assembly-CSharp" Category="Solitary,Explore" />
+
+  <!--MINOR EMPIRE-->
+
+  <AICommanderMissionDefinition Name="MinorEmpireRoamingDefault" Type="AICommanderMission_RoamingDefault, Assembly-CSharp" Category="MinorRoaming"/>
+
+  <AICommanderMissionDefinition Name="MinorEmpireAttackCity" Type="AICommanderMission_MinorAttackCity, Assembly-CSharp" Category="MinorAttackCity"/>
+
+  <AICommanderMissionDefinition Name="MinorEmpireBesiegeCity" Type="AICommanderMission_MinorBesiegeCity, Assembly-CSharp" Category="MinorSiegeCity" />
+
+  <AICommanderMissionDefinition Name="MinorEmpireAttackVillage" Type="AICommanderMission_MinorAttackVillage, Assembly-CSharp" Category="MinorAttackVillage"/>
+
+  <AICommanderMissionDefinition Name="MinorEmpireAttackArmy" Type="AICommanderMission_MinorAttackArmy, Assembly-CSharp" Category="MinorAttackArmy" />
+
+
+  <!--LESSER EMPIRE-->
+
+  <AICommanderMissionDefinition Name="QuestAttackCity" Type="AICommanderMission_QuestAttackCity, Assembly-CSharp" Category="Quest,Offense,City" />
+
+  <AICommanderMissionDefinition Name="QuestDefense" Type="AICommanderMission_QuestDefense, Assembly-CSharp" Category="Quest,Defense" />
+
+  <AICommanderMissionDefinition Name="QuestRoaming" Type="AICommanderMission_QuestRoaming, Assembly-CSharp" Category="Quest,Roaming" />
+
+  <AICommanderMissionDefinition Name="QuestPacifistRoaming" Type="AICommanderMission_QuestRoaming, Assembly-CSharp" Category="Quest,PacifistRoaming" />
+  
+  <AICommanderMissionDefinition Name="QuestFleeRoaming" Type="AICommanderMission_QuestRoaming, Assembly-CSharp" Category="Quest,FleeRoaming" />
+  
+</Datatable>

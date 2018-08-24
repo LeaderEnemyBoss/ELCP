@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- #################################################### -->
+  <!-- ################ UNIT EXPERIENCE ################### -->
+  <!-- #################################################### -->
+
+  <!-- 
+  NB 
+  - The conversion of experience to military power is assumed below to be more or less 1:1 
+  - We assume that heroes will remain governor for a period of around 20 turns
+  - We assume that units will remain in garrison for a period of around 10 turns
+  - We assume that militiar units will remain in garrison for a period of around 30 turns
+  -->
+
+  <!-- == Unit Initial Experience == -->
+  <AIParameterConverter Name="CityRecruitInitialExperience">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(../ClassEmpire/Garrison/ClassUnit)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Militia Unit Initial Experience == -->
+  <AIParameterConverter Name="CityMilitiaInitialExperience">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(../ClassEmpire/ClassCity/Militia/ClassUnit)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Unit Experience per turn in Garrison == -->
+  <AIParameterConverter Name="CityUnitExperienceGainPerTurn">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(../ClassEmpire/ClassCity/ClassUnit) * 10</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Militia Experience per turn == -->
+  <AIParameterConverter Name="CityMilitiaExperienceGainPerTurn">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(../ClassEmpire/ClassCity/Militia/ClassUnit) * 30</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Unit Experience bonus on experience received == -->
+  <AIParameterConverter Name="EmpireUnitExperienceGainPercent">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 30 * $Count(../ClassEmpire/Garrison/ClassUnit)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- #################################################### -->
+  <!-- ################ HERO EXPERIENCE ################### -->
+  <!-- #################################################### -->
+
+  <!-- == Governor Experience per Turn == -->
+  <AIParameterConverter Name="CityGovernorExperienceGainPerTurn">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(../ClassEmpire/ClassCity/UnitHero) * 10</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Governor Experience per Turn but only in a single city  == -->
+  <AIParameterConverter Name="CityGovernorExperienceGainPerTurn_NationalBuilding">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 10</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Hero Experience per Turn == -->
+  <AIParameterConverter Name="EmpireHeroExperienceGainPerTurn">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(ClassEmpire/Garrison/UnitHero) * 100</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(ClassEmpire/UnitHero) * 100</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(ClassEmpire/SpiedGarrison/UnitHero) * 100</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Hero Experience bonus on experience received == -->
+  <AIParameterConverter Name="EmpireHeroExperienceGainPercent">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(ClassEmpire/Garrison/UnitHero) * 30</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(ClassEmpire/UnitHero) * 30</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Count(ClassEmpire/SpiedGarrison/UnitHero) * 30</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ########################################################### -->
+  <!-- ################ BONUS TO ALL EMPIRE UNITS ################ -->
+  <!-- ########################################################### -->
+
+  <!-- == Increase in army size of the empire == -->
+  <AIParameterConverter Name="EmpireArmySize">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 0.8 * $Property(ClassEmpire:MilitaryPower)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Increase the number of guardians allowed == -->
+  <AIParameterConverter Name="EmpireNumberOfGuardiansAllowed">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 0.6 * $Property(ClassEmpire:MilitaryPower) * $Count(ClassEmpire/Garrison/UnitTypeColossus)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Increase number of equipment slots of all units in the empire == -->
+  <AIParameterConverter Name="EmpireUnitEquipmentSlot">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 0.4 * $Property(ClassEmpire:MilitaryPower)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Increase attack of all units in the empire == -->
+  <AIParameterConverter Name="EmpireUnitAttackPercent">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 4 * $SumProperty(ClassEmpire/Garrison/ClassUnit:AttributeAttack)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Increase defense of all units in the empire == -->
+  <AIParameterConverter Name="EmpireUnitDefensePercent">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 4 * $SumProperty(ClassEmpire/Garrison/ClassUnit:AttributeDefense)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Increase damage of all units in the empire == -->
+  <AIParameterConverter Name="EmpireUnitDamagePercent">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 6 * $SumProperty(ClassEmpire/Garrison/ClassUnit:AttributeDamage)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Increase life of all units in the empire == -->
+  <AIParameterConverter Name="EmpireUnitLifePercent">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $SumProperty(ClassEmpire/Garrison/ClassUnit:MaximumHealth)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ########################################################################## -->
+  <!-- ################## FASTER MOVEMENT IN FRIENDLY TERRITORY  ################ -->
+  <!-- ########################################################################## -->
+
+  <!-- Faster movement on my own territory thanks to roads or magic spells - good for both attack and defense -->
+  <AIParameterConverter Name="EmpireFasterMovement">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $Property(ClassEmpire:MilitaryPower) * 0.3</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ######################################################################### -->
+  <!-- ################## STRATEGIC-RESOURCE WEAPONS AND ARMOUR  ############### -->
+  <!-- ######################################################################### -->
+
+  <!--
+  By and large the estimated gain in military power is K*AvailableStrategics where K is the value, in military power, of 1 unit of strategics of this tier
+  One must also consider that each weapon and armour upgrade reduces the cost of equipment of the same type by 10%, so we have
+
+  MilitaryPower = K * AvailableStrategics / (1 - TotalDiscout)
+
+  Lower-tier strategics are made obsolete, meaning that their value in military-power decreases as we advances through the eras - especially when we unlock other equipment. Hence:
+
+  MilitaryPower = K * AvailableStrategics / (1 - TotalDiscout) * ObsoleteFactor
+  -->
+
+  <!-- 
+  1 Titanium/Glass-steel is worth about 10 military power 
+  -->
+  <AIParameterConverter Name="EmpireUnlockWeaponCommon">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 12
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * ($Property(Strategic1Stock) + $Property(Strategic2Stock) + $Property(NetStrategic1)*8*$Property(GameSpeedMultiplier) + $Property(NetStrategic1)*8*$Property(GameSpeedMultiplier))
+      / (1 - (0.1*($Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1) + $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier1) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2) + $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier2) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3) + $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier3))))
+      * (1
+      - (0.15*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1))
+      - (0.25*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2))
+      - (0.35*$Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3))
+      - (0.25*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier1))
+      - (0.35*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier2))
+      - (0.45*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier3))
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockArmorCommon">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 12
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * ($Property(Strategic1Stock) + $Property(Strategic2Stock) + $Property(NetStrategic1)*8*$Property(GameSpeedMultiplier) + $Property(NetStrategic1)*8*$Property(GameSpeedMultiplier))
+      / (1 - (0.1*($Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1) + $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier1) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2) + $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier2) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3) + $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier3))))
+      * (1
+      - (0.15*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1))
+      - (0.25*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2))
+      - (0.35*$Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3))
+      - (0.25*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier1))
+      - (0.35*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier2))
+      - (0.45*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier3))
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- 
+  1 Adamantium/Palladium is worth about 40 military power 
+  -->
+  <AIParameterConverter Name="EmpireUnlockWeaponUncommon">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 48
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * ($Property(Strategic3Stock) + $Property(Strategic4Stock) + $Property(NetStrategic3)*8*$Property(GameSpeedMultiplier) + $Property(NetStrategic4)*8*$Property(GameSpeedMultiplier))
+      / (1 - (0.1*($Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1) + $Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2) + $Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3) + $Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3))))
+      * (1
+      - (0.15*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier1))
+      - (0.25*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier2))
+      - (0.35*$Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier3))
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockArmorUncommon">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 48
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * ($Property(Strategic3Stock) + $Property(Strategic4Stock) + $Property(NetStrategic3)*8*$Property(GameSpeedMultiplier) + $Property(NetStrategic4)*8*$Property(GameSpeedMultiplier))
+      / (1 - (0.1*($Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1) + $Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2) + $Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3) + $Count(ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3))))
+      * (1
+      - (0.15*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier1))
+      - (0.25*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier2))
+      - (0.35*$Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier3))
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+
+  <!-- 
+  1 Mithrite/Hyperium is worth about 60 military power 
+  -->
+  <AIParameterConverter Name="EmpireUnlockWeaponRare">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 72
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * ($Property(Strategic5Stock) + $Property(Strategic6Stock) + $Property(NetStrategic5)*8*$Property(GameSpeedMultiplier) + $Property(NetStrategic6)*8*$Property(GameSpeedMultiplier))
+      / (1 - (0.1*($Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier1) + $Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier1) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier2) + $Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier2) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier3) + $Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier3))))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockArmorRare">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input)
+      * 72
+      * $Count(../ClassEmpire/Garrison/ClassUnit)
+      * ($Property(Strategic5Stock) + $Property(Strategic6Stock) + ($Property(NetStrategic5)*8*$Property(GameSpeedMultiplier)) + ($Property(NetStrategic6)*8*$Property(GameSpeedMultiplier)))
+      / (1 - (0.1*($Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier1) + $Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier1) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier2) + $Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier2) + $Count(ClassEmpire/ClassResearch,TechnologyWeaponRareTier3) + $Count(ClassEmpire/ClassResearch,TechnologyArmorRareTier3))))
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################### -->
+  <!-- ################## NEW UNIT MODELS  ############### -->
+  <!-- ################################################### -->
+
+  <AIParameterConverter Name="EmpireUnlockUnitInfantry">
+    <ToAIParameter AIParameter="AIEmpireUnlockUnit">($(Input) * (1.6 - ($(NavyImportance) * (0.9 min $Property(../EmpireTypeMajor:AIHasAnyCoastalCity))))) / (1 + $(NumberOfAvailableInfantryUnits))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitCavalry">
+    <ToAIParameter AIParameter="AIEmpireUnlockUnit">($(Input) * (1.3 - ($(NavyImportance) * (0.9 min $Property(../EmpireTypeMajor:AIHasAnyCoastalCity))))) / (1 + $(NumberOfAvailableCavalryUnits))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitRanged">
+    <ToAIParameter AIParameter="AIEmpireUnlockUnit">($(Input) * (1.5 - ($(NavyImportance) * (0.9 min $Property(../EmpireTypeMajor:AIHasAnyCoastalCity))))) / (1 + $(NumberOfAvailableRangedUnits))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitSupport">
+    <ToAIParameter AIParameter="AIEmpireUnlockUnit">($(Input) * (1.5 - ($(NavyImportance) * (0.9 min $Property(../EmpireTypeMajor:AIHasAnyCoastalCity))))) / (1 + $(NumberOfAvailableSupportUnits))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitFlying">
+    <ToAIParameter AIParameter="AIEmpireUnlockUnit">($(Input) * (1.3 - ($(NavyImportance) * (0.9 min $Property(../EmpireTypeMajor:AIHasAnyCoastalCity))))) / (1 + $(NumberOfAvailableFlyingUnits))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitGuardian">
+    <ToAIParameter AIParameter="AIEmpireUnlockUnit">($(Input) * (5 - ($(NavyImportance) * (0.9 min $Property(../EmpireTypeMajor:AIHasAnyCoastalCity))))) / (1 + $(NumberOfAvailableGuardianUnits))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitInterceptor">
+    <ToAIParameter AIParameter="AIEmpireUnlockSeafaringUnit">1.1 * (($(Input) / (1 + $(NumberOfAvailableInterceptorUnits))) * $(NavyImportance)) * $Property(../EmpireTypeMajor:AIHasAnyCoastalCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitFrigate">
+    <ToAIParameter AIParameter="AIEmpireUnlockSeafaringUnit">1.4 * (($(Input) / (1 + $(NumberOfAvailableFrigateUnits))) * $(NavyImportance)) * $Property(../EmpireTypeMajor:AIHasAnyCoastalCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitJuggernaut">
+    <ToAIParameter AIParameter="AIEmpireUnlockSeafaringUnit">1.2 * (($(Input) / (1 + $(NumberOfAvailableJuggernautUnits))) * $(NavyImportance)) * $Property(../EmpireTypeMajor:AIHasAnyCoastalCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockUnitSubmersible">
+    <ToAIParameter AIParameter="AIEmpireUnlockSeafaringUnit">0.9 * (($(Input) / (1 + $(NumberOfAvailableSubmersibleUnits))) * $(NavyImportance)) * $Property(../EmpireTypeMajor:AIHasAnyCoastalCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  
+  <!-- ######################################################################### -->
+  <!-- ################ MILITARY POWER THAT CANNOT LEAVE CITIES ################ -->
+  <!-- ######################################################################### -->
+
+  <!-- == Increase regeneration of all units garrisoned in cities -->
+  <AIParameterConverter Name="CityUnitRegenPercent">
+    <ToAIParameter AIParameter="AICityDefense">$(Input) * $SumProperty(ClassCity/Garrison/ClassUnit:MaximumHealth)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $SumProperty(ClassEmpire/ClassCity/Garrison/ClassUnit:MaximumHealth)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Militia Additional Unit == -->
+  <AIParameterConverter Name="CityMilitia">
+    <ToAIParameter AIParameter="AICityDefense">$(Input) * $MaxProperty(ClassCity/Garrison/ClassUnit:MilitaryPower)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * $SumProperty(../ClassEmpire/ClassCity/Militia/ClassUnit:MilitaryPower) / (1 max $Count(../ClassEmpire/ClassCity/Militia/ClassUnit))</ToAIParameter>
+  </AIParameterConverter>
+  
+  <!-- #################################################### -->
+  <!-- ################ CITY FORTIFICATION ################ -->
+  <!-- #################################################### -->
+
+  <!-- == Defense == -->
+  <AIParameterConverter Name="CityDefense">
+    <ToAIParameter AIParameter="AICityDefense">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireCityDefense">$(Input) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Defense percent == -->
+  <AIParameterConverter Name="CityDefensePercent">
+    <ToAIParameter AIParameter="AICityDefense">$(Input) * $Property(ClassCity:CityDefensePoint)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireCityDefense">$(Input) * $SumProperty(../ClassEmpire/ClassCity:CityDefensePoint)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- Fortifications per population -->
+  <AIParameterConverter Name="CityDefensePerPop">
+    <ToAIParameter AIParameter="AICityDefense">$(Input) * $Property(Population)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireCityDefense">$(Input) * $SumProperty(../ClassEmpire/ClassCity:Population)</ToAIParameter>
+  </AIParameterConverter>
+  
+  <AIParameterConverter Name="CityDefensePerPop_NationalBuilding">
+    <ToAIParameter AIParameter="AICityDefense">$(Input) * $Property(Population)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireCityDefense">$(Input) * $MaxProperty(../ClassEmpire/ClassCity:Population)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Defense Recovery == -->
+  <AIParameterConverter Name="CityDefenseRecovery">
+    <ToAIParameter AIParameter="AICityDefense">$(Input) * 8</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireCityDefense">$(Input) * 8 * $Property(../ClassEmpire:EmpireScaleFactor)</ToAIParameter>
+  </AIParameterConverter>
+  
+  <!-- ################################################### -->
+  <!-- ################ ESPIONAGE ######################## -->
+  <!-- ################################################### -->
+
+  <!-- == Spying == -->
+  <AIParameterConverter Name="EmpireSpy">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) * 0.1</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################### -->
+  <!-- ################ COUNTER-ESPIONAGE ################ -->
+  <!-- ################################################### -->
+
+  <!-- == AntiSpy == -->
+  <AIParameterConverter Name="EmpireAntiSpy">
+    <ToAIParameter AIParameter="AIEmpireAntiSpy">$(Input) * $Count(ClassEmpire/ClassCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityAntiSpy">
+    <ToAIParameter AIParameter="AICityAntiSpy">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireAntiSpy">$(Input) * $Count(ClassEmpire/ClassCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################ -->
+  <!-- ######     "WINTER SHIFTERS" EXPANSION    ###### -->
+  <!-- ################################################ -->
+
+  <AIParameterConverter Name="CityWinterVisionPenaltyImmunity">
+    <ToAIParameter AIParameter ="AIEmpireVision">$(Input) 
+    * ((0.3 * $Count(ClassEmpire/ClassCity)) + (0.2 * $Count(ClassEmpire/ClassCity/WatchTower,ExploitedPointOfInterest)))
+    * (1 min $Count(#Winter))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockArmorOrb">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) 
+    * 300 * $Count(../ClassEmpire/Garrison/ClassUnit)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockAccessoriesOrb">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">$(Input) 
+    * 300 * $Count(../ClassEmpire/Garrison/ClassUnit)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockDefensiveImprovement">
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">
+      $(Input) 
+      * 5 * $SumProperty(../ClassEmpire/ClassCity:CityDefensePoint)
+    </ToAIParameter>
+  </AIParameterConverter>
+
+</Datatable>

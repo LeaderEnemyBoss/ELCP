@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <AIParameterDatatableElement Name="UnitAbilitySweep">
+    <AIParameter Name="AIEquipmentAttack"                  Value="0"/>
+    <AIParameter Name="AIEquipmentDefense"                 Value="0"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="0"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="0"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="0"/>
+
+    <AIParameter Name="AIEquipmentAttackPercent"           Value="0"/>
+    <AIParameter Name="AIEquipmentDefensePercent"          Value="0"/>
+    <AIParameter Name="AIEquipmentInitiativePercent"       Value="0"/>
+    <AIParameter Name="AIEquipmentDamagePercent"           Value="0"/>
+    <AIParameter Name="AIEquipmentMaximumHealthPercent"    Value="0"/>
+
+    <AIParameter Name="AIUnitAttackPercent"           Value="0"/>
+    <AIParameter Name="AIUnitDefensePercent"          Value="0"/>
+    <AIParameter Name="AIUnitInitiativePercent"       Value="0"/>
+    <AIParameter Name="AIUnitDamagePercent"           Value="0"/>
+    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityEndlessFlames">
+    <AIParameter Name="AIEquipmentAttack"                  Value="0"/>
+    <AIParameter Name="AIEquipmentDefense"                 Value="0"/>
+    <AIParameter Name="AIEquipmentInitiative"              Value="0"/>
+    <AIParameter Name="AIEquipmentDamage"                  Value="0"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"           Value="0"/>
+
+    <AIParameter Name="AIEquipmentAttackPercent"           Value="0"/>
+    <AIParameter Name="AIEquipmentDefensePercent"          Value="0"/>
+    <AIParameter Name="AIEquipmentInitiativePercent"       Value="0"/>
+    <AIParameter Name="AIEquipmentDamagePercent"           Value="0"/>
+    <AIParameter Name="AIEquipmentMaximumHealthPercent"    Value="0"/>
+
+    <AIParameter Name="AIUnitAttackPercent"           Value="0"/>
+    <AIParameter Name="AIUnitDefensePercent"          Value="0"/>
+    <AIParameter Name="AIUnitInitiativePercent"       Value="0"/>
+    <AIParameter Name="AIUnitDamagePercent"           Value="0"/>
+    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityWarriorSlayer">
+    <AIParameter Name="UnitClassInfantry" Value="0.8"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityRangeSlayer">
+    <AIParameter Name="UnitClassRanged" Value="0.8"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityKnightSlayer">
+    <AIParameter Name="UnitClassCavalry" Value="0.8"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityFlyingSlayer">
+    <AIParameter Name="UnitClassFlying" Value="0.8"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityMageSlayer">
+    <AIParameter Name="UnitClassSupport" Value="0.8"/>
+  </AIParameterDatatableElement>
+  
+  
+  
+  <!-- 
+  ****
+  AI Parameters for hero assignment 
+  **** 
+  -->  
+
+  
+  <!-- 
+  ** 
+  Spying 
+  ** 
+  -->
+  <AIParameterDatatableElement Name="UnitAbilitySpy">
+    <AIParameter Name="Spy"            Value="0.6"/>
+  </AIParameterDatatableElement>
+
+  
+  <!-- 
+  ** 
+  Empire governor : provides dust, science and prestige
+  ** 
+  -->
+  
+  <AIParameterDatatableElement Name="UnitAbilityInitialBoostDust">
+    <AIParameter Name="GovernorEmpire"            Value="0.9"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement Name="UnitAbilityDustPopulationEfficiency">
+    <AIParameter Name="GovernorEmpire"            Value="0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityInitialBoostPrestige">
+    <AIParameter Name="GovernorEmpire"            Value="0.9"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement Name="UnitAbilityPrestigePopulationEfficiency">
+    <AIParameter Name="GovernorEmpire"            Value="0.5"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="UnitAbilityInitialBoostScience">
+    <AIParameter Name="GovernorEmpire"            Value="0.9"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement Name="UnitAbilitySciencePopulationEfficiency">
+    <AIParameter Name="GovernorEmpire"            Value="0.5"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="UnitAbilitySlavery">
+    <!-- slavery: +1 FI / village -->
+    <AIParameter Name="GovernorEmpire"            Value="0.4"/>
+    <AIParameter Name="GovernorCity"            Value="0.4"/>
+  </AIParameterDatatableElement>
+  
+  <!-- 
+  ** 
+  City governor : provides industry, food and approval 
+  ** 
+  -->
+  
+  <AIParameterDatatableElement Name="UnitAbilityInitialBoostIndustry">
+    <AIParameter Name="GovernorCity"            Value="0.9"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement Name="UnitAbilityIndustryPopulationEfficiency">
+    <AIParameter Name="GovernorCity"            Value="0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityInitialBoostFood">
+    <AIParameter Name="GovernorCity"            Value="0.9"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement Name="UnitAbilityFoodPopulationEfficiency">
+    <AIParameter Name="GovernorCity"            Value="0.5"/>
+  </AIParameterDatatableElement>
+
+  <!-- 
+  ** 
+  Army support : increases unit stats
+  ** 
+  -->
+  
+  <AIParameterDatatableElement Name="UnitAbilityGeneralDamage">
+    <AIParameter Name="ArmySupport"            Value="0.2"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="UnitAbilityGeneralAttack">
+    <AIParameter Name="ArmySupport"            Value="0.2"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="UnitAbilityGeneralDefense">
+    <AIParameter Name="ArmySupport"            Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityGeneralHealth">
+    <AIParameter Name="ArmySupport"            Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityGeneralInitiative">
+    <AIParameter Name="ArmySupport"            Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityGeneralCritical">
+    <AIParameter Name="ArmySupport"            Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityGeneralVision">
+    <AIParameter Name="ArmySupport"            Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityGeneralResistance">
+    <AIParameter Name="ArmySupport"            Value="0.3"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityGeneralPiercing">
+    <AIParameter Name="ArmySupport"            Value="0.3"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="UnitAbilityGeneralOverall">
+    <AIParameter Name="ArmySupport"            Value="0.4"/>
+  </AIParameterDatatableElement>
+  
+  
+  <!-- 
+  ** 
+  Army hero : deals direct damage
+  ** 
+  -->
+  <AIParameterDatatableElement Name="UnitAbilitySoulLeech">
+    <AIParameter Name="ArmyHero"            Value="0.4"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="UnitAbilityRegeneration">
+    <AIParameter Name="ArmyHero"            Value="0.4"/>
+  </AIParameterDatatableElement>
+  
+</Datatable>
