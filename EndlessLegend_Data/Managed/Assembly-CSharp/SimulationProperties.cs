@@ -723,4 +723,8 @@ public static class SimulationProperties
 	public static readonly StaticString CityOwnedTurn = "CityOwnedTurn";
 
 	public static readonly StaticString OvergrownCityRazeCityCooldownInTurns = "OvergrownCityRazeCityCooldownInTurns";
+
+	public static readonly StaticString AllayiBoosterDurationMultiplier = "AllayiBoosterDurationMultiplier";
+
+	public static readonly StaticString MarketplaceMercCostMultiplier = "MarketplaceMercCostMultiplier";
 }
