@@ -8,10 +8,10 @@ using Amplitude.Unity.AI.Decision;
 using Amplitude.Unity.AI.Decision.Diagnostics;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.Advanced;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
-using UnityEngine;
 
 public class AICommander_Colonization : AICommanderWithObjective, IXmlSerializable
 {
@@ -194,6 +194,7 @@ public class AICommander_Colonization : AICommanderWithObjective, IXmlSerializab
 
 	private float DecisionScoreTransferFunctionPosition(WorldPositionScore aiEvaluableElement, float currentScore)
 	{
+		currentScore += aiEvaluableElement.ScoresSum;
 		int num = 0;
 		for (int i = 0; i < aiEvaluableElement.CountByOrientation.Length; i++)
 		{
@@ -202,14 +203,14 @@ public class AICommander_Colonization : AICommanderWithObjective, IXmlSerializab
 				num = aiEvaluableElement.CountByOrientation[i];
 			}
 		}
-		num -= 2;
-		num = Mathf.Min(8, num);
-		currentScore += currentScore * 0.05f * (float)num;
+		currentScore += currentScore * 0.05f * (float)Math.Min(8, num - 2);
 		if (aiEvaluableElement.HasCostalTile)
 		{
 			currentScore += currentScore * this.costalColonizationBoost;
 		}
-		if (aiEvaluableElement.NewDistrictNeighbourgNumber < 6)
+		currentScore = currentScore / 6f * (float)aiEvaluableElement.NewDistrictNeighbourgNumber;
+		int num2 = (!base.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitCultists7)) ? 4 : 6;
+		if (aiEvaluableElement.NewDistrictNotWaterNeighbourNumber < num2)
 		{
 			currentScore *= 0.5f;
 		}
@@ -219,132 +220,102 @@ public class AICommander_Colonization : AICommanderWithObjective, IXmlSerializab
 	private bool SelectPositionToColonize(Region region, out WorldPosition[] sortedPosition, bool immediate = false)
 	{
 		this.ComputeCostalBoost();
-		WorldPositionScore[] array = AIScheduler.Services.GetService<IWorldPositionEvaluationAIHelper>().GetWorldPositionColonizationScore(base.Empire, region.WorldPositions);
-		bool result;
+		IWorldPositionEvaluationAIHelper service = AIScheduler.Services.GetService<IWorldPositionEvaluationAIHelper>();
+		Diagnostics.Assert(service != null);
+		IWorldAtlasAIHelper service2 = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
+		Diagnostics.Assert(service2 != null);
+		IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
+		Diagnostics.Assert(database != null);
+		WorldPositionScore[] array = service.GetWorldPositionColonizationScore(base.Empire, region.WorldPositions);
 		if (array == null || array.Length == 0)
 		{
 			sortedPosition = null;
-			result = false;
+			return false;
+		}
+		if (immediate)
+		{
+			DepartmentOfDefense agency = base.Empire.GetAgency<DepartmentOfDefense>();
+			Diagnostics.Assert(agency != null);
+			List<Army> list = null;
+			if (agency.Armies != null && agency.Armies.Count > 0)
+			{
+				list = (from army in agency.Armies
+				where army.IsSettler
+				select army).ToList<Army>();
+			}
+			if (list == null || list.Count == 0)
+			{
+				sortedPosition = null;
+				return false;
+			}
+			Army army3 = null;
+			int num = 2;
+			List<WorldPositionScore> list2 = new List<WorldPositionScore>();
+			for (int i = 0; i < list.Count; i++)
+			{
+				Army army2 = list[i];
+				List<WorldPositionScore> list3 = new List<WorldPositionScore>(array.Length);
+				int maximumNumberOfTurns = num;
+				for (int j = 0; j < array.Length; j++)
+				{
+					int num2;
+					if (this.CanReachPositionInTurn(army2, array[j].WorldPosition, maximumNumberOfTurns, out num2))
+					{
+						if (num2 < num)
+						{
+							army3 = army2;
+							num = num2;
+						}
+						list3.Add(array[j]);
+					}
+				}
+				if (army3 == army2)
+				{
+					list2 = list3;
+					break;
+				}
+				if (list2.Count == 0)
+				{
+					army3 = army2;
+					list2 = list3;
+				}
+			}
+			array = list2.ToArray();
+		}
+		Diagnostics.Assert(this.decisionMakerPosition != null);
+		this.decisionMakerPosition.UnregisterAllOutput();
+		this.decisionMakerPosition.ClearAIParametersOverrides();
+		AIEntity_Empire entity = base.AIPlayer.GetEntity<AIEntity_Empire>();
+		Diagnostics.Assert(entity != null);
+		entity.Context.InitializeDecisionMaker<WorldPositionScore>(AILayer_Strategy.ColonizationParameterModifier, this.decisionMakerPosition);
+		IGameService service3 = Services.GetService<IGameService>();
+		Diagnostics.Assert(service3 != null);
+		this.decisionResults.Clear();
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			DecisionMakerEvaluationData<WorldPositionScore, InterpreterContext> decisionMakerEvaluationData;
+			this.decisionMakerPosition.EvaluateDecisions(array, ref this.decisionResults, out decisionMakerEvaluationData);
+			decisionMakerEvaluationData.Turn = (service3.Game as global::Game).Turn;
+			this.DecisionMakerEvaluationDataHistoric.Add(decisionMakerEvaluationData);
 		}
 		else
 		{
-			if (immediate)
-			{
-				DepartmentOfDefense agency = base.Empire.GetAgency<DepartmentOfDefense>();
-				List<Army> list = null;
-				if (agency.Armies != null && agency.Armies.Count > 0)
-				{
-					list = (from army in agency.Armies
-					where army.IsSettler
-					select army).ToList<Army>();
-				}
-				if (list == null || list.Count == 0)
-				{
-					sortedPosition = null;
-					return false;
-				}
-				Army army3 = null;
-				int num = 2;
-				List<WorldPositionScore> list2 = new List<WorldPositionScore>();
-				for (int i = 0; i < list.Count; i++)
-				{
-					Army army2 = list[i];
-					List<WorldPositionScore> list3 = new List<WorldPositionScore>(array.Length);
-					int maximumNumberOfTurns = num;
-					for (int j = 0; j < array.Length; j++)
-					{
-						int num2;
-						if (this.CanReachPositionInTurn(army2, array[j].WorldPosition, maximumNumberOfTurns, out num2))
-						{
-							if (num2 < num)
-							{
-								army3 = army2;
-								num = num2;
-							}
-							list3.Add(array[j]);
-						}
-					}
-					if (army3 == army2)
-					{
-						list2 = list3;
-						break;
-					}
-					if (list2.Count == 0)
-					{
-						army3 = army2;
-						list2 = list3;
-					}
-				}
-				array = list2.ToArray();
-			}
-			WorldPosition[] array2 = new WorldPosition[array.Length];
-			double[] array3 = new double[array.Length];
-			for (int k = 0; k < array.Length; k++)
-			{
-				double num3 = 0.0;
-				foreach (AIParameterDefinition aiparameterDefinition in array[k].Scores)
-				{
-					if (aiparameterDefinition.Name == "DistrictIndustry")
-					{
-						num3 += (double)aiparameterDefinition.Value * 1.2;
-					}
-					else if (aiparameterDefinition.Name == "DistrictCityPoint")
-					{
-						num3 += (double)aiparameterDefinition.Value * 0.5;
-					}
-					else if (aiparameterDefinition.Name == "CityApproval")
-					{
-						num3 += (double)aiparameterDefinition.Value * 0.2;
-					}
-					else
-					{
-						num3 += (double)aiparameterDefinition.Value;
-					}
-				}
-				if (array[k].HasCostalTile)
-				{
-					num3 += num3 * (double)this.costalColonizationBoost;
-				}
-				int num4 = array[k].CountByOrientation.Count((int test) => test < 1);
-				if (num4 > 2)
-				{
-					num3 *= 1.0 - 0.1 * (double)(num4 - 2);
-				}
-				array2[k] = array[k].WorldPosition;
-				array3[k] = num3;
-			}
-			WorldPosition[] array4 = new WorldPosition[array2.Length];
-			Array.Copy(array2, array4, array2.Length);
-			Array.Sort<double, WorldPosition>(array3, array4);
-			Array.Reverse(array4);
-			this.decisionMakerPosition.UnregisterAllOutput();
-			this.decisionMakerPosition.ClearAIParametersOverrides();
-			base.AIPlayer.GetEntity<AIEntity_Empire>().Context.InitializeDecisionMaker<WorldPositionScore>(AILayer_Strategy.ColonizationParameterModifier, this.decisionMakerPosition);
-			IGameService service = Services.GetService<IGameService>();
-			this.decisionResults.Clear();
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-			{
-				DecisionMakerEvaluationData<WorldPositionScore, InterpreterContext> decisionMakerEvaluationData;
-				this.decisionMakerPosition.EvaluateDecisions(array, ref this.decisionResults, out decisionMakerEvaluationData);
-				decisionMakerEvaluationData.Turn = (service.Game as global::Game).Turn;
-				this.DecisionMakerEvaluationDataHistoric.Add(decisionMakerEvaluationData);
-			}
-			else
-			{
-				this.decisionMakerPosition.EvaluateDecisions(array, ref this.decisionResults);
-			}
-			if (this.decisionResults == null || this.decisionResults.Count == 0)
-			{
-				sortedPosition = null;
-				result = false;
-			}
-			else
-			{
-				sortedPosition = array4;
-				result = true;
-			}
+			this.decisionMakerPosition.EvaluateDecisions(array, ref this.decisionResults);
 		}
-		return result;
+		if (this.decisionResults == null || this.decisionResults.Count == 0)
+		{
+			sortedPosition = null;
+			return false;
+		}
+		int num3 = Math.Max(this.decisionResults.Count, Math.Min(this.decisionResults.Count, 10));
+		WorldPosition[] array2 = new WorldPosition[num3];
+		for (int k = 0; k < num3; k++)
+		{
+			WorldPositionScore worldPositionScore = (WorldPositionScore)this.decisionResults[k].Element;
+			array2[k] = worldPositionScore.WorldPosition;
+		}
+		sortedPosition = array2;
+		return true;
 	}
 
 	private void ComputeCostalBoost()

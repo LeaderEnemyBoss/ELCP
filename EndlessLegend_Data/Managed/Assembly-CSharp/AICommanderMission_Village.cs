@@ -23,7 +23,8 @@ public class AICommanderMission_Village : AICommanderMissionWithRequestArmy, IXm
 		{
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			World world = (service.Game as global::Game).World;
+			global::Game game = service.Game as global::Game;
+			World world = game.World;
 			this.RegionTarget = world.Regions[attribute];
 			Diagnostics.Assert(this.RegionTarget != null);
 		}
@@ -116,7 +117,7 @@ public class AICommanderMission_Village : AICommanderMissionWithRequestArmy, IXm
 
 	protected override bool IsMissionCompleted()
 	{
-		return this.Village != null && ((this.Village.HasBeenConverted && this.Village.Converter == base.Commander.Empire) || (this.Village.HasBeenPacified && this.Village.PointOfInterest.PointOfInterestImprovement == null));
+		return this.Village != null && this.Village.HasBeenConverted;
 	}
 
 	protected override void Running()
@@ -137,70 +138,37 @@ public class AICommanderMission_Village : AICommanderMissionWithRequestArmy, IXm
 
 	protected override bool TryComputeArmyMissionParameter()
 	{
-		bool result;
 		if (this.RegionTarget == null)
 		{
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Fail;
-			result = false;
+			return false;
 		}
-		else
+		base.ArmyMissionParameters.Clear();
+		if (base.AIDataArmyGUID == GameEntityGUID.Zero)
 		{
-			base.ArmyMissionParameters.Clear();
-			if (base.AIDataArmyGUID == GameEntityGUID.Zero)
+			return false;
+		}
+		this.Village = this.SelectVillage();
+		if (this.Village == null)
+		{
+			base.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
+			return true;
+		}
+		List<object> list = new List<object>();
+		list.Add(this.RegionTarget.Index);
+		list.Add(this.Village);
+		if (this.Village.HasBeenPacified)
+		{
+			if (base.TryCreateArmyMission("ConvertVillage", list))
 			{
-				result = false;
-			}
-			else
-			{
-				this.Village = this.SelectVillage();
-				if (this.Village == null)
-				{
-					base.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
-					result = true;
-				}
-				else
-				{
-					List<object> list = new List<object>();
-					list.Add(this.RegionTarget.Index);
-					list.Add(this.Village);
-					AIData_Army aidata = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID);
-					if (aidata != null)
-					{
-						Army army = aidata.Army;
-						if (army != null && !DepartmentOfTheInterior.IsArmyAbleToConvert(army, true) && base.TryCreateArmyMission("PacifyVillage", new List<object>
-						{
-							this.Village
-						}))
-						{
-							return true;
-						}
-					}
-					if (this.Village.HasBeenConverted && this.Village.Converter != base.Commander.Empire as MajorEmpire)
-					{
-						result = base.TryCreateArmyMission("PacifyVillage", new List<object>
-						{
-							this.Village
-						});
-					}
-					else
-					{
-						if (this.Village.HasBeenPacified)
-						{
-							if (base.TryCreateArmyMission("ConvertVillage", list))
-							{
-								return true;
-							}
-						}
-						else if (base.TryCreateArmyMission("PacifyAndConvertVillage", list))
-						{
-							return true;
-						}
-						result = false;
-					}
-				}
+				return true;
 			}
 		}
-		return result;
+		else if (base.TryCreateArmyMission("PacifyAndConvertVillage", list))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	private Village SelectVillage()

@@ -17,20 +17,12 @@ public class AIBoosterManager_CityResources : AIBoosterManager
 			BoosterDefinition boosterDefinition = this.departmentOfEducation.VaultItems[i].Constructible as BoosterDefinition;
 			if (boosterDefinition != null)
 			{
-				StaticString staticString = boosterDefinition.Name;
-				if (staticString == AIBoosterManager_CityResources.boosterCadavers)
+				StaticString name = boosterDefinition.Name;
+				if (!this.availableBoosterByDefinitionName.ContainsKey(name))
 				{
-					staticString = AIBoosterManager_CityResources.boosterFood;
+					this.availableBoosterByDefinitionName.Add(name, new List<GameEntityGUID>());
 				}
-				if (staticString == "FlamesIndustryBooster")
-				{
-					staticString = "BoosterIndustry";
-				}
-				if (!this.availableBoosterByDefinitionName.ContainsKey(staticString))
-				{
-					this.availableBoosterByDefinitionName.Add(staticString, new List<GameEntityGUID>());
-				}
-				this.availableBoosterByDefinitionName[staticString].Add(this.departmentOfEducation.VaultItems[i].GUID);
+				this.availableBoosterByDefinitionName[name].Add(this.departmentOfEducation.VaultItems[i].GUID);
 			}
 		}
 	}
@@ -38,34 +30,19 @@ public class AIBoosterManager_CityResources : AIBoosterManager
 	protected internal override void Evaluate()
 	{
 		base.Evaluate();
-		AILayer_ResourceManager layer = base.AIEntity.GetLayer<AILayer_ResourceManager>();
-		layer.BoostersInUse = new List<string>();
-		for (int i = 0; i < this.departmentOfEducation.VaultCount; i++)
-		{
-			BoosterDefinition boosterDefinition = this.departmentOfEducation.VaultItems[i].Constructible as BoosterDefinition;
-			if (boosterDefinition != null && boosterDefinition.Name == "BoosterScience")
-			{
-				layer.BoostersInUse.Add(this.departmentOfEducation.VaultItems[i].GUID.ToString());
-				break;
-			}
-		}
 		this.boosterNeedsMessages.Clear();
 		this.boosterNeedsMessages.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<CityBoosterNeeds>(BlackboardLayerID.Empire));
-		for (int j = 0; j < this.boosterNeedsMessages.Count; j++)
+		for (int i = 0; i < this.boosterNeedsMessages.Count; i++)
 		{
-			if (this.boosterNeedsMessages[j].BoosterGuid.IsValid)
+			if (this.boosterNeedsMessages[i].BoosterGuid.IsValid)
 			{
-				VaultItem vaultItem = this.departmentOfEducation[this.boosterNeedsMessages[j].BoosterGuid];
+				VaultItem vaultItem = this.departmentOfEducation[this.boosterNeedsMessages[i].BoosterGuid];
 				if (vaultItem != null)
 				{
 					StaticString staticString = vaultItem.Constructible.Name;
 					if (staticString == AIBoosterManager_CityResources.boosterCadavers)
 					{
 						staticString = AIBoosterManager_CityResources.boosterFood;
-					}
-					if (staticString == "FlamesIndustryBooster")
-					{
-						staticString = "BoosterIndustry";
 					}
 					if (this.availableBoosterByDefinitionName.ContainsKey(staticString))
 					{
@@ -75,16 +52,16 @@ public class AIBoosterManager_CityResources : AIBoosterManager
 							this.availableBoosterByDefinitionName.Remove(staticString);
 						}
 					}
-					this.boosterNeedsMessages[j].AvailabilityState = CityBoosterNeeds.CityBoosterState.Available;
+					this.boosterNeedsMessages[i].AvailabilityState = CityBoosterNeeds.CityBoosterState.Available;
 				}
 			}
 		}
-		this.boosterNeedsMessages.RemoveAll((CityBoosterNeeds match) => match.AvailabilityState > CityBoosterNeeds.CityBoosterState.Pending);
+		this.boosterNeedsMessages.RemoveAll((CityBoosterNeeds match) => match.AvailabilityState != CityBoosterNeeds.CityBoosterState.Pending);
 		this.boosterNeedsMessages.Sort((CityBoosterNeeds left, CityBoosterNeeds right) => -1 * left.BoosterPriority.CompareTo(right.BoosterPriority));
-		for (int k = 0; k < this.boosterNeedsMessages.Count; k++)
+		for (int j = 0; j < this.boosterNeedsMessages.Count; j++)
 		{
-			CityBoosterNeeds cityBoosterNeeds = this.boosterNeedsMessages[k];
-			StaticString boosterDefinitionName = cityBoosterNeeds.BoosterDefinitionName;
+			CityBoosterNeeds cityBoosterNeeds = this.boosterNeedsMessages[j];
+			StaticString staticString = cityBoosterNeeds.BoosterDefinitionName;
 			if (this.availableBoosterByDefinitionName.ContainsKey(cityBoosterNeeds.BoosterDefinitionName))
 			{
 				int num = this.availableBoosterByDefinitionName[cityBoosterNeeds.BoosterDefinitionName].Count - 1;
@@ -96,18 +73,17 @@ public class AIBoosterManager_CityResources : AIBoosterManager
 				}
 				cityBoosterNeeds.BoosterGuid = boosterGuid;
 				cityBoosterNeeds.AvailabilityState = CityBoosterNeeds.CityBoosterState.Available;
-				layer.BoostersInUse.Add(boosterGuid.ToString());
-				this.boosterNeedsMessages.RemoveAt(k);
-				k--;
+				this.boosterNeedsMessages.RemoveAt(j);
+				j--;
 			}
 		}
 		this.evaluableMessages.Clear();
 		this.evaluableMessages.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_CityBooster>(BlackboardLayerID.Empire));
 		this.evaluableMessages.RemoveAll((EvaluableMessage_CityBooster match) => match.State != BlackboardMessage.StateValue.Message_InProgress || match.EvaluationState != EvaluableMessage.EvaluableMessageState.Pending || match.EvaluationState != EvaluableMessage.EvaluableMessageState.Obtaining);
 		this.evaluableMessages.Sort((EvaluableMessage_CityBooster left, EvaluableMessage_CityBooster right) => -1 * left.Interest.CompareTo(right.Interest));
-		for (int l = 0; l < this.evaluableMessages.Count; l++)
+		for (int k = 0; k < this.evaluableMessages.Count; k++)
 		{
-			EvaluableMessage_CityBooster cityBoosterEvaluableMessage = this.evaluableMessages[l];
+			EvaluableMessage_CityBooster cityBoosterEvaluableMessage = this.evaluableMessages[k];
 			int num2 = this.boosterNeedsMessages.FindIndex((CityBoosterNeeds match) => match.BoosterDefinitionName == cityBoosterEvaluableMessage.BoosterDefinitionName);
 			if (num2 >= 0)
 			{
@@ -121,14 +97,14 @@ public class AIBoosterManager_CityResources : AIBoosterManager
 			}
 			else
 			{
-				base.AIEntity.AIPlayer.Blackboard.CancelMessage(this.evaluableMessages[l]);
-				this.evaluableMessages.RemoveAt(l);
-				l--;
+				base.AIEntity.AIPlayer.Blackboard.CancelMessage(this.evaluableMessages[k]);
+				this.evaluableMessages.RemoveAt(k);
+				k--;
 			}
 		}
-		for (int m = 0; m < this.boosterNeedsMessages.Count; m++)
+		for (int l = 0; l < this.boosterNeedsMessages.Count; l++)
 		{
-			CityBoosterNeeds cityBoosterNeeds3 = this.boosterNeedsMessages[m];
+			CityBoosterNeeds cityBoosterNeeds3 = this.boosterNeedsMessages[l];
 			BoosterGeneratorDefinition boosterGenerator = this.constructibleElementHelper.GetBoosterGenerator(base.AIEntity.Empire, cityBoosterNeeds3.BoosterDefinitionName);
 			if (boosterGenerator != null)
 			{
@@ -170,20 +146,14 @@ public class AIBoosterManager_CityResources : AIBoosterManager
 
 	private void StartNextBooster()
 	{
-		DepartmentOfScience agency = base.Empire.GetAgency<DepartmentOfScience>();
-		bool flag = base.Empire.GetAgency<DepartmentOfForeignAffairs>().IsInWarWithSomeone();
-		if (agency.GetResearchPropertyValue("UnlockedTechnologyCount") <= 16f || agency.GetTechnologyState("TechnologyDefinitionAllBoosterLevel1") == DepartmentOfScience.ConstructibleElement.State.Researched || agency.GetTechnologyState("TechnologyDefinitionAllBoosterLevel2") == DepartmentOfScience.ConstructibleElement.State.Researched || flag)
+		for (int i = 0; i < this.departmentOfEducation.VaultCount; i++)
 		{
-			for (int i = 0; i < this.departmentOfEducation.VaultCount; i++)
+			BoosterDefinition boosterDefinition = this.departmentOfEducation.VaultItems[i].Constructible as BoosterDefinition;
+			if (boosterDefinition != null && boosterDefinition.Name == "BoosterScience")
 			{
-				BoosterDefinition boosterDefinition = this.departmentOfEducation.VaultItems[i].Constructible as BoosterDefinition;
-				if (boosterDefinition != null && boosterDefinition.Name == "BoosterScience")
-				{
-					OrderBuyoutAndActivateBooster order = new OrderBuyoutAndActivateBooster(base.Empire.Index, boosterDefinition.Name, this.departmentOfEducation.VaultItems[i].GUID, false);
-					Ticket ticket;
-					base.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.BuyoutAndActivateBooster_TicketRaised));
-					return;
-				}
+				OrderBuyoutAndActivateBooster order = new OrderBuyoutAndActivateBooster(base.Empire.Index, boosterDefinition.Name, this.departmentOfEducation.VaultItems[i].GUID, false);
+				Ticket ticket;
+				base.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.BuyoutAndActivateBooster_TicketRaised));
 			}
 		}
 	}

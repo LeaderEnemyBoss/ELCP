@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -57,18 +55,11 @@ public class AILayer_SiegeBreaker : AILayerWithObjective, IXmlSerializable
 	protected override int GetCommanderLimit()
 	{
 		int num = 0;
-		using (IEnumerator<City> enumerator = this.departmentOfTheInterior.Cities.GetEnumerator())
+		foreach (City city in this.departmentOfTheInterior.Cities)
 		{
-			while (enumerator.MoveNext())
+			if (city.BesiegingEmpire != null)
 			{
-				if (enumerator.Current.BesiegingEmpire != null)
-				{
-					num++;
-					if (base.AIEntity.Empire.SimulationObject.Tags.Contains("FactionTraitCultists7") && num < (int)((float)base.AIEntity.Empire.GetAgency<DepartmentOfDefense>().Armies.Count * 0.75f))
-					{
-						num = (int)((float)base.AIEntity.Empire.GetAgency<DepartmentOfDefense>().Armies.Count * 0.75f);
-					}
-				}
+				num++;
 			}
 		}
 		return Math.Max(num, 1);
@@ -88,35 +79,15 @@ public class AILayer_SiegeBreaker : AILayerWithObjective, IXmlSerializable
 		for (int i = 0; i < this.departmentOfTheInterior.Cities.Count; i++)
 		{
 			City city = this.departmentOfTheInterior.Cities[i];
-			if (city.BesiegingEmpire != null && this.IsObjectiveValid(AICommanderMissionDefinition.AICommanderCategory.SiegeBreaker.ToString(), city.Region.Index, false) && this.globalObjectiveMessages.Find((GlobalObjectiveMessage match) => match.RegionIndex == city.Region.Index) == null)
+			if (city.BesiegingEmpire != null)
 			{
-				GlobalObjectiveMessage item = base.GenerateObjective(this.departmentOfTheInterior.Cities[i].Region.Index);
-				this.globalObjectiveMessages.Add(item);
-			}
-		}
-		for (int j = 0; j < this.departmentOfTheInterior.Cities.Count; j++)
-		{
-			if (this.globalObjectiveMessages.Count + 2 > base.AIEntity.Empire.GetAgency<DepartmentOfDefense>().Armies.Count)
-			{
-				break;
-			}
-			City city2 = this.departmentOfTheInterior.Cities[j];
-			if (city2.BesiegingEmpire != null && this.IsObjectiveValid(AICommanderMissionDefinition.AICommanderCategory.SiegeBreaker.ToString(), city2.Region.Index, false))
-			{
-				int num = Intelligence.GetArmiesInRegion(city2.Region.Index).Count((Army p) => p.Empire == city2.BesiegingEmpire);
-				IEnumerable<GlobalObjectiveMessage> globalObjectiveMessages = this.globalObjectiveMessages;
-				Func<GlobalObjectiveMessage, bool> selector;
-				Func<GlobalObjectiveMessage, bool> <>9__3;
-				if ((selector = <>9__3) == null)
+				if (this.IsObjectiveValid(AICommanderMissionDefinition.AICommanderCategory.SiegeBreaker.ToString(), city.Region.Index, false))
 				{
-					selector = (<>9__3 = ((GlobalObjectiveMessage p) => p.RegionIndex == city2.Region.Index));
-				}
-				int num2 = globalObjectiveMessages.Count(selector);
-				while (num2 <= num + 2 && this.globalObjectiveMessages.Count + 2 <= base.AIEntity.Empire.GetAgency<DepartmentOfDefense>().Armies.Count)
-				{
-					GlobalObjectiveMessage item2 = base.GenerateObjective(this.departmentOfTheInterior.Cities[j].Region.Index);
-					this.globalObjectiveMessages.Add(item2);
-					num2++;
+					if (this.globalObjectiveMessages.Find((GlobalObjectiveMessage match) => match.RegionIndex == city.Region.Index) == null)
+					{
+						GlobalObjectiveMessage item = base.GenerateObjective(this.departmentOfTheInterior.Cities[i].Region.Index);
+						this.globalObjectiveMessages.Add(item);
+					}
 				}
 			}
 		}

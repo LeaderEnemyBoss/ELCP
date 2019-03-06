@@ -112,11 +112,6 @@ public class AILayer_Exploration : AILayerWithObjective
 			heuristicValue.Multiply(0.1f, "(constant)", new object[0]);
 			globalObjectiveMessage.LocalPriority = heuristicValue;
 			globalObjectiveMessage.GlobalPriority = base.GlobalPriority;
-			if (i < 1 && !base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>().IsInWarWithSomeone() && base.AIEntity.Empire.GetAgency<DepartmentOfDefense>().Armies.Count > 2)
-			{
-				globalObjectiveMessage.LocalPriority.Boost(1f, "(constant)", new object[0]);
-				globalObjectiveMessage.GlobalPriority.Boost(1f, "(constant)", new object[0]);
-			}
 			globalObjectiveMessage.TimeOut = 1;
 		}
 	}

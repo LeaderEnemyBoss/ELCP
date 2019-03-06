@@ -293,33 +293,11 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		List<global::Empire> list = new List<global::Empire>();
 		int num = 0;
 		int num2 = 0;
-		bool flag = false;
-		using (IEnumerator<City> enumerator = this.departmentOfTheInterior.Cities.GetEnumerator())
-		{
-			while (enumerator.MoveNext())
-			{
-				if (enumerator.Current.BesiegingEmpire != null)
-				{
-					flag = true;
-					break;
-				}
-			}
-		}
-		float num3 = 0f;
-		int num4 = -1;
 		int index;
-		Predicate<AIRegionData> <>9__0;
-		int index2;
-		for (index = 0; index < this.globalObjectiveMessages.Count; index = index2 + 1)
+		for (index = 0; index < this.globalObjectiveMessages.Count; index++)
 		{
-			List<AIRegionData> list2 = this.regionToAttack;
-			Predicate<AIRegionData> match2;
-			if ((match2 = <>9__0) == null)
-			{
-				match2 = (<>9__0 = ((AIRegionData match) => match.RegionIndex == this.globalObjectiveMessages[index].RegionIndex));
-			}
-			int num5 = list2.FindIndex(match2);
-			if (num5 >= 0)
+			int num3 = this.regionToAttack.FindIndex((AIRegionData match) => match.RegionIndex == this.globalObjectiveMessages[index].RegionIndex);
+			if (num3 >= 0)
 			{
 				if (this.globalObjectiveMessages[index].ObjectiveState == "Attacking")
 				{
@@ -329,32 +307,21 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 				{
 					num2++;
 				}
-				AIRegionData airegionData = this.regionToAttack[num5];
-				City city = this.cityToAttack[num5];
+				AIRegionData airegionData = this.regionToAttack[num3];
+				City city = this.cityToAttack[num3];
 				HeuristicValue heuristicValue = new HeuristicValue(0f);
 				heuristicValue.Add(airegionData.WarAttackScore, "Attack score from the region", new object[0]);
-				heuristicValue.Boost(0.3f, "constant", new object[0]);
+				heuristicValue.Boost(0.2f, "constant", new object[0]);
 				this.globalObjectiveMessages[index].GlobalPriority = base.GlobalPriority;
 				this.globalObjectiveMessages[index].LocalPriority = heuristicValue;
 				this.globalObjectiveMessages[index].TimeOut = 1;
-				this.regionToAttack.RemoveAt(num5);
-				this.cityToAttack.RemoveAt(num5);
+				this.regionToAttack.RemoveAt(num3);
+				this.cityToAttack.RemoveAt(num3);
 				if (!list.Contains(city.Empire))
 				{
 					list.Add(city.Empire);
 				}
-				if (airegionData.WarAttackScore.Value > num3 && this.departmentOfForeignAffairs.IsAtWarWith(city.Empire) && !flag)
-				{
-					num3 = airegionData.WarAttackScore.Value;
-					num4 = index;
-				}
 			}
-			index2 = index;
-		}
-		if (num4 >= 0)
-		{
-			this.globalObjectiveMessages[num4].GlobalPriority.Boost(1f, "aggro boost", new object[0]);
-			this.globalObjectiveMessages[num4].LocalPriority.Boost(0.7f, "aggro boost", new object[0]);
 		}
 		if (num2 == 0 && this.regionToAttack.Count > 0)
 		{
@@ -367,24 +334,24 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 				{
 					if (!this.myEmpireData.HasShips)
 					{
-						bool flag2 = false;
+						bool flag = false;
 						for (int j = 0; j < this.departmentOfTheInterior.Cities.Count; j++)
 						{
 							if (this.departmentOfTheInterior.Cities[j].Region.ContinentID == region.ContinentID)
 							{
-								flag2 = true;
+								flag = true;
 								break;
 							}
 						}
-						if (!flag2)
+						if (!flag)
 						{
-							goto IL_41D;
+							goto IL_356;
 						}
 					}
 					regionData = this.regionToAttack[i];
 					break;
 				}
-				IL_41D:;
+				IL_356:;
 			}
 			if (regionData == null)
 			{
@@ -395,16 +362,10 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 			{
 				globalObjectiveMessage = base.GenerateObjective(regionData.RegionIndex);
 			}
-			City city2 = this.worldPositionningService.GetRegion(regionData.RegionIndex).City;
 			HeuristicValue heuristicValue2 = new HeuristicValue(0f);
 			heuristicValue2.Add(regionData.WarAttackScore, "Region war score", new object[0]);
-			heuristicValue2.Boost(0.5f, "constant", new object[0]);
+			heuristicValue2.Boost(0.5f, "(constant) to force the attack", new object[0]);
 			globalObjectiveMessage.GlobalPriority = base.GlobalPriority;
-			if (city2 != null && this.departmentOfForeignAffairs.IsAtWarWith(city2.Empire) && !flag && num4 < 0)
-			{
-				heuristicValue2.Boost(0.8f, "aggro boost", new object[0]);
-				globalObjectiveMessage.GlobalPriority.Boost(1f, "aggro boost", new object[0]);
-			}
 			globalObjectiveMessage.LocalPriority = heuristicValue2;
 			globalObjectiveMessage.ObjectiveState = "Preparing";
 			globalObjectiveMessage.TimeOut = 1;
@@ -554,7 +515,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		this.resourceScoreMultiplier = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "ResourceScoreMultiplier"), this.resourceScoreMultiplier);
 		this.villageScoreMultiplier = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "VillageScoreMultiplier"), this.villageScoreMultiplier);
 		this.cityQualityScoreMultiplier = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "CityQualityScoreMultiplier"), this.cityQualityScoreMultiplier);
-		this.distanceDeboost = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "DistanceDeboost"), this.distanceDeboost);
 	}
 
 	public int NumberOfWantedWar { get; set; }

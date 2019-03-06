@@ -21,6 +21,7 @@ using UnityEngine;
 })]
 public class AILayer_Research : AILayer
 {
+	// Note: this type is marked as 'beforefieldinit'.
 	static AILayer_Research()
 	{
 		AILayer_Research.NonFriendlyBordersPercent = "NonFriendlyBordersPercent";
@@ -216,7 +217,7 @@ public class AILayer_Research : AILayer
 					}
 				}
 			}
-			if (region.IsLand && region.City == null)
+			if (region.IsLand && !region.IsRegionColonized())
 			{
 				num5++;
 				if (region.ContinentID != num)
@@ -224,7 +225,7 @@ public class AILayer_Research : AILayer
 					num6++;
 				}
 			}
-			if (region.IsLand && region.City != null && !airegionData.IsColonizedByMe)
+			if (region.IsLand && region.IsRegionColonized() && !airegionData.IsColonizedByMe)
 			{
 				num7++;
 				if (region.ContinentID != num)
@@ -244,7 +245,7 @@ public class AILayer_Research : AILayer
 				for (int n = 0; n < agency3.Villages.Count; n++)
 				{
 					Village village = agency3.Villages[n];
-					if (village.Region.City != null && village.Region.City.Empire.Index == empire.Index)
+					if (village.Region.IsRegionColonized() && village.Region.Owner.Index == empire.Index)
 					{
 						if (!agency2.AssimilatedFactions.Contains(minorEmpire.MinorFaction))
 						{
@@ -356,28 +357,211 @@ public class AILayer_Research : AILayer
 			}
 		}
 		float cost = 0f;
+		IDatabase<DepartmentOfScience.ConstructibleElement> database = Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false);
 		DepartmentOfScience.ConstructibleElement technology;
-		if (Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false).TryGetValue(evaluableMessage_ResearchBuyout.TechnologyReference, out technology))
+		if (database.TryGetValue(evaluableMessage_ResearchBuyout.TechnologyReference, out technology))
 		{
 			cost = agency.GetBuyOutTechnologyCost(technology);
 		}
-		if (this.IdealBuyoutPeriod == 0f)
-		{
-			this.IdealBuyoutPeriod = 4f;
-		}
 		int maxValue = int.MaxValue;
-		float idealBuyoutPeriod = this.IdealBuyoutPeriod;
-		float num = (float)(Services.GetService<IGameService>().Game as global::Game).Turn;
-		float num2 = agency.GetResearchPropertyValue("UnlockedTechnologyCount") * idealBuyoutPeriod;
-		float num3 = Mathf.Clamp((num - num2) / idealBuyoutPeriod, -1f, 1f);
-		num3 = (num3 + 1f) / 2f;
-		float num4 = 0.25f + num3 * 0.75f;
+		float num = 5f * base.AIEntity.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+		IGameService service = Services.GetService<IGameService>();
+		float num2 = (float)(service.Game as global::Game).Turn;
+		float researchPropertyValue = agency.GetResearchPropertyValue("UnlockedTechnologyCount");
+		float num3 = researchPropertyValue * num;
+		float num4 = Mathf.Clamp((num2 - num3) / num, -1f, 1f);
+		num4 = (num4 + 1f) / 2f;
+		float num5 = 0.25f + num4 * 0.75f;
 		float globalMotivation = 0.8f;
-		if (num4 > 0.9f)
+		if (num5 > 0.9f)
 		{
 			globalMotivation = 0.9f;
 		}
-		evaluableMessage_ResearchBuyout.Refresh(globalMotivation, num4, cost, maxValue);
+		evaluableMessage_ResearchBuyout.Refresh(globalMotivation, num5, cost, maxValue);
+	}
+
+	private bool CanEvaluateKaijuResearches()
+	{
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		return service != null && service.IsShared(DownloadableContent20.ReadOnlyName) && (!(base.AIEntity.Empire is MajorEmpire) || (base.AIEntity.Empire as MajorEmpire).TamedKaijus.Count != 0);
+	}
+
+	private void EvaluateKaijuUnlocks()
+	{
+		DepartmentOfScience agency = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
+		DepartmentOfTheTreasury agency2 = base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>();
+		if (!this.CanEvaluateKaijuResearches())
+		{
+			return;
+		}
+		List<ConstructibleElement> list = new List<ConstructibleElement>();
+		for (int i = 0; i < this.kaijuUnlockDefinitions.Length; i++)
+		{
+			TechnologyDefinition technologyDefinition = this.kaijuUnlockDefinitions[i];
+			DepartmentOfScience.ConstructibleElement.State technologyState = this.kaijuTechsService.GetTechnologyState(technologyDefinition, base.AIEntity.Empire);
+			if (technologyState != DepartmentOfScience.ConstructibleElement.State.Researched && technologyState != DepartmentOfScience.ConstructibleElement.State.NotAvailable)
+			{
+				if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(base.AIEntity.Empire, technologyDefinition, new string[]
+				{
+					ConstructionFlags.Prerequisite
+				}))
+				{
+					if (agency2.CanAfford(technologyDefinition.Costs))
+					{
+						list.Add(technologyDefinition);
+					}
+				}
+			}
+		}
+		Diagnostics.Assert(this.decisionMaker != null);
+		this.kaijuUnlockDecisions.Clear();
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			IGameService service = Services.GetService<IGameService>();
+			global::Game game = service.Game as global::Game;
+			EvaluationData<ConstructibleElement, InterpreterContext> evaluationData = new EvaluationData<ConstructibleElement, InterpreterContext>();
+			this.decisionMaker.Evaluate(list, ref this.kaijuUnlockDecisions, evaluationData);
+			evaluationData.Turn = game.Turn;
+			this.KaijuUnlockDecisionMakerEvaluationDataHistoric.Add(evaluationData);
+		}
+		else
+		{
+			this.decisionMaker.Evaluate(list, ref this.kaijuUnlockDecisions, null);
+		}
+	}
+
+	private void GenerateKaijuUnlockBuyoutMessage()
+	{
+		if (!this.CanEvaluateKaijuResearches())
+		{
+			return;
+		}
+		DepartmentOfScience.ConstructibleElement constructibleElement = this.GetMostWantedKaijuUnlockDecision().Element as DepartmentOfScience.ConstructibleElement;
+		if (constructibleElement == null)
+		{
+			return;
+		}
+		List<KaijuUnlockBuyoutMessage> list = new List<KaijuUnlockBuyoutMessage>(base.AIEntity.AIPlayer.Blackboard.GetMessages<KaijuUnlockBuyoutMessage>(BlackboardLayerID.Empire, (KaijuUnlockBuyoutMessage message) => message.State == BlackboardMessage.StateValue.Message_InProgress));
+		if (list.Count == 0)
+		{
+			this.PostNewKaijuUnlockBuyoutMessage(constructibleElement.Name);
+		}
+		else
+		{
+			if (list.Count > 1)
+			{
+				AILayer.LogWarning("There should not be several KaijuUnlockBuyout in progress messages in the same empire ({0})", new object[]
+				{
+					base.AIEntity.Empire.Index
+				});
+			}
+			KaijuUnlockBuyoutMessage kaijuUnlockBuyoutMessage = null;
+			for (int i = 0; i < list.Count; i++)
+			{
+				if (kaijuUnlockBuyoutMessage == null && list[i].TechnologyReference.Equals(constructibleElement.Name))
+				{
+					kaijuUnlockBuyoutMessage = list[i];
+				}
+				else
+				{
+					base.AIEntity.AIPlayer.Blackboard.CancelMessage(list[i]);
+					kaijuUnlockBuyoutMessage.TimeOut = 0;
+				}
+			}
+			if (kaijuUnlockBuyoutMessage != null)
+			{
+				kaijuUnlockBuyoutMessage.TimeOut = 1;
+				kaijuUnlockBuyoutMessage.State = BlackboardMessage.StateValue.Message_InProgress;
+			}
+			else
+			{
+				this.PostNewKaijuUnlockBuyoutMessage(constructibleElement.Name);
+			}
+		}
+	}
+
+	private void OrderBuyOutKaijuTechnology_TicketRaised(object sender, TicketRaisedEventArgs e)
+	{
+		OrderBuyOutKaijuTechnology orderBuyOutKaijuTechnology = e.Order as OrderBuyOutKaijuTechnology;
+		Diagnostics.Assert(orderBuyOutKaijuTechnology != null);
+		List<KaijuUnlockBuyoutMessage> list = new List<KaijuUnlockBuyoutMessage>(base.AIEntity.AIPlayer.Blackboard.GetMessages<KaijuUnlockBuyoutMessage>(BlackboardLayerID.Empire, (KaijuUnlockBuyoutMessage message) => message.TechnologyReference == orderBuyOutKaijuTechnology.TechnologyName));
+		if (list.Count == 0)
+		{
+			return;
+		}
+		if (list.Count > 1)
+		{
+			AILayer.LogWarning("There should not be several KaijuUnlockBuyout messages for the same unlock in the same empire ({0}).", new object[]
+			{
+				base.AIEntity.Empire.Index
+			});
+		}
+		if (e.Result == PostOrderResponse.Processed)
+		{
+			for (int i = 0; i < list.Count; i++)
+			{
+				KaijuUnlockBuyoutMessage kaijuUnlockBuyoutMessage = list[i];
+				kaijuUnlockBuyoutMessage.TimeOut = 0;
+				if (i == 0)
+				{
+					kaijuUnlockBuyoutMessage.State = BlackboardMessage.StateValue.Message_Success;
+				}
+				else
+				{
+					kaijuUnlockBuyoutMessage.State = BlackboardMessage.StateValue.Message_Canceled;
+				}
+			}
+		}
+		else
+		{
+			for (int j = list.Count - 1; j >= 0; j--)
+			{
+				KaijuUnlockBuyoutMessage kaijuUnlockBuyoutMessage2 = list[j];
+				kaijuUnlockBuyoutMessage2.State = BlackboardMessage.StateValue.Message_Failed;
+				kaijuUnlockBuyoutMessage2.TimeOut = 0;
+			}
+		}
+	}
+
+	private KaijuUnlockBuyoutMessage PostNewKaijuUnlockBuyoutMessage(StaticString unlockName)
+	{
+		if (!this.CanEvaluateKaijuResearches())
+		{
+			return null;
+		}
+		if (StaticString.IsNullOrEmpty(unlockName))
+		{
+			return null;
+		}
+		KaijuUnlockBuyoutMessage kaijuUnlockBuyoutMessage = new KaijuUnlockBuyoutMessage(unlockName, 1);
+		kaijuUnlockBuyoutMessage.State = BlackboardMessage.StateValue.Message_InProgress;
+		base.AIEntity.AIPlayer.Blackboard.AddMessage(kaijuUnlockBuyoutMessage);
+		return kaijuUnlockBuyoutMessage;
+	}
+
+	private SynchronousJobState SynchronousJob_BuyoutKaijuUnlock()
+	{
+		if (!this.CanEvaluateKaijuResearches())
+		{
+			return SynchronousJobState.Failure;
+		}
+		List<KaijuUnlockBuyoutMessage> list = new List<KaijuUnlockBuyoutMessage>(base.AIEntity.AIPlayer.Blackboard.GetMessages<KaijuUnlockBuyoutMessage>(BlackboardLayerID.Empire, (KaijuUnlockBuyoutMessage match) => match.State == BlackboardMessage.StateValue.Message_InProgress));
+		if (list.Count != 0)
+		{
+			if (list.Count > 1)
+			{
+				AILayer.LogWarning("There should not be several KaijuUnlockBuyout in progress messages in the same empire ({0})", new object[]
+				{
+					base.AIEntity.Empire.Index
+				});
+			}
+			KaijuUnlockBuyoutMessage kaijuUnlockBuyoutMessage = list[0];
+			OrderBuyOutKaijuTechnology order = new OrderBuyOutKaijuTechnology(base.AIEntity.Empire.Index, kaijuUnlockBuyoutMessage.TechnologyReference);
+			Ticket ticket;
+			base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderBuyOutKaijuTechnology_TicketRaised));
+			return SynchronousJobState.Success;
+		}
+		return SynchronousJobState.Success;
 	}
 
 	private void EvaluateOrbUnlocks()
@@ -680,31 +864,8 @@ public class AILayer_Research : AILayer
 		}
 		float technologyUnlockedCount = agency.GetTechnologyUnlockedCount();
 		float a = (float)agency2.Cities.Count;
-		float num = Mathf.Max(technologyUnlockedCount / (15f * Mathf.Max(a, 1f)), b);
-		if (empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait))
-		{
-			List<StaticString> list = new List<StaticString>();
-			if (aiEvaluableElement.Name == "TechnologyDefinitionStrategicExtractionCommon")
-			{
-				list.Add("ResourceDeposit_Strategic1");
-				list.Add("ResourceDeposit_Strategic2");
-			}
-			if (aiEvaluableElement.Name == "TechnologyDefinitionStrategicExtractionUncommon")
-			{
-				list.Add("ResourceDeposit_Strategic3");
-				list.Add("ResourceDeposit_Strategic4");
-			}
-			if (aiEvaluableElement.Name == "TechnologyDefinitionStrategicExtractionRare")
-			{
-				list.Add("ResourceDeposit_Strategic5");
-				list.Add("ResourceDeposit_Strategic6");
-			}
-			if (list.Count > 0)
-			{
-				int num2 = AILayer_Research.CountVillageResources(empire, list);
-				aiParameterValue += (float)num2 * 0.25f;
-			}
-		}
+		float a2 = technologyUnlockedCount / (15f * Mathf.Max(a, 1f));
+		float num = Mathf.Max(a2, b);
 		return aiParameterValue * num;
 	}
 
@@ -726,40 +887,8 @@ public class AILayer_Research : AILayer
 		}
 		float technologyUnlockedCount = agency.GetTechnologyUnlockedCount();
 		float a = (float)agency2.Cities.Count;
-		float num = Mathf.Max(technologyUnlockedCount / (15f * Mathf.Max(a, 1f)), b);
-		if (empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait))
-		{
-			List<StaticString> list = new List<StaticString>();
-			if (aiEvaluableElement.Name == "TechnologyDefinitionLuxuryExtractionCommon")
-			{
-				list.Add("ResourceDeposit_Luxury1");
-				list.Add("ResourceDeposit_Luxury2");
-				list.Add("ResourceDeposit_Luxury3");
-				list.Add("ResourceDeposit_Luxury4");
-				list.Add("ResourceDeposit_Luxury5");
-			}
-			if (aiEvaluableElement.Name == "TechnologyDefinitionLuxuryExtractionUncommon")
-			{
-				list.Add("ResourceDeposit_Luxury6");
-				list.Add("ResourceDeposit_Luxury7");
-				list.Add("ResourceDeposit_Luxury8");
-				list.Add("ResourceDeposit_Luxury9");
-				list.Add("ResourceDeposit_Luxury10");
-			}
-			if (aiEvaluableElement.Name == "TechnologyDefinitionLuxuryExtractionRare")
-			{
-				list.Add("ResourceDeposit_Luxury11");
-				list.Add("ResourceDeposit_Luxury12");
-				list.Add("ResourceDeposit_Luxury13");
-				list.Add("ResourceDeposit_Luxury14");
-				list.Add("ResourceDeposit_Luxury15");
-			}
-			if (list.Count > 0)
-			{
-				int num2 = AILayer_Research.CountVillageResources(empire, list);
-				aiParameterValue += (float)num2 * 0.25f;
-			}
-		}
+		float a2 = technologyUnlockedCount / (15f * Mathf.Max(a, 1f));
+		float num = Mathf.Max(a2, b);
 		return aiParameterValue * num;
 	}
 
@@ -1011,6 +1140,8 @@ public class AILayer_Research : AILayer
 		Diagnostics.Assert(gameService != null);
 		this.worldPositionService = gameService.Game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositionService != null);
+		this.kaijuTechsService = gameService.Game.Services.GetService<IKaijuTechsService>();
+		Diagnostics.Assert(this.kaijuTechsService != null);
 		this.worldAtlasHelper = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
 		int idealNumberOfTurnsToResearchTechnology = 8;
 		int persistanceDuration = Mathf.RoundToInt((float)idealNumberOfTurnsToResearchTechnology * base.AIEntity.Empire.SimulationObject.GetPropertyValue(SimulationProperties.GameSpeedMultiplier));
@@ -1036,6 +1167,7 @@ public class AILayer_Research : AILayer
 		IDatabase<DepartmentOfScience.ConstructibleElement> technologyDatabase = Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false);
 		List<TechnologyDefinition> technologies = new List<TechnologyDefinition>();
 		List<TechnologyDefinition> orbUnlocks = new List<TechnologyDefinition>();
+		List<KaijuTechnologyDefinition> kaijuUnlocks = new List<KaijuTechnologyDefinition>();
 		foreach (DepartmentOfScience.ConstructibleElement constructibleElement in technologyDatabase)
 		{
 			TechnologyDefinition technologyDefinition = constructibleElement as TechnologyDefinition;
@@ -1047,6 +1179,10 @@ public class AILayer_Research : AILayer
 					{
 						orbUnlocks.Add(technologyDefinition);
 					}
+					else if ((technologyDefinition.TechnologyFlags & DepartmentOfScience.ConstructibleElement.TechnologyFlag.KaijuUnlock) == DepartmentOfScience.ConstructibleElement.TechnologyFlag.KaijuUnlock)
+					{
+						kaijuUnlocks.Add(technologyDefinition as KaijuTechnologyDefinition);
+					}
 					else
 					{
 						technologies.Add(technologyDefinition);
@@ -1054,6 +1190,7 @@ public class AILayer_Research : AILayer
 				}
 			}
 		}
+		this.kaijuUnlockDefinitions = kaijuUnlocks.ToArray();
 		this.orbUnlockDefinitions = orbUnlocks.ToArray();
 		this.technologyDefinitions = technologies.ToArray();
 		InfluencedByPersonalityAttribute.LoadFieldAndPropertyValues(base.AIEntity.Empire, this);
@@ -1084,77 +1221,27 @@ public class AILayer_Research : AILayer
 		{
 			return default(DecisionResult);
 		}
-		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-		{
-			foreach (DecisionResult decisionResult in this.technologyDecisions)
-			{
-				Diagnostics.Log("ELCP: Empire {0} TechDecisionResult for {1} is {2}", new object[]
-				{
-					base.AIEntity.Empire.Index,
-					(decisionResult.Element as DepartmentOfScience.ConstructibleElement).Name.ToString(),
-					decisionResult.Score
-				});
-			}
-		}
-		DepartmentOfEducation agency = base.AIEntity.Empire.GetAgency<DepartmentOfEducation>();
-		if (agency != null)
-		{
-			int num = 0;
-			for (int i = 0; i < agency.VaultCount; i++)
-			{
-				BoosterDefinition boosterDefinition = agency.VaultItems[i].Constructible as BoosterDefinition;
-				if (boosterDefinition != null && (boosterDefinition.Name == "BoosterScience" || boosterDefinition.Name == "BoosterFood" || boosterDefinition.Name == "BoosterIndustry"))
-				{
-					num++;
-				}
-			}
-			if (num > 0)
-			{
-				List<DecisionResult> list = new List<DecisionResult>();
-				list.AddRange(this.technologyDecisions.FindAll((DecisionResult match) => (match.Element as DepartmentOfScience.ConstructibleElement).Name.ToString().Contains("TechnologyDefinitionAllBooster")));
-				if (list.Count > 0)
-				{
-					foreach (DecisionResult decisionResult2 in list)
-					{
-						if (decisionResult2.Score + 0.4f * (float)num >= this.technologyDecisions[0].Score)
-						{
-							return decisionResult2;
-						}
-					}
-				}
-			}
-		}
 		return this.technologyDecisions[0];
 	}
 
 	protected DecisionResult GetMostWantedOrbUnlockDecision()
 	{
 		Diagnostics.Assert(this.orbUnlockDecisions != null);
-		int i = 0;
-		while (i < this.orbUnlockDecisions.Count)
-		{
-			if ((this.orbUnlockDecisions[i].Element as DepartmentOfScience.ConstructibleElement).Name == "TechnologyDefinitionOrbUnlock12")
-			{
-				float num = 0f;
-				base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.Orb, out num, false);
-				DepartmentOfScience agency = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
-				if ((agency.GetTechnologyState("TechnologyDefinitionAllBoosterLevel1") != DepartmentOfScience.ConstructibleElement.State.Researched && agency.GetTechnologyState("TechnologyDefinitionAllBoosterLevel2") != DepartmentOfScience.ConstructibleElement.State.Researched) || num <= 150f)
-				{
-					this.orbUnlockDecisions.RemoveAt(i);
-					break;
-				}
-				break;
-			}
-			else
-			{
-				i++;
-			}
-		}
 		if (this.orbUnlockDecisions.Count == 0)
 		{
 			return default(DecisionResult);
 		}
 		return this.orbUnlockDecisions[0];
+	}
+
+	protected DecisionResult GetMostWantedKaijuUnlockDecision()
+	{
+		Diagnostics.Assert(this.kaijuUnlockDecisions != null);
+		if (this.kaijuUnlockDecisions.Count == 0)
+		{
+			return default(DecisionResult);
+		}
+		return this.kaijuUnlockDecisions[0];
 	}
 
 	protected override void CreateLocalNeeds(StaticString context, StaticString pass)
@@ -1172,6 +1259,8 @@ public class AILayer_Research : AILayer
 		this.GenerateResearchBuyoutMessage();
 		this.EvaluateOrbUnlocks();
 		this.GenerateOrbUnlockBuyoutMessage();
+		this.EvaluateKaijuUnlocks();
+		this.GenerateKaijuUnlockBuyoutMessage();
 	}
 
 	protected override void ExecuteNeeds(StaticString context, StaticString pass)
@@ -1180,6 +1269,7 @@ public class AILayer_Research : AILayer
 		ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
 		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_QueueResearch));
 		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_BuyoutOrbUnlock));
+		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_BuyoutKaijuUnlock));
 	}
 
 	private void RegisterInterpreterContextData(AmasEmpireDataMessage amasEmpireDataMessage, InterpreterContext interpreterContext)
@@ -1500,28 +1590,6 @@ public class AILayer_Research : AILayer
 		return SynchronousJobState.Success;
 	}
 
-	private static int CountVillageResources(global::Empire empire, List<StaticString> TemplateNames)
-	{
-		MajorEmpire majorEmpire = empire as MajorEmpire;
-		if (majorEmpire == null || TemplateNames.Count == 0)
-		{
-			return 0;
-		}
-		int num = 0;
-		foreach (Village village in majorEmpire.ConvertedVillages)
-		{
-			Region region = village.Region;
-			foreach (PointOfInterest pointOfInterest in GuiSimulation.Instance.FilterRegionResources(region))
-			{
-				if (TemplateNames.Contains(pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName))
-				{
-					num++;
-				}
-			}
-		}
-		return num;
-	}
-
 	public const string RegistryPath = "AI/MajorEmpire/AIEntity_Empire/AILayer_Research";
 
 	private static readonly StaticString NonFriendlyBordersPercent;
@@ -1572,6 +1640,8 @@ public class AILayer_Research : AILayer
 
 	public FixedSizedList<EvaluationData<ConstructibleElement, InterpreterContext>> OrbUnlockDecisionMakerEvaluationDataHistoric = new FixedSizedList<EvaluationData<ConstructibleElement, InterpreterContext>>(global::Application.FantasyPreferences.AIDebugHistoricSize);
 
+	public FixedSizedList<EvaluationData<ConstructibleElement, InterpreterContext>> KaijuUnlockDecisionMakerEvaluationDataHistoric = new FixedSizedList<EvaluationData<ConstructibleElement, InterpreterContext>>(global::Application.FantasyPreferences.AIDebugHistoricSize);
+
 	private static StaticString researchContextGroupName = "Research";
 
 	private float contextBoostFromAmas = 0.5f;
@@ -1582,11 +1652,15 @@ public class AILayer_Research : AILayer
 
 	private List<DecisionResult> orbUnlockDecisions = new List<DecisionResult>();
 
+	private List<DecisionResult> kaijuUnlockDecisions = new List<DecisionResult>();
+
 	private float ratioOfExplorationToReach = 0.7f;
 
 	private AILayer_Strategy strategyLayer;
 
 	private IConstructibleElementEvaluationAIHelper technologyEvaluationHelper;
+
+	private IKaijuTechsService kaijuTechsService;
 
 	private AIData researchAIData;
 
@@ -1598,12 +1672,11 @@ public class AILayer_Research : AILayer
 
 	private TechnologyDefinition[] orbUnlockDefinitions;
 
+	private KaijuTechnologyDefinition[] kaijuUnlockDefinitions;
+
 	private IPersonalityAIHelper personalityHelper;
 
 	private AILayer_Attitude aiLayerAttitude;
-
-	[InfluencedByPersonality]
-	private float IdealBuyoutPeriod;
 
 	private static class OutputAIParameterNames
 	{

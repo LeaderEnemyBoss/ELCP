@@ -13,7 +13,6 @@ using Amplitude.Unity.AI.Evaluation.Diagnostics;
 using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
-using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.Advanced;
 using Amplitude.Unity.Xml;
@@ -616,39 +615,38 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 				break;
 			}
 		}
-		if (diplomaticTermDefinition != null)
+		if (diplomaticTermDefinition == null)
 		{
-			List<DiplomaticTerm> list = new List<DiplomaticTerm>();
-			if (diplomaticTermDefinition is DiplomaticTermProposalDefinition)
+			return;
+		}
+		List<DiplomaticTerm> list = new List<DiplomaticTerm>();
+		DiplomaticTermProposalDefinition diplomaticTermProposalDefinition = diplomaticTermDefinition as DiplomaticTermProposalDefinition;
+		if (diplomaticTermProposalDefinition != null)
+		{
+			DepartmentOfForeignAffairs.GetDiplomaticTerms(diplomaticTermDefinition, diplomaticContract, opponentEmpire, this.empire, ref list);
+		}
+		else
+		{
+			DepartmentOfForeignAffairs.GetDiplomaticTerms(diplomaticTermDefinition, diplomaticContract, this.empire, opponentEmpire, ref list);
+		}
+		Diagnostics.Assert(list != null);
+		float num;
+		float num2;
+		if (!this.aiLayerAccountManager.TryGetAccountInfos(AILayer_AccountManager.DiplomacyAccountName, DepartmentOfTheTreasury.Resources.EmpirePoint, out num, out num2))
+		{
+			AILayer.LogError("Can't retrieve empire point account infos");
+		}
+		for (int j = 0; j < list.Count; j++)
+		{
+			DiplomaticTerm diplomaticTerm = list[j];
+			float empirePointCost = DepartmentOfForeignAffairs.GetEmpirePointCost(diplomaticTerm, this.empire);
+			if (empirePointCost <= num)
 			{
-				DepartmentOfForeignAffairs.GetDiplomaticTerms(diplomaticTermDefinition, diplomaticContract, opponentEmpire, this.empire, ref list);
-			}
-			else
-			{
-				DepartmentOfForeignAffairs.GetDiplomaticTerms(diplomaticTermDefinition, diplomaticContract, this.empire, opponentEmpire, ref list);
-			}
-			Diagnostics.Assert(list != null);
-			float num;
-			float num2;
-			if (!this.aiLayerAccountManager.TryGetAccountInfos(AILayer_AccountManager.DiplomacyAccountName, DepartmentOfTheTreasury.Resources.EmpirePoint, out num, out num2))
-			{
-				AILayer.LogError("Can't retrieve empire point account infos");
-			}
-			this.aiLayerAccountManager.TryGetAccount(AILayer_AccountManager.DiplomacyAccountName);
-			float num3;
-			base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num3, false);
-			for (int j = 0; j < list.Count; j++)
-			{
-				DiplomaticTerm diplomaticTerm = list[j];
-				float empirePointCost = DepartmentOfForeignAffairs.GetEmpirePointCost(diplomaticTerm, this.empire);
-				if (empirePointCost <= num || empirePointCost * 5f < num3)
-				{
-					AILayer_Diplomacy.ContractRequest contractRequest = new AILayer_Diplomacy.ContractRequest(this.empire, opponentEmpire);
-					Diagnostics.Assert(contractRequest.Terms != null);
-					contractRequest.Terms.Add(diplomaticTerm);
-					this.ContractRequests.Add(contractRequest);
-					return;
-				}
+				AILayer_Diplomacy.ContractRequest contractRequest = new AILayer_Diplomacy.ContractRequest(this.empire, opponentEmpire);
+				Diagnostics.Assert(contractRequest.Terms != null);
+				contractRequest.Terms.Add(diplomaticTerm);
+				this.ContractRequests.Add(contractRequest);
+				break;
 			}
 		}
 	}
@@ -937,25 +935,6 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 	{
 		this.FillContract(contractRequest.Contract, ref contractRequest.Terms);
 		Diagnostics.Assert(contractRequest.Contract != null);
-		global::Empire empire = (contractRequest.Contract.EmpireWhichProposes.Index != this.empire.Index) ? contractRequest.Contract.EmpireWhichProposes : contractRequest.Contract.EmpireWhichReceives;
-		this.AnalyseContractProposition(contractRequest.Terms, empire);
-		if (contractRequest.Contract.GetPropositionMethod() == DiplomaticTerm.PropositionMethod.Negotiation)
-		{
-			GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
-			AIPlayer_MajorEmpire aiplayer_MajorEmpire;
-			if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(empire as MajorEmpire, out aiplayer_MajorEmpire))
-			{
-				AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
-				if (entity != null)
-				{
-					AILayer_Diplomacy layer = entity.GetLayer<AILayer_Diplomacy>();
-					if (layer != null && layer.IsActive() && layer.AnalyseContractProposition(contractRequest.Terms, this.empire) < 0.1f)
-					{
-						this.SweetenDeal(contractRequest.Contract, ref contractRequest.Terms, empire, layer);
-					}
-				}
-			}
-		}
 		contractRequest.State = AILayer_Diplomacy.ContractRequest.ContractRequestState.FillContract;
 		int count = contractRequest.Contract.Terms.Count;
 		DiplomaticTermChange[] array = new DiplomaticTermChange[count + contractRequest.Terms.Count];
@@ -966,13 +945,8 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		}
 		for (int j = 0; j < contractRequest.Terms.Count; j++)
 		{
-			DiplomaticTerm diplomaticTerm2 = contractRequest.Terms[j];
-			array[count + j] = DiplomaticTermChange.Add(diplomaticTerm2);
-			Diagnostics.Log("ELCP: Empire {0} OrderFillContract adding term {1}", new object[]
-			{
-				base.AIEntity.Empire.Index,
-				diplomaticTerm2.ToString()
-			});
+			DiplomaticTerm term = contractRequest.Terms[j];
+			array[count + j] = DiplomaticTermChange.Add(term);
 		}
 		OrderChangeDiplomaticContractTermsCollection orderChangeDiplomaticContractTermsCollection = new OrderChangeDiplomaticContractTermsCollection(contractRequest.Contract, array);
 		Diagnostics.Assert(base.AIEntity.AIPlayer.AIState == AIPlayer.PlayerState.EmpireControlledByAI);
@@ -1086,19 +1060,23 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 			return;
 		}
 		float empirePointCost = DepartmentOfForeignAffairs.GetEmpirePointCost(contractRequest.Contract, this.empire);
-		this.aiLayerAccountManager.TryGetAccount(AILayer_AccountManager.DiplomacyAccountName);
-		float num;
-		base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num, false);
-		if (this.aiLayerAccountManager.TryMakeUnexpectedImmediateExpense(AILayer_AccountManager.DiplomacyAccountName, empirePointCost, 0f) || empirePointCost * 1.5f < num)
+		if (this.aiLayerAccountManager.TryMakeUnexpectedImmediateExpense(AILayer_AccountManager.DiplomacyAccountName, empirePointCost, 0f))
 		{
 			OrderChangeDiplomaticContractState orderChangeDiplomaticContractState = new OrderChangeDiplomaticContractState(contractRequest.Contract, DiplomaticContractState.Proposed);
 			Diagnostics.Assert(base.AIEntity.AIPlayer.AIState == AIPlayer.PlayerState.EmpireControlledByAI);
 			Ticket ticket;
 			base.AIEntity.Empire.PlayerControllers.AI.PostOrder(orderChangeDiplomaticContractState, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderProcessedEventHandler));
 			contractRequest.CurrentOrderTicketNumber = orderChangeDiplomaticContractState.TicketNumber;
-			return;
 		}
-		contractRequest.State = AILayer_Diplomacy.ContractRequest.ContractRequestState.Failed;
+		else
+		{
+			AILayer.Log("The empire {0} tried to propose the following contract but has not enough empire point.\n{1}", new object[]
+			{
+				this.empire.Index,
+				contractRequest.Contract
+			});
+			contractRequest.State = AILayer_Diplomacy.ContractRequest.ContractRequestState.Failed;
+		}
 	}
 
 	private void SynchronousMethod_ProcessContractRequests()
@@ -1173,28 +1151,7 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		float empireWealth = AILayer_Diplomacy.GetEmpireWealth(empire);
 		float empireWealth2 = AILayer_Diplomacy.GetEmpireWealth(empire2);
 		float num2 = 1f / Mathf.Max(1f, Mathf.Min(empireWealth2, empireWealth));
-		float num3 = aiParameterValue * num2;
-		if (diplomaticTerm is DiplomaticTermBoosterExchange && num3 < 0f)
-		{
-			DiplomaticTermBoosterExchange diplomaticTermBoosterExchange = diplomaticTerm as DiplomaticTermBoosterExchange;
-			float num4 = (float)((diplomaticTermBoosterExchange.BoosterGUID == null) ? 0 : diplomaticTermBoosterExchange.BoosterGUID.Length);
-			DepartmentOfPlanificationAndDevelopment agency = empireWhichProvides.GetAgency<DepartmentOfPlanificationAndDevelopment>();
-			float num5 = 0f;
-			if (agency != null)
-			{
-				int num6 = agency.CountBoosters((BoosterDefinition match) => match.Name == diplomaticTermBoosterExchange.BoosterDefinitionName);
-				if (num6 < 6)
-				{
-					num5 = -1f;
-				}
-				else
-				{
-					num5 = Mathf.Min(-0.1f, 0.2f * (float)num6 - 2.1f);
-				}
-			}
-			num3 = Mathf.Min(num5 * num4, num3);
-		}
-		return num3;
+		return aiParameterValue * num2;
 	}
 
 	[UtilityFunction("DiplomacyEconomyReceiver")]
@@ -1212,14 +1169,7 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		float empireWealth = AILayer_Diplomacy.GetEmpireWealth(empire);
 		float empireWealth2 = AILayer_Diplomacy.GetEmpireWealth(empire2);
 		float num2 = 1f / Mathf.Max(1f, Mathf.Max(empireWealth2, empireWealth));
-		float num3 = aiParameterValue * num2;
-		if (diplomaticTerm is DiplomaticTermBoosterExchange && num3 > 0f)
-		{
-			DiplomaticTermBoosterExchange diplomaticTermBoosterExchange = diplomaticTerm as DiplomaticTermBoosterExchange;
-			float num4 = (float)((diplomaticTermBoosterExchange.BoosterGUID == null) ? 0 : diplomaticTermBoosterExchange.BoosterGUID.Length);
-			num3 = Mathf.Max(0.1f * num4, num3);
-		}
-		return num3;
+		return aiParameterValue * num2;
 	}
 
 	[UtilityFunction("DiplomacyTechnologyProvider")]
@@ -1433,7 +1383,8 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		float num2 = Mathf.Max(0.1f, worldExplorationRatio2) / Mathf.Max(0.1f, worldExplorationRatio);
 		interpreterContext.Register("TheirExplorationlead", num2);
 		float propertyValue = this.empire.GetPropertyValue("EmpireScaleFactor");
-		float num3 = empire.GetPropertyValue("EmpireScaleFactor") / propertyValue;
+		float propertyValue2 = empire.GetPropertyValue("EmpireScaleFactor");
+		float num3 = propertyValue2 / propertyValue;
 		interpreterContext.Register("TheirScaleLead", num3);
 		DiplomaticTermResourceExchange diplomaticTermResourceExchange = diplomaticTerm as DiplomaticTermResourceExchange;
 		if (diplomaticTermResourceExchange != null)
@@ -1441,11 +1392,13 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 			interpreterContext.Register("ResourceAmount", diplomaticTermResourceExchange.Amount);
 			float priceWithSalesTaxes = TradableResource.GetPriceWithSalesTaxes(diplomaticTermResourceExchange.ResourceName, TradableTransactionType.Buyout, empireWhichReceives, 1f);
 			interpreterContext.Register("MarketPlaceValue", priceWithSalesTaxes);
+			DepartmentOfTheTreasury agency = empireWhichProvides.GetAgency<DepartmentOfTheTreasury>();
 			float num4;
-			empireWhichProvides.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(empireWhichProvides.SimulationObject, diplomaticTermResourceExchange.ResourceName, out num4, true);
+			agency.TryGetResourceStockValue(empireWhichProvides.SimulationObject, diplomaticTermResourceExchange.ResourceName, out num4, true);
 			interpreterContext.Register("ProviderResourceStock", num4);
+			DepartmentOfTheTreasury agency2 = empireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
 			float num5;
-			empireWhichReceives.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(empireWhichReceives.SimulationObject, diplomaticTermResourceExchange.ResourceName, out num5, true);
+			agency2.TryGetResourceStockValue(empireWhichReceives.SimulationObject, diplomaticTermResourceExchange.ResourceName, out num5, true);
 			interpreterContext.Register("ReceiverResourceStock", num5);
 		}
 		DiplomaticTermCityExchange diplomaticTermCityExchange = diplomaticTerm as DiplomaticTermCityExchange;
@@ -1479,7 +1432,7 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 					{
 						Region.Border border = city.Region.Borders[i];
 						Region region = this.worldPositionningService.GetRegion(border.NeighbourRegionIndex);
-						if (region.City != null && region.City.Empire != null && region.City.Empire.Index == city.Empire.Index)
+						if (region.IsRegionColonized() && region.Owner != null && region.Owner.Index == city.Empire.Index)
 						{
 							num6 += (float)border.WorldPositions.Length;
 						}
@@ -1512,18 +1465,8 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 			Diagnostics.Assert(this.departmentOfPlanificationAndDevelopment != null);
 			float num8 = (float)this.departmentOfPlanificationAndDevelopment.CountBoosters((BoosterDefinition match) => match.Name == diplomaticTermBoosterExchange.BoosterDefinitionName);
 			interpreterContext.Register("BoosterCount", num8);
-			float priceWithSalesTaxes2 = TradableBooster.GetPriceWithSalesTaxes(diplomaticTermBoosterExchange.BoosterDefinitionName, TradableTransactionType.Sellout, this.empire, 1f);
+			float priceWithSalesTaxes2 = TradableBooster.GetPriceWithSalesTaxes(diplomaticTermBoosterExchange.BoosterDefinitionName, TradableTransactionType.Sellout, this.empire, num7);
 			interpreterContext.Register("MarketPlaceValue", priceWithSalesTaxes2);
-			float num9 = 1f;
-			if (this.departmentOfScience.GetTechnologyState("TechnologyDefinitionAllBoosterLevel1") == DepartmentOfScience.ConstructibleElement.State.Researched)
-			{
-				num9 += 1f;
-			}
-			if (this.departmentOfScience.GetTechnologyState("TechnologyDefinitionAllBoosterLevel2") == DepartmentOfScience.ConstructibleElement.State.Researched)
-			{
-				num9 += 1f;
-			}
-			interpreterContext.Register("Boostertechs", num9 / 3f);
 		}
 		DiplomaticTermProposal diplomaticTermProposal = diplomaticTerm as DiplomaticTermProposal;
 		if (diplomaticTermProposal != null)
@@ -1554,90 +1497,55 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		if (fortressExchange != null)
 		{
 			global::Empire empire2 = this.game.Empires.First((global::Empire match) => match is NavalEmpire);
-			if (empire2 != null)
+			if (empire2 == null)
 			{
-				PirateCouncil agency = empire2.GetAgency<PirateCouncil>();
-				if (agency != null)
+				return;
+			}
+			PirateCouncil agency3 = empire2.GetAgency<PirateCouncil>();
+			if (agency3 == null)
+			{
+				return;
+			}
+			Fortress fortress = agency3.Fortresses.FirstOrDefault((Fortress match) => match.GUID == fortressExchange.FortressGUID);
+			if (fortress == null)
+			{
+				return;
+			}
+			int num9 = 0;
+			if (fortress.Region.Owner == empireWhichProvides)
+			{
+				num9 = 1;
+			}
+			int num10 = 0;
+			int num11 = 0;
+			int num12 = 0;
+			for (int j = 0; j < agency3.Fortresses.Count; j++)
+			{
+				if (agency3.Fortresses[j].Region == fortress.Region)
 				{
-					Fortress fortress = agency.Fortresses.FirstOrDefault((Fortress match) => match.GUID == fortressExchange.FortressGUID);
-					if (fortress != null)
+					num10++;
+					if (agency3.Fortresses[j].Occupant == empireWhichProvides)
 					{
-						int num10 = 0;
-						if (fortress.Region.Owner == empireWhichProvides)
-						{
-							num10 = 1;
-						}
-						int num11 = 0;
-						int num12 = 0;
-						int num13 = 0;
-						for (int j = 0; j < agency.Fortresses.Count; j++)
-						{
-							if (agency.Fortresses[j].Region == fortress.Region)
-							{
-								num11++;
-								if (agency.Fortresses[j].Occupant == empireWhichProvides)
-								{
-									num12++;
-								}
-								if (agency.Fortresses[j].Occupant == empireWhichReceives)
-								{
-									num13++;
-								}
-							}
-						}
-						interpreterContext.SimulationObject = fortress.SimulationObject;
-						interpreterContext.Register("IsRegionControlled", num10);
-						interpreterContext.Register("TotalNumberOfFortressesInRegion", num11);
-						interpreterContext.Register("ProviderNumberOfFortressesInRegion", num12);
-						interpreterContext.Register("ReceiverNumberOfFortressesInRegion", num13);
-						float num14 = 0f;
-						NavyRegionData navyRegionData = this.aiLayerNavy.NavyRegions.Find((BaseNavyRegionData match) => match.WaterRegionIndex == fortress.Region.Index) as NavyRegionData;
-						if (navyRegionData != null)
-						{
-							num14 = navyRegionData.RegionScore;
-						}
-						interpreterContext.Register("MyRegionScore", num14);
-						int num15 = 0;
-						int num16 = 0;
-						bool flag3 = false;
-						Predicate<DiplomaticContract> match2 = (DiplomaticContract contract) => contract.EmpireWhichProposes == diplomaticTerm.EmpireWhichProposes && contract.EmpireWhichReceives == diplomaticTerm.EmpireWhichReceives && contract.State == DiplomaticContractState.Negotiation;
-						foreach (DiplomaticContract diplomaticContract in this.diplomacyContractRepositoryService.FindAll(match2))
-						{
-							foreach (DiplomaticTerm diplomaticTerm2 in diplomaticContract.Terms)
-							{
-								DiplomaticTermFortressExchange fortressExchange2 = diplomaticTerm2 as DiplomaticTermFortressExchange;
-								if (fortressExchange2 != null)
-								{
-									Fortress fortress2 = agency.Fortresses.FirstOrDefault((Fortress match3) => match3.GUID == fortressExchange2.FortressGUID);
-									if (fortress2.Region == fortress.Region && fortress2.GUID != fortress.GUID)
-									{
-										num15++;
-									}
-									if (fortress2.GUID == fortress.GUID)
-									{
-										num16 = 1;
-									}
-									if (fortress2.Occupant == empireWhichReceives && fortress2.Region == fortress.Region)
-									{
-										flag3 = true;
-										break;
-									}
-								}
-							}
-						}
-						float num17 = 0f;
-						if (num11 - num13 - num15 == 1 && num16 == 0 && !flag3)
-						{
-							num17 = 1f;
-						}
-						if (num11 - num13 - num15 - num16 == 0 && !flag3)
-						{
-							num17 = 1f / (float)(num15 + num16);
-						}
-						interpreterContext.Register("RegionCompletion", num17);
+						num11++;
+					}
+					if (agency3.Fortresses[j].Occupant == empireWhichReceives)
+					{
+						num12++;
 					}
 				}
 			}
+			interpreterContext.SimulationObject = fortress.SimulationObject;
+			interpreterContext.Register("IsRegionControlled", num9);
+			interpreterContext.Register("TotalNumberOfFortressesInRegion", num10);
+			interpreterContext.Register("ProviderNumberOfFortressesInRegion", num11);
+			interpreterContext.Register("ReceiverNumberOfFortressesInRegion", num12);
+			float num13 = 0f;
+			NavyRegionData navyRegionData = this.aiLayerNavy.NavyRegions.Find((BaseNavyRegionData match) => match.WaterRegionIndex == fortress.Region.Index) as NavyRegionData;
+			if (navyRegionData != null)
+			{
+				num13 = navyRegionData.RegionScore;
+			}
+			interpreterContext.Register("MyRegionScore", num13);
 		}
 	}
 
@@ -2132,9 +2040,9 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		string text = outputName;
 		if (text != null)
 		{
-			if (AILayer_Diplomacy.<>f__switch$map3 == null)
+			if (AILayer_Diplomacy.<>f__switch$map4 == null)
 			{
-				AILayer_Diplomacy.<>f__switch$map3 = new Dictionary<string, int>(6)
+				AILayer_Diplomacy.<>f__switch$map4 = new Dictionary<string, int>(6)
 				{
 					{
 						"DiplomacyEconomyProvider",
@@ -2163,7 +2071,7 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 				};
 			}
 			int num7;
-			if (AILayer_Diplomacy.<>f__switch$map3.TryGetValue(text, out num7))
+			if (AILayer_Diplomacy.<>f__switch$map4.TryGetValue(text, out num7))
 			{
 				if (num7 != 0)
 				{
@@ -2227,11 +2135,11 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		this.eventService = Services.GetService<IEventService>();
 		Diagnostics.Assert(this.eventService != null);
 		this.eventService.EventRaise += this.EventService_EventRaise;
-		IGameService service = Services.GetService<IGameService>();
-		Diagnostics.Assert(service != null);
+		IGameService gameService = Services.GetService<IGameService>();
+		Diagnostics.Assert(gameService != null);
 		this.tickableRepositoryAIHelper = AIScheduler.Services.GetService<ITickableRepositoryAIHelper>();
 		this.tickableRepositoryAIHelper.Register(this);
-		this.game = (service.Game as global::Game);
+		this.game = (gameService.Game as global::Game);
 		Diagnostics.Assert(this.game != null && this.game.Empires != null);
 		this.majorEmpires = Array.ConvertAll<global::Empire, MajorEmpire>(Array.FindAll<global::Empire>(this.game.Empires, (global::Empire empire) => empire is MajorEmpire), (global::Empire empire) => empire as MajorEmpire);
 		this.mostWantedDiplomaticTermAgentNameByEmpireIndex = new StaticString[this.majorEmpires.Length];
@@ -2253,10 +2161,10 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		this.worldPositionningService = this.game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositionningService != null);
 		Diagnostics.Assert(aiEntity.AIPlayer != null);
-		AIEntity entity = aiEntity.AIPlayer.GetEntity<AIEntity_Amas>();
-		Diagnostics.Assert(entity != null);
-		this.aiLayerDiplomacyAmas = entity.GetLayer<AILayer_DiplomacyAmas>();
-		this.aiLayerResourceAmas = entity.GetLayer<AILayer_ResourceAmas>();
+		AIEntity aiEntityAmas = aiEntity.AIPlayer.GetEntity<AIEntity_Amas>();
+		Diagnostics.Assert(aiEntityAmas != null);
+		this.aiLayerDiplomacyAmas = aiEntityAmas.GetLayer<AILayer_DiplomacyAmas>();
+		this.aiLayerResourceAmas = aiEntityAmas.GetLayer<AILayer_ResourceAmas>();
 		Diagnostics.Assert(this.aiLayerDiplomacyAmas != null);
 		this.aiLayerAccountManager = aiEntity.GetLayer<AILayer_AccountManager>();
 		Diagnostics.Assert(this.aiLayerAccountManager != null);
@@ -2266,14 +2174,14 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		Diagnostics.Assert(this.aiLayerAttitude != null);
 		this.aiLayerNavy = aiEntity.GetLayer<AILayer_Navy>();
 		Diagnostics.Assert(this.aiLayerAttitude != null);
-		DepartmentOfForeignAffairs.ConstructibleElement constructibleElement;
-		if (this.contructibleElementDatabase.TryGetValue(DiplomaticTermDefinition.Names.Warning, out constructibleElement))
+		DepartmentOfForeignAffairs.ConstructibleElement contructibleElement;
+		if (this.contructibleElementDatabase.TryGetValue(DiplomaticTermDefinition.Names.Warning, out contructibleElement))
 		{
-			this.diplomaticTermWarning = (constructibleElement as DiplomaticTermDefinition);
+			this.diplomaticTermWarning = (contructibleElement as DiplomaticTermDefinition);
 		}
-		if (this.contructibleElementDatabase.TryGetValue(DiplomaticTermDefinition.Names.Gratify, out constructibleElement))
+		if (this.contructibleElementDatabase.TryGetValue(DiplomaticTermDefinition.Names.Gratify, out contructibleElement))
 		{
-			this.diplomaticTermGratify = (constructibleElement as DiplomaticTermDefinition);
+			this.diplomaticTermGratify = (contructibleElement as DiplomaticTermDefinition);
 		}
 		Diagnostics.Assert(this.diplomaticTermWarning != null);
 		Diagnostics.Assert(this.diplomaticTermGratify != null);
@@ -2283,9 +2191,6 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		base.AIEntity.RegisterPass(AIEntity.Passes.CreateLocalNeeds.ToString(), "AILayer_Diplomacy_CreateLocalNeedsPass", new AIEntity.AIAction(this.CreateLocalNeeds), this, new StaticString[0]);
 		base.AIEntity.RegisterPass(AIEntity.Passes.EvaluateNeeds.ToString(), "AILayer_Diplomacy_EvaluateNeedsPass", new AIEntity.AIAction(this.EvaluateNeeds), this, new StaticString[0]);
 		base.AIEntity.RegisterPass(AIEntity.Passes.ExecuteNeeds.ToString(), "AILayer_Diplomacy_ExecuteNeedsPass", new AIEntity.AIAction(this.ExecuteNeeds), this, new StaticString[0]);
-		IPersonalityAIHelper service2 = AIScheduler.Services.GetService<IPersonalityAIHelper>();
-		this.maximumNumberDiplomaticProposalsPerTurn = service2.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", "AI/MajorEmpire/AIEntity_Empire/AILayer_Diplomacy", "MaximumNumberDiplomaticProposalsPerTurn"), 1f);
-		this.SweetenDealThreshold = service2.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", "AI/MajorEmpire/AIEntity_Empire/AILayer_Diplomacy", "SweetenDealThreshold"), 2f);
 		yield break;
 	}
 
@@ -2339,16 +2244,11 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 	protected override void CreateLocalNeeds(StaticString context, StaticString pass)
 	{
 		base.CreateLocalNeeds(context, pass);
-		float num = (float)this.departmentOfTheInterior.Cities.Count;
+		int count = this.departmentOfTheInterior.Cities.Count;
 		int currentTechnologyEraNumber = this.departmentOfScience.CurrentTechnologyEraNumber;
-		float num2 = num * (float)currentTechnologyEraNumber * this.diplomaticMaximumAccountMultiplier;
-		float num3;
-		base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num3, false);
-		if (num2 < num3 * 0.25f)
-		{
-			num2 = num3 * 0.25f;
-		}
-		base.AIEntity.GetLayer<AILayer_AccountManager>().SetMaximalAccount(AILayer_AccountManager.DiplomacyAccountName, num2);
+		float value = (float)(count * currentTechnologyEraNumber) * this.diplomaticMaximumAccountMultiplier;
+		AILayer_AccountManager layer = base.AIEntity.GetLayer<AILayer_AccountManager>();
+		layer.SetMaximalAccount(AILayer_AccountManager.DiplomacyAccountName, value);
 		this.ClearContractRequests();
 		Blackboard blackboard = base.AIEntity.AIPlayer.Blackboard;
 		for (int i = 0; i < this.majorEmpires.Length; i++)
@@ -2399,29 +2299,9 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 	{
 		base.ExecuteNeeds(context, pass);
 		this.currentContractRequest = null;
-		float num = this.maximumNumberDiplomaticProposalsPerTurn;
-		int i = 0;
-		while (i < this.ContractRequests.Count)
+		if (this.ContractRequests.Count > 0)
 		{
-			if (num < 1f && num > 0f)
-			{
-				if ((int)((float)this.game.Turn % (1f / num)) == 0)
-				{
-					this.ContractRequests[i].State = AILayer_Diplomacy.ContractRequest.ContractRequestState.WaitingToBeProcessed;
-					break;
-				}
-				break;
-			}
-			else
-			{
-				if (num < 1f)
-				{
-					break;
-				}
-				this.ContractRequests[i].State = AILayer_Diplomacy.ContractRequest.ContractRequestState.WaitingToBeProcessed;
-				num -= 1f;
-				i++;
-			}
+			this.ContractRequests[0].State = AILayer_Diplomacy.ContractRequest.ContractRequestState.WaitingToBeProcessed;
 		}
 		this.State = TickableState.NeedTick;
 	}
@@ -2665,284 +2545,6 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 		return SynchronousJobState.Success;
 	}
 
-	private void SweetenDeal(DiplomaticContract diplomaticContract, ref List<DiplomaticTerm> diplomaticTerms, global::Empire empire, AILayer_Diplomacy layer)
-	{
-		if (diplomaticContract == null)
-		{
-			throw new ArgumentNullException("diplomaticTerms");
-		}
-		if (diplomaticTerms == null)
-		{
-			throw new ArgumentNullException("diplomaticTerms");
-		}
-		float num = 1f;
-		if (this.departmentOfForeignAffairs.IsAtWarWith(empire))
-		{
-			num = 2f;
-		}
-		Diagnostics.Assert(this.diplomaticTermsCacheList != null);
-		AILayer_ResourceManager ResourceManager = base.AIEntity.GetLayer<AILayer_ResourceManager>();
-		List<DiplomaticTerm> list = new List<DiplomaticTerm>();
-		float num2 = this.AnalyseContractProposition(diplomaticTerms, empire);
-		float num3 = layer.AnalyseContractProposition(diplomaticTerms, this.empire);
-		List<DiplomaticTerm> list2 = new List<DiplomaticTerm>();
-		bool flag = false;
-		if (this.contructibleElementDatabase != null)
-		{
-			DepartmentOfForeignAffairs.ConstructibleElement[] values = this.contructibleElementDatabase.GetValues();
-			if (values != null)
-			{
-				for (int i = 0; i < values.Length; i++)
-				{
-					DiplomaticTermDefinition diplomaticTermDefinition = values[i] as DiplomaticTermDefinition;
-					if (diplomaticTermDefinition != null && (diplomaticTermDefinition is DiplomaticTermTechnologyExchangeDefinition || diplomaticTermDefinition is DiplomaticTermBoosterExchangeDefinition || diplomaticTermDefinition is DiplomaticTermResourceExchangeDefinition))
-					{
-						DepartmentOfForeignAffairs.GetDiplomaticTerms(diplomaticTermDefinition, diplomaticContract, this.empire, empire, ref list);
-					}
-				}
-			}
-		}
-		Predicate<GameEntityGUID> <>9__3;
-		foreach (DiplomaticTerm diplomaticTerm in list)
-		{
-			if (diplomaticTerm is DiplomaticTermBoosterExchange && ResourceManager != null)
-			{
-				DiplomaticTermBoosterExchange BoosterExchange = diplomaticTerm as DiplomaticTermBoosterExchange;
-				bool flag2 = false;
-				foreach (DiplomaticTerm diplomaticTerm2 in diplomaticTerms)
-				{
-					DiplomaticTermBoosterExchange diplomaticTermBoosterExchange = diplomaticTerm2 as DiplomaticTermBoosterExchange;
-					if (diplomaticTermBoosterExchange != null && diplomaticTermBoosterExchange.Equals(BoosterExchange))
-					{
-						flag2 = true;
-						break;
-					}
-				}
-				if (!flag2)
-				{
-					float num4 = Mathf.Floor((float)this.departmentOfPlanificationAndDevelopment.CountBoosters((BoosterDefinition match) => match.Name == BoosterExchange.BoosterDefinitionName) * this.maximumExchangeAmountRatio);
-					float num5 = 0f;
-					if (list2.Count > 0)
-					{
-						num5 = layer.AnalyseContractProposition(list2, this.empire);
-					}
-					DepartmentOfEducation agency = this.empire.GetAgency<DepartmentOfEducation>();
-					if (num4 - 1f > 0f && agency != null)
-					{
-						int num6 = 1;
-						if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-						{
-							using (List<string>.Enumerator enumerator3 = ResourceManager.BoostersInUse.GetEnumerator())
-							{
-								while (enumerator3.MoveNext())
-								{
-									string text = enumerator3.Current;
-									Diagnostics.Log("======= SweetenDeal found boosters in use: {0} =======", new object[]
-									{
-										text
-									});
-								}
-								goto IL_3B4;
-							}
-							goto IL_250;
-						}
-						goto IL_3B4;
-						IL_3C0:
-						if (list2.Count <= 0 || layer.AnalyseContractProposition(list2, this.empire) + num3 <= 0.1f)
-						{
-							continue;
-						}
-						if (num2 + this.AnalyseContractProposition(list2, empire) > 0f || Mathf.Abs(num2 + this.AnalyseContractProposition(list2, empire)) <= this.SweetenDealThreshold * num)
-						{
-							flag = true;
-							break;
-						}
-						list2.Clear();
-						list2.TrimExcess();
-						continue;
-						IL_3B4:
-						if ((float)num6 > (float)((int)num4))
-						{
-							goto IL_3C0;
-						}
-						IL_250:
-						DepartmentOfEducation departmentOfEducation = agency;
-						Func<VaultItem, bool> predicate;
-						Func<VaultItem, bool> <>9__1;
-						if ((predicate = <>9__1) == null)
-						{
-							predicate = (<>9__1 = ((VaultItem match) => match.Constructible.Name == BoosterExchange.BoosterDefinitionName));
-						}
-						List<GameEntityGUID> list3 = (from selectedBooster in departmentOfEducation.Where(predicate)
-						select selectedBooster.GUID).ToList<GameEntityGUID>();
-						List<GameEntityGUID> list4 = list3;
-						Predicate<GameEntityGUID> match2;
-						if ((match2 = <>9__3) == null)
-						{
-							match2 = (<>9__3 = ((GameEntityGUID x) => ResourceManager.BoostersInUse.Contains(x.ToString())));
-						}
-						list4.RemoveAll(match2);
-						num4 = (float)list3.Count;
-						int num7 = num6;
-						if (num7 < list3.Count)
-						{
-							list3.RemoveRange(num7 - 1, list3.Count - num7);
-							list3.TrimExcess();
-						}
-						GameEntityGUID[] boosterGUIDs = list3.ToArray();
-						DiplomaticTermBoosterExchange diplomaticTermBoosterExchange2 = new DiplomaticTermBoosterExchange((DiplomaticTermBoosterExchangeDefinition)BoosterExchange.Definition, BoosterExchange.EmpireWhichProposes, BoosterExchange.EmpireWhichProvides, BoosterExchange.EmpireWhichReceives, boosterGUIDs, BoosterExchange.BoosterDefinitionName);
-						if (!diplomaticTermBoosterExchange2.CanApply(diplomaticContract, new string[0]))
-						{
-							goto IL_3C0;
-						}
-						if (layer.AnalyseContractProposition(new List<DiplomaticTerm>
-						{
-							diplomaticTermBoosterExchange2
-						}, this.empire) + num5 + num3 > 0.1f)
-						{
-							list2.Add(diplomaticTermBoosterExchange2);
-							goto IL_3C0;
-						}
-						if ((float)num6 == num4)
-						{
-							list2.Add(diplomaticTermBoosterExchange2);
-						}
-						num6++;
-						goto IL_3B4;
-					}
-				}
-			}
-		}
-		if (!flag)
-		{
-			foreach (DiplomaticTerm diplomaticTerm3 in list)
-			{
-				if (diplomaticTerm3 is DiplomaticTermResourceExchange)
-				{
-					DiplomaticTermResourceExchange diplomaticTermResourceExchange = diplomaticTerm3 as DiplomaticTermResourceExchange;
-					bool flag3 = false;
-					foreach (DiplomaticTerm diplomaticTerm4 in diplomaticTerms)
-					{
-						DiplomaticTermResourceExchange diplomaticTermResourceExchange2 = diplomaticTerm4 as DiplomaticTermResourceExchange;
-						if (diplomaticTermResourceExchange2 != null && diplomaticTermResourceExchange2.Equals(diplomaticTermResourceExchange))
-						{
-							flag3 = true;
-							break;
-						}
-					}
-					if (!flag3)
-					{
-						float num8;
-						float num9;
-						this.GetDiplomaticTermAmountLimits(diplomaticTermResourceExchange, out num8, out num9);
-						num8 = Mathf.Floor(num8);
-						num9 = Mathf.Floor(num9);
-						float num10 = 0f;
-						if (list2.Count > 0)
-						{
-							num10 = layer.AnalyseContractProposition(list2, this.empire);
-						}
-						if (num9 - num8 > 0f)
-						{
-							DiplomaticTermResourceExchange diplomaticTermResourceExchange3 = new DiplomaticTermResourceExchange((DiplomaticTermResourceExchangeDefinition)diplomaticTermResourceExchange.Definition, diplomaticTermResourceExchange.EmpireWhichProposes, diplomaticTermResourceExchange.EmpireWhichProvides, diplomaticTermResourceExchange.EmpireWhichReceives, diplomaticTermResourceExchange.ResourceName, 1f);
-							int num11 = (int)num8;
-							while ((float)num11 <= (float)((int)num9))
-							{
-								diplomaticTermResourceExchange3.Amount = (float)num11;
-								if (!diplomaticTermResourceExchange3.CanApply(diplomaticContract, new string[0]))
-								{
-									break;
-								}
-								if (layer.AnalyseContractProposition(new List<DiplomaticTerm>
-								{
-									diplomaticTermResourceExchange3
-								}, this.empire) + num10 + num3 > 0f)
-								{
-									list2.Add(diplomaticTermResourceExchange3);
-									break;
-								}
-								if ((float)num11 == num9)
-								{
-									list2.Add(diplomaticTermResourceExchange3);
-								}
-								num11++;
-							}
-							if (list2.Count > 0 && layer.AnalyseContractProposition(list2, this.empire) + num3 > 0.1f)
-							{
-								if (num2 + this.AnalyseContractProposition(list2, empire) > 0f || Mathf.Abs(num2 + this.AnalyseContractProposition(list2, empire)) <= this.SweetenDealThreshold * num)
-								{
-									flag = true;
-									break;
-								}
-								list2.Clear();
-								list2.TrimExcess();
-							}
-						}
-					}
-				}
-			}
-		}
-		if (!flag)
-		{
-			foreach (DiplomaticTerm diplomaticTerm5 in list)
-			{
-				DiplomaticTermTechnologyExchange diplomaticTermTechnologyExchange = diplomaticTerm5 as DiplomaticTermTechnologyExchange;
-				if (diplomaticTermTechnologyExchange != null && diplomaticTermTechnologyExchange.CanApply(diplomaticContract, new string[0]))
-				{
-					bool flag4 = false;
-					foreach (DiplomaticTerm diplomaticTerm6 in diplomaticTerms)
-					{
-						DiplomaticTermTechnologyExchange diplomaticTermTechnologyExchange2 = diplomaticTerm6 as DiplomaticTermTechnologyExchange;
-						if (diplomaticTermTechnologyExchange2 != null && diplomaticTermTechnologyExchange2.Equals(diplomaticTermTechnologyExchange))
-						{
-							flag4 = true;
-							break;
-						}
-					}
-					if (!flag4 && DepartmentOfScience.GetTechnologyEraNumber(diplomaticTermTechnologyExchange.TechnologyDefinition) <= 5)
-					{
-						list2.Add(diplomaticTermTechnologyExchange);
-						if (layer.AnalyseContractProposition(list2, this.empire) + num3 > 0.1f)
-						{
-							if (num2 + this.AnalyseContractProposition(list2, empire) > 0f || Mathf.Abs(num2 + this.AnalyseContractProposition(list2, empire)) <= this.SweetenDealThreshold * num)
-							{
-								flag = true;
-								break;
-							}
-							list2.Clear();
-							list2.TrimExcess();
-						}
-					}
-				}
-			}
-		}
-		if (flag)
-		{
-			diplomaticTerms.AddRange(list2);
-			foreach (DiplomaticTerm diplomaticTerm7 in diplomaticTerms)
-			{
-				if (diplomaticTerm7 is DiplomaticTermBoosterExchange)
-				{
-					if (ResourceManager.BoostersInUse == null)
-					{
-						ResourceManager.BoostersInUse = new List<string>();
-					}
-					foreach (GameEntityGUID gameEntityGUID in (diplomaticTerm7 as DiplomaticTermBoosterExchange).BoosterGUID)
-					{
-						ResourceManager.BoostersInUse.Add(gameEntityGUID.ToString());
-					}
-				}
-			}
-			Diagnostics.Log("ELCP: Empire {0}/{1} with Empire {2}/{3} SweetenDeal succesfull", new object[]
-			{
-				base.AIEntity.Empire.Index,
-				this.AnalyseContractProposition(diplomaticTerms, empire),
-				empire.ToString(),
-				layer.AnalyseContractProposition(diplomaticTerms, this.empire)
-			});
-		}
-	}
-
 	private const bool DisableForceStatus = false;
 
 	public const string AIDiplomacyRegistryPath = "AI/MajorEmpire/AIEntity_Empire/AILayer_Diplomacy/";
@@ -3057,10 +2659,6 @@ public class AILayer_Diplomacy : AILayer, ITickable, ISimulationAIEvaluationHelp
 
 	[InfluencedByPersonality]
 	private int wantedDiplomaticRelationStateMessageRevaluationPeriod = 4;
-
-	private float maximumNumberDiplomaticProposalsPerTurn;
-
-	private float SweetenDealThreshold;
 
 	private static class EvaluationCategory
 	{

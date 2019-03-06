@@ -30,47 +30,6 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		{
 			return 0f;
 		}
-		IWorldAtlasAIHelper service = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
-		Diagnostics.Assert(service != null);
-		List<Region> list = new List<Region>();
-		service.ComputeNeighbourRegions(camp.City.Region, ref list);
-		bool flag = true;
-		DepartmentOfForeignAffairs agency = camp.Empire.GetAgency<DepartmentOfForeignAffairs>();
-		foreach (Army army in Intelligence.GetArmiesInRegion(camp.City.Region.Index))
-		{
-			if (army.Empire != camp.Empire && !agency.IsFriend(army.Empire))
-			{
-				return 0.1f;
-			}
-		}
-		for (int i = 0; i < list.Count; i++)
-		{
-			Region region = list[i];
-			if (!region.IsOcean && !region.IsWasteland)
-			{
-				if (region.City != null && region.City.Empire != camp.Empire && !agency.IsFriend(region.City.Empire))
-				{
-					flag = false;
-					break;
-				}
-				foreach (Army army2 in Intelligence.GetArmiesInRegion(region.Index))
-				{
-					if (army2.Empire != camp.Empire && army2.Empire is MajorEmpire && !agency.IsFriend(army2.Empire))
-					{
-						flag = false;
-						break;
-					}
-				}
-				if (!flag)
-				{
-					break;
-				}
-			}
-		}
-		if (flag)
-		{
-			return 0f;
-		}
 		float normalizedScore = 0f;
 		float num;
 		if (simulatedUnitsCount >= 0)
@@ -81,9 +40,10 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		{
 			num = (float)camp.StandardUnits.Count / (float)camp.MaximumUnitSlot;
 		}
-		float normalizedScore2 = AILayer.Boost(normalizedScore, (1f - num) * unitRatioBoost);
-		float developmentRatioOfCamp = AIScheduler.Services.GetService<IEntityInfoAIHelper>().GetDevelopmentRatioOfCamp(camp);
-		return AILayer.Boost(normalizedScore2, (1f - developmentRatioOfCamp) * AILayer_Military.cityDevRatioBoost);
+		normalizedScore = AILayer.Boost(normalizedScore, (1f - num) * unitRatioBoost);
+		IEntityInfoAIHelper service = AIScheduler.Services.GetService<IEntityInfoAIHelper>();
+		float developmentRatioOfCamp = service.GetDevelopmentRatioOfCamp(camp);
+		return AILayer.Boost(normalizedScore, (1f - developmentRatioOfCamp) * AILayer_Military.cityDevRatioBoost);
 	}
 
 	public static float GetCityDefenseLocalPriority(City city, float unitRatioBoost, int simulatedUnitsCount = -1)

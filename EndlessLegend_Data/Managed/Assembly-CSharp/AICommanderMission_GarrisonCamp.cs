@@ -286,7 +286,7 @@ public class AICommanderMission_GarrisonCamp : AICommanderMission
 				{
 					array[i] = this.Camp.City.StandardUnits[i].GUID;
 				}
-				OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(base.Commander.Empire.Index, this.Camp.City.GUID, array, armyPosition, null, false);
+				OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(base.Commander.Empire.Index, this.Camp.City.GUID, array, armyPosition, null, false, true, true);
 				base.Commander.Empire.PlayerControllers.AI.PostOrder(order, out this.armySpawnTicket, null);
 			}
 		}
@@ -303,7 +303,7 @@ public class AICommanderMission_GarrisonCamp : AICommanderMission
 
 	private bool IsMissionValid()
 	{
-		return this.Camp != null && this.Camp.Empire == base.Commander.Empire && AILayer_Military.GetCampDefenseLocalPriority(this.Camp, this.unitRatioBoost, AICommanderMission_GarrisonCamp.SimulatedUnitsCount) > 0f;
+		return this.Camp != null && this.Camp.Empire == base.Commander.Empire;
 	}
 
 	private bool WaitingOnArmyTicket()

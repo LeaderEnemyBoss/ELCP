@@ -15,11 +15,11 @@ public class Application : Amplitude.Unity.Framework.Application
 		Amplitude.Unity.Framework.Application.Name = "Endless Legend";
 		Amplitude.Unity.Framework.Application.Version = new Amplitude.Unity.Framework.Version
 		{
-			Major = 2,
-			Minor = 1,
-			Revision = 5,
+			Major = 1,
+			Minor = 7,
+			Revision = 4,
 			Serial = 3,
-			Label = "Community Patch",
+			Label = string.Empty,
 			Accessibility = Accessibility.Public
 		};
 		global::Application.SteamAppID = 289130;
@@ -206,6 +206,14 @@ public class Application : Amplitude.Unity.Framework.Application
 			}
 		}
 
+		public static bool EnableKaijuEmpireAI
+		{
+			get
+			{
+				return global::Application.FantasyPreferences.enableKaijuEmpireAI;
+			}
+		}
+
 		public static bool EnableNavalEmpireAI
 		{
 			get
@@ -267,6 +275,8 @@ public class Application : Amplitude.Unity.Framework.Application
 		private static bool enableNavalEmpireAI = true;
 
 		private static bool enableLesserEmpireAI = true;
+
+		private static bool enableKaijuEmpireAI = true;
 
 		private static bool forceAIEndTurn = true;
 

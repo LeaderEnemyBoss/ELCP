@@ -170,6 +170,11 @@ public class AchievementManager : SteamAchievementManager
 		return !this.GetAchievement("ROVING_CLANS_HERO_KILLER_SETSEKE") && deathUnit != null && killerUnit != null && (!(this.ActiveEmpire as global::Empire).Faction.IsCustom && killerUnit.Garrison.Empire.Index == this.ActiveEmpire.Index && deathUnit.IsHero() && killerUnit.UnitDesign.Tags.Contains("Scarab"));
 	}
 
+	private bool WasKaijuLiceKilled(Unit deathUnit)
+	{
+		return !this.GetAchievement("THE_EXTERMINATOR") && deathUnit != null && (deathUnit.Garrison.Empire.Index != this.ActiveEmpire.Index && deathUnit.UnitDesign.Tags.Contains(Kaiju.LiceUnitTag));
+	}
+
 	private string Command_Achievement(string[] commandLineArgs)
 	{
 		if (commandLineArgs.Length > 1)
@@ -319,6 +324,18 @@ public class AchievementManager : SteamAchievementManager
 		{
 			this.SetStatisticValue("CITIES_COUNT_TURN_15", (float)this.departmentOfTheInterior.Cities.Count, false);
 		}
+		if (!this.GetAchievement("WELCOME_TO_THE_FOLD"))
+		{
+			int num = 0;
+			for (int i = 0; i < this.departmentOfTheInterior.Cities.Count; i++)
+			{
+				if (this.departmentOfTheInterior.Cities[i].IsInfected)
+				{
+					num++;
+				}
+			}
+			this.SetStatisticValue("OVERGROWN_CITIES_COUNT", (float)num, false);
+		}
 	}
 
 	private void DepartmentOfTransportation_ArmyTeleportedToCity(object sender, ArmyTeleportedToCityEventArgs e)
@@ -444,56 +461,58 @@ public class AchievementManager : SteamAchievementManager
 
 	private void RuntimeService_RuntimeChange(object sender, RuntimeChangeEventArgs e)
 	{
-		if (e.Action == RuntimeChangeAction.Loading)
+		RuntimeChangeAction action = e.Action;
+		if (action != RuntimeChangeAction.Loading)
 		{
-			return;
-		}
-		if (base.IsDisabled)
-		{
-			Diagnostics.Log("Steam achievements restored.");
-			base.IsDisabled = false;
-		}
-		if (e.Action != RuntimeChangeAction.Loaded)
-		{
-			return;
-		}
-		this.Load();
-		if (base.IsDisabled)
-		{
-			return;
-		}
-		if (e.Action == RuntimeChangeAction.Loaded && e.Runtime != null && e.Runtime.Configuration != null)
-		{
-			RuntimeModule runtimeModule = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Standalone);
-			RuntimeModule runtimeModule2 = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Conversion);
-			RuntimeModule runtimeModule3 = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Extension);
-			RuntimeModule runtimeModule4;
-			if (runtimeModule2 != null)
+			if (base.IsDisabled)
 			{
-				runtimeModule4 = runtimeModule2;
-			}
-			else if (runtimeModule3 != null)
-			{
-				runtimeModule4 = runtimeModule3;
-			}
-			else
-			{
-				runtimeModule4 = runtimeModule;
-				IRuntimeService service = Services.GetService<IRuntimeService>();
-				if (service != null && service.VanillaModuleName == runtimeModule.Name)
-				{
-					runtimeModule4 = null;
-				}
-			}
-			if (runtimeModule4 != null)
-			{
+				Diagnostics.Log("Steam achievements restored.");
 				base.IsDisabled = false;
 			}
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			switch (e.Action)
 			{
-				Diagnostics.LogWarning("The network achievement manager has been disabled because the modding tools are enabled...");
-				base.IsDisabled = true;
+			case RuntimeChangeAction.Loaded:
+				this.Load();
+				if (base.IsDisabled)
+				{
+					return;
+				}
+				action = e.Action;
+				if (action == RuntimeChangeAction.Loaded)
+				{
+					if (e.Runtime != null && e.Runtime.Configuration != null)
+					{
+						RuntimeModule runtimeModule = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Standalone);
+						RuntimeModule runtimeModule2 = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Conversion);
+						RuntimeModule runtimeModule3 = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Extension);
+						RuntimeModule runtimeModule4;
+						if (runtimeModule2 != null)
+						{
+							runtimeModule4 = runtimeModule2;
+						}
+						else if (runtimeModule3 != null)
+						{
+							runtimeModule4 = runtimeModule3;
+						}
+						else
+						{
+							runtimeModule4 = runtimeModule;
+							IRuntimeService service = Services.GetService<IRuntimeService>();
+							if (service != null && service.VanillaModuleName == runtimeModule.Name)
+							{
+								runtimeModule4 = null;
+							}
+						}
+						if (runtimeModule4 != null)
+						{
+							Diagnostics.LogWarning("Steam achievements are disabled when playing a modified game.");
+							base.IsDisabled = true;
+						}
+					}
+				}
+				return;
 			}
+			return;
 		}
 	}
 
@@ -735,6 +754,10 @@ public class AchievementManager : SteamAchievementManager
 			if (this.CheckRovingClansHeroKillerSetsekeAchievementCondition(deathUnit, killerUnit))
 			{
 				this.IncrementStatistic("ROVING_CLANS_SETSEKE_HERO_KILLS_COUNT", false);
+			}
+			if (this.WasKaijuLiceKilled(deathUnit))
+			{
+				this.AddToStatistic("LICE_KILLED_OVERALL_COUNT", 1f, false);
 			}
 		}
 	}
@@ -1392,6 +1415,10 @@ public class AchievementManager : SteamAchievementManager
 		{
 			this.IncrementStatistic("ROVING_CLANS_SETSEKE_HERO_KILLS_COUNT", false);
 		}
+		if (this.WasKaijuLiceKilled(eventWorldBattleUnitPerformDeath.DeathUnit))
+		{
+			this.AddToStatistic("LICE_KILLED_OVERALL_COUNT", 1f, false);
+		}
 	}
 
 	private void OnEventOnApplySimulationDescriptorChange(Amplitude.Unity.Event.Event eventRaised)
@@ -1403,7 +1430,7 @@ public class AchievementManager : SteamAchievementManager
 		if (!this.GetAchievement("ALL_GEOMANCY_BUFFS"))
 		{
 			EventOnApplySimulationDescriptorChange eventOnApplySimulationDescriptorChange = eventRaised as EventOnApplySimulationDescriptorChange;
-			if (this.ActiveEmpire.Index == eventOnApplySimulationDescriptorChange.Empire.Index)
+			if (eventOnApplySimulationDescriptorChange != null && eventOnApplySimulationDescriptorChange.SimulationDescriptorChangeInstruction.InstructionAction == SimulationDescriptorChangeInstruction.Action.Add && this.ActiveEmpire.Index == eventOnApplySimulationDescriptorChange.Empire.Index)
 			{
 				EncounterUnit encounterUnit = eventOnApplySimulationDescriptorChange.Target.EncounterUnit;
 				if (encounterUnit.UnitDuplicatedSimulationObject.Tags.Contains("UnitActionTerrainDefUp") && encounterUnit.UnitDuplicatedSimulationObject.Tags.Contains("UnitActionForestGeomancyInitUp") && encounterUnit.UnitDuplicatedSimulationObject.Tags.Contains("UnitActionVolcanicGeomancyAttUp"))
@@ -1769,9 +1796,140 @@ public class AchievementManager : SteamAchievementManager
 		}
 	}
 
+	private void OnEventCreepingNodeComplete(Amplitude.Unity.Event.Event eventRaised)
+	{
+		if (!(eventRaised is EventCreepingNodeUpgradeComplete))
+		{
+			return;
+		}
+		EventCreepingNodeUpgradeComplete eventCreepingNodeUpgradeComplete = eventRaised as EventCreepingNodeUpgradeComplete;
+		if (eventCreepingNodeUpgradeComplete.Empire.Index != this.ActiveEmpire.Index)
+		{
+			return;
+		}
+		this.AddToStatistic("NODES_BUILT_OVERALL_COUNT", 1f, false);
+		if (this.departmentOfCreepingNodes != null)
+		{
+			int num = 0;
+			for (int i = 0; i < this.departmentOfCreepingNodes.Nodes.Count; i++)
+			{
+				if (this.departmentOfCreepingNodes.Nodes[i].IsUpgradeReady)
+				{
+					num++;
+				}
+			}
+			this.SetStatisticValue("CURRENT_NODES_COUNT", (float)num, false);
+		}
+	}
+
+	private void OnEventTameKaiju(Amplitude.Unity.Event.Event eventRaised)
+	{
+		if (!(eventRaised is EventKaijuTamed))
+		{
+			return;
+		}
+		EventKaijuTamed eventKaijuTamed = eventRaised as EventKaijuTamed;
+		if (eventKaijuTamed.Empire.Index != this.ActiveEmpire.Index)
+		{
+			return;
+		}
+		if (this.departmentOfTheInterior != null)
+		{
+			int count = this.departmentOfTheInterior.TamedKaijuGarrisons.Count;
+			this.SetStatisticValue("TAMED_KAIJU_COUNT", (float)count, false);
+		}
+	}
+
+	private void OnEventFactionIntegrated(Amplitude.Unity.Event.Event eventRaised)
+	{
+		if (!(eventRaised is EventFactionIntegrated))
+		{
+			return;
+		}
+		EventFactionIntegrated eventFactionIntegrated = eventRaised as EventFactionIntegrated;
+		if (eventFactionIntegrated.Empire.Index != this.ActiveEmpire.Index)
+		{
+			return;
+		}
+		if (this.departmentOfPlanificationAndDevelopment != null)
+		{
+			this.SetStatisticValue("INTEGRATED_FACTIONS_COUNT", (float)this.departmentOfPlanificationAndDevelopment.IntegratedFactionsCount(), false);
+		}
+	}
+
+	private void OnEventCityAddRegionalEffects(Amplitude.Unity.Event.Event eventRaised)
+	{
+		if (!(eventRaised is EventCityAddRegionalEffects))
+		{
+			return;
+		}
+		EventCityAddRegionalEffects eventCityAddRegionalEffects = eventRaised as EventCityAddRegionalEffects;
+		if (eventCityAddRegionalEffects.Empire.Index != this.ActiveEmpire.Index)
+		{
+			return;
+		}
+		IGameService service = Services.GetService<IGameService>();
+		IRegionalEffectsService service2 = service.Game.Services.GetService<IRegionalEffectsService>();
+		List<Kaiju> list = new List<Kaiju>();
+		foreach (RegionalEffect regionalEffect in eventCityAddRegionalEffects.City.GetRegionalEffects())
+		{
+			IRegionalEffectsProviderGameEntity regionalEffectsProviderGameEntity = null;
+			if (service2.TryGetEffectOwner(regionalEffect.GUID, out regionalEffectsProviderGameEntity) && regionalEffectsProviderGameEntity is Kaiju)
+			{
+				Kaiju item = regionalEffectsProviderGameEntity as Kaiju;
+				if (!list.Contains(item))
+				{
+					list.Add(item);
+				}
+			}
+		}
+		int count = list.Count;
+		this.SetStatisticValue("AFFECTING_KAIJU_COUNT", (float)count, false);
+	}
+
+	private void OnEventCityDamagedByKaijuEarthquake(Amplitude.Unity.Event.Event eventRaised)
+	{
+		if (!(eventRaised is EventCityDamagedByEarthquake))
+		{
+			return;
+		}
+		EventCityDamagedByEarthquake eventCityDamagedByEarthquake = eventRaised as EventCityDamagedByEarthquake;
+		if (eventCityDamagedByEarthquake.Empire.Index != this.ActiveEmpire.Index)
+		{
+			return;
+		}
+		float value = eventCityDamagedByEarthquake.EarthquakeGarrisonDamage + eventCityDamagedByEarthquake.EarthquakeCityPointDamage;
+		this.AddToStatistic("TREMOR_DAMAGE_OVERALL_COUNT", value, false);
+	}
+
+	private void OnEventKaijuLost(Amplitude.Unity.Event.Event eventRaised)
+	{
+		if (!(eventRaised is EventKaijuLost))
+		{
+			return;
+		}
+		EventKaijuLost eventKaijuLost = eventRaised as EventKaijuLost;
+		if (eventKaijuLost.Empire.Index != this.ActiveEmpire.Index)
+		{
+			return;
+		}
+		MajorEmpire lastOwner = eventKaijuLost.LastOwner;
+		Kaiju kaiju = eventKaijuLost.Kaiju;
+		int takenFromEmpire = eventKaijuLost.TakenFromEmpire;
+		EventKaijuLost.KaijuLostReason lostReason = eventKaijuLost.LostReason;
+		int turn = (this.gameService.Game as global::Game).Turn;
+		int tamedTurn = kaiju.TamedTurn;
+		int previousStunnerIndex = kaiju.PreviousStunnerIndex;
+		int previousStunnedTurn = kaiju.PreviousStunnedTurn;
+		if (lostReason == EventKaijuLost.KaijuLostReason.FREE && takenFromEmpire != -1 && previousStunnerIndex != -1 && lastOwner.Index == eventKaijuLost.Empire.Index && lastOwner.Index != takenFromEmpire && previousStunnerIndex == eventKaijuLost.Empire.Index && turn == tamedTurn && turn == previousStunnedTurn)
+		{
+			this.SetAchievement("CATCH_AND_RELEASE");
+		}
+	}
+
 	private void OnVictory(global::Empire empire, StaticString victoryConditionName)
 	{
-		if (this.alreadyWon)
+		if (this.alreadyWon && victoryConditionName.ToString().ToUpper() != "SHARED")
 		{
 			Diagnostics.Log("Ignoring victory achievement as one has already been raised this game");
 			return;
@@ -1871,6 +2029,11 @@ public class AchievementManager : SteamAchievementManager
 				this.departmentOfIntelligence = e.ActivePlayerController.Empire.GetAgency<DepartmentOfIntelligence>();
 				Diagnostics.Assert(this.departmentOfIntelligence != null);
 			}
+			if (service != null && service.IsShared(DownloadableContent20.ReadOnlyName))
+			{
+				this.departmentOfCreepingNodes = e.ActivePlayerController.Empire.GetAgency<DepartmentOfCreepingNodes>();
+				Diagnostics.Assert(this.departmentOfCreepingNodes != null);
+			}
 			Diagnostics.Assert(this.departmentOfTheInterior != null);
 			Diagnostics.Assert(this.departmentOfEducation != null);
 			Diagnostics.Assert(this.departmentOfTheTreasury != null);
@@ -1879,7 +2042,7 @@ public class AchievementManager : SteamAchievementManager
 			Diagnostics.Assert(this.departmentOfForeignAffairs != null);
 			Diagnostics.Assert(this.departmentOfTransportation != null);
 			Diagnostics.Assert(this.departmentOfDefense != null);
-			if (!this.GetAchievement("TWO_CITIES_EARLY"))
+			if (!this.GetAchievement("TWO_CITIES_EARLY") || !this.GetAchievement("WELCOME_TO_THE_FOLD"))
 			{
 				this.departmentOfTheInterior.CitiesCollectionChanged += this.DepartmentOfTheInterior_CitiesCollectionChanged;
 			}
@@ -2060,6 +2223,30 @@ public class AchievementManager : SteamAchievementManager
 		{
 			this.eventHandlers.Add(EventBattleDamageDone.Name, new AchievementManager.AchievementEventHandler(this.OnEventBattleDamageDone));
 		}
+		if (!this.GetAchievement("SPORETASTIC") || !this.GetAchievement("CREEPING_SPREE"))
+		{
+			this.eventHandlers.Add(EventCreepingNodeUpgradeComplete.Name, new AchievementManager.AchievementEventHandler(this.OnEventCreepingNodeComplete));
+		}
+		if (!this.GetAchievement("MONSTER_WRANGLER"))
+		{
+			this.eventHandlers.Add(EventKaijuTamed.Name, new AchievementManager.AchievementEventHandler(this.OnEventTameKaiju));
+		}
+		if (!this.GetAchievement("RESISTANCE_IS_FUTILE"))
+		{
+			this.eventHandlers.Add(EventFactionIntegrated.Name, new AchievementManager.AchievementEventHandler(this.OnEventFactionIntegrated));
+		}
+		if (!this.GetAchievement("SHADOW_OF_THE_COLOSSI"))
+		{
+			this.eventHandlers.Add(EventCityAddRegionalEffects.Name, new AchievementManager.AchievementEventHandler(this.OnEventCityAddRegionalEffects));
+		}
+		if (!this.GetAchievement("SHAKE_YOUR_FUNDATIONS"))
+		{
+			this.eventHandlers.Add(EventCityDamagedByEarthquake.Name, new AchievementManager.AchievementEventHandler(this.OnEventCityDamagedByKaijuEarthquake));
+		}
+		if (!this.GetAchievement("CATCH_AND_RELEASE"))
+		{
+			this.eventHandlers.Add(EventKaijuLost.Name, new AchievementManager.AchievementEventHandler(this.OnEventKaijuLost));
+		}
 	}
 
 	private void UnhookEmpireEvents()
@@ -2076,11 +2263,6 @@ public class AchievementManager : SteamAchievementManager
 		{
 			this.departmentOfTransportation.ArmyTeleportedToCity -= this.DepartmentOfTransportation_ArmyTeleportedToCity;
 		}
-	}
-
-	public void Disable(bool disable)
-	{
-		base.IsDisabled = disable;
 	}
 
 	private IGameService gameService;
@@ -2136,6 +2318,8 @@ public class AchievementManager : SteamAchievementManager
 	private DepartmentOfTransportation departmentOfTransportation;
 
 	private DepartmentOfIntelligence departmentOfIntelligence;
+
+	private DepartmentOfCreepingNodes departmentOfCreepingNodes;
 
 	private string activeFactionName;
 

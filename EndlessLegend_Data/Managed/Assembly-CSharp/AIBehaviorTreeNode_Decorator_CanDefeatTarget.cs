@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Xml.Serialization;
 using Amplitude;
 using Amplitude.Unity.AI.BehaviourTree;
@@ -12,7 +11,6 @@ public class AIBehaviorTreeNode_Decorator_CanDefeatTarget : AIBehaviorTreeNode_D
 	{
 		this.TargetVarName = null;
 		this.Inverted = false;
-		this.StrongestAttacker = false;
 	}
 
 	[XmlAttribute]
@@ -24,102 +22,69 @@ public class AIBehaviorTreeNode_Decorator_CanDefeatTarget : AIBehaviorTreeNode_D
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		State result;
-		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) > AIArmyMission.AIArmyMissionErrorCode.None)
+		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
+		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
-			result = State.Failure;
+			return State.Failure;
 		}
-		else if (this.StrongestAttacker)
+		if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
 		{
-			result = this.StrongestAttackerExecute(army);
+			return State.Failure;
 		}
-		else if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
+		Garrison garrison;
+		if (aiBehaviorTree.Variables[this.TargetVarName] is Kaiju)
 		{
-			result = State.Failure;
-		}
-		else
-		{
-			Garrison garrison = aiBehaviorTree.Variables[this.TargetVarName] as Garrison;
+			Kaiju kaiju = aiBehaviorTree.Variables[this.TargetVarName] as Kaiju;
+			garrison = kaiju.GetActiveTroops();
 			if (garrison == null)
 			{
 				aiBehaviorTree.ErrorCode = 10;
-				result = State.Failure;
-			}
-			else if (garrison == army)
-			{
-				result = State.Failure;
-			}
-			else
-			{
-				IGameService service = Services.GetService<IGameService>();
-				Diagnostics.Assert(service != null);
-				Diagnostics.Assert(service.Game.Services.GetService<IWorldPositionningService>() != null);
-				IIntelligenceAIHelper service2 = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
-				float num = 0f;
-				float num2 = 0f;
-				service2.EstimateMPInBattleground(army, garrison, ref num2, ref num);
-				bool flag = true;
-				if (num > num2)
-				{
-					flag = false;
-				}
-				if (this.Inverted)
-				{
-					if (!flag)
-					{
-						result = State.Success;
-					}
-					else
-					{
-						aiBehaviorTree.ErrorCode = 14;
-						result = State.Failure;
-					}
-				}
-				else if (flag)
-				{
-					result = State.Success;
-				}
-				else
-				{
-					aiBehaviorTree.ErrorCode = 13;
-					result = State.Failure;
-				}
+				return State.Failure;
 			}
 		}
-		return result;
-	}
-
-	private State StrongestAttackerExecute(Army army)
-	{
-		AIScheduler.Services.GetService<IIntelligenceAIHelper>();
+		else
+		{
+			garrison = (aiBehaviorTree.Variables[this.TargetVarName] as Garrison);
+			if (garrison == null)
+			{
+				aiBehaviorTree.ErrorCode = 10;
+				return State.Failure;
+			}
+		}
+		if (garrison == army)
+		{
+			return State.Failure;
+		}
 		IGameService service = Services.GetService<IGameService>();
 		Diagnostics.Assert(service != null);
-		Region region = service.Game.Services.GetService<IWorldPositionningService>().GetRegion(army.WorldPosition);
-		if (region != null)
+		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
+		Diagnostics.Assert(service2 != null);
+		IIntelligenceAIHelper service3 = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
+		float num = 0f;
+		float num2 = 0f;
+		service3.EstimateMPInBattleground(army, garrison, ref num2, ref num);
+		bool flag = true;
+		if (num > num2)
 		{
-			foreach (Army army2 in Intelligence.GetArmiesInRegion(region.Index).ToList<Army>())
-			{
-				if (army2.Empire == army.Empire && army2.GetPropertyValue(SimulationProperties.MilitaryPower) > army.GetPropertyValue(SimulationProperties.MilitaryPower))
-				{
-					if (!this.Inverted)
-					{
-						return State.Failure;
-					}
-					if (this.Inverted)
-					{
-						return State.Success;
-					}
-				}
-			}
-			if (!this.Inverted)
+			flag = false;
+		}
+		if (this.Inverted)
+		{
+			if (!flag)
 			{
 				return State.Success;
 			}
+			aiBehaviorTree.ErrorCode = 14;
 			return State.Failure;
 		}
-		return State.Failure;
+		else
+		{
+			if (flag)
+			{
+				return State.Success;
+			}
+			aiBehaviorTree.ErrorCode = 13;
+			return State.Failure;
+		}
 	}
-
-	[XmlAttribute]
-	public bool StrongestAttacker { get; set; }
 }

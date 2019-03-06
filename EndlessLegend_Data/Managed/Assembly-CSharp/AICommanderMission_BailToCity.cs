@@ -115,31 +115,13 @@ public class AICommanderMission_BailToCity : AICommanderMissionWithRequestArmy
 					WorldPosition neighbourFirstAvailablePositionForArmyCreation = DepartmentOfDefense.GetNeighbourFirstAvailablePositionForArmyCreation(aidata.Army);
 					if (neighbourFirstAvailablePositionForArmyCreation.IsValid && array[0].IsValid)
 					{
-						OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(base.Commander.Empire.Index, base.AIDataArmyGUID, array, neighbourFirstAvailablePositionForArmyCreation, null, false);
+						OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(base.Commander.Empire.Index, base.AIDataArmyGUID, array, neighbourFirstAvailablePositionForArmyCreation, null, false, true, true);
 						base.Commander.Empire.PlayerControllers.AI.PostOrder(order, out this.ticket, null);
 					}
 					return false;
 				}
 				return base.TryCreateArmyMission("ReachTarget", list);
 			}
-		}
-		Diagnostics.Assert(AIScheduler.Services != null);
-		IIntelligenceAIHelper service = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
-		Diagnostics.Assert(service != null);
-		List<Region> list2 = new List<Region>();
-		if (service.TryGetListOfRegionToExplore(base.Commander.Empire, 0.95f, ref list2))
-		{
-			foreach (Region region in list2)
-			{
-				if (AILayer_Exploration.IsRegionValidForExploration(base.Commander.Empire, region))
-				{
-					return base.TryCreateArmyMission("ExploreAt", new List<object>
-					{
-						region.Index
-					});
-				}
-			}
-			return false;
 		}
 		return false;
 	}

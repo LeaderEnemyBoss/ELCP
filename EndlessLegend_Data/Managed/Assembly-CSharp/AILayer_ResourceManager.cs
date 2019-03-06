@@ -248,7 +248,6 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 		this.resourceDatabase = null;
 		this.departmentOfTheInterior = null;
 		this.departmentOfTheTreasury = null;
-		this.BoostersInUse = null;
 	}
 
 	protected override void CreateLocalNeeds(StaticString context, StaticString pass)
@@ -364,8 +363,6 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 
 	[InfluencedByPersonality]
 	private float productionFactor = 10f;
-
-	public List<string> BoostersInUse;
 
 	private class SellInfo
 	{

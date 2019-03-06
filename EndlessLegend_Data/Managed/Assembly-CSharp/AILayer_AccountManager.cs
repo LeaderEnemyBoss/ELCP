@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Amplitude;
-using Amplitude.Unity.Framework;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
@@ -120,6 +119,7 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 		int diplomacyAccountIndex = this.EnsureAccount(AILayer_AccountManager.DiplomacyAccountName);
 		int empireplanAccountIndex = this.EnsureAccount(AILayer_AccountManager.EmpirePlanAccountName);
 		int orbAccountIndex = this.EnsureAccount(AILayer_AccountManager.OrbAccountName);
+		int kaijuAccountIndex = this.EnsureAccount(AILayer_AccountManager.KaijuAccountName);
 		this.accountIndexByResource.Add(DepartmentOfTheTreasury.Resources.EmpirePoint, new int[]
 		{
 			diplomacyAccountIndex,
@@ -134,6 +134,10 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 		this.accountIndexByResource.Add(DepartmentOfTheTreasury.Resources.Orb, new int[]
 		{
 			orbAccountIndex
+		});
+		this.accountIndexByResource.Add(DepartmentOfTheTreasury.Resources.Luxuries, new int[]
+		{
+			kaijuAccountIndex
 		});
 		yield break;
 	}
@@ -303,18 +307,6 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 				{
 					account.EstimatedBalance = 0f;
 				}
-			}
-		}
-		if (account.PromisedAmount > 0f && this.workingMessages.Count == 0)
-		{
-			account.PromisedAmount = 0f;
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-			{
-				Diagnostics.Log("ELCP: Empire {0} ApplyExecutedMessages workaround fix, resetting PromisedAmount of {1} to 0.", new object[]
-				{
-					base.AIEntity.Empire.Index,
-					account.AccountTag
-				});
 			}
 		}
 	}
@@ -680,6 +672,8 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 	public static StaticString NoAccountName = "NoAccount";
 
 	public static StaticString OrbAccountName = "OrbAccount";
+
+	public static StaticString KaijuAccountName = "KaijuAccount";
 
 	private Dictionary<StaticString, int[]> accountIndexByResource = new Dictionary<StaticString, int[]>();
 
