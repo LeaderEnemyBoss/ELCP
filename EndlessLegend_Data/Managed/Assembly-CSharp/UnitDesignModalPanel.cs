@@ -154,31 +154,6 @@ public class UnitDesignModalPanel : UnitInspectionModalPanel
 	private void OnApplyOrderResponse(object sender, TicketRaisedEventArgs args)
 	{
 		this.Hide(false);
-		MetaPanelCity guiPanel = base.GuiService.GetGuiPanel<MetaPanelCity>();
-		if (guiPanel != null)
-		{
-			guiPanel.RefreshContent();
-		}
-		MetaPanelArmy guiPanel2 = base.GuiService.GetGuiPanel<MetaPanelArmy>();
-		if (guiPanel2 != null)
-		{
-			guiPanel2.RefreshContent();
-		}
-		MetaPanelVillage guiPanel3 = base.GuiService.GetGuiPanel<MetaPanelVillage>();
-		if (guiPanel3 != null)
-		{
-			guiPanel3.RefreshContent();
-		}
-		MetaPanelCamp guiPanel4 = base.GuiService.GetGuiPanel<MetaPanelCamp>();
-		if (guiPanel4 != null)
-		{
-			guiPanel4.RefreshContent();
-		}
-		MetaPanelFortress guiPanel5 = base.GuiService.GetGuiPanel<MetaPanelFortress>();
-		if (guiPanel5 != null)
-		{
-			guiPanel5.RefreshContent();
-		}
 	}
 
 	private void OnCreateCB(GameObject obj)

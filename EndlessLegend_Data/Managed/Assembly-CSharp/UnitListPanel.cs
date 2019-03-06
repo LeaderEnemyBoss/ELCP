@@ -214,35 +214,27 @@ public class UnitListPanel : GuiCollapsingPanel
 
 	public void OnUnitToggle(GameObject obj)
 	{
-		if (Input.GetKey(KeyCode.Mouse0))
+		AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
+		List<UnitGuiItem> children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
+		for (int i = 0; i < children.Count; i++)
 		{
-			AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
-			List<UnitGuiItem> children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
-			for (int i = 0; i < children.Count; i++)
+			bool flag = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+			if (children[i].UnitToggle == component)
 			{
-				bool flag = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-				if (children[i].UnitToggle == component)
+				if (!flag)
 				{
-					if (!flag)
-					{
-						children[i].UnitToggle.State = true;
-					}
-				}
-				else if (!flag)
-				{
-					children[i].UnitToggle.State = false;
+					children[i].UnitToggle.State = true;
 				}
 			}
-			this.ComputeSelection();
-			if (this.parent != null)
+			else if (!flag)
 			{
-				this.parent.SendMessage("OnUnitToggle");
-				return;
+				children[i].UnitToggle.State = false;
 			}
 		}
-		else
+		this.ComputeSelection();
+		if (this.parent != null)
 		{
-			this.OnELCPRightClick(obj);
+			this.parent.SendMessage("OnUnitToggle");
 		}
 	}
 
@@ -841,6 +833,11 @@ public class UnitListPanel : GuiCollapsingPanel
 			this.SelectAllButton.AgeTooltip.Content = "%SelectAllTabOKDescription";
 			return true;
 		}
+		if (this.selectedUnits.Count == 0)
+		{
+			this.SelectAllButton.AgeTooltip.Content = "%ArmyEmptySelectionDescription";
+			return false;
+		}
 		this.SelectAllButton.AgeTooltip.Content = "%SelectAllTabFullSelectionDescription";
 		return false;
 	}
@@ -850,6 +847,14 @@ public class UnitListPanel : GuiCollapsingPanel
 		if ((this.IsOtherEmpire || this.DepartmentOfScience.CanTradeUnits(false)) && (this.selectedUnits.Count != 1 || !this.selectedUnits[0].CheckUnitAbility(UnitAbility.ReadonlyColonize, -1)))
 		{
 			return false;
+		}
+		foreach (Unit unit in this.selectedUnits)
+		{
+			if (unit.SimulationObject.Tags.Contains("UnitTypeKaijusMilitia") || unit.SimulationObject.Tags.Contains("UnitTypeKaijusUnit") || unit.SimulationObject.Tags.Contains("UnitTypeKaijus"))
+			{
+				this.DisbandButton.AgeTooltip.Content = "%KaijuCanNotDisbandUnitsDescription";
+				return false;
+			}
 		}
 		if (this.selectedUnits.Count == 0)
 		{
@@ -1075,30 +1080,6 @@ public class UnitListPanel : GuiCollapsingPanel
 		if (e.Result == MessagePanelResult.Yes)
 		{
 			this.DisbandSelectedUnits();
-		}
-	}
-
-	public void OnELCPRightClick(GameObject obj)
-	{
-		if (!this.IsOtherEmpire)
-		{
-			UnitListPanel.<>c__DisplayClass0_0 CS$<>8__locals1 = new UnitListPanel.<>c__DisplayClass0_0();
-			AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
-			CS$<>8__locals1.children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
-			int j;
-			int i;
-			for (i = 0; i < CS$<>8__locals1.children.Count; i = j + 1)
-			{
-				if (CS$<>8__locals1.children[i].UnitToggle == component && CS$<>8__locals1.children[i].GuiUnit.UnitDesign != null && this.departmentOfDefense.AvailableUnitDesigns.Find((UnitDesign unitDesign) => unitDesign.Model == CS$<>8__locals1.children[i].GuiUnit.UnitDesign.Model) != null)
-				{
-					base.GuiService.GetGuiPanel<UnitDesignModalPanel>().CreateMode = false;
-					base.GuiService.GetGuiPanel<UnitDesignModalPanel>().Show(new object[]
-					{
-						CS$<>8__locals1.children[i].GuiUnit.UnitDesign
-					});
-				}
-				j = i;
-			}
 		}
 	}
 
