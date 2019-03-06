@@ -182,7 +182,7 @@ public class AIData_Army : AIData_GameEntity, ICommanderMissionProvider
 		{
 			return false;
 		}
-		if (this.Army.HasOnlySeafaringUnits(false))
+		if (this.Army.HasSeafaringUnits())
 		{
 			return false;
 		}

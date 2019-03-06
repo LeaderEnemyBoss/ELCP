@@ -16,8 +16,7 @@ public class AIBehaviorTreeNode_Decorator_IsEmpireControlledByAI : AIBehaviorTre
 
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
-		IGameService service = Services.GetService<IGameService>();
-		global::Game game = service.Game as global::Game;
+		IGame game = Services.GetService<IGameService>().Game;
 		if (this.Inverted)
 		{
 			if (!aiBehaviorTree.AICommander.Empire.IsControlledByAI)

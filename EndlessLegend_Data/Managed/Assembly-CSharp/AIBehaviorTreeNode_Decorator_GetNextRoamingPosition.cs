@@ -7,6 +7,13 @@ using Amplitude.Unity.Game;
 
 public class AIBehaviorTreeNode_Decorator_GetNextRoamingPosition : AIBehaviorTreeNode_Decorator
 {
+	public AIBehaviorTreeNode_Decorator_GetNextRoamingPosition()
+	{
+		this.visitedPositions = new List<WorldPosition>();
+		this.PositionVarName = string.Empty;
+		this.LastResort = false;
+	}
+
 	[XmlAttribute]
 	public string Output_DestinationVarName { get; set; }
 
@@ -61,28 +68,40 @@ public class AIBehaviorTreeNode_Decorator_GetNextRoamingPosition : AIBehaviorTre
 	private State DoExecute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
-		if (string.IsNullOrEmpty(this.TargetRegionVarName) || !aiBehaviorTree.Variables.ContainsKey(this.TargetRegionVarName))
+		Region region;
+		int num;
+		if (this.PositionVarName != string.Empty && aiBehaviorTree.Variables.ContainsKey(this.PositionVarName))
 		{
-			aiBehaviorTree.LogError("Target region variable '{0}' not initialized.", new object[]
+			WorldPosition position = (WorldPosition)aiBehaviorTree.Variables[this.PositionVarName];
+			region = this.worldPositionningService.GetRegion(position);
+			if (region == null)
 			{
-				this.TargetRegionVarName
-			});
-			return State.Failure;
+				aiBehaviorTree.LogError("Target region is not valid.", new object[0]);
+				return State.Failure;
+			}
+			num = region.Index;
 		}
-		int num = (int)aiBehaviorTree.Variables[this.TargetRegionVarName];
-		Region region = this.worldPositionningService.World.Regions[num];
-		if (region == null)
+		else
 		{
-			aiBehaviorTree.LogError("Target region index '{0}' is not valid.", new object[]
+			if (string.IsNullOrEmpty(this.TargetRegionVarName) || !aiBehaviorTree.Variables.ContainsKey(this.TargetRegionVarName))
 			{
-				num
-			});
-			return State.Failure;
+				aiBehaviorTree.LogError("Target region variable '{0}' not initialized.", new object[]
+				{
+					this.TargetRegionVarName
+				});
+				return State.Failure;
+			}
+			num = (int)aiBehaviorTree.Variables[this.TargetRegionVarName];
+			region = this.worldPositionningService.World.Regions[num];
+			if (region == null)
+			{
+				aiBehaviorTree.LogError("Target region is not valid.", new object[0]);
+				return State.Failure;
+			}
 		}
 		WorldOrientation lastOrientation = WorldOrientation.East;
 		if (aiBehaviorTree.Variables.ContainsKey("LastRoamingOrientation"))
@@ -94,17 +113,29 @@ public class AIBehaviorTreeNode_Decorator_GetNextRoamingPosition : AIBehaviorTre
 		{
 			direction = 1;
 		}
-		WorldPosition position;
+		WorldPosition position2;
 		WorldOrientation worldOrientation;
-		if (!this.CheckIfPositionIsABorder(num, army.WorldPosition))
+		if (!this.LastResort)
 		{
-			this.RunForward(army, num, army.WorldPosition, lastOrientation, direction, out position, out worldOrientation);
+			if (!this.CheckIfPositionIsABorder(num, army.WorldPosition))
+			{
+				this.RunForward(army, num, army.WorldPosition, lastOrientation, direction, out position2, out worldOrientation);
+			}
+			else
+			{
+				this.FollowEdges(army, num, army.WorldPosition, lastOrientation, direction, out position2, out worldOrientation);
+			}
 		}
 		else
 		{
-			this.FollowEdges(army, num, army.WorldPosition, lastOrientation, direction, out position, out worldOrientation);
+			this.RunForwardIfPossible(army, num, army.WorldPosition, lastOrientation, direction, out position2, out worldOrientation);
+			if (!position2.IsValid)
+			{
+				aiBehaviorTree.ErrorCode = 5;
+				return State.Failure;
+			}
 		}
-		if (position.IsValid)
+		if (position2.IsValid)
 		{
 			if (aiBehaviorTree.Variables.ContainsKey("LastRoamingOrientation"))
 			{
@@ -114,7 +145,7 @@ public class AIBehaviorTreeNode_Decorator_GetNextRoamingPosition : AIBehaviorTre
 			{
 				aiBehaviorTree.Variables.Add("LastRoamingOrientation", worldOrientation);
 			}
-			this.AddOutputPositionToBehaviorTree(aiBehaviorTree, position);
+			this.AddOutputPositionToBehaviorTree(aiBehaviorTree, position2);
 		}
 		else
 		{
@@ -227,9 +258,31 @@ public class AIBehaviorTreeNode_Decorator_GetNextRoamingPosition : AIBehaviorTre
 		nextDestination = WorldPosition.Invalid;
 	}
 
+	[XmlAttribute]
+	public string PositionVarName { get; set; }
+
+	private void RunForwardIfPossible(Army currentArmy, int roamingRegionIndex, WorldPosition startingPosition, WorldOrientation lastOrientation, int direction, out WorldPosition nextDestination, out WorldOrientation nextOrientation)
+	{
+		nextOrientation = lastOrientation;
+		nextDestination = this.worldPositionningService.GetNeighbourTile(startingPosition, nextOrientation, 1);
+		for (int i = 0; i < 6; i++)
+		{
+			if (this.CheckPosition(currentArmy, roamingRegionIndex, nextDestination) && this.pathfindingService.IsTransitionPassable(startingPosition, nextDestination, currentArmy, PathfindingFlags.IgnoreFogOfWar, null))
+			{
+				return;
+			}
+			nextOrientation = nextOrientation.Rotate(direction);
+			nextDestination = this.worldPositionningService.GetNeighbourTile(startingPosition, nextOrientation, 1);
+		}
+		nextDestination = WorldPosition.Invalid;
+	}
+
+	[XmlAttribute]
+	public bool LastResort { get; set; }
+
 	private IPathfindingService pathfindingService;
 
-	private List<WorldPosition> visitedPositions = new List<WorldPosition>();
+	private List<WorldPosition> visitedPositions;
 
 	private IWorldPositionningService worldPositionningService;
 

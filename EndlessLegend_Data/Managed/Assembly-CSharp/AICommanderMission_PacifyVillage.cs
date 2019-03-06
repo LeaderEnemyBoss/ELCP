@@ -114,11 +114,10 @@ public class AICommanderMission_PacifyVillage : AICommanderMissionWithRequestArm
 		if (this.Village == null)
 		{
 			minMilitaryPower = this.intelligenceAIHelper.EvaluateMaxMilitaryPowerOfRegion(base.Commander.Empire, this.RegionTarget.Index);
+			return;
 		}
-		else
-		{
-			minMilitaryPower = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, this.Village, 0);
-		}
+		minMilitaryPower = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, this.Village, 0);
+		minMilitaryPower *= 1.5f;
 	}
 
 	protected override int GetNeededAvailabilityTime()

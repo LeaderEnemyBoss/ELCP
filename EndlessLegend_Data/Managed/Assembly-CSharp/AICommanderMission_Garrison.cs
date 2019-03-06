@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using Amplitude.Unity.Session;
 using Amplitude.Xml;
 using UnityEngine;
 
@@ -227,9 +228,7 @@ public class AICommanderMission_Garrison : AICommanderMission
 		{
 			return false;
 		}
-		if (this.City.BesiegingEmpire != null)
-		{
-		}
+		global::Empire besiegingEmpire = this.City.BesiegingEmpire;
 		if (!flag)
 		{
 			int num = this.City.UnitsCount;
@@ -254,6 +253,25 @@ public class AICommanderMission_Garrison : AICommanderMission
 		if (!base.AIDataArmyGUID.IsValid)
 		{
 			return this.AskForArmy(numberOfUnits);
+		}
+		if (base.Commander.Empire != null && base.Commander.Empire is MajorEmpire && base.AIDataArmyGUID.IsValid)
+		{
+			AIData_Army aidata2 = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID);
+			GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
+			AILayer_War ailayer_War = null;
+			AIPlayer_MajorEmpire aiplayer_MajorEmpire;
+			if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(base.Commander.Empire as MajorEmpire, out aiplayer_MajorEmpire))
+			{
+				AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
+				if (entity != null)
+				{
+					ailayer_War = entity.GetLayer<AILayer_War>();
+				}
+			}
+			if (ailayer_War != null)
+			{
+				ailayer_War.AssignDefensiveArmyToCity(aidata2.Army);
+			}
 		}
 		return base.TryCreateArmyMission("MajorFactionRoaming", new List<object>
 		{
@@ -379,6 +397,10 @@ public class AICommanderMission_Garrison : AICommanderMission
 				{
 					base.AIDataArmyGUID = orderTransferGarrisonToNewArmy.ArmyGuid;
 				}
+			}
+			else if (this.armySpawnTicket.PostOrderResponse == PostOrderResponse.PreprocessHasFailed)
+			{
+				base.Success();
 			}
 			this.armySpawnTicket = null;
 		}

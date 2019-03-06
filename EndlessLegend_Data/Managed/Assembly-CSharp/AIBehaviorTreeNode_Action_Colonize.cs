@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using Amplitude;
 using Amplitude.Unity.AI.BehaviourTree;
@@ -12,48 +13,54 @@ public class AIBehaviorTreeNode_Action_Colonize : AIBehaviorTreeNode_Action
 
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
+		State result;
+		Army army;
 		if (this.orderPosted)
 		{
 			if (this.orderExecuted)
 			{
 				this.orderExecuted = false;
 				this.orderPosted = false;
-				return State.Success;
+				result = State.Success;
 			}
-			return State.Running;
+			else
+			{
+				result = State.Running;
+			}
+		}
+		else if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) > AIArmyMission.AIArmyMissionErrorCode.None)
+		{
+			result = State.Failure;
 		}
 		else
 		{
-			Army army;
-			AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-			if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
-			{
-				return State.Failure;
-			}
 			ArmyAction armyAction = null;
-			IDatabase<ArmyAction> database = Databases.GetDatabase<ArmyAction>(false);
-			List<ArmyAction> list = new List<ArmyAction>(database.GetValues());
-			List<ArmyAction> list2 = new List<ArmyAction>(list.FindAll((ArmyAction match) => match is ArmyAction_Colonization));
-			List<StaticString> list3 = new List<StaticString>();
-			for (int i = 0; i < list2.Count; i++)
+			List<ArmyAction> list = new List<ArmyAction>(new List<ArmyAction>(Databases.GetDatabase<ArmyAction>(false).GetValues()).FindAll((ArmyAction match) => match is ArmyAction_Colonization));
+			List<StaticString> list2 = new List<StaticString>();
+			for (int i = 0; i < list.Count; i++)
 			{
-				ArmyAction armyAction2 = list2[i];
-				if (armyAction2.CanExecute(army, ref list3, new object[0]))
+				if (list[i].CanExecute(army, ref list2, new object[0]))
 				{
-					armyAction = list2[i];
+					armyAction = list[i];
 				}
 			}
 			if (armyAction != null)
 			{
 				this.orderExecuted = false;
 				this.orderPosted = true;
+				this.CityLocation = army.WorldPosition;
+				this.Empire = army.Empire;
 				Ticket ticket;
 				armyAction.Execute(army, aiBehaviorTree.AICommander.Empire.PlayerControllers.AI, out ticket, new EventHandler<TicketRaisedEventArgs>(this.ArmyAction_TicketRaised), new object[0]);
-				return State.Running;
+				result = State.Running;
 			}
-			aiBehaviorTree.ErrorCode = 22;
-			return State.Failure;
+			else
+			{
+				aiBehaviorTree.ErrorCode = 22;
+				result = State.Failure;
+			}
 		}
+		return result;
 	}
 
 	protected override bool Initialize(AIBehaviorTree aiBehaviorTree)
@@ -63,10 +70,82 @@ public class AIBehaviorTreeNode_Action_Colonize : AIBehaviorTreeNode_Action
 
 	private void ArmyAction_TicketRaised(object sender, TicketRaisedEventArgs e)
 	{
+		this.OrderCityBuilding();
+		this.CityLocation = WorldPosition.Invalid;
+		this.Empire = null;
 		this.orderExecuted = true;
+	}
+
+	private void OrderCityBuilding()
+	{
+		DepartmentOfTheInterior agency = this.Empire.GetAgency<DepartmentOfTheInterior>();
+		DepartmentOfIndustry agency2 = this.Empire.GetAgency<DepartmentOfIndustry>();
+		if (this.CityLocation.IsValid && agency != null)
+		{
+			City closestCityFromWorldPosition = agency.GetClosestCityFromWorldPosition(this.CityLocation, true);
+			if ((closestCityFromWorldPosition != null || closestCityFromWorldPosition.Empire == this.Empire) && agency2.GetConstructionQueue(closestCityFromWorldPosition).PendingConstructions.Count <= 0)
+			{
+				List<string> list = new List<string>
+				{
+					"CityImprovementIndustry0",
+					"CityImprovementDust0",
+					"CityImprovementFood0",
+					"CityImprovementApproval1",
+					"CityImprovementScience0"
+				};
+				List<DepartmentOfIndustry.ConstructibleElement> list2 = new List<DepartmentOfIndustry.ConstructibleElement>();
+				DepartmentOfIndustry.ConstructibleElement constructibleElement = null;
+				foreach (DepartmentOfIndustry.ConstructibleElement constructibleElement2 in agency2.ConstructibleElementDatabase.GetAvailableConstructibleElements(new StaticString[]
+				{
+					CityImprovementDefinition.ReadOnlyCategory
+				}))
+				{
+					if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(closestCityFromWorldPosition, constructibleElement2, new string[]
+					{
+						ConstructionFlags.Prerequisite
+					}))
+					{
+						if (agency.Cities.Count == 1 && constructibleElement2.ToString().Contains("CityImprovementFIDS"))
+						{
+							constructibleElement = constructibleElement2;
+							break;
+						}
+						if (list.Contains(constructibleElement2.ToString()))
+						{
+							list2.Add(constructibleElement2);
+						}
+					}
+				}
+				if (constructibleElement == null && list2.Count > 0)
+				{
+					using (List<string>.Enumerator enumerator = list.GetEnumerator())
+					{
+						while (enumerator.MoveNext())
+						{
+							string important = enumerator.Current;
+							if (list2.Any((DepartmentOfIndustry.ConstructibleElement item) => item.Name == important))
+							{
+								constructibleElement = list2.First((DepartmentOfIndustry.ConstructibleElement item) => item.Name == important);
+								break;
+							}
+						}
+					}
+				}
+				if (constructibleElement != null)
+				{
+					OrderQueueConstruction order = new OrderQueueConstruction(this.Empire.Index, closestCityFromWorldPosition.GUID, constructibleElement, string.Empty);
+					Ticket ticket;
+					this.Empire.PlayerControllers.AI.PostOrder(order, out ticket, null);
+				}
+			}
+		}
 	}
 
 	private bool orderExecuted;
 
 	private bool orderPosted;
+
+	private WorldPosition CityLocation;
+
+	private Empire Empire;
 }

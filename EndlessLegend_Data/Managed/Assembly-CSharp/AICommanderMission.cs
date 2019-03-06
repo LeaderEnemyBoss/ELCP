@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using Amplitude;
 using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
@@ -20,8 +21,7 @@ public class AICommanderMission : ITickable, IXmlSerializable
 
 	public virtual void ReadXml(XmlReader reader)
 	{
-		int num = reader.ReadVersionAttribute();
-		if (num >= 2)
+		if (reader.ReadVersionAttribute() >= 2)
 		{
 			this.InternalGUID = reader.GetAttribute<ulong>("InternalGUID");
 		}
@@ -104,6 +104,11 @@ public class AICommanderMission : ITickable, IXmlSerializable
 	public virtual void Initialize(AICommander aiCommander)
 	{
 		this.Commander = aiCommander;
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.encounterRepositoryService = service.Game.Services.GetService<IEncounterRepositoryService>();
+		Diagnostics.Assert(this.encounterRepositoryService != null);
+		this.encounterRepositoryService.OneEncounterStateChange += this.EncounterRepositoryService_OneEncounterStateChange;
 		this.departmentOfDefense = this.Commander.Empire.GetAgency<DepartmentOfDefense>();
 		Diagnostics.Assert(this.departmentOfDefense != null);
 		this.departmentOfDefense.ArmiesCollectionChange += this.AICommanderMission_ArmyCollectionChange;
@@ -162,6 +167,11 @@ public class AICommanderMission : ITickable, IXmlSerializable
 		{
 			this.departmentOfDefense.ArmiesCollectionChange -= this.AICommanderMission_ArmyCollectionChange;
 			this.departmentOfDefense = null;
+		}
+		if (this.encounterRepositoryService != null)
+		{
+			this.encounterRepositoryService.OneEncounterStateChange -= this.EncounterRepositoryService_OneEncounterStateChange;
+			this.encounterRepositoryService = null;
 		}
 		if (this.tickableRepository != null)
 		{
@@ -286,22 +296,24 @@ public class AICommanderMission : ITickable, IXmlSerializable
 		{
 		case AICommanderMission.AICommanderMissionCompletion.Initializing:
 			this.Initializing();
-			break;
+			return;
 		case AICommanderMission.AICommanderMissionCompletion.Running:
 			this.Running();
-			break;
+			return;
 		case AICommanderMission.AICommanderMissionCompletion.Pending:
 			this.Pending();
-			break;
+			return;
 		case AICommanderMission.AICommanderMissionCompletion.Success:
 			this.Success();
-			break;
+			return;
 		case AICommanderMission.AICommanderMissionCompletion.Fail:
 			this.Fail();
-			break;
+			return;
 		case AICommanderMission.AICommanderMissionCompletion.Interrupted:
 			this.Interrupted();
-			break;
+			return;
+		default:
+			return;
 		}
 	}
 
@@ -322,19 +334,21 @@ public class AICommanderMission : ITickable, IXmlSerializable
 			TickableState state = TickableState.NoTick;
 			this.Completion = this.GetCompletionFor(errorCode, out state);
 			this.State = state;
-			break;
+			return;
 		}
 		case AIArmyMission.AIArmyMissionCompletion.Running:
 			aidata.ArmyMission.Tick();
-			break;
+			return;
 		case AIArmyMission.AIArmyMissionCompletion.Success:
 		{
 			aidata.ArmyMission.Reset();
 			TickableState state2 = TickableState.NoTick;
 			this.Completion = this.GetCompletionWhenSuccess(aidata, out state2);
 			this.State = state2;
-			break;
+			return;
 		}
+		default:
+			return;
 		}
 	}
 
@@ -360,8 +374,7 @@ public class AICommanderMission : ITickable, IXmlSerializable
 			this.AIDataArmyGUID = GameEntityGUID.Zero;
 			return false;
 		}
-		IDatabase<AIArmyMissionDefinition> database = Databases.GetDatabase<AIArmyMissionDefinition>(false);
-		AIArmyMissionDefinition value = database.GetValue(missionType);
+		AIArmyMissionDefinition value = Databases.GetDatabase<AIArmyMissionDefinition>(false).GetValue(missionType);
 		Diagnostics.Assert(value != null);
 		if (value == null)
 		{
@@ -430,11 +443,30 @@ public class AICommanderMission : ITickable, IXmlSerializable
 		return true;
 	}
 
+	private void EncounterRepositoryService_OneEncounterStateChange(object sender, EncounterStateChangeEventArgs e)
+	{
+		if (this.Completion != AICommanderMission.AICommanderMissionCompletion.Fail || this.Commander.AIPlayer.AIState != AIPlayer.PlayerState.EmpireControlledByAI)
+		{
+			return;
+		}
+		if (e.EncounterState == EncounterState.BattleHasEnded)
+		{
+			if (this.AIDataArmyGUID == GameEntityGUID.Zero)
+			{
+				return;
+			}
+			this.aiDataRepository.GetAIData<AIData_Army>(this.AIDataArmyGUID);
+			this.Initializing();
+		}
+	}
+
 	protected IAIDataRepositoryAIHelper aiDataRepository;
 
 	private DepartmentOfDefense departmentOfDefense;
 
 	private ITickableRepositoryAIHelper tickableRepository;
+
+	protected IEncounterRepositoryService encounterRepositoryService;
 
 	public enum AICommanderMissionCompletion
 	{
