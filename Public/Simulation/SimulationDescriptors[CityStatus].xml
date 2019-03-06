@@ -110,6 +110,8 @@
       
       <!-- Faster ownership recovery rate. -->
       <SimulationModifierDescriptor TargetProperty="OwnershipRecoveryRate" Operation="Percent" Value="1.0"/>
+	  
+	  <SimulationModifierDescriptor TargetProperty="EmpireScaleFactor"  Operation="Addition"  Value="-0.5"  Path="../EmpireTypeMajor"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -121,7 +123,9 @@
       <SimulationModifierDescriptor TargetProperty="NetCityMoney"  Operation="Addition"  Value="$(DistrictDust)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityResearch"  Operation="Addition"  Value="$(DistrictScience)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityEmpirePoint"  Operation="Addition"  Value="$(DistrictCityPoint)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
-      
+	  
+	  <SimulationModifierDescriptor TargetProperty="NetCityApproval" Operation="Force" Value="80" BindOnSource="false" Path="ClassCity"  Priority="11"/>
+	  <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"   Operation="Multiplication" Value="0"  Path="ClassCity" Priority="20"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   

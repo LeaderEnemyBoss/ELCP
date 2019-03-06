@@ -52,7 +52,7 @@
       <!-- Diplomatic victory -->
       <SimulationPropertyDescriptor Name="EmpirePeacePointStock"          IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetEmpirePeacePoint"/>
-      <SimulationPropertyDescriptor Name="EmpirePointToPeacePointFactor"  BaseValue="0.2"/>
+      <SimulationPropertyDescriptor Name="EmpirePointToPeacePointFactor"  BaseValue="0.05"/>
       <SimulationPropertyDescriptor Name="AffinityRelationScoreSum"       MinValue="Negative" IsSealed="true"/>
       <SimulationPropertyDescriptor Name="RelationScoreSumFactor"         BaseValue="0.1"/>
       <SimulationPropertyDescriptor Name="ClampedRelationScoreSum"        MinValue="0"        BaseValue="0"/>
@@ -250,7 +250,10 @@
       <!-- Misc -->
       <SimulationPropertyDescriptor Name="CurrentEra"                     BaseValue="1"/>
 
-      <SimulationPropertyDescriptor Name="BoosterDurationMultiplier"      BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="BoosterDurationMultiplier"           BaseValue="1"/>
+	  <!-- ELCP/LeaderEnemyBoss: New unique AllayiBoosterDurationMultiplier for Luxury Alchemists -->
+	  <SimulationPropertyDescriptor Name="AllayiBoosterDurationMultiplier"     BaseValue="1"/>
+	  <!-- End ELCP -->
 
       <SimulationPropertyDescriptor Name="BonusMovementOnEnemySpotted"/>
 
@@ -290,7 +293,7 @@
       <SimulationPropertyDescriptor Name="NumberOfPastSeasons"                BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NumberOfPastWinters"                BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NumberOfWinters"                    BaseValue="0"/>
-      <SimulationPropertyDescriptor Name="PrayerCostByPastWinter"             BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="PrayerCostByPastWinter"             BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NumberOfTurnsSinceSeasonStart"      BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NumberOfTurnsSinceSummerStart"      BaseValue="0"/>
       <SimulationPropertyDescriptor Name="PrayerCostByTurnsSinceSeasonStart"  BaseValue="1"/>
@@ -307,6 +310,14 @@
 
       <SimulationPropertyDescriptor Name="DissentCostInflationFactor"   BaseValue="0"   MinValue="0"/>
       
+	  <!-- ELCP Volcanic City present & merc cost multiplier-->
+	  <SimulationPropertyDescriptor Name="AIHasAnyVolcanicCity"  BaseValue="0" MaxValue="1" MinValue="0"/>
+	  <SimulationPropertyDescriptor Name="MarketplaceMercCostMultiplier" MinValue="0" BaseValue="1"/>
+	  <SimulationPropertyDescriptor Name="PeacePointBucketStock" MinValue="0" IsSealed="true"/>
+	  <SimulationPropertyDescriptor Name="NetPeacePointBucket" MinValue="Negative" BaseValue="0"/>
+	  <SimulationPropertyDescriptor Name="TreatyPeacePointPerTurn" MinValue="0" BaseValue="30"/>
+	  <SimulationPropertyDescriptor Name="TreatyPeacePointPerTurnMult" MinValue="0" BaseValue="1" IsSealed="true"/> <!--hardcoded multiplier dependant on PeacePointThreshold mults -->
+		
       <!-- Booster activations -->
       <SimulationPropertyDescriptor Name="BoosterStrategic1LavapoolActivations" BaseValue="0" MinValue="0" IsSealed="true" IsSerializable="true"/>
       <SimulationPropertyDescriptor Name="BoosterStrategic2LavapoolActivations" BaseValue="0" MinValue="0" IsSealed="true" IsSerializable="true"/>
@@ -343,8 +354,13 @@
       <!--
       <BinarySimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint"      Operation="Addition"  Left="$(ClampedRelationScoreSum)"  BinaryOperation="Multiplication" Right="$(RelationScoreSumFactor)"/>
       -->
-      <SimulationModifierDescriptor       TargetProperty="NetEmpirePeacePoint"      Operation="Multiplication"  Value="$(PeacePointGainMultiplier)" Priority="2"/>
-
+      <SimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint" Operation="Multiplication"  Value="$(PeacePointGainMultiplier)" Priority="2"/>
+	  <SimulationModifierDescriptor TargetProperty="TreatyPeacePointPerTurn" Operation="Multiplication" Value="$(TreatyPeacePointPerTurnMult)" Priority="1"/>
+	  <SimulationModifierDescriptor TargetProperty="TreatyPeacePointPerTurn" Operation="Multiplication" Value="$(PeacePointGainMultiplier)" Priority="2"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint" Operation="Addition" Left="$(PeacePointBucketStock)" BinaryOperation="Minimum" Right="$(TreatyPeacePointPerTurn)" Priority="3"/>
+	  <SimulationModifierDescriptor TargetProperty="NetPeacePointBucket" Operation="Subtraction" Value="$(TreatyPeacePointPerTurn)" Priority="4"/>
+	  
+	  
       <SimulationModifierDescriptor TargetProperty="MaximumEmpireResearchStock"   Operation="Addition"        Value="$(NetEmpireResearch)"/>
       <SimulationModifierDescriptor TargetProperty="MaximumEmpireResearchStock"   Operation="Multiplication"  Value="2"/>
 
