@@ -43,21 +43,16 @@ public class AIBehaviorTreeNode_Action_ImmolateUnits : AIBehaviorTreeNode_Action
 		}
 		else
 		{
-			IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
-			if (!service.IsShared(DownloadableContent19.ReadOnlyName))
+			if (!Services.GetService<IDownloadableContentService>().IsShared(DownloadableContent19.ReadOnlyName))
 			{
 				return State.Success;
 			}
-			IGameService service2 = Services.GetService<IGameService>();
-			ISeasonService service3 = service2.Game.Services.GetService<ISeasonService>();
-			if (!service3.GetCurrentSeason().SeasonDefinition.SeasonType.Equals(Season.ReadOnlyHeatWave))
+			if (!Services.GetService<IGameService>().Game.Services.GetService<ISeasonService>().GetCurrentSeason().SeasonDefinition.SeasonType.Equals(Season.ReadOnlyHeatWave))
 			{
 				return State.Success;
 			}
 			Army army = null;
-			AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-			AIArmyMission.AIArmyMissionErrorCode aiarmyMissionErrorCode = armyUnlessLocked;
-			if (aiarmyMissionErrorCode != AIArmyMission.AIArmyMissionErrorCode.None)
+			if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 			{
 				return State.Failure;
 			}
@@ -70,14 +65,19 @@ public class AIBehaviorTreeNode_Action_ImmolateUnits : AIBehaviorTreeNode_Action
 			{
 				return State.Running;
 			}
-			if (this.EvaluateImmolationNeed(army, garrison))
+			if (!this.EvaluateImmolationNeed(army, garrison))
 			{
-				GameEntityGUID[] immolatingUnitGuids = null;
-				this.SelectImmolableUnits(army, out immolatingUnitGuids);
-				OrderImmolateUnits order = new OrderImmolateUnits(army.Empire.Index, immolatingUnitGuids);
-				this.orderExecuted = false;
-				aiBehaviorTree.AICommander.Empire.PlayerControllers.AI.PostOrder(order, out this.orderTicket, new EventHandler<TicketRaisedEventArgs>(this.Order_TicketRaised));
+				return State.Success;
 			}
+			GameEntityGUID[] array = null;
+			this.SelectImmolableUnits(army, out array);
+			if (array.Length < 1)
+			{
+				return State.Success;
+			}
+			OrderImmolateUnits order = new OrderImmolateUnits(army.Empire.Index, array);
+			this.orderExecuted = false;
+			aiBehaviorTree.AICommander.Empire.PlayerControllers.AI.PostOrder(order, out this.orderTicket, new EventHandler<TicketRaisedEventArgs>(this.Order_TicketRaised));
 			return State.Running;
 		}
 	}
@@ -86,8 +86,7 @@ public class AIBehaviorTreeNode_Action_ImmolateUnits : AIBehaviorTreeNode_Action
 	{
 		float num = 0f;
 		float num2 = 0f;
-		IIntelligenceAIHelper service = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
-		service.EstimateMPInBattleground(army, target, ref num2, ref num);
+		AIScheduler.Services.GetService<IIntelligenceAIHelper>().EstimateMPInBattleground(army, target, ref num2, ref num);
 		float num3 = num / num2;
 		return num3 < this.PowerRatioCeil && num3 > this.PowerRatioFloor;
 	}

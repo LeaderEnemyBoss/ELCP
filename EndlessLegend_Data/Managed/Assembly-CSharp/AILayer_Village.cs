@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Amplitude;
+using Amplitude.Unity.AI;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
 
@@ -20,12 +21,11 @@ public class AILayer_Village : AILayerWithObjective
 		{
 			return false;
 		}
-		IGameService service = Services.GetService<IGameService>();
-		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
-		IIntelligenceAIHelper service3 = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
+		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
+		IIntelligenceAIHelper service2 = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
 		village = null;
-		region = service2.GetRegion(regionIndex);
-		if (region == null || region.MinorEmpire == null || !service3.IsContinentAcccessible(empire, regionIndex))
+		region = service.GetRegion(regionIndex);
+		if (region == null || region.MinorEmpire == null || !service2.IsContinentAcccessible(empire, regionIndex))
 		{
 			return false;
 		}
@@ -69,11 +69,11 @@ public class AILayer_Village : AILayerWithObjective
 	public override IEnumerator Initialize(AIEntity aiEntity)
 	{
 		yield return base.Initialize(aiEntity);
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
-		this.worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositionningService != null);
-		this.gameEntityRepositoryService = gameService.Game.Services.GetService<IGameEntityRepositoryService>();
+		this.gameEntityRepositoryService = service.Game.Services.GetService<IGameEntityRepositoryService>();
 		Diagnostics.Assert(this.gameEntityRepositoryService != null);
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		this.departmentOfDefense = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
@@ -110,8 +110,14 @@ public class AILayer_Village : AILayerWithObjective
 
 	protected override int GetCommanderLimit()
 	{
-		int count = this.departmentOfTheInterior.Cities.Count;
-		return count + 1;
+		int num = this.departmentOfTheInterior.Cities.Count + 1;
+		float num2;
+		base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num2, false);
+		if (base.AIEntity.Empire.SimulationObject.Tags.Contains("FactionTraitCultists7") && !this.departmentOfForeignAffairs.IsInWarWithSomeone() && num2 > 500f && num < this.departmentOfDefense.Armies.Count - 2)
+		{
+			num = this.departmentOfDefense.Armies.Count - 2;
+		}
+		return num;
 	}
 
 	protected override bool IsObjectiveValid(GlobalObjectiveMessage objective)
@@ -179,14 +185,14 @@ public class AILayer_Village : AILayerWithObjective
 		{
 			if (this.regions[index].City == null || this.regions[index].City.Empire == base.AIEntity.Empire)
 			{
-				goto IL_1D3;
+				goto IL_1BC;
 			}
 			if (flag2)
 			{
 				DiplomaticRelation diplomaticRelation = this.departmentOfForeignAffairs.GetDiplomaticRelation(this.regions[index].City.Empire);
 				if (diplomaticRelation != null && !(diplomaticRelation.State.Name != DiplomaticRelationState.Names.War))
 				{
-					goto IL_1D3;
+					goto IL_1BC;
 				}
 				this.CancelMessagesFor(this.regions[index].Index);
 			}
@@ -194,25 +200,26 @@ public class AILayer_Village : AILayerWithObjective
 			{
 				this.CancelMessagesFor(this.regions[index].Index);
 			}
-			IL_41C:
-			index++;
+			IL_1A5:
+			int index2 = index;
+			index = index2 + 1;
 			continue;
-			IL_1D3:
+			IL_1BC:
 			if (!flag2 && this.regions[index].City == null && flag)
 			{
 				this.CancelMessagesFor(this.regions[index].Index);
-				goto IL_41C;
+				goto IL_1A5;
 			}
 			if (this.regions[index].MinorEmpire == null)
 			{
 				this.CancelMessagesFor(this.regions[index].Index);
-				goto IL_41C;
+				goto IL_1A5;
 			}
 			BarbarianCouncil agency = this.regions[index].MinorEmpire.GetAgency<BarbarianCouncil>();
 			if (agency == null)
 			{
 				this.CancelMessagesFor(this.regions[index].Index);
-				goto IL_41C;
+				goto IL_1A5;
 			}
 			for (int i = 0; i < agency.Villages.Count; i++)
 			{
@@ -223,6 +230,20 @@ public class AILayer_Village : AILayerWithObjective
 				}
 				else
 				{
+					float num3;
+					if (flag2)
+					{
+						num3 = this.ComputePerceivedPathDistanceOfVillageToConvert(village);
+						if (num3 == 0f)
+						{
+							this.CancelMessagesFor(this.regions[index].Index, village.GUID);
+							goto IL_425;
+						}
+					}
+					else
+					{
+						num3 = this.ComputePerceivedDistanceOfVillageToConvert(village);
+					}
 					GlobalObjectiveMessage globalObjectiveMessage = base.AIEntity.AIPlayer.Blackboard.FindFirst<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.RegionIndex == this.regions[index].Index && match.SubObjectifGUID == village.GUID && match.ObjectiveType == this.ObjectiveType);
 					if (globalObjectiveMessage == null || globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Canceled)
 					{
@@ -230,7 +251,6 @@ public class AILayer_Village : AILayerWithObjective
 					}
 					globalObjectiveMessage.TimeOut = 1;
 					this.workingList.Add(globalObjectiveMessage);
-					float num3 = this.ComputePerceivedDistanceOfVillageToConvert(village);
 					if (num3 > num)
 					{
 						num = num3;
@@ -239,40 +259,61 @@ public class AILayer_Village : AILayerWithObjective
 					if (flag2)
 					{
 						float villageConversionCost = AILayer_Village.GetVillageConversionCost(base.AIEntity.Empire as MajorEmpire, village);
-						if (villageConversionCost > num2)
+						if (num2 == 0f)
+						{
+							num2 = villageConversionCost;
+						}
+						else if (villageConversionCost < num2)
 						{
 							num2 = villageConversionCost;
 						}
 						this.workingListConversionCost.Add(villageConversionCost);
 					}
 				}
+				IL_425:;
 			}
-			goto IL_41C;
+			goto IL_1A5;
 		}
-		if (flag2)
+		DepartmentOfScience.ConstructibleElement constructibleElement;
+		if (this.workingList.Count < 2 && flag2 && base.AIEntity.Empire.SimulationObject.Tags.Contains("FactionTraitCultists7") && base.AIEntity.Empire.GetAgency<DepartmentOfScience>().TechnologyDatabase.TryGetValue("TechnologyDefinitionShip", out constructibleElement) && base.AIEntity.Empire.GetAgency<DepartmentOfScience>().GetTechnologyState(constructibleElement) == DepartmentOfScience.ConstructibleElement.State.Available)
 		{
-			ConversionNeedPrestigeMessage conversionNeedPrestigeMessage = base.AIEntity.AIPlayer.Blackboard.GetMessages<ConversionNeedPrestigeMessage>(BlackboardLayerID.Empire).FirstOrDefault<ConversionNeedPrestigeMessage>();
-			if (conversionNeedPrestigeMessage == null)
+			bool flag3 = false;
+			if (this.departmentOfForeignAffairs.IsInWarWithSomeone() && this.departmentOfTheInterior.Cities.Count > 0)
 			{
-				conversionNeedPrestigeMessage = new ConversionNeedPrestigeMessage(BlackboardLayerID.Empire);
-				base.AIEntity.AIPlayer.Blackboard.AddMessage(conversionNeedPrestigeMessage);
-			}
-			conversionNeedPrestigeMessage.TimeOut = 1;
-			conversionNeedPrestigeMessage.NeededPrestigePoints = 0f;
-			conversionNeedPrestigeMessage.Priority = 0f;
-			if (num2 > 0f)
-			{
-				AILayer_AccountManager layer2 = base.AIEntity.GetLayer<AILayer_AccountManager>();
-				Account account = layer2.TryGetAccount(AILayer_AccountManager.ConversionAccountName);
-				if (account != null && num2 > account.GetAvailableAmount())
+				for (int j = 0; j < this.departmentOfTheInterior.Cities[0].Region.Borders.Length; j++)
 				{
-					conversionNeedPrestigeMessage.NeededPrestigePoints = num2 - account.GetAvailableAmount();
+					if (this.worldPositionningService.GetRegion(this.departmentOfTheInterior.Cities[0].Region.Borders[j].NeighbourRegionIndex).IsOcean)
+					{
+						flag3 = true;
+						break;
+					}
+				}
+			}
+			if (this.ChooseOverseaRegion() != null || flag3)
+			{
+				if (!DepartmentOfScience.CanBuyoutResearch(base.AIEntity.Empire))
+				{
+					OrderQueueResearch orderQueueResearch = new OrderQueueResearch(base.AIEntity.Empire.Index, constructibleElement);
+					orderQueueResearch.InsertAtFirstPlace = true;
+					base.AIEntity.Empire.PlayerControllers.AI.PostOrder(orderQueueResearch);
+				}
+				else
+				{
+					float num4 = -base.AIEntity.Empire.GetAgency<DepartmentOfScience>().GetBuyOutTechnologyCost(constructibleElement) * 1.2f;
+					if (base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().IsTransferOfResourcePossible(base.AIEntity.Empire, DepartmentOfTheTreasury.Resources.TechnologiesBuyOut, ref num4))
+					{
+						OrderBuyOutTechnology order = new OrderBuyOutTechnology(base.AIEntity.Empire.Index, "TechnologyDefinitionShip");
+						Ticket ticket;
+						base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out ticket, null);
+					}
 				}
 			}
 		}
-		for (int j = 0; j < this.workingList.Count; j++)
+		int num5 = -1;
+		for (int k = 0; k < this.workingList.Count; k++)
 		{
-			GlobalObjectiveMessage globalObjectiveMessage2 = this.workingList[j];
+			bool flag4 = false;
+			GlobalObjectiveMessage globalObjectiveMessage2 = this.workingList[k];
 			Region region = this.worldPositionningService.GetRegion(globalObjectiveMessage2.RegionIndex);
 			IGameEntity gameEntity;
 			if (!this.gameEntityRepositoryService.TryGetValue(globalObjectiveMessage2.SubObjectifGUID, out gameEntity) || !(gameEntity is Village))
@@ -288,7 +329,7 @@ public class AILayer_Village : AILayerWithObjective
 				if (num > 0f)
 				{
 					HeuristicValue heuristicValue4 = new HeuristicValue(0f);
-					float operand = this.workingListDistance[j];
+					float operand = this.workingListDistance[k];
 					heuristicValue4.Add(operand, "Objective distance", new object[0]);
 					heuristicValue4.Divide(num, "Max distance", new object[0]);
 					heuristicValue3.Add(1f, "constant", new object[0]);
@@ -310,7 +351,7 @@ public class AILayer_Village : AILayerWithObjective
 					if (num2 > 0f)
 					{
 						HeuristicValue heuristicValue6 = new HeuristicValue(0f);
-						float operand2 = this.workingListConversionCost[j];
+						float operand2 = this.workingListConversionCost[k];
 						heuristicValue6.Add(operand2, "Objective distance", new object[0]);
 						heuristicValue6.Divide(num2, "Max distance", new object[0]);
 						heuristicValue5.Add(1f, "(constant)", new object[0]);
@@ -327,63 +368,152 @@ public class AILayer_Village : AILayerWithObjective
 					heuristicValue2.Boost(heuristicValue7, "Cost boost", new object[0]);
 					if (village2.HasBeenPacified)
 					{
-						heuristicValue2.Boost(0.05f, "Pacified", new object[0]);
+						heuristicValue2.Boost(0.5f, "Pacified", new object[0]);
 						if (village2.PointOfInterest.PointOfInterestImprovement != null)
 						{
 							heuristicValue2.Boost(0.1f, "Built", new object[0]);
+						}
+						if (village2.Region.City != null && this.departmentOfForeignAffairs.IsAtWarWith(village2.Region.City.Empire))
+						{
+							heuristicValue2.Boost(0.1f, "Steal from enemy", new object[0]);
 						}
 					}
 					if (village2.HasBeenConverted)
 					{
 						heuristicValue2.Boost(-0.05f, "Converted by someone else", new object[0]);
 					}
-					int num4 = 0;
-					for (int k = 0; k < 6; k++)
+					int num6 = 0;
+					int num7 = 0;
+					for (int l = 0; l < 6; l++)
 					{
-						WorldPosition neighbourTile = this.worldPositionningService.GetNeighbourTile(village2.WorldPosition, (WorldOrientation)k, 1);
-						if (neighbourTile.IsValid && this.worldPositionningService.IsExploitable(neighbourTile, 0))
+						WorldPosition neighbourTile = this.worldPositionningService.GetNeighbourTile(village2.WorldPosition, (WorldOrientation)l, 1);
+						if (neighbourTile.IsValid && this.worldPositionningService.IsExploitable(neighbourTile, 0) && this.worldPositionningService.GetRegion(neighbourTile) == village2.Region)
 						{
-							num4++;
+							num6++;
+							byte anomalyType = this.worldPositionningService.GetAnomalyType(neighbourTile);
+							if (!StaticString.IsNullOrEmpty(this.worldPositionningService.GetAnomalyTypeMappingName(anomalyType)))
+							{
+								num7++;
+							}
 						}
 					}
 					HeuristicValue heuristicValue8 = new HeuristicValue(0f);
-					heuristicValue8.Add((float)num4, "exploitable tile around", new object[0]);
+					heuristicValue8.Add((float)num6, "exploitable tile around", new object[0]);
 					heuristicValue8.Divide(6f, "Max tile", new object[0]);
 					heuristicValue8.Multiply(0.5f, "(constant)", new object[0]);
 					heuristicValue2.Boost(heuristicValue8, "FIDS generated by village", new object[0]);
+					HeuristicValue heuristicValue9 = new HeuristicValue(0f);
+					heuristicValue9.Add((float)num7, "anomalies around", new object[0]);
+					heuristicValue9.Divide(6f, "Max tile", new object[0]);
+					heuristicValue9.Multiply(0.5f, "(constant)", new object[0]);
+					heuristicValue2.Boost(heuristicValue9, "FIDS generated by village", new object[0]);
+					if (!this.departmentOfForeignAffairs.IsInWarWithSomeone() && !village2.HasBeenConverted)
+					{
+						float num8;
+						base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num8, false);
+						if (this.workingListConversionCost[k] * 1.5f <= num8)
+						{
+							heuristicValue.Boost(1f, "Peacetime Cultist Boost", new object[0]);
+							heuristicValue2.Boost(0.9f, "Peacetime Cultist Boost", new object[0]);
+							if (village2.Region.Owner == base.AIEntity.Empire)
+							{
+								heuristicValue2.Boost(0.2f, "Peacetime Cultist Boost", new object[0]);
+							}
+							if (this.workingListDistance[k] < 14f && village2.HasBeenPacified && (village2.Region.City == null || village2.Region.City.Empire == base.AIEntity.Empire) && village2.PointOfInterest.PointOfInterestImprovement != null)
+							{
+								flag4 = true;
+							}
+						}
+					}
 				}
 				else
 				{
 					if (region.City != null && region.City.Empire == base.AIEntity.Empire)
 					{
 						heuristicValue.Add(agentValue, "Internal pacification global score", new object[0]);
+						if (!this.departmentOfForeignAffairs.IsInWarWithSomeone())
+						{
+							heuristicValue.Boost(1f, "Internal pacification global score", new object[0]);
+						}
 					}
 					else
 					{
 						heuristicValue.Add(agentValue2, "External pacification global score", new object[0]);
 					}
-					HeuristicValue heuristicValue9 = new HeuristicValue(0f);
-					heuristicValue9.Add(heuristicValue3, "Distance ratio", new object[0]);
-					heuristicValue9.Subtract(1f, "(constant)", new object[0]);
+					HeuristicValue heuristicValue10 = new HeuristicValue(0f);
+					heuristicValue10.Add(heuristicValue3, "Distance ratio", new object[0]);
+					heuristicValue10.Subtract(1f, "(constant)", new object[0]);
 					if (village2.Region.City == null)
 					{
 						heuristicValue2.Add(0.6f, "(constant) nobody own the region", new object[0]);
-						heuristicValue9.Multiply(0.5f, "(constant)", new object[0]);
-						heuristicValue2.Boost(heuristicValue9, "Distance boost", new object[0]);
-						HeuristicValue heuristicValue10 = new HeuristicValue(0f);
-						heuristicValue10.Add(this.colonizationLayer.GetColonizationInterest(globalObjectiveMessage2.RegionIndex), "Region colo interest", new object[0]);
+						heuristicValue10.Multiply(0.5f, "(constant)", new object[0]);
+						heuristicValue2.Boost(heuristicValue10, "Distance boost", new object[0]);
+						HeuristicValue heuristicValue11 = new HeuristicValue(0f);
+						heuristicValue11.Add(this.colonizationLayer.GetColonizationInterest(globalObjectiveMessage2.RegionIndex), "Region colo interest", new object[0]);
+						heuristicValue11.Multiply(0.1f, "(constant)", new object[0]);
+						heuristicValue2.Boost(heuristicValue11, "Colonization boost", new object[0]);
+					}
+					else if (region.City.Empire == base.AIEntity.Empire)
+					{
+						heuristicValue2.Boost(1f, "I own the region", new object[0]);
 						heuristicValue10.Multiply(0.1f, "(constant)", new object[0]);
-						heuristicValue2.Boost(heuristicValue10, "Colonization boost", new object[0]);
+						heuristicValue2.Boost(heuristicValue10, "Distance boost", new object[0]);
 					}
 					else
 					{
-						heuristicValue2.Add(0.8f, "(constant) I own the region", new object[0]);
-						heuristicValue9.Multiply(0.1f, "(constant)", new object[0]);
-						heuristicValue2.Boost(heuristicValue9, "Distance boost", new object[0]);
+						heuristicValue2.Add(0.8f, "(constant) I don't own the region", new object[0]);
+						heuristicValue10.Multiply(0.1f, "(constant)", new object[0]);
+						heuristicValue2.Boost(heuristicValue10, "Distance boost", new object[0]);
 					}
 				}
-				this.workingList[j].GlobalPriority = heuristicValue;
-				this.workingList[j].LocalPriority = heuristicValue2;
+				this.workingList[k].GlobalPriority = heuristicValue;
+				this.workingList[k].LocalPriority = heuristicValue2;
+				if (flag2)
+				{
+					if (k == 0)
+					{
+						num2 = this.workingListConversionCost[k];
+					}
+					else if (this.workingList[k].LocalPriority.Value > this.workingList[k - 1].LocalPriority.Value)
+					{
+						num2 = this.workingListConversionCost[k];
+					}
+					if (flag4)
+					{
+						if (num5 == -1)
+						{
+							num5 = k;
+						}
+						else if (this.workingListDistance[k] < this.workingListDistance[num5])
+						{
+							num5 = k;
+						}
+					}
+				}
+			}
+		}
+		if (flag2)
+		{
+			ConversionNeedPrestigeMessage conversionNeedPrestigeMessage = base.AIEntity.AIPlayer.Blackboard.GetMessages<ConversionNeedPrestigeMessage>(BlackboardLayerID.Empire).FirstOrDefault<ConversionNeedPrestigeMessage>();
+			if (conversionNeedPrestigeMessage == null)
+			{
+				conversionNeedPrestigeMessage = new ConversionNeedPrestigeMessage(BlackboardLayerID.Empire);
+				base.AIEntity.AIPlayer.Blackboard.AddMessage(conversionNeedPrestigeMessage);
+			}
+			conversionNeedPrestigeMessage.TimeOut = 1;
+			conversionNeedPrestigeMessage.NeededPrestigePoints = 0f;
+			conversionNeedPrestigeMessage.Priority = 0f;
+			if (num2 > 0f)
+			{
+				Account account = base.AIEntity.GetLayer<AILayer_AccountManager>().TryGetAccount(AILayer_AccountManager.ConversionAccountName);
+				if (account != null && num2 > account.GetAvailableAmount())
+				{
+					conversionNeedPrestigeMessage.NeededPrestigePoints = num2 - account.GetAvailableAmount();
+				}
+			}
+			if (num5 >= 0)
+			{
+				this.workingList[num5].LocalPriority.Boost(1f, "premiumboost", new object[0]);
 			}
 		}
 	}
@@ -410,19 +540,25 @@ public class AILayer_Village : AILayerWithObjective
 		{
 			Region.Border border = region.Borders[i];
 			Region region2 = this.worldPositionningService.World.Regions[border.NeighbourRegionIndex];
-			if (region2.ContinentID == region.ContinentID)
+			if (region2.ContinentID == region.ContinentID && region2 != null && !this.regions.Contains(region2))
 			{
-				if (region2 != null && !this.regions.Contains(region2))
-				{
-					this.regions.Add(region2);
-				}
+				this.regions.Add(region2);
 			}
 		}
 	}
 
 	private void CancelMessagesFor(int regionIndex, GameEntityGUID villageGUID)
 	{
-		foreach (GlobalObjectiveMessage message in base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.RegionIndex == regionIndex && match.SubObjectifGUID == villageGUID && match.ObjectiveType == this.ObjectiveType))
+		Blackboard<BlackboardLayerID, BlackboardMessage> blackboard = base.AIEntity.AIPlayer.Blackboard;
+		BlackboardLayerID blackboardLayerID = BlackboardLayerID.Empire;
+		BlackboardLayerID layerID = blackboardLayerID;
+		Func<GlobalObjectiveMessage, bool> <>9__0;
+		Func<GlobalObjectiveMessage, bool> filter;
+		if ((filter = <>9__0) == null)
+		{
+			filter = (<>9__0 = ((GlobalObjectiveMessage match) => match.RegionIndex == regionIndex && match.SubObjectifGUID == villageGUID && match.ObjectiveType == this.ObjectiveType));
+		}
+		foreach (GlobalObjectiveMessage message in blackboard.GetMessages<GlobalObjectiveMessage>(layerID, filter))
 		{
 			base.AIEntity.AIPlayer.Blackboard.CancelMessage(message);
 		}
@@ -430,7 +566,16 @@ public class AILayer_Village : AILayerWithObjective
 
 	private void CancelMessagesFor(int regionIndex)
 	{
-		foreach (GlobalObjectiveMessage message in base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.RegionIndex == regionIndex && match.ObjectiveType == this.ObjectiveType))
+		Blackboard<BlackboardLayerID, BlackboardMessage> blackboard = base.AIEntity.AIPlayer.Blackboard;
+		BlackboardLayerID blackboardLayerID = BlackboardLayerID.Empire;
+		BlackboardLayerID layerID = blackboardLayerID;
+		Func<GlobalObjectiveMessage, bool> <>9__0;
+		Func<GlobalObjectiveMessage, bool> filter;
+		if ((filter = <>9__0) == null)
+		{
+			filter = (<>9__0 = ((GlobalObjectiveMessage match) => match.RegionIndex == regionIndex && match.ObjectiveType == this.ObjectiveType));
+		}
+		foreach (GlobalObjectiveMessage message in blackboard.GetMessages<GlobalObjectiveMessage>(layerID, filter))
 		{
 			base.AIEntity.AIPlayer.Blackboard.CancelMessage(message);
 		}
@@ -447,21 +592,7 @@ public class AILayer_Village : AILayerWithObjective
 		{
 			city = this.departmentOfTheInterior.Cities[0];
 		}
-		float num = (float)this.worldPositionningService.GetDistance(city.WorldPosition, village.WorldPosition);
-		float num2 = float.MaxValue;
-		for (int i = 0; i < this.departmentOfDefense.Armies.Count; i++)
-		{
-			float num3 = (float)this.worldPositionningService.GetDistance(this.departmentOfDefense.Armies[i].WorldPosition, village.WorldPosition);
-			if (num3 < num2)
-			{
-				num2 = num3;
-			}
-		}
-		if (num2 == 3.40282347E+38f)
-		{
-			return num;
-		}
-		return (num + num2) / 2f;
+		return (float)this.worldPositionningService.GetDistance(city.WorldPosition, village.WorldPosition);
 	}
 
 	private void FillUpRegions()
@@ -491,6 +622,14 @@ public class AILayer_Village : AILayerWithObjective
 				Region region2 = this.worldPositionningService.GetRegion(regionIndex);
 				this.AddRegion(region2, false);
 			}
+			if (base.AIEntity.Empire.SimulationObject.Tags.Contains("FactionTraitCultists7") && base.AIEntity.Empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait) && this.departmentOfDefense.TechnologyDefinitionShipState == DepartmentOfScience.ConstructibleElement.State.Researched)
+			{
+				Region region3 = this.ChooseOverseaRegion();
+				if (region3 != null)
+				{
+					this.AddRegion(region3, false);
+				}
+			}
 		}
 	}
 
@@ -498,9 +637,15 @@ public class AILayer_Village : AILayerWithObjective
 	{
 		if (canConvert)
 		{
-			if (village.HasBeenConverted && village.Converter == base.AIEntity.Empire)
+			if (village.HasBeenConverted && village.Converter == base.AIEntity.Empire as MajorEmpire)
 			{
 				return false;
+			}
+			if (village.HasBeenConverted && village.Converter != base.AIEntity.Empire as MajorEmpire)
+			{
+				MajorEmpire converter = village.Converter;
+				DiplomaticRelation diplomaticRelation = this.departmentOfForeignAffairs.GetDiplomaticRelation(converter);
+				return diplomaticRelation != null && diplomaticRelation.State.Name == DiplomaticRelationState.Names.War;
 			}
 			if (village.HasBeenPacified && !village.HasBeenInfected)
 			{
@@ -519,8 +664,168 @@ public class AILayer_Village : AILayerWithObjective
 		this.conversionArmies.Clear();
 		for (int i = 0; i < this.departmentOfDefense.Armies.Count; i++)
 		{
-			DepartmentOfTheInterior.IsArmyAbleToConvert(this.departmentOfDefense.Armies[i], true);
+			if (DepartmentOfTheInterior.IsArmyAbleToConvert(this.departmentOfDefense.Armies[i], true))
+			{
+				this.conversionArmies.Add(this.departmentOfDefense.Armies[i]);
+			}
 		}
+	}
+
+	private float ComputePerceivedPathDistanceOfVillageToConvert(Village village)
+	{
+		if (this.conversionArmies.Count == 0)
+		{
+			return 0f;
+		}
+		IPathfindingService service = Services.GetService<IGameService>().Game.Services.GetService<IPathfindingService>();
+		City city = this.departmentOfTheInterior.MainCity;
+		if (village.Region.City != null && village.Region.City.Empire == base.AIEntity.Empire)
+		{
+			city = village.Region.City;
+			return (float)this.worldPositionningService.GetDistance(city.WorldPosition, village.WorldPosition);
+		}
+		if (city == null)
+		{
+			city = this.departmentOfTheInterior.Cities[0];
+		}
+		PathfindingContext pathfindingContext = this.conversionArmies[0].GenerateContext();
+		pathfindingContext.Greedy = true;
+		PathfindingResult pathfindingResult = service.FindPath(pathfindingContext, city.WorldPosition, village.WorldPosition, PathfindingManager.RequestMode.Default, null, PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI, null);
+		if (pathfindingResult != null)
+		{
+			return (float)pathfindingResult.CompletPathLength;
+		}
+		return 0f;
+	}
+
+	private Region ChooseOverseaRegion()
+	{
+		List<Region> list = new List<Region>();
+		foreach (Continent continent in this.worldPositionningService.World.Continents)
+		{
+			List<Region> list2 = new List<Region>();
+			foreach (int regionIndex in continent.RegionList)
+			{
+				Region region = this.worldPositionningService.GetRegion(regionIndex);
+				if (region.IsLand)
+				{
+					list2.Add(region);
+				}
+			}
+			if (list2.Count > 0 && !this.AlreadyConvertedVillagesOnContinent(list2))
+			{
+				for (int k = list2.Count - 1; k >= 0; k--)
+				{
+					if (!this.HasConvertableVillages(list2[k]))
+					{
+						list2.RemoveAt(k);
+					}
+				}
+				if (list2.Count > 0)
+				{
+					list.AddRange(list2);
+				}
+			}
+		}
+		if (list.Count > 0)
+		{
+			return this.GetClosestRegion(list);
+		}
+		return null;
+	}
+
+	private Region GetClosestRegion(List<Region> Regions)
+	{
+		City city = this.departmentOfTheInterior.MainCity;
+		if (city == null)
+		{
+			city = this.departmentOfTheInterior.Cities[0];
+		}
+		WorldPosition worldPosition;
+		if (city == null)
+		{
+			if (this.departmentOfDefense.Armies.Count <= 0)
+			{
+				return null;
+			}
+			worldPosition = this.departmentOfDefense.Armies[0].WorldPosition;
+		}
+		else
+		{
+			worldPosition = city.WorldPosition;
+		}
+		int num = int.MaxValue;
+		Region result = null;
+		foreach (Region region in Regions)
+		{
+			int distance = this.worldPositionningService.GetDistance(region.Barycenter, worldPosition);
+			if (distance <= num)
+			{
+				num = distance;
+				result = region;
+			}
+		}
+		return result;
+	}
+
+	private bool AlreadyConvertedVillagesOnContinent(List<Region> Regions)
+	{
+		foreach (Region region in Regions)
+		{
+			if (region.City != null && region.City.Empire == base.AIEntity.Empire)
+			{
+				return true;
+			}
+		}
+		MajorEmpire majorEmpire = base.AIEntity.Empire as MajorEmpire;
+		if (majorEmpire != null)
+		{
+			foreach (Village village in majorEmpire.ConvertedVillages)
+			{
+				if (Regions.Contains(village.Region))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		return true;
+	}
+
+	private bool HasConvertableVillages(Region region)
+	{
+		if (region.City != null)
+		{
+			DiplomaticRelation diplomaticRelation = this.departmentOfForeignAffairs.GetDiplomaticRelation(region.City.Empire);
+			if (diplomaticRelation != null && diplomaticRelation.State.Name == DiplomaticRelationState.Names.War)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			BarbarianCouncil agency = region.MinorEmpire.GetAgency<BarbarianCouncil>();
+			if (agency != null)
+			{
+				foreach (Village village in agency.Villages)
+				{
+					if (!village.HasBeenConverted)
+					{
+						return true;
+					}
+					if (village.HasBeenConverted && village.Converter != base.AIEntity.Empire as MajorEmpire)
+					{
+						DiplomaticRelation diplomaticRelation2 = this.departmentOfForeignAffairs.GetDiplomaticRelation(village.Converter);
+						if (diplomaticRelation2 != null && diplomaticRelation2.State.Name == DiplomaticRelationState.Names.War)
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		}
+		return false;
 	}
 
 	public static readonly StaticString TagConversionTrait = new StaticString("FactionTraitCultists14");

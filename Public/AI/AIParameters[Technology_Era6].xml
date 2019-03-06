@@ -3,33 +3,44 @@
 
   <!-- Dust6 -->
   <AIParameterDatatableElement Name="TechnologyDefinitionDust6">
-    <AIParameter Name="CityMoneyPercent"                  Value="1"/>
+    <AIParameter Name="CityMoneyPercent" Value="1 * (0 max (($Property(../EmpireTypeMajor:UnlockedTechnologyCount)) - 47 - (2 * $(VictoryFocusEconomy))))"/>
+	<AIParameter Name="AITechMustHave" Value="0.1 * ($Count(ClassEmpire/ClassResearch,TechnologyFood6) + $Count(ClassEmpire/ClassResearch,TechnologyIndustry5) + $Count(ClassEmpire/ClassResearch,TechnologyScience6) + $Count(ClassEmpire/ClassResearch,TechnologyEmpire1) + $Count(ClassEmpire/ClassResearch,TechnologyUnitImproved1)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyDust6)))"/>
+	<AIParameter Name="AITechMustHave" Value="2 * $(VictoryFocusEconomy)"/>
   </AIParameterDatatableElement>
 
   <!-- Food6 -->
   <AIParameterDatatableElement Name="TechnologyDefinitionFood6">
-    <AIParameter Name="CityFoodPercent" Value="1"/>
+    <AIParameter Name="CityFoodPercent"  Value="1 * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 49))"/>
+	<AIParameter Name="AITechMustHave" Value="0.1 * ($Count(ClassEmpire/ClassResearch,TechnologyDust6) + $Count(ClassEmpire/ClassResearch,TechnologyIndustry5) + $Count(ClassEmpire/ClassResearch,TechnologyScience6) + $Count(ClassEmpire/ClassResearch,TechnologyEmpire1) + $Count(ClassEmpire/ClassResearch,TechnologyUnitImproved1)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyFood6)))"/>
   </AIParameterDatatableElement>
 
   <!-- Industry6 -->
   <AIParameterDatatableElement Name="TechnologyDefinitionIndustry5">
-    <AIParameter Name="CityProductionPercent" Value="1"/>
+    <AIParameter Name="CityProductionPercent"  Value="1 * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 48 - $Count(ClassEmpire/ClassCity,EndlessTempleWonderInQueue)))"/>
+	<AIParameter Name="AITechMustHave" Value="0.1 * ($Count(ClassEmpire/ClassResearch,TechnologyDust6) + $Count(ClassEmpire/ClassResearch,TechnologyFood6) + $Count(ClassEmpire/ClassResearch,TechnologyScience6) + $Count(ClassEmpire/ClassResearch,TechnologyEmpire1) + $Count(ClassEmpire/ClassResearch,TechnologyUnitImproved1)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyIndustry5)))"/>
+	<AIParameter Name="AITechMustHave" Value="2 * $Count(ClassEmpire/ClassCity,EndlessTempleWonderInQueue)"/>
   </AIParameterDatatableElement>
 
   <!-- Science6 -->
   <AIParameterDatatableElement Name="TechnologyDefinitionScience6">
-    <AIParameter Name="CitySciencePercent" Value="1"/>
+    <AIParameter Name="CitySciencePercent" Value="1 * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 47 - (2 * $(VictoryFocusTechnology))))"/>
+	<AIParameter Name="AITechMustHave" Value="0.15 * ($Count(ClassEmpire/ClassResearch,TechnologyDust6) + $Count(ClassEmpire/ClassResearch,TechnologyFood6) + $Count(ClassEmpire/ClassResearch,TechnologyIndustry5) + $Count(ClassEmpire/ClassResearch,TechnologyEmpire1) + $Count(ClassEmpire/ClassResearch,TechnologyUnitImproved1))"/>
+	<AIParameter Name="AITechMustHave" Value="2 * $(VictoryFocusTechnology)"/>
   </AIParameterDatatableElement>
 
   <!-- Influence6 --> 
   <AIParameterDatatableElement Name="TechnologyDefinitionEmpire1">
-    <AIParameter Name="CityCityPointPercent" Value="1"/>
+    <AIParameter Name="CityCityPointPercent" Value="1 * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 47 - (2 * $(VictoryFocusDiplomacy))))"/>
+	<AIParameter Name="AITechMustHave" Value="0.1 * ($Count(ClassEmpire/ClassResearch,TechnologyDust6) + $Count(ClassEmpire/ClassResearch,TechnologyFood6) + $Count(ClassEmpire/ClassResearch,TechnologyIndustry5) + $Count(ClassEmpire/ClassResearch,TechnologyScience6) + $Count(ClassEmpire/ClassResearch,TechnologyUnitImproved1)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyEmpire1)))"/>
+	<AIParameter Name="AITechMustHave" Value="2 * $(VictoryFocusDiplomacy)"/>
   </AIParameterDatatableElement>
 
   <!-- Units Improved -->
   <AIParameterDatatableElement Name="TechnologyDefinitionUnitImproved1">
-    <AIParameter Name="EmpireUnitLifePercent"   Value="1"/>
-    <AIParameter Name="EmpireUnitDamagePercent" Value="1"/>
+    <AIParameter Name="EmpireUnitLifePercent"    Value="0.5 * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 48 - (2 * $(VictoryFocusMilitary))))"/>
+    <AIParameter Name="EmpireUnitDamagePercent"  Value="0.5 * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 48 - (2 * $(VictoryFocusMilitary))))"/>
+	<AIParameter Name="AITechMustHave" Value="0.1 * ($Count(ClassEmpire/ClassResearch,TechnologyDust6) + $Count(ClassEmpire/ClassResearch,TechnologyFood6) + $Count(ClassEmpire/ClassResearch,TechnologyIndustry5) + $Count(ClassEmpire/ClassResearch,TechnologyScience6) + $Count(ClassEmpire/ClassResearch,TechnologyEmpire1)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyUnitImproved1)))"/>
+	<AIParameter Name="AITechMustHave" Value="1 * $(VictoryFocusMilitary)"/>
   </AIParameterDatatableElement>
 
   <!-- Quest reward: TechnologyDefinitionEndlessTemple -->

@@ -16,9 +16,7 @@ public class NavyTask_Takeover : NavyTask
 
 	public override bool CheckValidity()
 	{
-		IGameService service = Services.GetService<IGameService>();
-		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
-		Region region = service2.GetRegion(this.FortressPosition);
+		Region region = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>().GetRegion(this.FortressPosition);
 		if (region.NavalEmpire == null)
 		{
 			return false;
@@ -37,6 +35,10 @@ public class NavyTask_Takeover : NavyTask
 		{
 			return false;
 		}
+		if (base.Owner is MajorEmpire && fortressAt.Occupant != null && base.NavyLayer.diplomacyLayer.GetPeaceWish(fortressAt.Occupant.Index))
+		{
+			return false;
+		}
 		if (base.AssignedArmy != null && base.AssignedArmy.Garrison == null)
 		{
 			base.AssignedArmy = null;
@@ -45,8 +47,7 @@ public class NavyTask_Takeover : NavyTask
 		if (base.AssignedArmy != null)
 		{
 			float enemyPower = this.GetEnemyPower();
-			float propertyValue = base.AssignedArmy.Garrison.GetPropertyValue(SimulationProperties.MilitaryPower);
-			if (propertyValue < enemyPower * 0.8f)
+			if (base.AssignedArmy.Garrison.GetPropertyValue(SimulationProperties.MilitaryPower) < enemyPower * 0.8f)
 			{
 				return false;
 			}
@@ -56,8 +57,7 @@ public class NavyTask_Takeover : NavyTask
 
 	public override NavyTaskEvaluation ComputeFitness(BaseNavyArmy navyGarrison)
 	{
-		IGameService service = Services.GetService<IGameService>();
-		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
+		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
 		NavyTaskEvaluation navyTaskEvaluation = new NavyTaskEvaluation();
 		navyTaskEvaluation.Fitness = new HeuristicValue(0f);
 		navyTaskEvaluation.Task = this;
@@ -76,15 +76,14 @@ public class NavyTask_Takeover : NavyTask
 			navyTaskEvaluation.Fitness.Add(base.ComputePowerFitness(enemyPower, propertyValue), "MilitaryPower", new object[0]);
 			if (navyTaskEvaluation.Fitness > 0f)
 			{
-				float num = (float)service2.GetDistance(navyGarrison.Garrison.WorldPosition, this.FortressPosition);
-				float numberOfTurnToReach = num / navyGarrison.GetMaximumMovement();
+				float value = navyTaskEvaluation.Fitness.Value;
+				float numberOfTurnToReach = (float)service.GetDistance(navyGarrison.Garrison.WorldPosition, this.FortressPosition) / navyGarrison.GetMaximumMovement();
 				navyTaskEvaluation.Fitness.Multiply(base.ComputeDistanceFitness(numberOfTurnToReach, navyGarrison.Role), "Distance", new object[0]);
 				if (navyGarrison.Role == BaseNavyArmy.ArmyRole.Forteress)
 				{
 					navyTaskEvaluation.Fitness.Boost(-0.2f, "Fortress...", new object[0]);
 				}
-				float propertyValue2 = navyGarrison.Garrison.GetPropertyValue(SimulationProperties.ActionPointsSpent);
-				if (propertyValue2 > 0f)
+				if (navyGarrison.Garrison.GetPropertyValue(SimulationProperties.ActionPointsSpent) > 0f)
 				{
 					navyTaskEvaluation.Fitness.Boost(-0.2f, "No more action point...", new object[0]);
 				}
@@ -100,9 +99,7 @@ public class NavyTask_Takeover : NavyTask
 
 	private float GetEnemyPower()
 	{
-		IGameService service = Services.GetService<IGameService>();
-		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
-		Region region = service2.GetRegion(this.FortressPosition);
+		Region region = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>().GetRegion(this.FortressPosition);
 		if (region.NavalEmpire == null)
 		{
 			return 0f;

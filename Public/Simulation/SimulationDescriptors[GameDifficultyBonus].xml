@@ -85,7 +85,7 @@
       <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.2" Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.15"   Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.2"   Priority="1" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.2"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Percent"        Value="0.2"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
       <!-- City Modifier -->
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.2"  Priority="1" Path="ClassEmpire/ClassCity"/>
@@ -105,6 +105,13 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic4"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic5"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"        Value="0.5"   Priority="1" Path="ClassEmpire"/>
+	  
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="0.5" Path="ClassEmpire,AffinityStrategic1"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="0.5" Path="ClassEmpire,AffinityStrategic2"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="0.5" Path="ClassEmpire,AffinityStrategic3"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="0.5" Path="ClassEmpire,AffinityStrategic4"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="0.5" Path="ClassEmpire,AffinityStrategic5"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="0.5" Path="ClassEmpire,AffinityStrategic6"/>
       <!-- Search Modifier : no quests until the AI can do them correctly -->
       <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
@@ -134,7 +141,7 @@
       <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.35" Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.2"  Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.35"  Priority="1" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.35"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Percent"        Value="0.35"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
       <!-- City Modifier -->
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
@@ -154,6 +161,13 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic4"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic5"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"        Value="1"   Priority="1" Path="ClassEmpire"/>
+	  
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1" Path="ClassEmpire,AffinityStrategic1"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1" Path="ClassEmpire,AffinityStrategic2"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1" Path="ClassEmpire,AffinityStrategic3"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1" Path="ClassEmpire,AffinityStrategic4"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1" Path="ClassEmpire,AffinityStrategic5"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1" Path="ClassEmpire,AffinityStrategic6"/>
       <!-- Search Modifier : no quests until the AI can do them correctly -->
       <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
@@ -183,7 +197,7 @@
       <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.5"  Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.25"  Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.5"   Priority="1" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.5"   Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Percent"        Value="0.5"   Priority="1" Path="EmpireTypeMajor/ClassCity"/>
       <!-- City Modifier -->
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.5"   Priority="1" Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.6"   Priority="1" Path="ClassEmpire/ClassCity"/>
@@ -203,6 +217,13 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic4"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic5"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"         Value="1.5"   Priority="1" Path="ClassEmpire"/>
+	  
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1.5" Path="ClassEmpire,AffinityStrategic1"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1.5" Path="ClassEmpire,AffinityStrategic2"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1.5" Path="ClassEmpire,AffinityStrategic3"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1.5" Path="ClassEmpire,AffinityStrategic4"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1.5" Path="ClassEmpire,AffinityStrategic5"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="1.5" Path="ClassEmpire,AffinityStrategic6"/>
       <!-- Search Modifier : no quests until the AI can do them correctly -->
       <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Addition"        Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
@@ -236,7 +257,7 @@
       <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.6" Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.3"  Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.6"  Priority="1" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.6"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Percent"        Value="0.6"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
       <!-- City Modifier -->
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.6"  Priority="1" Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.7"  Priority="1" Path="ClassEmpire/ClassCity"/>
@@ -255,7 +276,14 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic3"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic4"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic5"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
-      <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>    
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"                        Operation="Percent"        Value="2"   Priority="1" Path="ClassEmpire"/>
+
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="2" Path="ClassEmpire,AffinityStrategic1"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="2" Path="ClassEmpire,AffinityStrategic2"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="2" Path="ClassEmpire,AffinityStrategic3"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="2" Path="ClassEmpire,AffinityStrategic4"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="2" Path="ClassEmpire,AffinityStrategic5"/>
+	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Percent" Value="2" Path="ClassEmpire,AffinityStrategic6"/>	  
       
       <!-- Search Modifier : no quests until the AI can do them correctly -->
       <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>

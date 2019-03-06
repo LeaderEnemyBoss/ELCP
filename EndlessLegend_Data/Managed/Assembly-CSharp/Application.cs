@@ -15,11 +15,11 @@ public class Application : Amplitude.Unity.Framework.Application
 		Amplitude.Unity.Framework.Application.Name = "Endless Legend";
 		Amplitude.Unity.Framework.Application.Version = new Amplitude.Unity.Framework.Version
 		{
-			Major = 1,
-			Minor = 7,
-			Revision = 4,
+			Major = 2,
+			Minor = 3,
+			Revision = 3,
 			Serial = 3,
-			Label = string.Empty,
+			Label = "Community Patch",
 			Accessibility = Accessibility.Public
 		};
 		global::Application.SteamAppID = 289130;
@@ -104,6 +104,7 @@ public class Application : Amplitude.Unity.Framework.Application
 		Amplitude.Unity.Framework.Application.DebugNetwork = global::Application.CommandLineArguments.DebugNetwork;
 		Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools = global::Application.CommandLineArguments.EnableModdingTools;
 		Amplitude.Unity.Framework.Application.Preferences.EnableMultiplayer = !global::Application.CommandLineArguments.EnableModdingTools;
+		Amplitude.Unity.Framework.Application.Preferences.ELCPDevMode = false;
 	}
 
 	protected override IEnumerator OnApplicationIgnitionComplete()

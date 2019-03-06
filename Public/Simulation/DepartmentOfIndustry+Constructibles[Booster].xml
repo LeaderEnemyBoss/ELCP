@@ -11,7 +11,7 @@
     <SimulationDescriptorReference    Name="BoosterGeneratorFoodBonus1" />
     <BoosterDefinitionName>BoosterFood</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
-    <Cost ResourceName="Production" Instant="false">1200</Cost>
+    <Cost ResourceName="Production" Instant="false">900</Cost>
     <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
     <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel1</TechnologyPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">.../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2</PathPrerequisite>
@@ -21,7 +21,7 @@
     <SimulationDescriptorReference    Name="BoosterGeneratorFoodBonus2" />
     <BoosterDefinitionName>BoosterFood</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
-    <Cost ResourceName="Production" Instant="false">2500</Cost>
+    <Cost ResourceName="Production" Instant="false">2000</Cost>
     <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
     <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel2</TechnologyPrerequisite>
   </BoosterGeneratorDefinition>
@@ -31,7 +31,7 @@
     <BoosterDefinitionName>BoosterFood</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
     <CustomCost ResourceName="Production" Instant="false">
-      100 + 500*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 1000*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
+      100 + 350*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 750*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
     </CustomCost>
     <CustomCost ResourceName="Orb" Instant="true">8 * (1 - $Property(ClassCity:StockpileOrbCostReduction))</CustomCost>
     <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
@@ -44,7 +44,7 @@
     <SimulationDescriptorReference    Name="BoosterGeneratorIndustryBonus1" />
     <BoosterDefinitionName>BoosterIndustry</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
-    <Cost ResourceName="Production" Instant="false">1200</Cost>
+    <Cost ResourceName="Production" Instant="false">900</Cost>
     <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel1</TechnologyPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">.../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2</PathPrerequisite>
   </BoosterGeneratorDefinition>
@@ -53,7 +53,7 @@
     <SimulationDescriptorReference    Name="BoosterGeneratorIndustryBonus2" />
     <BoosterDefinitionName>BoosterIndustry</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
-    <Cost ResourceName="Production" Instant="false">2500</Cost>
+    <Cost ResourceName="Production" Instant="false">2000</Cost>
     <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel2</TechnologyPrerequisite>
   </BoosterGeneratorDefinition>
 
@@ -62,7 +62,7 @@
     <BoosterDefinitionName>BoosterIndustry</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
     <CustomCost ResourceName="Production" Instant="false">
-      100 + 500*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 1000*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
+      100 + 350*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 750*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
     </CustomCost>
     <CustomCost ResourceName="Orb" Instant="true">8 * (1 - $Property(ClassCity:StockpileOrbCostReduction))</CustomCost>
     <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyOrbUnlock12</TechnologyPrerequisite>
@@ -74,7 +74,7 @@
     <SimulationDescriptorReference    Name="BoosterGeneratorScienceBonus1" />
     <BoosterDefinitionName>BoosterScience</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
-    <Cost ResourceName="Production" Instant="false">1200</Cost>
+    <Cost ResourceName="Production" Instant="false">900</Cost>
     <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityReplicants</PathPrerequisite>
     <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel1</TechnologyPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">.../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2</PathPrerequisite>
@@ -84,7 +84,7 @@
     <SimulationDescriptorReference    Name="BoosterGeneratorScienceBonus2" />
     <BoosterDefinitionName>BoosterScience</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
-    <Cost ResourceName="Production" Instant="false">2500</Cost>
+    <Cost ResourceName="Production" Instant="false">2000</Cost>
     <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityReplicants</PathPrerequisite>
     <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel2</TechnologyPrerequisite>
   </BoosterGeneratorDefinition>
@@ -94,7 +94,7 @@
     <BoosterDefinitionName>BoosterScience</BoosterDefinitionName>
     <BuyoutCostModifier>0.5</BuyoutCostModifier>
     <CustomCost ResourceName="Production" Instant="false">
-      100 + 500*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 1000*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
+      100 + 350*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 750*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
     </CustomCost>
     <CustomCost ResourceName="Orb" Instant="true">8 * (1 - $Property(ClassCity:StockpileOrbCostReduction))</CustomCost>
     <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityReplicants</PathPrerequisite>

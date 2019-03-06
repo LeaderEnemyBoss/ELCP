@@ -134,9 +134,15 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 
 	protected override AICommanderMission.AICommanderMissionCompletion GetCompletionFor(AIArmyMission.AIArmyMissionErrorCode errorCode, out TickableState tickableState)
 	{
+		if (errorCode == AIArmyMission.AIArmyMissionErrorCode.NoTargetSelected && base.AIDataArmyGUID.IsValid && !this.IsMissionCompleted() && !this.IsRegionColonized())
+		{
+			tickableState = TickableState.Optional;
+			return AICommanderMission.AICommanderMissionCompletion.Running;
+		}
 		if (errorCode == AIArmyMission.AIArmyMissionErrorCode.InvalidDestination && this.PositionIndex + 1 < this.ListOfPosition.Length)
 		{
-			this.PositionIndex++;
+			int positionIndex = this.PositionIndex;
+			this.PositionIndex = positionIndex + 1;
 			tickableState = TickableState.NoTick;
 			return AICommanderMission.AICommanderMissionCompletion.Running;
 		}
@@ -163,7 +169,12 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 
 	protected override bool IsMissionCompleted()
 	{
-		return this.RegionTarget == null || this.RegionTarget.IsRegionColonized();
+		if (this.RegionTarget == null || base.AIDataArmyGUID == GameEntityGUID.Zero)
+		{
+			return true;
+		}
+		Army army = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID).Army;
+		return army == null || !army.GUID.IsValid || (army.GetPropertyValue(SimulationProperties.Movement) <= 0.01f && this.RegionTarget.IsRegionColonized());
 	}
 
 	protected override bool MissionCanAcceptHero()
@@ -191,19 +202,33 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 	protected override void Success()
 	{
 		base.Success();
+		base.SetArmyFree();
 	}
 
 	protected override bool TryComputeArmyMissionParameter()
 	{
-		if (this.RegionTarget == null)
+		if (this.RegionTarget == null || base.AIDataArmyGUID == GameEntityGUID.Zero)
 		{
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Fail;
 			return false;
 		}
 		base.ArmyMissionParameters.Clear();
-		return !(base.AIDataArmyGUID == GameEntityGUID.Zero) && (this.PositionIndex < this.ListOfPosition.Length && base.TryCreateArmyMission("ColonizeAt", new List<object>
+		Army army = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID).Army;
+		if (army == null || !army.GUID.IsValid)
 		{
-			this.ListOfPosition[this.PositionIndex]
-		}));
+			return false;
+		}
+		if (this.RegionTarget != null && !this.RegionTarget.IsRegionColonized() && army.IsSettler)
+		{
+			return !(base.AIDataArmyGUID == GameEntityGUID.Zero) && this.PositionIndex < this.ListOfPosition.Length && base.TryCreateArmyMission("ColonizeAt", new List<object>
+			{
+				this.ListOfPosition[this.PositionIndex]
+			});
+		}
+		return base.TryCreateArmyMission("MajorFactionRoaming", new List<object>
+		{
+			this.RegionTarget.Index,
+			false
+		});
 	}
 }

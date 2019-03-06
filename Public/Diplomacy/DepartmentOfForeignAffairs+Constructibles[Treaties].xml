@@ -269,7 +269,7 @@
   <!-- #################################### -->
   <!-- ############ MARKET BAN ############ -->
   <!-- #################################### -->
-
+  
   <DiplomaticTermDefinition Name="MarketBan" PropositionMethod="Declaration" ApplicationMethod="ReceiverOnly" Category="Treaty" Alignment="Neutral">
     <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
     <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">MarketBan</DiplomaticAbilityPrerequisite>
@@ -283,8 +283,10 @@
     <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichReceives">
       <PathPrerequisite Inverted="true">EmpireTypeMajor,FactionTraitRovingClans11</PathPrerequisite>
     </DiplomaticRelationStateEmpirePrerequisite>
-
-    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="MarketBan" />
+	<!--ELCP: added new CooldownPrerequisite, 2 turn cooldown after removal-->
+	<DiplomaticCooldownPrerequisite Inverted="false" Flags="Prerequisite,Discard" Cooldown="2" OnlyWhenProposer="false">MarketBanRemoval,MarketBanNullification</DiplomaticCooldownPrerequisite>
+    
+	<DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="MarketBan" />
   </DiplomaticTermDefinition>
 
   <!-- ############################################ -->

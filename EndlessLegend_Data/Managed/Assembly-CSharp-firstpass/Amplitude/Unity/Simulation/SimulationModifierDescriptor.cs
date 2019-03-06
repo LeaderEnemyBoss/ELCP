@@ -139,9 +139,18 @@ namespace Amplitude.Unity.Simulation
 				num3 = 0f;
 				break;
 			case SimulationModifierDescriptor.ModifierOperation.Addition:
-				num = propertyRefreshContext.InternalCurrentValue + num2;
-				propertyRefreshContext.InternalPercentBaseValue = num;
-				propertyRefreshContext.InternalCurrentValue = num;
+				if (this.MultiplicativeStacking)
+				{
+					num = propertyRefreshContext.InternalCurrentValue + (1f - propertyRefreshContext.InternalCurrentValue) * num2;
+					propertyRefreshContext.InternalPercentBaseValue = num;
+					propertyRefreshContext.InternalCurrentValue = num;
+				}
+				else
+				{
+					num = propertyRefreshContext.InternalCurrentValue + num2;
+					propertyRefreshContext.InternalPercentBaseValue = num;
+					propertyRefreshContext.InternalCurrentValue = num;
+				}
 				break;
 			case SimulationModifierDescriptor.ModifierOperation.Subtraction:
 				num = propertyRefreshContext.InternalCurrentValue - num2;
@@ -221,6 +230,19 @@ namespace Amplitude.Unity.Simulation
 			return context.Unsafe_GetPropertyValue(value as StaticString);
 		}
 
+		[XmlAttribute]
+		public bool MultiplicativeStacking
+		{
+			get
+			{
+				return this.multiplicativeStacking;
+			}
+			private set
+			{
+				this.multiplicativeStacking = value;
+			}
+		}
+
 		protected bool isBindOnSource;
 
 		private static int nextId;
@@ -230,6 +252,8 @@ namespace Amplitude.Unity.Simulation
 		private SimulationModifierDescriptor.ModifierOperation operation;
 
 		private SimulationPath path;
+
+		private bool multiplicativeStacking;
 
 		public enum ModifierOperation
 		{

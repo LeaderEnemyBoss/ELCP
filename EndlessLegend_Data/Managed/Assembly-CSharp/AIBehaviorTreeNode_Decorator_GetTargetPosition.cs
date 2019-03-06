@@ -19,14 +19,17 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
 		if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
 		{
-			aiBehaviorTree.LogError("$Target not set", new object[0]);
+			aiBehaviorTree.LogError("$Target not set {0}/{1}", new object[]
+			{
+				army.Empire,
+				army.LocalizedName
+			});
 			return State.Failure;
 		}
 		IWorldPositionable worldPositionable = aiBehaviorTree.Variables[this.TargetVarName] as IWorldPositionable;
@@ -81,6 +84,10 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 			worldPosition = this.GetValidTileToAttack(service3, service2, worldPositionable.WorldPosition, army);
 		}
 		else if (worldPositionable is Kaiju)
+		{
+			worldPosition = this.GetValidTileToAttack(service3, service2, worldPositionable.WorldPosition, army);
+		}
+		else if (worldPositionable is Army)
 		{
 			worldPosition = this.GetValidTileToAttack(service3, service2, worldPositionable.WorldPosition, army);
 		}
@@ -333,6 +340,7 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 
 	private WorldPosition GetValidTileToAttack(IPathfindingService pathfindingService, IWorldPositionningService worldPositionningService, WorldPosition maintAttackedPosition, Army army)
 	{
+		District district = worldPositionningService.GetDistrict(army.WorldPosition);
 		bool flag = worldPositionningService.IsWaterTile(maintAttackedPosition);
 		WorldOrientation worldOrientation = worldPositionningService.GetOrientation(maintAttackedPosition, army.WorldPosition);
 		for (int i = 0; i < 6; i++)
@@ -340,7 +348,25 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 			WorldPosition neighbourTile = worldPositionningService.GetNeighbourTile(maintAttackedPosition, worldOrientation, 1);
 			if (worldPositionningService.IsWaterTile(neighbourTile) == flag && pathfindingService.IsTransitionPassable(neighbourTile, maintAttackedPosition, army, OrderAttack.AttackFlags, null) && pathfindingService.IsTileStopableAndPassable(neighbourTile, army, PathfindingFlags.IgnoreFogOfWar, null))
 			{
-				return neighbourTile;
+				District district2 = worldPositionningService.GetDistrict(neighbourTile);
+				if (district2 != null && district2.City.Empire.Index == army.Empire.Index && district2.City.BesiegingEmpire != null && District.IsACityTile(district2))
+				{
+					if (district != null && District.IsACityTile(district) && district.City.GUID == district2.City.GUID)
+					{
+						return neighbourTile;
+					}
+				}
+				else
+				{
+					if (district == null || !District.IsACityTile(district) || district.City.BesiegingEmpire == null)
+					{
+						return neighbourTile;
+					}
+					if (district2 != null && District.IsACityTile(district2) && district.City.GUID == district2.City.GUID)
+					{
+						return neighbourTile;
+					}
+				}
 			}
 			if (i % 2 == 0)
 			{

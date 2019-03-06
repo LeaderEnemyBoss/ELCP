@@ -174,6 +174,10 @@ public abstract class Tradable : IXmlSerializable, IBinarySerializable, ITradabl
 		float num = Tradable.GetUnitPrice(this.TradableCategoryDefinition, this.Value);
 		num *= this.Quantity;
 		num = Tradable.ApplySalesTaxes(num, transactionType, empire);
+		if (this is TradableUnit && transactionType == TradableTransactionType.Buyout && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier) > 0f)
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier);
+		}
 		return this.GetPriceWithSeasonEffectModifier(num, empire);
 	}
 
@@ -182,6 +186,10 @@ public abstract class Tradable : IXmlSerializable, IBinarySerializable, ITradabl
 		float num = Tradable.GetUnitPrice(this.TradableCategoryDefinition, this.Value);
 		num *= quantity;
 		num = Tradable.ApplySalesTaxes(num, transactionType, empire);
+		if (this is TradableUnit && transactionType == TradableTransactionType.Buyout && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier) > 0f)
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier);
+		}
 		return this.GetPriceWithSeasonEffectModifier(num, empire);
 	}
 

@@ -11,6 +11,7 @@ public class OrderToggleInfiltration : global::Order
 		this.AssignmentGUID = assignmentGuid;
 		this.IsAGroundInfiltration = isAGroundInfiltration;
 		this.IsStarting = isStarting;
+		this.IgnoreVision = false;
 	}
 
 	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
@@ -52,6 +53,8 @@ public class OrderToggleInfiltration : global::Order
 		this.InfiltrationCost = reader.ReadSingle();
 		this.IsStarting = reader.ReadBoolean();
 	}
+
+	public bool IgnoreVision { get; set; }
 
 	public static StaticString AuthenticationPath = "DepartmentOfIntelligence/OrderToggleInfiltration";
 }

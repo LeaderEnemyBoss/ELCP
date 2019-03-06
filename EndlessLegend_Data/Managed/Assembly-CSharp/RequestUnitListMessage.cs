@@ -60,6 +60,7 @@ public class RequestUnitListMessage : BlackboardMessage
 			this.MinimumNeededArmyFulfillement = reader.GetAttribute<float>("MinimumNeededArmyFulfillement");
 			this.CurrentFulfillement = reader.GetAttribute<float>("CurrentFulfillement");
 			this.MissingMilitaryPower = reader.GetAttribute<float>("MissingMilitaryPower");
+			this.OnlyMercenaries = reader.GetAttribute<bool>("OnlyMercenaries", false);
 			if (num >= 5)
 			{
 				this.CommanderCategory = reader.GetAttribute<AICommanderMissionDefinition.AICommanderCategory>("CommanderCategoryEnum");
@@ -113,6 +114,7 @@ public class RequestUnitListMessage : BlackboardMessage
 			writer.WriteAttributeString<float>("MinimumNeededArmyFulfillement", this.MinimumNeededArmyFulfillement);
 			writer.WriteAttributeString<float>("CurrentFulfillement", this.CurrentFulfillement);
 			writer.WriteAttributeString<float>("MissingMilitaryPower", this.MissingMilitaryPower);
+			writer.WriteAttributeString<bool>("OnlyMercenaries", this.OnlyMercenaries);
 			if (num >= 5)
 			{
 				writer.WriteAttributeString<AICommanderMissionDefinition.AICommanderCategory>("CommanderCategoryEnum", this.CommanderCategory);
@@ -141,7 +143,10 @@ public class RequestUnitListMessage : BlackboardMessage
 		this.ForceSourceRegion = -1;
 		this.MinimumNeededArmyFulfillement = 1f;
 		this.MissingMilitaryPower = 0f;
+		this.OnlyMercenaries = false;
 	}
+
+	public bool OnlyMercenaries { get; set; }
 
 	public enum RequestUnitListState
 	{

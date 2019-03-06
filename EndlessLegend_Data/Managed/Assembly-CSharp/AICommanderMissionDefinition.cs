@@ -117,7 +117,9 @@ public class AICommanderMissionDefinition : IDatatableElement
 		SettlerBail,
 		MaximumNumber,
 		Terraformation,
-		KaijuAdquisition
+		KaijuAdquisition,
+		Victory,
+		KaijuSupport
 	}
 
 	public class StringObjectPair

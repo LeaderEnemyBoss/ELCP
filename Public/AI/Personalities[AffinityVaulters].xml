@@ -31,6 +31,10 @@
             <IdealTechnologyUnlockPeriod>0.5</IdealTechnologyUnlockPeriod>
             <MaximumPeriodGap>0.5</MaximumPeriodGap>
           </TechnologyReferenceTurnCountAgent>
+		  
+			<MoneyPrintTermAgent>
+                <Multiplier>0</Multiplier>
+            </MoneyPrintTermAgent>
 
         </AgentDefinition>
 
@@ -239,6 +243,13 @@
                 <AIEmpireUnlockDiplomacyPositive>0.8</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>
+			
+			<AILayer_Victory>
+				<VictoryFocusMilitary>1.4</VictoryFocusMilitary>
+				<VictoryFocusDiplomacy>1.5</VictoryFocusDiplomacy>
+				<VictoryFocusEconomy>0.9</VictoryFocusEconomy>
+				<VictoryFocusTechnology>2.5</VictoryFocusTechnology>
+			</AILayer_Victory>
           </AIEntity_Empire>
 
           <AIEntity_City>

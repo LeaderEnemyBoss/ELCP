@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -30,6 +31,15 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		{
 			return 0f;
 		}
+		DepartmentOfForeignAffairs agency = camp.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		if (agency.IsInWarWithSomeone() && AILayer_Military.AreaIsSave(camp.WorldPosition, 12, agency, false))
+		{
+			return 0f;
+		}
+		if (camp.City.BesiegingEmpire != null)
+		{
+			return 0f;
+		}
 		float normalizedScore = 0f;
 		float num;
 		if (simulatedUnitsCount >= 0)
@@ -40,10 +50,9 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		{
 			num = (float)camp.StandardUnits.Count / (float)camp.MaximumUnitSlot;
 		}
-		normalizedScore = AILayer.Boost(normalizedScore, (1f - num) * unitRatioBoost);
-		IEntityInfoAIHelper service = AIScheduler.Services.GetService<IEntityInfoAIHelper>();
-		float developmentRatioOfCamp = service.GetDevelopmentRatioOfCamp(camp);
-		return AILayer.Boost(normalizedScore, (1f - developmentRatioOfCamp) * AILayer_Military.cityDevRatioBoost);
+		float normalizedScore2 = AILayer.Boost(normalizedScore, (1f - num) * unitRatioBoost);
+		float developmentRatioOfCamp = AIScheduler.Services.GetService<IEntityInfoAIHelper>().GetDevelopmentRatioOfCamp(camp);
+		return AILayer.Boost(normalizedScore2, (1f - developmentRatioOfCamp) * AILayer_Military.cityDevRatioBoost);
 	}
 
 	public static float GetCityDefenseLocalPriority(City city, float unitRatioBoost, int simulatedUnitsCount = -1)
@@ -51,6 +60,16 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		if (city == null)
 		{
 			return 0f;
+		}
+		bool flag = false;
+		DepartmentOfForeignAffairs agency = city.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		if (!agency.IsInWarWithSomeone() && !AIScheduler.Services.GetService<IWorldAtlasAIHelper>().IsRegionPacified(city.Empire, city.Region))
+		{
+			return 0f;
+		}
+		if (agency.IsInWarWithSomeone() && city.BesiegingEmpire == null)
+		{
+			flag = !AILayer_Military.AreaIsSave(city.WorldPosition, 10, agency, false);
 		}
 		float num = 0f;
 		float num2;
@@ -66,16 +85,18 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		if (city.BesiegingEmpire != null)
 		{
 			float propertyValue = city.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
-			float propertyValue2 = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
-			float num3 = propertyValue2 / propertyValue;
+			float num3 = city.GetPropertyValue(SimulationProperties.CityDefensePoint) / propertyValue;
 			num3 = 1f - num3;
 			num = AILayer.Boost(num, num3 * AILayer_Military.cityDefenseUnderSiegeBoost);
 		}
 		else
 		{
-			IEntityInfoAIHelper service = AIScheduler.Services.GetService<IEntityInfoAIHelper>();
-			float developmentRatioOfCity = service.GetDevelopmentRatioOfCity(city);
+			float developmentRatioOfCity = AIScheduler.Services.GetService<IEntityInfoAIHelper>().GetDevelopmentRatioOfCity(city);
 			num = AILayer.Boost(num, (1f - developmentRatioOfCity) * AILayer_Military.cityDevRatioBoost);
+			if (flag)
+			{
+				num = AILayer.Boost(num, 0.5f);
+			}
 		}
 		return num;
 	}
@@ -92,8 +113,7 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 			num = ((float)this.endTurnService.Turn - this.unitInGarrisonTurnLimit) / (this.unitInGarrisonTurnLimitForMaxPercent - this.unitInGarrisonTurnLimit);
 			num = this.unitInGarrisonPercent + num * (1f - this.unitInGarrisonPercent);
 		}
-		int num2 = Mathf.CeilToInt((float)garrison.MaximumUnitSlot * num);
-		if (num2 < slotIndex)
+		if (Mathf.CeilToInt((float)garrison.MaximumUnitSlot * num) < slotIndex)
 		{
 			return 0f;
 		}
@@ -117,14 +137,16 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 	public override IEnumerator Initialize(AIEntity aiEntity)
 	{
 		yield return base.Initialize(aiEntity);
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
-		this.worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
 		this.endTurnService = Services.GetService<IEndTurnService>();
 		this.personalityAIHelper = AIScheduler.Services.GetService<IPersonalityAIHelper>();
 		this.worldAtlasHelper = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
 		this.aiDataRepositoryAIHelper = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
+		this.departmentOfScience = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
+		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		base.AIEntity.RegisterPass(AIEntity.Passes.RefreshObjectives.ToString(), "AILayer_Military_RefreshObjectives", new AIEntity.AIAction(this.RefreshObjectives), this, new StaticString[0]);
 		this.unitInGarrisonPercent = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_Military.RegistryPath, "UnitInGarrisonPercent"), this.unitInGarrisonPercent);
 		this.unitInGarrisonPriorityMultiplierPerSlot = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_Military.RegistryPath, "UnitInGarrisonPriorityMultiplierPerSlot"), this.unitInGarrisonPriorityMultiplierPerSlot);
@@ -149,6 +171,8 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		this.worldAtlasHelper = null;
 		this.aiDataRepositoryAIHelper = null;
 		this.departmentOfTheInterior = null;
+		this.departmentOfScience = null;
+		this.departmentOfForeignAffairs = null;
 		this.VillageDOFPriority.Clear();
 	}
 
@@ -160,7 +184,7 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 	protected override bool IsObjectiveValid(StaticString objectiveType, int regionIndex, bool checkLocalPriority = false)
 	{
 		Region region = this.worldPositionningService.GetRegion(regionIndex);
-		return region != null && region.City != null && region.City.Empire == base.AIEntity.Empire;
+		return (region.City == null || region.City.Empire != base.AIEntity.Empire || this.worldAtlasHelper.IsRegionPacified(base.AIEntity.Empire, region) || this.departmentOfScience.CanParley() || this.departmentOfForeignAffairs.IsInWarWithSomeone()) && (region != null && region.City != null) && region.City.Empire == base.AIEntity.Empire;
 	}
 
 	protected override void RefreshObjectives(StaticString context, StaticString pass)
@@ -237,25 +261,24 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		num *= base.GlobalPriority;
 		for (int j = 0; j < this.VillageDOFPriority.Count; j++)
 		{
-			AILayer_Military.VillageDefensePriority villageDefensePriority = this.VillageDOFPriority[j];
-			villageDefensePriority.Reset();
+			this.VillageDOFPriority[j].Reset();
 		}
 		float num2 = 0f;
 		for (int k = 0; k < majorEmpire.ConvertedVillages.Count; k++)
 		{
 			Village village = majorEmpire.ConvertedVillages[k];
-			AILayer_Military.VillageDefensePriority villageDefensePriority2 = this.VillageDOFPriority.Find((AILayer_Military.VillageDefensePriority match) => match.Village.GUID == village.GUID);
-			if (villageDefensePriority2 == null)
+			AILayer_Military.VillageDefensePriority villageDefensePriority = this.VillageDOFPriority.Find((AILayer_Military.VillageDefensePriority match) => match.Village.GUID == village.GUID);
+			if (villageDefensePriority == null)
 			{
-				villageDefensePriority2 = new AILayer_Military.VillageDefensePriority();
-				villageDefensePriority2.Reset();
-				villageDefensePriority2.Village = village;
-				this.VillageDOFPriority.Add(villageDefensePriority2);
+				villageDefensePriority = new AILayer_Military.VillageDefensePriority();
+				villageDefensePriority.Reset();
+				villageDefensePriority.Village = village;
+				this.VillageDOFPriority.Add(villageDefensePriority);
 			}
-			villageDefensePriority2.ToDelete = false;
-			villageDefensePriority2.FirstUnitPriority = num;
+			villageDefensePriority.ToDelete = false;
+			villageDefensePriority.FirstUnitPriority = num;
 			float num3 = (float)this.worldPositionningService.GetDistance(village.WorldPosition, mainCity.WorldPosition);
-			villageDefensePriority2.DistanceToMainCity = num3;
+			villageDefensePriority.DistanceToMainCity = num3;
 			if (num3 > num2)
 			{
 				num2 = num3;
@@ -263,17 +286,17 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 		}
 		for (int l = this.VillageDOFPriority.Count - 1; l >= 0; l--)
 		{
-			AILayer_Military.VillageDefensePriority villageDefensePriority3 = this.VillageDOFPriority[l];
-			if (villageDefensePriority3.ToDelete)
+			AILayer_Military.VillageDefensePriority villageDefensePriority2 = this.VillageDOFPriority[l];
+			if (villageDefensePriority2.ToDelete)
 			{
-				this.VillageDOFPriority.Remove(villageDefensePriority3);
+				this.VillageDOFPriority.Remove(villageDefensePriority2);
 			}
 			else
 			{
-				float num4 = villageDefensePriority3.DistanceToMainCity / num2;
+				float num4 = villageDefensePriority2.DistanceToMainCity / num2;
 				if (majorEmpire.ConvertedVillages.Count > 1)
 				{
-					villageDefensePriority3.FirstUnitPriority = AILayer.Boost(villageDefensePriority3.FirstUnitPriority, num4 * -0.1f);
+					villageDefensePriority2.FirstUnitPriority = AILayer.Boost(villageDefensePriority2.FirstUnitPriority, num4 * -0.1f);
 				}
 			}
 		}
@@ -282,6 +305,219 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 	private bool DefenseShouldStress()
 	{
 		return (float)this.endTurnService.Turn > this.unitInGarrisonTurnLimit;
+	}
+
+	public static bool AreaIsSave(WorldPosition pos, int size, DepartmentOfForeignAffairs departmentOfForeignAffairs, bool NavalOnly = false)
+	{
+		if (size < 1)
+		{
+			return true;
+		}
+		List<global::Empire> list = new List<global::Empire>(Array.FindAll<global::Empire>((Services.GetService<IGameService>().Game as global::Game).Empires, (global::Empire match) => match is MajorEmpire && departmentOfForeignAffairs.IsAtWarWith(match)));
+		if (list.Count < 1)
+		{
+			return true;
+		}
+		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
+		foreach (global::Empire empire in list)
+		{
+			List<IGarrison> list2 = new List<IGarrison>();
+			DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
+			DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
+			if (!NavalOnly)
+			{
+				list2.AddRange(agency.Armies.ToList<Army>().FindAll((Army match) => !match.IsSeafaring && !match.IsSettler).Cast<IGarrison>());
+				list2.AddRange(agency2.Cities.Cast<IGarrison>());
+				list2.AddRange(agency2.Camps.Cast<IGarrison>());
+				list2.AddRange(agency2.ConvertedVillages.Cast<IGarrison>());
+			}
+			if (NavalOnly)
+			{
+				list2.AddRange(agency.Armies.ToList<Army>().FindAll((Army match) => match.IsNaval && !match.IsSettler).Cast<IGarrison>());
+				list2.AddRange(agency2.OccupiedFortresses.Cast<IGarrison>());
+			}
+			foreach (IGarrison garrison in list2)
+			{
+				if (garrison.UnitsCount > 0 && garrison is IWorldPositionable && service.GetDistance((garrison as IWorldPositionable).WorldPosition, pos) <= size)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public static bool AreaIsSave(WorldPosition pos, int size, DepartmentOfForeignAffairs departmentOfForeignAffairs, out float rangescore, bool NavalOnly = false)
+	{
+		rangescore = float.MaxValue;
+		if (size < 1)
+		{
+			return true;
+		}
+		List<global::Empire> list = new List<global::Empire>(Array.FindAll<global::Empire>((Services.GetService<IGameService>().Game as global::Game).Empires, (global::Empire match) => match is MajorEmpire && departmentOfForeignAffairs.IsAtWarWith(match)));
+		if (list.Count < 1)
+		{
+			return true;
+		}
+		bool result = true;
+		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
+		foreach (global::Empire empire in list)
+		{
+			List<IGarrison> list2 = new List<IGarrison>();
+			DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
+			DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
+			if (!NavalOnly)
+			{
+				list2.AddRange(agency.Armies.ToList<Army>().FindAll((Army match) => !match.IsSeafaring && !match.IsSettler).Cast<IGarrison>());
+				list2.AddRange(agency2.Cities.Cast<IGarrison>());
+				list2.AddRange(agency2.Camps.Cast<IGarrison>());
+				list2.AddRange(agency2.ConvertedVillages.Cast<IGarrison>());
+			}
+			if (NavalOnly)
+			{
+				list2.AddRange(agency.Armies.ToList<Army>().FindAll((Army match) => match.IsNaval && !match.IsSettler).Cast<IGarrison>());
+				list2.AddRange(agency2.OccupiedFortresses.Cast<IGarrison>());
+			}
+			foreach (IGarrison garrison in list2)
+			{
+				if (garrison.UnitsCount > 0 && garrison is IWorldPositionable)
+				{
+					float num = (float)service.GetDistance((garrison as IWorldPositionable).WorldPosition, pos);
+					if (num <= (float)size)
+					{
+						result = false;
+						if (num / (float)size < rangescore)
+						{
+							rangescore = 1f - num / (float)size;
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	public static bool AreaIsSave(WorldPosition pos, int size, DepartmentOfForeignAffairs departmentOfForeignAffairs, out float rangescore, out float incomingMP, bool NavalOnly = false)
+	{
+		incomingMP = 0f;
+		rangescore = 0f;
+		if (size < 1)
+		{
+			return true;
+		}
+		List<global::Empire> list = new List<global::Empire>(Array.FindAll<global::Empire>((Services.GetService<IGameService>().Game as global::Game).Empires, (global::Empire match) => match is MajorEmpire && departmentOfForeignAffairs.IsAtWarWith(match)));
+		if (list.Count < 1)
+		{
+			return true;
+		}
+		bool result = true;
+		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
+		foreach (global::Empire empire in list)
+		{
+			List<IGarrison> list2 = new List<IGarrison>();
+			DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
+			DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
+			if (!NavalOnly)
+			{
+				list2.AddRange(agency.Armies.ToList<Army>().FindAll((Army match) => !match.IsSeafaring && !match.IsSettler).Cast<IGarrison>());
+				list2.AddRange(agency2.Cities.Cast<IGarrison>());
+				list2.AddRange(agency2.Camps.Cast<IGarrison>());
+				list2.AddRange(agency2.ConvertedVillages.Cast<IGarrison>());
+			}
+			if (NavalOnly)
+			{
+				list2.AddRange(agency.Armies.ToList<Army>().FindAll((Army match) => match.IsNaval && !match.IsSettler).Cast<IGarrison>());
+				list2.AddRange(agency2.OccupiedFortresses.Cast<IGarrison>());
+			}
+			foreach (IGarrison garrison in list2)
+			{
+				if (garrison.UnitsCount > 0 && garrison is IWorldPositionable)
+				{
+					float num = (float)service.GetDistance((garrison as IWorldPositionable).WorldPosition, pos);
+					if (num <= (float)size)
+					{
+						incomingMP += garrison.GetPropertyValue(SimulationProperties.MilitaryPower);
+						result = false;
+						float num2 = 1f - num / (float)size;
+						if (num2 > rangescore)
+						{
+							rangescore = num2;
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	public static bool HasSaveAttackableTargetsNearby(Garrison Attacker, int size, DepartmentOfForeignAffairs departmentOfForeignAffairs, out List<IGarrison> Targets, bool NavalOnly = false)
+	{
+		IIntelligenceAIHelper service = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
+		IVisibilityService service2 = Services.GetService<IGameService>().Game.Services.GetService<IVisibilityService>();
+		Targets = new List<IGarrison>();
+		if (size < 1 || Attacker == null || !(Attacker is IWorldPositionable))
+		{
+			return false;
+		}
+		List<global::Empire> list = new List<global::Empire>(Array.FindAll<global::Empire>((Services.GetService<IGameService>().Game as global::Game).Empires, (global::Empire match) => match is MajorEmpire && departmentOfForeignAffairs.IsAtWarWith(match)));
+		if (list.Count < 1)
+		{
+			return false;
+		}
+		bool result = true;
+		IWorldPositionningService service3 = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
+		foreach (global::Empire empire in list)
+		{
+			List<Garrison> list2 = new List<Garrison>();
+			DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
+			DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
+			if (!NavalOnly)
+			{
+				list2.AddRange(agency.Armies.ToList<Army>().FindAll((Army match) => !match.IsSeafaring && !match.IsSettler).Cast<Garrison>());
+				list2.AddRange(agency2.Cities.Cast<Garrison>());
+				list2.AddRange(agency2.Camps.Cast<Garrison>());
+				list2.AddRange(agency2.ConvertedVillages.Cast<Garrison>());
+			}
+			if (NavalOnly)
+			{
+				list2.AddRange(agency.Armies.ToList<Army>().FindAll((Army match) => match.IsNaval && !match.IsSettler).Cast<Garrison>());
+				list2.AddRange(agency2.OccupiedFortresses.Cast<Garrison>());
+			}
+			foreach (Garrison garrison in list2)
+			{
+				if (garrison.UnitsCount > 0 && garrison is IWorldPositionable && (float)service3.GetDistance((garrison as IWorldPositionable).WorldPosition, (Attacker as IWorldPositionable).WorldPosition) <= (float)size && departmentOfForeignAffairs.CanAttack(garrison) && (!garrison.SimulationObject.Tags.Contains(Army.TagCamouflaged) || service2.IsWorldPositionDetectedFor((garrison as IWorldPositionable).WorldPosition, Attacker.Empire)) && service2.IsWorldPositionVisibleFor((garrison as IWorldPositionable).WorldPosition, Attacker.Empire))
+				{
+					float num = 0f;
+					float num2 = 0f;
+					if (!NavalOnly)
+					{
+						service.EstimateMPInBattleground(Attacker, garrison, ref num, ref num2);
+					}
+					else
+					{
+						num += Attacker.GetPropertyValue(SimulationProperties.MilitaryPower);
+						num2 += garrison.GetPropertyValue(SimulationProperties.MilitaryPower);
+						if (Attacker is Army && (Attacker as Army).IsSeafaring && garrison is Army && !(garrison as Army).IsSeafaring)
+						{
+							num2 *= 0.2f;
+						}
+					}
+					if (num > num2 * 1.5f)
+					{
+						Targets.Add(garrison);
+					}
+					else
+					{
+						result = false;
+					}
+				}
+			}
+		}
+		if (Targets.Count == 0)
+		{
+			result = false;
+		}
+		return result;
 	}
 
 	public static string RegistryPath = "AI/MajorEmpire/AIEntity_Empire/AILayer_Military";
@@ -315,6 +551,10 @@ public class AILayer_Military : AILayerWithObjective, IXmlSerializable
 	private IWorldAtlasAIHelper worldAtlasHelper;
 
 	private IWorldPositionningService worldPositionningService;
+
+	private DepartmentOfScience departmentOfScience;
+
+	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
 
 	public class VillageDefensePriority
 	{

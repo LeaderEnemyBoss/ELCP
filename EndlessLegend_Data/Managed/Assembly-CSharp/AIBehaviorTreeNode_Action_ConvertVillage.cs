@@ -27,83 +27,109 @@ public class AIBehaviorTreeNode_Action_ConvertVillage : AIBehaviorTreeNode_Actio
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		this.aiBehaviorTree = aiBehaviorTree;
+		State result;
 		if (this.ticket != null)
 		{
-			return State.Running;
+			result = State.Running;
 		}
-		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		else
 		{
-			return State.Failure;
-		}
-		if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
-		{
-			aiBehaviorTree.LogError("${0} not set", new object[]
+			Army army;
+			if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) > AIArmyMission.AIArmyMissionErrorCode.None)
 			{
-				this.TargetVarName
-			});
-			return State.Failure;
-		}
-		IGameEntity target = aiBehaviorTree.Variables[this.TargetVarName] as IGameEntity;
-		if (!(target is IWorldPositionable))
-		{
-			return State.Failure;
-		}
-		IGameService service = Services.GetService<IGameService>();
-		Diagnostics.Assert(service != null);
-		IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
-		if (!service2.Contains(target.GUID))
-		{
-			return State.Success;
-		}
-		AICommanderWithObjective commanderObjective = aiBehaviorTree.AICommander as AICommanderWithObjective;
-		if (commanderObjective == null)
-		{
-			return State.Failure;
-		}
-		EvaluableMessage_VillageAction evaluableMessage_VillageAction = aiBehaviorTree.AICommander.AIPlayer.Blackboard.FindFirst<EvaluableMessage_VillageAction>(BlackboardLayerID.Empire, (EvaluableMessage_VillageAction match) => match.RegionIndex == commanderObjective.RegionIndex && match.VillageGUID == target.GUID && match.AccountTag == AILayer_AccountManager.ConversionAccountName);
-		if (evaluableMessage_VillageAction == null || evaluableMessage_VillageAction.EvaluationState == EvaluableMessage.EvaluableMessageState.Cancel)
-		{
-			this.aiBehaviorTree.ErrorCode = 32;
-			return State.Failure;
-		}
-		if (evaluableMessage_VillageAction.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtained)
-		{
-			return State.Success;
-		}
-		if (evaluableMessage_VillageAction.ChosenBuyEvaluation == null || evaluableMessage_VillageAction.ChosenBuyEvaluation.State != BuyEvaluation.EvaluationState.Purchased || evaluableMessage_VillageAction.EvaluationState != EvaluableMessage.EvaluableMessageState.Validate)
-		{
-			return State.Failure;
-		}
-		IEncounterRepositoryService service3 = service.Game.Services.GetService<IEncounterRepositoryService>();
-		if (service3 != null)
-		{
-			IEnumerable<Encounter> enumerable = service3;
-			if (enumerable != null)
+				result = State.Failure;
+			}
+			else if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
 			{
-				bool flag = enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false) || encounter.IsGarrisonInEncounter(target.GUID, false));
-				if (flag)
+				aiBehaviorTree.LogError("${0} not set", new object[]
 				{
-					return State.Running;
+					this.TargetVarName
+				});
+				result = State.Failure;
+			}
+			else
+			{
+				IGameEntity target = aiBehaviorTree.Variables[this.TargetVarName] as IGameEntity;
+				if (!(target is IWorldPositionable))
+				{
+					result = State.Failure;
+				}
+				else
+				{
+					IGameService service = Services.GetService<IGameService>();
+					Diagnostics.Assert(service != null);
+					if (!service.Game.Services.GetService<IGameEntityRepositoryService>().Contains(target.GUID))
+					{
+						result = State.Success;
+					}
+					else
+					{
+						AICommanderWithObjective commanderObjective = aiBehaviorTree.AICommander as AICommanderWithObjective;
+						if (commanderObjective == null)
+						{
+							result = State.Failure;
+						}
+						else if (!(target is Village))
+						{
+							aiBehaviorTree.ErrorCode = 2;
+							result = State.Failure;
+						}
+						else
+						{
+							EvaluableMessage_VillageAction evaluableMessage_VillageAction = aiBehaviorTree.AICommander.AIPlayer.Blackboard.FindFirst<EvaluableMessage_VillageAction>(BlackboardLayerID.Empire, (EvaluableMessage_VillageAction match) => match.RegionIndex == commanderObjective.RegionIndex && match.VillageGUID == target.GUID && match.AccountTag == AILayer_AccountManager.ConversionAccountName);
+							if (evaluableMessage_VillageAction == null)
+							{
+								float num;
+								army.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(army.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num, false);
+								if (AILayer_Village.GetVillageConversionCost(army.Empire as MajorEmpire, target as Village) > num || ((target as Village).HasBeenConverted && (target as Village).Converter == aiBehaviorTree.AICommander.Empire as MajorEmpire))
+								{
+									this.aiBehaviorTree.ErrorCode = 32;
+									return State.Failure;
+								}
+							}
+							else
+							{
+								if (evaluableMessage_VillageAction.EvaluationState == EvaluableMessage.EvaluableMessageState.Cancel)
+								{
+									this.aiBehaviorTree.ErrorCode = 32;
+									return State.Failure;
+								}
+								if (evaluableMessage_VillageAction.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtained)
+								{
+									return State.Success;
+								}
+								if (evaluableMessage_VillageAction.ChosenBuyEvaluation == null || evaluableMessage_VillageAction.ChosenBuyEvaluation.State != BuyEvaluation.EvaluationState.Purchased || evaluableMessage_VillageAction.EvaluationState != EvaluableMessage.EvaluableMessageState.Validate)
+								{
+									return State.Failure;
+								}
+							}
+							IEncounterRepositoryService service2 = service.Game.Services.GetService<IEncounterRepositoryService>();
+							if (service2 != null)
+							{
+								IEnumerable<Encounter> enumerable = service2;
+								if (enumerable != null && enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false) || encounter.IsGarrisonInEncounter(target.GUID, false)))
+								{
+									return State.Running;
+								}
+							}
+							Diagnostics.Assert(AIScheduler.Services != null);
+							if (service.Game.Services.GetService<IWorldPositionningService>().GetDistance(army.WorldPosition, (target as IWorldPositionable).WorldPosition) != 1)
+							{
+								aiBehaviorTree.ErrorCode = 12;
+								result = State.Failure;
+							}
+							else
+							{
+								OrderConvertVillage order = new OrderConvertVillage(army.Empire.Index, army.GUID, (target as IWorldPositionable).WorldPosition);
+								aiBehaviorTree.AICommander.Empire.PlayerControllers.AI.PostOrder(order, out this.ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderConvertVillage_TicketRaised));
+								result = State.Running;
+							}
+						}
+					}
 				}
 			}
 		}
-		if (!(target is Village))
-		{
-			aiBehaviorTree.ErrorCode = 2;
-			return State.Failure;
-		}
-		Diagnostics.Assert(AIScheduler.Services != null);
-		IWorldPositionningService service4 = service.Game.Services.GetService<IWorldPositionningService>();
-		if (service4.GetDistance(army.WorldPosition, (target as IWorldPositionable).WorldPosition) != 1)
-		{
-			aiBehaviorTree.ErrorCode = 12;
-			return State.Failure;
-		}
-		OrderConvertVillage order = new OrderConvertVillage(army.Empire.Index, army.GUID, (target as IWorldPositionable).WorldPosition);
-		aiBehaviorTree.AICommander.Empire.PlayerControllers.AI.PostOrder(order, out this.ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderConvertVillage_TicketRaised));
-		return State.Running;
+		return result;
 	}
 
 	private void OrderConvertVillage_TicketRaised(object sender, TicketRaisedEventArgs e)

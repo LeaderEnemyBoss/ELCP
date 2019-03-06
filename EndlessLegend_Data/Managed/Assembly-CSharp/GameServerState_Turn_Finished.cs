@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Amplitude;
 using Amplitude.Extensions;
 using Amplitude.Unity.Framework;
@@ -126,19 +127,27 @@ public class GameServerState_Turn_Finished : GameServerState<GameServerState_Tur
 	private IEnumerator WaitForAI()
 	{
 		DateTime time = DateTime.Now;
-		double timeout = 5.0;
+		double timeout = 2.5;
 		if (base.GameServer.AIScheduler != null)
 		{
 			while (!base.GameServer.AIScheduler.CanEndTurn())
 			{
 				this.tickableRepository.Tick(false);
 				yield return null;
-				TimeSpan elapsedTime = DateTime.Now - time;
-				double totalTime = elapsedTime.TotalSeconds;
-				if (global::Application.FantasyPreferences.ForceAIEndTurn && elapsedTime.TotalSeconds > timeout)
+				TimeSpan timeSpan = DateTime.Now - time;
+				double totalSeconds = timeSpan.TotalSeconds;
+				if (global::Application.FantasyPreferences.ForceAIEndTurn && timeSpan.TotalSeconds > timeout)
 				{
 					Diagnostics.LogWarning("Timeout! The AI scheduler is taking too long allowing for the turn to end... aborting!");
-					Diagnostics.LogWarning("Timeout: Tickables NeedTick: " + this.tickableRepository.Tickables.ToString((ITickable tickable) => (tickable.State != TickableState.NeedTick) ? string.Empty : tickable.GetType().ToString(), ",", string.Empty));
+					Diagnostics.LogWarning("Timeout: Tickables NeedTick: " + this.tickableRepository.Tickables.ToString(delegate(ITickable tickable)
+					{
+						if (tickable.State == TickableState.NeedTick)
+						{
+							return tickable.GetType().ToString();
+						}
+						return string.Empty;
+					}, ", ", string.Empty));
+					Diagnostics.LogWarning("Timeout: Tickables NeedTick Count: " + this.tickableRepository.Tickables.Count((ITickable tickable) => tickable.State == TickableState.NeedTick));
 					break;
 				}
 			}

@@ -11,7 +11,7 @@
     <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
     <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
     <EmpireResource>EmpireMoney</EmpireResource>
-    <StealParameters BaseAmount="50" AdditionalRandomThreshold="0.25" TargetStockPercentage="0.15"/>
+    <StealParameters BaseAmount="75" RandomThreshold="0.25" TargetStockPercentage="0.30"/>
   </InfiltrationActionOnEmpire_StealResource>
   
   <InfiltrationActionOnEmpire_StealResource Name="StealEmpireMoney_Level3" FirstName="StealEmpireMoney" SubCategory="Dust" Level="3" EraMax="2" ExperienceReward="7" DontNotifyWhenSpyUnnoticed="false">
@@ -20,7 +20,7 @@
     <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
     <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
     <EmpireResource>EmpireMoney</EmpireResource>
-    <StealParameters BaseAmount="75" AdditionalRandomThreshold="0.25" TargetStockPercentage="0.30"/>
+    <StealParameters BaseAmount="100" RandomThreshold="0.25" TargetStockPercentage="0.45"/>
   </InfiltrationActionOnEmpire_StealResource>
 
   <InfiltrationActionOnEmpire_StealResource Name="StealEmpireMoney_Level4" FirstName="StealEmpireMoney" SubCategory="Dust" Level="4" EraMax="3" ExperienceReward="10" DontNotifyWhenSpyUnnoticed="false">
@@ -29,7 +29,7 @@
     <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
     <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
     <EmpireResource>EmpireMoney</EmpireResource>
-    <StealParameters BaseAmount="100" AdditionalRandomThreshold="0.25" TargetStockPercentage="0.45"/>
+    <StealParameters BaseAmount="125" RandomThreshold="0.25" TargetStockPercentage="0.60"/>
   </InfiltrationActionOnEmpire_StealResource>
 
 

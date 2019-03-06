@@ -1177,7 +1177,7 @@
       <!-- [FB]  TODO: Based on the previous comment, this bonus should be applied only on district improvement, but, by design, only one category exists for the building...
                        Just make your mind and then come to me if you need some help to change it...      -->
       <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition" Value="1"      Path="EmpireTypeMajor"/>
-      <BinarySimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition" Left=".05"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Urces)" Path="EmpireTypeMajor/ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true" Operation="Addition" Left=".05"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Urces)" Path="EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

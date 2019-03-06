@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Amplitude;
 using Amplitude.Unity.Framework;
 using UnityEngine;
 
@@ -19,6 +18,7 @@ public class TickableRepository : AIHelper, ITickableRepositoryAIHelper, IServic
 	public override IEnumerator Initialize(IServiceContainer serviceContainer, Game game)
 	{
 		yield return base.Initialize(serviceContainer, game);
+		this.encounterRepositoryService = game.Services.GetService<IEncounterRepositoryService>();
 		serviceContainer.AddService<ITickableRepositoryAIHelper>(this);
 		yield break;
 	}
@@ -43,6 +43,7 @@ public class TickableRepository : AIHelper, ITickableRepositoryAIHelper, IServic
 	{
 		base.Release();
 		this.tickables.Clear();
+		this.encounterRepositoryService = null;
 	}
 
 	public override void RunAIThread()
@@ -76,6 +77,18 @@ public class TickableRepository : AIHelper, ITickableRepositoryAIHelper, IServic
 		{
 			return;
 		}
+		bool flag = false;
+		using (IEnumerator<Encounter> enumerator = this.encounterRepositoryService.GetEnumerator())
+		{
+			while (enumerator.MoveNext())
+			{
+				if (enumerator.Current.EncounterState != EncounterState.BattleHasEnded)
+				{
+					flag = true;
+					break;
+				}
+			}
+		}
 		this.tickTimer = 0f;
 		if (this.index >= this.tickables.Count)
 		{
@@ -90,59 +103,36 @@ public class TickableRepository : AIHelper, ITickableRepositoryAIHelper, IServic
 			{
 				if (this.tickables[this.index] != null)
 				{
-					if (this.tickables[this.index].State == TickableState.NeedTick)
+					if (this.tickables[this.index].State == TickableState.NeedTick || this.tickables[this.index].State == TickableState.Optional)
 					{
-						goto IL_F4;
+						this.tickables[this.index].Tick();
+						num++;
 					}
-					if (this.tickables[this.index].State == TickableState.Optional)
-					{
-						goto Block_9;
-					}
-					IL_17F:
-					if ((DateTime.Now - now).TotalMilliseconds > 200.0)
+					this.index++;
+					if ((DateTime.Now - now).TotalMilliseconds > 150.0)
 					{
 						break;
 					}
-					if (isInGameState && num > 10)
+					if (isInGameState)
 					{
-						break;
+						if (num > 9)
+						{
+							break;
+						}
+						if (flag && num > 0)
+						{
+							break;
+						}
 					}
 					if (num > 20)
 					{
 						break;
 					}
-					goto IL_1C6;
-					Block_9:
-					try
-					{
-						IL_F4:
-						this.tickables[this.index].Tick();
-					}
-					catch (Exception ex)
-					{
-						if (this.tickables[this.index] != null)
-						{
-							Diagnostics.LogError("Exception while ticking the AI ({0}) : {1}", new object[]
-							{
-								this.tickables[this.index].GetType(),
-								ex.ToString()
-							});
-						}
-						else
-						{
-							Diagnostics.LogError("Exception while ticking the AI: {0}", new object[]
-							{
-								ex.ToString()
-							});
-						}
-					}
-					num++;
-					goto IL_17F;
 				}
-				this.tickables.RemoveAt(this.index);
-				this.index--;
-				IL_1C6:
-				this.index++;
+				else
+				{
+					this.tickables.RemoveAt(this.index);
+				}
 			}
 		}
 	}
@@ -165,4 +155,6 @@ public class TickableRepository : AIHelper, ITickableRepositoryAIHelper, IServic
 	private float tickOutGameMaxTimer = 0.05f;
 
 	private float tickTimer;
+
+	private IEncounterRepositoryService encounterRepositoryService;
 }

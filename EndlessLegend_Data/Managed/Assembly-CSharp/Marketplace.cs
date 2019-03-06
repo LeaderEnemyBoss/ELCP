@@ -2058,7 +2058,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	[CompilerGenerated]
 	private sealed class TryReserveTradable>c__AnonStorey8C2
 	{
-		internal bool <>m__316(Tradable predicate)
+		internal bool <>m__315(Tradable predicate)
 		{
 			return predicate.UID == this.uid;
 		}
@@ -2069,7 +2069,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	[CompilerGenerated]
 	private sealed class TryGetTradableByUID>c__AnonStorey8C3
 	{
-		internal bool <>m__317(Tradable predicate)
+		internal bool <>m__316(Tradable predicate)
 		{
 			return predicate.UID == this.uid;
 		}
@@ -2080,7 +2080,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	[CompilerGenerated]
 	private sealed class TryConsumeTradableAndAllocateTo>c__AnonStorey8C4
 	{
-		internal bool <>m__318(Tradable predicate)
+		internal bool <>m__317(Tradable predicate)
 		{
 			return predicate.UID == this.uid;
 		}
@@ -2091,7 +2091,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	[CompilerGenerated]
 	private sealed class CollectTradableResource>c__AnonStorey8C5
 	{
-		internal bool <>m__319(Tradable iterator)
+		internal bool <>m__318(Tradable iterator)
 		{
 			return iterator.TradableCategoryDefinition.Name == this.tradableResource.TradableCategoryDefinition.Name;
 		}
@@ -2102,7 +2102,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	[CompilerGenerated]
 	private sealed class CollectTradableBooster>c__AnonStorey8C6
 	{
-		internal bool <>m__31A(TradableBooster iterator)
+		internal bool <>m__319(TradableBooster iterator)
 		{
 			return iterator.BoosterDefinitionName == this.tradableBooster.BoosterDefinitionName;
 		}

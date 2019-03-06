@@ -27,9 +27,9 @@ public class AILayer_Dissent : AILayer
 		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		this.warLayer = base.AIEntity.GetLayer<AILayer_War>();
 		this.tickableRepository = AIScheduler.Services.GetService<ITickableRepositoryAIHelper>();
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
-		this.game = (gameService.Game as global::Game);
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.game = (service.Game as global::Game);
 		this.GlobalPriority = new HeuristicValue(0f);
 		base.AIEntity.RegisterPass(AIEntity.Passes.CreateLocalNeeds.ToString(), "AILayer_Dissent_CreateLocalNeeds", new AIEntity.AIAction(this.CreateLocalNeeds), this, new StaticString[0]);
 		yield break;
@@ -68,19 +68,17 @@ public class AILayer_Dissent : AILayer
 			{
 				this.dissentTasks[i].NewTurn(this);
 			}
+			return;
 		}
-		else
+		for (int j = 0; j < this.dissentTasks.Count; j++)
 		{
-			for (int j = 0; j < this.dissentTasks.Count; j++)
+			if (this.dissentTasks[j].AssociateRequest != null)
 			{
-				if (this.dissentTasks[j].AssociateRequest != null)
-				{
-					this.dissentTasks[j].AssociateRequest.Cancel();
-				}
-				this.tickableRepository.Unregister(this.dissentTasks[j]);
+				this.dissentTasks[j].AssociateRequest.Cancel();
 			}
-			this.dissentTasks.Clear();
+			this.tickableRepository.Unregister(this.dissentTasks[j]);
 		}
+		this.dissentTasks.Clear();
 	}
 
 	private bool CanUseDissent()
@@ -99,38 +97,28 @@ public class AILayer_Dissent : AILayer
 	{
 		this.whiteList.Clear();
 		int index;
-		for (index = 0; index < this.game.Empires.Length; index++)
+		int index2;
+		for (index = 0; index < this.game.Empires.Length; index = index2 + 1)
 		{
-			if (base.AIEntity.Empire.Index != index)
+			if (base.AIEntity.Empire.Index != index && this.game.Empires[index] is MajorEmpire && !this.departmentOfForeignAffairs.IsFriend(this.game.Empires[index]) && (!this.departmentOfForeignAffairs.IsInWarWithSomeone() || this.departmentOfForeignAffairs.IsAtWarWith(this.game.Empires[index])) && this.warLayer.GetWarStatusWithEmpire(index) > AILayer_War.WarStatusType.None)
 			{
-				if (this.game.Empires[index] is MajorEmpire)
+				this.whiteList.Add(this.game.Empires[index]);
+				if (this.FindTask<DissentTask_Empire>((DissentTask_Empire match) => match.OtherEmpire == this.game.Empires[index]) == null)
 				{
-					if (!this.departmentOfForeignAffairs.IsFriend(this.game.Empires[index]))
-					{
-						if (this.warLayer.GetWarStatusWithEmpire(index) != AILayer_War.WarStatusType.None)
-						{
-							this.whiteList.Add(this.game.Empires[index]);
-							if (this.FindTask<DissentTask_Empire>((DissentTask_Empire match) => match.OtherEmpire == this.game.Empires[index]) == null)
-							{
-								DissentTask_Empire dissentTask_Empire = new DissentTask_Empire(base.AIEntity.Empire, this.game.Empires[index]);
-								this.dissentTasks.Add(dissentTask_Empire);
-								this.tickableRepository.Register(dissentTask_Empire);
-							}
-						}
-					}
+					DissentTask_Empire dissentTask_Empire = new DissentTask_Empire(base.AIEntity.Empire, this.game.Empires[index]);
+					this.dissentTasks.Add(dissentTask_Empire);
+					this.tickableRepository.Register(dissentTask_Empire);
 				}
 			}
+			index2 = index;
 		}
 		for (int i = this.dissentTasks.Count - 1; i >= 0; i--)
 		{
 			DissentTask_Empire dissentTask_Empire2 = this.dissentTasks[i] as DissentTask_Empire;
-			if (dissentTask_Empire2 != null)
+			if (dissentTask_Empire2 != null && !this.whiteList.Contains(dissentTask_Empire2.OtherEmpire))
 			{
-				if (!this.whiteList.Contains(dissentTask_Empire2.OtherEmpire))
-				{
-					this.tickableRepository.Unregister(dissentTask_Empire2);
-					this.dissentTasks.RemoveAt(i);
-				}
+				this.tickableRepository.Unregister(dissentTask_Empire2);
+				this.dissentTasks.RemoveAt(i);
 			}
 		}
 	}
@@ -140,15 +128,12 @@ public class AILayer_Dissent : AILayer
 		for (int i = 0; i < this.dissentTasks.Count; i++)
 		{
 			T t = this.dissentTasks[i] as T;
-			if (t != null)
+			if (t != null && (match == null || match(t)))
 			{
-				if (match == null || match(t))
-				{
-					return t;
-				}
+				return t;
 			}
 		}
-		return (T)((object)null);
+		return default(T);
 	}
 
 	private List<DissentTask> dissentTasks = new List<DissentTask>();

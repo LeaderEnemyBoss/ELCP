@@ -14,6 +14,7 @@ public class QuestBehaviourTreeNode_ConditionCheck_RegionContainsEnemy : QuestBe
 	{
 		this.RegionIndex = -1;
 		this.IgnoredEmpiresIndex = null;
+		this.IncludeNaval = false;
 	}
 
 	[XmlAttribute("RegionVarName")]
@@ -73,7 +74,7 @@ public class QuestBehaviourTreeNode_ConditionCheck_RegionContainsEnemy : QuestBe
 						DepartmentOfDefense agency2 = empire2.GetAgency<DepartmentOfDefense>();
 						for (int j = 0; j < agency2.Armies.Count; j++)
 						{
-							if ((int)service2.GetRegionIndex(agency2.Armies[j].WorldPosition) == this.RegionIndex)
+							if ((this.IncludeNaval || !agency2.Armies[j].IsNaval) && (int)service2.GetRegionIndex(agency2.Armies[j].WorldPosition) == this.RegionIndex)
 							{
 								return State.Success;
 							}
@@ -122,4 +123,7 @@ public class QuestBehaviourTreeNode_ConditionCheck_RegionContainsEnemy : QuestBe
 		}
 		return base.Initialize(questBehaviour);
 	}
+
+	[XmlElement]
+	public bool IncludeNaval { get; set; }
 }

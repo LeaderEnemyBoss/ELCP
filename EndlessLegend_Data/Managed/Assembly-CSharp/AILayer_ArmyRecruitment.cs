@@ -53,11 +53,11 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 			int num5 = 0;
 			while (num5 < garrison.StandardUnits.Count && num > 0)
 			{
-				AIData_Unit aidata_Unit;
-				if (this.aiDataRepository.TryGetAIData<AIData_Unit>(garrison.StandardUnits[num5].GUID, out aidata_Unit) && aidata_Unit.ReservationExtraTag == AIData_Unit.AIDataReservationExtraTag.FreeForExploration)
+				AIData_Unit aidata_Unit2;
+				if (this.aiDataRepository.TryGetAIData<AIData_Unit>(garrison.StandardUnits[num5].GUID, out aidata_Unit2) && aidata_Unit2.ReservationExtraTag == AIData_Unit.AIDataReservationExtraTag.FreeForExploration)
 				{
 					num--;
-					this.smallEntitiesToRegroup.Add(aidata_Unit);
+					this.smallEntitiesToRegroup.Add(aidata_Unit2);
 				}
 				num5++;
 			}
@@ -78,12 +78,9 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 						aidata_Unit.TryUnLockUnit(base.InternalGUID);
 					}
 				}
-				else if (!this.unitsGUIDS.Contains(aidata_Unit.Unit.GUID))
+				else if (!this.unitsGUIDS.Contains(aidata_Unit.Unit.GUID) && !aidata_Unit.Unit.UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
 				{
-					if (!aidata_Unit.Unit.UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
-					{
-						aidata_Unit.TagAsFreeForExploration();
-					}
+					aidata_Unit.TagAsFreeForExploration();
 				}
 			}
 		}
@@ -117,13 +114,28 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 		List<EvaluableMessage_UnitRequest> list = new List<EvaluableMessage_UnitRequest>(base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_UnitRequest>(BlackboardLayerID.Empire, (EvaluableMessage_UnitRequest match) => match.EvaluationState != EvaluableMessage.EvaluableMessageState.Cancel && match.EvaluationState != EvaluableMessage.EvaluableMessageState.Obtained));
 		HeuristicValue globalMotivation = new HeuristicValue(1f);
 		int index;
-		for (index = 0; index < this.countByUnitModel.Count; index++)
+		Predicate<EvaluableMessage_UnitRequest> <>9__1;
+		int index2;
+		for (index = 0; index < this.countByUnitModel.Count; index = index2 + 1)
 		{
 			for (int i = 0; i < this.countByUnitModel[index].Count; i++)
 			{
 				if (this.countByUnitModel[index].RequestArmy != null)
 				{
-					int num = list.FindIndex((EvaluableMessage_UnitRequest match) => (this.countByUnitModel[index].UnitDesign == null) ? (match.UnitDesign == null && match.RequestUnitListMessageID == this.countByUnitModel[index].RequestArmy.ID) : (match.UnitDesign != null && match.UnitDesign.Model == this.countByUnitModel[index].UnitDesign.Model && match.RequestUnitListMessageID == this.countByUnitModel[index].RequestArmy.ID));
+					List<EvaluableMessage_UnitRequest> list2 = list;
+					Predicate<EvaluableMessage_UnitRequest> match2;
+					if ((match2 = <>9__1) == null)
+					{
+						match2 = (<>9__1 = delegate(EvaluableMessage_UnitRequest match)
+						{
+							if (this.countByUnitModel[index].UnitDesign != null)
+							{
+								return match.UnitDesign != null && match.UnitDesign.Model == this.countByUnitModel[index].UnitDesign.Model && match.RequestUnitListMessageID == this.countByUnitModel[index].RequestArmy.ID;
+							}
+							return match.UnitDesign == null && match.RequestUnitListMessageID == this.countByUnitModel[index].RequestArmy.ID;
+						});
+					}
+					int num = list2.FindIndex(match2);
 					if (num < 0)
 					{
 						HeuristicValue heuristicValue = new HeuristicValue(0f);
@@ -136,12 +148,12 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 					}
 					else
 					{
-						EvaluableMessage_UnitRequest evaluableMessage_UnitRequest = list[num];
-						evaluableMessage_UnitRequest.Refresh(1f, this.countByUnitModel[index].RequestArmy.Priority);
+						list[num].Refresh(1f, this.countByUnitModel[index].RequestArmy.Priority);
 						list.RemoveAt(num);
 					}
 				}
 			}
+			index2 = index;
 		}
 		for (int j = 0; j < list.Count; j++)
 		{
@@ -164,6 +176,7 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 
 	private void LaunchProductionNeeds(DepartmentOfDefense departmentOfDefense, RequestUnitListMessage requestUnitListMessage)
 	{
+		Predicate<AILayer_ArmyRecruitment.UnitModelProductionNeeds> <>9__1;
 		for (int i = 0; i < requestUnitListMessage.ArmyPattern.UnitPatternCategoryList.Count; i++)
 		{
 			ArmyPattern.UnitPatternCategory unitPatternCategory = requestUnitListMessage.ArmyPattern.UnitPatternCategoryList[i];
@@ -183,7 +196,13 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 			}
 			else
 			{
-				int num2 = this.countByUnitModel.FindIndex((AILayer_ArmyRecruitment.UnitModelProductionNeeds match) => match.UnitDesign == null && match.RequestArmy.ID == requestUnitListMessage.ID);
+				List<AILayer_ArmyRecruitment.UnitModelProductionNeeds> list = this.countByUnitModel;
+				Predicate<AILayer_ArmyRecruitment.UnitModelProductionNeeds> match2;
+				if ((match2 = <>9__1) == null)
+				{
+					match2 = (<>9__1 = ((AILayer_ArmyRecruitment.UnitModelProductionNeeds match) => match.UnitDesign == null && match.RequestArmy.ID == requestUnitListMessage.ID));
+				}
+				int num2 = list.FindIndex(match2);
 				if (num2 < 0)
 				{
 					num2 = ~num2;
@@ -291,6 +310,7 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 
 	private void RegroupSmallFreeArmies()
 	{
+		List<Army> list = new List<Army>();
 		IAIDataRepositoryAIHelper service = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
 		this.smallEntitiesToRegroup.Clear();
 		this.tempEntitiesToRegroup.Clear();
@@ -299,34 +319,38 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 		for (int i = 0; i < agency.Armies.Count; i++)
 		{
 			Army army = agency.Armies[i];
-			AIData_Army aidata_Army = service.GetAIData<AIData_Army>(army.GUID);
-			if (aidata_Army != null)
+			AIData_Army aidata = service.GetAIData<AIData_Army>(army.GUID);
+			if (aidata != null && !aidata.IsSolitary && !aidata.Army.IsSeafaring && !aidata.Army.HasCatspaw && !(aidata.Army is KaijuArmy))
 			{
-				if (!aidata_Army.IsSolitary && !aidata_Army.Army.IsSeafaring && !aidata_Army.Army.HasCatspaw)
+				if (aidata.CommanderMission != null)
 				{
-					if (aidata_Army.CommanderMission != null)
+					if (aidata.CommanderMission.Commander == null)
 					{
-						if (aidata_Army.CommanderMission.Commander == null)
-						{
-							AILayer.LogError("[AILayer_ArmyRecruitment] Commander Mission without a commander");
-							goto IL_11A;
-						}
-						if (!AILayer_ArmyRecruitment.IsCommanderMissionNotInteresting(aidata_Army.CommanderMission.Commander.Category))
-						{
-							goto IL_11A;
-						}
+						AILayer.LogError("[AILayer_ArmyRecruitment] Commander Mission without a commander");
+						goto IL_131;
 					}
-					else if (!aidata_Army.IsTaggedFreeForExploration())
+					if (!AILayer_ArmyRecruitment.IsCommanderMissionNotInteresting(aidata.CommanderMission.Commander.Category))
 					{
-						goto IL_11A;
+						goto IL_131;
 					}
-					if (army.StandardUnits.Count < num)
+				}
+				else if (!aidata.IsTaggedFreeForExploration())
+				{
+					goto IL_131;
+				}
+				if (army.StandardUnits.Count < num)
+				{
+					if (!this.IsMercArmy(aidata.Army))
 					{
-						this.smallEntitiesToRegroup.Add(aidata_Army);
+						this.smallEntitiesToRegroup.Add(aidata);
+					}
+					else
+					{
+						list.Add(aidata.Army);
 					}
 				}
 			}
-			IL_11A:;
+			IL_131:;
 		}
 		if (this.Empire is MajorEmpire)
 		{
@@ -368,44 +392,40 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 			}
 			this.tempEntitiesToRegroup.Clear();
 			this.tempEntitiesToRegroup.Add(aidata_GameEntity);
-			int l = this.smallEntitiesToRegroup.Count - 1;
-			while (l >= 0)
+			int num3 = this.smallEntitiesToRegroup.Count - 1;
+			while (num3 >= 0 && num2 < num)
 			{
-				if (num2 >= num)
-				{
-					break;
-				}
-				AIData_GameEntity item = this.smallEntitiesToRegroup[l];
-				int num3;
+				AIData_GameEntity item = this.smallEntitiesToRegroup[num3];
+				int num4;
 				if (aidata_GameEntity is AIData_Army)
 				{
-					num3 = (aidata_GameEntity as AIData_Army).Army.StandardUnits.Count;
-					goto IL_2CE;
+					num4 = (aidata_GameEntity as AIData_Army).Army.StandardUnits.Count;
+					goto IL_29E;
 				}
 				if (aidata_GameEntity is AIData_Unit)
 				{
-					num3 = 1;
-					goto IL_2CE;
+					num4 = 1;
+					goto IL_29E;
 				}
-				IL_2FA:
-				l--;
+				IL_296:
+				num3--;
 				continue;
-				IL_2CE:
-				if (num2 + num3 <= num)
+				IL_29E:
+				if (num2 + num4 <= num)
 				{
-					num2 += num3;
+					num2 += num4;
 					this.tempEntitiesToRegroup.Add(item);
-					this.smallEntitiesToRegroup.RemoveAt(l);
-					goto IL_2FA;
+					this.smallEntitiesToRegroup.RemoveAt(num3);
+					goto IL_296;
 				}
-				goto IL_2FA;
+				goto IL_296;
 			}
 			if (this.tempEntitiesToRegroup.Count > 1)
 			{
 				this.unitsGUIDS.Clear();
-				for (int m = 0; m < this.tempEntitiesToRegroup.Count; m++)
+				for (int l = 0; l < this.tempEntitiesToRegroup.Count; l++)
 				{
-					AIData_GameEntity aidata_GameEntity2 = this.tempEntitiesToRegroup[m];
+					AIData_GameEntity aidata_GameEntity2 = this.tempEntitiesToRegroup[l];
 					if (aidata_GameEntity2 is AIData_Army)
 					{
 						AIData_Army aidata_Army = aidata_GameEntity2 as AIData_Army;
@@ -413,10 +433,10 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 						{
 							aidata_Army.CommanderMission.Interrupt();
 						}
-						for (int n = 0; n < aidata_Army.Army.StandardUnits.Count; n++)
+						for (int m = 0; m < aidata_Army.Army.StandardUnits.Count; m++)
 						{
 							AIData_Unit aidata_Unit;
-							if (service.TryGetAIData<AIData_Unit>(aidata_Army.Army.StandardUnits[n].GUID, out aidata_Unit))
+							if (service.TryGetAIData<AIData_Unit>(aidata_Army.Army.StandardUnits[m].GUID, out aidata_Unit))
 							{
 								aidata_Unit.ReservationExtraTag = AIData_Unit.AIDataReservationExtraTag.None;
 								this.unitsGUIDS.Add(aidata_Unit.Unit.GUID);
@@ -425,15 +445,44 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 					}
 					else if (aidata_GameEntity2 is AIData_Unit)
 					{
-						AIData_Unit aidata_Unit = aidata_GameEntity2 as AIData_Unit;
-						aidata_Unit.ReservationExtraTag = AIData_Unit.AIDataReservationExtraTag.None;
-						this.unitsGUIDS.Add(aidata_Unit.Unit.GUID);
+						AIData_Unit aidata_Unit2 = aidata_GameEntity2 as AIData_Unit;
+						aidata_Unit2.ReservationExtraTag = AIData_Unit.AIDataReservationExtraTag.None;
+						this.unitsGUIDS.Add(aidata_Unit2.Unit.GUID);
 					}
 				}
 				if (this.unitsGUIDS.Count != 0)
 				{
 					this.CreateNewCommanderRegroup(this.unitsGUIDS.ToArray(), null);
 				}
+			}
+		}
+		if (list.Count > 1)
+		{
+			int num5 = 0;
+			List<GameEntityGUID> list2 = new List<GameEntityGUID>();
+			for (int n = 0; n < list.Count; n++)
+			{
+				num5++;
+				foreach (Unit unit in list[n].StandardUnits)
+				{
+					AIData_Unit aidata_Unit3;
+					if (service.TryGetAIData<AIData_Unit>(unit.GUID, out aidata_Unit3))
+					{
+						aidata_Unit3.ReservationExtraTag = AIData_Unit.AIDataReservationExtraTag.None;
+						list2.Add(aidata_Unit3.Unit.GUID);
+						if (list2.Count >= num)
+						{
+							this.CreateNewCommanderRegroup(list2.ToArray(), null);
+							list2.Clear();
+							num5 = 0;
+							break;
+						}
+					}
+				}
+			}
+			if (num5 > 1)
+			{
+				this.CreateNewCommanderRegroup(list2.ToArray(), null);
 			}
 		}
 	}
@@ -494,22 +543,22 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 				if (!this.IsCommanderStillRegrouping(requestUnitListMessage))
 				{
 					requestUnitListMessage.ExecutionState = RequestUnitListMessage.RequestUnitListState.Pending;
-					goto IL_80;
+					goto IL_72;
 				}
 				requestUnitListMessage.ExecutionState = RequestUnitListMessage.RequestUnitListState.Regrouping;
 			}
 			else if (requestUnitListMessage.State != BlackboardMessage.StateValue.Message_Canceled && requestUnitListMessage.State != BlackboardMessage.StateValue.Message_Failed)
 			{
-				goto IL_80;
+				goto IL_72;
 			}
-			IL_134:
+			IL_69:
 			i++;
 			continue;
-			IL_80:
+			IL_72:
 			if (requestUnitListMessage.ArmyPattern == null || requestUnitListMessage.ArmyPattern.UnitPatternCategoryList.Count == 0)
 			{
 				base.AIEntity.AIPlayer.Blackboard.CancelMessage(requestUnitListMessage);
-				goto IL_134;
+				goto IL_69;
 			}
 			if (requestUnitListMessage is RequestArmyMessage)
 			{
@@ -523,7 +572,7 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 					break;
 				}
 			}
-			goto IL_134;
+			goto IL_69;
 		}
 	}
 
@@ -599,9 +648,9 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 	{
 		yield return base.Initialize(aiEntity);
 		this.intelligenceAIHelper = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
-		this.worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositionningService != null);
 		this.personalityAIHelper = AIScheduler.Services.GetService<IPersonalityAIHelper>();
 		this.unitInGarrisonMaxPercent = this.personalityAIHelper.GetRegistryValue<float>(this.Empire, string.Format("{0}/{1}", AILayer_Military.RegistryPath, "UnitInGarrisonMaxPercent"), this.unitInGarrisonMaxPercent);
@@ -622,13 +671,18 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 		IEnumerable<BlackboardMessage> messages = base.AIEntity.AIPlayer.Blackboard.GetMessages<BlackboardMessage>(BlackboardLayerID.Empire);
 		if (messages != null)
 		{
-			IUnitDesignDatabase unitDesignDatabase = this.Empire.GetAgency<DepartmentOfDefense>();
-			foreach (BlackboardMessage message in messages)
+			IUnitDesignDatabase agency = this.Empire.GetAgency<DepartmentOfDefense>();
+			using (IEnumerator<BlackboardMessage> enumerator = messages.GetEnumerator())
 			{
-				if (message is EvaluableMessageWithUnitDesign)
+				while (enumerator.MoveNext())
 				{
-					(message as EvaluableMessageWithUnitDesign).Load(this.Empire, unitDesignDatabase);
+					BlackboardMessage blackboardMessage = enumerator.Current;
+					if (blackboardMessage is EvaluableMessageWithUnitDesign)
+					{
+						(blackboardMessage as EvaluableMessageWithUnitDesign).Load(this.Empire, agency);
+					}
 				}
+				yield break;
 			}
 		}
 		yield break;
@@ -683,7 +737,7 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 				{
 					if (state == BlackboardMessage.StateValue.Message_Success || state == BlackboardMessage.StateValue.Message_Canceled)
 					{
-						goto IL_252;
+						goto IL_1F3;
 					}
 					if (state != BlackboardMessage.StateValue.Message_InProgress)
 					{
@@ -691,7 +745,7 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 						{
 							requestUnitListMessage.State
 						});
-						goto IL_252;
+						goto IL_1F3;
 					}
 				}
 				if (requestUnitListMessage.ExecutionState == RequestUnitListMessage.RequestUnitListState.Pending)
@@ -715,11 +769,40 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 					}
 				}
 			}
-			IL_252:;
+			IL_1F3:;
 		}
 		this.ResetRecruitementLocks();
 		this.RegroupSmallFreeArmies();
 		this.CleanupRequestUnitMessages();
+	}
+
+	public void CreateNewCommanderRegroup(GameEntityGUID[] units)
+	{
+		AICommander commander = new AICommander_RegroupArmies(units, 0UL)
+		{
+			AIPlayer = base.AIEntity.AIPlayer,
+			Empire = base.AIEntity.Empire
+		};
+		this.AddCommander(commander);
+	}
+
+	public bool IsMercArmy(Army army)
+	{
+		if (army.IsPrivateers)
+		{
+			return true;
+		}
+		using (IEnumerator<Unit> enumerator = army.StandardUnits.GetEnumerator())
+		{
+			while (enumerator.MoveNext())
+			{
+				if (!enumerator.Current.UnitDesign.Tags.Contains(TradableUnit.ReadOnlyMercenary))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private List<AILayer_ArmyRecruitment.UnitModelProductionNeeds> countByUnitModel = new List<AILayer_ArmyRecruitment.UnitModelProductionNeeds>();
@@ -741,6 +824,8 @@ public class AILayer_ArmyRecruitment : AILayerCommanderController
 	private float unitInGarrisonMaxPercent = 0.8f;
 
 	private IWorldPositionningService worldPositionningService;
+
+	private List<Army> list;
 
 	private class UnitModelProductionNeeds
 	{

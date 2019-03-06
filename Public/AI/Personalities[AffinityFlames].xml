@@ -23,12 +23,22 @@
                         <!-- MaximumNumberOfTurnToReachNextPopulation = RangeRatio *  IdealNumberOfTurnToReachNextPopulation -->
                         <RangeRatio>0.75</RangeRatio>
                     </PopulationReferenceTurnCountAgent>
+					
+					<MoneyPrintTermAgent>
+						<Multiplier>0</Multiplier>
+					</MoneyPrintTermAgent>
 
                 </AgentDefinition>
 
                 <MajorEmpire>
                     <AIEntity_Empire>
-
+					
+						<AILayer_Victory>
+							<VictoryFocusMilitary>1.8</VictoryFocusMilitary>
+							<VictoryFocusDiplomacy>1.2</VictoryFocusDiplomacy>
+							<VictoryFocusEconomy>1</VictoryFocusEconomy>
+							<VictoryFocusTechnology>1.7</VictoryFocusTechnology>
+						</AILayer_Victory>
                         <!-- The degree to which various attitude modifiers are taken into account -->
                         <AILayer_Attitude>
                             <!-- ##### -->
@@ -217,7 +227,7 @@
                                 <AIEmpireUnlockPrivateers>0.6</AIEmpireUnlockPrivateers>
                                 <AIEmpireUnlockMarketUnit>1.4</AIEmpireUnlockMarketUnit>
                                 <AIEmpireUnlockMarketResource>1.6</AIEmpireUnlockMarketResource>
-                                <AIEmpireUnlockBooster>1.4</AIEmpireUnlockBooster>
+                                <AIEmpireUnlockBooster>1.8</AIEmpireUnlockBooster>
                                 <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
                                 <AIEmpireUnlockDiplomacyPositive>1.6</AIEmpireUnlockDiplomacyPositive>
                             </ElementEvaluatorContextMultiplier>

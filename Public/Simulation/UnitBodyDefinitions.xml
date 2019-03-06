@@ -7214,6 +7214,7 @@
     <UnitAbilityReference Name="UnitAbilitySlow" Level="0"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
+	<UnitAbilityReference Name="UnitAbilityFlamewalker" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyColossusEarth</TechnologyPrerequisite>
@@ -7364,8 +7365,8 @@
       <InterpreterPrerequisite Flags="Prerequisite,AIColossusPrerequisite">$Property(.../ClassEmpire:MaximumNumberOfColossi) - $Property(.../ClassEmpire:NumberOfColossi) gt 0</InterpreterPrerequisite>
     </UnitDesignPrerequisites>
 
-    <Cost ResourceName="Production" Instant="false">2000</Cost>
-    <Cost ResourceName="Strategic3" Instant="true">30</Cost>
+    <Cost ResourceName="Production" Instant="false">1600</Cost>
+    <Cost ResourceName="Strategic3" Instant="true">20</Cost>
 
     <SimulationDescriptorReference Name="AffinityColossus" />
     <SimulationDescriptorReference Name="UnitTypeColossus" />
@@ -7420,11 +7421,13 @@
     <UnitAbilityReference Name="UnitAbilityColossusNature"/>
     <UnitAbilityReference Name="UnitAbilitySolitary"/>
     <UnitAbilityReference Name="UnitAbilityBloodRage"/>
+	<UnitAbilityReference Name="UnitAbilityKaijuSlayer" Level="2"/>
     <UnitAbilityReference Name="UnitAbilityWinterWind"/>
     <UnitAbilityReference Name="UnitAbilityFly"/>
     <UnitAbilityReference Name="UnitAbilityTeleportInRange"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
+	<UnitAbilityReference Name="UnitAbilityFlamewalker" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyColossusAir</TechnologyPrerequisite>
@@ -7434,8 +7437,8 @@
       <InterpreterPrerequisite Flags="Prerequisite,AIColossusPrerequisite">$Property(.../ClassEmpire:MaximumNumberOfColossi) - $Property(.../ClassEmpire:NumberOfColossi) gt 0</InterpreterPrerequisite>
     </UnitDesignPrerequisites>
 
-    <Cost ResourceName="Production" Instant="false">2000</Cost>
-    <Cost ResourceName="Strategic5" Instant="true">30</Cost>
+    <Cost ResourceName="Production" Instant="false">1600</Cost>
+    <Cost ResourceName="Strategic5" Instant="true">20</Cost>
 
     <SimulationDescriptorReference Name="AffinityColossus" />
     <SimulationDescriptorReference Name="UnitTypeColossus" />
@@ -7493,6 +7496,7 @@
     <UnitAbilityReference Name="UnitAbilityMindControl"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
+	<UnitAbilityReference Name="UnitAbilityFlamewalker" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyColossusDust</TechnologyPrerequisite>
@@ -7503,9 +7507,9 @@
     </UnitDesignPrerequisites>
 
     <!--<CustomCost ResourceName="Production" Instant="false">0</CustomCost>-->
-    <Cost ResourceName="Production" Instant="false">2000</Cost>
-    <Cost ResourceName="Strategic1" Instant="true">20</Cost>
-    <Cost ResourceName="Strategic2" Instant="true">20</Cost>
+    <Cost ResourceName="Production" Instant="false">1200</Cost>
+    <Cost ResourceName="Strategic1" Instant="true">5</Cost>
+    <Cost ResourceName="Strategic2" Instant="true">5</Cost>
 
     <SimulationDescriptorReference Name="AffinityColossus" />
     <SimulationDescriptorReference Name="UnitTypeColossus" />
@@ -7613,6 +7617,7 @@
     <UnitAbilityReference Name="UnitAbilityBeam"/>
     <UnitAbilityReference Name="UnitAbilityFly"/>
     <UnitAbilityReference Name="UnitAbilityColossusSlayer" Level="1"/>
+	<UnitAbilityReference Name="UnitAbilityKaijuSlayer" Level="1"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
@@ -7756,14 +7761,13 @@
 
     <CostReductionReference Name="MinorFactionUrces"/>
 
-    <UnitAbilityReference Name="UnitAbilityBeam"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
     <Tags></Tags>
 
-    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostLessThanAverage) + $Property(../ClassEmpire:UnitProductionCostLessThanAverage) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
+    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostCheap) + $Property(../ClassEmpire:UnitProductionCostCheap) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
 
     <SimulationDescriptorReference Name="AffinityUrces" />
     <SimulationDescriptorReference Name="UnitFactionTypeMinorFaction" />
@@ -7772,7 +7776,7 @@
     <SimulationDescriptorReference Name="UnitSizeLarge" />
     <SimulationDescriptorReference Name="MovementCapacityWalk" />
     <SimulationDescriptorReference Name="ItemSlotHammer2" />
-    <SimulationDescriptorReference Name="ItemSlotClaw2" />
+    <SimulationDescriptorReference Name="ItemSlotAxe2" />
     <SimulationDescriptorReference Name="ItemSlotHead" />
     <SimulationDescriptorReference Name="ItemSlotTorso" />
     <SimulationDescriptorReference Name="ItemSlotLegs" />
@@ -7785,8 +7789,8 @@
     </UnitDesignPrerequisites>
 
     <UnitEquipmentSet>
-      <Slot Name="MainHand"                        ItemName="ItemClaw2IronTier1#1" />
-      <Slot Name="OffHand"                         ItemName="ItemClaw2IronTier1#1" />
+      <Slot Name="MainHand"                        ItemName="ItemAxe2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemAxe2IronTier1#1" />
       <Slot Name="Head"                            ItemName="" />
       <Slot Name="Torso"                           ItemName="" />
       <Slot Name="Legs"                            ItemName="" />
@@ -8601,10 +8605,10 @@
 
     <UnitAbilityReference Name="UnitAbilityShortRanged" />
     <UnitAbilityReference Name="UnitAbilityFreeCounter" />
+	<UnitAbilityReference Name="UnitAbilityTrueSight" />
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
-
 
     <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostMoreExpensive) + $Property(../ClassEmpire:UnitProductionCostMoreExpensive) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
 
@@ -9075,7 +9079,7 @@
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
-    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostCheaper) + $Property(../ClassEmpire:UnitProductionCostCheaper) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
+    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostCheap) + $Property(../ClassEmpire:UnitProductionCostCheap) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
 
     <InterpreterPrerequisite Flags="Prerequisite,Affinity">$Path(.../EmpireTypeMajor/EmpireTypeMinor,AffinityDorgeshi) or $Path(.../EmpireTypeMinor,AffinityDorgeshi)</InterpreterPrerequisite>
     <UnitDesignPrerequisites>
@@ -10323,6 +10327,7 @@
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
     <UnitAbilityReference Name="UnitAbilityFlamewalker" />
+	<UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
     <UnitAbilityReference Name="UnitAbilityVolcanicRegen" />
 
     <SimulationDescriptorReference Name="UnitKaijusMonster" />
@@ -10396,6 +10401,7 @@
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
     <UnitAbilityReference Name="UnitAbilityFlamewalker" />
+	<UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
     <UnitAbilityReference Name="UnitAbilityVolcanicRegen" />
     
     <SimulationDescriptorReference Name="UnitKaijusMonster" />
@@ -10470,6 +10476,7 @@
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
     <UnitAbilityReference Name="UnitAbilityFlamewalker" />
+	<UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
     <UnitAbilityReference Name="UnitAbilityVolcanicRegen" />
 
     <SimulationDescriptorReference Name="UnitKaijusMonster" />

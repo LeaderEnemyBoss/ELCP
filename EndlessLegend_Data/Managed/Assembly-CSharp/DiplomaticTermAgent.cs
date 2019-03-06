@@ -50,11 +50,15 @@ public abstract class DiplomaticTermAgent : SimulationAgent
 		this.EmpireWhichReceives = null;
 		this.AttitudeScore = null;
 		this.aiEntityEmpire = null;
+		this.DiplomacyLayer = null;
+		this.VictoryLayer = null;
 		base.Release();
 	}
 
 	public override void Reset()
 	{
+		this.DiplomacyLayer = this.aiEntityEmpire.GetLayer<AILayer_Diplomacy>();
+		this.VictoryLayer = this.aiEntityEmpire.GetLayer<AILayer_Victory>();
 		AILayer_Attitude layer = this.aiEntityEmpire.GetLayer<AILayer_Attitude>();
 		Diagnostics.Assert(layer != null);
 		AILayer_Attitude.Attitude attitude = layer.GetAttitude(this.EmpireWhichReceives);
@@ -83,10 +87,7 @@ public abstract class DiplomaticTermAgent : SimulationAgent
 			return;
 		}
 		base.Reset();
-		if (!base.Enable)
-		{
-			return;
-		}
+		bool enable = base.Enable;
 	}
 
 	protected float GetValueFromAttitude()
@@ -201,4 +202,8 @@ public abstract class DiplomaticTermAgent : SimulationAgent
 	private AIEntity aiEntityEmpire;
 
 	private Dictionary<StaticString, float> attitudeMultipliers;
+
+	protected AILayer_Diplomacy DiplomacyLayer;
+
+	protected AILayer_Victory VictoryLayer;
 }

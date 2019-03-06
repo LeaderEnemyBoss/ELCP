@@ -5,19 +5,29 @@
     <Multipliers>
       <!-- AI Registry -->
       <AI>
-
+		<AgentDefinition>
         <!-- 
         Money-grubbing
         -->
-        <MoneyReferenceRatioAgent>
-          <MoneyStockToMaintainUpkeepTurnCount>1.7</MoneyStockToMaintainUpkeepTurnCount>
-          <MoneyIncomeGrowthPercent>1.7</MoneyIncomeGrowthPercent>
-        </MoneyReferenceRatioAgent>
+			<MoneyReferenceRatioAgent>
+			  <MoneyStockToMaintainUpkeepTurnCount>1.7</MoneyStockToMaintainUpkeepTurnCount>
+			  <MoneyIncomeGrowthPercent>1.7</MoneyIncomeGrowthPercent>
+			</MoneyReferenceRatioAgent>
+			
+			<OpenBordersTermAgent>
+				<OpenedTradeBonus>1.5</OpenedTradeBonus>
+			</OpenBordersTermAgent>
+		</AgentDefinition>
 
 
         <MajorEmpire>
           <AIEntity_Empire>
-
+			<AILayer_Victory>
+				<VictoryFocusMilitary>0</VictoryFocusMilitary>
+				<VictoryFocusDiplomacy>1.7</VictoryFocusDiplomacy>
+				<VictoryFocusEconomy>2.5</VictoryFocusEconomy>
+				<VictoryFocusTechnology>1.3</VictoryFocusTechnology>
+			</AILayer_Victory>
             <!-- The degree to which various attitude modifiers are taken into account -->
             <AILayer_Attitude>
               <!-- ##### -->
@@ -116,7 +126,12 @@
               <AttitudeScoreOtherEmpireHasUniqueFacility>1.1</AttitudeScoreOtherEmpireHasUniqueFacility>
               <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.0</AttitudeScoreOtherEmpireLeadNavalRegionCount>
             </AILayer_Attitude>
-            
+            <!-- ELCP\LeaderEnemyBoss Clans are more likely to offer nice deals -->
+			<AILayer_Diplomacy>
+			  <SweetenDealThreshold>1.5</SweetenDealThreshold>
+			  <EmergencyGangupLimit>1.25</EmergencyGangupLimit>
+			</AILayer_Diplomacy>
+			
             <AILayer_Strategy>
 
               <ResearchScoreFactor>0.8</ResearchScoreFactor>
@@ -129,7 +144,7 @@
               -->
               <Network>
                 <MilitaryEmpireNeedAgent>
-                  <GlobalUnitCountMultiplier>0.75</GlobalUnitCountMultiplier>
+                  <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
 
                   <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
                   <CityUnitNeedStartTurn>1</CityUnitNeedStartTurn>
@@ -202,7 +217,7 @@
                   <AIEmpireUnlockUnit>0.6</AIEmpireUnlockUnit>
                   <AIEmpireUnlockAssimilation>1</AIEmpireUnlockAssimilation>
                   <AIEmpireUnlockBribe>1.6</AIEmpireUnlockBribe>
-                  <AIEmpireUnlockPillage>1.6</AIEmpireUnlockPillage>
+                  <AIEmpireUnlockPillage>3</AIEmpireUnlockPillage>
                   <AIEmpireUnlockPrivateers>1.9</AIEmpireUnlockPrivateers>
                   <AIEmpireUnlockMarketUnit>2</AIEmpireUnlockMarketUnit>
                   <AIEmpireUnlockMarketResource>2</AIEmpireUnlockMarketResource>

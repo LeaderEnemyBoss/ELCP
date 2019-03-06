@@ -179,6 +179,14 @@ public class QuestMarker : IXmlSerializable, IGameEntity, IGameEntityWithWorldPo
 		return false;
 	}
 
+	public bool IsVisibleInFogOfWar
+	{
+		get
+		{
+			return this.isVisibleInFogOfWar;
+		}
+	}
+
 	private const string MarkerHiddenInFogOfWarProperty = "_HideInFow";
 
 	public static readonly StaticString DefaultMarkerTypeName = "QuestMarker";

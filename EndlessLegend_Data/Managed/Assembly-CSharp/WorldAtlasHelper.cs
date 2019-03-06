@@ -470,13 +470,12 @@ public class WorldAtlasHelper : AIHelper, IWorldAtlasAIHelper, IService, ISimula
 	{
 		global::Empire empire = base.Game.Empires[regionData.EmpireIndex];
 		DepartmentOfScience agency = empire.GetAgency<DepartmentOfScience>();
-		DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
-		if (agency2.Cities.Count <= 0)
+		if (empire.GetAgency<DepartmentOfTheInterior>().Cities.Count <= 0)
 		{
 			return true;
 		}
 		Region region = this.world.Regions[regionData.RegionIndex];
-		PathfindingContext pathfindingContext = new PathfindingContext(GameEntityGUID.Zero, null, (!agency.HaveResearchedShipTechnology()) ? PathfindingMovementCapacity.Ground : (PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water));
+		PathfindingContext pathfindingContext = new PathfindingContext(GameEntityGUID.Zero, null, (!agency.HaveResearchedShipTechnology()) ? (PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.FrozenWater) : (PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water | PathfindingMovementCapacity.FrozenWater));
 		pathfindingContext.RefreshProperties(1f, float.PositiveInfinity, false, false, float.PositiveInfinity, float.PositiveInfinity);
 		pathfindingContext.Greedy = true;
 		PathfindingFlags flags = PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnoreZoneOfControl;

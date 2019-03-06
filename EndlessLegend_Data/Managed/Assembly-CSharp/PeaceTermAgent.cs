@@ -71,7 +71,15 @@ public class PeaceTermAgent : DiplomaticTermAgent
 			float num3 = ((this.theirEmpireDepartmentOfScience.GetTechnologyState(TechnologyDefinition.Names.LandTrade) != DepartmentOfScience.ConstructibleElement.State.Researched) ? 0f : 1f) + ((this.theirEmpireDepartmentOfScience.GetTechnologyState(TechnologyDefinition.Names.SeaTrade) != DepartmentOfScience.ConstructibleElement.State.Researched) ? 0f : 1f);
 			num += (num2 + num3) / 4f * this.openedTradeBonus;
 		}
+		if (this.DiplomacyLayer.MilitaryPowerDif < 0f && (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.ColdWar || base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace) && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index])
+		{
+			num = Mathf.Max(50f, num + 50f);
+		}
 		num *= this.multiplier;
+		if (this.VictoryLayer.CurrentFocus == ELCPUtilities.AIVictoryFocus.Diplomacy && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index] && (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.ColdWar || base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace))
+		{
+			num = Mathf.Max(50f, num + 50f);
+		}
 		return num / 100f;
 	}
 

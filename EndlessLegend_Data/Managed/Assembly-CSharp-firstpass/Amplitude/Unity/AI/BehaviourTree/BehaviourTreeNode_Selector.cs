@@ -1,4 +1,5 @@
 ﻿using System;
+using Amplitude.Unity.Framework;
 
 namespace Amplitude.Unity.AI.BehaviourTree
 {
@@ -46,7 +47,8 @@ namespace Amplitude.Unity.AI.BehaviourTree
 					state = this.Current.Execute(behaviourTree, parameters);
 					if (state == State.Failure)
 					{
-						this.Index++;
+						int index = this.Index;
+						this.Index = index + 1;
 						parameters = null;
 					}
 				}
@@ -57,6 +59,18 @@ namespace Amplitude.Unity.AI.BehaviourTree
 				parameters = null;
 				this.Reset();
 				this.Execute(behaviourTree, parameters);
+			}
+			if (Application.Preferences.EnableModdingTools && state == State.Failure)
+			{
+				if (this.Current == null)
+				{
+					behaviourTree.LastNodeName = base.Children[base.Children.Length - 1].GetType().ToString();
+				}
+				else
+				{
+					behaviourTree.LastNodeName = this.Current.GetType().ToString();
+				}
+				behaviourTree.LastDebugString = base.Debug;
 			}
 			return state;
 		}

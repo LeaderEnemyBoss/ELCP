@@ -13,23 +13,24 @@
 			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
 			<Controller_Selector>
+				<Controller_Sequence Debug="SelectMantaTarget">
+					<Decorator_SelectMantaTarget MantaZoneVarName="$MantaZone" Output_TargetVarName="$MantaTarget"/>
+					<Decorator_GetTargetPosition TargetVarName="$MantaTarget" Output_DestinationVarName="$MantaWorldPosition"/>
+				</Controller_Sequence> 
+				<Decorator_Successor />
+			</Controller_Selector>
+			
+			<Controller_Selector Debug="MantaExploration_Main">
 
 				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
-
+				
+				<Include SubTreeName="ExploreNearbyRuin"/>
+				<Include SubTreeName="ParleyWithVillage"/>
 				<!--IF we could collect orbs THEN Change path -->
 				<Include SubTreeName="OrbsOpportunity">
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$MantaWorldPosition"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
 				</Include>
-
-        <!--IF we could collect a map boost then change path -->
-        <Include SubTreeName="MapBoostOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$MantaWorldPosition"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
-
-				<!--IF RuinDetected THEN explore the ruin -->
-				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<!--IF City need vision for spy THEN move to get a look at the city -->
 				<Controller_Sequence Debug="Opportunity_CityToSpy">

@@ -5,7 +5,7 @@ using Amplitude;
 using Amplitude.Unity.Framework;
 
 [Diagnostics.TagAttribute("AI")]
-public class SynchronousJobRepository : AIHelper, ISynchronousJobRepositoryAIHelper, ITickable, IService
+public class SynchronousJobRepository : AIHelper, ISynchronousJobRepositoryAIHelper, IService, ITickable
 {
 	public bool IsEmpty
 	{
@@ -56,38 +56,34 @@ public class SynchronousJobRepository : AIHelper, ISynchronousJobRepositoryAIHel
 		}
 		Diagnostics.Assert(this.synchronousDelegates != null);
 		int num = 0;
-		while (this.lastJobIndex >= 0)
+		while (this.lastJobIndex >= 0 && num++ <= 5)
 		{
-			if (num++ > 10)
-			{
-				break;
-			}
 			SynchronousJob synchronousJob = this.synchronousDelegates[this.lastJobIndex];
 			if (synchronousJob == null)
 			{
-				goto IL_C5;
+				goto IL_AB;
 			}
 			switch (synchronousJob())
 			{
 			case SynchronousJobState.Running:
 				break;
 			case SynchronousJobState.Success:
-				goto IL_C5;
+				goto IL_AB;
 			case SynchronousJobState.Failure:
 				Diagnostics.Log("Synchronous job {0} failed.", new object[]
 				{
 					synchronousJob.Method.Name
 				});
-				goto IL_C5;
+				goto IL_AB;
 			default:
-				goto IL_C5;
+				goto IL_AB;
 			}
-			IL_D6:
+			IL_9B:
 			this.lastJobIndex--;
 			continue;
-			IL_C5:
+			IL_AB:
 			this.synchronousDelegates.RemoveAt(this.lastJobIndex);
-			goto IL_D6;
+			goto IL_9B;
 		}
 	}
 

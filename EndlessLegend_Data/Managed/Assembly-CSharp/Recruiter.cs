@@ -35,6 +35,10 @@ public class Recruiter
 
 	public void Initialize()
 	{
+		if (this.AIEntity.Empire is MajorEmpire)
+		{
+			this.VictoryLayer = this.AIEntity.GetLayer<AILayer_Victory>();
+		}
 		this.ComputeMilitaryBodyRatio();
 	}
 
@@ -318,6 +322,26 @@ public class Recruiter
 		}
 		heuristicValue2.Multiply(0.05f, "constant", new object[0]);
 		heuristicValue.Boost(heuristicValue2, "Body ratio boost", new object[0]);
+		DepartmentOfTheInterior agency = this.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
+		if (unitDesign.Name.ToString().Contains("Preacher") && agency.AssimilatedFactions.Count > 0 && (this.VictoryLayer == null || !this.VictoryLayer.NeedPreachers))
+		{
+			heuristicValue.Boost(-0.4f, "Bad Unit Malus", new object[0]);
+		}
+		if (unitDesign.Name.ToString().Contains("EyelessOnesCaecator") || unitDesign.Name.ToString().Contains("CeratanDrider"))
+		{
+			heuristicValue.Boost(-0.3f, "Bad Unit Malus", new object[0]);
+		}
+		if (unitDesign.Name.ToString().Contains("Mastermind") && agency.AssimilatedFactions.Count > 0)
+		{
+			foreach (Faction faction in agency.AssimilatedFactions)
+			{
+				if (faction.Name != "Ceratan" && faction.Name != "EyelessOnes")
+				{
+					heuristicValue.Boost(-0.2f, "Bad Unit Malus", new object[0]);
+					break;
+				}
+			}
+		}
 		return heuristicValue;
 	}
 
@@ -340,4 +364,6 @@ public class Recruiter
 	private float maxNewUnits;
 
 	private float averageMilitaryPower;
+
+	private AILayer_Victory VictoryLayer;
 }

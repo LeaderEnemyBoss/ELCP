@@ -444,17 +444,7 @@
       <KeyValuePair Key="FactionRandomizationMode">Weighted</KeyValuePair>
     </ItemDefinition>
   </GameOptionDefinition>
-
-  <!--GameOptionDefinition Name="SharedVictory"	Default="False"	Category="Game"	SubCategory="Diagnostics"	GuiControlType="Toggle">
-    <Tags>Advanced</Tags>
-    <ItemDefinition Name="False">
-      <KeyValuePair Key="SharedVictory">false</KeyValuePair>
-    </ItemDefinition>
-    <ItemDefinition Name="True">
-      <KeyValuePair Key="SharedVictory">true</KeyValuePair>
-    </ItemDefinition>
-  </GameOptionDefinition-->
-
+  
   <GameOptionDefinition Name="PlayWithKaiju"               Default="True" Category="Game" SubCategory="Diagnostics"       GuiControlType="Toggle">
     <Tags>Advanced</Tags>
     <OptionDefinitionConstraint OptionName="MimicsPack" Type="DownloadableContentConditional" />
@@ -465,5 +455,92 @@
       <KeyValuePair Key="PlayWithKaiju">true</KeyValuePair>
     </ItemDefinition>
   </GameOptionDefinition>
+  
+  <!-- ELCP -->  
+  <GameOptionDefinition Name="ShackleAI"  Default="False" Category="Game" SubCategory="ELCP" GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="ShackleAI">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="ShackleAI">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+  
+  <GameOptionDefinition Name="TechTradeCost"               Default="Moderate" Category="Game" SubCategory="ELCP"   GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Vanilla">
+      <KeyValuePair Key="TechTradeCost">Vanilla</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Light">
+      <KeyValuePair Key="TechTradeCost">Light</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Moderate">
+      <KeyValuePair Key="TechTradeCost">Moderate</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="Harsh">
+      <KeyValuePair Key="TechTradeCost">Harsh</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+  
+  <GameOptionDefinition Name="PeacePointRulseset"         Default="true" Category="Game" SubCategory="ELCP"   GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="false">
+      <KeyValuePair Key="PeacePointRulseset">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="true">
+      <KeyValuePair Key="PeacePointRulseset">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+  
+  <GameOptionDefinition Name="FortificationRules"               Default="ELCP" Category="Game" SubCategory="ELCP"   GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Vanilla">
+      <KeyValuePair Key="FortificationRules">Vanilla</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="ELCP">
+      <KeyValuePair Key="FortificationRules">ELCP</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+  
+  <GameOptionDefinition Name="StockpileRules"               Default="ELCP" Category="Game" SubCategory="ELCP"   GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Vanilla">
+      <KeyValuePair Key="StockpileRules">Vanilla</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="ELCP">
+      <KeyValuePair Key="StockpileRules">ELCP</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+  
+  <GameOptionDefinition Name="BlackspotRules"               Default="true" Category="Game" SubCategory="ELCP"   GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="false">
+      <KeyValuePair Key="BlackspotRules">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="true">
+      <KeyValuePair Key="BlackspotRules">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+  
+  <GameOptionDefinition Name="ArmySpeedScaleFactor"         Default="Vanilla" Category="Game" SubCategory="ELCP"   GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="Vanilla">
+      <KeyValuePair Key="ArmySpeedScaleFactor">Vanilla</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="2">
+      <KeyValuePair Key="ArmySpeedScaleFactor">2</KeyValuePair>
+    </ItemDefinition>
+	<ItemDefinition Name="3">
+      <KeyValuePair Key="ArmySpeedScaleFactor">3</KeyValuePair>
+    </ItemDefinition>
+	<ItemDefinition Name="4">
+      <KeyValuePair Key="ArmySpeedScaleFactor">4</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
+  
+  
+
+
 
 </Datatable>

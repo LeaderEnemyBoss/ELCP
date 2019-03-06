@@ -48,7 +48,15 @@ public class ForcePeaceTermAgent : DiplomaticTermAgent
 			return 0f;
 		}
 		float num = base.GetValueFromAttitude();
+		if (this.DiplomacyLayer.MilitaryPowerDif < 0f && (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.ColdWar || base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace) && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index])
+		{
+			num = Mathf.Max(51f, num + 51f);
+		}
 		num *= this.multiplier;
+		if (this.VictoryLayer.CurrentFocus == ELCPUtilities.AIVictoryFocus.Diplomacy && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index] && (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.ColdWar || base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace))
+		{
+			num = Mathf.Max(51f, num + 51f);
+		}
 		return num / 100f;
 	}
 

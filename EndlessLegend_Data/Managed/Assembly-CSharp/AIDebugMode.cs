@@ -22,7 +22,6 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 	{
 		this.altarDecisionMakerDebugger = new ElementEvaluationGUILayoutDebugger<ConstructibleElement, InterpreterContext>("Orb unlock evaluations", true);
 		this.seasonEffectDecisionMakerDebugger = new ElementEvaluationGUILayoutDebugger<SeasonEffect, InterpreterContext>("Season effect evaluations", true);
-		base..ctor();
 	}
 
 	private void DiplayAltarDebugger()
@@ -208,15 +207,28 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 
 	private void DiplayArmyDebugger()
 	{
-		if (this.aiLayerArmyManagement == null || this.selectedArmy == null || this.selectedArmy.SimulationObject == null)
+		if (this.selectedArmy == null || this.selectedArmy.SimulationObject == null)
+		{
+			return;
+		}
+		if ((this.selectedArmy.Empire is LesserEmpire && this.aiLayerQuestManager == null) || (!(this.selectedArmy.Empire is LesserEmpire) && this.aiLayerArmyManagement == null))
 		{
 			return;
 		}
 		UnityEngine.GUILayout.Label(string.Format("Military power: {0}", this.selectedArmy.GetPropertyValue(SimulationProperties.MilitaryPower).ToString("0.0")), new GUILayoutOption[0]);
 		UnityEngine.GUILayout.Label(string.Format("<b>Army {0} commanders</b>", this.selectedArmy.GUID), new GUILayoutOption[0]);
-		this.DisplayCommanders(this.aiLayerArmyManagement.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
-		this.DisplayCommanders(this.aiLayerArmyRecruitment.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
-		this.DisplayCommanders(this.aiLayerManta.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
+		if (this.selectedArmy.Empire is LesserEmpire)
+		{
+			this.DisplayCommanders(this.aiLayerQuestManager.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
+		}
+		else
+		{
+			this.DisplayCommanders(this.aiLayerArmyManagement.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
+			this.DisplayCommanders(this.aiLayerArmyRecruitment.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
+			this.DisplayCommanders(this.aiLayerManta.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
+			this.DisplayCommanders(this.aiLayerColossus.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
+			this.DisplayCommanders(this.aiLayerKaiju.AICommanders, (AICommander commander) => commander.Missions.Any((AICommanderMission mission) => mission.AIDataArmyGUID == this.selectedArmy.GUID));
+		}
 		UnityEngine.GUILayout.Space(10f);
 	}
 
@@ -224,8 +236,29 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 	{
 		this.selectedArmy = army;
 		Diagnostics.Assert(this.playerControllerRepository != null && this.playerControllerRepository.ActivePlayerController != null);
-		Amplitude.Unity.Game.Empire empire = this.playerControllerRepository.ActivePlayerController.Empire;
+		global::Empire empire = army.Empire;
 		Diagnostics.Assert(this.aiScheduler != null);
+		if (empire is LesserEmpire)
+		{
+			AIPlayer_LesserEmpire aiplayer_LesserEmpire = this.aiScheduler.AIPlayer_LesserEmpire;
+			if (aiplayer_LesserEmpire == null)
+			{
+				Diagnostics.LogError("Failed to retrieve ai player of empire {0}.", new object[]
+				{
+					empire.Index
+				});
+			}
+			AIEntity_LesserEmpire entity = aiplayer_LesserEmpire.GetEntity<AIEntity_LesserEmpire>();
+			if (entity == null)
+			{
+				Diagnostics.LogError("Failed to retrieve ai entity empire.");
+				this.ReleaseArmyDebugger();
+			}
+			this.aiDataRepository = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
+			this.aiLayerQuestManager = entity.GetLayer<AILayer_QuestManager>();
+			this.currentDebugMode = AIDebugMode.DebugMode.Army;
+			return;
+		}
 		AIPlayer_MajorEmpire aiplayer_MajorEmpire;
 		if (!this.aiScheduler.TryGetMajorEmpireAIPlayer(empire as MajorEmpire, out aiplayer_MajorEmpire))
 		{
@@ -234,19 +267,21 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 				empire.Index
 			});
 		}
-		AIEntity_Empire entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
-		if (entity == null)
+		AIEntity_Empire entity2 = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
+		if (entity2 == null)
 		{
 			Diagnostics.LogError("Failed to retrieve ai entity empire.");
 			this.ReleaseArmyDebugger();
 		}
 		this.aiDataRepository = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
-		this.aiLayerArmyManagement = entity.GetLayer<AILayer_ArmyManagement>();
+		this.aiLayerArmyManagement = entity2.GetLayer<AILayer_ArmyManagement>();
 		Diagnostics.Assert(this.aiLayerArmyManagement != null);
-		this.aiLayerArmyRecruitment = entity.GetLayer<AILayer_ArmyRecruitment>();
+		this.aiLayerArmyRecruitment = entity2.GetLayer<AILayer_ArmyRecruitment>();
 		Diagnostics.Assert(this.aiLayerArmyRecruitment != null);
-		this.aiLayerManta = entity.GetLayer<AILayer_Manta>();
+		this.aiLayerManta = entity2.GetLayer<AILayer_Manta>();
 		Diagnostics.Assert(this.aiLayerManta != null);
+		this.aiLayerColossus = entity2.GetLayer<AILayer_Colossus>();
+		this.aiLayerKaiju = entity2.GetLayer<AILayer_KaijuManagement>();
 		this.currentDebugMode = AIDebugMode.DebugMode.Army;
 	}
 
@@ -255,6 +290,10 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		this.selectedArmy = null;
 		this.aiLayerArmyManagement = null;
 		this.aiLayerArmyRecruitment = null;
+		this.aiLayerManta = null;
+		this.aiLayerColossus = null;
+		this.aiLayerQuestManager = null;
+		this.aiLayerKaiju = null;
 		this.currentDebugMode = AIDebugMode.DebugMode.None;
 	}
 
@@ -345,6 +384,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		GameEntityGUID cityGUID = this.aiEntityCity.City.GUID;
 		this.boosterProductionMessages.AddRange(this.cityBlackboard.GetMessages<EvaluableMessage_CityBooster>(BlackboardLayerID.Empire, (EvaluableMessage_CityBooster match) => match.ChosenProductionEvaluation != null && match.ChosenProductionEvaluation.CityGuid == cityGUID));
 		this.boosterProductionMessages.Sort(this.boosterProductionMessageComparison);
+		Predicate<ProductionEvaluation> <>9__1;
 		foreach (EvaluableMessage_CityBooster evaluableMessage_CityBooster in this.boosterProductionMessages)
 		{
 			string text = string.Format("{1} for city {2} <i>[{3}]</i>", new object[]
@@ -354,8 +394,13 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 				evaluableMessage_CityBooster.CityGuid,
 				evaluableMessage_CityBooster.State.ToString().Replace("Message_", string.Empty)
 			});
-			List<ProductionEvaluation> list = evaluableMessage_CityBooster.ProductionEvaluations.FindAll((ProductionEvaluation match) => match.CityGuid == cityGUID);
-			foreach (ProductionEvaluation productionEvaluation in list)
+			List<ProductionEvaluation> productionEvaluations = evaluableMessage_CityBooster.ProductionEvaluations;
+			Predicate<ProductionEvaluation> match2;
+			if ((match2 = <>9__1) == null)
+			{
+				match2 = (<>9__1 = ((ProductionEvaluation match) => match.CityGuid == cityGUID));
+			}
+			foreach (ProductionEvaluation productionEvaluation in productionEvaluations.FindAll(match2))
 			{
 				text += string.Format("\n        <size=11><b>{0}</b> by {1} (base interest was {2})</size>", productionEvaluation.ProductionFinalScore.ToString("F"), productionEvaluation.LayerTag, evaluableMessage_CityBooster.Interest.Value.ToString("F"));
 			}
@@ -371,6 +416,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		GameEntityGUID cityGUID = this.aiEntityCity.City.GUID;
 		this.buildingProductionMessages.AddRange(this.cityBlackboard.GetMessages<EvaluableMessage_BuildingProduction>(BlackboardLayerID.City, (EvaluableMessage_BuildingProduction match) => match.CityGuid == cityGUID));
 		this.buildingProductionMessages.Sort(this.buildingProductionMessageComparison);
+		Predicate<ProductionEvaluation> <>9__1;
 		foreach (EvaluableMessage_BuildingProduction evaluableMessage_BuildingProduction in this.buildingProductionMessages)
 		{
 			string text = string.Format("{1}", evaluableMessage_BuildingProduction.Interest.Value.ToString("F"), evaluableMessage_BuildingProduction.ConstructibleElementName);
@@ -379,8 +425,13 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 				text += string.Format(" <size=11>at position {0}</size>", evaluableMessage_BuildingProduction.BuildingPosition);
 			}
 			text += string.Format(" <i>[{0}]</i>", evaluableMessage_BuildingProduction.State.ToString().Replace("Message_", string.Empty));
-			List<ProductionEvaluation> list = evaluableMessage_BuildingProduction.ProductionEvaluations.FindAll((ProductionEvaluation match) => match.CityGuid == cityGUID);
-			foreach (ProductionEvaluation productionEvaluation in list)
+			List<ProductionEvaluation> productionEvaluations = evaluableMessage_BuildingProduction.ProductionEvaluations;
+			Predicate<ProductionEvaluation> match2;
+			if ((match2 = <>9__1) == null)
+			{
+				match2 = (<>9__1 = ((ProductionEvaluation match) => match.CityGuid == cityGUID));
+			}
+			foreach (ProductionEvaluation productionEvaluation in productionEvaluations.FindAll(match2))
 			{
 				text += string.Format("\n        <size=11><b>{0}</b> by {1} (base interest was {2})</size>", productionEvaluation.ProductionFinalScore.ToString("F"), productionEvaluation.LayerTag, evaluableMessage_BuildingProduction.Interest.Value.ToString("F"));
 			}
@@ -396,12 +447,18 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		GameEntityGUID cityGUID = this.aiEntityCity.City.GUID;
 		this.wonderProductionMessages.AddRange(this.cityBlackboard.GetMessages<EvaluableMessage_Wonder>(BlackboardLayerID.Empire, (EvaluableMessage_Wonder match) => match.ChosenProductionEvaluation == null || match.ChosenProductionEvaluation.CityGuid == cityGUID));
 		this.wonderProductionMessages.Sort(this.wonderProductionMessageComparison);
+		Predicate<ProductionEvaluation> <>9__1;
 		foreach (EvaluableMessage_Wonder evaluableMessage_Wonder in this.wonderProductionMessages)
 		{
 			string text = string.Format("{1}", evaluableMessage_Wonder.Interest.Value.ToString("F"), evaluableMessage_Wonder.ConstructibleElementName);
 			text += string.Format(" <i>[{0}]</i>", evaluableMessage_Wonder.State.ToString().Replace("Message_", string.Empty));
-			List<ProductionEvaluation> list = evaluableMessage_Wonder.ProductionEvaluations.FindAll((ProductionEvaluation match) => match.CityGuid == cityGUID);
-			foreach (ProductionEvaluation productionEvaluation in list)
+			List<ProductionEvaluation> productionEvaluations = evaluableMessage_Wonder.ProductionEvaluations;
+			Predicate<ProductionEvaluation> match2;
+			if ((match2 = <>9__1) == null)
+			{
+				match2 = (<>9__1 = ((ProductionEvaluation match) => match.CityGuid == cityGUID));
+			}
+			foreach (ProductionEvaluation productionEvaluation in productionEvaluations.FindAll(match2))
 			{
 				text += string.Format("\n        <size=11><b>{0}</b> by {1} (base interest was {2})</size>", productionEvaluation.ProductionFinalScore.ToString("F"), productionEvaluation.LayerTag, evaluableMessage_Wonder.Interest.Value.ToString("F"));
 			}
@@ -617,11 +674,17 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		GameEntityGUID cityGUID = this.aiEntityCity.City.GUID;
 		this.unitProductionMessages.AddRange(this.cityBlackboard.GetMessages<EvaluableMessageWithUnitDesign>(BlackboardLayerID.Empire, (EvaluableMessageWithUnitDesign match) => match.ChosenProductionEvaluation != null && match.ChosenProductionEvaluation.CityGuid == cityGUID));
 		this.unitProductionMessages.Sort(this.unitProductionMessageComparison);
+		Predicate<ProductionEvaluation> <>9__1;
 		foreach (EvaluableMessageWithUnitDesign evaluableMessageWithUnitDesign in this.unitProductionMessages)
 		{
 			string text = string.Format("{1} <i>[{2}]</i>", evaluableMessageWithUnitDesign.Interest.Value.ToString("F"), evaluableMessageWithUnitDesign.UnitDesign, evaluableMessageWithUnitDesign.State.ToString().Replace("Message_", string.Empty));
-			List<ProductionEvaluation> list = evaluableMessageWithUnitDesign.ProductionEvaluations.FindAll((ProductionEvaluation match) => match.CityGuid == cityGUID);
-			foreach (ProductionEvaluation productionEvaluation in list)
+			List<ProductionEvaluation> productionEvaluations = evaluableMessageWithUnitDesign.ProductionEvaluations;
+			Predicate<ProductionEvaluation> match2;
+			if ((match2 = <>9__1) == null)
+			{
+				match2 = (<>9__1 = ((ProductionEvaluation match) => match.CityGuid == cityGUID));
+			}
+			foreach (ProductionEvaluation productionEvaluation in productionEvaluations.FindAll(match2))
 			{
 				text += string.Format("\n        <size=11><b>{0}</b> by {1} (base interest was {2})</size>", productionEvaluation.ProductionFinalScore.ToString("F"), productionEvaluation.LayerTag, evaluableMessageWithUnitDesign.Interest.Value.ToString("F"));
 			}
@@ -827,21 +890,21 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 						text2 = "red";
 						break;
 					case AICommanderMission.AICommanderMissionCompletion.Interrupted:
-						goto IL_1BD;
+						goto IL_2F9;
 					case AICommanderMission.AICommanderMissionCompletion.Cancelled:
 						text2 = "grey";
 						break;
 					default:
-						goto IL_1BD;
+						goto IL_2F9;
 					}
-					IL_1D5:
+					IL_19E:
 					string text3 = string.Empty;
 					if (aidata_Army != null)
 					{
 						text3 = string.Format(" Army={0}({1})", aidata_Army.Army.LocalizedName, aidata_Army.Army.GUID);
 					}
 					string text4 = (aidata_Army == null || aidata_Army.ArmyMission == null) ? string.Empty : (" Error=" + aidata_Army.ArmyMission.ErrorCode.ToString());
-					string text5 = (aidata_Army == null || aidata_Army.ArmyMission == null) ? string.Empty : (" Debug=" + aidata_Army.ArmyMission.LastDebugString);
+					string text5 = (aidata_Army == null || aidata_Army.ArmyMission == null) ? string.Empty : (" Debug=" + aidata_Army.ArmyMission.LastDebugString + " Node=" + aidata_Army.ArmyMission.LastNodeName);
 					text += string.Format("\n        <color={7}><size=11><b>{0}</b> ({1}) Priority={2} - {3} - {6} {4}{5}{8} - {9}</size></color>", new object[]
 					{
 						aicommanderMission.GetType().ToString().Replace("AICommanderMission_", string.Empty),
@@ -857,12 +920,13 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 					});
 					j++;
 					continue;
-					IL_1BD:
+					IL_2F9:
 					if (aicommanderMission.State == TickableState.NeedTick)
 					{
 						text2 = "yellow";
+						goto IL_19E;
 					}
-					goto IL_1D5;
+					goto IL_19E;
 				}
 				UnityEngine.GUILayout.Label(text, new GUILayoutOption[0]);
 			}
@@ -894,7 +958,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		{
 			ParameterModifierGroupDefinition parameterModifierGroupDefinition = currentStrategicPlan.ParameterModifierGroups[i];
 			Diagnostics.Assert(parameterModifierGroupDefinition != null);
-			if (filterGroups == null || filterGroups.Length <= 0 || Array.Exists<string>(filterGroups, (string match) => match == parameterModifierGroupDefinition.Name))
+			if (filterGroups == null || filterGroups.Length == 0 || Array.Exists<string>(filterGroups, (string match) => match == parameterModifierGroupDefinition.Name))
 			{
 				this.empireStateModifierGroups[i] = UnityEngine.GUILayout.Toggle(this.empireStateModifierGroups[i], parameterModifierGroupDefinition.Name, new GUILayoutOption[0]);
 				if (this.empireStateModifierGroups[i])
@@ -1141,6 +1205,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			{
 				Diagnostics.Assert(this.empirePlanDecisionMakerDebugger != null);
 				this.empirePlanDecisionMakerDebugger.OnGUI(this.aiLayerEmpirePlan.DecisionMakerEvaluationDataHistoric, true);
+				return;
 			}
 		}
 		else
@@ -1264,8 +1329,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		UnityEngine.GUILayout.Space(10f);
 		float num = 0f;
 		float num2 = 0f;
-		DepartmentOfTheInterior agency = empire.GetAgency<DepartmentOfTheInterior>();
-		foreach (City city in agency.Cities)
+		foreach (City city in empire.GetAgency<DepartmentOfTheInterior>().Cities)
 		{
 			num += city.GetPropertyValue(SimulationProperties.DustPopulation);
 			num2 += city.GetPropertyValue(SimulationProperties.CityPointPopulation);
@@ -1361,8 +1425,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			return;
 		}
 		DepartmentOfPlanificationAndDevelopment agency = empire.GetAgency<DepartmentOfPlanificationAndDevelopment>();
-		IPersonalityAIHelper service = AIScheduler.Services.GetService<IPersonalityAIHelper>();
-		float registryValue = service.GetRegistryValue<float>(empire as global::Empire, "AI/MajorEmpire/AIEntity_Empire/AILayer_EmpirePlan/MaximumPopulationPercentToReachObjective", 0f);
+		float registryValue = AIScheduler.Services.GetService<IPersonalityAIHelper>().GetRegistryValue<float>(empire as global::Empire, "AI/MajorEmpire/AIEntity_Empire/AILayer_EmpirePlan/MaximumPopulationPercentToReachObjective", 0f);
 		UnityEngine.GUILayout.Label(string.Format("<b>Wanted empire plan</b> <size=11>(Maximum population percent to reach objective: {0}%)</size>", registryValue * 100f), new GUILayoutOption[0]);
 		Diagnostics.Assert(this.empirePlanMessages != null);
 		this.empirePlanMessages.Clear();
@@ -1399,114 +1462,110 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			message.Interest.Value.ToString("0.000"),
 			message.Summary(this.empire, this.empireBlackboard)
 		});
-		if (isMessageSelected)
-		{
-			if (message.ProductionEvaluations != null && message.ProductionEvaluations.Count > 0)
-			{
-				for (int i = 0; i < message.ProductionEvaluations.Count; i++)
-				{
-					ProductionEvaluation productionEvaluation = message.ProductionEvaluations[i];
-					string text4 = (productionEvaluation != message.ChosenProductionEvaluation) ? "silver" : "yellow";
-					tableContentManager.AddRow(new string[]
-					{
-						string.Empty,
-						string.Format("<color={0}>Production eval</color>", text4),
-						string.Format("<color={1}>{0}</color>", productionEvaluation.State, text4),
-						string.Format("<color={1}>{0}</color>", productionEvaluation.LayerTag, text4),
-						string.Format("<color={1}>{0}</color>", productionEvaluation.ProductionFinalScore, text4),
-						string.Format("<color={4}>Cost: {0} ({1} turns) City: {2} Eco stress: {3}</color>", new object[]
-						{
-							productionEvaluation.ProductionCost,
-							productionEvaluation.ProductionDurationInTurn,
-							productionEvaluation.CityGuid,
-							productionEvaluation.CityEconomicalStress,
-							text4
-						})
-					});
-				}
-			}
-			else
-			{
-				tableContentManager.AddRow(new string[]
-				{
-					string.Empty,
-					"<color=silver>No prod. eval</color>"
-				});
-			}
-			if (message.BuyEvaluations != null && message.BuyEvaluations.Count > 0)
-			{
-				for (int j = 0; j < message.BuyEvaluations.Count; j++)
-				{
-					BuyEvaluation buyEvaluation = message.BuyEvaluations[j];
-					string text5 = (buyEvaluation != message.ChosenBuyEvaluation) ? "silver" : "yellow";
-					tableContentManager.AddRow(new string[]
-					{
-						string.Empty,
-						string.Format("<color={0}>Buyout eval</color>", text5),
-						string.Format("<color={1}>{0}</color>", buyEvaluation.State, text5),
-						string.Format("<color={1}>{0}</color>", buyEvaluation.LayerTag, text5),
-						string.Format("<color={1}>{0}</color>", buyEvaluation.BuyoutFinalScore, text5),
-						string.Format("<color={3}>Cost: {0} Turn gain: {1} City: {2}</color>", new object[]
-						{
-							buyEvaluation.DustCost,
-							buyEvaluation.TurnGain,
-							buyEvaluation.CityGuid,
-							text5
-						})
-					});
-				}
-			}
-			else
-			{
-				tableContentManager.AddRow(new string[]
-				{
-					string.Empty,
-					"<color=silver>No buyout eval</color>"
-				});
-			}
-		}
-		else
+		if (!isMessageSelected)
 		{
 			if (message.ChosenProductionEvaluation != null)
 			{
-				string text6 = "yellow";
+				string text4 = "yellow";
 				tableContentManager.AddRow(new string[]
 				{
 					string.Empty,
-					string.Format("<color={0}>Production eval</color>", text6),
-					string.Format("<color={1}>{0}</color>", message.ChosenProductionEvaluation.State, text6),
-					string.Format("<color={1}>{0}</color>", message.ChosenProductionEvaluation.LayerTag, text6),
-					string.Format("<color={1}>{0}</color>", message.ChosenProductionEvaluation.ProductionFinalScore, text6),
+					string.Format("<color={0}>Production eval</color>", text4),
+					string.Format("<color={1}>{0}</color>", message.ChosenProductionEvaluation.State, text4),
+					string.Format("<color={1}>{0}</color>", message.ChosenProductionEvaluation.LayerTag, text4),
+					string.Format("<color={1}>{0}</color>", message.ChosenProductionEvaluation.ProductionFinalScore, text4),
 					string.Format("<color={4}>Cost: {0} ({1} turns) City: {2} Eco stress: {3}</color>", new object[]
 					{
 						message.ChosenProductionEvaluation.ProductionCost,
 						message.ChosenProductionEvaluation.ProductionDurationInTurn,
 						message.ChosenProductionEvaluation.CityGuid,
 						message.ChosenProductionEvaluation.CityEconomicalStress,
-						text6
+						text4
 					})
 				});
 			}
 			if (message.ChosenBuyEvaluation != null)
 			{
-				string text7 = "yellow";
+				string text5 = "yellow";
 				tableContentManager.AddRow(new string[]
 				{
 					string.Empty,
-					string.Format("<color={0}>Buyout eval</color>", text7),
-					string.Format("<color={1}>{0}</color>", message.ChosenBuyEvaluation.State, text7),
-					string.Format("<color={1}>{0}</color>", message.ChosenBuyEvaluation.LayerTag, text7),
-					string.Format("<color={1}>{0}</color>", message.ChosenBuyEvaluation.BuyoutFinalScore, text7),
+					string.Format("<color={0}>Buyout eval</color>", text5),
+					string.Format("<color={1}>{0}</color>", message.ChosenBuyEvaluation.State, text5),
+					string.Format("<color={1}>{0}</color>", message.ChosenBuyEvaluation.LayerTag, text5),
+					string.Format("<color={1}>{0}</color>", message.ChosenBuyEvaluation.BuyoutFinalScore, text5),
 					string.Format("<color={3}>Cost: {0} Turn gain: {1} City: {2}</color>", new object[]
 					{
 						message.ChosenBuyEvaluation.DustCost,
 						message.ChosenBuyEvaluation.TurnGain,
 						message.ChosenBuyEvaluation.CityGuid,
-						text7
+						text5
+					})
+				});
+			}
+			return;
+		}
+		if (message.ProductionEvaluations != null && message.ProductionEvaluations.Count > 0)
+		{
+			for (int i = 0; i < message.ProductionEvaluations.Count; i++)
+			{
+				ProductionEvaluation productionEvaluation = message.ProductionEvaluations[i];
+				string text6 = (productionEvaluation != message.ChosenProductionEvaluation) ? "silver" : "yellow";
+				tableContentManager.AddRow(new string[]
+				{
+					string.Empty,
+					string.Format("<color={0}>Production eval</color>", text6),
+					string.Format("<color={1}>{0}</color>", productionEvaluation.State, text6),
+					string.Format("<color={1}>{0}</color>", productionEvaluation.LayerTag, text6),
+					string.Format("<color={1}>{0}</color>", productionEvaluation.ProductionFinalScore, text6),
+					string.Format("<color={4}>Cost: {0} ({1} turns) City: {2} Eco stress: {3}</color>", new object[]
+					{
+						productionEvaluation.ProductionCost,
+						productionEvaluation.ProductionDurationInTurn,
+						productionEvaluation.CityGuid,
+						productionEvaluation.CityEconomicalStress,
+						text6
 					})
 				});
 			}
 		}
+		else
+		{
+			tableContentManager.AddRow(new string[]
+			{
+				string.Empty,
+				"<color=silver>No prod. eval</color>"
+			});
+		}
+		if (message.BuyEvaluations != null && message.BuyEvaluations.Count > 0)
+		{
+			for (int j = 0; j < message.BuyEvaluations.Count; j++)
+			{
+				BuyEvaluation buyEvaluation = message.BuyEvaluations[j];
+				string text7 = (buyEvaluation != message.ChosenBuyEvaluation) ? "silver" : "yellow";
+				tableContentManager.AddRow(new string[]
+				{
+					string.Empty,
+					string.Format("<color={0}>Buyout eval</color>", text7),
+					string.Format("<color={1}>{0}</color>", buyEvaluation.State, text7),
+					string.Format("<color={1}>{0}</color>", buyEvaluation.LayerTag, text7),
+					string.Format("<color={1}>{0}</color>", buyEvaluation.BuyoutFinalScore, text7),
+					string.Format("<color={3}>Cost: {0} Turn gain: {1} City: {2}</color>", new object[]
+					{
+						buyEvaluation.DustCost,
+						buyEvaluation.TurnGain,
+						buyEvaluation.CityGuid,
+						text7
+					})
+				});
+			}
+			return;
+		}
+		tableContentManager.AddRow(new string[]
+		{
+			string.Empty,
+			"<color=silver>No buyout eval</color>"
+		});
 	}
 
 	private void InitializeEmpireDebugger()
@@ -1773,9 +1832,30 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		{
 			UnityEngine.GUILayout.Width(200f)
 		});
-		float modifierValueUnnormalized = this.aiEntityContext.GetModifierValueUnnormalized(this.researchContextGroupName, AILayer_EmpireAntiSpy.AntiSpyParameterModifier);
-		this.WeightLabel(modifierValueUnnormalized, new GUILayoutOption[0]);
+		if (this.aILayerHeroAssignation.IsActive())
+		{
+			float modifierValueUnnormalized = this.aiEntityContext.GetModifierValueUnnormalized(this.researchContextGroupName, AILayer_EmpireAntiSpy.AntiSpyParameterModifier);
+			this.WeightLabel(modifierValueUnnormalized, new GUILayoutOption[0]);
+		}
 		UnityEngine.GUILayout.EndHorizontal();
+		GameEspionageScreen guiPanel = this.guiService.GetGuiPanel<GameEspionageScreen>();
+		if (guiPanel.SelectedSpy != null)
+		{
+			List<InfiltrationActionData> debugInfiltrationInfo = this.aILayerHeroAssignation.GetDebugInfiltrationInfo(guiPanel.SelectedSpy.GUID);
+			UnityEngine.GUILayout.Label(Amplitude.Unity.UI.GUILayout.Format("<b>Hero: {0}, Threshold: {1}</b>", new object[]
+			{
+				guiPanel.SelectedSpy.UnitDesign.LocalizedName,
+				(debugInfiltrationInfo.Count > 0) ? debugInfiltrationInfo[0].UtilityThreshold : -1f
+			}), new GUILayoutOption[0]);
+			foreach (InfiltrationActionData infiltrationActionData in debugInfiltrationInfo)
+			{
+				UnityEngine.GUILayout.Label(Amplitude.Unity.UI.GUILayout.Format("<i>{0}: {1}</i>", new object[]
+				{
+					infiltrationActionData.ChosenActionName,
+					infiltrationActionData.ChosenActionUtility
+				}), new GUILayoutOption[0]);
+			}
+		}
 	}
 
 	private void InitializeEspionageDebugger()
@@ -1795,10 +1875,11 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		if (entity == null)
 		{
 			Diagnostics.LogError("Failed to retrieve ai entity empire.");
-			this.ReleaseDiplomacyDebugger();
+			this.ReleaseEspionageDebugger();
 		}
 		this.aiEntityContext = entity.Context;
 		this.aiLayerEmpireAntiSpy = entity.GetLayer<AILayer_EmpireAntiSpy>();
+		this.aILayerHeroAssignation = entity.GetLayer<AILayer_HeroAssignation>();
 		Diagnostics.Assert(this.aiLayerEmpireAntiSpy != null);
 		this.currentDebugMode = AIDebugMode.DebugMode.Espionage;
 		AILayer_Research layer = entity.GetLayer<AILayer_Research>();
@@ -1810,6 +1891,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		this.currentDebugMode = AIDebugMode.DebugMode.None;
 		this.aiLayerEmpireAntiSpy = null;
 		this.aiEntityContext = null;
+		this.aILayerHeroAssignation = null;
 	}
 
 	private string GetRegionName(int regionIndex)
@@ -1828,7 +1910,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 
 	private void DiplayNavalArmyDebugger()
 	{
-		if (this.navyLayer == null || this.selectedNavalArmy == null || this.selectedNavalArmy == null)
+		if (this.navyLayer == null || this.selectedNavalArmy == null)
 		{
 			return;
 		}
@@ -1838,7 +1920,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 	private void InitializeNavalArmyDebugger(Army army)
 	{
 		Diagnostics.Assert(this.playerControllerRepository != null && this.playerControllerRepository.ActivePlayerController != null);
-		Amplitude.Unity.Game.Empire empire = this.playerControllerRepository.ActivePlayerController.Empire;
+		Amplitude.Unity.Game.Empire empire = army.Empire;
 		Diagnostics.Assert(this.aiScheduler != null);
 		AIPlayer_MajorEmpire aiplayer_MajorEmpire;
 		if (this.aiScheduler.TryGetMajorEmpireAIPlayer(empire as MajorEmpire, out aiplayer_MajorEmpire))
@@ -1910,6 +1992,11 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			UnityEngine.GUILayout.EndHorizontal();
 			StaticString mostWantedDiplomaticTermAgentName = this.aiLayerDiplomacy.GetMostWantedDiplomaticTermAgentName(this.negotiationEngagedWithEmpire);
 			UnityEngine.GUILayout.Label(string.Format("Most wanted diplomatic term agent: <b>{0}</b>", mostWantedDiplomaticTermAgentName), new GUILayoutOption[0]);
+			UnityEngine.GUILayout.Label(string.Format("PeaceWish: <b>{0}</b>", this.aiLayerDiplomacy.GetPeaceWish(this.negotiationEngagedWithEmpire.Index)), new GUILayoutOption[0]);
+			foreach (Agent agent in this.aiLayerDiplomacy.GetAgents(this.negotiationEngagedWithEmpire as MajorEmpire))
+			{
+				UnityEngine.GUILayout.Label(string.Format("<i>{0}</i>: {1}", agent.AgentDefinition.Name, agent.CriticityMax.Intensity), new GUILayoutOption[0]);
+			}
 		}
 		UnityEngine.GUILayout.Space(10f);
 		if (this.aiLayerAttitude != null)
@@ -2004,11 +2091,10 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 					}
 					this.aiLayerDiplomacyOtherEmpire = entity.GetLayer<AILayer_Diplomacy>();
 					Diagnostics.Assert(this.aiLayerDiplomacy != null);
+					return;
 				}
-				else
-				{
-					this.aiLayerDiplomacyOtherEmpire = null;
-				}
+				this.aiLayerDiplomacyOtherEmpire = null;
+				return;
 			}
 		}
 		else
@@ -2040,6 +2126,17 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 
 	private void DisplayResearchSummary()
 	{
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && this.aiLayerResearch != null)
+		{
+			if (this.aiLayerVictory != null)
+			{
+				UnityEngine.GUILayout.Label(string.Format("<b>Victory Focus: {0}</b>", this.aiLayerVictory.CurrentFocus), new GUILayoutOption[0]);
+			}
+			foreach (DecisionResult decisionResult in this.aiLayerResearch.GetTechnologyDecisions())
+			{
+				UnityEngine.GUILayout.Label(string.Format("<i>{0}</i>: {1}", (decisionResult.Element as DepartmentOfScience.ConstructibleElement).Name.ToString(), decisionResult.Score), new GUILayoutOption[0]);
+			}
+		}
 		if (this.resourceAmas != null)
 		{
 			UnityEngine.GUILayout.Label("<b>Summary</b>", new GUILayoutOption[0]);
@@ -2131,13 +2228,13 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		AIEntity_Empire entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
 		if (entity == null)
 		{
-			Diagnostics.LogError("Failed to retrieve ai entity empire.");
 			this.ReleaseResearchDebugger();
 		}
 		this.aiEntityContext = entity.Context;
 		this.researchBlackboard = entity.Blackboard;
 		Diagnostics.Assert(this.researchBlackboard != null);
 		this.aiLayerResearch = entity.GetLayer<AILayer_Research>();
+		this.aiLayerVictory = entity.GetLayer<AILayer_Victory>();
 		Diagnostics.Assert(this.aiLayerResearch != null);
 		this.aiLayerAmasEmpire = entity.GetLayer<AILayer_AmasEmpire>();
 		Diagnostics.Assert(this.aiLayerAmasEmpire != null);
@@ -2156,6 +2253,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		this.aiLayerResearch = null;
 		this.aiLayerAmasEmpire = null;
 		this.resourceAmas = null;
+		this.aiLayerVictory = null;
 		this.currentDebugMode = AIDebugMode.DebugMode.None;
 	}
 
@@ -2190,6 +2288,33 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			{
 				this.DisplayAfterBattleData(afterBattleData);
 			}
+			if (this.selectedUnitDesign is UnitProfile && (this.selectedUnitDesign as UnitProfile).IsHero && this.aILayerHeroAssignation != null && Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				DepartmentOfEducation agency = this.playerControllerRepository.ActivePlayerController.Empire.GetAgency<DepartmentOfEducation>();
+				Unit unit = null;
+				foreach (Unit unit2 in agency.Heroes)
+				{
+					if (unit2.UnitDesign == this.selectedUnitDesign)
+					{
+						unit = unit2;
+						break;
+					}
+				}
+				AIData_Unit aidata_Unit;
+				if (unit != null && this.aiDataRepository.TryGetAIData<AIData_Unit>(unit.GUID, out aidata_Unit))
+				{
+					string arg = string.Empty;
+					if (aidata_Unit.HeroData.WantedHeroAssignation != null && aidata_Unit.HeroData.WantedHeroAssignation.Garrison != null)
+					{
+						arg = aidata_Unit.HeroData.WantedHeroAssignation.Garrison.LocalizedName;
+					}
+					UnityEngine.GUILayout.Label(string.Format("<b>Speciality: {0}, Wants to be in: {1}</b>", AILayer_HeroAssignation.HeroAssignationTypeNames[aidata_Unit.HeroData.ChosenSpecialty], arg), new GUILayoutOption[0]);
+					foreach (string arg2 in this.aILayerHeroAssignation.GetHeroSkillDecisions(aidata_Unit))
+					{
+						UnityEngine.GUILayout.Label(string.Format("<i>{0}</i>", arg2), new GUILayoutOption[0]);
+					}
+				}
+			}
 		}
 	}
 
@@ -2201,14 +2326,13 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		{
 			for (int i = 0; i < afterBattleData.Modifiers.Length; i++)
 			{
-				string text = this.FormatLabelContent("    {0}: <b>{1}</b> (Base={2}, Boost={3})", new object[]
+				UnityEngine.GUILayout.Label(this.FormatLabelContent("    {0}: <b>{1}</b> (Base={2}, Boost={3})", new object[]
 				{
 					afterBattleData.Modifiers[i].Name,
 					afterBattleData.Modifiers[i].Value,
 					afterBattleData.Modifiers[i].BaseValue,
 					afterBattleData.Modifiers[i].Boost
-				});
-				UnityEngine.GUILayout.Label(text, new GUILayoutOption[0]);
+				}), new GUILayoutOption[0]);
 			}
 		}
 		this.showEncounterData = UnityEngine.GUILayout.Toggle(this.showEncounterData, "Display EncounterData", new GUILayoutOption[0]);
@@ -2221,23 +2345,22 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			}
 			for (int j = 0; j < afterBattleData.EncounterData.Length; j++)
 			{
-				string text2 = this.FormatLabelContent("    {0}: Turn {1}, Modifier count={2}", new object[]
+				string text = this.FormatLabelContent("    {0}: Turn {1}, Modifier count={2}", new object[]
 				{
 					j,
 					afterBattleData.EncounterDataLastTurn[j],
 					afterBattleData.EncounterData[j].Count
 				});
-				this.encounterDataFoldout[j] = UnityEngine.GUILayout.Toggle(this.encounterDataFoldout[j], text2, new GUILayoutOption[0]);
+				this.encounterDataFoldout[j] = UnityEngine.GUILayout.Toggle(this.encounterDataFoldout[j], text, new GUILayoutOption[0]);
 				if (this.encounterDataFoldout[j])
 				{
 					for (int k = 0; k < afterBattleData.EncounterData[j].Count; k++)
 					{
-						string text3 = this.FormatLabelContent("        {0}: <b>{1}</b>", new object[]
+						UnityEngine.GUILayout.Label(this.FormatLabelContent("        {0}: <b>{1}</b>", new object[]
 						{
 							afterBattleData.EncounterData[j][k].Name,
 							afterBattleData.EncounterData[j][k].Value
-						});
-						UnityEngine.GUILayout.Label(text3, new GUILayoutOption[0]);
+						}), new GUILayoutOption[0]);
 					}
 				}
 			}
@@ -2426,6 +2549,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			return;
 		}
 		this.aiLayerUnitDesigner = entity.GetLayer<AILayer_UnitDesigner>();
+		this.aILayerHeroAssignation = entity.GetLayer<AILayer_HeroAssignation>();
 		this.currentDebugMode = AIDebugMode.DebugMode.UnitDesign;
 		this.unitDesignDataRepository = AIScheduler.Services.GetService<IAIUnitDesignDataRepository>();
 	}
@@ -2438,6 +2562,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 		this.aiLayerStrategy = null;
 		this.resourceAmas = null;
 		this.selectedUnitDesign = null;
+		this.aILayerHeroAssignation = null;
 		this.currentDebugMode = AIDebugMode.DebugMode.None;
 	}
 
@@ -2501,14 +2626,14 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 	protected override IEnumerator Start()
 	{
 		yield return base.StartCoroutine(base.Start());
-		GameObject aiDebugInputGrabObject = GameObject.Find("06-AIDebugInputGrab");
-		if (aiDebugInputGrabObject == null)
+		GameObject gameObject = GameObject.Find("06-AIDebugInputGrab");
+		if (gameObject == null)
 		{
 			Diagnostics.LogWarning("Can't retrieve AIDebugInputGrab object.");
 		}
 		else
 		{
-			this.inputGrabAgeTransform = aiDebugInputGrabObject.GetComponent<AgeTransform>();
+			this.inputGrabAgeTransform = gameObject.GetComponent<AgeTransform>();
 			Diagnostics.Assert(this.inputGrabAgeTransform != null);
 			this.inputGrabAgeTransform.Position = ((!this.IsExpanded) ? this.uiReducedScreenRect : this.uiExpandedScreenRect);
 			this.inputGrabAgeTransform.Visible = true;
@@ -2580,10 +2705,11 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			this.BackToDefaultMode();
 		}
 		ArmyWorldCursor armyWorldCursor = eventArgs.CurrentCursor as ArmyWorldCursor;
+		FortressWorldCursor fortressWorldCursor = eventArgs.CurrentCursor as FortressWorldCursor;
 		if (armyWorldCursor != null)
 		{
 			this.ReleaseCurrentMode();
-			if (armyWorldCursor.Army.HasOnlySeafaringUnits(false))
+			if (armyWorldCursor.Army.HasSeafaringUnits())
 			{
 				this.InitializeNavalArmyDebugger(armyWorldCursor.Army);
 			}
@@ -2591,6 +2717,11 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			{
 				this.InitializeArmyDebugger(armyWorldCursor.Army);
 			}
+		}
+		else if (fortressWorldCursor != null)
+		{
+			this.ReleaseCurrentMode();
+			this.InitializeNavalFortressDebugger(fortressWorldCursor.Fortress);
 		}
 		else if (this.currentDebugMode == AIDebugMode.DebugMode.Army || this.currentDebugMode == AIDebugMode.DebugMode.NavalArmy)
 		{
@@ -2603,6 +2734,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			{
 				this.ReleaseCurrentMode();
 				this.InitializeEncounterDebugger(encounterWorldCursor.Encounter);
+				return;
 			}
 		}
 		else if (this.currentDebugMode == AIDebugMode.DebugMode.Encounter)
@@ -2618,16 +2750,17 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 
 	private void GameService_GameChange(object sender, GameChangeEventArgs eventArgs)
 	{
-		switch (eventArgs.Action)
+		GameChangeAction action = eventArgs.Action;
+		if (action == GameChangeAction.Created)
 		{
-		case GameChangeAction.Created:
 			this.OnCreateGame(eventArgs.Game as global::Game);
-			break;
-		case GameChangeAction.Releasing:
-		case GameChangeAction.Released:
-			this.OnReleaseGame();
-			break;
+			return;
 		}
+		if (action - GameChangeAction.Releasing > 1)
+		{
+			return;
+		}
+		this.OnReleaseGame();
 	}
 
 	private Texture2D MakeTexture(int width, int height, Color color)
@@ -2981,6 +3114,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			if (debugMode == AIDebugMode.DebugMode.Negotiation)
 			{
 				this.UpdateNegotiationDebugger();
+				return;
 			}
 		}
 		else
@@ -3003,6 +3137,48 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 	{
 		Color color = new Color(Mathf.Clamp01(0.5f + weight), Mathf.Clamp01(1.5f - weight), 0.5f);
 		Amplitude.Unity.UI.GUILayout.Label(weight.ToString("F"), color, options);
+	}
+
+	private void InitializeNavalFortressDebugger(Fortress fortress)
+	{
+		Diagnostics.Assert(this.playerControllerRepository != null && this.playerControllerRepository.ActivePlayerController != null);
+		Amplitude.Unity.Game.Empire empire = fortress.Empire;
+		Diagnostics.Assert(this.aiScheduler != null);
+		AIPlayer_MajorEmpire aiplayer_MajorEmpire;
+		if (this.aiScheduler.TryGetMajorEmpireAIPlayer(empire as MajorEmpire, out aiplayer_MajorEmpire))
+		{
+			AIEntity_Empire entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
+			if (entity == null)
+			{
+				Diagnostics.LogError("Failed to retrieve ai entity empire.");
+				this.ReleaseNavalArmyDebugger();
+				return;
+			}
+			this.navyLayer = entity.GetLayer<AILayer_Navy>();
+		}
+		else
+		{
+			AIPlayer_NavalEmpire aiplayer_NavalEmpire;
+			if (!this.aiScheduler.TryGetNavalEmpireAIPlayer(out aiplayer_NavalEmpire))
+			{
+				Diagnostics.LogError("Failed to retrieve ai entity empire.");
+				this.ReleaseNavalArmyDebugger();
+				return;
+			}
+			AIEntity_NavalEmpire entity2 = aiplayer_MajorEmpire.GetEntity<AIEntity_NavalEmpire>();
+			if (entity2 == null)
+			{
+				Diagnostics.LogError("Failed to retrieve ai entity empire.");
+				this.ReleaseNavalArmyDebugger();
+				return;
+			}
+			this.navyLayer = entity2.GetLayer<AILayer_Raiders>();
+		}
+		Diagnostics.Assert(this.navyLayer != null);
+		this.aiDataRepository = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
+		NavyCommander navyCommander = this.navyLayer.NavyCommanders.Find((BaseNavyCommander match) => match.RegionData.WaterRegionIndex == fortress.Region.Index) as NavyCommander;
+		this.selectedNavalArmy = navyCommander.NavyFortresses.Find((NavyFortress match) => match.Fortress.GUID == fortress.GUID);
+		this.currentDebugMode = AIDebugMode.DebugMode.NavalArmy;
 	}
 
 	private Blackboard altarBlackboard;
@@ -3288,6 +3464,16 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 	[SerializeField]
 	private GUIStyle uiTitleStyle;
 
+	private AILayer_Colossus aiLayerColossus;
+
+	private AILayer_HeroAssignation aILayerHeroAssignation;
+
+	private AILayer_Victory aiLayerVictory;
+
+	private AILayer_QuestManager aiLayerQuestManager;
+
+	private AILayer_KaijuManagement aiLayerKaiju;
+
 	public class Element
 	{
 		public Element(string name, float score)
@@ -3313,11 +3499,9 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			if (this.Content.ContainsKey(name))
 			{
 				this.Content[name] = value;
+				return;
 			}
-			else
-			{
-				this.Content.Add(name, value);
-			}
+			this.Content.Add(name, value);
 		}
 
 		public Dictionary<string, object> Content = new Dictionary<string, object>();
@@ -3364,8 +3548,7 @@ public class AIDebugMode : Amplitude.Unity.Framework.Behaviour, IAIEvaluationHel
 			{
 				return 0f;
 			}
-			object obj = context.Content["Input"];
-			return (float)obj * this.Ratio;
+			return (float)context.Content["Input"] * this.Ratio;
 		}
 
 		public override string ToString()

@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshFilter))]
 public class NoiseRenderer : MonoBehaviour
 {
 	public bool AutoRefresh

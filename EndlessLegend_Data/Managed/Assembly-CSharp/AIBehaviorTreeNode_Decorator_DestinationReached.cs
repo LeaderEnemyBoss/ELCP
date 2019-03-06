@@ -10,6 +10,7 @@ public class AIBehaviorTreeNode_Decorator_DestinationReached : AIBehaviorTreeNod
 	public AIBehaviorTreeNode_Decorator_DestinationReached()
 	{
 		this.TypeOfCheck = AIBehaviorTreeNode_Decorator_DestinationReached.DestinationReachAlgorithm.Regular;
+		this.Range = 3;
 	}
 
 	[XmlAttribute]
@@ -30,8 +31,7 @@ public class AIBehaviorTreeNode_Decorator_DestinationReached : AIBehaviorTreeNod
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -80,13 +80,13 @@ public class AIBehaviorTreeNode_Decorator_DestinationReached : AIBehaviorTreeNod
 			}
 			break;
 		case AIBehaviorTreeNode_Decorator_DestinationReached.DestinationReachAlgorithm.InRange:
-			if (service.IsPositionInRange(army.WorldPosition, worldPosition, army.LineOfSightVisionRange))
+			if (service.IsPositionInRange(army.WorldPosition, worldPosition, this.Range))
 			{
 				return State.Success;
 			}
 			break;
 		}
-		if (army.GetPropertyValue(SimulationProperties.Movement) == 0f)
+		if (army.GetPropertyValue(SimulationProperties.Movement) < 0.001f)
 		{
 			aiBehaviorTree.ErrorCode = 24;
 			return State.Failure;
