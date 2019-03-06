@@ -255,19 +255,15 @@
 
     <AIParameterDatatableElement Name="MarketBanRemoval">
       <AIParameter Name="DiplomacyUtilityProvider" Value="0 - 1 - $(MarketBanTermAgentCriticity)"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries) + $(MarketBanNullificationTermAgentCriticity)"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources) + $(MarketBanNullificationTermAgentCriticity)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources)"/>
     </AIParameterDatatableElement>
 
     <!-- Receiver is always the Roving Clans empire in the case of a nullification -->
 
     <AIParameterDatatableElement Name="MarketBanNullification">
-      <!-- 
-	  <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries)"/>
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources)"/> 
-	  -->
-	  <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + 2 * $Link(Provider|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries) + $(MarketBanNullificationTermAgentCriticity)"/>
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + 1.5 * $Link(Provider|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources) + $(MarketBanNullificationTermAgentCriticity)"/> 
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries)"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 * $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources)"/>
       <AIParameter Name="DiplomacyUtilityReceiver" Value="0 - 1 - $(MarketBanTermAgentCriticity)"/>
     </AIParameterDatatableElement>
 
@@ -409,10 +405,6 @@
     * MyRegionScore is a heuristic calculated by the Navy - it is between 0 (don't care) and 1 (do want)
     * The interpreter context simulation object is the fortress
     -->
-	<!-- ELCP\LeaderenemyBoss New value: RegionCompletion, is set to 1, if a Fortress trade helps the Receiver to complete the region, is 0 otherwise
-							  Also: Heavily reduced value of Fortress trades for AI receivers without region completion (to prevent abuse) 
-	-->
-	
 
     <AIParameterDatatableElement Name="FortressExchange">
       <AIParameter Name="DiplomacyUtilityProvider" Value="0 - 0.5"/>
@@ -420,10 +412,9 @@
       <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (5 * $(MyRegionScore))"/>
       <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (3 * ($(ProviderNumberOfFortressesInRegion) / $(TotalNumberOfFortressesInRegion)))"/>
       <AIParameter Name="DiplomacyUtilityProvider" Value="0.5"/>
-      <!--<AIParameter Name="DiplomacyUtilityReceiver" Value="2 * $(IsRegionControlled)"/>-->
-	  <AIParameter Name="DiplomacyUtilityReceiver" Value="5.5 * $(RegionCompletion) * $(MyRegionScore)"/> <!-- heavily boost utility when the trade allows to obtain a new region (dependant on region score) -->
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.4 * $(MyRegionScore)"/> <!-- base value without region completion bonus -->
-      <!--<AIParameter Name="DiplomacyUtilityReceiver" Value="4 * ($(ReceiverNumberOfFortressesInRegion) / $(TotalNumberOfFortressesInRegion))"/>-->
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * $(IsRegionControlled)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * $(MyRegionScore)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * ($(ReceiverNumberOfFortressesInRegion) / $(TotalNumberOfFortressesInRegion))"/>
     </AIParameterDatatableElement>
 
 </Datatable>

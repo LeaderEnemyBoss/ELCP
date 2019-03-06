@@ -17,15 +17,30 @@
 
 				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
 
-				<!--IF we could collect orbs THEN Change path -->
+        <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
+        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
+        
+        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
+
+        <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
+        
+        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
+        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
+        
+        <!--IF we could collect orbs THEN Change path -->
 				<Include SubTreeName="OrbsOpportunity">
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
 				</Include>
-				
-				<Include SubTreeName="OpportunityConvertVillage"/>
-				<Include SubTreeName="ParleyWithVillage"/>
-				<Include SubTreeName="ExploreNearbyQuestRuin"/>
+
+        <!--IF we could collect a map boost then change path -->
+        <Include SubTreeName="MapBoostOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+        </Include>
+        
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<!--IF City need vision for spy THEN move to get a look at the city -->
@@ -48,6 +63,12 @@
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
 				</Include>
+
+        <!--If there is a creeping node, destroy it -->
+        <Include SubTreeName="OpportunityDestroyCreepingNode">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+        </Include>
 
 				<!--IF nothing else to do THEN Move to Destination-->
 				<Controller_Sequence Debug="Exploration_TryToFollowTheBorder">
@@ -96,9 +117,7 @@
 			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
 			<Controller_Selector>
-				<Include SubTreeName="OpportunityConvertVillage"/>
-				<Include SubTreeName="ParleyWithVillage"/>
-				<Include SubTreeName="ExploreNearbyQuestRuin"/>
+
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<!--IF we could collect orbs THEN Change path -->
@@ -107,15 +126,40 @@
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
 				</Include>
 
+        <!--IF we could collect a map boost then change path -->
+        <Include SubTreeName="MapBoostOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+        </Include>
+
 				<!--IF we could Pillage something THEN try to pillage it -->
 				<Include SubTreeName="OpportunityPillage">
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
 				</Include>
 
-				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+        <!--If there is a creeping node, destroy it -->
+        <Include SubTreeName="OpportunityDestroyCreepingNode">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+        </Include>
 
-				<Controller_Sequence Debug="ScoutRegion_AlreadyAtDestination">
+        <Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+
+        <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
+        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
+        
+        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
+
+        <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
+        
+        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
+        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
+     
+        
+        <Controller_Sequence Debug="ScoutRegion_AlreadyAtDestination">
 					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
 				</Controller_Sequence>          
 

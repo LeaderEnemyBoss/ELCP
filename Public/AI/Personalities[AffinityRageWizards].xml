@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <AIPersonalityDefinition Name="PersonalityAffinityRageWizards">
+    <Multipliers>
+      <!-- AI Registry -->
+      <AI>
+
+        <AgentDefinition>
+          <!-- 
+          Money-grubbing
+          -->
+          <MoneyReferenceRatioAgent>
+            <MoneyStockToMaintainUpkeepTurnCount>1.5</MoneyStockToMaintainUpkeepTurnCount>
+            <MoneyIncomeGrowthPercent>1.2</MoneyIncomeGrowthPercent>
+          </MoneyReferenceRatioAgent>
+
+          <!--
+          Science-focused
+          -->
+          <TechnologyReferenceTurnCountAgent>
+            <IdealTechnologyUnlockPeriod>0.75</IdealTechnologyUnlockPeriod>
+            <MaximumPeriodGap>0.75</MaximumPeriodGap>
+          </TechnologyReferenceTurnCountAgent>
+
+        </AgentDefinition>
+
+
+        <MajorEmpire>
+          <AIEntity_Empire>
+
+            <!-- The degree to which various attitude modifiers are taken into account -->
+            <AILayer_Attitude>
+              <!-- ##### -->
+              <!-- TRUST -->
+              <!-- ##### -->
+              <!-- Positive -->
+              <AttitudeScorePeaceful>0.8</AttitudeScorePeaceful>
+              <AttitudeScoreCommonEnemy>1.3</AttitudeScoreCommonEnemy>
+              <AttitudeScoreCommonFriend>1.1</AttitudeScoreCommonFriend>
+              <AttitudeScoreCommonAlly>1.2</AttitudeScoreCommonAlly>
+              <AttitudeScorePositiveContract>1.1</AttitudeScorePositiveContract>
+              <AttitudeScoreGift>1.2</AttitudeScoreGift>
+              <AttitudeScoreMantaAspiratingInMyTerritory>1.1</AttitudeScoreMantaAspiratingInMyTerritory>
+              <AttitudeScoreLongTermAlliance>0.5</AttitudeScoreLongTermAlliance>
+              <AttitudeScoreLongTermPeace>0.5</AttitudeScoreLongTermPeace>
+              <AttitudeScoreTerraformedInMyTerritoryPositive>0.25</AttitudeScoreTerraformedInMyTerritoryPositive>
+              <AttitudeScoreTerraformedNearMyArmiesPositive>0.25</AttitudeScoreTerraformedNearMyArmiesPositive>
+              <!-- Negative -->
+              <AttitudeScoreLastWar>2</AttitudeScoreLastWar>
+              <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1.3</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
+              <AttitudeScoreAggressiveColonization>0.9</AttitudeScoreAggressiveColonization>
+              <AttitudeScoreNegativeContract>1.2</AttitudeScoreNegativeContract>
+              <AttitudeScoreVillageConverted>1.6</AttitudeScoreVillageConverted>
+              <AttitudeScoreRegionalBuildingDestroyed>1.4</AttitudeScoreRegionalBuildingDestroyed>
+              <AttitudeScoreSpy>1.2</AttitudeScoreSpy>
+              <AttitudeScorePillaging>1.4</AttitudeScorePillaging>
+              <AttitudeScorePillageSucceed>1.4</AttitudeScorePillageSucceed>
+              <AttitudeScoreDismantleDeviceSuffered>1.4</AttitudeScoreDismantleDeviceSuffered>
+              <AttitudeScoreOrbsStolen>1.1</AttitudeScoreOrbsStolen>
+              <AttitudeScoreEliminatedAcquaintance>0.6</AttitudeScoreEliminatedAcquaintance>
+              <AttitudeScoreEliminatedAlly>0.6</AttitudeScoreEliminatedAlly>
+              <AttitudeScoreEliminatedEnemy>0.9</AttitudeScoreEliminatedEnemy>
+              <AttitudeScoreEliminatedFriend>0.6</AttitudeScoreEliminatedFriend>
+              <AttitudeScoreCityTakenFromAlly>0.6</AttitudeScoreCityTakenFromAlly>
+              <AttitudeScoreCityTakenFromEnemy>0.9</AttitudeScoreCityTakenFromEnemy>
+              <AttitudeScoreCityTakenFromFriend>0.6</AttitudeScoreCityTakenFromFriend>
+              <AttitudeScoreAtWarWithMyAlly>0.6</AttitudeScoreAtWarWithMyAlly>
+              <AttitudeScoreAlliedWithMyEnemy>1.1</AttitudeScoreAlliedWithMyEnemy>
+              <AttitudeScoreBetrayedYourAlly>0.6</AttitudeScoreBetrayedYourAlly>
+              <AttitudeScoreBetrayedYourFriend>0.6</AttitudeScoreBetrayedYourFriend>
+              <AttitudeScoreTerraformedInMyTerritoryNegative>0</AttitudeScoreTerraformedInMyTerritoryNegative>
+              <AttitudeScoreTerraformedNearMyArmiesNegative>0</AttitudeScoreTerraformedNearMyArmiesNegative>
+              <AttitudeScoreCreepingNodeUpgradeComplete>0.8</AttitudeScoreCreepingNodeUpgradeComplete>
+              <AttitudeScoreKaijuAttacked>1.5</AttitudeScoreKaijuAttacked>
+              <AttitudeScoreKaijuPlacedNearMyCityNegative>0.4</AttitudeScoreKaijuPlacedNearMyCityNegative>
+
+              <!-- #### -->
+              <!-- WAR -->
+              <!-- #### -->
+              <!-- Positive (towards asking for peace) -->
+              <AttitudeScoreWarFatigue>0.6</AttitudeScoreWarFatigue>
+              <AttitudeScoreMyEmpireUnitsKilledDuringWar>0.8</AttitudeScoreMyEmpireUnitsKilledDuringWar>
+              <AttitudeScoreMyEmpireCitiesBesiegedDuringWar>0.9</AttitudeScoreMyEmpireCitiesBesiegedDuringWar>
+              <AttitudeScoreMyEmpireCitiesTakenDuringWar>0.9</AttitudeScoreMyEmpireCitiesTakenDuringWar>
+              <AttitudeScoreMyEmpireFortressesTakenDuringWar>0.9</AttitudeScoreMyEmpireFortressesTakenDuringWar>
+              <AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>0.9</AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>
+              <AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>0.9</AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>
+              <!-- Negative (towards remaining at war) -->
+              <AttitudeScoreOtherEmpireUnitsKilledDuringWar>1.3</AttitudeScoreOtherEmpireUnitsKilledDuringWar>
+              <AttitudeScoreOtherEmpireCitiesBesiegedDuringWar>1.3</AttitudeScoreOtherEmpireCitiesBesiegedDuringWar>
+              <AttitudeScoreOtherEmpireCitiesTakenDuringWar>1.3</AttitudeScoreOtherEmpireCitiesTakenDuringWar>
+              <AttitudeScoreOtherEmpireFortressesTakenDuringWar>1.3</AttitudeScoreOtherEmpireFortressesTakenDuringWar>
+              <!-- #### -->
+              <!-- FEAR -->
+              <!-- #### -->
+              <!-- Positive (towards avoiding war) -->
+              <AttitudeScoreMyEmpireLeadMilitaryPower>1.9</AttitudeScoreMyEmpireLeadMilitaryPower>
+              <AttitudeScoreMyEmpireLeadNavalMilitaryPower>1.3</AttitudeScoreMyEmpireLeadNavalMilitaryPower>
+              <!-- Negative (towards declaring war) -->
+              <AttitudeScoreOtherEmpireLeadMilitaryPower>0.6</AttitudeScoreOtherEmpireLeadMilitaryPower>
+              <AttitudeScoreUnitsInMyTerritory>0.3</AttitudeScoreUnitsInMyTerritory>
+              <AttitudeScoreOtherEmpireLeadNavalMilitaryPower>0.4</AttitudeScoreOtherEmpireLeadNavalMilitaryPower>
+              <!-- #### -->
+              <!-- ENVY -->
+              <!-- #### -->
+              <!-- Positive (towards avoiding war) -->
+              <AttitudeScoreMyEmpireLeadScore>1.1</AttitudeScoreMyEmpireLeadScore>
+              <AttitudeScoreMyEmpireLeadRegionCount>0.9</AttitudeScoreMyEmpireLeadRegionCount>
+              <AttitudeScoreMyEmpireLeadNavalRegionCount>1</AttitudeScoreMyEmpireLeadNavalRegionCount>
+              <!-- Negative (towards declaring war) -->
+              <AttitudeScoreCommonFrontier>1.2</AttitudeScoreCommonFrontier>
+              <AttitudeScoreOtherEmpireLeadScore>1.6</AttitudeScoreOtherEmpireLeadScore>
+              <AttitudeScoreLivingSpaceTense>1.2</AttitudeScoreLivingSpaceTense>
+              <AttitudeScoreOtherEmpireLeadRegionCount>1.4</AttitudeScoreOtherEmpireLeadRegionCount>
+              <AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
+              <AttitudeScoreVictoryAlertLastEmpireStanding>1</AttitudeScoreVictoryAlertLastEmpireStanding>
+              <AttitudeScoreVictoryAlertExpansion>1</AttitudeScoreVictoryAlertExpansion>
+              <AttitudeScoreVictoryAlertEconomy>1</AttitudeScoreVictoryAlertEconomy>
+              <AttitudeScoreVictoryAlertDiplomacy>1</AttitudeScoreVictoryAlertDiplomacy>
+              <AttitudeScoreVictoryAlertWonder>1</AttitudeScoreVictoryAlertWonder>
+              <AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1.5</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
+              <AttitudeScoreVictoryAlertSupremacy>1</AttitudeScoreVictoryAlertSupremacy>
+              <AttitudeScoreVictoryAlertQuest>1</AttitudeScoreVictoryAlertQuest>
+              <AttitudeScoreFortressesOwnedInTheSameRegion>1.4</AttitudeScoreFortressesOwnedInTheSameRegion>
+              <AttitudeScoreOtherEmpireHasUniqueFacility>1.5</AttitudeScoreOtherEmpireHasUniqueFacility>
+              <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.2</AttitudeScoreOtherEmpireLeadNavalRegionCount>
+            </AILayer_Attitude>
+
+            <AILayer_Strategy>
+              
+              <ResearchScoreFactor>1.3</ResearchScoreFactor>
+              <EconomicScoreFactor>1.2</EconomicScoreFactor>
+              <DiplomaticScoreFactor>0.7</DiplomaticScoreFactor>
+              <PrepareWarScoreFactor>1.1</PrepareWarScoreFactor>
+
+              <!--
+              Militaristic
+              -->
+              <Network>
+                <MilitaryEmpireNeedAgent>
+                  <GlobalUnitCountMultiplier>1.2</GlobalUnitCountMultiplier>
+
+                  <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
+                  <CityUnitNeedStartTurn>1.1</CityUnitNeedStartTurn>
+                  <CityUnitNeedTurnRatio>0.8</CityUnitNeedTurnRatio>
+                  <MinimumNumberOfUnitPerCity>0</MinimumNumberOfUnitPerCity>
+                  <MaximumNumberOfUnitPerCity>1.1</MaximumNumberOfUnitPerCity>
+
+                  <!-- Roaming unit need: NumberOfRoamingUnit = CLAMP((turn - RoamingUnitNeedStartTurn) / RoamingUnitNeedTurnRatio, MinimumNumberOfRoamingUnit, MaximumNumberOfRoamingUnit) -->
+                  <RoamingUnitNeedStartTurn>0</RoamingUnitNeedStartTurn>
+                  <RoamingUnitNeedTurnRatio>0.9</RoamingUnitNeedTurnRatio>
+                  <MinimumNumberOfRoamingUnit>1.1</MinimumNumberOfRoamingUnit>
+                  <MaximumNumberOfRoamingUnit>1.1</MaximumNumberOfRoamingUnit>
+
+                  <!-- War unit need: NumberOfWarUnit = CLAMP(WarUnitNeedOffset + (turn - WarUnitNeedStartTurn) / WarUnitNeedTurnRatio, MinimumNumberOfWarUnit, MaximumNumberOfWarUnit) -->
+                  <WarUnitNeedOffset>1.2</WarUnitNeedOffset>
+                  <WarUnitNeedStartTurn>0.9</WarUnitNeedStartTurn>
+                  <WarUnitNeedTurnRatio>0.9</WarUnitNeedTurnRatio>
+                  <MinimumNumberOfWarUnit>1.2</MinimumNumberOfWarUnit>
+                  <MaximumNumberOfWarUnit>1.2</MaximumNumberOfWarUnit>
+
+                  <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
+                </MilitaryEmpireNeedAgent>
+              </Network>
+            </AILayer_Strategy>
+
+            <AILayer_Altar>
+              <ElementEvaluatorContextMultiplier>
+                <AIEmpireGrowth>0.9</AIEmpireGrowth>
+                <AIEmpireProduction>1.4</AIEmpireProduction>
+                <AIEmpireMoney>1.8</AIEmpireMoney>
+                <AIEmpireResearch>2.2</AIEmpireResearch>
+                <AIEmpireEmpirePoint>0.9</AIEmpireEmpirePoint>
+                <AIEmpireApproval>0.6</AIEmpireApproval>
+
+                <AIEmpireMilitaryPower>1.6</AIEmpireMilitaryPower>
+                <AIEmpireAntiSpy>1.2</AIEmpireAntiSpy>
+                <AIEmpirePillageDefense>1.2</AIEmpirePillageDefense>
+                <AIEmpireCityDefense>1.2</AIEmpireCityDefense>
+                <AIEmpireStrategicResource>1.2</AIEmpireStrategicResource>
+                <AIEmpireLuxuryResource>1.2</AIEmpireLuxuryResource>
+
+                <AIWorldNavy>1.0</AIWorldNavy>
+                <AIWorldSpy>0.6</AIWorldSpy>
+                <AIWorldWar>1.5</AIWorldWar>
+                <AIWorldPeace>0.4</AIWorldPeace>
+                <AIWorldStrategicMarketPrice>-0.4</AIWorldStrategicMarketPrice>
+                <AIWorldLuxuryMarketPrice>-0.4</AIWorldLuxuryMarketPrice>
+                <AIWorldMercenaryMarketPrice>-0.1</AIWorldMercenaryMarketPrice>
+              </ElementEvaluatorContextMultiplier>
+            </AILayer_Altar>
+            
+            <AILayer_Research>
+              <ElementEvaluatorContextMultiplier>
+                <AIEmpireApproval>1.1</AIEmpireApproval>
+                <AIEmpireGrowth>0.9</AIEmpireGrowth>
+                <AIEmpireProduction>1.4</AIEmpireProduction>
+                <AIEmpireResearch>2.2</AIEmpireResearch>
+                <AIEmpireMoney>1.8</AIEmpireMoney>
+                <AIEmpireEmpirePoint>0.9</AIEmpireEmpirePoint>
+                <AIEmpirePillageDefense>1.2</AIEmpirePillageDefense>
+                <AIEmpireAntiSpy>1.2</AIEmpireAntiSpy>
+                <AIEmpireMilitaryPower>1.6</AIEmpireMilitaryPower>
+                <AIEmpireCityDefense>1.2</AIEmpireCityDefense>
+                <AIEmpireVision>1.2</AIEmpireVision>
+                <AIEmpireBuyout>1.1</AIEmpireBuyout>
+                <AIEmpireImprovedRuinSearch>1</AIEmpireImprovedRuinSearch>
+                <AIEmpireStrategicResource>1.2</AIEmpireStrategicResource>
+                <AIEmpireLuxuryResource>1.2</AIEmpireLuxuryResource>
+                <AIEmpireUnlockShip>1</AIEmpireUnlockShip>
+                <AIEmpireUnlockUnit>1</AIEmpireUnlockUnit>
+                <AIEmpireUnlockAssimilation>0.8</AIEmpireUnlockAssimilation>
+                <AIEmpireUnlockBribe>0.8</AIEmpireUnlockBribe>
+                <AIEmpireUnlockPillage>1</AIEmpireUnlockPillage>
+                <AIEmpireUnlockPrivateers>0.9</AIEmpireUnlockPrivateers>
+                <AIEmpireUnlockMarketUnit>0.8</AIEmpireUnlockMarketUnit>
+                <AIEmpireUnlockMarketResource>1.2</AIEmpireUnlockMarketResource>
+                <AIEmpireUnlockBooster>0.9</AIEmpireUnlockBooster>
+                <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
+                <AIEmpireUnlockDiplomacyPositive>0.8</AIEmpireUnlockDiplomacyPositive>
+                <AIEmpireWonderVictory>1.0</AIEmpireWonderVictory>
+                <AIEmpireUnlockAltarOfAuriga>0.9</AIEmpireUnlockAltarOfAuriga>
+              </ElementEvaluatorContextMultiplier>
+            </AILayer_Research>
+          </AIEntity_Empire>
+
+          <AIEntity_City>
+            <AILayer_Production>              
+              <ElementEvaluatorContextMultiplier>
+                <AICityApproval>0.9</AICityApproval>
+                <AICityGrowth>0.8</AICityGrowth>
+                <AICityProduction>1.4</AICityProduction>
+                <AICityResearch>2.0</AICityResearch>
+                <AICityMoney>1.4</AICityMoney>
+                <AICityEmpirePoint>0.7</AICityEmpirePoint>
+                <AICityMoneyUpkeep>1.2</AICityMoneyUpkeep>
+                <AICityDefense>0.8</AICityDefense>
+                <AICityPillageDefense>0.8</AICityPillageDefense>
+                <AICityLuxuryResource>0.8</AICityLuxuryResource>
+                <AICityStrategicResource>1.2</AICityStrategicResource>
+                <AICityAntiSpy>1.4</AICityAntiSpy>
+                <AIEmpireMilitaryPower>1.3</AIEmpireMilitaryPower>
+                <AIEmpireVision>1.6</AIEmpireVision>
+              </ElementEvaluatorContextMultiplier>
+            </AILayer_Production>
+          </AIEntity_City>
+        </MajorEmpire>
+      </AI>
+
+      <!-- AIStrategicPlanDefinition Database -->
+      <AIStrategicPlanDefinition>
+      </AIStrategicPlanDefinition>
+
+    </Multipliers>
+  </AIPersonalityDefinition>
+
+</Datatable>

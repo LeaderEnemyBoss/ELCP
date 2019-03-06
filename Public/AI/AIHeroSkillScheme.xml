@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <AIHeroSkillSchemeDefinition Name="HeroSkillAllocationSchemeBalanced">
+    <ParameterModifiers Name="UnitSkills">
+      <AIModifier Name="AICity"  Value="1"/>
+      <AIModifier Name="AIArmy"  Value="1"/>
+      <AIModifier Name="AIExploration"  Value="1"/>
+      <AIModifier Name="Spy"  Value="1"/>
+    </ParameterModifiers>
+  </AIHeroSkillSchemeDefinition>
+
+  <AIHeroSkillSchemeDefinition Name="HeroSkillAllocationSchemeLeaderBattle">
+    <ParameterModifiers Name="UnitSkills">
+      <AIModifier Name="AICity"  Value="0"/>
+      <AIModifier Name="AIArmy"  Value="2"/>
+      <AIModifier Name="AIExploration"  Value="1"/>
+      <AIModifier Name="Spy"  Value="0"/>
+    </ParameterModifiers>
+  </AIHeroSkillSchemeDefinition>
+
+  <AIHeroSkillSchemeDefinition Name="HeroSkillAllocationSchemeLeaderMap">
+    <ParameterModifiers Name="UnitSkills">
+      <AIModifier Name="AICity"  Value="0"/>
+      <AIModifier Name="AIArmy"  Value="1"/>
+      <AIModifier Name="AIExploration"  Value="2"/>
+      <AIModifier Name="Spy"  Value="0"/>
+    </ParameterModifiers>
+  </AIHeroSkillSchemeDefinition>
+
+  <AIHeroSkillSchemeDefinition Name="HeroSkillAllocationSchemeSpy">
+    <ParameterModifiers Name="UnitSkills">
+      <AIModifier Name="AICity"  Value="0"/>
+      <AIModifier Name="AIArmy"  Value="0"/>
+      <AIModifier Name="AIExploration"  Value="1"/>
+      <AIModifier Name="Spy"  Value="2"/>
+    </ParameterModifiers>
+  </AIHeroSkillSchemeDefinition>
+
+  <AIHeroSkillSchemeDefinition Name="HeroSkillAllocationSchemeGovernor">
+    <ParameterModifiers Name="UnitSkills">
+      <AIModifier Name="AICity"  Value="2"/>
+      <AIModifier Name="AIArmy"  Value="1"/>
+      <AIModifier Name="AIExploration"  Value="0"/>
+      <AIModifier Name="Spy"  Value="0"/>
+    </ParameterModifiers>
+  </AIHeroSkillSchemeDefinition>
+  
+</Datatable>

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--
+  DiplomaticCustomCost
+    Attributes
+      - Responsible: The responsible of the cost (empire that must pay it). It can be one of the following value: EmpireWhichProposes, EmpireWhichProvides or EmpireWhichReceives.
+      - Resource name: The resource name of the cost (see the Simulation/RessourceDefinition.xml to have a list of the available resources, it must be empire resource).
+
+    Content
+      Inpreter formula used to define the cost amount. The following variables are set in the interpreter context and can be used with the syntax $(variableName):
+      - AffinityRelationScore
+      - RelationStateChaosScore
+      - DiscussionChaosScore
+      - ForceRelationStateChaosScore
+      - BordersChaosScore
+      - VisionChaosScore
+      - CommercialChaosScore
+      - ResearchChaosScore
+      - MarketBanChaosScore
+      - BlackSpotChaosScore
+  -->
+
+  <!-- ##################################################################################################################################################################### -->
+  <!-- ####################################################################      POSITIVE TREATIES       ################################################################### -->
+  <!-- ##################################################################################################################################################################### -->
+
+  <!-- ###################################### -->
+  <!-- ############ MAP EXCHANGE ############ -->
+  <!-- ###################################### -->
+
+  <DiplomaticTermDefinition Name="MapExchange" PropositionMethod="Negotiation" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">VisionAndMapExchange</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">MapExchange</DiplomaticAbilityPrerequisite>
+    <DiplomaticMetaPrerequisite Flags="Prerequisite,Discard" Operator="OR">
+      <DiplomaticRelationStatePrerequisite>DiplomaticRelationStatePeace</DiplomaticRelationStatePrerequisite>
+      <DiplomaticRelationStatePrerequisite>DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    </DiplomaticMetaPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToAlliance</DiplomaticContractContainsTermPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">4 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(VisionChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="MapExchange" />
+  </DiplomaticTermDefinition>
+
+  <!-- ################################################# -->
+  <!-- ############ VISION AND MAP EXCHANGE ############ -->
+  <!-- ################################################# -->
+
+  <DiplomaticTermDefinition Name="VisionAndMapExchange" PropositionMethod="Negotiation" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">MapExchange</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">VisionExchange</DiplomaticAbilityPrerequisite>
+    <DiplomaticMetaPrerequisite Flags="Prerequisite,Discard" Operator="OR">
+      <DiplomaticRelationStatePrerequisite>DiplomaticRelationStatePeace</DiplomaticRelationStatePrerequisite>
+      <DiplomaticRelationStatePrerequisite>DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    </DiplomaticMetaPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToAlliance</DiplomaticContractContainsTermPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">12 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(VisionChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="MapExchange" />
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="VisionExchange" />
+  </DiplomaticTermDefinition>
+
+  <!-- ############################################## -->
+  <!-- ############ COMMERCIAL AGREEMENT ############ -->
+  <!-- ############################################## -->
+
+  <DiplomaticTermDefinition Name="CommercialAgreement" PropositionMethod="Negotiation" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">TradeRoute</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ReceiverToProvider" Flags="Prerequisite,Discard">TradeRoute</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">CloseBorders</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ReceiverToProvider" Inverted="true" Flags="Prerequisite,Discard">CloseBorders</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">CommercialAgreement</DiplomaticAbilityPrerequisite>
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">15 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(CommercialChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:CommercialAgreementCostMultiplier) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="CommercialAgreement" />
+  </DiplomaticTermDefinition>
+
+  <!-- ############################################ -->
+  <!-- ############ RESEARCH AGREEMENT ############ -->
+  <!-- ############################################ -->
+
+  <DiplomaticTermDefinition Name="ResearchAgreement" PropositionMethod="Negotiation" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">TradeRoute</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ReceiverToProvider" Flags="Prerequisite,Discard">TradeRoute</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">CloseBorders</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ReceiverToProvider" Inverted="true" Flags="Prerequisite,Discard">CloseBorders</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">ResearchAgreement</DiplomaticAbilityPrerequisite>
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">15 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(CommercialChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:CommercialAgreementCostMultiplier) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="ResearchAgreement" />
+  </DiplomaticTermDefinition>
+
+  <!-- ###################################### -->
+  <!-- ############ OPEN BORDERS ############ -->
+  <!-- ###################################### -->
+
+  <DiplomaticTermDefinition Name="OpenBorders" PropositionMethod="Negotiation" ApplicationMethod="ReceiverOnly" Category="Treaty" Alignment="Good">
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">CloseBorders</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">8 * (((($Property(EmpireTypeMajor:EmpireScaleFactor) + ($Property(ClassEmpire:CurrentEra) - $(AffinityRelationScore))) max 1) + $(BordersChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="CloseBorders" />
+  </DiplomaticTermDefinition>
+
+  <!-- ##################################################################################################################################################################### -->
+  <!-- ####################################################################      NEGATIVE TREATIES       ################################################################### -->
+  <!-- ##################################################################################################################################################################### -->
+
+  <!-- ##################################### -->
+  <!-- ############ MAP EMBARGO ############ -->
+  <!-- ##################################### -->
+
+  <DiplomaticTermDefinition Name="MapEmbargo" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToColdWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToColdWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToPeace</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">MapExchange</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite Inverted="true" TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">VisionExchange</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">12 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $Property(VisionChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="MapExchange" />
+  </DiplomaticTermDefinition>
+
+  <!-- ################################################ -->
+  <!-- ############ VISION AND MAP EMBARGO ############ -->
+  <!-- ################################################ -->
+
+  <DiplomaticTermDefinition Name="VisionAndMapEmbargo" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToColdWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToColdWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToPeace</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">VisionEmbargo</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">VisionExchange</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">20 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $Property(VisionChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="VisionExchange" />
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="MapExchange" />
+  </DiplomaticTermDefinition>
+
+  <!-- ######################################## -->
+  <!-- ############ VISION EMBARGO ############ -->
+  <!-- ######################################## -->
+
+  <DiplomaticTermDefinition Name="VisionEmbargo" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToColdWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToColdWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">AllianceToPeace</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">VisionAndMapEmbargo</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">VisionExchange</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">8 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(VisionChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="VisionExchange" />
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="MapExchange" />
+  </DiplomaticTermDefinition>
+
+  <!-- ############################################ -->
+  <!-- ############ COMMERCIAL EMBARGO ############ -->
+  <!-- ############################################ -->
+
+  <DiplomaticTermDefinition Name="CommercialEmbargo" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">CommercialAgreement</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">8 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(CommercialChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="CommercialAgreement" />
+  </DiplomaticTermDefinition>
+
+  <!-- ########################################## -->
+  <!-- ############ RESEARCH EMBARGO ############ -->
+  <!-- ########################################## -->
+
+  <DiplomaticTermDefinition Name="ResearchEmbargo" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">ResearchAgreement</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">8 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(ResearchChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="ResearchAgreement" />
+  </DiplomaticTermDefinition>
+
+  <!-- ######################################## -->
+  <!-- ############ CLOSE BORDERS ############ -->
+  <!-- ######################################## -->
+
+  <DiplomaticTermDefinition Name="CloseBorders" PropositionMethod="Declaration" ApplicationMethod="ReceiverOnly" Category="Treaty" Alignment="Bad">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateUnknown</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">CloseBorders</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">TruceToWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">ColdWarToWar</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToWar</DiplomaticContractContainsTermPrerequisite>
+
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">ColdWarToAlliance</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Inverted="true" Flags="Prerequisite,Discard">PeaceToAlliance</DiplomaticContractContainsTermPrerequisite>
+
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,SeasonEffectDiplomacy1,!WinterEffectImmunity</PathPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">30 * (((($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(AffinityRelationScore)) max 1) + $(BordersChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="CloseBorders" />
+  </DiplomaticTermDefinition>
+
+  <!-- ################################################## -->
+  <!-- ############ MARKET BAN NULLIFICATION ############ -->
+  <!-- ################################################## -->
+
+  <!-- This is declared by the empire targeted by a market ban to remove the effect at a very high cost -->
+
+  <DiplomaticTermDefinition Name="MarketBanNullification" PropositionMethod="Declaration" ApplicationMethod="ProviderOnly" Category="Treaty" Alignment="Neutral">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ReceiverToProvider" Inverted="false" Flags="Prerequisite,Discard">MarketBan</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">60 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(MarketBanChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="MarketBan" />
+  </DiplomaticTermDefinition>
+
+  <!-- ######################################################################################################################################################################## -->
+  <!-- ####################################################################      WARNING / COMPLIMENT       ################################################################### -->
+  <!-- ######################################################################################################################################################################## -->
+
+  <!-- ################################# -->
+  <!-- ############ WARNING ############ -->
+  <!-- ################################# -->
+
+  <DiplomaticTermDefinition Name="DiplomaticTermWarning" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateUnknown</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+
+    <DiplomaticRelationScoreModifierReference Name="DiplomaticRelationScoreModifierWarnings" />
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">2 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(DiscussionChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+  </DiplomaticTermDefinition>
+
+  <!-- #################################### -->
+  <!-- ############ COMPLIMENT ############ -->
+  <!-- #################################### -->
+
+  <DiplomaticTermDefinition Name="DiplomaticTermGratify" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateUnknown</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+
+    <DiplomaticRelationScoreModifierReference Name="DiplomaticRelationScoreModifierThanks" />
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">2 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(DiscussionChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+  </DiplomaticTermDefinition>
+
+  <!-- ######################################################################################################################################################################## -->
+  <!-- ###############################################################      ROVING CLANS SPECIAL ABILITIES       ############################################################## -->
+  <!-- ######################################################################################################################################################################## -->
+
+  <!-- #################################### -->
+  <!-- ############ MARKET BAN ############ -->
+  <!-- #################################### -->
+
+  <DiplomaticTermDefinition Name="MarketBan" PropositionMethod="Declaration" ApplicationMethod="ReceiverOnly" Category="Treaty" Alignment="Neutral">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">MarketBan</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">24 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(MarketBanChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
+      <PathPrerequisite Inverted="false">EmpireTypeMajor,FactionTraitRovingClans11</PathPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+
+    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichReceives">
+      <PathPrerequisite Inverted="true">EmpireTypeMajor,FactionTraitRovingClans11</PathPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="MarketBan" />
+  </DiplomaticTermDefinition>
+
+  <!-- ############################################ -->
+  <!-- ############ MARKET BAN REMOVAL ############ -->
+  <!-- ############################################ -->
+
+  <!-- Not to be confused with nullification: removal is proposed by the Roving Clans empire -->
+
+  <DiplomaticTermDefinition Name="MarketBanRemoval" PropositionMethod="Negotiation" ApplicationMethod="ReceiverOnly" Category="Treaty" Alignment="Neutral">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="false" Flags="Prerequisite,Discard">MarketBan</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">8 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(MarketBanChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="MarketBan" />
+  </DiplomaticTermDefinition>
+
+  <!-- ################################### -->
+  <!-- ############ INFLATION ############ -->
+  <!-- ################################### -->
+
+  <!-- The targeted empire receives less dust from trade (complete the faction quest to gain this ability) -->
+
+  <DiplomaticTermDefinition Name="MoneyPrint" PropositionMethod="Declaration" ApplicationMethod="ReceiverOnly" Category="Treaty" Alignment="Neutral">
+    <SimulationDescriptorReference Name="MoneyPrint" />
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">MoneyPrint</DiplomaticAbilityPrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyRovingClans5</TechnologyPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">6 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Add" DiplomaticAbilityReference="MoneyPrint" />
+  </DiplomaticTermDefinition>
+
+  <!-- ############################################### -->
+  <!-- ########### INFLATION NULLIFICATION ########### -->
+  <!-- ############################################### -->
+
+  <!-- This is declared by the empire targeted by inflation to remove the effect at a very high cost -->
+
+  <DiplomaticTermDefinition Name="MoneyPrintNullification" PropositionMethod="Declaration" ApplicationMethod="ReceiverOnly" Category="Treaty" Alignment="Neutral">
+    <SimulationDescriptorReference Name="MoneyPrintNullification" />
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="false" Flags="Prerequisite,Discard">MoneyPrint</DiplomaticAbilityPrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyRovingClans5</TechnologyPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">30 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange Operation="Remove" DiplomaticAbilityReference="MoneyPrint" />
+  </DiplomaticTermDefinition>
+
+  <!-- ######################################## -->
+  <!-- ############   BLACK SPOT   ############ -->
+  <!-- ######################################## -->
+
+  <DiplomaticTermDefinition Name="BlackSpot" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Bad">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStatePeace</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateUnknown</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+
+    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
+      <PathPrerequisite>EmpireTypeMajor,FactionTraitSeaDemons6</PathPrerequisite>
+      <InterpreterPrerequisite>$Property(EmpireTypeMajor:BlackSpotCount) le 0</InterpreterPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+
+    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichReceives">
+      <PathPrerequisite Inverted="true">EmpireTypeMajor,BlackSpotVictim</PathPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">32 * (((($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(AffinityRelationScore)) max 1) + $(BlackSpotChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+    
+    <DiplomaticAbilityChange ApplicationMethodOverride="ProviderOnly" Operation="Add" DiplomaticAbilityReference="BlackSpot" />
+    <DiplomaticAbilityChange ApplicationMethodOverride="ReceiverOnly" Operation="Add" DiplomaticAbilityReference="BlackSpotVictim" />
+  </DiplomaticTermDefinition>
+
+  <!-- ##################################################### -->
+  <!-- ############   BLACK SPOT NULLIFICATION  ############ -->
+  <!-- ##################################################### -->
+
+    <!-- This is declared by the empire targeted by a blackspot to remove the effect at a very high cost -->
+
+  <DiplomaticTermDefinition Name="BlackSpotNullification" PropositionMethod="Declaration" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">BlackSpot</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ReceiverToProvider" Flags="Prerequisite,Discard">BlackSpotVictim</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichReceives">
+      <PathPrerequisite>EmpireTypeMajor,FactionTraitSeaDemons6</PathPrerequisite>
+      <InterpreterPrerequisite>$Property(EmpireTypeMajor:BlackSpotCount) ge 1</InterpreterPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+
+    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
+      <PathPrerequisite>EmpireTypeMajor,BlackSpotVictim</PathPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">20 * ((2 * $(BlackSpotChaosScore)) + 1) * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange ApplicationMethodOverride="ReceiverOnly" Operation="Remove" DiplomaticAbilityReference="BlackSpot" />
+    <DiplomaticAbilityChange ApplicationMethodOverride="ProviderOnly" Operation="Remove" DiplomaticAbilityReference="BlackSpotVictim" />
+  </DiplomaticTermDefinition>
+
+  <!-- ############################################ -->
+  <!-- ############ BLACK SPOT REMOVAL ############ -->
+  <!-- ############################################ -->
+
+  <!-- Not to be confused with nullification: removal is proposed by the Sea demons empire -->
+
+  <DiplomaticTermDefinition Name="BlackSpotRemoval" PropositionMethod="Negotiation" ApplicationMethod="Symetric" Category="Treaty" Alignment="Neutral">
+    <DiplomaticRelationStatePrerequisite Inverted="true" Flags="Prerequisite,Discard">DiplomaticRelationStateDead</DiplomaticRelationStatePrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ReceiverToProvider" Flags="Prerequisite,Discard">BlackSpot</DiplomaticAbilityPrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Flags="Prerequisite,Discard">BlackSpotVictim</DiplomaticAbilityPrerequisite>
+
+    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
+      <PathPrerequisite>EmpireTypeMajor,FactionTraitSeaDemons6</PathPrerequisite>
+      <InterpreterPrerequisite>$Property(EmpireTypeMajor:BlackSpotCount) ge 1</InterpreterPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+
+    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichReceives">
+      <PathPrerequisite>EmpireTypeMajor,BlackSpotVictim</PathPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">8 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(BlackSpotChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+
+    <DiplomaticAbilityChange ApplicationMethodOverride="ProviderOnly" Operation="Remove" DiplomaticAbilityReference="BlackSpot" />
+    <DiplomaticAbilityChange ApplicationMethodOverride="ReceiverOnly" Operation="Remove" DiplomaticAbilityReference="BlackSpotVictim" />
+  </DiplomaticTermDefinition>
+
+</Datatable>

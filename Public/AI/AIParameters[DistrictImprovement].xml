@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ############################################ -->
+  <!-- ######     VANILLA ENDLESS LEGEND     ###### -->
+  <!-- ############################################ -->
+  
+  <AIParameterDatatableElement  Name="DistrictImprovement1">
+    <AIParameter Name="CityMoney"                                       Value="1"/>
+    <AIParameter Name="CityFood"                                        Value="1"/>
+    <AIParameter Name="CityProduction"                                  Value="1"/>
+    <AIParameter Name="CityCityPoint"                                   Value="1"/>
+    <AIParameter Name="CityScience"                                     Value="1"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictImprovement1">
+    <AIParameter Name="CityMoney"                                       Value="1"/>
+    <AIParameter Name="CityFood"                                        Value="1"/>
+    <AIParameter Name="CityProduction"                                  Value="1"/>
+    <AIParameter Name="CityCityPoint"                                   Value="1"/>
+    <AIParameter Name="CityScience"                                     Value="1"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement  Name="DistrictImprovement1Necrophage">
+    <AIParameter Name="CityMoney"                                       Value="1"/>
+    <AIParameter Name="CityFood"                                        Value="1"/>
+    <AIParameter Name="CityProduction"                                  Value="1"/>
+    <AIParameter Name="CityCityPoint"                                   Value="1"/>
+    <AIParameter Name="CityScience"                                     Value="1"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictImprovement1Necrophage">
+    <AIParameter Name="CityMoney"                                       Value="1"/>
+    <AIParameter Name="CityFood"                                        Value="1"/>
+    <AIParameter Name="CityProduction"                                  Value="1"/>
+    <AIParameter Name="CityCityPoint"                                   Value="1"/>
+    <AIParameter Name="CityScience"                                     Value="1"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement  Name="DistrictImprovementDocks">
+    <AIParameter Name="CityFood"                                        Value="2"/>
+    <AIParameter Name="CityApproval"                                    Value="20"/>
+    <AIParameter Name="CityIndustry"                                    Value="5 * (1 + $Count(ClassCity/TerrainTagWater))"/>
+    <AIParameter Name="EmpireFasterMovement"                            Value="0.1 * $Count(ClassEmpire/ClassResearch,TechnologyShip)"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictDocks">
+    <AIParameter Name="CityFood"                                        Value="2"/>
+    <AIParameter Name="CityApproval"                                    Value="20"/>
+    <AIParameter Name="CityIndustry"                                    Value="5 * (1 + $Count(ClassCity/TerrainTagWater))"/>
+    <AIParameter Name="EmpireFasterMovement"                            Value="0.1 * $Count(ClassEmpire/ClassResearch,TechnologyShip)"/>
+  </AIParameterDatatableElement>
+
+  <!-- ################################################ -->
+  <!-- ######     "WINTER SHIFTERS" EXPANSION    ###### -->
+  <!-- ################################################ -->
+  
+  <!-- Altar of Auriga -->
+  <AIParameterDatatableElement  Name="DistrictAltarOfAuriga">
+    <AIParameter Name="CityApproval"                                    Value="5"/>
+    <AIParameter Name="CityEmpirePoint"                                 Value="5"/>
+    <AIParameter Name="CityFood"                                        Value="3"/>
+    <AIParameter Name="EmpireUnlockAltarOfAuriga"                       Value="1"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictAltarOfAuriga">
+    <AIParameter Name="CityApproval"                                    Value="5"/>
+    <AIParameter Name="CityEmpirePoint"                                 Value="5"/>
+    <AIParameter Name="CityFood"                                        Value="3"/>
+    <AIParameter Name="EmpireUnlockAltarOfAuriga"                       Value="1"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb District Anomaly intensifier -->
+  <!-- obvious the best tile for dust may not always be the best tile for food and so on, but this approximation seems reasonable -->
+  <AIParameterDatatableElement  Name="DistrictImprovementOrbUnlock6">
+    <AIParameter Name="CityFood"                                        Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictFood)" />
+    <AIParameter Name="CityProduction"                                  Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictIndustry)" />
+    <AIParameter Name="CityMoney"                                       Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictDust)" />
+    <AIParameter Name="CityScience"                                     Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictScience)" />
+    <AIParameter Name="CityCityPoint"                                   Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictCityPoint)" />
+    <AIParameter Name="CityApproval"                                    Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictApproval)" />
+    <AIParameter Name="CityFood"                                        Value="3 * $Count(ClassCity/TerrainTagAnomaly)"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictOrbUnlock6">
+    <AIParameter Name="CityFood"                                        Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictFood)" />
+    <AIParameter Name="CityProduction"                                  Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictIndustry)" />
+    <AIParameter Name="CityMoney"                                       Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictDust)" />
+    <AIParameter Name="CityScience"                                     Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictScience)" />
+    <AIParameter Name="CityCityPoint"                                   Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictCityPoint)" />
+    <AIParameter Name="CityApproval"                                    Value="$MaxProperty(ClassCity/DistrictTypeExploitation:DistrictApproval)" />
+    <AIParameter Name="CityFood"                                        Value="3 * $Count(ClassCity/TerrainTagAnomaly)"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb District Strategic intensifier -->
+  <AIParameterDatatableElement  Name="DistrictImprovementOrbUnlock7">
+    <AIParameter Name="CityStrategicResource"                           Value="1"/>
+    <AIParameter Name="CityScience"                                     Value="10 * $Count(ClassCity/PointOfInterestBonusStrategic)"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictOrbUnlock7">
+    <AIParameter Name="CityStrategicResource"                           Value="1"/>
+    <AIParameter Name="CityScience"                                     Value="10 * $Count(ClassCity/PointOfInterestBonusStrategic)"/>
+  </AIParameterDatatableElement>
+
+  <!-- Orb District Luxury intensifier -->
+  <AIParameterDatatableElement  Name="DistrictImprovementOrbUnlock8">
+    <AIParameter Name="CityLuxuryResource"                              Value="1"/>
+    <AIParameter Name="CityMoney"                                       Value="10 * $Count(ClassCity/PointOfInterestBonusLuxury)"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictOrbUnlock8">
+    <AIParameter Name="CityLuxuryResource"                              Value="1"/>
+    <AIParameter Name="CityMoney"                                       Value="10 * $Count(ClassCity/PointOfInterestBonusLuxury)"/>
+  </AIParameterDatatableElement>
+
+
+  <!-- Orb District Winter Borough -->
+  <AIParameterDatatableElement  Name="DistrictImprovementOrbUnlock9">
+    <AIParameter Name="DistrictFood"                                    Value="2 * $Count(ClassCity/DistrictTypeExtension,#Winter)" />
+    <AIParameter Name="DistrictIndustry"                                Value="2 * $Count(ClassCity/DistrictTypeExtension,#Winter)" />
+    <AIParameter Name="DistrictDust"                                    Value="2 * $Count(ClassCity/DistrictTypeExtension,#Winter)" />
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictOrbUnlock9">
+    <AIParameter Name="DistrictFood"                                    Value="2 * $Count(ClassCity/DistrictTypeExtension,#Winter)" />
+    <AIParameter Name="DistrictIndustry"                                Value="2 * $Count(ClassCity/DistrictTypeExtension,#Winter)" />
+    <AIParameter Name="DistrictDust"                                    Value="2 * $Count(ClassCity/DistrictTypeExtension,#Winter)" />
+  </AIParameterDatatableElement>
+  
+  <!-- Winter Shifters (Allayi) 'Orb Architecture' borough -->
+  <AIParameterDatatableElement  Name="DistrictImprovementOrbUnlock18WinterShifters">
+    <AIParameter Name="CityMoney"                                       Value="2"/>
+    <AIParameter Name="CityFood"                                        Value="2"/>
+    <AIParameter Name="CityProduction"                                  Value="2"/>
+    <AIParameter Name="CityCityPoint"                                   Value="2"/>
+    <AIParameter Name="CityScience"                                     Value="2"/>
+  </AIParameterDatatableElement>
+  <AIParameterDatatableElement  Name="FreeDistrictOrbUnlock18">
+    <AIParameter Name="CityMoney"                                       Value="2"/>
+    <AIParameter Name="CityFood"                                        Value="2"/>
+    <AIParameter Name="CityProduction"                                  Value="2"/>
+    <AIParameter Name="CityCityPoint"                                   Value="2"/>
+    <AIParameter Name="CityScience"                                     Value="2"/>
+  </AIParameterDatatableElement>
+  
+</Datatable>

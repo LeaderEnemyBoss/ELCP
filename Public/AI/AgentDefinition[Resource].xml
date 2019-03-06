@@ -181,8 +181,8 @@
         <ValueMin>-1</ValueMin>
         <ValueMax>1</ValueMax>
 
-        <!--<IdealNumberOfTurnToReachNextPopulation>(5 + ($Property(ClassCity:Population) * $Property(ClassCity:Population) * $Property(ClassCity:Population))) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>-->
-		<IdealNumberOfTurnToReachNextPopulation>(4 max (4 + ($Property(ClassCity:Population) * 2) - ($Property(../EmpireTypeMajor:CurrentTurn) / 20 ))) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>
+        <!--<IdealNumberOfTurnToReachNextPopulation>(3 + ($Property(ClassCity:Population) * 1.8)) * (1+ ($Count(../ClassEmpire,#Winter) * 4) ) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>-->
+        <IdealNumberOfTurnToReachNextPopulation>(5 + ($Property(ClassCity:Population) * $Property(ClassCity:Population) * $Property(ClassCity:Population))) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>
 
         <CurveReference Name="PopulationReferenceTurnCount_Default" />
 

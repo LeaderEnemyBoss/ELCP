@@ -24,7 +24,6 @@
     <AIParameter Name="CityFood" Value="10"/>
     <AIParameter Name="CityFoodPercent"   Value="0.15"/>
     <AIParameter Name="CityMoneyUpkeep"   Value="-1"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>
   </AIParameterDatatableElement>
   
   <!-- Husbandry Center (national building) -->
@@ -50,14 +49,12 @@
     <AIParameter Name="CityFood"                  Value="10"/>
     <AIParameter Name="BaseFoodPerPopulation"     Value="2"/>
     <AIParameter Name="CityMoneyUpkeep"           Value="-2"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>
   </AIParameterDatatableElement>
 
   <!-- Plow Factory -->
   <AIParameterDatatableElement Name="CityImprovementFood8">
     <AIParameter Name="DistrictFoodExploitation"  Value="3"/>
     <AIParameter Name="CityMoneyUpkeep"           Value="-4"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>
   </AIParameterDatatableElement>
 
   <!-- Refrigeration Plant -->
@@ -95,7 +92,6 @@
     <AIParameter Name="CityProduction"            Value="6"/>
     <AIParameter Name="CityProductionPercent"     Value="0.15"/>
     <AIParameter Name="CityMoneyUpkeep"           Value="-1"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>
   </AIParameterDatatableElement>
 
   <!-- Lumber Mill -->
@@ -108,7 +104,6 @@
   <AIParameterDatatableElement Name="CityImprovementIndustry7">
     <AIParameter Name="DistrictIndustryExploitation"  Value="1"/>
     <AIParameter Name="CityMoneyUpkeep"               Value="-2"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>	
   </AIParameterDatatableElement>
 
   <!-- Canal System -->
@@ -167,7 +162,6 @@
   <AIParameterDatatableElement Name="CityImprovementDust0">
     <AIParameter Name="CityMoney"         Value="5"/>
     <AIParameter Name="CityMoneyPercent"  Value="0.15"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>	
   </AIParameterDatatableElement>
 
   <!-- Dust Filtration -->
@@ -184,7 +178,6 @@
   <AIParameterDatatableElement Name="CityImprovementDust2">
     <AIParameter Name="CityMoney"         Value="20"/>
     <AIParameter Name="CityMoneyPercent"  Value="0.3"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>	
   </AIParameterDatatableElement>
 
   <!-- Dust Depository -->
@@ -232,7 +225,6 @@
     <AIParameter Name="CityScience"               Value="10"/>
     <AIParameter Name="CitySciencePercent"        Value="0.1"/>
     <AIParameter Name="CityMoneyUpkeep"           Value="-1"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>	
   </AIParameterDatatableElement>
 
   <!-- Geomic Labs -->
@@ -252,7 +244,6 @@
     <AIParameter Name="CityScience"               Value="15"/>
     <AIParameter Name="CitySciencePercent"        Value="0.2"/>
     <AIParameter Name="CityMoneyUpkeep"           Value="-2"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>	
   </AIParameterDatatableElement>
 
   <!-- Advanced Alchemy Lab -->
@@ -330,7 +321,6 @@
     <AIParameter Name="DistrictCityPoint"   Value="1"  />
   </AIParameterDatatableElement>
 
-  
   <!-- ################################ -->
   <!-- ######      PRESTIGE      ###### -->
   <!-- ################################ -->
@@ -348,7 +338,6 @@
     <AIParameter Name="CityCityPoint"               Value="2"  />
     <AIParameter Name="BaseCityPointPerPopulation"  Value="2"  />
     <AIParameter Name="CityMoneyUpkeep"             Value="-4"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>
   </AIParameterDatatableElement>
 
   <!-- National Arena -->
@@ -400,7 +389,6 @@
     <AIParameter Name="CityFoodPercentEcstatic"     Value="0.1"/>
     <AIParameter Name="CityMoneyPercentEcstatic"    Value="0.1"/>
     <AIParameter Name="CityMoneyUpkeep"             Value="-2"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>	
   </AIParameterDatatableElement>
 
   <!-- Arts Council -->
@@ -439,7 +427,6 @@
     <AIParameter Name="CityAdditionalTradeRoute"          Value="1"/>
     <AIParameter Name="CityTradeRouteMoneyGainPercent"    Value="0.5"/>
     <AIParameter Name="CityMoneyUpkeep"                   Value="-2"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.3"/>
   </AIParameterDatatableElement>
   
   <!-- Scientific Envoy -->
@@ -572,13 +559,11 @@
 
   <AIParameterDatatableElement Name="CityImprovementMedalEra2DiplomacyReward">
     <AIParameter Name="CityTradeRouteGainPercent"             Value="1"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>
-	</AIParameterDatatableElement>
+  </AIParameterDatatableElement>
 
   <AIParameterDatatableElement Name="CityImprovementMedalEra4EconomyReward">
     <AIParameter Name="CityMoneyPercentHappy"                 Value="1"/>
-  	<AIParameter Name="AIItemMustBuild" Value="0.1"/>	
-</AIParameterDatatableElement>
+  </AIParameterDatatableElement>
 
   <!-- #################################### -->
   <!-- ######   SIDE QUEST REWARDS    ##### -->
@@ -627,10 +612,10 @@
   <AIParameterDatatableElement Name="CityImprovementVaulters9">
     <AIParameter Name="CityResourceExtraction_Strategic1"               Value="$Count(ClassCity/ResourceExtractor_Strategic1)"/>
     <AIParameter Name="CityResourceExtraction_Strategic2"               Value="$Count(ClassCity/ResourceExtractor_Strategic2)"/>
-    <AIParameter Name="CityResourceExtraction_Strategic3"               Value="2 * $Count(ClassCity/ResourceExtractor_Strategic3)"/>
-    <AIParameter Name="CityResourceExtraction_Strategic4"               Value="2 * $Count(ClassCity/ResourceExtractor_Strategic4)"/>
-    <AIParameter Name="CityResourceExtraction_Strategic5"               Value="2 * $Count(ClassCity/ResourceExtractor_Strategic5)"/>
-    <AIParameter Name="CityResourceExtraction_Strategic6"               Value="2 * $Count(ClassCity/ResourceExtractor_Strategic6)"/>
+    <AIParameter Name="CityResourceExtraction_Strategic3"               Value="$Count(ClassCity/ResourceExtractor_Strategic3)"/>
+    <AIParameter Name="CityResourceExtraction_Strategic4"               Value="$Count(ClassCity/ResourceExtractor_Strategic4)"/>
+    <AIParameter Name="CityResourceExtraction_Strategic5"               Value="$Count(ClassCity/ResourceExtractor_Strategic5)"/>
+    <AIParameter Name="CityResourceExtraction_Strategic6"               Value="$Count(ClassCity/ResourceExtractor_Strategic6)"/>
     <AIParameter Name="CityMoneyUpkeep"                 Value="-4"/>
   </AIParameterDatatableElement>
 
@@ -706,12 +691,10 @@
 
   <AIParameterDatatableElement Name="CityImprovementRovingClans2">
     <AIParameter Name="CityScience"                 Value="5"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>
   </AIParameterDatatableElement>
 
   <AIParameterDatatableElement Name="CityImprovementRovingClans4">
-    <AIParameter Name="CityAdditionalTradeRoute"    Value="2"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>
+    <AIParameter Name="CityAdditionalTradeRoute"               Value="2"/>
   </AIParameterDatatableElement>
 
   <!-- ############################################ -->
@@ -722,14 +705,12 @@
     <AIParameter Name="CityFood"                    Value="10"/>
     <AIParameter Name="CityRecruitInitialExperience"          Value="25"/>
     <AIParameter Name="CityMoneyUpkeep"             Value="-2"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>
   </AIParameterDatatableElement>
 
   <AIParameterDatatableElement Name="CityImprovementDrakkens4">
     <AIParameter Name="CityApproval"                Value="20"/>
     <AIParameter Name="CityCityPoint"               Value="10"/>
     <AIParameter Name="CityMoneyUpkeep"             Value="-4"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>
   </AIParameterDatatableElement>
 
   <!-- ############################################ -->
@@ -740,7 +721,6 @@
   <AIParameterDatatableElement Name="CityImprovementCultists3">
     <AIParameter Name="CitySciencePercent"          Value="0.02 * $Property(ClassCity:NumberOfConvertedVillages)"/>
     <AIParameter Name="CityMoneyUpkeep"             Value="-4"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>
   </AIParameterDatatableElement>
 
   <!-- ############################################# -->
@@ -827,8 +807,7 @@
 
   <!-- "Nyctalopian lenses": winter vision immunity for regional buildings -->
   <AIParameterDatatableElement Name="CityImprovementOrbUnlock3" >
-	<AIParameter Name="CitySciencePercent"        Value="0.1"/>
-    <AIParameter Name="CityWatchTower" Value="0.5 * $Count(#Winter)"/>
+    <AIParameter Name="CityWatchTower" Value="2 * $Count(#Winter)"/>
   </AIParameterDatatableElement>
 
   <!-- "Ice-works": industry on frozen lakes and coastal water and on rivers in winter -->
@@ -851,9 +830,8 @@
   <AIParameterDatatableElement Name="CityImprovementSeaDemons10">
     <AIParameter Name="CityRecruitInitialExperience"      Value="40"/>
     <AIParameter Name="CityMoneyUpkeep"                   Value="-2"/>
-	<AIParameter Name="AIItemMustBuild" Value="0.2"/>
   </AIParameterDatatableElement>
-
+  
   <AIParameterDatatableElement  Name="CityImprovementCoastalRetaliation">
     <AIParameter Name="CityDefense"                 Value="$Property(ClassCity:CityDefensePoint) * $Property(ClassCity:CityHasAnyCoastalDistrict)"/>
   </AIParameterDatatableElement>
@@ -889,4 +867,109 @@
     <AIParameter Name="CityMoneyUpkeep"           Value="-7"/>
   </AIParameterDatatableElement>
 
+  <!-- ################################################ -->
+  <!-- ######     "MIMICS" EXPANSION            ###### -->
+  <!-- ################################################ -->
+
+  <AIParameterDatatableElement Name="CityConstructibleActionPurgeTheLand">
+    <AIParameter Name="CityMoney"                 Value="10"/>
+    <AIParameter Name="CityFood"                  Value="10"/>
+    <!-- luxury resources -->
+    <AIParameter Name="CityResourceExtraction_Luxury1"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury2"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury3"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury4"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury5"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury6"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury7"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury8"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury9"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury10"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury11"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury12"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury13"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury14"                Value="10"  />
+    <AIParameter Name="CityResourceExtraction_Luxury15"                Value="10"  />
+    <!-- strategic resources -->
+    <AIParameter Name="CityResourceExtraction_Strategic1"               Value="10"/>
+    <AIParameter Name="CityResourceExtraction_Strategic2"               Value="10"/>
+    <AIParameter Name="CityResourceExtraction_Strategic3"               Value="10"/>
+    <AIParameter Name="CityResourceExtraction_Strategic4"               Value="10"/>
+    <AIParameter Name="CityResourceExtraction_Strategic5"               Value="10"/>
+    <AIParameter Name="CityResourceExtraction_Strategic6"               Value="10"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateBrokenLords">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateMadFairies">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateNecrophages">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateRageWizards">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateVaulters">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateRovingClans">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateDrakkens">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateCultists">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateMezari">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateReplicants">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateWinterShifters">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateSeaDemons">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="CityConstructibleActionIntegrateFlames">
+    <AIParameter Name="CityMoney"                 Value="100"/>
+    <AIParameter Name="CityFood"                  Value="100"/>
+  </AIParameterDatatableElement>
+
+  <!-- Chapter 7 quest reward -->
+  <AIParameterDatatableElement Name="CityImprovementMimics3">
+    <AIParameter Name="CityMoney"                 Value="50"/>
+    <AIParameter Name="CityFood"                  Value="50"/>
+    <AIParameter Name="CityScience"               Value="50"/>
+    <AIParameter Name="CityMoneyUpkeep"                   Value="-2"/>
+  </AIParameterDatatableElement>
+  
 </Datatable>

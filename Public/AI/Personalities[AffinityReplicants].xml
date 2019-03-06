@@ -9,23 +9,15 @@
         <!-- 
         Money-grubbing
         -->
-	<!-- ELCP\LeaderEnemyBoss Forgotten tend to sit on their money instead of using it, reducing stock -->
         <MoneyReferenceRatioAgent>
-          <MoneyStockToMaintainUpkeepTurnCount>1</MoneyStockToMaintainUpkeepTurnCount>
+          <MoneyStockToMaintainUpkeepTurnCount>1.2</MoneyStockToMaintainUpkeepTurnCount>
           <MoneyIncomeGrowthPercent>1.3</MoneyIncomeGrowthPercent>
         </MoneyReferenceRatioAgent>
-	<!-- ELCP\LeaderEnemyBoss Dont know if this does something for Tech buy, but if it does, it should raise their willingness to buy tech -->
-	<!-- The tend to fall behind (even with my changes) -->	
-	<TechnologyReferenceTurnCountAgent>
-          <IdealTechnologyUnlockPeriod>0.1</IdealTechnologyUnlockPeriod>
-          <MaximumPeriodGap>0.1</MaximumPeriodGap>
-        </TechnologyReferenceTurnCountAgent>
-        <!-- End ELCP-->
+
 
         <MajorEmpire>
-			<!-- ELCP\LeaderEnemyBoss this was missingh and probably a bug-->
-			<AIEntity_Empire>
-			<!-- End ELCP-->
+
+          <AIEntity_Empire>
           <!-- The degree to which various attitude modifiers are taken into account -->
           <AILayer_Attitude>
             <!-- ##### -->
@@ -68,6 +60,10 @@
             <AttitudeScoreBetrayedYourFriend>0.1</AttitudeScoreBetrayedYourFriend>
             <AttitudeScoreTerraformedInMyTerritoryNegative>0.5</AttitudeScoreTerraformedInMyTerritoryNegative>
             <AttitudeScoreTerraformedNearMyArmiesNegative>0.9</AttitudeScoreTerraformedNearMyArmiesNegative>
+            <AttitudeScoreCreepingNodeUpgradeComplete>0.8</AttitudeScoreCreepingNodeUpgradeComplete>
+            <AttitudeScoreKaijuAttacked>1.5</AttitudeScoreKaijuAttacked>
+            <AttitudeScoreKaijuPlacedNearMyCityNegative>0.4</AttitudeScoreKaijuPlacedNearMyCityNegative>
+
             <!-- #### -->
             <!-- WAR -->
             <!-- #### -->
@@ -120,23 +116,14 @@
             <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.2</AttitudeScoreOtherEmpireLeadNavalRegionCount>
           </AILayer_Attitude>
 
-          
             <!--
             Spy masters
             -->
             <AILayer_HeroAssignation>
               <MaximumHeroCount>1.5</MaximumHeroCount>
-	      <!-- ELCP\LeaderEnemyBoss to account for changes in registry.xml (so they dont spam too much heroes)-->
               <MaximumTurnForHero>0.8</MaximumTurnForHero>
-              <MaximumFractionOfHeroesSpy>2.5</MaximumFractionOfHeroesSpy>
-              <MinimalTurnBeforeSpying>0.25</MinimalTurnBeforeSpying>
-			  <!-- ELCP/LeaderEnemyBoss: needs vision to actually use spies -->
-			  <Utility>
-				<StealVision>
-					<factorForInterestingArmies>2</factorForInterestingArmies>
-				</StealVision>
-			  </Utility>
-			  <!-- End ELCP -->
+              <MaximumFractionOfHeroesSpy>2</MaximumFractionOfHeroesSpy>
+              <MinimalTurnBeforeSpying>0.5</MinimalTurnBeforeSpying>
             </AILayer_HeroAssignation>
 
             <AILayer_Strategy>
@@ -209,11 +196,11 @@
                 <AIEmpireGrowth>1.1</AIEmpireGrowth>
                 <AIEmpireProduction>1.3</AIEmpireProduction>
                 <AIEmpireResearch>0</AIEmpireResearch>
-                <AIEmpireMoney>5</AIEmpireMoney>
+                <AIEmpireMoney>2</AIEmpireMoney>
                 <AIEmpireEmpirePoint>1.5</AIEmpireEmpirePoint>
                 <AIEmpirePillageDefense>1.1</AIEmpirePillageDefense>
-                <AIEmpireAntiSpy>1</AIEmpireAntiSpy>
-                <AIEmpireMilitaryPower>1.1</AIEmpireMilitaryPower>
+                <AIEmpireAntiSpy>1.3</AIEmpireAntiSpy>
+                <AIEmpireMilitaryPower>1.3</AIEmpireMilitaryPower>
                 <AIEmpireCityDefense>1.1</AIEmpireCityDefense>
                 <AIEmpireVision>1.3</AIEmpireVision>
                 <AIEmpireBuyout>2</AIEmpireBuyout>
@@ -224,13 +211,13 @@
                 <AIEmpireUnlockUnit>1.2</AIEmpireUnlockUnit>
                 <AIEmpireUnlockAssimilation>0.8</AIEmpireUnlockAssimilation>
                 <AIEmpireUnlockBribe>0.7</AIEmpireUnlockBribe>
-                <AIEmpireUnlockPillage>1.5</AIEmpireUnlockPillage>
+                <AIEmpireUnlockPillage>2</AIEmpireUnlockPillage>
                 <AIEmpireUnlockPrivateers>2</AIEmpireUnlockPrivateers>
-                <AIEmpireUnlockMarketUnit>2.5</AIEmpireUnlockMarketUnit>
+                <AIEmpireUnlockMarketUnit>2.0</AIEmpireUnlockMarketUnit>
                 <AIEmpireUnlockMarketResource>1.4</AIEmpireUnlockMarketResource>
                 <AIEmpireUnlockBooster>1</AIEmpireUnlockBooster>
                 <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
-                <AIEmpireUnlockDiplomacyPositive>2</AIEmpireUnlockDiplomacyPositive>
+                <AIEmpireUnlockDiplomacyPositive>1.4</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>
           </AIEntity_Empire>

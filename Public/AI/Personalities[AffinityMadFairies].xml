@@ -46,6 +46,7 @@
               <AttitudeScoreLongTermPeace>1.3</AttitudeScoreLongTermPeace>
               <AttitudeScoreTerraformedInMyTerritoryPositive>0</AttitudeScoreTerraformedInMyTerritoryPositive>
               <AttitudeScoreTerraformedNearMyArmiesPositive>0</AttitudeScoreTerraformedNearMyArmiesPositive>
+              <AttitudeScoreKaijuPlacedNearMyCityPositive>0.6</AttitudeScoreKaijuPlacedNearMyCityPositive>
               <!-- Negative -->
               <AttitudeScoreLastWar>1.2</AttitudeScoreLastWar>
               <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1.2</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
@@ -71,6 +72,10 @@
               <AttitudeScoreBetrayedYourFriend>1.1</AttitudeScoreBetrayedYourFriend>
               <AttitudeScoreTerraformedInMyTerritoryNegative>1.1</AttitudeScoreTerraformedInMyTerritoryNegative>
               <AttitudeScoreTerraformedNearMyArmiesNegative>1.1</AttitudeScoreTerraformedNearMyArmiesNegative>
+              <AttitudeScoreCreepingNodeUpgradeComplete>0.8</AttitudeScoreCreepingNodeUpgradeComplete>
+              <AttitudeScoreKaijuAttacked>1.5</AttitudeScoreKaijuAttacked>
+              <AttitudeScoreKaijuPlacedNearMyCityNegative>0.4</AttitudeScoreKaijuPlacedNearMyCityNegative>
+
               <!-- #### -->
               <!-- WAR -->
               <!-- #### -->
@@ -135,7 +140,7 @@
               -->
               <Network>
                 <MilitaryEmpireNeedAgent>
-                  <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
+                  <GlobalUnitCountMultiplier>0.75</GlobalUnitCountMultiplier>
 
                   <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
                   <CityUnitNeedStartTurn>1</CityUnitNeedStartTurn>

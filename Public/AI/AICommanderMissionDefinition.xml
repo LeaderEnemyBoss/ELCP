@@ -129,6 +129,19 @@
     </AIArmyPattern>
   </AICommanderMissionDefinition>
 
+
+  <AICommanderMissionDefinition Name="AttackAndTameKaijuDefault" Type="AICommanderMission_AttackAndTameKaijuDefault, Assembly-CSharp" Category="KaijuAdquisition,AttackKaiju,TameKaiju">
+    <AIArmyPattern>
+      <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+      <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+    </AIArmyPattern>
+  </AICommanderMissionDefinition>
+
   <AICommanderMissionDefinition Name="GarrisonBreakSiege" Type="AICommanderMission_GarrisonBreakSiege, Assembly-CSharp" Category="Defense,BreakSiege"/>
   
   <AICommanderMissionDefinition Name="SettlerBail" Type="AICommanderMission_BailToCity, Assembly-CSharp" Category="SettlerBail"/>
@@ -153,13 +166,9 @@
   <AICommanderMissionDefinition Name="ConvertAndPacifyVillage" Type="AICommanderMission_Village, Assembly-CSharp" Category="Convert,Village,Pacification,Hardway">
     <AIArmyPattern>
       <AIUnitDescription AIUnitPatternCategory="Killer" Tags="!UnitFactionTypeMinorFaction,!Mercenary" Priority="1" MinimalQuantity="1" Ratio="0.0"/>
-	  <AIUnitDescription AIUnitPatternCategory="Killer" Priority="2"  MinimalQuantity="2" Ratio="0.0"/>
-	  <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Priority="3"  MinimalQuantity="2" Ratio="0.0"/>
-	  <AIUnitDescription AIUnitPatternCategory="Artillery" Priority="4"  MinimalQuantity="0" Ratio="0.25"/>
-	  <AIUnitDescription AIUnitPatternCategory="Harasser" Priority="5"  MinimalQuantity="0" Ratio="0.25"/>
     </AIArmyPattern>
   </AICommanderMissionDefinition>
-
+  
   <AICommanderMissionDefinition Name="Terraformation" Type="AICommanderMission_Terraform, Assembly-CSharp" Category="Terraformation"/>
 
   <AICommanderMissionDefinition Name="AttackCity" Type="AICommanderMission_AttackCityDefault, Assembly-CSharp" Category="Offense,City"/>  

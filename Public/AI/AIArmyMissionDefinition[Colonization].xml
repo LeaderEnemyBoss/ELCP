@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<!-- Not opportunist at all-->
+	<AIArmyMissionDefinition Name="ColonizeAt">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
+		</Parameters>
+
+		<Controller_Sequence>
+
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+
+			<Controller_Selector>
+
+				<!-- IF Destination reached, THEN colonize -->
+				<Controller_Sequence Debug="Colonize">
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+					<Action_Colonize />
+					<Decorator_IsRegionMine Inverted="false" PositionVarName="$WorldPositionDestination"/>
+				</Controller_Sequence>
+                
+				<!--IF Target within the movement range THEN Move to Destination and colonize -->
+				<Controller_Sequence Debug="MoveToDestinationAndColonize">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$WorldPositionDestination" PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+					<Action_Colonize />
+					<Decorator_IsRegionMine Inverted="false" PositionVarName="$WorldPositionDestination"/>
+				</Controller_Sequence>
+                
+				<Include SubTreeName="OpportunitySearchRuin">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>                
+				</Include>
+                
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>                
+				</Include>
+
+        <!--IF we could collect a map boost then change path -->
+        <Include SubTreeName="MapBoostOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+        </Include>
+
+				<!--IF EnnemyDetected AND I can not defeat him THEN colonize right here -->
+				<Controller_Sequence Debug="BewareOfEnemies">
+					<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+					<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
+					<Decorator_CanDefeatTarget Inverted="true" TargetVarName="$Target"/>
+
+					<Controller_Selector>
+
+						<!--IF in my target region and a reachable colonization position is not to bad, THEN colonize -->
+						<Controller_Sequence Debug="TryToPanicColonize">
+							<Decorator_ComputePanicColonizationPosition LossTolerance="0.25" Output_PanicColonizationPositionVarName="$PanicColonizationPosition"/>
+
+							<Controller_Selector>
+
+								<Controller_Sequence Debug="InPlacePanicColonization">
+									<Decorator_DestinationReached DestinationVarName="$PanicColonizationPosition" TypeOfCheck="Regular"/>
+									<Action_Colonize />
+									<Decorator_IsRegionMine Inverted="false" PositionVarName="$PanicColonizationPosition"/>
+								</Controller_Sequence>
+
+								<Controller_Sequence Debug="DistantPanicColonization">
+									<Action_GeneratePath DestinationVarName="$PanicColonizationPosition" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+									<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+									<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+									<Action_Colonize />
+									<Decorator_IsRegionMine Inverted="false" PositionVarName="$PanicColonizationPosition"/>
+								</Controller_Sequence>
+
+							</Controller_Selector>
+
+						</Controller_Sequence>            
+
+						<!-- IF i can flee somewhere, do it -->
+						<Controller_Sequence Debug="TryToFleeFromEnemy">
+							<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+							<Decorator_ComputeSavingPosition TargetListVarName="$TargetList" Output_DestinationVarName="$SafeWorldPositionDestination"/>
+							<Action_GeneratePath DestinationVarName="$SafeWorldPositionDestination"  TypeOfPath="FuzzyDestination" Output_PathVarName="$Path"/>
+							<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>    
+						</Controller_Sequence>
+
+					</Controller_Selector>
+
+				</Controller_Sequence>
+
+				<!--IF NO EnnemyDetected THEN Move to Destination-->
+				<Controller_Sequence Debug="TryToMoveToDestinationToColonize">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<!-- don't consider opponent for now -->
+					<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+					<Action_Colonize />
+					<Decorator_IsRegionMine Inverted="false" PositionVarName="$WorldPositionDestination"/>
+				</Controller_Sequence>
+
+			</Controller_Selector>
+
+		</Controller_Sequence>        
+
+	</AIArmyMissionDefinition>
+</Datatable>

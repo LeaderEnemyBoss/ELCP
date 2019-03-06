@@ -22,9 +22,13 @@
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
 				</Include>
 
+        <!--IF we could collect a map boost then change path -->
+        <Include SubTreeName="MapBoostOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$MantaWorldPosition"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
+        </Include>
+
 				<!--IF RuinDetected THEN explore the ruin -->
-				<Include SubTreeName="ParleyWithVillage"/>
-				<Include SubTreeName="ExploreNearbyQuestRuin"/>
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<!--IF City need vision for spy THEN move to get a look at the city -->

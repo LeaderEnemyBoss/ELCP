@@ -35,6 +35,7 @@
               <AttitudeScoreLongTermPeace>0.25</AttitudeScoreLongTermPeace>
               <AttitudeScoreTerraformedInMyTerritoryPositive>1.1</AttitudeScoreTerraformedInMyTerritoryPositive>
               <AttitudeScoreTerraformedNearMyArmiesPositive>1.1</AttitudeScoreTerraformedNearMyArmiesPositive>
+              <AttitudeScoreKaijuPlacedNearMyCityPositive>0.6</AttitudeScoreKaijuPlacedNearMyCityPositive>
               <!-- Negative -->
               <AttitudeScoreLastWar>0.8</AttitudeScoreLastWar>
               <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1.2</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
@@ -60,6 +61,10 @@
               <AttitudeScoreBetrayedYourFriend>0.6</AttitudeScoreBetrayedYourFriend>
               <AttitudeScoreTerraformedInMyTerritoryNegative>0</AttitudeScoreTerraformedInMyTerritoryNegative>
               <AttitudeScoreTerraformedNearMyArmiesNegative>0</AttitudeScoreTerraformedNearMyArmiesNegative>
+              <AttitudeScoreCreepingNodeUpgradeComplete>0.8</AttitudeScoreCreepingNodeUpgradeComplete>
+              <AttitudeScoreKaijuAttacked>1.5</AttitudeScoreKaijuAttacked>
+              <AttitudeScoreKaijuPlacedNearMyCityNegative>0.4</AttitudeScoreKaijuPlacedNearMyCityNegative>
+
               <!-- #### -->
               <!-- WAR -->
               <!-- #### -->
@@ -111,11 +116,7 @@
               <AttitudeScoreOtherEmpireHasUniqueFacility>1.1</AttitudeScoreOtherEmpireHasUniqueFacility>
               <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.0</AttitudeScoreOtherEmpireLeadNavalRegionCount>
             </AILayer_Attitude>
-            <!-- ELCP\LeaderEnemyBoss Clans are more likely to offer nice deals -->
-			<AILayer_Diplomacy>
-			  <SweetenDealThreshold>1.5</SweetenDealThreshold>
-			</AILayer_Diplomacy>
-			
+            
             <AILayer_Strategy>
 
               <ResearchScoreFactor>0.8</ResearchScoreFactor>
@@ -128,7 +129,7 @@
               -->
               <Network>
                 <MilitaryEmpireNeedAgent>
-                  <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
+                  <GlobalUnitCountMultiplier>0.75</GlobalUnitCountMultiplier>
 
                   <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
                   <CityUnitNeedStartTurn>1</CityUnitNeedStartTurn>

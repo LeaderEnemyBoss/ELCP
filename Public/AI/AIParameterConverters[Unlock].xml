@@ -143,7 +143,7 @@
   <!-- ################################################ -->
 
   <AIParameterConverter Name="EmpireUnlockForceShift">
-    <ToAIParameter AIParameter="AIEmpireMilitaryPower">1000 * $Property(ClassEmpire:OrbStock) / 10</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMilitaryPower">1000 * $Property(OrbStock) / 10</ToAIParameter>
   </AIParameterConverter>
 
   <AIParameterConverter Name="EmpireUnlockAltarOfAuriga">

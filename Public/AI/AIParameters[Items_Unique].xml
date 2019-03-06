@@ -87,6 +87,19 @@
     <AIParameter   Name="AIUnitDamagePercent"        Value="0.2"/>
   </AIParameterDatatableElement>
 
+  <!-- Mimic Quest Reward -->
+  <AIParameterDatatableElement Name="ItemSwordMimicsQuestReward">
+    <AIParameter   Name="AIEquipmentAttack"          Value="70"/>
+    <AIParameter   Name="AIEquipmentDefense"         Value="50"/>
+    <AIParameter   Name="AIEquipmentInitiative"      Value="10"/>
+    <AIParameter   Name="AIEquipmentDamage"          Value="55"/>
+
+    <AIParameter   Name="AIUnitAttackPercent"        Value="0.4"/>
+    <AIParameter   Name="AIUnitDefensePercent"       Value="0.5"/>
+    <AIParameter   Name="AIUnitInitiativePercent"    Value="0.1"/>
+    <AIParameter   Name="AIUnitDamagePercent"        Value="0.2"/>
+  </AIParameterDatatableElement>
+
 
   <!-- ########## 2H_Sword ########### -->
 
@@ -387,6 +400,18 @@
     <AIParameter Name="AIUnitDamagePercent"      Value="0.1"/>
   </AIParameterDatatableElement>
 
+  <!--MIMICS Quest Reward: Good Book-->
+  <AIParameterDatatableElement Name="ItemTomeMimicsQuest2" >
+    <!-- Tome, +2 Science and Influence per Population -->
+    <AIParameter Name="AIItemScience"           Value="0.9"/>
+    <AIParameter Name="AIItemEmpirePoint"       Value="0.9"/>
+    <AIParameter Name="GovernorCity"            Value="0.3"/>
+    <AIParameter Name="GovernorEmpire"          Value="0.8"/>
+    <AIParameter Name="ArmySupport"             Value="-1"/>
+    <AIParameter Name="ArmyHero"                Value="-1"/>
+    <AIParameter Name="Spy"                     Value="-1"/>
+  </AIParameterDatatableElement>
+
 
   <!-- ########### Insignia ########### -->
 
@@ -493,8 +518,8 @@
 
   <AIParameterDatatableElement Name="ItemTalismanMedalEra2MilitaryReward">
     <!-- Free counter -->
-    <AIParameter Name="AIUnitDefensePercent"              Value="0.4"/>
-    <AIParameter Name="AIUnitDamagePercent"               Value="0.4"/>
+    <AIParameter Name="AIUnitAttackPercent"               Value="0.6"/>
+    <AIParameter Name="AIUnitDamagePercent"               Value="0.6"/>
   </AIParameterDatatableElement>
 
   <AIParameterDatatableElement Name="ItemTorsoMedalEra5HeroesReward">

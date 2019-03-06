@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <!-- 
+    ###################
+    AVAILABLE VARIABLES
+    ###################
+
+    Actors:
+    * Provider: Empire which provide simulation object
+    * Receiver: Empire which receive simulation object
+    * MyEmpire: The AI's empire simulation object
+    * OtherEmpire: The empire the AI is negociating with
+    
+    Desire to propose various diplomatic terms
+    * WarTermAgentCriticity
+    * TruceTermAgentCriticity
+    * ColdWarTermAgentCriticity 
+    * PeaceTermAgentCriticity
+    * AllianceTermAgentCriticity
+    * MapExchangeTermAgentCriticity
+    * MapEmbargoTermAgentCriticity
+    * VisionAndMapExchangeTermAgentCriticity
+    * VisionAndMapEmbargoTermAgentCriticity
+    * VisionEmbargoTermAgentCriticity
+    * CommercialAgreementTermAgentCriticity
+    * ResearchAgreementTermAgentCriticity        
+    * CloseBordersTermAgentCriticity
+    * OpenBordersTermAgentCriticity
+    * MarketBanTermAgentCriticity
+    * MarketBanNullificationTermAgentCriticity
+    * MarketBanRemovalTermAgentCriticity
+  
+    Other useful values:
+    * GlobalWarTermAgentCriticity: The AI's (receiver or provider) desire for war
+    * MoneyReferenceRatioAgentCriticity: The AI's (receiver or provider) desire for money
+    * TechnologyReferenceTurnCountAgentCriticity: The AI's (receiver or provider) desire for technology
+    -->
+    
+    <!--
+    ##################################
+    ### RESEARCH AGREEMENT (TRADE) ###
+    ##################################
+    -->
+
+    <!-- 
+    Research agreement provide up to a 20% increase in research income from trade over 20 turns (+1% per turn).
+    -->
+
+
+    <AIParameterDatatableElement Name="ResearchAgreement">
+      <AIParameter Name="DiplomacyUtilityProvider" Value="$(ResearchAgreementTermAgentCriticity) - 0.5"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="$(ResearchAgreementTermAgentCriticity) - 0.5"/>
+    </AIParameterDatatableElement>
+
+    <!--
+    ####################
+    ### TECHNOLOGIES ###
+    ####################
+    -->
+
+    <!-- The interpreter context simulation object is the empire who analyse the term -->
+    
+    <!-- Available hooks:
+    * $(TechnologyRemainingTurn) = number of turns it would take us (the AI, 'MyEmpire') to research this technology (or to finish researching it).
+    * $(TechnologyEvaluationScore) = how much we (the AI, 'MyEmpire') want this technology.
+    * $(TechnologyEra) = the era this technology appears on.
+    -->
+
+    <AIParameterDatatableElement Name="TechnologyDeal">
+        <AIParameter Name="DiplomacyTechnologyReceiver" Value="3 * ((0.2*$(TechnologyEra)) + (1 min (0.8*$(TechnologyEvaluationScore)))) * (1 max ($(TechnologyRemainingTurn) / 4))"/>
+        <AIParameter Name="DiplomacyTechnologyProvider" Value="3 * (0 - 1) * ((0.8*$(TechnologyEra)) + (1 min (0.2*$(TechnologyEvaluationScore))))"/>
+    </AIParameterDatatableElement>
+
+</Datatable>

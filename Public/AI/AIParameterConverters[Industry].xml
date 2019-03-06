@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ##################################################### -->
+  <!-- ################ FLAT VALUE FOR CITY ################ -->
+  <!-- ##################################################### -->
+
+  <AIParameterConverter Name="CityProduction">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input) * $Property(CityIndustryToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityMoney">$(Input) * $Property(NetCityProductionToCityMoneyConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityResearch">$(Input) * $Property(NetCityProductionToCityResearchConversionFactor)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">$(Input) * $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">$(Input) * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ################################################ -->
+  <!-- ################ PER POPULATION ################ -->
+  <!-- ################################################ -->
+
+  <AIParameterConverter Name="BaseIndustryPerPopulation">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input) * $Property(CityIndustryToCityGrowthConversionFactor) * ((0.2 * $Property(Population)) max $Property(IndustryPopulation)) </ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * ((0.2 * $Property(Population)) max $Property(IndustryPopulation))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityMoney">$(Input) * $Property(NetCityProductionToCityMoneyConversionFactor) * ((0.2 * $Property(Population)) max $Property(IndustryPopulation)) </ToAIParameter>
+    <ToAIParameter AIParameter="AICityResearch">$(Input) * $Property(NetCityProductionToCityResearchConversionFactor) * ((0.2 * $Property(Population)) max $Property(IndustryPopulation))</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">$(Input) *  $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor) * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">$(Input)  * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor) * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation))</ToAIParameter>
+  </AIParameterConverter>
+  
+  <!-- Bonus per population only once per empire -->
+  <AIParameterConverter Name="BaseIndustryPerPopulation_NationalBuilding">
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * ((0.2 * $MaxProperty(ClassEmpire/ClassCity:Population)) max $MaxProperty(ClassEmpire/ClassCity:IndustryPopulation))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * ((0.2 * $MaxProperty(ClassEmpire/ClassCity:Population)) max $MaxProperty(ClassEmpire/ClassCity:IndustryPopulation))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">$(Input) *  $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor) * ((0.2 * $MaxProperty(ClassEmpire/ClassCity:Population)) max $MaxProperty(ClassEmpire/ClassCity:IndustryPopulation))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">$(Input)  * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor) * ((0.2 * $MaxProperty(ClassEmpire/ClassCity:Population)) max $MaxProperty(ClassEmpire/ClassCity:IndustryPopulation))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="BaseIndustryPerPopulationHappy">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input) * $Property(CityIndustryToCityGrowthConversionFactor) * ((0.2 * $Property(Population)) max $Property(IndustryPopulation)) * (1 min $Count(ClassCity,ApprovalStatusTagCityHappy))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * ((0.2 * $Property(Population)) max $Property(IndustryPopulation)) * (1 min $Count(ClassCity,ApprovalStatusTagCityHappy))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityMoney">$(Input) * $Property(NetCityProductionToCityMoneyConversionFactor) * ((0.2 * $Property(Population)) max $Property(IndustryPopulation)) * (1 min $Count(ClassCity,ApprovalStatusTagCityHappy))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityResearch">$(Input) * $Property(NetCityProductionToCityResearchConversionFactor) * ((0.2 * $Property(Population)) max $Property(IndustryPopulation)) * (1 min $Count(ClassCity,ApprovalStatusTagCityHappy))</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation)) * $Count(ClassEmpire/ClassCity,ApprovalStatusTagCityHappy)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation)) * $Count(ClassEmpire/ClassCity,ApprovalStatusTagCityHappy)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">$(Input) *  $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor) * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation)) * $Count(ClassEmpire/ClassCity,ApprovalStatusTagCityHappy)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">$(Input)  * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor) * ((0.2 * $SumProperty(ClassEmpire/ClassCity:Population)) max $SumProperty(ClassEmpire/ClassCity:IndustryPopulation)) * $Count(ClassEmpire/ClassCity,ApprovalStatusTagCityHappy)</ToAIParameter>
+  </AIParameterConverter>
+  
+  <!-- ################################################## -->
+  <!-- ################ PERCENT INCREASE ################ -->
+  <!-- ################################################## -->
+
+  <AIParameterConverter Name="CityProductionPercent">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input) * $Property(CityProduction) * $Property(CityIndustryToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityProduction) * $Property(CityIndustryToCityProductionConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityMoney">$(Input) * $Property(CityProduction) * $Property(NetCityProductionToCityMoneyConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityResearch">$(Input) * $Property(CityProduction) * $Property(NetCityProductionToCityResearchConversionFactor)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) * $SumProperty(ClassEmpire/ClassCity:CityProduction) * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $SumProperty(ClassEmpire/ClassCity:CityProduction) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">$(Input) * $SumProperty(ClassEmpire/ClassCity:CityProduction) * $Property(ClassEmpire/ClassCity:NetCityProductionToCityMoneyConversionFactor) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">$(Input) * $SumProperty(ClassEmpire/ClassCity:CityProduction) * $Property(ClassEmpire/ClassCity:NetCityProductionToCityResearchConversionFactor) * $Property(../EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ######################################################################## -->
+  <!-- ################ BONUSES FROM EXPLOITATIONS (DISTRICTS) ################ -->
+  <!-- ######################################################################## -->
+
+  <!-- == Base == -->
+  <AIParameterConverter Name="DistrictIndustry">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/ClassDistrict)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/ClassDistrict)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) *  $Count(ClassEmpire/ClassCity/ClassDistrict)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor)*  $Count(ClassEmpire/ClassCity/ClassDistrict)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Extra industry on tiles which provide industry == -->
+  <AIParameterConverter Name="DistrictIndustryIndustry">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/TerrainTagIndustry)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/TerrainTagIndustry)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagIndustry)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagIndustry)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Extra industry on tiles which provide industry (only in summer) == -->
+  <AIParameterConverter Name="DistrictIndustryIndustrySummer">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/TerrainTagIndustry) * (1 - (1 min $Count(#Winter)))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/TerrainTagIndustry) * (1 - (1 min $Count(#Winter)))</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagIndustry) * (1 - (1 min $Count(#Winter)))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagIndustry) * (1 - (1 min $Count(#Winter)))</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Industry from Exploitation Area == -->
+  <AIParameterConverter Name="DistrictIndustryExploitation">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/DistrictTypeExploitation)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/DistrictTypeExploitation)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) *  $Count(ClassEmpire/ClassCity/DistrictTypeExploitation)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor)*  $Count(ClassEmpire/ClassCity/DistrictTypeExploitation)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Industry from Forest == -->
+  <AIParameterConverter Name="DistrictIndustryForest">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/TerrainTagForest)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/TerrainTagForest)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagForest)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagForest)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Industry from Rocks == -->
+  <AIParameterConverter Name="DistrictIndustryRocks">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/TerrainTagRocks)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/TerrainTagRocks)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagRocks)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagRocks)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Industry from Resources  == -->
+  <AIParameterConverter Name="DistrictIndustryResources">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit,ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit,ExploitedPointOfInterest)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit,ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit,ExploitedPointOfInterest)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Industry from Strategic Resources  == -->
+  <AIParameterConverter Name="DistrictIndustryStrategicResources">
+    <!-- city -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit,ExploitedPointOfInterest,ResourceTypeStrategic)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit,ExploitedPointOfInterest,ResourceTypeStrategic)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit,ExploitedPointOfInterest,ResourceTypeStrategic)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit,ExploitedPointOfInterest,ResourceTypeStrategic)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="DistrictIndustryStrategicResources_NationalBuilding">
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) *  $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $MaxProperty(ClassEmpire/ClassCity:AICountStrategicDepositTilesInCity)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $MaxProperty(ClassEmpire/ClassCity:AICountStrategicDepositTilesInCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Industry Percent Bonus on District == -->
+  <AIParameterConverter Name="DistrictIndustryPercent">
+    <!-- city -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $SumProperty(ClassEmpire/ClassCity:DistrictIndustry)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $SumProperty(ClassEmpire/ClassCity:DistrictIndustry)</ToAIParameter>
+    <!-- empire -->
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $SumProperty(ClassEmpire/ClassCity:DistrictIndustry)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $SumProperty(ClassEmpire/ClassCity:DistrictIndustry)</ToAIParameter>
+  </AIParameterConverter>
+
+</Datatable>

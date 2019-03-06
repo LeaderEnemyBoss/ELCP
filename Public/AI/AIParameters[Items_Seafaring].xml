@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--
+  Example item:
+  
+  <AIParameterDatatableElement Name="ItemIdentifier">
+    <AIParameter Name="AIEquipmentAttack"       Value="0"/>
+    <AIParameter Name="AIEquipmentDefense"      Value="0"/>
+    <AIParameter Name="AIEquipmentInitiative"   Value="0"/>
+    <AIParameter Name="AIEquipmentDamage"       Value="0"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"Value="0"/>
+
+    <AIParameter Name="AIUnitAttackPercent"           Value="0"/>
+    <AIParameter Name="AIUnitDefensePercent"          Value="0"/>
+    <AIParameter Name="AIUnitInitiativePercent"       Value="0"/>
+    <AIParameter Name="AIUnitDamagePercent"           Value="0"/>
+    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0"/>
+  </AIParameterDatatableElement>
+  -->
+
+  <!-- #################################### -->
+  <!-- #######     NAVAL WEAPONS     ###### -->
+  <!-- #################################### -->
+
+  <!-- Jaws -->
+  <AIParameterDatatableElement Name="ItemJawsIron">
+    <AIParameter Name="AIEquipmentAttack"         Value="12"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="6" />
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemJawsStrategic12">
+    <AIParameter Name="AIEquipmentAttack"         Value="20"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="16"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemJawsStrategic34">
+    <AIParameter Name="AIEquipmentAttack"         Value="28"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="26"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.1"/>
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemJawsStrategic56">
+    <AIParameter Name="AIEquipmentAttack"         Value="36"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="36"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.2"/>
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <!-- Acid Spray -->
+  <AIParameterDatatableElement Name="ItemAcidSprayIron">
+    <AIParameter Name="AIEquipmentAttack"         Value="9" />
+    <AIParameter Name="AIEquipmentDamage"         Value="4" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="-6"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.3"/>
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.3"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemAcidSprayStrategic12">
+    <AIParameter Name="AIEquipmentAttack"         Value="20"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="0" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="-8"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.5"/>
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemAcidSprayStrategic34">
+    <AIParameter Name="AIEquipmentAttack"         Value="31"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="16"/>
+    <AIParameter Name="AIEquipmentInitiative"     Value="-12"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.6"/>
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.6"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemAcidSprayStrategic56">
+    <AIParameter Name="AIEquipmentAttack"         Value="42"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="22"/>
+    <AIParameter Name="AIEquipmentInitiative"     Value="-16"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.7"/>
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.7"/>
+  </AIParameterDatatableElement>
+
+  <!-- Satchel Charges -->
+  <AIParameterDatatableElement Name="ItemSatchelChargesIron">
+    <AIParameter Name="AIEquipmentAttack"         Value="6" />
+    <AIParameter Name="AIEquipmentDamage"         Value="4" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="-10"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemSatchelChargesStrategic12">
+    <AIParameter Name="AIEquipmentAttack"         Value="14"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="10" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="-12"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemSatchelChargesStrategic34">
+    <AIParameter Name="AIEquipmentAttack"         Value="22"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="16"/>
+    <AIParameter Name="AIEquipmentInitiative"     Value="-14"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemSatchelChargesStrategic56">
+    <AIParameter Name="AIEquipmentAttack"         Value="30"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="22"/>
+    <AIParameter Name="AIEquipmentInitiative"     Value="-16"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.3"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemSatchelChargesQuest">
+    <AIParameter Name="AIEquipmentAttack"         Value="24"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="18"/>
+    <AIParameter Name="AIEquipmentInitiative"     Value="-8"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.3"/>
+  </AIParameterDatatableElement>
+
+  <!-- Boarding Spikes -->
+  <AIParameterDatatableElement Name="ItemBoardingSpikesIron">
+    <AIParameter Name="AIEquipmentAttack"         Value="8"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemBoardingSpikesStrategic12">
+    <AIParameter Name="AIEquipmentAttack"         Value="21"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemBoardingSpikesStrategic34">
+    <AIParameter Name="AIEquipmentAttack"         Value="31"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.3"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemBoardingSpikesStrategic56">
+    <AIParameter Name="AIEquipmentAttack"         Value="41"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.6"/>
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.4"/>
+  </AIParameterDatatableElement>
+
+  <!-- Endless Flames -->
+  <AIParameterDatatableElement Name="ItemEndlessFlamesIron">
+    <AIParameter Name="AIEquipmentAttack"         Value="9" />
+    <AIParameter Name="AIEquipmentDefense"        Value="4" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.4"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemEndlessFlamesStrategic12">
+    <AIParameter Name="AIEquipmentAttack"         Value="18"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="10" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemEndlessFlamesStrategic34">
+    <AIParameter Name="AIEquipmentAttack"         Value="27"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="16" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.6"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemEndlessFlamesStrategic56">
+    <AIParameter Name="AIEquipmentAttack"         Value="36"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="22"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.7"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemEndlessFlamesQuest">
+    <AIParameter Name="AIEquipmentAttack"         Value="32"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="14" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.9"/>
+  </AIParameterDatatableElement>
+
+  <!-- Dust Focal -->
+  <AIParameterDatatableElement Name="ItemDustFocalIron">
+    <AIParameter Name="AIEquipmentAttack"         Value="12"/>
+    <AIParameter Name="EquipmentDamage"           Value="4" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="2" />
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemDustFocalStrategic12">
+    <AIParameter Name="AIEquipmentAttack"         Value="24"/>
+    <AIParameter Name="EquipmentDamage"           Value="12" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="5" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemDustFocalStrategic34">
+    <AIParameter Name="AIEquipmentAttack"         Value="36"/>
+    <AIParameter Name="EquipmentDamage"           Value="20" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="8" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemDustFocalStrategic56">
+    <AIParameter Name="AIEquipmentAttack"         Value="48"/>
+    <AIParameter Name="EquipmentDamage"           Value="28" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="11" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitAttackPercent"       Value="0.3"/>
+  </AIParameterDatatableElement>
+
+  <!-- Broadside -->
+  <AIParameterDatatableElement Name="ItemBroadsideIron">
+    <AIParameter Name="AIEquipmentAttack"         Value="10" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="1" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemBroadsideStrategic12">
+    <AIParameter Name="AIEquipmentAttack"         Value="24"/>
+    <AIParameter Name="AIEquipmentInitiative"     Value="5"/>
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemBroadsideStrategic34">
+    <AIParameter Name="AIEquipmentAttack"         Value="36"/>
+    <AIParameter Name="AIEquipmentInitiative"     Value="9" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.3"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemBroadsideStrategic56">
+    <AIParameter Name="AIEquipmentAttack"         Value="48"/>
+    <AIParameter Name="AIEquipmentInitiative"     Value="13" />
+    <!-- Bonus from capacities -->
+    <AIParameter Name="AIUnitDamagePercent"       Value="0.4"/>
+  </AIParameterDatatableElement>
+
+  <!-- Trebuchet -->
+  <AIParameterDatatableElement Name="ItemTrebuchetIron">
+    <AIParameter Name="AIEquipmentAttack"         Value="4"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="4" />
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTrebuchetStrategic12">
+    <AIParameter Name="AIEquipmentAttack"         Value="12"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="20" />
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTrebuchetStrategic34">
+    <AIParameter Name="AIEquipmentAttack"         Value="18"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="32" />
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTrebuchetStrategic56">
+    <AIParameter Name="AIEquipmentAttack"         Value="24"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="44" />
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemTrebuchetQuest">
+    <AIParameter Name="AIEquipmentAttack"         Value="14"/>
+    <AIParameter Name="AIEquipmentDamage"         Value="24" />
+    <AIParameter Name="AIEquipmentInitiative"     Value="14" />
+  </AIParameterDatatableElement>
+
+
+  <!-- #################################### -->
+  <!-- ######       NAVAL HULL       ###### -->
+  <!-- #################################### -->
+
+  <!-- Plating -->
+  <AIParameterDatatableElement Name="ItemPlatingIron">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="24"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="12"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemPlatingStrategic12">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="58"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="28"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemPlatingStrategic34">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="92"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="44"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemPlatingStrategic56">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="126"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="60"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemPlatingQuest">
+    <AIParameter Name="AIEquipmentMaximumHealth"    Value="68"/>
+    <AIParameter Name="AIEquipmentDefense"          Value="32"/>
+    <!-- from life drain -->
+    <AIParameter Name="AIUnitMaximumHealthPercent"  Value="0.4"/>
+  </AIParameterDatatableElement>
+
+  <!-- Hydrofoils -->
+  <AIParameterDatatableElement Name="ItemHydrofoilsIron">
+    <AIParameter Name="AIEquipmentInitiative"                   Value="10"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemHydrofoilsStrategic12" >
+    <AIParameter Name="AIEquipmentInitiative"                   Value="18"/>
+    <AIParameter Name="AIEquipmentMaximumMovement"              Value="1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemHydrofoilsStrategic34" >
+    <AIParameter Name="AIEquipmentInitiative"                   Value="26"/>
+    <AIParameter Name="AIEquipmentMaximumMovement"              Value="2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemHydrofoilsStrategic56" >
+    <AIParameter Name="AIEquipmentInitiative"                   Value="34"/>
+    <AIParameter Name="AIEquipmentMaximumMovement"              Value="3"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemHydrofoilsQuest" >
+    <AIParameter Name="AIEquipmentInitiative"                   Value="20"/>
+    <AIParameter Name="AIEquipmentMaximumMovement"              Value="2"/>
+  </AIParameterDatatableElement>
+  
+
+  <!-- #################################### -->
+  <!-- ######   NAVAL PROW CLADDING  ###### -->
+  <!-- #################################### -->
+
+  <AIParameterDatatableElement Name="ItemProwIron">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="10"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="16"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemProwStrategic12">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="26"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="34"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemProwStrategic34">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="42"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="52"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemProwStrategic56">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="58"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="70"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemProwQuest">
+    <AIParameter Name="AIEquipmentMaximumHealth"  Value="30"/>
+    <AIParameter Name="AIEquipmentDefense"        Value="38"/>
+    <!-- from auto-heal -->
+    <AIParameter Name="AIUnitMaximumHealthPercent"  Value="0.4"/>
+  </AIParameterDatatableElement>
+  
+
+  <!-- #################################### -->
+  <!-- ######    NAVAL OFFICERS    ######## -->
+  <!-- #################################### -->
+
+  <!-- Ordinator -->
+  <AIParameterDatatableElement Name="ItemOrdinatorIron">
+    <!-- +2 Vision -->
+    <AIParameter Name="AIUnitAttackPercent"           Value="0.01"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemOrdinatorStrategic12">
+    <!-- +2 morale when defending a fortress -->
+    <AIParameter Name="AIUnitAttackPercent"           Value="0.2"/>
+    <AIParameter Name="AIUnitDefensePercent"          Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemOrdinatorStrategic34">
+    <!-- -50% retaliation damage received -->
+    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemOrdinatorStrategic56">
+    <!-- +30% initiative and damage on lightning strike, immunity to damage from lightning strikes in and out of battle -->
+    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0.1"/>
+    <AIParameter Name="AIUnitInitiativePercent"       Value="0.05"/>
+    <AIParameter Name="AIUnitDamagePercent"           Value="0.05"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemOrdinatorQuest">
+    <!-- 35% XP earned per turn and in battle -->
+    <AIParameter Name="AIUnitInitiativePercent"       Value="0.1"/>
+    <AIParameter Name="AIUnitDamagePercent"           Value="0.1"/>
+    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <!-- Engineer -->
+  <AIParameterDatatableElement Name="ItemEngineerIron">
+    <!-- +30% Damage against neutral Fomorian units -->
+    <AIParameter Name="AIUnitDamagePercent"                     Value="0.2"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemEngineerStrategic12">
+    <!-- Movement cost reduce to 0.5 on coastal tiles -->
+    <AIParameter Name="AIEquipmentMaximumMovement"              Value="1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemEngineerStrategic34">
+    <!-- +20% regeneration -->
+    <AIParameter Name="AIUnitMaximumHealthPercent"              Value="0.1"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemEngineerStrategic56">
+    <!-- Each round the first attack made against the unit is a critical fail -->
+    <AIParameter Name="AIUnitMaximumHealthPercent"              Value="0.5"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="ItemEngineerStrategicQuest">
+    <!-- +3 morale on adjacent embarked units -->
+    <AIParameter Name="AIUnitAttackPercent"                     Value="0.01"/>
+  </AIParameterDatatableElement>
+
+</Datatable>
