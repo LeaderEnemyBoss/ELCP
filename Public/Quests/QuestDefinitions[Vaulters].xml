@@ -1,0 +1,1588 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://Vaultersw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://Vaultersw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 1 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter1" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter1,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor,FactionTraitVaultersMezari</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter1-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:MinorFactionAssimilatedCount) ge 1</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter1-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+      
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter1-Step1">
+        <Reward Droplist="DroplistMainQuestVaultersChapter1StrategicReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 2 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    
+    <!--============ TAGS ============-->  
+    <Tags>MainQuest,Vaulters,Chapter2</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter2Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter2Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter2Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set all Player's regions-->
+      <Var VarName="$AllPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the region to spawn the 1st Army-->
+      <Var VarName="$RegionToSpawnArmyID1">
+        <Any>
+          <From Source="$AllPlayerRegions"/>
+        </Any>
+      </Var>
+      <!--Set the region to spawn the 1st Army-->
+      <Var VarName="$LocationsToSpawnArmyID1">
+          <From Source="$RegionToSpawnArmyID1.$Positions"/>
+      </Var>
+
+
+      <!--Set Player's city-->
+      <Var VarName="$SelectedPlayerCity1">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCity1Location">
+        <From Source="$SelectedPlayerCity1.$Position"/>
+      </Var>
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Sort by distance from the 1st selected Player's city, all regions that doesn't belong to Player -->
+      <Var VarName="$SortedAllRegionsButPlayerRegions">
+        <From Source="$AllRegionsButPlayerRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCity1Location"/>
+          </OrderBy>
+        </From>
+      </Var>
+        
+      <!--Set the region to spawn the 2nd Army-->
+      <Var VarName="$RegionToSpawnArmyID2">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$SortedAllRegionsButPlayerRegions"/>
+        </Limit>
+      </Var>
+      <!--Set the region to spawn the 2nd Army-->
+      <Var VarName="$LocationsToSpawnArmyID2">
+          <From Source="$RegionToSpawnArmyID2.$Positions"/>
+      </Var>
+
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2-Step1" HideRewards="true" State="InProgress" />
+      
+      <Controller_Loop LoopCount="2">
+        <Controller_Parallel CompletionPolicy="Any">
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Strategic1" LinkedStepProgression="MainQuestVaulters-Chapter2-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Strategic2" LinkedStepProgression="MainQuestVaulters-Chapter2-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Strategic3" LinkedStepProgression="MainQuestVaulters-Chapter2-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Strategic4" LinkedStepProgression="MainQuestVaulters-Chapter2-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Strategic5" LinkedStepProgression="MainQuestVaulters-Chapter2-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Strategic6" LinkedStepProgression="MainQuestVaulters-Chapter2-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2-Step2" State="InProgress" />
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID1" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter2" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID2" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter2" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Controller_Parallel CompletionPolicy="All">
+        
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Sequence>
+        
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter2-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMainQuestVaultersChapter2ItemReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter2-Step2">
+        <Reward Droplist="DroplistMainQuestVaultersChapter2TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 2Alt ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter2Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter2</Tags>
+    
+
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter2" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter2" QuestState="Unstarted"/>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/ResourceTypeStrategic,ExploitedPointOfInterest) ge 3</InterpreterPrerequisite>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    
+    <Vars>
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set one Player's city-->
+      <Var VarName="$SelectedPlayerCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCityLocation">
+          <From Source="$SelectedPlayerCity.$Position"/>
+      </Var>
+      
+      <!--Sort bydtance all regions that doesn't belong to Player-->
+      <Var VarName="$SortedAllRegionsButPlayerRegions">
+        <From Source="$AllRegionsButPlayerRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+      
+      <!--Set the region of the 1st Quest POI to inspect-->
+      <Var VarName="$PointOfInterestToInspect1Region">
+        <Limit LimitMin="1" LimitMax="2">
+          <From Source="$SortedAllRegionsButPlayerRegions"/>
+        </Limit>
+      </Var>
+
+      <!--Set the region of the 2nd Quest POI to inspect-->
+      <Var VarName="$PointOfInterestToInspect2Region">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$SortedAllRegionsButPlayerRegions"/>
+        </Limit>
+      </Var>
+
+      <!--Set the 1st Quest POI to inspect-->
+      <Var VarName="$PointOfInterestToInspect1">
+        <Any>
+          <From Source="$PointOfInterestToInspect1Region.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      
+      <!--Set the 2nd Quest POI to inspect-->
+      <Var VarName="$PointOfInterestToInspect2">
+        <Any>
+          <From Source="$PointOfInterestToInspect2Region.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      
+      <!--Set the Biome Name of the 1st Quest POI to inspect-->
+      <Var VarName="$POIBiome1">
+        <From Source="$PointOfInterestToInspect1.$Position.$Region"/>
+      </Var>
+      
+      <!--Set the Biome Name of the 2nd Quest POI to inspect-->
+      <Var VarName="$POIBiome2">
+        <From Source="$PointOfInterestToInspect2.$Position.$Region"/>
+      </Var>
+
+      <!--Set the location to spawn the 1st Army-->
+      <Var VarName="$LocationsToSpawnArmyID1">
+          <From Source="$PointOfInterestToInspect1Region.$Positions"/>
+      </Var>
+
+      <!--Set the possible locations to spawn the 2nd-->
+      <Var VarName="$RegionToSpawnArmyID2">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$SortedAllRegionsButPlayerRegions"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID2">
+          <From Source="$RegionToSpawnArmyID2.$Positions"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName1" Source="$POIBiome1"/>
+      <LocalizationVar LocalizationKey="$RegionName2" Source="$POIBiome2"/>
+      <LocalizationVar LocalizationKey="$Ruins1" Source="$PointOfInterestToInspect1"/>
+      <LocalizationVar LocalizationKey="$Ruins2" Source="$PointOfInterestToInspect2"/>
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect2" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2Alt-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect1" Tags="MainQuest" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect1"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect1" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect1"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect1" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2Alt-Step2" HideRewards="true" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect2" Tags="MainQuest" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect2"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect2" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect2"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect2" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2Alt-Step2" State="Completed" />
+      
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2Alt-Step3" State="InProgress" />
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID1" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter2Alt" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="Roaming" TargetEmpireVarName="$InstigatorEmpire"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID2" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter2Alt" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" BehaviourName="Roaming" TargetEmpireVarName="$InstigatorEmpire"/>
+      <Controller_Parallel CompletionPolicy="All">
+
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter2Alt-Step3" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+      
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    
+    <Steps>
+      
+      <Step Name="MainQuestVaulters-Chapter2Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      
+      <Step Name="MainQuestVaulters-Chapter2Alt-Step2">
+        <Reward Droplist="DroplistMainQuestVaultersChapter2ItemReward" Picks="1"/>
+      </Step>
+
+      <Step Name="MainQuestVaulters-Chapter2Alt-Step3">
+        <Reward Droplist="DroplistMainQuestVaultersChapter2TechnologyReward" Picks="1"/>
+      </Step>
+      
+    </Steps>
+
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  
+  
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 3 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter3" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="0" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter3,MainQuestVaulters-Chapter3</Tags>
+
+    
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$EmpireCity">
+        <First>
+          <From Source="$Empire.$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Descending" PropertyName="CityResearch"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$CityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$CityName" Source="$CityRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Parallel CompletionPolicy="Any">
+      
+      <Controller_Sequence>
+        <!--Step 1-->
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter3-Step1" State="InProgress" />
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$EmpireCity">
+              <PathPrerequisite Flags="Prerequisite">ClassCity/CityImprovementVaulters6</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter3-Step1" State="Completed" />
+
+        <!--Step 2-->
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter3-Step2" State="InProgress" />
+        <Controller_Loop LoopCount="2">
+          <Decorator_DistrictLevelUp Level="0" LinkedStepProgression="MainQuestVaulters-Chapter3-Step2" TargetCityVarName="$EmpireCity" Output_DistrictSimObjectVarName="$District" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$District">
+                <PathPrerequisite Flags="Prerequisite">DistrictTypeExtension</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_DistrictLevelUp>
+        </Controller_Loop>
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter3-Step2" State="Completed" />
+        <Action_UpdateQuest State="Completed" />
+      </Controller_Sequence>
+
+	  <!-- Fail check -->
+      <Controller_Sequence>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite Inverted="true">
+            <Prerequisites Target="$EmpireCity">
+              <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+      
+    </Controller_Parallel>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter3-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter3-Step2">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+    
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter4</Tags>
+      </OnQuestCompleted>
+      <OnQuestFailed>
+        <Tags>MainQuestVaulters-Chapter3</Tags>
+      </OnQuestFailed>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 4 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter4" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter4</Tags>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <!--Set Player's Empire-->
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set the City to capture-->
+      <Var VarName="$CityToCapture">
+        <Any>
+          <From Source="$Regions.$City">
+            <Where>
+              <FilterCityByEmpire Inverted="true" EmpireVarName="$MyEmpire"/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the Biome Name of the 1st Quest POI to inspect-->
+      <Var VarName="$CityBiome">
+        <From Source="$CityToCapture.$Position.$BiomeTypeName"/>
+      </Var>
+
+      <!--Set the region of the Quest POI to inspect -->
+      <Var VarName="$CityToCaptureRegion">
+        <From Source="$CityToCapture.$Region"/>
+      </Var>
+      
+      <!--Set the Quest POI to inspect in the captured region-->
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$CityToCaptureRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$CityToCaptureRegion"/>
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+      <LocalizationVar LocalizationKey="$BiomeName" Source="$CityBiome"/>
+      
+    </Vars>
+
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter4-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_CaptureCity TargetCityVarName="$CityToCapture"  Initiator="Empire"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$CityToCapture">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+      
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter4-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter4-Step2" HideRewards="true" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Path(ClassArmy/UnitTypeVaultersHero/ItemAttributesInsigniaVaultersMainQuest1) or $Path(ClassArmy/UnitTypeMezariHero/ItemAttributesInsigniaVaultersMainQuest1)</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter4-Step2" State="Completed" />
+      
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter4-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter4-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 5 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter5" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter5</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InitialCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$InitialCityPosition">
+        <From Source="$InitialCity.$Position"/>
+      </Var>
+
+      <!--Get the list of all the regions excluding my regions-->
+      <Var VarName="$AllRegionsButMine">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the nearest region from the city position (excluding the initial city region)-->
+      <Var VarName="$NearestRegionsFromInitialCity">
+        <From Source="$AllRegionsButMine">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialCityPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$VillageType">
+        <First>
+          <From Source="$NearestRegionsFromInitialCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">VillageTypeKazanji</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">VillageTypeCeratan</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">VillageTypeErycis</PathPrerequisite>
+              
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PointOfInterestTypeWatchTower</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      
+      <Var VarName="$VillageToTalkLocation">
+        <From Source="$VillageType.$Position"/>
+      </Var>
+
+      <Var VarName="$VillageMinorEmpire">
+        <From Source="$VillageToTalkLocation.$Region.$MinorEmpire"/>
+      </Var>
+
+      <Var VarName="$InitialTribeName">
+        <From Source="$VillageMinorEmpire.$FactionName"/>
+      </Var>
+
+      <!--Get the nearest region from the city position (excluding the initial city region)-->
+      <Var VarName="$NearestRegionFromVillageToTalk">
+        <From Source="$AllRegionsButMine">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$VillageToTalkLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect1">
+        <Limit LimitMin="12" LimitMax="13">
+          <From Source="$NearestRegionFromVillageToTalk.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect1Location">
+        <From Source="$PointOfInterestToInspect1.$Position"/>
+      </Var>
+
+      <Var VarName="$StrategicResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$InitialCity.$Region.$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$LuxuryResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$InitialCity.$Region.$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NameOfStrategicResourceToGather">
+        <Any>
+          <From Source="$StrategicResourceDepositPointOfInterest.$ResourceName"/>
+        </Any>
+      </Var>
+      <Var VarName="$NameOfLuxuryResourceToGather">
+        <Any>
+          <From Source="$LuxuryResourceDepositPointOfInterest.$ResourceName"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$StrategicResourceAmount" Value="30"/>
+      <Var VarName="$StrategicResourceTransfertAmount" Value="-30"/>
+      <Var VarName="$LuxuryResourceAmount" Value="50"/>
+      <Var VarName="$LuxuryResourceTransfertAmount" Value="-50"/>
+
+      <LocalizationVar LocalizationKey="$LuxuryResource" Source="$LuxuryResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$LuxuryCounter" Source="$LuxuryResourceAmount"/>
+      <LocalizationVar LocalizationKey="$StrategicResource" Source="$StrategicResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$StrategicCounter" Source="$StrategicResourceAmount"/>
+      <LocalizationVar LocalizationKey="$MinorEmpire" Source="$VillageMinorEmpire"/>
+    </Vars>
+
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$VillageType" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect1" LockOption="Lock"/>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$VillageType" Tags="Talk" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Initiator="Empire" Output_QuestMarkerVarName="$QuestMarkerVillageType"/>
+      <Decorator_Talk TargetEntityVarName="$VillageType" Initiator="Empire"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5-Step2" State="InProgress" />
+      <Decorator_Talk TargetEntityVarName="$VillageType" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfLuxuryResourceToGather" WantedAmountVarName="$LuxuryResourceAmount"/>
+      </Decorator_Talk>
+      <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+      <Action_TransferResource ResourceNameVarName="$NameOfLuxuryResourceToGather" AmountVarName="$LuxuryResourceTransfertAmount"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageType" />
+      <Action_LockQuestTarget TargetVarName="$VillageType" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5-Step2" State="Completed" />
+      <Action_SpawnArmy SpawnLocationVarName="$VillageToTalkLocation" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter5Step2Reward" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" ArmyDroplistSuffixVarName="$InitialTribeName" Output_EnemyArmyGUIDVarName="$ArmyID" EmpireArmyOwnerVarName="$InstigatorEmpire"/>
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5-Step3" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect1" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect1"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect1" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Path(ClassArmy/ClassUnit,UnitTypeVaultersHero) or $Path(ClassArmy/ClassUnit,UnitTypeMezariHero)</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect1"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect1" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspect1Location" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter5Step3" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="Roaming" TargetEmpireVarName="$InstigatorEmpire"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5-Step3" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+      
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter5-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter5-Step2">
+        <Reward LocalizationKey="%MainQuestVaulters-Chapter5-Step2Reward"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter5-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 5 ALT===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter5Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+    
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter5Alt</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InitialCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      
+      <Var VarName="$InitialCityPosition">
+        <From Source="$InitialCity.$Position"/>
+      </Var>
+
+      <!--Get the list of all the regions excluding my regions-->
+      <Var VarName="$AllRegionsButMine">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the nearest region from the city position (excluding the initial city region)-->
+      <Var VarName="$NearestRegionsFromInitialCity">
+        <From Source="$AllRegionsButMine">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialCityPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect1">
+        <First>
+          <From Source="$NearestRegionsFromInitialCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation,QuestLocationTypeRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect1Location">
+        <From Source="$PointOfInterestToInspect1.$Position"/>
+      </Var>
+
+      <!--<Var VarName="$VillageMinorEmpire">
+        <From Source="$VillageToTalkLocation.$Region.$MinorEmpire"/>
+      </Var>
+
+      <Var VarName="$InitialTribeName">
+        <From Source="$VillageMinorEmpire.$FactionName"/>
+      </Var>-->
+
+      <!--Get the nearest region from the city position (excluding the initial city region)-->
+      <Var VarName="$NearestRegionFromVillageToTalk">
+        <From Source="$AllRegionsButMine">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$PointOfInterestToInspect1Location"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect2">
+        <Limit LimitMin="12" LimitMax="13">
+          <From Source="$NearestRegionFromVillageToTalk.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect2Location">
+        <From Source="$PointOfInterestToInspect2.$Position"/>
+      </Var>
+
+      <Var VarName="$StrategicResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$InitialCity.$Region.$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$LuxuryResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$InitialCity.$Region.$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NameOfStrategicResourceToGather">
+        <Any>
+          <From Source="$StrategicResourceDepositPointOfInterest.$ResourceName"/>
+        </Any>
+      </Var>
+      <Var VarName="$NameOfLuxuryResourceToGather">
+        <Any>
+          <From Source="$LuxuryResourceDepositPointOfInterest.$ResourceName"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$StrategicResourceAmount" Value="30"/>
+      <Var VarName="$StrategicResourceTransfertAmount" Value="-30"/>
+      <Var VarName="$LuxuryResourceAmount" Value="50"/>
+      <Var VarName="$LuxuryResourceTransfertAmount" Value="-50"/>
+
+      <LocalizationVar LocalizationKey="$LuxuryResource" Source="$LuxuryResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$LuxuryCounter" Source="$LuxuryResourceAmount"/>
+      <LocalizationVar LocalizationKey="$StrategicResource" Source="$StrategicResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$StrategicCounter" Source="$StrategicResourceAmount"/>
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect2" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5Alt-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect1" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Initiator="Empire" Output_QuestMarkerVarName="$QuestPointOfInterestToInspect1"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect1"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5Alt-Step2" State="InProgress" />
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect1" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfLuxuryResourceToGather" WantedAmountVarName="$LuxuryResourceAmount"/>
+      </Decorator_Inspect>
+      <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+      <Action_TransferResource ResourceNameVarName="$NameOfLuxuryResourceToGather" AmountVarName="$LuxuryResourceTransfertAmount"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPointOfInterestToInspect1" />
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect1" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5Alt-Step2" State="Completed" />
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspect1Location" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter2" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID" EmpireArmyOwnerVarName="$InstigatorEmpire"/>
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5Alt-Step3" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect2" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect2"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect2" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Path(ClassArmy/ClassUnit,UnitTypeVaultersHero) or $Path(ClassArmy/ClassUnit,UnitTypeMezariHero)</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect2"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect2" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspect2Location" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter5Step3" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="Roaming" TargetEmpireVarName="$InstigatorEmpire"/>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter5Alt-Step3" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter5Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter5Alt-Step2">
+        <Reward LocalizationKey="%MainQuestVaulters-Chapter5-Step2Reward"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter5Alt-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+  
+
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 6 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter6" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter6</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter6Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter6Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter6Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <DropListVar VarName="$VaultersSkill" DropList="DroplistMainQuestVaultersChapter6SkillToCheck"/>
+      <LocalizationVar LocalizationKey="$VaultersSkillName" Source="$VaultersSkill"/>
+      <DropListVar VarName="$SkillLevelToCheck" DropList="DroplistMainQuestVaultersChapter6SkillLevelToCheck"/>
+      <LocalizationVar LocalizationKey="$SkillLevelToCheckNumber" Source="$SkillLevelToCheck"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter6-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+        
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Path(EmpireTypeMajor/Garrison/UnitTypeVaultersHero,HeroSkillGovernor24Level3) or $Path(EmpireTypeMajor/Garrison/UnitTypeMezariHero,HeroSkillGovernor24Level3)</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Path(EmpireTypeMajor/UnitTypeVaultersHero,HeroSkillGovernor24Level3) or $Path(EmpireTypeMajor/UnitTypeMezariHero,HeroSkillGovernor24Level3)</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter6-Step1" State="Completed"/>
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter6-Step2" State="InProgress" />
+      <Controller_Sequence ResetPolicy="onFail">
+        <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Controller_Parallel CompletionPolicy="All">
+          
+          <Controller_Sequence>
+            <Controller_Loop LoopCount="10">
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite IsFailureCondition="true">
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,BoosterTeleport</PathPrerequisite>
+                    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Path(ClassEmpire/ClassCity/UnitTypeVaultersHero,HeroSkillGovernor24Level3) or $Path(ClassEmpire/ClassCity/UnitTypeMezariHero,HeroSkillGovernor24Level3)</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Loop>
+          </Controller_Sequence>
+          
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          </Controller_Sequence>
+          
+        </Controller_Parallel>
+      </Controller_Sequence>
+      
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter6-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed" />
+      
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter6-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter6-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 6Alt ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter6Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter6</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter6" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter6" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter6" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <DropListVar VarName="$VaultersSkill" DropList="DroplistMainQuestVaultersChapter6AltSkillToCheck"/>
+      <LocalizationVar LocalizationKey="$VaultersSkillName" Source="$VaultersSkill"/>
+      <DropListVar VarName="$SkillLevelToCheck" DropList="DroplistMainQuestVaultersChapter6AltSkillLevelToCheck"/>
+      <LocalizationVar LocalizationKey="$SkillLevelToCheckNumber" Source="$SkillLevelToCheck"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter6Alt-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Path(EmpireTypeMajor/Garrison/UnitTypeVaultersHero,HeroSkillGovernor12Level3) or $Path(EmpireTypeMajor/Garrison/UnitTypeMezariHero,HeroSkillGovernor12Level3)</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Path(EmpireTypeMajor/UnitTypeVaultersHero,HeroSkillGovernor12Level3) or $Path(EmpireTypeMajor/UnitTypeMezariHero,HeroSkillGovernor12Level3)</InterpreterPrerequisite>
+            </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter6Alt-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter6Alt-Step2" State="InProgress" />
+      <Controller_Sequence ResetPolicy="onFail">
+        <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Controller_Loop LoopCount="10">
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite IsFailureCondition="true">
+                  <Prerequisites Target="$Empire">
+                    <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,BoosterTeleport</PathPrerequisite>
+                    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Path(ClassEmpire/ClassCity/UnitTypeVaultersHero,HeroSkillGovernor12Level3) or $Path(ClassEmpire/ClassCity/UnitTypeMezariHero,HeroSkillGovernor12Level3)</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Loop>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+      </Controller_Sequence>
+
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter6Alt-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed" />
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter6Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter6Alt-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 7 ===========
+     ======================================== -->
+
+  <QuestDefinition Name="MainQuestVaulters-Chapter7" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter7</Tags>
+
+    
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter7Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter7Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter7Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <DropListVar VarName="$WantedEmpirePlanClass" DropList="DroplistMainQuestVaultersChapter7EmpirePlanClass"/>
+      <DropListVar VarName="$WantedEmpirePlanLevel" DropList="DroplistMainQuestVaultersChapter7EmpirePlanLevel"/>
+      <LocalizationVar LocalizationKey="$ScienceMinistry" Source="$WantedEmpirePlanClass"/>
+      <LocalizationVar LocalizationKey="$EmpirePlanLevel" Source="$WantedEmpirePlanLevel"/>
+    </Vars>
+
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter7-Step1" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_HasEmpirePlan EmpirePlanClassVarName="$WantedEmpirePlanClass" EmpirePlanLevelVarName="$WantedEmpirePlanLevel"/>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestVaulters-Chapter7-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+      
+    </Controller_Sequence>
+
+    
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter7-Step1">
+        <Reward Droplist="DroplistMainQuestVaultersChapter7TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 7Alt ========
+     ======================================== -->
+
+  <QuestDefinition Name="MainQuestVaulters-Chapter7Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Vaulters,Chapter7</Tags>
+    
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">      
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter7" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter7" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestVaulters-Chapter7" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    
+    <!--============ SEQUENCE ============-->
+      <Controller_Sequence>
+
+        <!--Step 1-->
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter7Alt-Step1" State="InProgress" />
+        <Controller_Loop LoopCount="5">
+          <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestVaulters-Chapter7Alt-Step1">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(ClassEmpire/ClassCity:NetCityResearch) ge 200</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Loop>
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter7Alt-Step1" State="Completed" />
+        <Action_UpdateQuest State="Completed" />
+        
+      </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter7Alt-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMainQuestVaultersChapter7TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Vaulters,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  
+  
+  <!-- ======================================
+     ========= VAULTERS-CHAPTER 8 ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestVaulters-Chapter8" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="0" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->    
+    <Tags>MainQuest,Vaulters,Chapter8,MainQuestVaulters-Chapter8,FinalQuest</Tags>
+
+
+    <!--============ VARIABLES ============-->    
+    <Vars>
+
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+      <Var VarName="$EmpireCityRegionLocation">
+        <From Source="$EmpireCityRegion.$Position"/>
+      </Var>
+      
+      <Var VarName="$AllRegionsButInitialCityRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByDistance PositionToCompareVarName="$EmpireCityRegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$NearestRegionsFromInitialCity">
+        <From Source="$AllRegionsButInitialCityRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityRegionLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$RegionsToSpawnArmies">
+        <Limit LimitMin="2" LimitMax="5">
+          <From Source="$NearestRegionsFromInitialCity"/>
+        </Limit>
+      </Var>
+      
+      
+      <!--Set the region positions to spawn the 7 Armies-->
+      <Var VarName="$LocationsToSpawnArmyID1">
+        <From Source="$RegionsToSpawnArmies.$Positions"/>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID2">
+        <From Source="$RegionsToSpawnArmies.$Positions"/>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID3">
+        <From Source="$RegionsToSpawnArmies.$Positions"/>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID4">
+        <From Source="$RegionsToSpawnArmies.$Positions"/>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID5">
+        <From Source="$RegionsToSpawnArmies.$Positions"/>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID6">
+        <From Source="$RegionsToSpawnArmies.$Positions"/>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID7">
+        <From Source="$RegionsToSpawnArmies.$Positions"/>
+      </Var>
+      
+      <!--Set the region positions to spawn the Boss Army-->
+      <Var VarName="$LocationsToSpawnArmyID8">
+        <From Source="$RegionsToSpawnArmies.$Positions"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$City" Source="$EmpireCityRegion"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Parallel CompletionPolicy="Any">
+      
+      <Controller_Sequence>
+
+        <!--Step 1-->
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter8-Step1" State="InProgress" />
+        <Decorator_ConstructionEnded ConstructionName="CityImprovementVaulters9" TargetCityVarName="$EmpireCity" Initiator="Empire"/>
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter8-Step1" State="Completed" />
+      
+        <!--Step 2-->
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter8-Step2" State="InProgress" />
+        <Action_StartTimer Output_TimerVarName="$Timer"/>
+        <!--1st wave of spawn armies-->
+        <Controller_Parallel CompletionPolicy="All">
+
+        <!--1st wave of spawn armies-->
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="1" Initiator="Empire"/>
+            <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID1" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter8Step2Summer" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+          </Controller_Sequence>
+
+          <!--2nd wave of spawn armies-->
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="2" Initiator="Empire"/>
+            <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID2" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter8Step2Summer" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID2" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+            <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID3" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter8Step2Summer" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID3" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID3" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+          </Controller_Sequence>
+
+          <!--3rd wave of spawn armies-->
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="5" Initiator="Empire"/>
+            <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID6" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter8Step2Summer" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID6" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID6" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+            <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID7" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter8Step2Summer" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID7" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID7" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+          </Controller_Sequence>
+
+          <!--4th wave of spawn armies-->
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="7" Initiator="Empire"/>
+            <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID6" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter8Step2Summer" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID6" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID6" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+            <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID7" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter8Step2Summer" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID7" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID7" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+          </Controller_Sequence>
+        
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          </Controller_Sequence>
+        
+        </Controller_Parallel>
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter8-Step2" State="Completed"/>
+      
+        <!--Step 3-->
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter8-Step3" State="InProgress" />
+        <!--Final spawn-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="10" Initiator="Empire"/>
+          <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID8" ArmyDroplist="DroplistArmyDefinitionMainQuestVaultersChapter8Step3Summer" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID8" Initiator="Empire"/>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID8" TargetCityVarName="$EmpireCity" BehaviourName="Offense"/>
+        </Controller_Sequence>
+        <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+          <EnemyArmyGUIDVarName>$ArmyID8</EnemyArmyGUIDVarName>
+        </Decorator_KillArmy>
+        <Action_UpdateStep StepName="MainQuestVaulters-Chapter8-Step3" State="Completed"/>
+        <Action_UpdateQuest State="Completed"/>
+    
+      </Controller_Sequence>
+
+      <Controller_Sequence>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite Inverted="true">
+            <Prerequisites Target="$EmpireCity">
+              <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+      
+    </Controller_Parallel>
+
+
+    <!--============ REWARDS ============-->
+    
+    <Steps>
+      <Step Name="MainQuestVaulters-Chapter8-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter8-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestVaulters-Chapter8-Step3">
+        <Reward Droplist="DroplistMainQuestVaultersChapter8Step3TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestFailed>
+        <Tags>MainQuestVaulters-Chapter8</Tags>
+      </OnQuestFailed>
+	  
+	  <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+  </QuestDefinition>
+  
+</Datatable>

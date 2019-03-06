@@ -224,6 +224,7 @@
   <SimulationDescriptor Name="TechnologyWinterShiftersUnit2"                    Type="Technology" />
   <SimulationDescriptor Name="TechnologySeaDemonsUnit2"                         Type="Technology" />
   <SimulationDescriptor Name="TechnologyFlamesUnit2"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMimicsUnit2"                            Type="Technology" />
   <SimulationDescriptor Name="TechnologyTutorialUnit2"                          Type="Technology" />
   <SimulationDescriptor Name="TechnologyTutorialUnit1"                          Type="Technology" />
   <SimulationDescriptor Name="TechnologyTutorialSettler"                        Type="Technology" />
@@ -238,7 +239,7 @@
   <!-- Mad Fairies - Empire Bonus (Ending Reward) -->
   <SimulationDescriptor Name="TechnologyMadFairies6"                            Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true"  Value="0.25" Operation="Addition"  Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"        Value="0.25" Operation="Addition"  Path="../EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -416,12 +417,23 @@
   </SimulationDescriptor>
 
   <!-- Flames : Golem Workers -->
-  <SimulationDescriptor Name="TechnologyFlames2"                            Type="Technology" >
+  <SimulationDescriptor Name="TechnologyFlames2"                                Type="Technology" >
   </SimulationDescriptor>
   
   <!-- Flames Quest Reward: Unique Item -->
-  <SimulationDescriptor Name="TechnologyFlames11"                          Type="Technology" />
-  <SimulationDescriptor Name="TechnologyItemHammerFlamesQuestReward"       Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFlames11"                               Type="Technology" />
+  <SimulationDescriptor Name="TechnologyItemHammerFlamesQuestReward"            Type="Technology" />
+
+  <!-- Mimic Quest Reward: Unique Item -->
+  <SimulationDescriptor Name="TechnologyItemSwordMimicQuestReward"              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMimicsQuest1"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMimicsQuest2"                           Type="Technology" />
+  <SimulationDescriptor Name="TechnologyKaijuKiller"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyDescriptorLiceUnits"                    Type="Technology" />
+
+  <SimulationDescriptor Name="TechnologyKaijuHead"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyKaijuTorso"                             Type="Technology" />
+  <SimulationDescriptor Name="TechnologyKaijuLegs"                              Type="Technology" />
 
 
   <!-- ############################# -->
@@ -438,8 +450,8 @@
   <SimulationDescriptor Name="TechnologyMilitaryRecruitmentBonus1"              Type="Technology" />
   <SimulationDescriptor Name="TechnologyConstructionBuyout"                     Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true" Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true" Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <!--<SimulationDescriptor Name="TechnologyUnitCostReduction1"             Type="Technology"/>-->
@@ -520,6 +532,7 @@
   <SimulationDescriptor Name="TechnologyWinterShiftersUnit3"                    Type="Technology" />
   <SimulationDescriptor Name="TechnologySeaDemonsUnit3"                         Type="Technology" />
   <SimulationDescriptor Name="TechnologyFlamesUnit3"                            Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMimicsUnit3"                            Type="Technology" />
   <SimulationDescriptor Name="TechnologyTutorialUnit3"                          Type="Technology" />
 
   <!-- Broken Lords Quest Reward: Empire Bonus -->
@@ -619,16 +632,12 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <!-- ELCP/LeaderEnemyBoss: New unique AllayiBoosterDurationMultiplier for Luxury Alchemists since BoosterDurationMultiplier multiplies everything from stockpiles to infiltration effects -->
-  
   <!-- Winter Shifters Quest Reward: Luxury Booster bonus -->
   <SimulationDescriptor Name="TechnologyWinterShifters7"                        Type="Technology">
     <SimulationModifierDescriptors>
-      <!--<BinarySimulationModifierDescriptor TargetProperty="BoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>-->
-	  <BinarySimulationModifierDescriptor TargetProperty="AllayiBoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>
-	</SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>
+    </SimulationModifierDescriptors>
   </SimulationDescriptor>
-  <!-- End ELCP -->
 
   <!-- Sea Demons Quest Reward: City Improvement giving XP at seafaring unit creation -->
   <SimulationDescriptor Name="TechnologySeaDemons10"                            Type="Technology">
@@ -637,14 +646,14 @@
   </SimulationDescriptor>
 
   <!-- Flames Quest Reward: remove upkeep to golems -->
-  <SimulationDescriptor Name="TechnologyFlames6"                           Type="Technology">
+  <SimulationDescriptor Name="TechnologyFlames6"                                Type="Technology">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep" Value="-1" Operation="Percent" Path="./EmpireTypeMajor/Garrison/ClassUnit,UnitTypeFlamesGolem"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Flames : Golem Camp-->
-  <SimulationDescriptor Name="TechnologyFlames14"                            Type="Technology" >
+  <SimulationDescriptor Name="TechnologyFlames14"                               Type="Technology" >
   </SimulationDescriptor>
   <!-- ############################# -->
   <!-- ##########  ERA 3  ########## -->
@@ -688,6 +697,7 @@
   <SimulationDescriptor Name="TechnologyLuxuryExtractionUncommon"               Type="Technology">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Addition" Value="1" Path="./EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Luxury"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"  Operation ="Addition"  Value="1" Path="./EmpireTypeMajor/ClassCity/ClassCreepingNode, CreepingNode_LuxuryExtractor_Counter" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="TechnologyStrategicExtractionUncommon"            Type="Technology" />
@@ -802,15 +812,18 @@
   </SimulationDescriptor>
 
   <!-- Flames : Golem Workers 2-->
-  <SimulationDescriptor Name="TechnologyFlames3"                            Type="Technology" >
+  <SimulationDescriptor Name="TechnologyFlames3"                                Type="Technology" >
   </SimulationDescriptor>
 
   <!-- Flames : Rubber Rousers -->
-  <SimulationDescriptor Name="TechnologyFlames9"                            Type="Technology" >
+  <SimulationDescriptor Name="TechnologyFlames9"                                Type="Technology" >
   </SimulationDescriptor>
 
   <!-- Flames Quest Reward: City Improvement -->
-  <SimulationDescriptor Name="TechnologyFlames10"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFlames10"                               Type="Technology" />
+
+  <!-- Mimics Quest Reward: City Improvement -->
+  <SimulationDescriptor Name="TechnologyMimics3"                                Type="Technology" />
 
   <!-- ############################# -->
   <!-- ##########  ERA 4  ########## -->
@@ -831,6 +844,8 @@
 
   <SimulationDescriptor Name="TechnologyStrategicExtractionRare"                Type="Technology" />
   <SimulationDescriptor Name="TechnologyLuxuryExtractionRare"                   Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMimicsStrategicExtractionRare"          Type="Technology" />
+  <SimulationDescriptor Name="TechnologyMimicsLuxuryExtractionRare"             Type="Technology" />
   
   <SimulationDescriptor Name="TechnologyVolcanic2"                              Type="Technology" />
 
@@ -857,7 +872,7 @@
       <SimulationModifierDescriptor TargetProperty="CityUnitSlot"               Operation="Addition"  Value="2"     Path="./EmpireTypeMajor"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-  <SimulationDescriptor Name="TechnologyArmySize2MilitaryUpkeep"            Type="Technology">
+  <SimulationDescriptor Name="TechnologyArmySize2MilitaryUpkeep"                Type="Technology">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"             Operation="Addition"  Value="2"     Path="./EmpireTypeMajor/ClassArmy"/>
     </SimulationModifierDescriptors>
@@ -989,7 +1004,7 @@
   <SimulationDescriptor Name="TechnologyMedalEra4MilitaryReward"                Type="Technology" />
 
   <!-- Flames : Golem Workers 3-->
-  <SimulationDescriptor Name="TechnologyFlames4"                            Type="Technology" >
+  <SimulationDescriptor Name="TechnologyFlames4"                                Type="Technology" >
   </SimulationDescriptor>
 
   <!-- ############################# -->
@@ -1088,11 +1103,17 @@
   <SimulationDescriptor Name="TechnologyMedalEra5HeroesReward"                  Type="Technology" />
 
   <!-- Flames Quest Reward: Endless Memorial -->
-  <SimulationDescriptor Name="TechnologyFlames12"                              Type="Technology" />
+  <SimulationDescriptor Name="TechnologyFlames12"                               Type="Technology" />
 
-  <SimulationDescriptor Name="TechnologyFlames13"                              Type="Technology">
+  <SimulationDescriptor Name="TechnologyFlames13"                               Type="Technology">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"          Operation="Addition"   Value="15"  Path="../EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TechnologyMimics4"                                Type="Technology">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FIDSIMultiplier"          Operation="Addition"   Value="3"  Path="../EmpireTypeMajor/ClassCity/ClassCreepingNode"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1169,10 +1190,10 @@
 
   <SimulationDescriptor Name="TechnologyUnitImproved1"                          Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1318,9 +1339,76 @@
   <SimulationDescriptor Name="TechnologyNavalUnit2"                             Type="Technology" />
   <SimulationDescriptor Name="TechnologyNavalUnit3"                             Type="Technology" />
   <SimulationDescriptor Name="TechnologyNavalUnit4"                             Type="Technology" />
+  
 
+  <!-- ############################################ -->
+  <!-- ######          KAIJU UNLOCKS         ###### -->
+  <!-- ############################################ -->
 
+  <SimulationDescriptor Name="TechnologyKaiju1Unlock1"                          Type="KaijuUnlock" />
+  <SimulationDescriptor Name="TechnologyKaiju1Unlock2"                          Type="KaijuUnlock" />
+  <SimulationDescriptor Name="TechnologyKaiju1Unlock3"                          Type="KaijuUnlock" >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyKaiju2Unlock1"                          Type="KaijuUnlock" />
+  <SimulationDescriptor Name="TechnologyKaiju2Unlock2"                          Type="KaijuUnlock" />
+  <SimulationDescriptor Name="TechnologyKaiju2Unlock3"                          Type="KaijuUnlock" >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"            Operation="Addition"   Value="5"     Path="../EmpireTypeMajor/ClassKaijuGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"            Operation="Addition"   Value="5"     Path="../EmpireTypeMajor/ClassKaijuArmy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyKaiju3Unlock1"                          Type="KaijuUnlock" />
+  <SimulationDescriptor Name="TechnologyKaiju3Unlock2"                          Type="KaijuUnlock" />
+  <SimulationDescriptor Name="TechnologyKaiju3Unlock3"                          Type="KaijuUnlock" >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Addition"         Value="2"       Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Addition"         Value="2"       Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Addition"         Value="2"       Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" TooltipHidden="true"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="1"  Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus" Priority="101" TooltipHidden="true"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="1"  Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia" Priority="101" TooltipHidden="true"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="1"  Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" Priority="101" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Percent"   Value="0.2"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Percent"   Value="0.2"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"          Operation="Percent"   Value="0.2"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyKaiju1and2"                             Type="KaijuUnlock"  >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor  TargetProperty="KaijuUnitProductionTimer"  Operation="Percent"   Value="-0.5"  Path="../EmpireTypeMajor/ClassKaiju"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyKaiju2and3"                                Type="KaijuUnlock" />
+  <SimulationDescriptor Name="TechnologyKaiju1and3"                                Type="KaijuUnlock" >
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="WinterPenaltyModifier"                     Operation="Force"     Value="0" Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyAllKaijuUnlock"                         Type="KaijuUnlock" />
 
+  <!-- ################################################ -->
+  <!-- ######             MIMICS                 ###### -->
+  <!-- ################################################ -->
+
+  <!-- "Feels Like Home" Tech -->
+  <SimulationDescriptor Name="TechnologyMimics1"                                Type="Technology" >
+  </SimulationDescriptor>
+
+  <!-- Kaiju Diplomacy -->
+  <SimulationDescriptor Name="TechnologyMimics2"                                Type="Technology" >
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DiplomaticDeclarationFactor" Operation="Percent" Left="-0.2" BinaryOperation="Multiplication" Right="$(NumberOfTamedKaijus)" Path="./EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DiplomaticNegotiationFactor" Operation="Percent" Left="-0.2" BinaryOperation="Multiplication" Right="$(NumberOfTamedKaijus)" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
   <!-- ########################################## -->
   <!-- ######            CUSTOM            ###### -->
   <!-- ########################################## -->

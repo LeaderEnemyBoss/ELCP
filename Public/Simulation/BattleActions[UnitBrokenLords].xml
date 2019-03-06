@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ############################################################################################################################################ -->
+  <!-- ############################################################################################################################################ -->
+  <!-- #################################    BATTLE ACTIONS WITH THE VISUAL DATA AND SPECIFIC GAMEPLAY   ########################################### -->
+  <!-- ############################################################################################################################################ -->
+  <!-- ############################################################################################################################################ -->
+
+  <!-- BROKEN LORDS UNITS -->
+  <BattleActionUnit Name="BattleActionUnitBrokenLords_Immolate"  Defensible="false" Type="Deactivation" Priority="0">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ImmolationState) gt 0</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ImmolationDamages" PropertyName="Health" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * 0.1))" />
+    </BattleEffects>
+  </BattleActionUnit>
+  
+  
+  <!-- BROKEN LORDS SETTLER -->  
+
+  
+  <!-- BROKEN LORDS FOOTMAN -->
+  
+  <!-- BROKEN LORDS BLACK BISHOP -->
+  <BattleActionUnit Name="BattleActionUnitBrokenLordsBlackBishopAttackLeech" Defensible="false" TerrainConsideration="Range" Type="Attack">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_BrokenLords_LightningBolt_01" Speed="5" Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="20" OriginBoneName="LeftHand" TargetBoneName="Hips"  ProgressionRatioBeforeFadeOut="0.85"/>
+    </BattleActionData>
+  </BattleActionUnit>
+  
+  <!-- ===================================== BROKEN LORDS CAVALRY ======================================== -->
+  <BattleActionUnit Name="BattleActionUnitBrokenLordsCavalryCharging" Type="Move">
+    <InterpreterPrerequisite Inverted="false">$Count(ClassUnit,UnitAbilityActiveChargeDescriptor) ge 1</InterpreterPrerequisite> 
+  
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleActionUnitBrokenLordsCavalryPassive_BattleEffectChargeUp" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+    <!-- ===================================== BROKEN LORDS HERO ======================================== -->
+</Datatable>

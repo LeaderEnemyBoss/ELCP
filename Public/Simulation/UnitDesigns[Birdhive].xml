@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################################################################################################################################## -->
+  <!-- #########################################   PREMADE UNIT DESIGN WHICH CAN BE CALL BY OTHER XMLS  ################################################# -->
+  <!-- ########    - Those units can be useful for the Quest, and  Minor Faction. It still can be used to generate units from a city improvement ######## -->
+  <!-- ################################################################################################################################################## -->
+
+  <!-- ######################################################### -->
+  <!-- ################# BIRDHIVE HARPY UNITS ################## -->
+  <!-- ######################################################### -->
+
+  <!-- Default Unit Design proposed to Player when unlocking the Body -->
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#1"                         Model="1130100">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMajor</PathPrerequisite>
+  </UnitDesign>
+
+  <!--Used by the Minor Faction tribes to create village armies and roaming armies-->
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MinorEmpireEra1"           Model="1130111">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive</PathPrerequisite>
+    <Tags>Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier1#1"     />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#1"  />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MinorEmpireEra2"           Model="1130112">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive</PathPrerequisite>
+    <Tags>Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier2#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier2#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MinorEmpireEra3"           Model="1130113">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive</PathPrerequisite>
+    <Tags>Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier3#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier3#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MinorEmpireEra4"           Model="1130114">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive</PathPrerequisite>
+    <Tags>Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier1#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier1#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MinorEmpireEra5"           Model="1130115">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive</PathPrerequisite>
+    <Tags>Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier2#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier2#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MinorEmpireEra6"           Model="1130116">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive</PathPrerequisite>
+    <Tags>Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier3#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier3#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!--Used by the Minor Faction neutral tribes to inject units through the Market Place -->
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MercenaryEra1"             Model="1130121">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive,Mercenary</PathPrerequisite>
+    <Tags>Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier1#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MercenaryEra2"             Model="1130122">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive,Mercenary</PathPrerequisite>
+    <Tags>Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier2#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier2#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MercenaryEra3"             Model="1130123">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive,Mercenary</PathPrerequisite>
+    <Tags>Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier3#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier3#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MercenaryEra4"             Model="1130124">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive,Mercenary</PathPrerequisite>
+    <Tags>Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier1#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier1#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MercenaryEra5"             Model="1130125">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive,Mercenary</PathPrerequisite>
+    <Tags>Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier2#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier2#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MercenaryEra6"             Model="1130126">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive,Mercenary</PathPrerequisite>
+    <Tags>Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier3#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier3#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!--Used by the Minor Faction converted tribes -->
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#ConvertedEra1"             Model="1130131" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <Tags>ConvertedVillageUnit,Era1,Birdhive,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier1#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"      />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#ConvertedEra2"             Model="1130132" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <Tags>ConvertedVillageUnit,Era2,Birdhive,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier2#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"      />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#ConvertedEra3"             Model="1130133" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <Tags>ConvertedVillageUnit,Era3,Birdhive,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier3#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"      />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#ConvertedEra4"             Model="1130134" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <Tags>ConvertedVillageUnit,Era4,Birdhive,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier1#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"      />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#ConvertedEra5"             Model="1130135" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <Tags>ConvertedVillageUnit,Era5,Birdhive,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier2#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"      />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#ConvertedEra6"             Model="1130136" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <Tags>ConvertedVillageUnit,Era6,Birdhive,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1DustTier3#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"      />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!--Used by Lore Quests -->
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#SideQuestLore0015"         Model="1130141" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMajor</PathPrerequisite>
+    <Tags>Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier3#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier3#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- Deprecated -->
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#MinorEmpire"               Model="1130101">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive</PathPrerequisite>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1IronTier1#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#1" />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"     />
+      <Slot Name="Accessory0"                      ItemName="" />
+      <Slot Name="Accessory1"                      ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignBirdhiveHarpy#Mercenary"                 Model="1130102">
+    <UnitBodyDefinitionReference Name="UnitBodyBirdhiveHarpy" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityBirdhive,Mercenary</PathPrerequisite>
+  </UnitDesign>
+ 
+</Datatable>

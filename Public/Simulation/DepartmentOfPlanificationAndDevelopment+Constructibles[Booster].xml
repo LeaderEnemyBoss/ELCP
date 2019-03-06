@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- FIDS RESOURCES -->
+  <BoosterDefinition Name="BoosterFood" RewardType="BoosterFood" Duration="1" BoosterType="DelayingTime" AutoActivation="false" TargetType="City" TargetPath="ClassCity,!CityStatusInfected">
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFood</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFood"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodBonus1"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodBonus2"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterIndustry" RewardType="BoosterIndustry" Duration="1" BoosterType="DelayingTime" AutoActivation="false" TargetType="City" TargetPath="ClassCity,!CityStatusInfected">
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustry</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustry"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus1"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus2"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterScience" RewardType="BoosterScience" Duration="1" BoosterType="DelayingTime" AutoActivation="false">
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScience</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScience"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceBonus1"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceBonus2"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="FlamesIndustryBooster" RewardType="FlamesIndustryBooster" Duration="1" BoosterType="DelayingTime" Unsalable="true" AutoActivation="false" TargetType="City" TargetPath="ClassCity,!CityStatusInfected">
+    <Effect>
+      <SimulationDescriptorReference Name="BoosterIndustry"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus1"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus2"/>
+    </Effect>
+    <CustomCost ResourceName="SiegeDamage" Instant="true">100</CustomCost>
+  </BoosterDefinition>
+
+  <!-- LUXURY RESOURCES -->
+  <BoosterDefinition Name="BoosterLuxury1" RewardType="BoosterLuxury1" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury1" />
+    <SimulationDescriptorReference Name="CommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury1" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury2" RewardType="BoosterLuxury2" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury2" />
+    <SimulationDescriptorReference Name="CommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury2" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury3" RewardType="BoosterLuxury3" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury3" />
+    <SimulationDescriptorReference Name="CommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury3" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury4" RewardType="BoosterLuxury4" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury4" />
+    <SimulationDescriptorReference Name="CommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury4" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury5" RewardType="BoosterLuxury5" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury5" />
+    <SimulationDescriptorReference Name="CommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury5" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury6" RewardType="BoosterLuxury6" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury6" />
+    <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury6" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury7" RewardType="BoosterLuxury7" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury7" />
+    <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury7" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury8" RewardType="BoosterLuxury8" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury8" />
+    <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury8" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury9" RewardType="BoosterLuxury9" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury9" />
+    <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury9" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury10" RewardType="BoosterLuxury10" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury10" />
+    <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
+    <CustomCost ResourceName="Luxury10" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury11" RewardType="BoosterLuxury11" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury11" />
+    <SimulationDescriptorReference Name="RareLuxuryBooster" />
+    <CustomCost ResourceName="Luxury11" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury12" RewardType="BoosterLuxury12" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury12" />
+    <SimulationDescriptorReference Name="RareLuxuryBooster" />
+    <CustomCost ResourceName="Luxury12" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury13" RewardType="BoosterLuxury13" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury13" />
+    <SimulationDescriptorReference Name="RareLuxuryBooster" />
+    <CustomCost ResourceName="Luxury13" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury14" RewardType="BoosterLuxury14" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury14" />
+    <SimulationDescriptorReference Name="RareLuxuryBooster" />
+    <CustomCost ResourceName="Luxury14" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterLuxury15" RewardType="BoosterLuxury15" Duration="10">
+    <SimulationDescriptorReference Name="EmpireBoosterLuxury15" />
+    <SimulationDescriptorReference Name="RareLuxuryBooster" />
+    <CustomCost ResourceName="Luxury15" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
+  </BoosterDefinition>
+
+  <!-- STRATEGIC RESOURCES -->
+  <BoosterDefinition Name="BoosterStrategic1" RewardType="BoosterStrategic1" Duration="10">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="AffinityStrategicWinterBoosterBonus"/>
+      <SimulationDescriptorReference Name="BoosterTeleport"/>
+    </ParentSimulationDescriptorReference>
+    <SimulationDescriptorReference Name="EmpireBoosterStrategic1" />
+    <CustomCost ResourceName="Strategic1" Instant="true">5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitVaultersMezari</PathPrerequisite>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic2" RewardType="BoosterStrategic2" Duration="10">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="AffinityStrategicWinterBoosterBonus"/>
+      <SimulationDescriptorReference Name="BoosterTeleport"/>
+    </ParentSimulationDescriptorReference>
+    <SimulationDescriptorReference Name="EmpireBoosterStrategic2" />
+    <CustomCost ResourceName="Strategic2" Instant="true">5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitVaultersMezari</PathPrerequisite>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic3" RewardType="BoosterStrategic3" Duration="10">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="AffinityStrategicWinterBoosterBonus"/>
+      <SimulationDescriptorReference Name="BoosterTeleport"/>
+    </ParentSimulationDescriptorReference>
+    <SimulationDescriptorReference Name="EmpireBoosterStrategic3" />
+    <CustomCost ResourceName="Strategic3" Instant="true">5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitVaultersMezari</PathPrerequisite>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic4" RewardType="BoosterStrategic4" Duration="10">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="AffinityStrategicWinterBoosterBonus"/>
+      <SimulationDescriptorReference Name="BoosterTeleport"/>
+    </ParentSimulationDescriptorReference>
+    <SimulationDescriptorReference Name="EmpireBoosterStrategic4" />
+    <CustomCost ResourceName="Strategic4" Instant="true">5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitVaultersMezari</PathPrerequisite>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic5" RewardType="BoosterStrategic5" Duration="10">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="AffinityStrategicWinterBoosterBonus"/>
+      <SimulationDescriptorReference Name="BoosterTeleport"/>
+    </ParentSimulationDescriptorReference>
+    <SimulationDescriptorReference Name="EmpireBoosterStrategic5" />
+    <CustomCost ResourceName="Strategic5" Instant="true">5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitVaultersMezari</PathPrerequisite>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic6" RewardType="BoosterStrategic6" Duration="10">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="AffinityStrategicWinterBoosterBonus"/>
+      <SimulationDescriptorReference Name="BoosterTeleport"/>
+    </ParentSimulationDescriptorReference>
+    <SimulationDescriptorReference Name="EmpireBoosterStrategic6" />
+    <CustomCost ResourceName="Strategic6" Instant="true">5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitVaultersMezari</PathPrerequisite>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterSacrificePopulation" RewardType="BoosterSacrificePopulation" Duration="$(Population)" BoosterType="DelayingTime" AutoActivation="true" TargetType="City" TargetPath="ClassCity">
+    <Effect>
+      <SimulationDescriptorReference Name="BoosterSacrificePopulationTimer"/>
+      <SimulationDescriptorReference Name="BoosterSacrificePopulation"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterSacrificePopulationVariableDuration" RewardType="BoosterSacrificePopulationVariableDuration" Duration="0" BoosterType="DelayingTime" AutoActivation="true" TargetType="City" TargetPath="ClassCity">
+    <ParentSimulationDescriptorReference ParentTags="ClassCity">
+      <SimulationDescriptorReference Name="BoosterSacrificePopulationVariableDuration"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <!-- NECROPHAGES FOOD BOOSTER -->
+  <BoosterDefinition Name="BoosterCadavers" RewardType="BoosterCadavers" Duration="1" BoosterType="DelayingTime" AutoActivation="false" Unsalable="true" TargetType="City" TargetPath="ClassCity">
+    <Effect>
+      <SimulationDescriptorReference Name="BoosterCadaver"/>
+    </Effect>
+    <Effect>
+      <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
+      <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra2,TechnologyEra1</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
+      <Command        Name="CreateUnit"   AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra1"/>
+      <Command        Name="CreateUnit"   AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra1"/>
+    </Effect>
+    <Effect>
+      <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
+      <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra3,TechnologyEra2</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra2"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra2"/>
+    </Effect>
+    <Effect>
+      <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
+      <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra4,TechnologyEra3</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra3"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra3"/>
+    </Effect>
+    <Effect>
+      <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
+      <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra5,TechnologyEra4</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra4"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra4"/>
+    </Effect>
+    <Effect>
+      <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
+      <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra6,TechnologyEra5</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra5"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra5"/>
+    </Effect>
+    <Effect>
+      <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
+      <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra6"/>
+      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra6"/>
+    </Effect>
+    <Effect>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyNecrophages11</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterCadaverBonus1"/>
+    </Effect>
+    <CustomCost ResourceName="Cadaver" Instant="true">8</CustomCost>
+  </BoosterDefinition>
+
+  <!-- EARTH COLOSSUS -->
+  <BoosterDefinition Name="BoosterFortify" RewardType="BoosterFortify" Duration="5" BoosterType="DelayingTime" AutoActivation="true" Unsalable="true" TargetType="City" TargetPath="ClassCity">
+    <!--<ParentSimulationDescriptorReference ParentTags="ClassCity">-->
+      <SimulationDescriptorReference Name="BoosterFortify"/>
+      <SimulationDescriptorReference Name="BoosterFortifyCityDefenses"/>
+    <!--</ParentSimulationDescriptorReference>-->
+  </BoosterDefinition>
+
+  
+
+  <!-- ### SUMMER FLAMES DLC ### -->
+  
+  <!-- STRATEGIC RESOURCES -->
+  <BoosterDefinition Name="BoosterStrategic1Lavapool" RewardType="BoosterStrategic1Lavapool" BoosterType="Instant" Duration="0" NotifyUnused="false">
+    <SimulationDescriptorReference Name="BoosterStrategicLavapool"/>
+    <CurveCustomCost ResourceName="Strategic1" CurveReference="StrategicTier1LavapoolCost" Instant="true">$Property(EmpireTypeMajor:BoosterStrategic1LavapoolActivations)</CurveCustomCost>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityVaulters</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityMezari</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitFlames1</PathPrerequisite>
+    <Effect>
+      <Transfer ResourceName="Lavapool" Amount="1"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic2Lavapool" RewardType="BoosterStrategic2Lavapool" BoosterType="Instant" Duration="0" NotifyUnused="false">
+    <SimulationDescriptorReference Name="BoosterStrategicLavapool"/>
+    <CurveCustomCost ResourceName="Strategic2" CurveReference="StrategicTier1LavapoolCost" Instant="true">$Property(EmpireTypeMajor:BoosterStrategic2LavapoolActivations)</CurveCustomCost>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityVaulters</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityMezari</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitFlames1</PathPrerequisite>
+    <Effect>
+      <Transfer ResourceName="Lavapool" Amount="1"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic3Lavapool" RewardType="BoosterStrategic3Lavapool" BoosterType="Instant" Duration="0" NotifyUnused="false">
+    <SimulationDescriptorReference Name="BoosterStrategicLavapool"/>
+    <CurveCustomCost ResourceName="Strategic3" CurveReference="StrategicTier2LavapoolCost" Instant="true">$Property(EmpireTypeMajor:BoosterStrategic3LavapoolActivations)</CurveCustomCost>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityVaulters</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityMezari</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitFlames1</PathPrerequisite>
+    <Effect>
+      <Transfer ResourceName="Lavapool" Amount="1"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic4Lavapool" RewardType="BoosterStrategic4Lavapool" BoosterType="Instant" Duration="0" NotifyUnused="false">
+    <SimulationDescriptorReference Name="BoosterStrategicLavapool"/>
+    <CurveCustomCost ResourceName="Strategic4" CurveReference="StrategicTier2LavapoolCost" Instant="true">$Property(EmpireTypeMajor:BoosterStrategic4LavapoolActivations)</CurveCustomCost>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityVaulters</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityMezari</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitFlames1</PathPrerequisite>
+    <Effect>
+      <Transfer ResourceName="Lavapool" Amount="1"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic5Lavapool" RewardType="BoosterStrategic5Lavapool" BoosterType="Instant" Duration="0" NotifyUnused="false">
+    <SimulationDescriptorReference Name="BoosterStrategicLavapool"/>
+    <CurveCustomCost ResourceName="Strategic5" CurveReference="StrategicTier3LavapoolCost" Instant="true">$Property(EmpireTypeMajor:BoosterStrategic5LavapoolActivations)</CurveCustomCost>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityVaulters</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityMezari</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitFlames1</PathPrerequisite>
+    <Effect>
+      <Transfer ResourceName="Lavapool" Amount="1"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStrategic6Lavapool" RewardType="BoosterStrategic6Lavapool" BoosterType="Instant" Duration="0" NotifyUnused="false">
+    <SimulationDescriptorReference Name="BoosterStrategicLavapool"/>
+    <CurveCustomCost ResourceName="Strategic6" CurveReference="StrategicTier3LavapoolCost" Instant="true">$Property(EmpireTypeMajor:BoosterStrategic6LavapoolActivations)</CurveCustomCost>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityVaulters</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">.../ClassEmpire,AffinityMezari</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitFlames1</PathPrerequisite>
+    <Effect>
+      <Transfer ResourceName="Lavapool" Amount="1"/>
+    </Effect>
+  </BoosterDefinition>
+</Datatable>

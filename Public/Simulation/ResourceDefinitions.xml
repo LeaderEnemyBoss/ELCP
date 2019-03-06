@@ -1,0 +1,449 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Default property names are generated with the name of the resource :
+  * Net{ResourceName}
+  * {ResourceName}Stock
+  * Maximum{ResourceName}Stock
+  * Minimum{ResourceName}Stock
+  * {ResourceName}Count
+
+  It is possible to override default property names with following tags :
+  <ResourceDefinition Name="MyResource" LocationPath="EmpireTypeMajor">
+
+    <ResourceLocation Name="EmpireMoney" LocationPath="EmpireTypeMajor">
+      <NetPropertyName>MyNetPropertyName</NetPropertyName>
+      <StockPropertyName>MyStockPropertyName</StockPropertyName>
+      <MaximumStockPropertyName>MyMaximumStockPropertyName</MaximumStockPropertyName>
+      <MinimumStockPropertyName>MyMinimumStockPropertyName</MinimumStockPropertyName>
+      <CountPropertyName>MyResourceCountPropertyName</CountPropertyName>
+    </ResourceLocation>
+
+    <SimulationEffect />
+
+  </ResourceDefinition> -->
+
+  <ResourceDefinition Name="ActionPoint" Type="Gameplay">
+    <ResourceLocation Name="ActionPoint" LocationPath="EmpireTypeMajor/Garrison">
+      <StockPropertyName>ActionPoint</StockPropertyName>
+    </ResourceLocation>
+    <ResourceLocation Name="ActionPoint" LocationPath="EmpireTypeMajor/Garrison/ClassUnit">
+      <StockPropertyName>ActionPoint</StockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Empire resources -->
+  <ResourceDefinition Name="EmpireMoney" Type="Common">
+    <ResourceLocation Name="EmpireMoney" LocationPath="EmpireTypeMajor">
+      <StockPropertyName>BankAccount</StockPropertyName>
+      <MinimumStockPropertyName>MinimumBankAccount</MinimumStockPropertyName>
+      <AccumulatorPropertyName>EmpireMoneyAccumulator</AccumulatorPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="EmpireResearch" Type="Common">
+    <ResourceLocation Name="EmpireResearch" LocationPath="EmpireTypeMajor">
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="EmpirePoint" Type="Common">
+    <ResourceLocation Name="EmpirePoint" LocationPath="EmpireTypeMajor">
+      <AccumulatorPropertyName>EmpirePointAccumulator</AccumulatorPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- City resources -->
+
+  <ResourceDefinition Name="CityGrowth" Type="Common" CarryOverMigration="true">
+    <ResourceLocation Name="CityGrowth" LocationPath="EmpireTypeMajor/ClassCity"/>
+    <ResourceLocation Name="CityGrowth" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Production" Type="Common">
+    <ResourceLocation Name="CityProduction" LocationPath="EmpireTypeMajor/ClassCity"/>
+    <ResourceLocation Name="UnitProduction" LocationPath="EmpireTypeMinor//ClassMinorEmpireGarrison"/>
+  </ResourceDefinition>
+
+  <!-- Added for BoosterScience -->
+  <ResourceDefinition Name="CityResearch" Type="Common">
+    <ResourceLocation Name="CityResearch" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <!-- Added for CityConstructibleActionRaze and used by CityConstructibleActionMigrate -->
+  <ResourceDefinition Name="CityActionPoint" Type="Common">
+    <ResourceLocation Name="CityActionPoint" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <!-- Strategic resources -->
+
+  <ResourceDefinition Name="AffinityStrategic" Type="Alias">
+    <ResourceLocation Name="Strategic1" LocationPath="EmpireTypeMajor,AffinityStrategic1">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+    <ResourceLocation Name="Strategic2" LocationPath="EmpireTypeMajor,AffinityStrategic2">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+    <ResourceLocation Name="Strategic3" LocationPath="EmpireTypeMajor,AffinityStrategic3">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+    <ResourceLocation Name="Strategic4" LocationPath="EmpireTypeMajor,AffinityStrategic4">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+    <ResourceLocation Name="Strategic5" LocationPath="EmpireTypeMajor,AffinityStrategic5">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+    <ResourceLocation Name="Strategic6" LocationPath="EmpireTypeMajor,AffinityStrategic6">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+
+  <!-- Titanium -->
+  <ResourceDefinition Name="Strategic1" Type="Strategic">
+    <ResourceLocation Name="Strategic1" LocationPath="EmpireTypeMajor,!AffinityStrategic1">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+
+    <ResourceLocation Name="Strategic1" LocationPath="EmpireTypeMajor,AffinityStrategic1">
+      <NetPropertyName>NetAffinityStrategic</NetPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Glassteel -->
+  <ResourceDefinition Name="Strategic2" Type="Strategic">
+    <ResourceLocation Name="Strategic2" LocationPath="EmpireTypeMajor,!AffinityStrategic2">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+
+    <ResourceLocation Name="Strategic2" LocationPath="EmpireTypeMajor,AffinityStrategic2">
+      <NetPropertyName>NetAffinityStrategic</NetPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Adamantian -->
+  <ResourceDefinition Name="Strategic3" Type="Strategic">
+    <ResourceLocation Name="Strategic3" LocationPath="EmpireTypeMajor,!AffinityStrategic3">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+
+    <ResourceLocation Name="Strategic3" LocationPath="EmpireTypeMajor,AffinityStrategic3">
+      <NetPropertyName>NetAffinityStrategic</NetPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Palladian -->
+  <ResourceDefinition Name="Strategic4" Type="Strategic">
+    <ResourceLocation Name="Strategic4" LocationPath="EmpireTypeMajor,!AffinityStrategic4">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+
+    <ResourceLocation Name="Strategic4" LocationPath="EmpireTypeMajor,AffinityStrategic4">
+      <NetPropertyName>NetAffinityStrategic</NetPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Mithrite -->
+  <ResourceDefinition Name="Strategic5" Type="Strategic">
+    <ResourceLocation Name="Strategic5" LocationPath="EmpireTypeMajor,!AffinityStrategic5">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+
+    <ResourceLocation Name="Strategic5" LocationPath="EmpireTypeMajor,AffinityStrategic5">
+      <NetPropertyName>NetAffinityStrategic</NetPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Hyperium -->
+  <ResourceDefinition Name="Strategic6" Type="Strategic">
+    <ResourceLocation Name="Strategic6" LocationPath="EmpireTypeMajor,!AffinityStrategic6">
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+    </ResourceLocation>
+
+    <ResourceLocation Name="Strategic6" LocationPath="EmpireTypeMajor,AffinityStrategic6">
+      <NetPropertyName>NetAffinityStrategic</NetPropertyName>
+      <MaximumStockPropertyName>MaximumStrategicStock</MaximumStockPropertyName>
+      <MinimumStockPropertyName>MinimumStrategicStock</MinimumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Luxury resources -->
+
+  <ResourceDefinition Name="Luxury1" Type="Luxury">
+    <ResourceLocation Name="Luxury1" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+    <!--<SimulationEffect>
+      <SimulationDescriptorReference Name="Luxury1Bonus" />
+      <InterpreterPrerequisite Inverted="false">$Property(NetLuxury1) gt 0</InterpreterPrerequisite>
+    </SimulationEffect>-->
+    <!--<SimulationEffect>
+      <SimulationDescriptorReference Name="Luxury1MonopolyBonus" />
+      <InterpreterPrerequisite Inverted="false">($Property(NetLuxury1) eq $Property(Luxury1Count)) and ($Property(Luxury1Count) gt 0)</InterpreterPrerequisite>
+    </SimulationEffect>-->
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury2" Type="Luxury">
+    <ResourceLocation Name="Luxury2" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury3" Type="Luxury">
+    <ResourceLocation Name="Luxury3" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury4" Type="Luxury">
+    <ResourceLocation Name="Luxury4" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury5" Type="Luxury">
+    <ResourceLocation Name="Luxury5" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury6" Type="Luxury">
+    <ResourceLocation Name="Luxury6" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury7" Type="Luxury">
+    <ResourceLocation Name="Luxury7" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury8" Type="Luxury">
+    <ResourceLocation Name="Luxury8" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury9" Type="Luxury">
+    <ResourceLocation Name="Luxury9" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury10" Type="Luxury">
+    <ResourceLocation Name="Luxury10" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury11" Type="Luxury">
+    <ResourceLocation Name="Luxury11" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury12" Type="Luxury">
+    <ResourceLocation Name="Luxury12" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury13" Type="Luxury">
+    <ResourceLocation Name="Luxury13" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury14" Type="Luxury">
+    <ResourceLocation Name="Luxury14" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Luxury15" Type="Luxury">
+    <ResourceLocation Name="Luxury15" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumLuxuryStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumLuxuryStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Common empire resources -->
+
+  <!-- Cadavers -->
+  <ResourceDefinition Name="Cadaver" Type="Common">
+    <ResourceLocation Name="Cadaver" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumCadaverStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumCadaverStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Lavapool -->
+  <ResourceDefinition Name="Lavapool" Type="Common">
+    <ResourceLocation Name="Lavapool" LocationPath="EmpireTypeMajor">
+      <StockPropertyName>LavapoolStock</StockPropertyName>
+      <StockPropertyName>MinimumLavapoolStock</StockPropertyName>
+      <StockPropertyName>MaximumLavapoolStock</StockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- SiegeDamage -->
+  <ResourceDefinition Name="SiegeDamage" Type="Common">
+    <ResourceLocation Name="SiegeDamage" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumSiegeDamageStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumSiegeDamageStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeBorough" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeBorough" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeBorough" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeDocks" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeDocks" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeDocks" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeOrbUnlock6" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeOrbUnlock6" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeOrbUnlock6" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeOrbUnlock7" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeOrbUnlock7" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeOrbUnlock7" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeOrbUnlock8" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeOrbUnlock8" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeOrbUnlock8" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeOrbUnlock9" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeOrbUnlock9" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeOrbUnlock9" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeOrbUnlock18" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeOrbUnlock18" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeOrbUnlock18" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeAltarOfAuriga" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeAltarOfAuriga" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeAltarOfAuriga" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="FreeWonder1" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeWonder1" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeWonder1" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+  <ResourceDefinition Name="FreeWonder2" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeWonder2" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeWonder2" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+  <ResourceDefinition Name="FreeWonder3" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeWonder3" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeWonder3" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+  <ResourceDefinition Name="FreeWonder4" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeWonder4" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeWonder4" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+  <ResourceDefinition Name="FreeWonder5" Type="Common" CarryOverMigration="true" >
+    <ResourceLocation Name="FreeWonder5" LocationPath="EmpireTypeMajor/Garrison/MigrationUnit"/>
+    <ResourceLocation Name="FreeWonder5" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="QueuedFreeBorough" Type="Common">
+    <ResourceLocation Name="QueuedFreeBorough" LocationPath="EmpireTypeMajor/ClassCity"/>
+  </ResourceDefinition>
+
+  <!-- Victory Resource -->
+  <ResourceDefinition Name="EmpirePeacePoint" Type="Common">
+    <ResourceLocation Name="EmpirePeacePoint" LocationPath="EmpireTypeMajor"/>
+    <AccumulatorPropertyName>PeacePointAccumulator</AccumulatorPropertyName>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="PopulationBuyout" Type="StaticAlias">
+    <ResourceLocation Name="EmpireMoney" LocationPath="EmpireTypeMajor">
+      <StockPropertyName>BankAccount</StockPropertyName>
+      <MinimumStockPropertyName>MinimumBankAccount</MinimumStockPropertyName>
+      <AccumulatorPropertyName>EmpireMoneyAccumulator</AccumulatorPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="TechnologiesBuyOut" Type="StaticAlias">
+    <ResourceLocation Name="EmpireMoney" LocationPath="EmpireTypeMajor">
+      <StockPropertyName>BankAccount</StockPropertyName>
+      <MinimumStockPropertyName>MinimumBankAccount</MinimumStockPropertyName>
+      <AccumulatorPropertyName>EmpireMoneyAccumulator</AccumulatorPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Buyout" Type="StaticAlias">
+    <ResourceLocation Name="EmpireMoney" LocationPath="EmpireTypeMajor">
+      <StockPropertyName>BankAccount</StockPropertyName>
+      <MinimumStockPropertyName>MinimumBankAccount</MinimumStockPropertyName>
+      <AccumulatorPropertyName>EmpireMoneyAccumulator</AccumulatorPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <!-- Espionage Resources -->
+  <ResourceDefinition Name="InfiltrationPoint" Type="Common">
+    <ResourceLocation Name="InfiltrationPoint" LocationPath="EmpireTypeMajor/SpiedGarrison">
+      <MinimumStockPropertyName>MinimumInfiltrationPointStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumInfiltrationPointStock</MaximumStockPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="InfiltrationCost" Type="StaticAlias">
+    <ResourceLocation Name="EmpirePoint" LocationPath="EmpireTypeMajor"/>
+    <AccumulatorPropertyName>EmpirePointAccumulator</AccumulatorPropertyName>
+  </ResourceDefinition>
+
+  <ResourceDefinition Name="Orb" Type="Common">
+    <ResourceLocation Name="Orb" LocationPath="EmpireTypeMajor">
+      <MinimumStockPropertyName>MinimumOrbStock</MinimumStockPropertyName>
+      <MaximumStockPropertyName>MaximumOrbStock</MaximumStockPropertyName>
+      <AccumulatorPropertyName>OrbAccumulator</AccumulatorPropertyName>
+    </ResourceLocation>
+  </ResourceDefinition>
+
+</Datatable>

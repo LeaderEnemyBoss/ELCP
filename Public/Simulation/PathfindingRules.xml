@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!--
+  The default value of the attribute 'IsTileUnstopable' is False.
+  The default value of the attribute 'OverrideTerrainCost' is False.
+  The default value of the attribute DefaultCost (Cost for overrides) is 0.
+  You can override each rules for each movement capacities.
+
+  Exemple:
+  <PathfindingRule Name="Mountains" DefaultCost="3" IsTileUnstopable="true" OverrideTerrainCost="true">
+    <RuleOverride MovementCapacity="Air" Cost="1" IsTileUnstopable="false" />
+  </PathfindingRule>
+  -->
+
+    <!-- Default rule if we cannot find any other rules. -->
+    <PathfindingRule Name="Default" DefaultCost="Infinity">
+    </PathfindingRule>
+
+    <!-- Additive rule for forest tiles. -->
+    <PathfindingRule Name="Forest" DefaultCost="0">
+      <RuleOverride MovementCapacity="ForestRunner" Cost="0.5" OverrideTerrainCost="true" />
+    </PathfindingRule>
+  
+    <!-- Additive rule for ridge tiles. -->
+    <PathfindingRule Name="Ridge" DefaultCost="Infinity">
+        <RuleOverride MovementCapacity="Air" Cost="0" IsTileUnstopable="true" />
+    </PathfindingRule>
+
+    <!-- Additive rule for river tiles. -->
+    <PathfindingRule Name="River" DefaultCost="0">
+        <RuleOverride MovementCapacity="RiverSurfer" Cost="0.5" OverrideTerrainCost="true" />
+        <RuleOverride MovementCapacity="FrozenRiverSurfer" Cost="0.5" OverrideTerrainCost="true" />
+        <RuleOverride MovementCapacity="ImprovedRiverSurfer" Cost="0.25" OverrideTerrainCost="true" />
+    </PathfindingRule>
+
+    <!-- Additive rule for lava river tiles. -->
+    <PathfindingRule Name="LavaRiver" DefaultCost="0">
+      <RuleOverride MovementCapacity="Ground" Cost="2" OverrideTerrainCost="true" />
+    </PathfindingRule>
+
+    <!-- Additive rule for POI tiles. -->
+    <PathfindingRule Name="PointOfInterest_Village" DefaultCost="1" IsTileUnstopable="true" OverrideTerrainCost="true">
+    </PathfindingRule>
+
+    <PathfindingRule Name="PointOfInterest_Citadel" DefaultCost="1" IsTileUnstopable="true" OverrideTerrainCost="true">
+      <RuleOverride MovementCapacity="FasterWater"  Cost="0.5" />
+    </PathfindingRule>
+
+    <PathfindingRule Name="PointOfInterest_Facility" DefaultCost="1" IsTileUnstopable="true" OverrideTerrainCost="true">
+      <RuleOverride MovementCapacity="FasterWater"  Cost="0.5" />
+    </PathfindingRule>
+
+    <PathfindingRule Name="PointOfInterest_QuestLocation" DefaultCost="1" IsTileUnstopable="true" OverrideTerrainCost="true">
+    </PathfindingRule>
+
+    <PathfindingRule Name="PointOfInterest_NavalQuestLocation" DefaultCost="1" OverrideTerrainCost="true">
+    </PathfindingRule>
+
+    <PathfindingRule Name="PointOfInterest_WatchTower" IsTileUnstopable="false">
+    </PathfindingRule>
+
+    <PathfindingRule Name="PointOfInterest_ResourceDeposit" IsTileUnstopable="false">
+    </PathfindingRule>
+
+    <!-- Additives rules for battle-->
+    <PathfindingRule Name="Battle_NoUnit" IsTileUnstopable="false">
+    </PathfindingRule>
+
+    <PathfindingRule Name="Battle_SameGroupUnit" IsTileUnstopable="true">
+    </PathfindingRule>
+
+    <PathfindingRule Name="Battle_EnemyGroupUnit" IsTileUnstopable="true" DefaultCost="Infinity">
+        <RuleOverride MovementCapacity="Air" Cost="0" IsTileUnstopable="true"/>
+        <RuleOverride MovementCapacity="Acrobat" Cost="0" IsTileUnstopable="true"/>
+        <RuleOverride MovementCapacity="Submersible" Cost="0" IsTileUnstopable="true"/>
+    </PathfindingRule>
+
+    <!-- Rule on the empire district tiles. -->
+    <PathfindingRule Name="DistrictTile" DefaultCost="0.5" OverrideTerrainCost="true">
+    </PathfindingRule>
+
+    <!-- Rule on the empire road tiles. -->
+    <PathfindingRule Name="RoadTile" DefaultCost="0.5" OverrideTerrainCost="true">
+    </PathfindingRule>
+
+    <PathfindingRule Name="HighwayTile" DefaultCost="0.25" OverrideTerrainCost="true">
+    </PathfindingRule>
+
+    <!-- Rule used in deployment, to inhibit rule propagation when a unit is present-->
+    <PathfindingRule Name="Battle_Deployment_Obstacle" IsTileUnstopable="true">
+    </PathfindingRule>
+
+	  <!-- Rule used in Winter when coastal and lake are frozen -->
+    <PathfindingRule Name="FrozenWaterTile" DefaultCost="Infinity" OverrideTerrainCost="true">
+      <RuleOverride MovementCapacity="Ground"  Cost="1" />
+      <RuleOverride MovementCapacity="IceWalker" Cost="0.5" OverrideTerrainCost="true" />
+    </PathfindingRule>
+
+    <!-- Rule used in ocean when on flotsam weather effect. -->
+    <PathfindingRule Name="WeatherFlotsam" DefaultCost="3">
+      <RuleOverride MovementCapacity="IgnoreFlotsam" Cost="1" OverrideTerrainCost="true" />
+    </PathfindingRule>
+
+    <!-- Rule used in ocean when on turbulence weather effect. -->
+    <PathfindingRule Name="WeatherTurbulence" DefaultCost="0.5">
+    </PathfindingRule>
+</Datatable>

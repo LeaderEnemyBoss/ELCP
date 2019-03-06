@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ########################################## -->
+  <!-- #### Steal Dust - During Mad Season ###### -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnEmpire_StealResource Name="StealEmpireMoney_Level2" FirstName="StealEmpireMoney" SubCategory="Dust" Level="2" EraMax="1" ExperienceReward="5" DontNotifyWhenSpyUnnoticed="false">
+    <PathPrerequisite Flags="Discard">#HeatWave</PathPrerequisite>
+    <PathPrerequisite Flags="Discard">.../FactionTraitReplicantsHeatWave</PathPrerequisite>
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+    <EmpireResource>EmpireMoney</EmpireResource>
+    <StealParameters BaseAmount="50" AdditionalRandomThreshold="0.25" TargetStockPercentage="0.15"/>
+  </InfiltrationActionOnEmpire_StealResource>
+  
+  <InfiltrationActionOnEmpire_StealResource Name="StealEmpireMoney_Level3" FirstName="StealEmpireMoney" SubCategory="Dust" Level="3" EraMax="2" ExperienceReward="7" DontNotifyWhenSpyUnnoticed="false">
+    <PathPrerequisite Flags="Discard">#HeatWave</PathPrerequisite>
+    <PathPrerequisite Flags="Discard">.../FactionTraitReplicantsHeatWave</PathPrerequisite>
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+    <EmpireResource>EmpireMoney</EmpireResource>
+    <StealParameters BaseAmount="75" AdditionalRandomThreshold="0.25" TargetStockPercentage="0.30"/>
+  </InfiltrationActionOnEmpire_StealResource>
+
+  <InfiltrationActionOnEmpire_StealResource Name="StealEmpireMoney_Level4" FirstName="StealEmpireMoney" SubCategory="Dust" Level="4" EraMax="3" ExperienceReward="10" DontNotifyWhenSpyUnnoticed="false">
+    <PathPrerequisite Flags="Discard">#HeatWave</PathPrerequisite>
+    <PathPrerequisite Flags="Discard">.../FactionTraitReplicantsHeatWave</PathPrerequisite>
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+    <EmpireResource>EmpireMoney</EmpireResource>
+    <StealParameters BaseAmount="100" AdditionalRandomThreshold="0.25" TargetStockPercentage="0.45"/>
+  </InfiltrationActionOnEmpire_StealResource>
+
+
+
+  <!-- ########################################## -->
+  <!-- ##########   Decrease Vision   ########### -->
+  <!-- ########################################## -->
+  
+  <InfiltrationActionOnEmpire_Booster Name="DecreaseVision_Level3" FirstName="DecreaseVision" SubCategory="Vision" Level="3" Duration="6" ExperienceReward="9">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseWatchtowerVisionByInfiltration" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+  <InfiltrationActionOnEmpire_Booster Name="DecreaseVision_Level4" FirstName="DecreaseVision" SubCategory="Vision" Level="4" Duration="10" ExperienceReward="12">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseBuildingsAndCitiesVisionByInfiltration" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+  
+  <InfiltrationActionOnEmpire_Booster Name="DecreaseVision_Level5" FirstName="DecreaseVision" SubCategory="Vision" Level="5" Duration="10" ExperienceReward="15">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites,Discard">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseVisionByInfiltration" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+
+
+  <!-- ########################################## -->
+  <!-- ###############   Reveal   ############### -->
+  <!-- ########################################## -->
+  
+  <InfiltrationActionOnEmpire_Reveal Name="Reveal_Level4" FirstName="Reveal" SubCategory="Espionage" Level="4" NumberOfSpiesToReveal="1" Damage="50"  ExperienceReward="12" DontNotifyWhenSpyUnnoticed="false">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Reveal>
+
+  <InfiltrationActionOnEmpire_Reveal Name="Reveal_Level5" FirstName="Reveal" SubCategory="Espionage" Level="5" NumberOfSpiesToReveal="-1" Damage="75" ExperienceReward="15" DontNotifyWhenSpyUnnoticed="false">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Reveal>
+
+
+
+  <!-- ########################################## -->
+  <!-- ########   Steal Luxury Booster   ######## -->
+  <!-- ########################################## -->
+  <!-- Deprecated
+  <InfiltrationActionOnEmpire_StealBooster Name="StealBoosterLuxury_Level2" FirstName="StealBoosterLuxury" SubCategory="Luxury" Level="2">
+    <InterpreterPrerequisite Flags="Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterLuxury1" />
+    <BoosterReference Name="BoosterLuxury2" />
+    <BoosterReference Name="BoosterLuxury3" />
+    <BoosterReference Name="BoosterLuxury4" />
+    <BoosterReference Name="BoosterLuxury5" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">8 * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealBooster>
+
+  <InfiltrationActionOnEmpire_StealBooster Name="StealBoosterLuxury_Level3" FirstName="StealBoosterLuxury" SubCategory="Luxury" Level="3">
+    <InterpreterPrerequisite Flags="Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterLuxury1" />
+    <BoosterReference Name="BoosterLuxury2" />
+    <BoosterReference Name="BoosterLuxury3" />
+    <BoosterReference Name="BoosterLuxury4" />
+    <BoosterReference Name="BoosterLuxury5" />
+    <BoosterReference Name="BoosterLuxury6" />
+    <BoosterReference Name="BoosterLuxury7" />
+    <BoosterReference Name="BoosterLuxury8" />
+    <BoosterReference Name="BoosterLuxury9" />
+    <BoosterReference Name="BoosterLuxury10" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">8 * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealBooster>
+
+  <InfiltrationActionOnEmpire_StealBooster Name="StealBoosterLuxury_Level4" FirstName="StealBoosterLuxury" SubCategory="Luxury" Level="4">
+    <InterpreterPrerequisite Flags="Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterLuxury1" />
+    <BoosterReference Name="BoosterLuxury2" />
+    <BoosterReference Name="BoosterLuxury3" />
+    <BoosterReference Name="BoosterLuxury4" />
+    <BoosterReference Name="BoosterLuxury5" />
+    <BoosterReference Name="BoosterLuxury6" />
+    <BoosterReference Name="BoosterLuxury7" />
+    <BoosterReference Name="BoosterLuxury8" />
+    <BoosterReference Name="BoosterLuxury9" />
+    <BoosterReference Name="BoosterLuxury10" />
+    <BoosterReference Name="BoosterLuxury11" />
+    <BoosterReference Name="BoosterLuxury12" />
+    <BoosterReference Name="BoosterLuxury13" />
+    <BoosterReference Name="BoosterLuxury14" />
+    <BoosterReference Name="BoosterLuxury15" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">8 * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealBooster> -->
+
+
+
+  <!-- ########################################## -->
+  <!-- ####   Decrease Science Production  ###### -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnEmpire_Booster Name="ResearchCost_Level2" FirstName="ResearchCost" SubCategory="Science" Level="2" Duration="6" ExperienceReward="6">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="ResearchCostReplicantsPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|../ClassEmpire,!AffinityReplicants)</InterpreterPrerequisite>
+    <PathPrerequisite Flags="Discard">.../!FactionTraitReplicants4</PathPrerequisite>
+    <BoosterReference Name="BoosterResearchCostByInfiltration2" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+  <InfiltrationActionOnEmpire_Booster Name="ResearchCost_Level3" FirstName="ResearchCost" SubCategory="Science" Level="3" Duration="6" ExperienceReward="9">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="ResearchCostReplicantsPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|../ClassEmpire,!AffinityReplicants)</InterpreterPrerequisite>
+    <PathPrerequisite Flags="Discard">.../!FactionTraitReplicants4</PathPrerequisite>
+    <BoosterReference Name="BoosterResearchCostByInfiltration2" />
+    <BoosterReference Name="BoosterResearchCostByInfiltration3" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+  <InfiltrationActionOnEmpire_Booster Name="ResearchCost_Level4" FirstName="ResearchCost" SubCategory="Science" Level="4" Duration="6" ExperienceReward="12">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="ResearchCostReplicantsPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|../ClassEmpire,!AffinityReplicants)</InterpreterPrerequisite>
+    <PathPrerequisite Flags="Discard">.../!FactionTraitReplicants4</PathPrerequisite>
+    <BoosterReference Name="BoosterResearchCostByInfiltration2" />
+    <BoosterReference Name="BoosterResearchCostByInfiltration3" />
+    <BoosterReference Name="BoosterResearchCostByInfiltration4" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+  <InfiltrationActionOnEmpire_Booster Name="ResearchCost_Level5" FirstName="ResearchCost" SubCategory="Science" Level="5" Duration="6" ExperienceReward="15">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="ResearchCostReplicantsPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|../ClassEmpire,!AffinityReplicants)</InterpreterPrerequisite>
+    <PathPrerequisite Flags="Discard">.../!FactionTraitReplicants4</PathPrerequisite>
+    <BoosterReference Name="BoosterResearchCostByInfiltration2" />
+    <BoosterReference Name="BoosterResearchCostByInfiltration3" />
+    <BoosterReference Name="BoosterResearchCostByInfiltration4" />
+    <BoosterReference Name="BoosterResearchCostByInfiltration5" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+
+
+  <!-- ########################################## -->
+  <!-- #######   Decrease Battle Morale  ######## -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnEmpire_Booster Name="DecreaseBattleMorale_Level3" FirstName="BattleMorale" SubCategory="Military" Level="3" Duration="6" ExperienceReward="9">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseBattleMoraleByInfiltration3" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+  <InfiltrationActionOnEmpire_Booster Name="DecreaseBattleMorale_Level4" FirstName="BattleMorale" SubCategory="Military" Level="4" Duration="6" ExperienceReward="12">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseBattleMoraleByInfiltration4" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+  <InfiltrationActionOnEmpire_Booster Name="DecreaseBattleMorale_Level5" FirstName="BattleMorale" SubCategory="Military" Level="5" Duration="10" ExperienceReward="15">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseBattleMoraleByInfiltration5" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_Booster>
+
+
+
+  <!-- ########################################## -->
+  <!-- ###########   Steal Vision   ############# -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnEmpire_StealVisionOverArmies Name="StealVision_Level3" FirstName="StealVision" SubCategory="Vision" Level="3" Duration="4" ExperienceReward="9" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealVisionOverArmies>
+
+  <InfiltrationActionOnEmpire_StealVisionOverArmies Name="StealVision_Level4" FirstName="StealVision" SubCategory="Vision" Level="4" Duration="10" ExperienceReward="12" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealVisionOverArmies>
+  
+  <InfiltrationActionOnEmpire_StealVision Name="StealVision_Level5" FirstName="StealVision" SubCategory="Vision" Level="5" Duration="20" ExperienceReward="15" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealVision>
+
+
+
+  <!-- ########################################## -->
+  <!-- #####   Diplomatic Cost Reduction   ###### -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnEmpire_DiplomaticCostReduction Name="DiplomaticCostReduction_Level3" FirstName="DiplomaticCostReduction" SubCategory="Diplomacy" Level="3" Duration="10" ExperienceReward="9" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_DiplomaticCostReduction>
+
+  <InfiltrationActionOnEmpire_DiplomaticCostReduction Name="DiplomaticCostReduction_Level4" FirstName="DiplomaticCostReduction" SubCategory="Diplomacy" Level="4" Duration="10" ExperienceReward="12" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_DiplomaticCostReduction>
+
+  <InfiltrationActionOnEmpire_DiplomaticCostReduction Name="DiplomaticCostReduction_Level5" FirstName="DiplomaticCostReduction" SubCategory="Diplomacy" Level="5" Duration="20" ExperienceReward="15" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_DiplomaticCostReduction>
+
+
+
+  <!-- ########################################## -->
+  <!-- ##########   Steal Technology   ########## -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnEmpire_StealTechnology Name="StealTechnology_Level2" FirstName="StealTechnology" SubCategory="Research" Level="2" EraMax="1" ExperienceReward="6" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <PathPrerequisite Flags="Discard">.../FactionTraitReplicants4</PathPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealTechnology>
+
+  <InfiltrationActionOnEmpire_StealTechnology Name="StealTechnology_Level3" FirstName="StealTechnology" SubCategory="Research" Level="3" EraMin="1" EraMax="2" ExperienceReward="9" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <PathPrerequisite Flags="Discard">.../FactionTraitReplicants4</PathPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealTechnology>
+  
+  <InfiltrationActionOnEmpire_StealTechnology Name="StealTechnology_Level4" FirstName="StealTechnology" SubCategory="Research" Level="4" EraMin="1" EraMax="3" ExperienceReward="12" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <PathPrerequisite Flags="Discard">.../FactionTraitReplicants4</PathPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealTechnology>
+  
+  <InfiltrationActionOnEmpire_StealTechnology Name="StealTechnology_Level5" FirstName="StealTechnology" SubCategory="Research" Level="5" EraMin="1" EraMax="5" ExperienceReward="15" DontNotifyWhenSpyUnnoticed="true">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <PathPrerequisite Flags="Discard">.../FactionTraitReplicants4</PathPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnEmpire_StealTechnology>
+
+</Datatable>

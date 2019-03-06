@@ -31,6 +31,8 @@
       <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
 
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1"    Path="ClassEmpire"/>
+
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   
@@ -44,6 +46,9 @@
       <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
 
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0"  Priority="1" Path="ClassEmpire/ClassCity"/>
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1"    Path="ClassEmpire"/>
+      
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -59,6 +64,9 @@
       <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"        Operation="Multiplication"  Value="0"     Priority="2" Path="EmpireTypeMajor/ClassArmy"/>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"                 Operation="Subtraction"     Value="40"    Priority="1" Path="EmpireTypeMajor/ClassArmy"/>
            -->
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1"    Path="ClassEmpire"/>
+    
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -77,7 +85,7 @@
       <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.2" Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.15"   Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.2"   Priority="1" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Percent"        Value="0.2"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.2"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
       <!-- City Modifier -->
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.2"  Priority="1" Path="ClassEmpire/ClassCity"/>
@@ -105,6 +113,8 @@
       <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI" Operation="Addition" Value="0.25" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit"             TooltipHidden="true"/>
 
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Addition"        Value="-1"    Priority="10" Path="ClassEmpire/ClassArmy/UnitRankStandard"/>
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1.3"    Path="ClassEmpire"/>
       
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -124,7 +134,7 @@
       <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.35" Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.2"  Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.35"  Priority="1" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Percent"        Value="0.35"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.35"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
       <!-- City Modifier -->
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.35"  Priority="1" Path="ClassEmpire/ClassCity"/>
@@ -152,6 +162,8 @@
       <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI" Operation="Addition" Value="0.5" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit"                    TooltipHidden="true"/>
 
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Addition"        Value="-1"    Priority="10" Path="ClassEmpire/ClassArmy/UnitRankStandard"/>
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1.55"    Path="ClassEmpire"/>
       
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -162,8 +174,6 @@
       <SimulationPropertyDescriptor Name="AIEmpirePlanCostReduction" MinValue="Negative"/>
     </SimulationPropertyDescriptors>
     <SimulationModifierDescriptors>
-	  <!--AMS: Funciona!! -->
-      <!--<SimulationModifierDescriptor TargetProperty="ItemStrategicMasteryCostFactor"       Operation="Percent"         Value="-0.5" Priority="1" Path="EmpireTypeMajor"/>-->
       <!-- Empire Modifier -->
       <SimulationModifierDescriptor TargetProperty="TotalCityMoneyUpkeep"                 Operation="Percent"         Value="-0.5" Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="EmpireMoneyUpkeep"                    Operation="Percent"         Value="-0.5" Priority="1" Path="EmpireTypeMajor"/>
@@ -173,7 +183,7 @@
       <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.5"  Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.25"  Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.5"   Priority="1" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Percent"        Value="0.5"   Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.5"   Priority="1" Path="EmpireTypeMajor/ClassCity"/>
       <!-- City Modifier -->
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.5"   Priority="1" Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.6"   Priority="1" Path="ClassEmpire/ClassCity"/>
@@ -206,6 +216,8 @@
 
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Addition"        Value="-1"    Priority="10" Path="ClassEmpire/ClassArmy/UnitRankStandard"/>
 
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="2.2"    Path="ClassEmpire"/>
+
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -224,7 +236,7 @@
       <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"             Operation="Percent"         Value="-0.6" Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIResearchCostReduction"              Operation="Addition"        Value="0.3"  Priority="1" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="AIEmpirePlanCostReduction"            Operation="Addition"        Value="0.6"  Priority="1" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Percent"        Value="0.6"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityGrowth"                           Operation="Addition"        Value="0.6"  Priority="1" Path="EmpireTypeMajor/ClassCity"/>
       <!-- City Modifier -->
       <SimulationModifierDescriptor TargetProperty="CityCityPoint"                        Operation="Percent"         Value="0.6"  Priority="1" Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="AIUnitProductionCostReduction"        Operation="Addition"        Value="0.7"  Priority="1" Path="ClassEmpire/ClassCity"/>
@@ -258,6 +270,8 @@
       <SimulationModifierDescriptor TargetProperty="ControlledByMajorAI"                  Operation="Addition"       Value="1"                  Path="ClassEmpire/ClassCity/Militia/ClassUnit"    TooltipHidden="true"/>
 
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                       Operation="Addition"        Value="-1"    Priority="10" Path="ClassEmpire/ClassArmy/UnitRankStandard"/>
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="2.75"    Path="ClassEmpire"/>
       
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -297,6 +311,9 @@
       <SimulationModifierDescriptor TargetProperty="AttributeAttack"                Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"   TooltipHidden="true"/>
       <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/Garrison/ClassUnit"/>
       <SimulationModifierDescriptor TargetProperty="AttributeDefense"               Operation="Percent"         Value="0.20"  Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"   TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1"    Path="ClassEmpire"/>
+    
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   
@@ -317,16 +334,21 @@
       <!-- Army Modifier -->
       <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/Garrison/ClassUnit"/>
       <SimulationModifierDescriptor TargetProperty="MaximumHealth"                  Operation="Percent"         Value="0.10"  Priority="1" Path="ClassEmpire/ClassCity/Militia/ClassUnit"     TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1"    Path="ClassEmpire"/>
+      
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="GameDifficultyNormalHumanMajorEmpire" Type="GameDifficultyBonus">
     <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1"    Path="ClassEmpire"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="GameDifficultyHardHumanMajorEmpire" Type="GameDifficultyBonus">
     <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1.3"    Path="ClassEmpire"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -336,6 +358,9 @@
       <!--<SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"       Operation="Percent"         Value="0.15"  Priority="1" Path="EmpireTypeMajor"/>-->
       <!-- Garrison/Army 
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                 Operation="Percent"         Value="0.25"  Priority="1" Path="ClassEmpire/Garrison"/>-->
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="1.55"    Path="ClassEmpire"/>
+      
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -346,6 +371,9 @@
       <!-- Garrison/Army 
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                 Operation="Percent"         Value="0.50"  Priority="1" Path="ClassEmpire/Garrison"/>
       <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                     Operation="Percent"         Value="0.25"  Priority="2" Path="ClassEmpire/Garrison/UnitHero"/>-->
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="2.2"    Path="ClassEmpire"/>
+      
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -357,6 +385,9 @@
       <!-- Garrison/Army 
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                 Operation="Percent"         Value="1.00"  Priority="1" Path="ClassEmpire/Garrison"/>
       <SimulationModifierDescriptor TargetProperty="HeroUpkeep"                     Operation="Percent"         Value="0.50"  Priority="2" Path="ClassEmpire/Garrison/UnitHero"/>-->
+
+      <SimulationModifierDescriptor TargetProperty="GameDifficultyKaijuSpawnMultiplier"   Operation="Force"           Value="2.75"    Path="ClassEmpire"/>
+      
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   

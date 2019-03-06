@@ -1,0 +1,1558 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="PointOfInterestStatusPillaged"              Type="PointOfInterestStatus"/>
+
+  <SimulationDescriptor Name="ResourceExtractor_Strategic"                Type="PointOfInterestImprovement"/>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury"                   Type="PointOfInterestImprovement"/>
+
+  <SimulationDescriptor Name="ResourceExtractor_Strategic1"               Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1" Value="$(ResourceBonus)" Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1" Value="$(ResourceGain)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Strategic2"               Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2" Value="$(ResourceBonus)" Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2" Value="$(ResourceGain)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Strategic3"               Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3" Value="$(ResourceBonus)" Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3" Value="$(ResourceGain)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Strategic4"               Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4" Value="$(ResourceBonus)" Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4" Value="$(ResourceGain)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Strategic5"               Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5" Value="$(ResourceBonus)" Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5" Value="$(ResourceGain)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Strategic6"               Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6" Value="$(ResourceBonus)" Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6" Value="$(ResourceGain)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury1"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury2"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury3"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury4"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury5"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury6"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury7"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury8"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury9"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury10"                 Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury11"                 Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury12"                 Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury13"                 Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury14"                 Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ResourceExtractor_Luxury15"                 Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"  Value="1"                Operation="Addition"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15" Value="$(ResourceBonus)"  Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15" Value="$(ResourceGain)"   Operation="Addition" Path="!PointOfInterestStatusPillaged/../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WatchTower0"                                Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.15" Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="3"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"  Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WatchTower1"                                Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.20" Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier"  Value="0.20" Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="5"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"  Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WatchTower2"                                Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.25" Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier"  Value="0.25" Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="7"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"  Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WatchTower0ReplicantsPack"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.15" Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="3"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"           Value="3"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"  Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumPillageDefense"    Value="20"   Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WatchTower1ReplicantsPack"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="5"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.20" Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier"  Value="0.20" Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"           Value="5"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"  Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumPillageDefense"    Value="30"   Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WatchTower2ReplicantsPack"                  Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.25"  Operation="Addition"  Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier"  Value="0.25"  Operation="Addition"  Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="7"     Operation="Addition"  Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"           Value="7"     Operation="Addition"  Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"   Operation="Addition"  Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumPillageDefense"    Value="50"    Operation="Addition"  Path="!PointOfInterestStatusPillaged,PointOfInterestTypeWatchTower"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DefensiveTowerTooltipEffect"                Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DefensiveTower0"                            Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="2"     Operation="Addition"  Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"   Operation="Addition"  Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DefensivePower"     Operation="Addition"   Left="0.3"   BinaryOperation="Multiplication" Right="$(CityDefensePoint)" Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DefensiveTower1"                            Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="3"     Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"   Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DefensivePower"     Operation="Addition"   Left="0.5"   BinaryOperation="Multiplication" Right="$(CityDefensePoint)" Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DefensiveTower0ReplicantsPack"              Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="2"     Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"   Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumPillageDefense"    Value="10"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DefensivePower"     Operation="Addition"   Left="0.3"   BinaryOperation="Multiplication" Right="$(CityDefensePoint)" Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DefensiveTower1ReplicantsPack"              Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="3"     Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"   Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumPillageDefense"    Value="20"    Operation="Addition"   Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DefensivePower"     Operation="Addition"   Left="0.5"   BinaryOperation="Multiplication" Right="$(CityDefensePoint)" Path="!PointOfInterestStatusPillaged,PointOfInterestTypeDefensiveTower" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="WatchTowerFoundationRequirements"           Type="PointOfInterestImprovement" />
+
+  <SimulationDescriptor Name="WatchTowerHealthEffectArea"                 Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ExploitedPointOfInterest"                   Type="PointOfInterestState">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ExtractorIntensifier"                       Type="PointOfInterestState">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor   TargetProperty="ResourceBonus"   Operation="Multiplication"    Value="2" Priority="2"/>
+      <SimulationModifierDescriptor   TargetProperty="ResourceGain"    Operation="Multiplication"    Value="2" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestBonusStrategic"              Type="PointOfInterestBonus">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                           Value="1"    Operation="Addition" />
+      <SimulationModifierDescriptor TargetProperty="AICountStrategicDepositTilesInCity"        Value="1"    Operation="Addition" Path="../ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestBonusLuxury"                 Type="PointOfInterestBonus">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                              Value="1"    Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DestroyedVillage"                           Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="QuestPOI"                                   Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ConvertedVillage"                           Type="VillageStateExclusive">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ExperienceRewardAtCreation" Composition="Sum"/>
+      <SimulationPropertyDescriptor Name="DepositCountToResourceNet" BaseValue="0.20"/>
+      <SimulationPropertyDescriptor Name="DistrictFood" Composition="Sum"/>
+      <SimulationPropertyDescriptor Name="DistrictIndustry" Composition="Sum"/>
+      <SimulationPropertyDescriptor Name="DistrictDust" Composition="Sum"/>
+      <SimulationPropertyDescriptor Name="DistrictScience" Composition="Sum"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint" Composition="Sum"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NumberOfConvertedVillages"                 Value="1"    Operation="Addition"    Path="./ClassCity,MainCity"/>
+      <SimulationModifierDescriptor TargetProperty="NumberOfRebuildPacifiedVillage"            Value="1"    Operation="Addition"    Path="./ClassCity"                           TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="IsNotConvertedVillageDistrict"             Value="1"    Operation="Subtraction" Path="ConvertedVillage/ClassDistrict"        TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"                            Value="1"    Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PacifiedVillage"                            Type="VillageStateExclusive">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DissentedVillage"                            Type="VillageStateExclusive">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="RebuiltVillage"                             Type="VillageState">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NumberOfRebuildPacifiedVillage"            Value="1"    Operation="Addition" Path="PacifiedVillage,!PointOfInterestStatusPillaged/../ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="PopulationBonus"                           Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,ClassPointOfInterest"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                               Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,ClassPointOfInterest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Urces"                              Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UrcesUnitProductionCostReduction"          Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithUrcesPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Urces"                    Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Erycis"                             Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ErycisUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithErycisPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Erycis"                   Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Ceratan"                            Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CeratanUnitProductionCostReduction"        Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithCeratanPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Ceratan"                  Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Kazanji"                            Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="KazanjiUnitProductionCostReduction"        Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithKazanjiPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Kazanji"                  Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Bos"                                Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BosUnitProductionCostReduction"            Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithBosPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Bos"                      Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Silics"                             Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SilicsUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithSilicsPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Silics"                   Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Delvers"                            Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DelversUnitProductionCostReduction"        Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithDelversPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Delvers"                  Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_SistersOfMercy"                     Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SistersOfMercyUnitProductionCostReduction" Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithSistersOfMercyPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_SistersOfMercy"           Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Haunts"                             Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="HauntsUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithHauntsPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Haunts"                   Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Jotus"                              Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="JotusUnitProductionCostReduction"          Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithJotusPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Jotus"                    Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Hurnas"                             Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="HurnasUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithHurnasPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Hurnas"                   Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Gauran"                             Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="GauranUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithGauranPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Gauran"                   Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Birdhive"                           Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BirdhiveUnitProductionCostReduction"       Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithBirdhivePacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Birdhive"                 Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Geldirus"                           Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="GeldirusUnitProductionCostReduction"       Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithGeldirusPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Geldirus"                 Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_EyelessOnes"                        Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EyelessOnesUnitProductionCostReduction"    Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithEyelessOnesPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_EyelessOnes"              Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Village_Dorgeshi"                           Type="PointOfInterestImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DorgeshiUnitProductionCostReduction"       Value="0.05" Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../ClassCity,CityWithDorgeshiPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Dorgeshi"                 Value="1"    Operation="Addition" Path="!PointOfInterestStatusPillaged,!InfectedPointOfInterest/../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ###################################### -->
+  <!-- ###           MIMICS PACK          #### -->
+  <!-- ###################################### -->
+
+  <SimulationDescriptor Name="Infected_Village_Urces"                              Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UrcesUnitProductionCostReduction"          Value="0.05" Operation="Addition" Path="../ClassCity,CityWithUrcesPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Urces"                    Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Erycis"                             Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ErycisUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="../ClassCity,CityWithErycisPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Erycis"                   Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Ceratan"                            Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CeratanUnitProductionCostReduction"        Value="0.05" Operation="Addition" Path="../ClassCity,CityWithCeratanPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Ceratan"                  Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Kazanji"                            Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="KazanjiUnitProductionCostReduction"        Value="0.05" Operation="Addition" Path="../ClassCity,CityWithKazanjiPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Kazanji"                  Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Bos"                                Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BosUnitProductionCostReduction"            Value="0.05" Operation="Addition" Path="../ClassCity,CityWithBosPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Bos"                      Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Silics"                             Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SilicsUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="../ClassCity,CityWithSilicsPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Silics"                   Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Delvers"                            Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DelversUnitProductionCostReduction"        Value="0.05" Operation="Addition" Path="../ClassCity,CityWithDelversPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Delvers"                  Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_SistersOfMercy"                     Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SistersOfMercyUnitProductionCostReduction" Value="0.05" Operation="Addition" Path="../ClassCity,CityWithSistersOfMercyPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_SistersOfMercy"           Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Haunts"                             Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="HauntsUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="../ClassCity,CityWithHauntsPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Haunts"                   Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Jotus"                              Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="JotusUnitProductionCostReduction"          Value="0.05" Operation="Addition" Path="../ClassCity,CityWithJotusPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Jotus"                    Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Hurnas"                             Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="HurnasUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="../ClassCity,CityWithHurnasPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Hurnas"                   Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Gauran"                             Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="GauranUnitProductionCostReduction"         Value="0.05" Operation="Addition" Path="../ClassCity,CityWithGauranPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Gauran"                   Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Birdhive"                           Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BirdhiveUnitProductionCostReduction"       Value="0.05" Operation="Addition" Path="../ClassCity,CityWithBirdhivePacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Birdhive"                 Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Geldirus"                           Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="GeldirusUnitProductionCostReduction"       Value="0.05" Operation="Addition" Path="../ClassCity,CityWithGeldirusPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Geldirus"                 Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_EyelessOnes"                        Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EyelessOnesUnitProductionCostReduction"    Value="0.05" Operation="Addition" Path="../ClassCity,CityWithEyelessOnesPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_EyelessOnes"              Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Infected_Village_Dorgeshi"                           Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DorgeshiUnitProductionCostReduction"       Value="0.05" Operation="Addition" Path="../ClassCity,CityWithDorgeshiPacified"/>
+      <SimulationModifierDescriptor TargetProperty="PacifiedVillages_Dorgeshi"                 Value="1"    Operation="Addition" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ###################################### -->
+  <!-- ###           NAVAL PACK          #### -->
+  <!-- ###################################### -->
+
+  <SimulationDescriptor Name="RevealedFacility"                           Type="PointOfInterestImprovement">
+  </SimulationDescriptor>
+
+  <!--To differenciate the Tiers of Facility Resource Extractors in the simulation-->
+  <SimulationDescriptor Name="CommonFacilityStrategicResourceExtractor"   Type="PointOfInterestImprovement"/>
+  <SimulationDescriptor Name="UncommonFacilityStrategicResourceExtractor" Type="PointOfInterestImprovement"/>
+  <SimulationDescriptor Name="RareFacilityStrategicResourceExtractor"     Type="PointOfInterestImprovement"/>
+
+  <SimulationDescriptor Name="CommonFacilityLuxuryResourceExtractor"      Type="PointOfInterestImprovement"/>
+  <SimulationDescriptor Name="UncommonFacilityLuxuryResourceExtractor"    Type="PointOfInterestImprovement"/>
+  <SimulationDescriptor Name="RareFacilityLuxuryResourceExtractor"        Type="PointOfInterestImprovement"/>
+
+  <SimulationDescriptor Name="OccupiedCitadel"                            Type="FortressStateExclusive">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FortressBonusesOnRegionControlled"          Type="FortressStateExclusive">
+    <SimulationModifierDescriptors>
+      <!--<SimulationModifierDescriptor TargetProperty="ResourceGain"    Value="2"                Operation="Multiplication" Path="ClassFortress/ResourceExtractor_Strategic"/>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"    Value="2"                Operation="Multiplication" Path="ClassFortress/ResourceExtractor_Luxury"/>-->
+
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"    Value="0.5"     Operation="Percent"        Path="ClassFortress/ResourceExtractor_Strategic" Priority="1"/>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"    Value="0.5"     Operation="Percent"        Path="ClassFortress/ResourceExtractor_Luxury"    Priority="1"/>
+      
+      <SimulationModifierDescriptor TargetProperty="VisionRange"     Value="3"       Operation="Addition"       Path="ClassFortress/PointOfInterestTypeCitadel"/>
+      <!--
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"  Value="3"       Operation="Addition"       Path="ClassFortress/PointOfInterestTypeCitadel"/>
+      -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ###################################### -->
+  <!-- ###            CITADELS           #### -->
+  <!-- ###################################### -->
+
+  <SimulationDescriptor Name="Citadel0" Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="2"       Operation="Addition"/>
+      
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                      Value="$(FortressTileDust)"         Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                 Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                 Value="3"       Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"              Value="1"       Operation="Addition" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"                Value="100"     Operation="Addition" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="InGarrisonRegenModifier"     Value="0.25"    Operation="Addition" Path="./ClassFortress,Garrison"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"       Value="3"       Operation="Addition" Path="./ClassFortress,Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Citadel1" Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileScience"/>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      
+      <SimulationPropertyDescriptor Name="DistrictScience"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="FortressTileScience"         Value="2"       Operation="Addition"/>
+      
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                   Value="$(FortressTileScience)"      Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                 Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                 Value="3"       Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"              Value="1"       Operation="Addition" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"                Value="100"     Operation="Addition" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="InGarrisonRegenModifier"     Value="0.25"    Operation="Addition" Path="./ClassFortress,Garrison"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"       Value="3"       Operation="Addition" Path="./ClassFortress,Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Citadel2" Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="FortressTileScience"/>
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>
+      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+      <SimulationPropertyDescriptor Name="DistrictScience"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="FortressTileScience"         Value="1"       Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="1"       Operation="Addition"/>
+      
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                      Value="$(FortressTileDust)"         Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                   Value="$(FortressTileScience)"      Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"                 Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                 Value="3"       Operation="Addition"/>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"              Value="1"       Operation="Addition" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"                Value="100"     Operation="Addition" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="InGarrisonRegenModifier"     Value="0.25"    Operation="Addition" Path="./ClassFortress,Garrison"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn"       Value="3"       Operation="Addition" Path="./ClassFortress,Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ###################################### -->
+  <!-- ### STRATEGIC RESOURCE FACILITIES #### -->
+  <!-- ###################################### -->
+  
+  <!-- Titanium Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Strategic1"       Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileScience"/> 
+      <SimulationPropertyDescriptor Name="DistrictScience"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileScience"     Value="1"  Operation="Addition" Path="RevealedFacility"/>      
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                   Value="$(FortressTileScience)"  Operation="Addition"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Glassteel Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Strategic2"       Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileScience"/>      
+      <SimulationPropertyDescriptor Name="DistrictScience"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileScience"     Value="1"  Operation="Addition" Path="RevealedFacility"/>      
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                   Value="$(FortressTileScience)"  Operation="Addition"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Adamantian Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Strategic3"       Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileScience"/>      
+      <SimulationPropertyDescriptor Name="DistrictScience"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileScience"     Value="2"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"                   Value="$(FortressTileScience)"  Operation="Addition"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Palladian Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Strategic4"       Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileScience"/>      
+      <SimulationPropertyDescriptor Name="DistrictScience"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileScience"         Value="2"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"             Value="$(FortressTileScience)"  Operation="Addition"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mithrite Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Strategic5"       Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileScience"/>      
+      <SimulationPropertyDescriptor Name="DistrictScience"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileScience"     Value="3"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"         Value="$(FortressTileScience)"  Operation="Addition"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Hyperium Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Strategic6"       Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileScience"/>      
+      <SimulationPropertyDescriptor Name="DistrictScience"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileScience"         Value="3"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"             Value="$(FortressTileScience)"  Operation="Addition"   TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dye Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury1"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="1"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Emeralds Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury2"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="1"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Gold Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury3"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="1"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Spices Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury4"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="1"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Wine Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury5"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="1"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Blood Crystal Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury6"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="2"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Grassilk Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury7"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="2"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Moonleaf Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury8"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="2"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Quicksilver Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury9"          Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="2"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Titan Bones Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury10"         Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="2"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Orchid Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury11"         Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="3"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dustwater Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury12"         Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="3"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Hydromiel Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury13"         Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="3"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Pixie Blood Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury14"         Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="3"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Redsang Facility -->
+  <SimulationDescriptor Name="FacilityResourceExtractor_Luxury15"         Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceGain" BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>      
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <!--<CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="0.5"     Operation="Percent"   CountPath="../ClassEmpire,GameSpeedFast"    Priority="10" TooltipHidden="true"/>-->
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.25"   Operation="Percent"   CountPath="../ClassEmpire,GameSpeedSlow"    Priority="10" TooltipHidden="true"/>
+      <CountSimulationModifierDescriptor  TargetProperty="ResourceGain"   Value="-0.5"    Operation="Percent"   CountPath="../ClassEmpire,GameSpeedEndless" Priority="10" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15" Value="$(ResourceGain)"  Operation="Addition" Path="../ClassFortress"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"            Value="3"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"                Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ###################################### -->
+  <!-- ###       UNIQUE FACILITIES       #### -->
+  <!-- ###################################### -->
+
+  <SimulationDescriptor Name="FacilityUnique"                             Type="PointOfInterestImprovement"/>
+
+  <!-- Dust Accumulator Facility -->
+  <SimulationDescriptor Name="FacilityUnique1"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+
+      <SimulationPropertyDescriptor Name="DustAccumulatorBonus"     BaseValue="0.02"  MinValue="0"  MaxValue="1"/>
+      <SimulationPropertyDescriptor Name="FortressCount"            BaseValue="0"     MinValue="0"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="EmpireMoney"  Operation="Percent"   BinaryOperation="Multiplication"  Left="$(DustAccumulatorBonus)"  Right="$(FortressCount)" Path="../EmpireTypeMajor" IsBindOnSource="true"/>
+      
+      <SimulationModifierDescriptor       TargetProperty="FortressTileDust"   Operation="Addition"  Value="10"  Path="RevealedFacility"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictDust"          Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Accumulator Facility Malus -->
+  <SimulationDescriptor Name="FacilityUnique1Malus"                       Type="FacilityUniqueMalus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="DustAccumulatorMalus"     BaseValue="0" MinValue="Negative" MaxValue="0"  IsSealed="true"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireMoney"  Operation="Percent"     Value="$(DustAccumulatorMalus)"     ValueMustBePositive="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Center of Influence Facility -->
+  <SimulationDescriptor Name="FacilityUnique2"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="CenterOfInfluenceBonus"     BaseValue="0.02"  MinValue="0"  MaxValue="1"/>
+      <SimulationPropertyDescriptor Name="FortressCount"              BaseValue="0"     MinValue="0"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>      
+      <BinarySimulationModifierDescriptor TargetProperty="EmpirePoint"       Operation="Percent"   BinaryOperation="Multiplication"  Left="$(CenterOfInfluenceBonus)"  Right="$(FortressCount)" Path="../EmpireTypeMajor" IsBindOnSource="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="10"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Center of Influence Facility Malus -->
+  <SimulationDescriptor Name="FacilityUnique2Malus"                       Type="FacilityUniqueMalus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="CenterOfInfluenceMalus"     BaseValue="0" MinValue="Negative" MaxValue="0"  IsSealed="true"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpirePoint"  Operation="Percent"     Value="$(CenterOfInfluenceMalus)"     ValueMustBePositive="true"  Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Vision Facility -->
+  <SimulationDescriptor Name="FacilityUnique3"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+    
+     <SimulationModifierDescriptors>
+       <SimulationModifierDescriptor TargetProperty="VisionRange"      Value="2"  Operation="Addition"  Path="../EmpireTypeMajor/ClassFortress/PointOfInterestTypeCitadel" Priority="0"  TooltipHidden="true"/>
+       <SimulationModifierDescriptor TargetProperty="DetectionRange"   Value="$(VisionRange)"  Operation="Force"  Path="../EmpireTypeMajor/ClassFortress/PointOfInterestTypeCitadel" Priority="99" IsBindOnSource="false"/>
+       <SimulationModifierDescriptor TargetProperty="DetectionRange"   Value="$(VisionRange)"  Operation="Force"  Path="../EmpireTypeMajor/ClassFortress/PointOfInterestTypeFacility" Priority="99" IsBindOnSource="false"/>
+
+       <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+       <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+     </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Food Stockpile Facility -->
+  <SimulationDescriptor Name="FacilityUnique4"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+    
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Industry Stockpile Facility -->
+  <SimulationDescriptor Name="FacilityUnique5"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Science Stockpile Facility -->
+  <SimulationDescriptor Name="FacilityUnique6"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cargo Nexus Facility -->
+  <SimulationDescriptor Name="FacilityUnique7"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="CargoNexusBaseBonus"  BaseValue="0.05"  MinValue="0"/>
+      <SimulationPropertyDescriptor Name="CargoNexusBonus"      BaseValue="0.01"  MinValue="0"  MaxValue="1"/>
+      <SimulationPropertyDescriptor Name="FortressCount"        BaseValue="0"     MinValue="0"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="TradeRouteGain"     Operation="Percent" Value="$(CargoNexusBaseBonus)"  Path="../ClassEmpire/ClassCity/ClassTradeRoute"/>
+      <BinarySimulationModifierDescriptor TargetProperty="TradeRouteGain"     Operation="Percent" BinaryOperation="Multiplication"  Left="$(CargoNexusBonus)"   Right="$(FortressCount)" Path="../ClassEmpire/ClassCity/ClassTradeRoute" IsBindOnSource="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+      
+      <!-- Waiting for localisation -->
+      <!--
+      <SimulationModifierDescriptor       TargetProperty="TradeRouteGain"     Operation="Percent" Value="$(CargoNexusBaseBonus)"  Path="../ClassEmpire/ClassCity/ClassTradeRoute,TradeRouteMovementCapacityWater"/>
+      <BinarySimulationModifierDescriptor TargetProperty="TradeRouteGain"     Operation="Percent" BinaryOperation="Multiplication"  Left="$(CargoNexusBonus)"   Right="$(FortressCount)" Path="../ClassEmpire/ClassCity/ClassTradeRoute,TradeRouteMovementCapacityWater" IsBindOnSource="true"/>
+      -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ship Design Efficiency Facility -->
+  <SimulationDescriptor Name="FacilityUnique8"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="ShipDesignEfficiencyBaseBonus"  BaseValue="0.1"   MinValue="0"  MaxValue="1"/>
+      <SimulationPropertyDescriptor Name="ShipDesignEfficiencyBonus"      BaseValue="0.01"  MinValue="0"  MaxValue="1"/>
+      <SimulationPropertyDescriptor Name="FortressCount"                  BaseValue="0"     MinValue="0"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="SeafaringUnitProductionCostReduction" Operation="Addition"  Value="$(ShipDesignEfficiencyBaseBonus)"  Path="../ClassEmpire/ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction" Operation="Addition"  BinaryOperation="Multiplication"  Left="$(ShipDesignEfficiencyBonus)"  Right="$(FortressCount)"  Path="../ClassEmpire/ClassCity" IsBindOnSource="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ship Design Optimization Facility -->
+  <SimulationDescriptor Name="FacilityUnique9"                            Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="ShipDesignOptimizationBaseBonus"  BaseValue="0.1"   MinValue="0"  MaxValue="1"/>
+      <SimulationPropertyDescriptor Name="ShipDesignOptimizationBonus"      BaseValue="0.05"  MinValue="0"  MaxValue="1"/>
+      <SimulationPropertyDescriptor Name="FortressCount"                    BaseValue="0"     MinValue="0"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="AttributeAttack"  Operation="Percent" Value="$(ShipDesignOptimizationBaseBonus)"  Path="../ClassEmpire/ClassArmy/SeafaringUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack"  Operation="Percent" BinaryOperation="Multiplication" Left="$(ShipDesignOptimizationBonus)"  Right="$(FortressCount)"  Path="../ClassEmpire/ClassArmy/SeafaringUnit" IsBindOnSource="true"/>
+      <SimulationModifierDescriptor       TargetProperty="AttributeDefense" Operation="Percent" Value="$(ShipDesignOptimizationBaseBonus)"  Path="../ClassEmpire/ClassArmy/SeafaringUnit"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" BinaryOperation="Multiplication" Left="$(ShipDesignOptimizationBonus)"  Right="$(FortressCount)"  Path="../ClassEmpire/ClassArmy/SeafaringUnit" IsBindOnSource="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Weather-control Facility -->
+  <SimulationDescriptor Name="FacilityUnique10"                           Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+      
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+    
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="WeatherControl"       Value="1"   Operation="Addition"  Path="../ClassEmpire" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"     Value="10"  Operation="Addition"  Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"         Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury Boost Facility -->
+  <SimulationDescriptor Name="FacilityUnique11"                           Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+  
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"   Value="0.5" Operation="Percent"  Path="../EmpireTypeMajor/ClassFortress/ResourceExtractor_Luxury"  Priority="2" TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strategic Boost Facility -->
+  <SimulationDescriptor Name="FacilityUnique12"                           Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+    </SimulationPropertyDescriptors>
+ 
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ResourceGain"   Value="0.5" Operation="Percent"  Path="../EmpireTypeMajor/ClassFortress/ResourceExtractor_Strategic"  Priority="2" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sea Monster Immunity Facility -->
+  <SimulationDescriptor Name="FacilityUnique13"                           Type="PointOfInterestImprovement">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="FortressTileEmpirePoint"/>
+      <SimulationPropertyDescriptor Name="DistrictCityPoint"/>
+
+      <SimulationPropertyDescriptor Name="FortressTileDust"/>
+      <SimulationPropertyDescriptor Name="DistrictDust"/>
+    </SimulationPropertyDescriptors>
+    
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="SeaMonsterImmune"   Value="1"   Operation="Force" Path="../ClassEmpire"/>
+      
+      <SimulationModifierDescriptor TargetProperty="FortressTileDust"   Value="8"  Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"       Value="$(FortressTileDust)"  Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="FortressTileEmpirePoint"     Value="1"       Operation="Addition" Path="RevealedFacility"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"           Value="$(FortressTileEmpirePoint)"  Operation="Addition"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

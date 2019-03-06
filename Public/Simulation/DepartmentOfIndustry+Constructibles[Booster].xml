@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ########################################## -->
+  <!-- ######   FIDS Conversion boosters   ###### -->
+  <!-- ########################################## -->
+
+  <!-- Industry to Food booster -->
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorFoodBonus1" SubCategory="SubCategoryFood">
+    <NextUpgradeName>BoosterGeneratorFoodBonus2</NextUpgradeName>
+    <SimulationDescriptorReference    Name="BoosterGeneratorFoodBonus1" />
+    <BoosterDefinitionName>BoosterFood</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <Cost ResourceName="Production" Instant="false">1200</Cost>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel1</TechnologyPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">.../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2</PathPrerequisite>
+  </BoosterGeneratorDefinition>
+
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorFoodBonus2" SubCategory="SubCategoryFood">
+    <SimulationDescriptorReference    Name="BoosterGeneratorFoodBonus2" />
+    <BoosterDefinitionName>BoosterFood</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <Cost ResourceName="Production" Instant="false">2500</Cost>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel2</TechnologyPrerequisite>
+  </BoosterGeneratorDefinition>
+
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorFoodBonus3" SubCategory="SubCategoryFood">
+    <SimulationDescriptorReference    Name="BoosterGeneratorFoodBonus3" />
+    <BoosterDefinitionName>BoosterFood</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <CustomCost ResourceName="Production" Instant="false">
+      100 + 500*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 1000*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
+    </CustomCost>
+    <CustomCost ResourceName="Orb" Instant="true">8 * (1 - $Property(ClassCity:StockpileOrbCostReduction))</CustomCost>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyOrbUnlock12</TechnologyPrerequisite>
+  </BoosterGeneratorDefinition>
+
+  <!-- Industry to Industry booster -->
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorIndustryBonus1" SubCategory="SubCategoryIndustry">
+    <NextUpgradeName>BoosterGeneratorIndustryBonus2</NextUpgradeName>
+    <SimulationDescriptorReference    Name="BoosterGeneratorIndustryBonus1" />
+    <BoosterDefinitionName>BoosterIndustry</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <Cost ResourceName="Production" Instant="false">1200</Cost>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel1</TechnologyPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">.../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2</PathPrerequisite>
+  </BoosterGeneratorDefinition>
+
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorIndustryBonus2" SubCategory="SubCategoryIndustry">
+    <SimulationDescriptorReference    Name="BoosterGeneratorIndustryBonus2" />
+    <BoosterDefinitionName>BoosterIndustry</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <Cost ResourceName="Production" Instant="false">2500</Cost>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel2</TechnologyPrerequisite>
+  </BoosterGeneratorDefinition>
+
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorIndustryBonus3" SubCategory="SubCategoryIndustry">
+    <SimulationDescriptorReference    Name="BoosterGeneratorIndustryBonus3" />
+    <BoosterDefinitionName>BoosterIndustry</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <CustomCost ResourceName="Production" Instant="false">
+      100 + 500*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 1000*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
+    </CustomCost>
+    <CustomCost ResourceName="Orb" Instant="true">8 * (1 - $Property(ClassCity:StockpileOrbCostReduction))</CustomCost>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyOrbUnlock12</TechnologyPrerequisite>
+  </BoosterGeneratorDefinition>
+
+  <!-- Industry to Science booster -->
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorScienceBonus1" SubCategory="SubCategoryScience">
+    <NextUpgradeName>BoosterGeneratorScienceBonus2</NextUpgradeName>
+    <SimulationDescriptorReference    Name="BoosterGeneratorScienceBonus1" />
+    <BoosterDefinitionName>BoosterScience</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <Cost ResourceName="Production" Instant="false">1200</Cost>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityReplicants</PathPrerequisite>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel1</TechnologyPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">.../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2</PathPrerequisite>
+  </BoosterGeneratorDefinition>
+
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorScienceBonus2" SubCategory="SubCategoryScience">
+    <SimulationDescriptorReference    Name="BoosterGeneratorScienceBonus2" />
+    <BoosterDefinitionName>BoosterScience</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <Cost ResourceName="Production" Instant="false">2500</Cost>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityReplicants</PathPrerequisite>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyAllBoosterLevel2</TechnologyPrerequisite>
+  </BoosterGeneratorDefinition>
+
+  <BoosterGeneratorDefinition         Name="BoosterGeneratorScienceBonus3" SubCategory="SubCategoryScience">
+    <SimulationDescriptorReference    Name="BoosterGeneratorScienceBonus3" />
+    <BoosterDefinitionName>BoosterScience</BoosterDefinitionName>
+    <BuyoutCostModifier>0.5</BuyoutCostModifier>
+    <CustomCost ResourceName="Production" Instant="false">
+      100 + 500*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel1) + 1000*$Count(../ClassEmpire/ClassResearch,TechnologyAllBoosterLevel2)
+    </CustomCost>
+    <CustomCost ResourceName="Orb" Instant="true">8 * (1 - $Property(ClassCity:StockpileOrbCostReduction))</CustomCost>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityReplicants</PathPrerequisite>
+    <TechnologyPrerequisite           Flags="Prerequisite,Discard,Technology">TechnologyOrbUnlock12</TechnologyPrerequisite>
+  </BoosterGeneratorDefinition>
+
+</Datatable>

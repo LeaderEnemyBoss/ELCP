@@ -52,7 +52,7 @@
       <!-- Diplomatic victory -->
       <SimulationPropertyDescriptor Name="EmpirePeacePointStock"          IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetEmpirePeacePoint"/>
-      <SimulationPropertyDescriptor Name="EmpirePointToPeacePointFactor"  BaseValue="0.1"/>
+      <SimulationPropertyDescriptor Name="EmpirePointToPeacePointFactor"  BaseValue="0.2"/>
       <SimulationPropertyDescriptor Name="AffinityRelationScoreSum"       MinValue="Negative" IsSealed="true"/>
       <SimulationPropertyDescriptor Name="RelationScoreSumFactor"         BaseValue="0.1"/>
       <SimulationPropertyDescriptor Name="ClampedRelationScoreSum"        MinValue="0"        BaseValue="0"/>
@@ -241,13 +241,16 @@
       <SimulationPropertyDescriptor Name="PacifiedVillages_EyelessOnes"     BaseValue="0" MaxValue="6"/>
       <SimulationPropertyDescriptor Name="PacifiedVillages_Dorgeshi"        BaseValue="0" MaxValue="6"/>
 
-      <!-- Misc -->
-      <SimulationPropertyDescriptor Name="CurrentEra"           BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="CreepingNode_StrategicExtractor"  BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="CreepingNode_LuxuryExtractor"     BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="CreepingNode_Ruin"                BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="CreepingNode_Foundation"          BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="CreepingNode_Village"             BaseValue="0"/>
 
-      <SimulationPropertyDescriptor Name="BoosterDurationMultiplier"           BaseValue="1"/>
-	  <!-- ELCP/LeaderEnemyBoss: New unique AllayiBoosterDurationMultiplier for Luxury Alchemists -->
-	  <SimulationPropertyDescriptor Name="AllayiBoosterDurationMultiplier"     BaseValue="1"/>
-	  <!-- End ELCP -->
+      <!-- Misc -->
+      <SimulationPropertyDescriptor Name="CurrentEra"                     BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="BoosterDurationMultiplier"      BaseValue="1"/>
 
       <SimulationPropertyDescriptor Name="BonusMovementOnEnemySpotted"/>
 
@@ -287,10 +290,15 @@
       <SimulationPropertyDescriptor Name="NumberOfPastSeasons"                BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NumberOfPastWinters"                BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NumberOfWinters"                    BaseValue="0"/>
-      <SimulationPropertyDescriptor Name="PrayerCostByPastWinter"             BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="PrayerCostByPastWinter"             BaseValue="1"/>
       <SimulationPropertyDescriptor Name="NumberOfTurnsSinceSeasonStart"      BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NumberOfTurnsSinceSummerStart"      BaseValue="0"/>
       <SimulationPropertyDescriptor Name="PrayerCostByTurnsSinceSeasonStart"  BaseValue="1"/>
+      
+      <!-- Kaiju -->
+      <SimulationPropertyDescriptor Name="NumberOfResearchedKaijuTechs"       BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NumberOfTamedKaijus"                BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="TotalIndustrySpent"                 BaseValue="0"/>
 
       <!-- Naval -->
       <SimulationPropertyDescriptor Name="OceanRegionControlledCount"  BaseValue="0"/>
@@ -369,12 +377,13 @@
       <SimulationModifierDescriptor TargetProperty="DissentCostInflationFactor"   Operation="Addition"        Value="$(CurrentEra)"                   Path="ClassEmpire"    Priority="2"/>
       <SimulationModifierDescriptor TargetProperty="DissentCostInflationFactor"   Operation="Multiplication"  Value="1.5"                             Path="ClassEmpire"    Priority="3"/>
       <SimulationModifierDescriptor TargetProperty="DissentCost"                  Operation="Multiplication"  Value="$(DissentCostInflationFactor)"   Path="ClassEmpire"    Priority="4"/>
+
+      <SimulationModifierDescriptor TargetProperty="NumberOfTamedKaijus" Operation ="Force" Value="$(NumberOfTamedKaijus)" Path="ClassEmpire/ClassResearch"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="EmpireTypeMinor" Type="EmpireType">
     <SimulationPropertyDescriptors>
-
 
       <!-- Unit health Regen-->
       <SimulationPropertyDescriptor Name="GlobalUnitRegenImprovement"          BaseValue="0.05"/>
@@ -392,6 +401,20 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
+  <SimulationDescriptor Name="EmpireTypeKaiju" Type="EmpireType">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="GlobalUnitRegenImprovement"          BaseValue="0.05"/>
+      <SimulationPropertyDescriptor Name="InAlliedRegionUnitRegenModifier"     BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="InOwnedRegionUnitRegenModifier"      BaseValue="0.1"/>
+      <SimulationPropertyDescriptor Name="InNoneAlliedRegionUnitRegenModifier" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="UnassignedHeroRegenModifier"         BaseValue="0"/>
+
+      <SimulationPropertyDescriptor Name="NumberOfResearchedKaijuTechs"        BaseValue="0"/>
+      
+      <SimulationPropertyDescriptor Name="SpawnedKaijusCounter"                BaseValue="0" MinValue="0" IsSealed="true" IsSerializable="true"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+  
   <SimulationDescriptor Name="EmpireTypeNaval" Type="EmpireType">
     <SimulationPropertyDescriptors>
 

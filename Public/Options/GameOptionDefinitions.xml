@@ -444,32 +444,6 @@
       <KeyValuePair Key="FactionRandomizationMode">Weighted</KeyValuePair>
     </ItemDefinition>
   </GameOptionDefinition>
-  
-  <GameOptionDefinition Name="TechTradeCost"               Default="Moderate" Category="Game" SubCategory="Diagnostics"   GuiControlType="DropList">
-    <Tags>Advanced</Tags>
-    <ItemDefinition Name="Vanilla">
-      <KeyValuePair Key="TechTradeCost">Vanilla</KeyValuePair>
-    </ItemDefinition>
-    <ItemDefinition Name="Light">
-      <KeyValuePair Key="TechTradeCost">Light</KeyValuePair>
-    </ItemDefinition>
-    <ItemDefinition Name="Moderate">
-      <KeyValuePair Key="TechTradeCost">Moderate</KeyValuePair>
-    </ItemDefinition>
-    <ItemDefinition Name="Harsh">
-      <KeyValuePair Key="TechTradeCost">Harsh</KeyValuePair>
-    </ItemDefinition>
-  </GameOptionDefinition>
-  
-  <GameOptionDefinition Name="FortificationRules"               Default="ELCP" Category="Game" SubCategory="Diagnostics"   GuiControlType="DropList">
-    <Tags>Advanced</Tags>
-    <ItemDefinition Name="Vanilla">
-      <KeyValuePair Key="FortificationRules">Vanilla</KeyValuePair>
-    </ItemDefinition>
-    <ItemDefinition Name="ELCP">
-      <KeyValuePair Key="FortificationRules">ELCP</KeyValuePair>
-    </ItemDefinition>
-  </GameOptionDefinition>
 
   <!--GameOptionDefinition Name="SharedVictory"	Default="False"	Category="Game"	SubCategory="Diagnostics"	GuiControlType="Toggle">
     <Tags>Advanced</Tags>
@@ -480,5 +454,16 @@
       <KeyValuePair Key="SharedVictory">true</KeyValuePair>
     </ItemDefinition>
   </GameOptionDefinition-->
+
+  <GameOptionDefinition Name="PlayWithKaiju"               Default="True" Category="Game" SubCategory="Diagnostics"       GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+    <OptionDefinitionConstraint OptionName="MimicsPack" Type="DownloadableContentConditional" />
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="PlayWithKaiju">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="PlayWithKaiju">true</KeyValuePair>
+    </ItemDefinition>
+  </GameOptionDefinition>
 
 </Datatable>

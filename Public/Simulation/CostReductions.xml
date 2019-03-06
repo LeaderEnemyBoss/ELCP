@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <CostReduction Name="UnitBody">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIUnitProductionCostReduction"              Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIUnitBuyoutCostReduction"                  Type="Buyout"     Priority="2"/>
+    <Reduction PropertyName="UnitProductionCostReduction"                Type="Production" Priority="3"/>
+    <Reduction PropertyName="UnitBuyoutReduction"                        Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="UnitDesign">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIUnitProductionCostReduction"              Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIUnitBuyoutCostReduction"                  Type="Buyout"     Priority="2"/>
+    <Reduction PropertyName="UnitProductionCostReduction"                Type="Production" Priority="3"/>
+    <Reduction PropertyName="UnitBuyoutReduction"                        Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="UnitDesignSettler">
+    <!-- Don't add the Game speed production cost reduction for the settler, it already had it by the unit design cost reduction. -->
+    <Reduction PropertyName="UnitSettlerProductionCostReduction"         Type="Production" Priority="3"/>
+    <Reduction PropertyName="UnitSettlerBuyoutReduction"                 Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="MajorTypeUnit">
+    <Reduction PropertyName="MajorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="CityImprovement">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
+    <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
+    <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="CategoryNationalBuilding">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
+    <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
+    <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="DistrictImprovement">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
+    <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="DistrictImprovementWithAIBonus">
+    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
+  </CostReduction>
+
+  <CostReduction Name="RegionImprovement">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
+    <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
+    <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="PointOfInterestImprovement">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
+    <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
+    <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionErycis">
+    <Reduction PropertyName="ErycisUnitProductionCostReduction"          Type="Production" Priority="3"/>
+    <Reduction PropertyName="ErycisUnitBuyoutReduction"                  Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionCeratan">
+    <Reduction PropertyName="CeratanUnitProductionCostReduction"         Type="Production" Priority="3"/>
+    <Reduction PropertyName="CeratanUnitBuyoutReduction"                 Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionDelvers">
+    <Reduction PropertyName="DelversUnitProductionCostReduction"         Type="Production" Priority="3"/>
+    <Reduction PropertyName="DelversUnitBuyoutReduction"                 Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionUrces">
+    <Reduction PropertyName="UrcesUnitProductionCostReduction"           Type="Production" Priority="3"/>
+    <Reduction PropertyName="UrcesUnitBuyoutReduction"                   Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionKazanji">
+    <Reduction PropertyName="KazanjiUnitProductionCostReduction"         Type="Production" Priority="3"/>
+    <Reduction PropertyName="KazanjiUnitBuyoutReduction"                 Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionSistersOfMercy">
+    <Reduction PropertyName="SistersOfMercyUnitProductionCostReduction"  Type="Production" Priority="3"/>
+    <Reduction PropertyName="SistersOfMercyUnitBuyoutReduction"          Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionSilics">
+    <Reduction PropertyName="SilicsUnitProductionCostReduction"          Type="Production" Priority="3"/>
+    <Reduction PropertyName="SilicsUnitBuyoutReduction"                  Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionHaunts">
+    <Reduction PropertyName="HauntsUnitProductionCostReduction"          Type="Production" Priority="3"/>
+    <Reduction PropertyName="HauntsUnitBuyoutReduction"                  Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionBos">
+    <Reduction PropertyName="BosUnitProductionCostReduction"             Type="Production" Priority="3"/>
+    <Reduction PropertyName="BosUnitBuyoutReduction"                     Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionJotus">
+    <Reduction PropertyName="JotusUnitProductionCostReduction"           Type="Production" Priority="3"/>
+    <Reduction PropertyName="JotusUnitBuyoutReduction"                   Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionHurnas">
+    <Reduction PropertyName="HurnasUnitProductionCostReduction"          Type="Production" Priority="3"/>
+    <Reduction PropertyName="HurnasUnitBuyoutReduction"                  Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionGauran">
+    <Reduction PropertyName="GauranUnitProductionCostReduction"          Type="Production" Priority="3"/>
+    <Reduction PropertyName="GauranUnitBuyoutReduction"                  Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionBirdhive">
+    <Reduction PropertyName="BirdhiveUnitProductionCostReduction"        Type="Production" Priority="3"/>
+    <Reduction PropertyName="BirdhiveUnitBuyoutReduction"                Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionGeldirus">
+    <Reduction PropertyName="GeldirusUnitProductionCostReduction"        Type="Production" Priority="3"/>
+    <Reduction PropertyName="GeldirusUnitBuyoutReduction"                Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionEyelessOnes">
+    <Reduction PropertyName="EyelessOnesUnitProductionCostReduction"     Type="Production" Priority="3"/>
+    <Reduction PropertyName="EyelessOnesUnitBuyoutReduction"             Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MinorFactionDorgeshi">
+    <Reduction PropertyName="DorgeshiUnitProductionCostReduction"        Type="Production" Priority="3"/>
+    <Reduction PropertyName="DorgeshiUnitBuyoutReduction"                Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="Bribe">
+    <Reduction PropertyName="BribeCostReduction"                         Type="Buyout"/>
+  </CostReduction>
+
+  <CostReduction Name="Technology">
+    <Reduction PropertyName="AIResearchCostReduction"                    Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="EmpirePlan">
+    <Reduction PropertyName="AIEmpirePlanCostReduction"                  Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="MarkOfTheDamned">
+    <Reduction PropertyName="MarkOfTheDamnedUnitProductionCostReduction" Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="UnitSeafaring">
+    <Reduction PropertyName="SeafaringUnitProductionCostReduction"        Type="Production" Priority="3"/>
+  </CostReduction>
+</Datatable>

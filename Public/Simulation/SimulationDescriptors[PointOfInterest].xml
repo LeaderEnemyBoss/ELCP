@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="PointOfInterestTypeQuestLocation"   Type="PointOfInterestType">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest"  BaseValue="20"/>
+      <SimulationPropertyDescriptor Name="Interact_OddsLooting"           BaseValue="60"/>
+      <SimulationPropertyDescriptor Name="Interact_OddsLootingNothing"    BaseValue="20"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestTypeNavalQuestLocation"   Type="PointOfInterestType">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest"  BaseValue="20"/>
+      <SimulationPropertyDescriptor Name="Interact_OddsLooting"           BaseValue="60"/>
+      <SimulationPropertyDescriptor Name="Interact_OddsLootingNothing"    BaseValue="20"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestTypeResourceDeposit" Type="PointOfInterestType">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ResourceBonus"/>
+      <SimulationPropertyDescriptor Name="ResourceGain"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestTypeVillage"         Type="PointOfInterestType">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest" BaseValue="100"/>
+      <SimulationPropertyDescriptor Name="PopulationBonus"/>
+      <SimulationPropertyDescriptor Name="GlobalLeachModifier" BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="ConvertedVillageUnitProductionTimer" BaseValue="15" />
+
+      <SimulationPropertyDescriptor Name="InGarrisonRegenModifier" BaseValue="0"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestTypeCitadel"         Type="PointOfInterestType"> 
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest" BaseValue="100"/>
+     </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestTypeFacility"        Type="PointOfInterestType">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest" BaseValue="100"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DetectionRange"                      Value="1"  Operation="Addition"/>
+      <!-- POIs have a vision of -1 by default, -1 + 2 = 1 -->
+      <SimulationModifierDescriptor TargetProperty="VisionRange"                         Value="2"  Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestTypeWatchTower"      Type="PointOfInterestType">
+    <SimulationPropertyDescriptors>
+      <!-- Bonus to unit health Regen near the city-->
+      <SimulationPropertyDescriptor Name="UnitRegenLimitDistance"       BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="AlliedUnitRegenModifier"      BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="OwnedUnitRegenModifier"       BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NoneAlliedUnitRegenModifier"  BaseValue="0"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestTypeDefensiveTower"  Type="PointOfInterestType">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="DefensivePower" BaseValue="0"/>
+    </SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+
+  <!-- With these modifiers, Ruins odds are : Quest=20%, Loot=50% -->
+  <SimulationDescriptor Name="QuestLocationTypeRuin"              Type="QuestLocationType">
+    <!--<SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"  Operation="Addition" Value="-10"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"           Operation="Addition" Value="10"/>
+    </SimulationModifierDescriptors>-->
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="NavalQuestLocationTypeSunkenRuin"        Type="QuestLocationType">
+    <!--<SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"  Operation="Addition" Value="-10"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"           Operation="Addition" Value="10"/>
+    </SimulationModifierDescriptors>-->
+  </SimulationDescriptor>
+
+  <!-- These descriptors can be used to block action on a Temple in Winter (removed):
+      <SimulationModifierDescriptor TargetProperty="IsInteractionBlocked" Operation="Force" Value="1" Path="#Winter"/>
+      <SimulationModifierDescriptor TargetProperty="IsInteractionBlocked"     Operation="Force" Value="0" Path="!#Winter"/>
+  -->
+  <!-- With these modifiers, Ruins odds are : Quest=40%, Loot=30% -->
+  <SimulationDescriptor Name="QuestLocationTypeTemple"            Type="QuestLocationType">
+    <!--<SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="IsInteractionBlocked" BaseValue="0"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"  Operation="Addition" Value="10"/>
+      <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"           Operation="Addition" Value="-10"/>
+    </SimulationModifierDescriptors>-->
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="PointOfInterestVictoryQuest"        Type="QuestLocationType">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cultist leach is drived by these descriptors. -->
+  <SimulationDescriptor Name="LeachByConversionStrategic1"        Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionStrategic1" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetStrategic1"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Addition" Value="$(LeachByConversionStrategic1)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Addition" Value="$(NetStrategic1)" Path="ConvertedVillage/../ClassEmpire"/> -->
+
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic1)" Path="ConvertedVillage/../ClassEmpire,AffinityStrategic1"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Addition" Value="$(NetStrategic1)" Path="ConvertedVillage/../ClassEmpire,!AffinityStrategic1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionStrategic2"        Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionStrategic2" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetStrategic2"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Addition" Value="$(LeachByConversionStrategic2)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Addition" Value="$(NetStrategic2)" Path="ConvertedVillage/../ClassEmpire"/> -->
+
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic2)" Path="ConvertedVillage/../ClassEmpire,AffinityStrategic2"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Addition" Value="$(NetStrategic2)" Path="ConvertedVillage/../ClassEmpire,!AffinityStrategic2"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionStrategic3"        Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionStrategic3" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetStrategic3"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Addition" Value="$(LeachByConversionStrategic3)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Addition" Value="$(NetStrategic3)" Path="ConvertedVillage/../ClassEmpire"/> -->
+
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic3)" Path="ConvertedVillage/../ClassEmpire,AffinityStrategic3"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Addition" Value="$(NetStrategic3)" Path="ConvertedVillage/../ClassEmpire,!AffinityStrategic3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionStrategic4"        Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionStrategic4" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetStrategic4"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Addition" Value="$(LeachByConversionStrategic4)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Addition" Value="$(NetStrategic4)" Path="ConvertedVillage/../ClassEmpire"/> -->
+
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic4)" Path="ConvertedVillage/../ClassEmpire,AffinityStrategic4"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Addition" Value="$(NetStrategic4)" Path="ConvertedVillage/../ClassEmpire,!AffinityStrategic4"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionStrategic5"        Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionStrategic5" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetStrategic5"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Addition" Value="$(LeachByConversionStrategic5)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Addition" Value="$(NetStrategic5)" Path="ConvertedVillage/../ClassEmpire"/> -->
+
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic5)" Path="ConvertedVillage/../ClassEmpire,AffinityStrategic5"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Addition" Value="$(NetStrategic5)" Path="ConvertedVillage/../ClassEmpire,!AffinityStrategic5"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionStrategic6"        Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionStrategic6" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetStrategic6"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Addition" Value="$(LeachByConversionStrategic6)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Addition" Value="$(NetStrategic6)" Path="ConvertedVillage/../ClassEmpire"/> -->
+
+      <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic6)" Path="ConvertedVillage/../ClassEmpire,AffinityStrategic6"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Addition" Value="$(NetStrategic6)" Path="ConvertedVillage/../ClassEmpire,!AffinityStrategic6"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury1"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury1" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury1"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1"  Operation="Addition" Value="$(LeachByConversionLuxury1)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1"  Operation="Addition" Value="$(NetLuxury1)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury2"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury2" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury2"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2"  Operation="Addition" Value="$(LeachByConversionLuxury2)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2"  Operation="Addition" Value="$(NetLuxury2)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury3"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury3" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury3"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3"  Operation="Addition" Value="$(LeachByConversionLuxury3)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3"  Operation="Addition" Value="$(NetLuxury3)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury4"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury4" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury4"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4"  Operation="Addition" Value="$(LeachByConversionLuxury4)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4"  Operation="Addition" Value="$(NetLuxury4)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury5"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury5" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury5"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5"  Operation="Addition" Value="$(LeachByConversionLuxury5)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5"  Operation="Addition" Value="$(NetLuxury5)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury6"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury6" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury6"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6"  Operation="Addition" Value="$(LeachByConversionLuxury6)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6"  Operation="Addition" Value="$(NetLuxury6)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury7"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury7" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury7"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7"  Operation="Addition" Value="$(LeachByConversionLuxury7)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7"  Operation="Addition" Value="$(NetLuxury7)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury8"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury8" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury8"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8"  Operation="Addition" Value="$(LeachByConversionLuxury8)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8"  Operation="Addition" Value="$(NetLuxury8)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury9"           Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury9" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury9"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9"  Operation="Addition" Value="$(LeachByConversionLuxury9)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9"  Operation="Addition" Value="$(NetLuxury9)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury10"          Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury10" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury10"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10"  Operation="Addition" Value="$(LeachByConversionLuxury10)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10"  Operation="Addition" Value="$(NetLuxury10)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury11"          Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury11" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury11"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11"  Operation="Addition" Value="$(LeachByConversionLuxury11)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11"  Operation="Addition" Value="$(NetLuxury11)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury12"          Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury12" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury12"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12"  Operation="Addition" Value="$(LeachByConversionLuxury12)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12"  Operation="Addition" Value="$(NetLuxury12)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury13"          Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury13" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury13"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13"  Operation="Addition" Value="$(LeachByConversionLuxury13)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13"  Operation="Addition" Value="$(NetLuxury13)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury14"          Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury14" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury14"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14"  Operation="Addition" Value="$(LeachByConversionLuxury14)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14"  Operation="Addition" Value="$(NetLuxury14)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeachByConversionLuxury15"          Type="LeachByConversion">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeachByConversionLuxury15" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="NetLuxury15"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15"  Operation="Addition" Value="$(LeachByConversionLuxury15)" Path="ConvertedVillage"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15"  Operation="Multiplication" Value="$(DepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15"  Operation="Multiplication" Value="$(GlobalLeachModifier)"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15"  Operation="Addition" Value="$(NetLuxury15)" Path="ConvertedVillage/../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="MantaApprovalBonus"                 Type="PointOfInterestTypeResourceDeposit">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition" Value="10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  
+  
+  <!-- ############################ -->
+  <!-- #######  MIMICS DLC  ####### -->
+  <!-- ############################ -->
+  
+  <!-- Kaijus leech is driven by these descriptors. -->
+
+  <SimulationDescriptor Name="LeechByKaijusStrategic1"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusStrategic1"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetStrategic1"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Addition"  Value="$(LeechByKaijusStrategic1)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- We do not need to modify the Empire's property since it is a SUM of its children properties and the kaiju is a direct child. -->
+      <!-- We could modify the Main City property tho. -->
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Addition"  Value="$(NetStrategic1)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusStrategic2"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusStrategic2"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetStrategic2"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Addition"  Value="$(LeechByKaijusStrategic2)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Addition"  Value="$(NetStrategic2)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusStrategic3"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusStrategic3"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetStrategic3"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Addition"  Value="$(LeechByKaijusStrategic3)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Addition"  Value="$(NetStrategic3)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusStrategic4"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusStrategic4"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetStrategic4"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Addition"  Value="$(LeechByKaijusStrategic4)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Addition"  Value="$(NetStrategic4)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusStrategic5"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusStrategic5"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetStrategic5"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Addition"  Value="$(LeechByKaijusStrategic5)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Addition"  Value="$(NetStrategic5)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusStrategic6"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusStrategic6"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetStrategic6"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Addition"  Value="$(LeechByKaijusStrategic6)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Addition"  Value="$(NetStrategic6)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury1"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury1"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury1"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1"  Operation="Addition"  Value="$(LeechByKaijusLuxury1)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury1"  Operation="Addition"  Value="$(NetLuxury1)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury2"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury2"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury2"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2"  Operation="Addition"  Value="$(LeechByKaijusLuxury2)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury2"  Operation="Addition"  Value="$(NetLuxury1)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury3"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury3"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury3"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3"  Operation="Addition"  Value="$(LeechByKaijusLuxury3)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury3"  Operation="Addition"  Value="$(NetLuxury3)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury4"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury4"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury4"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4"  Operation="Addition"  Value="$(LeechByKaijusLuxury4)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury4"  Operation="Addition"  Value="$(NetLuxury4)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury5"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury5"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury5"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5"  Operation="Addition"  Value="$(LeechByKaijusLuxury5)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury5"  Operation="Addition"  Value="$(NetLuxury5)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury6"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury6"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury6"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6"  Operation="Addition"  Value="$(LeechByKaijusLuxury6)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury6"  Operation="Addition"  Value="$(NetLuxury6)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury7"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury7"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury7"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7"  Operation="Addition"  Value="$(LeechByKaijusLuxury7)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury7"  Operation="Addition"  Value="$(NetLuxury7)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury8"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury8"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury8"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8"  Operation="Addition"  Value="$(LeechByKaijusLuxury8)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury8"  Operation="Addition"  Value="$(NetLuxury8)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury9"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury9"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury9"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9"  Operation="Addition"  Value="$(LeechByKaijusLuxury9)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury9"  Operation="Addition"  Value="$(NetLuxury9)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury10"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury10"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury10"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10"  Operation="Addition"  Value="$(LeechByKaijusLuxury10)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury10"  Operation="Addition"  Value="$(NetLuxury10)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury11"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury11"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury11"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11"  Operation="Addition"  Value="$(LeechByKaijusLuxury11)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury11"  Operation="Addition"  Value="$(NetLuxury11)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury12"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury12"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury12"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12"  Operation="Addition"  Value="$(LeechByKaijusLuxury12)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury12"  Operation="Addition"  Value="$(NetLuxury12)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury13"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury13"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury13"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13"  Operation="Addition"  Value="$(LeechByKaijusLuxury13)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury13"  Operation="Addition"  Value="$(NetLuxury13)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury14"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury14"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury14"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14"  Operation="Addition"  Value="$(LeechByKaijusLuxury14)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury14"  Operation="NetLuxury14"  Value="$(NetLuxury14)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="LeechByKaijusLuxury15"  Type="LeechByKaijus">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="LeechByKaijusLuxury15"  BaseValue="0"  IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="NetLuxury15"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15"  Operation="Addition"  Value="$(LeechByKaijusLuxury15)"  Path="ClassKaiju"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
+
+      <!-- <SimulationModifierDescriptor TargetProperty="NetLuxury15"  Operation="NetLuxury14"  Value="$(NetLuxury15)"  Path="../ClassEmpire"/> -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

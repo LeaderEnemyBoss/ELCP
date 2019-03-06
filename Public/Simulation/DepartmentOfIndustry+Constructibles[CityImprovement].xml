@@ -597,6 +597,14 @@
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyTradeRouteBonus1</TechnologyPrerequisite>
   </CityImprovementDefinition>
 
+  <!-- Era 3 - Double unlock : Highway Outposts (Caravanserai & Lookout Towers) -->
+  <CityImprovementDefinition Name="CityImprovementMimicsTradeRoutes1"                  SubCategory="SubCategoryTradeRoutes">
+    <SimulationDescriptorReference Name="CityImprovementTradeRoutes1" />
+    <Cost ResourceName="Production">600</Cost>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementTradeRoutes1</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyMimicsTradeRouteBonus1</TechnologyPrerequisite>
+  </CityImprovementDefinition>
+
   <!-- Era 5 - Double unlock : Enlightened Trade (Scientific Envoy & Remotuscope Factory) -->
   <CityImprovementDefinition Name="CityImprovementTradeRoutes3"                  SubCategory="SubCategoryTradeRoutes">
     <SimulationDescriptorReference Name="CityImprovementTradeRoutes3" />
@@ -630,8 +638,6 @@
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementRoads</PathPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyRoad</TechnologyPrerequisite>
   </CityImprovementDefinition>
-
-
 
   <!-- ###################################### -->
   <!-- ####  Military Recruitment Bonus  #### -->
@@ -878,9 +884,11 @@
     <SimulationDescriptorReference Name="CityImprovementExtractingCapacity" />
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,AIEconomicRatio">../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,AIEconomicRatio">../ClassEmpire,AffinityReplicants</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,AIEconomicRatio">../ClassEmpire,AffinityMimics</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHall</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallBrokenLords</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallReplicants</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallMimics</PathPrerequisite>
     <PathPrerequisite Flags="AIEconomicRatio">1 == 0</PathPrerequisite>
   </CityImprovementDefinition>
 
@@ -893,6 +901,7 @@
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHall</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallBrokenLords</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallReplicants</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallMimics</PathPrerequisite>
     <PathPrerequisite Flags="AIEconomicRatio">1 == 0</PathPrerequisite>
   </CityImprovementDefinition>
 
@@ -905,10 +914,22 @@
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHall</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallBrokenLords</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallReplicants</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallMimics</PathPrerequisite>
     <PathPrerequisite Flags="AIEconomicRatio">1 == 0</PathPrerequisite>
   </CityImprovementDefinition>
 
-
+  <CityImprovementDefinition Name="CityImprovementCityHallMimics"            SubCategory="SubCategoryCityHall">
+    <Tags>Free</Tags>
+    <SimulationDescriptorReference Name="CityImprovementCityHallMimics" />
+    <SimulationDescriptorReference Name="CityImprovementUndestroyable" />
+    <SimulationDescriptorReference Name="CityImprovementExtractingCapacity" />
+    <PathPrerequisite Flags="Prerequisite,Discard">../ClassEmpire,AffinityMimics</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHall</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallBrokenLords</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallReplicants</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementCityHallMimics</PathPrerequisite>
+    <PathPrerequisite Flags="AIEconomicRatio">1 == 0</PathPrerequisite>
+  </CityImprovementDefinition>
 
   <!-- ################################## -->
   <!-- ######   Wonder Buildings   ###### -->
@@ -960,7 +981,7 @@
     <SimulationDescriptorReference    Name="OnlyOnePerEmpire" />
     <SimulationDescriptorReference    Name="CityImprovementUndestroyable" />
     <Tags>NoBuyout,NoNotification</Tags>
-    <Cost ResourceName="Production">72000</Cost>
+    <Cost ResourceName="Production">36000</Cost>
     <Cost ResourceName="Strategic5" Instant="true">40</Cost>
     <Cost ResourceName="Strategic6" Instant="true">40</Cost>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire/ClassCity/CityImprovementEndlessTemple</PathPrerequisite>
@@ -1208,7 +1229,6 @@
     <SimulationDescriptorReference Name="CityImprovementReplicants9"/>
     <Cost ResourceName="Production">600</Cost>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementReplicants9</PathPrerequisite>
-    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassCity:PopulationBonus) ge 1</InterpreterPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyReplicants9</TechnologyPrerequisite>
   </CityImprovementDefinition>
 
@@ -1414,8 +1434,8 @@
     <Cost ResourceName="Production">2000</Cost>
     <Cost ResourceName="Strategic1" Instant="true">10</Cost>
     <Cost ResourceName="Strategic2" Instant="true">10</Cost>
-    <Cost ResourceName="Strategic3" Instant="true">10</Cost>
-    <Cost ResourceName="Strategic4" Instant="true">10</Cost>
+    <Cost ResourceName="Strategic3" Instant="true">9</Cost>
+    <Cost ResourceName="Strategic4" Instant="true">9</Cost>
     <PathPrerequisite Flags="Prerequisite">../ClassCity/TerrainTagVolcanic</PathPrerequisite>
     <PathPrerequisite Flags="Prerequisite">../ClassCity/PointOfInterestTypeResourceDeposit,ResourceTypeStrategic</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementVolcanic1</PathPrerequisite>
@@ -1432,6 +1452,23 @@
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementVolcanic2</PathPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyVolcanic2</TechnologyPrerequisite>
   </CityImprovementDefinition>
+
+
+  <!-- ########################################## -->
+  <!-- ######       "MIMICS" EXPANSION     ###### -->
+  <!-- ########################################## -->
+
+
+  <!-- chapter 7 quest reward -->
+  <CityImprovementDefinition Name="CityImprovementMimics3"        SubCategory="SubCategoryScience">
+    <SimulationDescriptorReference Name="CityImprovementMimics3"/>
+    <Cost ResourceName="Production">800</Cost>
+    <Cost ResourceName="Strategic4" Instant="true">20</Cost>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerEmpire" />
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassCity/CityImprovementMimics3</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyMimics3</TechnologyPrerequisite>
+  </CityImprovementDefinition>
+
   <!-- ########################################## -->
   <!-- ######         PLACEHOLDERS         ###### -->
   <!-- ########################################## -->

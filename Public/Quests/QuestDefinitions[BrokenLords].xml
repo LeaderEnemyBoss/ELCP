@@ -1,0 +1,1358 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://BrokenLordsw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://BrokenLordsw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ============ BL-CHAPTER 1 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter1" Category="MainQuest" SubCategory="Main" Cooldown="0" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter1,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$SurroundingRegions">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspectChapter1">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$SurroundingRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspectChapter1Location">
+        <From Source="$PointOfInterestToInspectChapter1.$Position"/>
+      </Var>
+
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestBrokenLordsChapter1ResourceName"/>
+
+      <Var VarName="$DustAmount" Value="80"/>
+      <Var VarName="$DustTransfertAmount" Value="-80"/>
+
+
+      <LocalizationVar LocalizationKey="$Dust" Source="$DustAmount"/>
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspectChapter1"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter1" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter1-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspectChapter1" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspectChapter1" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeBrokenLordsHero</PathPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitClassInfantry,UnitRankStandard) ge 3</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter1-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter1-Step2" State="InProgress" />
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspectChapter1" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$DustResource" WantedAmountVarName="$DustAmount"/>
+      </Decorator_Inspect>
+      <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="$DustTransfertAmount"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter1" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectChapter1Location" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter1" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter1-Step2" State="Completed" />
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter1-Step3" HideRewards="true" State="InProgress" />
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter1-Step3" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter1-Step1">
+        <Reward Droplist="DroplistFallbackMainQuestRewardsEra1" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter1-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter1-Step3">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter1Step3TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ============ BL-CHAPTER 2 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter2" Category="MainQuest" SubCategory="Main" Cooldown="0" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter2</Tags>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter2-Step1" State="InProgress"/>
+      <Decorator_BeginTurn AllowOnQuestStart="true" Initiator="Empire" >
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount)" StepName="MainQuestBrokenLords-Chapter2-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter2-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter2-Step2" HideRewards="true" State="InProgress"/>
+      <Decorator_BeginTurn AllowOnQuestStart="true" Initiator="Empire" >
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount)" StepName="MainQuestBrokenLords-Chapter2-Step2" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter2-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter2-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="8"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter2-Step2">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter2Step2ItemReward" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="12"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ============ BL-CHAPTER 3 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter3" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="0" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter3,MainQuestBrokenLords-Chapter3</Tags>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter3-Step1" State="InProgress"/>
+      <Decorator_Colonize Initiator="Empire" Output_ColonizedCityVarName="$ColonizedCity" Output_ColonizedCityVillagesVarName="$ColonizedCitysVillages">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$ColonizedCity">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:DistrictDust) ge 13</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Colonize>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter3-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter3-Step2" HideRewards="true" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <Controller_Parallel CompletionPolicy="All">
+
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$ColonizedCity">
+                    <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassCity/PointOfInterestTypeWatchTower,ExploitedPointOfInterest) ge 1</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+
+            <Controller_Parallel CompletionPolicy="Any">
+              <Controller_Sequence>
+                <Decorator_VillagesPacified VillagesVarName="$ColonizedCitysVillages" TargetOption="All" Initiator="AllEmpires"/>
+              </Controller_Sequence>
+              <Controller_Sequence>
+                <Decorator_BeginTurn Initiator="Empire">
+                  <ConditionCheck_VillagesPacified VillagesVarName="$ColonizedCitysVillages" TargetOption="All"/>
+                </Decorator_BeginTurn>
+              </Controller_Sequence>
+            </Controller_Parallel>
+
+          </Controller_Parallel>
+
+          <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter3-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$ColonizedCity">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter3-Step1">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter3Step1TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter3-Step2">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter3Step2HeroReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter4</Tags>
+      </OnQuestCompleted>
+      <OnQuestFailed>
+        <Tags>MainQuestBrokenLords-Chapter3</Tags>
+      </OnQuestFailed>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- ========================================
+     ============ BL-CHAPTER 4 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter4" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter4</Tags>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <DropListVar VarName="$WantedEmpirePlanClass" DropList="DroplistMainQuestBrokenLordsChapter4EmpirePlanClass"/>
+      <DropListVar VarName="$WantedEmpirePlanLevel" DropList="DroplistMainQuestBrokenLordsChapter4EmpirePlanLevel"/>
+
+      <LocalizationVar LocalizationKey="$Ministry" Source="$WantedEmpirePlanClass"/>
+      <LocalizationVar LocalizationKey="$EmpirePlanLevel" Source="$WantedEmpirePlanLevel"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter4-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="All">
+
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="10">
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestBrokenLords-Chapter4-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassCity/UnitProfileBrokenLordsHero7</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Loop>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_DistrictLevelUp Level="1" Output_DistrictSimObjectVarName="$District" Initiator="Empire"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter4-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter4-Step2" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_HasEmpirePlan EmpirePlanClassVarName="$WantedEmpirePlanClass" EmpirePlanLevelVarName="$WantedEmpirePlanLevel"/>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter4-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter4-Step1">
+        <ProgressionRange StartValue="0" EndValue="10"/>
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter4Step1TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter4-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- ========================================
+     ============ BL-CHAPTER 5 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter5" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter5</Tags>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <!--Set Player's Empire-->
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityPosition">
+        <From Source="$EmpireCity.$Position"/>
+      </Var>
+
+      <Var VarName="$EnemyRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$MyEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$NearestEnemyRegion">
+        <From Source="$EnemyRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$CityToCaptureRegion">
+        <From Source="$NearestEnemyRegion"/>
+      </Var>
+
+      <!--Set the City to capture-->
+      <Var VarName="$CityToCapture">
+          <From Source="$CityToCaptureRegion.$City"/>
+      </Var>
+
+      <!--Set the Quest POI to inspect in the region-->
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$CityToCapture.$Region.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the Hero to remove-->
+      <Var VarName="$Hero">
+        <Any>
+          <From Source="$Empire.$Heroes">
+            <Where>
+              <PathPrerequisite>UnitProfileBrokenLordsHero7</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$CityToCapture"/>
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter5-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$CityToCapture" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterest1"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_CaptureCity TargetCityVarName="$CityToCapture"  Initiator="Empire"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$CityToCapture">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterest1"/>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter5-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter5-Step2" HideRewards="true" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(ClassArmy/ClassUnit,UnitTypeBrokenLordsBlackBishop:LevelDisplayed) ge 6</InterpreterPrerequisite>
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/UnitProfileBrokenLordsHero7</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_RemoveHero TargetUnitVarName="$Hero"/>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter5-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter5-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter5-Step2">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter5Step2ItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGERS============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ============ BL-CHAPTER 6 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter6" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter6</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter6Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter6Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter6Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$City1">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$City2">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$City3">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$City1Location">
+        <From Source="$City1.$Position"/>
+      </Var>
+
+      <Var VarName="$ContinentRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$OtherRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$AllNearestRegionsFromEmpireCity">
+        <From Source="$OtherRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$City1Location"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$23To24NearestPointsOfInterest">
+        <Limit LimitMin="23" LimitMax="24">
+          <From Source="$AllNearestRegionsFromEmpireCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$23To24NearestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspectLocation">
+          <From Source="$23To24NearestPointsOfInterest.$Position"/>
+      </Var>
+
+      <Var VarName="$AllNearestRegionsFromQuestPOI">
+        <From Source="$ContinentRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$PointOfInterestToInspectLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$NearestRegion1">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$AllNearestRegionsFromQuestPOI"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID1">
+        <From Source="$NearestRegion1.$Positions"/>
+      </Var>
+
+      <Var VarName="$NearestRegion2">
+        <Limit LimitMin="4" LimitMax="5">
+          <From Source="$AllNearestRegionsFromQuestPOI"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID2andArmyID3">
+        <From Source="$NearestRegion2.$Positions"/>
+      </Var>
+
+      <Var VarName="$NearestRegion3">
+        <Limit LimitMin="6" LimitMax="7">
+          <From Source="$AllNearestRegionsFromQuestPOI"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID4andArmyID5">
+        <From Source="$NearestRegion3.$Positions"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter6-Step1" HideRewards="true" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeBrokenLordsHero/ItemAttributesTomeBrokenLordsMainQuest2</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID1" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter6"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID2andArmyID3" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter6"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID4andArmyID5" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter6"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID4"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID4" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID4andArmyID5" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter6"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID5"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID5" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter6-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter6-Step2" HideRewards="true" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Loop LoopCount="4">
+          <Decorator_KillArmy CountAllDeadEnemyArmiesForStepProgression="true" LinkedStepProgression="MainQuestBrokenLords-Chapter6-Step2" TargetOption="Any" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+            <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+            <EnemyArmyGUIDVarName>$ArmyID4</EnemyArmyGUIDVarName>
+            <EnemyArmyGUIDVarName>$ArmyID5</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Loop>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestBrokenLords-Chapter6-Step2"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter6-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter6-Step1">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter6Step1ItemReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter6-Step2">
+        <ProgressionRange StartValue="0" EndValue="4"/>
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter6Step2StrategicResource5Reward" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ============ BL-CHAPTER 6Alt ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter6Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter6</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter6" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter6" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter6" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$City1">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$City2">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$City3">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$City1Location">
+        <From Source="$City1.$Position"/>
+      </Var>
+
+      <Var VarName="$ContinentRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$OtherRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$AllNearestRegionsFromEmpireCity">
+        <From Source="$OtherRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$City1Location"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$23To24NearestPointsOfInterest">
+        <Limit LimitMin="23" LimitMax="24">
+          <From Source="$AllNearestRegionsFromEmpireCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$23To24NearestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$23To24NearestPointsOfInterest.$Position"/>
+      </Var>
+
+      <Var VarName="$AllNearestRegionsFromQuestPOI">
+        <From Source="$ContinentRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$PointOfInterestToInspectLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$NearestRegion1">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$AllNearestRegionsFromQuestPOI"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID1">
+        <From Source="$NearestRegion1.$Positions"/>
+      </Var>
+
+      <Var VarName="$NearestRegion2">
+        <Limit LimitMin="4" LimitMax="5">
+          <From Source="$AllNearestRegionsFromQuestPOI"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID2andArmyID3">
+        <From Source="$NearestRegion2.$Positions"/>
+      </Var>
+
+      <Var VarName="$NearestRegion3">
+        <Limit LimitMin="6" LimitMax="7">
+          <From Source="$AllNearestRegionsFromQuestPOI"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID4andArmyID5">
+        <From Source="$NearestRegion3.$Positions"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+
+    </Vars>
+
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter6Alt-Step1" HideRewards="true" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeBrokenLordsHero/ItemAttributesTomeBrokenLordsMainQuest2</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID1" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter6"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID2andArmyID3" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter6"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID4andArmyID5" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter6"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID4"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID4" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID4andArmyID5" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter6"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID5"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID5" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter6Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter6Alt-Step2" HideRewards="true" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Loop LoopCount="4">
+          <Decorator_KillArmy CountAllDeadEnemyArmiesForStepProgression="true" LinkedStepProgression="MainQuestBrokenLords-Chapter6Alt-Step2" TargetOption="Any" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+            <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+            <EnemyArmyGUIDVarName>$ArmyID4</EnemyArmyGUIDVarName>
+            <EnemyArmyGUIDVarName>$ArmyID5</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Loop>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestBrokenLords-Chapter6Alt-Step2"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter6Alt-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter6Alt-Step1">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter6AltStep1ItemReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter6Alt-Step2">
+        <ProgressionRange StartValue="0" EndValue="4"/>
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter6AltStep2StrategicResource6Reward" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- ========================================
+     ============ BL-CHAPTER 7 ==============
+     ======================================== -->
+
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter7" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter7</Tags>
+
+    <!--============ PRERREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire,!FactionTraitArmy3NegativeLevel2</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire,!FactionTraitArmy3NegativeLevel1</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyBrokenLords12</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt2" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt2" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$City1">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$City1Location">
+        <From Source="$City1.$Position"/>
+      </Var>
+
+      <Var VarName="$OtherRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$AllNearestRegionsFromEmpireCity">
+        <From Source="$OtherRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$City1Location"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$23To24NearestPointsOfInterest">
+        <Limit LimitMin="23" LimitMax="24">
+          <From Source="$AllNearestRegionsFromEmpireCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$23To24NearestPointsOfInterest"/>
+        </Any>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCES ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(ClassArmy/ClassUnit:LevelDisplayed;ge;5) ge 8</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit/ItemAttributesRingBrokenLordsMainQuest1) ge 8</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter7" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7-Step2" State="InProgress" />
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter7-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter7-Step2">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter7Step2ItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ========================================
+     ============ BL-CHAPTER 7Alt ===========
+     ======================================== -->
+
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter7Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter7</Tags>
+
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire,!FactionTraitArmy3NegativeLevel2</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire,!FactionTraitArmy3NegativeLevel1</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyBrokenLords13</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt2" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt2" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7" QuestState="Unstarted"/>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$City1">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$City1Location">
+        <From Source="$City1.$Position"/>
+      </Var>
+
+      <Var VarName="$OtherRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$AllNearestRegionsFromEmpireCity">
+        <From Source="$OtherRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$City1Location"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$23To24NearestPointsOfInterest">
+        <Limit LimitMin="23" LimitMax="24">
+          <From Source="$AllNearestRegionsFromEmpireCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$23To24NearestPointsOfInterest"/>
+        </Any>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+    </Vars>
+
+
+    <!--============ SEQUENCE============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7Alt-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(ClassArmy/ClassUnit:LevelDisplayed;ge;5) ge 8</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit/ItemAttributesRingBrokenLordsMainQuest2) ge 8</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter7Alt" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7Alt-Step2" State="InProgress" />
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7Alt-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter7Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter7Alt-Step2">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter7Step2ItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ========================================
+     ====== BL-CHAPTER 7Alt2 (Anarchists) =====
+     ======================================== -->
+
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter7Alt2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter7</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Path(ClassEmpire,FactionTraitArmy3NegativeLevel2) or $Path(ClassEmpire,FactionTraitArmy3NegativeLevel1)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Path(ClassEmpire/ClassResearch,TechnologyBrokenLords12) or $Path(ClassEmpire/ClassResearch,TechnologyBrokenLords13)</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7Alt" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter7" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$City1">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$City1Location">
+        <From Source="$City1.$Position"/>
+      </Var>
+
+      <Var VarName="$OtherRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$AllNearestRegionsFromEmpireCity">
+        <From Source="$OtherRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$City1Location"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$23To24NearestPointsOfInterest">
+        <Limit LimitMin="23" LimitMax="24">
+          <From Source="$AllNearestRegionsFromEmpireCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$23To24NearestPointsOfInterest"/>
+        </Any>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCES ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7Alt2-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(ClassArmy/ClassUnit:LevelDisplayed;ge;5) ge 6</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit/ItemAttributesRingBrokenLordsMainQuest1) ge 6 or $Count(ClassArmy/ClassUnit/ItemAttributesRingBrokenLordsMainQuest2) ge 6</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter7" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7Alt2-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7Alt2-Step2" State="InProgress" />
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter7Alt2-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter7Alt2-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter7Alt2-Step2">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter7Step2ItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,BrokenLords,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ============ BL-CHAPTER 8 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestBrokenLords-Chapter8" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,BrokenLords,Chapter8,FinalQuest</Tags>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step1-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter8-Step1" HideRewards="true" State="InProgress"/>
+      <Decorator_BeginTurn>
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassCity/ClassUnit,UnitTypeBrokenLordsHero/ItemAttributesTomeBrokenLordsMainQuest1</PathPrerequisite>
+            <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassCity/ClassUnit,UnitTypeBrokenLordsHero/ItemAttributesTomeBrokenLordsMainQuest2</PathPrerequisite>
+            <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassCity/ClassUnit,UnitTypeBrokenLordsHero/ItemAttributesInsigniaBrokenLordsMainQuest1</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter8-Step1" State="Completed"/>
+
+      <!--Step2-->
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter8-Step2" HideRewards="true" State="InProgress"/>
+      <Controller_Loop LoopCount="3">
+        <Decorator_ConstructionEnded ConstructionName="CityImprovementBrokenLords7" LinkedStepProgression="MainQuestBrokenLords-Chapter8-Step2" Initiator="Empire"/>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestBrokenLords-Chapter8-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestBrokenLords-Chapter8-Step1">
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter8Step1TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestBrokenLords-Chapter8-Step2">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMainQuestBrokenLordsChapter8Step2TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+</Datatable>

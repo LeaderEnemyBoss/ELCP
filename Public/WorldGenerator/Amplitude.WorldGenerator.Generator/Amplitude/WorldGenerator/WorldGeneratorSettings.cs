@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Serialization;
 using Amplitude.WorldGenerator.Tasks;
@@ -95,54 +94,54 @@ namespace Amplitude.WorldGenerator
 		[XmlIgnore]
 		public Map TmxMap { get; set; }
 
-		[XmlElement("Version")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("Version")]
 		public int Version { get; set; }
 
-		[XmlElement("NumberOfMajorFactions")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("NumberOfMajorFactions")]
 		public int NumberOfMajorFactions { get; set; }
 
-		[XmlElement("Seed")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("Seed")]
 		public int Seed { get; set; }
 
-		[XmlElement("Width")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("Width")]
 		public int Width { get; set; }
 
-		[XmlElement("Height")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("Height")]
 		public int Height { get; set; }
 
-		[XmlElement("WorldWrap")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("WorldWrap")]
 		public bool WorldWrap { get; set; }
 
-		[XmlElement("ForceOceansOnMapEdges")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("ForceOceansOnMapEdges")]
 		public bool ForceOceansOnMapEdges { get; set; }
 
-		[XmlElement("WastelandEdges")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("WastelandEdges")]
 		public bool WastelandEdges { get; set; }
 
-		[XmlElement("OceanContourSailDistance")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("OceanContourSailDistance")]
 		public int OceanContourSailDistance { get; set; }
 
 		[XmlArray("Climates")]
 		public List<Climate> Climates { get; set; }
 
-		[XmlElement("SelectedGlobalClimate")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("SelectedGlobalClimate")]
 		public string SelectedGlobalClimate { get; set; }
 
 		[XmlArray("GlobalClimates")]
 		public List<GlobalClimate> GlobalClimates { get; set; }
 
-		[XmlElement("ClimateStructure")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("ClimateStructure")]
 		public ClimateStructure ClimateStructure { get; set; }
 
 		[XmlIgnore]
@@ -170,8 +169,8 @@ namespace Amplitude.WorldGenerator
 		[XmlIgnore]
 		public Dictionary<string, int> AnomalyOdds { get; private set; }
 
-		[XmlElement("GlobalAnomalyMultiplier")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GlobalAnomalyMultiplier")]
 		public int GlobalAnomalyMultiplier { get; set; }
 
 		[XmlArray("AnomalyOdds")]
@@ -186,48 +185,48 @@ namespace Amplitude.WorldGenerator
 		[XmlIgnore]
 		public Dictionary<string, int> UniqueAnomaliesQuantities { get; private set; }
 
-		[XmlElement("LandPrevalence")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("LandPrevalence")]
 		public int LandPrevalence { get; set; }
 
-		[XmlElement("OceanPrevalence")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("OceanPrevalence")]
 		public int OceanPrevalence { get; set; }
 
-		[XmlElement("LandMasses")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("LandMasses")]
 		public int LandMasses { get; set; }
 
-		[XmlElement("MinLandMasses")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MinLandMasses")]
 		public int MinLandMasses { get; set; }
 
-		[XmlElement("MaxLandMasses")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxLandMasses")]
 		public int MaxLandMasses { get; set; }
 
-		[XmlElement("ContinentShaping")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("ContinentShaping")]
 		public WorldGeneratorSettings.ContinentStyles ContinentShaping { get; set; }
 
-		[XmlElement("ContinentSpreading")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("ContinentSpreading")]
 		public WorldGeneratorSettings.ContinentStyles ContinentSpreading { get; set; }
 
-		[XmlElement("IslandsPresencePercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("IslandsPresencePercent")]
 		public int IslandsPresencePercent { get; set; }
 
-		[XmlElement("IslandsMinimalSize")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("IslandsMinimalSize")]
 		public int IslandsMinimalSize { get; set; }
 
-		[XmlElement("ExpectedRegionArea")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("ExpectedRegionArea")]
 		public int ExpectedRegionArea { get; set; }
 
-		[XmlElement("ExpectedOceanRegionArea")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("ExpectedOceanRegionArea")]
 		public int ExpectedOceanRegionArea { get; set; }
 
 		[XmlElement("MinSpawnRegionAreaFactor")]
@@ -262,107 +261,107 @@ namespace Amplitude.WorldGenerator
 			}
 		}
 
-		[XmlElement("ExpectedDistrictArea")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("ExpectedDistrictArea")]
 		public int ExpectedDistrictArea { get; set; }
 
-		[XmlElement("MaxResourcesPerRegion")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxResourcesPerRegion")]
 		public int MaxResourcesPerRegion { get; set; }
 
-		[XmlElement("MaxDifferentLuxuryTypes")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxDifferentLuxuryTypes")]
 		public int MaxDifferentLuxuryTypes { get; set; }
 
-		[XmlElement("MaxLandElevation")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxLandElevation")]
 		public sbyte MaxLandElevation { get; set; }
 
-		[XmlElement("MaxOceanDepth")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxOceanDepth")]
 		public sbyte MaxOceanDepth { get; set; }
 
-		[XmlElement("MediumMountainElevation")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MediumMountainElevation")]
 		public sbyte MediumMountainElevation { get; set; }
 
-		[XmlElement("HighMountainElevation")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("HighMountainElevation")]
 		public sbyte HighMountainElevation { get; set; }
 
-		[XmlElement("MaxCliffDeltaElevation")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxCliffDeltaElevation")]
 		public sbyte MaxCliffDeltaElevation { get; set; }
 
 		[XmlElement("MaxPassableDeltaElevation")]
 		public sbyte MaxPassableDeltaElevation { get; set; }
 
-		[XmlElement("PassablePrevalence")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("PassablePrevalence")]
 		public int PassablePrevalence { get; set; }
 
-		[XmlElement("CliffPrevalence")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("CliffPrevalence")]
 		public int CliffPrevalence { get; set; }
 
-		[XmlElement("MinLakeArea")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MinLakeArea")]
 		public sbyte MinLakeArea { get; set; }
 
-		[XmlElement("MaxLakeArea")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxLakeArea")]
 		public sbyte MaxLakeArea { get; set; }
 
-		[XmlElement("MaxLakeBottomElevation")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxLakeBottomElevation")]
 		public sbyte MaxLakeBottomElevation { get; set; }
 
-		[XmlElement("LakePresencePercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("LakePresencePercent")]
 		public int LakePresencePercent { get; set; }
 
-		[XmlElement("MaxRiverElevation")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxRiverElevation")]
 		public sbyte MaxRiverElevation { get; set; }
 
-		[XmlElement("RiverPresencePercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("RiverPresencePercent")]
 		public int RiverPresencePercent { get; set; }
 
-		[XmlElement("MountainRangeAreaSize")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MountainRangeAreaSize")]
 		public int MountainRangeAreaSize { get; set; }
 
-		[XmlElement("MountainDownwardSlopePercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MountainDownwardSlopePercent")]
 		public int MountainDownwardSlopePercent { get; set; }
 
-		[XmlElement("ElevationNoisePercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("ElevationNoisePercent")]
 		public int ElevationNoisePercent { get; set; }
 
-		[XmlElement("CoastalCliffPercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("CoastalCliffPercent")]
 		public int CoastalCliffPercent { get; set; }
 
-		[XmlElement("RiverMinLength")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("RiverMinLength")]
 		public int RiverMinLength { get; set; }
 
-		[XmlElement("RidgePresencePercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("RidgePresencePercent")]
 		public int RidgePresencePercent { get; set; }
 
-		[XmlElement("MinRidgeSize")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MinRidgeSize")]
 		public int MinRidgeSize { get; set; }
 
-		[XmlElement("MaxRidgeSize")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MaxRidgeSize")]
 		public int MaxRidgeSize { get; set; }
 
-		[XmlElement("RidgeMinElevation")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("RidgeMinElevation")]
 		public int RidgeMinElevation { get; set; }
 
 		[XmlElement("AdjacentBiomeInclusionOdds")]
@@ -371,12 +370,12 @@ namespace Amplitude.WorldGenerator
 		[XmlElement("AdjacentBiomeInclusionDepth")]
 		public int AdjacentBiomeInclusionDepth { get; set; }
 
-		[XmlElement("MinVolvanicRegions")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("MinVolvanicRegions")]
 		public int MinVolvanicRegions { get; set; }
 
-		[XmlElement("WeightMultiplier")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("WeightMultiplier")]
 		public float WeightMultiplier { get; set; }
 
 		[XmlIgnore]
@@ -392,16 +391,16 @@ namespace Amplitude.WorldGenerator
 		[XmlArrayItem(Type = typeof(string), ElementName = "NoRiverHexAnomaly")]
 		public HashSet<string> NoRiverHexAnomalies { get; set; }
 
-		[XmlElement("SpawnDesirabilityFIDS")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("SpawnDesirabilityFIDS")]
 		public float SpawnDesirabilityFIDS { get; set; }
 
-		[XmlElement("SpawnDesirabilityShape")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("SpawnDesirabilityShape")]
 		public float SpawnDesirabilityShape { get; set; }
 
-		[XmlElement("SpawnDesirabilityLocation")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("SpawnDesirabilityLocation")]
 		public float SpawnDesirabilityLocation { get; set; }
 
 		[XmlArray("SpawnPreferences")]
@@ -455,12 +454,12 @@ namespace Amplitude.WorldGenerator
 		[XmlElement("GUILimitedResourcesPerRegion")]
 		public int GUILimitedResourcesPerRegion { get; set; }
 
-		[XmlElement("StrategicResourcesAbundancePercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("StrategicResourcesAbundancePercent")]
 		public int StrategicResourcesAbundancePercent { get; set; }
 
-		[XmlElement("LuxuryResourcesAbundancePercent")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("LuxuryResourcesAbundancePercent")]
 		public int LuxuryResourcesAbundancePercent { get; set; }
 
 		[XmlArray("POIAlgorithmParameters")]
@@ -478,149 +477,145 @@ namespace Amplitude.WorldGenerator
 			}
 		}
 
-		[XmlElement("Geometry")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("Geometry")]
 		public string Geometry { get; set; }
 
-		[XmlElement("GeometryHexaPerBigPatchX")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryHexaPerBigPatchX")]
 		public int GeometryHexaPerBigPatchX { get; set; }
 
-		[XmlElement("GeometryHexaPerBigPatchY")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryHexaPerBigPatchY")]
 		public int GeometryHexaPerBigPatchY { get; set; }
 
-		[XmlElement("GeometryGenerateRiver")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryGenerateRiver")]
 		public bool GeometryGenerateRiver { get; set; }
 
-		[XmlElement("GeometryGenerateOceanRegionBorder")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryGenerateOceanRegionBorder")]
 		public bool GeometryGenerateOceanRegionBorder { get; set; }
 
-		[XmlElement("GeometryTerrainLevelHeight")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryTerrainLevelHeight")]
 		public float GeometryTerrainLevelHeight { get; set; }
 
-		[XmlElement("GeometryTranslationPerTransitionNoStep")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryTranslationPerTransitionNoStep")]
 		public float GeometryTranslationPerTransitionNoStep { get; set; }
 
-		[XmlElement("GeometryTranslationPerTransitionNoStepUnderWater")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryTranslationPerTransitionNoStepUnderWater")]
 		public float GeometryTranslationPerTransitionNoStepUnderWater { get; set; }
 
-		[XmlElement("GeometryTranslationPerStep")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryTranslationPerStep")]
 		public float GeometryTranslationPerStep { get; set; }
 
-		[XmlElement("GeometryTranslationPerStepUnderWater")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryTranslationPerStepUnderWater")]
 		public float GeometryTranslationPerStepUnderWater { get; set; }
 
-		[XmlElement("GeometryTranslationPerSmallCliff")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryTranslationPerSmallCliff")]
 		public float GeometryTranslationPerSmallCliff { get; set; }
 
-		[XmlElement("GeometryTranslationPerSmallCliffUnderWater")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryTranslationPerSmallCliffUnderWater")]
 		public float GeometryTranslationPerSmallCliffUnderWater { get; set; }
 
-		[XmlElement("GeometrySmallBreakUpCountSteps")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometrySmallBreakUpCountSteps")]
 		public int GeometrySmallBreakUpCountSteps { get; set; }
 
-		[XmlElement("GeometrySmallBreakUpCountNoStep")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometrySmallBreakUpCountNoStep")]
 		public int GeometrySmallBreakUpCountNoStep { get; set; }
 
-		[XmlElement("GeometrySmallBreakUpCountRivers")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometrySmallBreakUpCountRivers")]
 		public int GeometrySmallBreakUpCountRivers { get; set; }
 
-		[XmlElement("GeometrySmoothGroupAngle")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometrySmoothGroupAngle")]
 		public float GeometrySmoothGroupAngle { get; set; }
 
-		[XmlElement("GeometryBreakUpProbabilityMultiplier")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryBreakUpProbabilityMultiplier")]
 		public float GeometryBreakUpProbabilityMultiplier { get; set; }
 
-		[XmlElement("GeometryLowResNoiseFrequencyMultiplier")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryLowResNoiseFrequencyMultiplier")]
 		public float GeometryLowResNoiseFrequencyMultiplier { get; set; }
 
-		[XmlElement("GeometryLowResNoiseIntensity")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryLowResNoiseIntensity")]
 		public float GeometryLowResNoiseIntensity { get; set; }
 
-		[XmlElement("GeometryHighResNoiseFrequencyMultiplier")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryHighResNoiseFrequencyMultiplier")]
 		public float GeometryHighResNoiseFrequencyMultiplier { get; set; }
 
-		[XmlElement("GeometryHighResNoiseIntensityLowAltitude")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryHighResNoiseIntensityLowAltitude")]
 		public float GeometryHighResNoiseIntensityLowAltitude { get; set; }
 
-		[XmlElement("GeometryHighResNoiseIntensityHighAltitude")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryHighResNoiseIntensityHighAltitude")]
 		public float GeometryHighResNoiseIntensityHighAltitude { get; set; }
 
-		[XmlElement("GeometryHighResNoiseLowAltitude")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryHighResNoiseLowAltitude")]
 		public float GeometryHighResNoiseLowAltitude { get; set; }
 
-		[XmlElement("GeometryHighResNoiseHighAltitude")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryHighResNoiseHighAltitude")]
 		public float GeometryHighResNoiseHighAltitude { get; set; }
 
-		[XmlElement("GeometryRegionLinefilterRadius")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryRegionLinefilterRadius")]
 		public float GeometryRegionLinefilterRadius { get; set; }
 
-		[XmlElement("GeometryLevelLinefilterRadius")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryLevelLinefilterRadius")]
 		public float GeometryLevelLinefilterRadius { get; set; }
 
-		[XmlElement("GeometryMinRiverWidth")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryMinRiverWidth")]
 		public float GeometryMinRiverWidth { get; set; }
 
-		[XmlElement("GeometryMaxRiverWidth")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryMaxRiverWidth")]
 		public float GeometryMaxRiverWidth { get; set; }
 
-		[XmlElement("GeometryMinRiverDepth")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryMinRiverDepth")]
 		public float GeometryMinRiverDepth { get; set; }
 
-		[XmlElement("GeometryMaxRiverDepth")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryMaxRiverDepth")]
 		public float GeometryMaxRiverDepth { get; set; }
 
-		[XmlElement("GeometryLengthRiverToBeMaxWidthDepth")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryLengthRiverToBeMaxWidthDepth")]
 		public float GeometryLengthRiverToBeMaxWidthDepth { get; set; }
 
-		[XmlElement("GeometryRiverBorderFactor")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryRiverBorderFactor")]
 		public float GeometryRiverBorderFactor { get; set; }
 
-		[XmlElement("GeometryOffsetYOfRegionLineAboveCliff")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryOffsetYOfRegionLineAboveCliff")]
 		public float GeometryOffsetYOfRegionLineAboveCliff { get; set; }
 
-		[XmlElement("GeometryDisableNoTransition")]
 		[WorldGeneratorConfigurationProperty]
+		[XmlElement("GeometryDisableNoTransition")]
 		public bool GeometryDisableNoTransition { get; set; }
 
+		[WorldGeneratorConfigurationProperty]
 		[XmlElement("GeometryDisableTripleTransition")]
-		[WorldGeneratorConfigurationProperty]
 		public bool GeometryDisableTripleTransition { get; set; }
-
-		[XmlElement("ReplaceInlandSeas")]
-		[WorldGeneratorConfigurationProperty]
-		public bool ReplaceInlandSeas { get; set; }
 
 		private List<ITask> tasks = new List<ITask>();
 
@@ -714,7 +709,6 @@ namespace Amplitude.WorldGenerator
 		}
 
 		[XmlType("FIDS")]
-		[StructLayout(LayoutKind.Sequential, Size = 1)]
 		public struct xmlFIDS
 		{
 			[XmlAttribute("Name")]

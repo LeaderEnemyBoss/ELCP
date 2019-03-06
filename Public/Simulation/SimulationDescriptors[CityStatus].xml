@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="CityStatusFree" Type="CityStatus">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CityStatusSiege" Type="CityStatus">
+    <SimulationModifierDescriptors>
+
+      <!-- Strategic resources -->
+      <SimulationModifierDescriptor TargetProperty="ResourceGain" Operation="Multiplication" Value="0" Path="ClassCity/PointOfInterestTypeResourceDeposit,!PointOfInterestOnDistrict"/>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Multiplication" Value="0" Path="ClassCity/PointOfInterestTypeResourceDeposit,!PointOfInterestOnDistrict"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Multiplication"  Value="0" Path="ClassCity/ClassCreepingNode, CreepingNode_StrategicExtractor_Counter" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Multiplication"  Value="0" Path="ClassCity/ClassCreepingNode, CreepingNode_LuxuryExtractor_Counter" TooltipHidden="true"/>
+
+      <!-- Block the production of city action points -->
+      <SimulationModifierDescriptor TargetProperty="NetCityActionPoint" Operation="Multiplication" Value="0"/>
+
+      <!-- Block the empire gathering -->
+      <!-- Removed temporarily : too harsh for the player and can cause an early "game over" if 1st and only city is sieged -->
+      <!--<SimulationModifierDescriptor TargetProperty="NetCityMoney" Operation="Multiplication" Value="$(BesiegedMultiplier)" BindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityResearch" Operation="Multiplication" Value="$(BesiegedMultiplier)" BindOnSource="false"/>-->
+
+      <!-- lowered the penalty but sill there; and don't affect the home city -->
+      <SimulationModifierDescriptor TargetProperty="NetCityMoney" Operation="Multiplication" Value="$(BesiegedMultiplier)" BindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityResearch" Operation="Multiplication" Value="$(BesiegedMultiplier)" BindOnSource="false"/>
+
+      <!-- Block exploitation gathering -->
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Multiplication" Value="$(DistrictBesiegedMultiplier)" Path="ClassCity/ClassDistrict,DistrictTypeExploitation" BindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Multiplication" Value="$(DistrictBesiegedMultiplier)" Path="ClassCity/ClassDistrict,DistrictTypeExploitation" BindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Multiplication" Value="$(DistrictBesiegedMultiplier)" Path="ClassCity/ClassDistrict,DistrictTypeExploitation" BindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint" Operation="Multiplication" Value="$(DistrictBesiegedMultiplier)" Path="ClassCity/ClassDistrict,DistrictTypeExploitation" BindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Multiplication" Value="$(DistrictBesiegedMultiplier)" Path="ClassCity/ClassDistrict,DistrictTypeExploitation" BindOnSource="false"/>
+
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Force" Value="-1" Path="ClassCity/ClassDistrict,DistrictTypeExploitation"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Force" Value="-1" Path="ClassCity/ClassPointOfInterest,!PointOfInterestOnDistrict"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Force" Value="1"  Path="../ClassEmpire,AffinityCultists/ClassCity/ClassPointOfInterest,RebuiltVillage" Priority="1"/>
+
+      <!-- No regen. bonus from city while under siege -->
+      <!-- Units in city garrison don't use these properties; the department of the interior handles this -->
+      <!-- Armies on city tiles don't use these properties; the department of defense handles this -->
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier" Operation="Force" Value="0" Path="ClassCity/ClassPointOfInterest"/>
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier" Operation="Force" Value="0" Path="ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier" Operation="Force" Value="0" Path="ClassCity/ClassPointOfInterest"/>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier" Operation="Force" Value="0" Path="ClassCity"/>
+
+      <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Subtraction" Value="10" Path="ClassCity"/>
+
+      <SimulationModifierDescriptor TargetProperty="PopulationBonus" Operation="Multiplication" Value="0" Path="ClassCity/PointOfInterestTypeVillage"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainPerTurn" Operation="Addition" Value="4" Path="ClassCity/ClassUnit,UnitHero"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CityStatusNavalSiege" Type="CityStatus">
+  </SimulationDescriptor>
+    
+  <SimulationDescriptor Name="CityStatusProducingSettler" Type="CityStatus">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetCityGrowth" Operation="Force" Value="$(AlmostNetCityGrowth)" Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityGrowth" Operation="Subtraction" Value="$(PositiveClampedAlmostNetCityGrowth)" Priority="11"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CityStatusRoundUp" Type="CityStatus">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"              Operation="Percent"       Value="-0.5"       Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"          Operation="Percent"       Value="-0.5"       Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="BaseDustPerPopulation"              Operation="Percent"       Value="-0.5"       Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="BaseSciencePerPopulation"           Operation="Percent"       Value="-0.5"       Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation"         Operation="Percent"       Value="-0.5"       Priority="10"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityAntiSpy"                  Operation="Addition" Left="$(RoundUpProgress)"  BinaryOperation ="Multiplication" Right ="$(RoundUpBonusPerTurn)" Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EndlessTempleWonderInQueue" Type="CityStatus">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CityStatusRazed" Type="CityStatus">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VillageStatusConverted" Type="VillageStatus">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VillageStatusPacified" Type="VillageStatus">
+  </SimulationDescriptor>
+  
+<SimulationDescriptor Name="CityStatusInfected" Type="CityStatus">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityAntiSpy"  Operation="Multiplication"  Value="$(CityStatusInfectedMultiplier)"   Path="ClassCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="CityMoneyUpkeep"  Operation="Multiplication"  Value="$(CityStatusInfectedMultiplier)"   Path="ClassCity"  Priority="10"/>
+      <!-- Strategic resources -->
+      <SimulationModifierDescriptor TargetProperty="ResourceGain" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" Path="ClassCity/PointOfInterestTypeResourceDeposit,!PointOfInterestOnDistrict"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="ResourceBonus" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" Path="ClassCity/PointOfInterestTypeResourceDeposit,!PointOfInterestOnDistrict"  Priority="10"/>
+
+      <!-- Resource: Rafined net. -->
+      <!-- These are the total FIDS generated by a City, multiplied by CityStatusInfectedMultiplier or force to 0-->
+      <SimulationModifierDescriptor TargetProperty="NetCityMoney" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityResearch" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityGrowth" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityProduction" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityEmpirePoint" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetCityApproval" Operation="Force" Value="60" BindOnSource="false" Path="ClassCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="PopulationBonus" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" Path="ClassCity/PointOfInterestTypeVillage"  Priority="10"/>
+
+      <!--  OCs retain Base Fortification, Ignore all Fortification Improvements-->
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"  Operation="Multiplication"  Value="0"   Path="ClassCity"  Priority="20"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"  Operation="Force"  Value="$(MaximumCityDefensePointBaseValue)"   Path="ClassCity"  Priority="21"/>
+      
+      <!-- Faster ownership recovery rate. -->
+      <SimulationModifierDescriptor TargetProperty="OwnershipRecoveryRate" Operation="Percent" Value="1.0"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CityStatusIntegrated" Type="CityStatus">
+    
+    <SimulationModifierDescriptors>      
+      <SimulationModifierDescriptor TargetProperty="NetCityGrowth"  Operation="Addition"  Value="$(DistrictFood)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityProduction"  Operation="Addition"  Value="$(DistrictIndustry)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityMoney"  Operation="Addition"  Value="$(DistrictDust)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityResearch"  Operation="Addition"  Value="$(DistrictScience)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityEmpirePoint"  Operation="Addition"  Value="$(DistrictCityPoint)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
+      
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+</Datatable>

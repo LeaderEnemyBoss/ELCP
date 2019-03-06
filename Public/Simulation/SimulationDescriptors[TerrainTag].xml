@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Terrain tags (terrain type) -->
+  <SimulationDescriptor Name="TerrainTagForest"   Type="TerrainTag">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagWater"    Type="TerrainTag">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AIHasWaterTileInCity"       Operation="Addition" Value="1"  Path="./ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"               Operation="Addition" Value="1"  />
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"               Operation="Addition" Value="1"  />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagPlains"   Type="TerrainTag">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagRocks"    Type="TerrainTag">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagArid"     Type="TerrainTag">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagVolcanic"     Type="TerrainTag">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"   Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- Terrain tags (FIDS gain type) -->
+  <SimulationDescriptor Name="TerrainTagFood"     Type="TerrainTag">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagIndustry" Type="TerrainTag">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagDust"     Type="TerrainTag">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AICountDustTilesInCity"       Operation="Addition" Value="1"  Path="../ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagScience"  Type="TerrainTag">
+  </SimulationDescriptor>
+
+
+  <!-- Terrain tags (anomalies) -->
+  <SimulationDescriptor Name="TerrainTagAnomaly"  Type="TerrainTagObject">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AICountAnomalyTilesInCity"       Operation="Addition" Value="1"  Path="../ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagRiver"    Type="TerrainTagFlow">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagLavaRiver"    Type="TerrainTagFlow">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagPointOfInterest" Type="TerrainTagObject">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagQuestLocation" Type="TerrainTagObject">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagNavalQuestLocation" Type="TerrainTagObject">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTagCommonAnomaly" Type="TerrainTagObject"/>
+
+  <SimulationDescriptor Name="TerrainTagRareAnomaly" Type="TerrainTagObject"/>
+
+  <SimulationDescriptor Name="TerrainTagUniqueAnomaly" Type="TerrainTagObject"/>
+
+  <SimulationDescriptor Name="TerrainTagSeafaringUnitCreation" Type="TerrainTagObject">
+    <SimulationModifierDescriptors>
+      <!-- Converted villages don't count! -->
+      <BinarySimulationModifierDescriptor TargetProperty="AIHasAnyCoastalCity"        Operation="Addition"  Left="$(IsNotConvertedVillageDistrict)"  BinaryOperation="Multiplication"  Right="1"     Path="../ClassEmpire"   TooltipHidden="true"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityHasAnyCoastalDistrict"  Operation="Addition"  Left="$(IsNotConvertedVillageDistrict)"  BinaryOperation="Multiplication"  Right="1"     Path="../ClassCity"     TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

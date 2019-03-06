@@ -356,36 +356,36 @@
   <!-- Slave Driver -->
   <SimulationDescriptor Name="HeroSkillGovernor19NecrophagesLevel1"        Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor19NecrophagesLevel2"        Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Game Theory -->
   <SimulationDescriptor Name="HeroSkillGovernor19RovingClansLevel1"        Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor19RovingClansLevel2"        Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Behemoth Tamer -->
   <SimulationDescriptor Name="HeroSkillGovernor20Level1"                   Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true" Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor20Level2"                   Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true" Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -393,16 +393,22 @@
   <SimulationDescriptor Name="HeroSkillGovernor21Level1"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassCreepingNode, CreepingNode_StrategicExtractor_Counter" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassCreepingNode, CreepingNode_LuxuryExtractor_Counter" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor21Level2"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassCreepingNode, CreepingNode_StrategicExtractor_Counter" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassCreepingNode, CreepingNode_LuxuryExtractor_Counter" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor21Level3"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassPointOfInterest,PointOfInterestTypeResourceDeposit"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassCreepingNode, CreepingNode_StrategicExtractor_Counter" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Addition"  Value="0.5" Path="../ClassCity/ClassCreepingNode, CreepingNode_LuxuryExtractor_Counter" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -708,12 +714,12 @@
   <!-- Ship Builder (Sea Demons) -->
   <SimulationDescriptor Name="HeroSkillGovernor41Level1"               Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"  MultiplicativeStacking="true"  Operation="Addition"  Value="0.10" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"      Operation="Addition"  Value="0.10" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor41Level2"               Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"  MultiplicativeStacking="true"  Operation="Addition"  Value="0.15" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"      Operation="Addition"  Value="0.15" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -721,12 +727,11 @@
   <!-- Keen Prospector (Flames) -->
   <SimulationDescriptor Name="HeroSkillGovernor42Level1"                   Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="DistrictScience"         Operation="Addition"  Value="2"     Path="../ClassCity/TerrainTagVolcanic"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"         Operation="Addition"  Value="1"     Path="../ClassCity/TerrainTagVolcanic"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor42Level2"                   Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"        Operation="Addition"  Value="1"     Path="../ClassCity/TerrainTagVolcanic"/>
       <SimulationModifierDescriptor TargetProperty="DistrictDust"            Operation="Addition"  Value="1"     Path="../ClassCity/TerrainTagVolcanic"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -735,11 +740,13 @@
   <SimulationDescriptor Name="HeroSkillGovernor43Level1"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="1" Path="../ClassCity/PointOfInterestTypeResourceDeposit, ResourceTypeStrategic"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Addition"  Value="1" Path="../ClassCity/ClassCreepingNode, CreepingNode_StrategicExtractor_Counter" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor43Level2"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="ResourceBonus"                    Operation ="Addition"  Value="1" Path="../ClassCity/PointOfInterestTypeResourceDeposit, ResourceTypeStrategic"/>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"                    Operation ="Addition"  Value="1" Path="../ClassCity/ClassCreepingNode, CreepingNode_StrategicExtractor_Counter" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -774,6 +781,51 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
+  <!-- Mimic Food on Food tile skill -->
+  <SimulationDescriptor Name="HeroSkillGovernor46Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                      Operation="Addition"   Value="1" Path="../ClassCity/ClassDistrict,TerrainTagFood"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                      Operation="Addition"   Value="1" Path="../ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagFood" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor46Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                      Operation="Addition"   Value="1" Path="../ClassCity/ClassDistrict,TerrainTagFood"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                      Operation="Addition"   Value="1" Path="../ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagFood" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor46Level3"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                      Operation="Addition"   Value="1" Path="../ClassCity/ClassDistrict,TerrainTagFood"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                      Operation="Addition"   Value="1" Path="../ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagFood" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mimic Food on Food tile skill -->
+  <SimulationDescriptor Name="HeroSkillGovernor47Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityGrowthUpkeepPerPopulation" Operation="Percent" Value="-0.50" Path="../ClassCity" Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor47Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityGrowthUpkeepPerPopulation" Operation="Percent" Value="-0.50" Path="../ClassCity" Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- Mimic influence per pop skill -->
+  <SimulationDescriptor Name="HeroSkillGovernor48Level1"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DefensivePower" Operation="Addition"  Left="0.5"   BinaryOperation="Multiplication" Right="$(CityDefensePoint)"  Path="../ClassCity"  IsBindOnSource="false"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor48Level2"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DefensivePower" Operation="Addition"  Left="0.5"   BinaryOperation="Multiplication" Right="$(CityDefensePoint)"  Path="../ClassCity"  IsBindOnSource="false"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
   <!-- ####################################### -->
   <!-- ##### HERO LEADER (battle) SKILLS ##### -->
   <!-- ####################################### -->
@@ -1748,6 +1800,28 @@
   <SimulationDescriptor Name="HeroSkillLeaderMap25Level2"                  Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.50"   Path="../Garrison/ClassUnit,#HeatWave" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mimics damage on units-->
+  <SimulationDescriptor Name="HeroSkillLeaderMap27Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.10"   Path="../Garrison/ClassUnit" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap27Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                      Operation="Percent"   Value="0.10"   Path="../Garrison/ClassUnit" Priority="101" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mimics hero damage vs kaiju-->
+  <SimulationDescriptor Name="HeroSkillLeaderMap28Level1"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap28Level2"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   

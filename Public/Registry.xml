@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Registry xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Debug>
+    <GodCursor>
+      <SpawnArmy>UnitProfileRovingClansHero6Quest,UnitDesignMimicsUnit1#1,UnitDesignMimicsUnit2#1,UnitDesignMimicsUnit3#1</SpawnArmy>
+      <SpawnEnnemyArmy>UnitProfileBrokenLordsHero6Quest,UnitDesignBrokenLordsBlackBishop#Quest#Hidden,UnitDesignBrokenLordsBlackBishop#Quest#Hidden,UnitDesignBrokenLordsCavalry#Quest#Hidden</SpawnEnnemyArmy>
+      <SpawnWildlingArmy>UnitDesignFlamesGolem#1</SpawnWildlingArmy>
+    </GodCursor>
+  </Debug>
+  <Gameplay>
+    <Agencies>
+      <DepartmentOfDefense>
+        <CatspawCostFormula>((5 + $(ArmyCatspawCost)) * $Property(ClassEmpire:GameSpeedMultiplier) * ($Property(ClassEmpire:CurrentEra) + $Property(EmpireTypeMajor:EmpireScaleFactor)) / 1.5)* $Property(ClassEmpire:CatsPawHeatWaveCostModifier)</CatspawCostFormula>
+      </DepartmentOfDefense>
+      <DepartmentOfEducation>
+        <MaximalTurnUnassigned>10</MaximalTurnUnassigned>
+      </DepartmentOfEducation>
+      <DepartmentOfPlanificationAndDevelopment>
+        <MaximalTurnWithoutBooster>10</MaximalTurnWithoutBooster>
+        <MaximalTurnWithoutPillar>10</MaximalTurnWithoutPillar>
+        <TradeRoutes>
+          <BaseMultiplier>0.6</BaseMultiplier>
+          <DistanceMultiplier>0.30</DistanceMultiplier>
+        </TradeRoutes>
+        <EmpirePlanImminentNotificationTurnCount>6</EmpirePlanImminentNotificationTurnCount>
+      </DepartmentOfPlanificationAndDevelopment>
+      <DepartmentOfTheInterior>
+        <GrowthFormula>($(Population) ^ 2.75 ) * $Property(ClassEmpire:BaseGrowthRequiredPerPopulation) * $Property(ClassEmpire:GameSpeedMultiplier)</GrowthFormula>
+        <!--<GrowthFormula>(($(Population)) ^ 3 ) * 3.0</GrowthFormula>-->
+        <AssimilationFormula>(((($Property(ClassEmpire:MinorFactionAssimilatedCount) + $(Delta) + 1) ^ 3) * 10) + 20) * $Property(ClassEmpire:MinorFactionAssimilationCostModifier) * $Property(ClassEmpire:GameSpeedMultiplier)</AssimilationFormula>
+        <DoesRazingDetroyRegionBuilding>true</DoesRazingDetroyRegionBuilding>
+      </DepartmentOfTheInterior>
+      <DepartmentOfPlanificationAndDevelopment>
+        <!-- Duration between two empire plan choices -->
+        <EmpirePlanPeriod>20 * $Property(ClassEmpire:GameSpeedMultiplier)</EmpirePlanPeriod>
+      </DepartmentOfPlanificationAndDevelopment>
+
+      <DepartmentOfIntelligence>
+        <InfiltrateLevelFormula>($(WantedLevel) ^ 2.2 ) * 10 * $Property(ClassEmpire:GameSpeedMultiplier)</InfiltrateLevelFormula>
+        <InfiltrationCostFormula>(((10 + (12 * ($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra)) / 1.5) - (2 * $Link(Target|Property|Population) max 1)) * $Property(ClassEmpire:GameSpeedMultiplier)) max 10)* $Property(ClassEmpire:InfiltrationCostModifier)</InfiltrationCostFormula>
+        <!--<InfiltrationCostFormula>((100 - ($Link(Target|Property|Population) * 5)) max 1) + ($Link(InfiltratingEmpire|Count|../ClassEmpire/Cities) * 10)</InfiltrationCostFormula>-->
+        <InfiltrationSucceedExperienceGain>$Link(Target|Property|Population)</InfiltrationSucceedExperienceGain>
+        <!--<InfiltrationSucceedExperienceGain>8</InfiltrationSucceedExperienceGain>-->
+        <InfiltrationActionSeniorityFormula>$(ActionLevel) * $Link(Hero|Property|InfiltrationSeniorityFactor) </InfiltrationActionSeniorityFormula>
+      </DepartmentOfIntelligence>
+
+      <PirateCouncil>
+        <Facilities>
+          <StockpileCooldownFormula>10 * $Property(ClassEmpire:GameSpeedMultiplier)</StockpileCooldownFormula>
+        </Facilities>
+      </PirateCouncil>
+
+      <KaijuCouncil>
+        <RelocationFrequencyFormula>$(BaseRelocationFrequency)* $Property(ClassEmpire:GameSpeedMultiplier)</RelocationFrequencyFormula>
+        <FirstKaijuSpawnFormula>900 * $(NumberOfPlayers) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:GameDifficultyKaijuSpawnMultiplier)</FirstKaijuSpawnFormula>
+        <SecondKaijuSpawnFormula>3000 * $(NumberOfPlayers) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:GameDifficultyKaijuSpawnMultiplier)</SecondKaijuSpawnFormula>
+        <ThirdKaijuSpawnFormula>9000 * $(NumberOfPlayers) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:GameDifficultyKaijuSpawnMultiplier)</ThirdKaijuSpawnFormula>
+        <KaijuSpawnTurns>3</KaijuSpawnTurns>
+      </KaijuCouncil>
+      
+    </Agencies>
+
+    <Kaiju>
+      <KaijuAutoTameBeforeLoseEncounter>true</KaijuAutoTameBeforeLoseEncounter>
+      <KaijuSetWildIfReinforcementBeforeLoseEncounter>true</KaijuSetWildIfReinforcementBeforeLoseEncounter>
+      <KaijuModesShareActionPoints>true</KaijuModesShareActionPoints>
+      <LiceArmy>
+        <ArmiesToSpawnCount>1</ArmiesToSpawnCount>
+        <SpawningCooldown>10</SpawningCooldown>
+        <UnitsPerArmy>3</UnitsPerArmy>
+        <MaxArmiesAlive>
+          <WorldTiny>3</WorldTiny>
+          <WorldSmall>3</WorldSmall>
+          <WorldNormal>4</WorldNormal>
+          <WorldLarge>5</WorldLarge>
+          <WorldHuge>5</WorldHuge>
+          <Default>4</Default>
+        </MaxArmiesAlive>
+        <ArmyTag>WildLiceArmy</ArmyTag>
+        <UnitTag>WildLiceUnit</UnitTag>
+      </LiceArmy>
+    </Kaiju>
+    
+    <OvergrownCity>
+      <OvergrownCityRazeImmediate>false</OvergrownCityRazeImmediate>
+    </OvergrownCity>
+    
+    <Ancillaries>
+      <AntiSpy>
+        <WoundedPercentageValue>50</WoundedPercentageValue>
+      </AntiSpy>
+      <Marketplace>
+        <Tradable>
+          <!-- Tax applied when buying -->
+          <BuyoutMultiplier>1.25</BuyoutMultiplier>
+          <!-- Depreciation is applied for each consecutive turn when tradable is neither bought nor sold on the marketplace -->
+          <!-- Depreciation is reset as soon as some quantity of tradable is either bought or sold -->
+          <DepreciationMultiplier>-0.03</DepreciationMultiplier>
+          <InflationMultiplier>0.02</InflationMultiplier>
+          <!-- Tendency is modified each time some quantity of tradable is bought -->
+          <PositiveTendencyMultiplier>0.025</PositiveTendencyMultiplier>
+          <!-- Tendency is modified each time some quantity of tradable is sold -->
+          <NegativeTendencyMultiplier>-0.025</NegativeTendencyMultiplier>
+          <!-- Max / Min price -->
+          <MaximumPriceMultiplier>3.0</MaximumPriceMultiplier>
+          <MinimumPriceMultiplier>0.33</MinimumPriceMultiplier>
+          <!-- Tax applied when selling -->
+          <SelloutMultiplier>0.40</SelloutMultiplier>
+          <!-- Increasing Market Place cost at each Unit or Hero level -->
+          <UnitLevelMultiplier>0.15</UnitLevelMultiplier>
+        </Tradable>
+      </Marketplace>
+      <Season>
+        <StartingSeason>Summer</StartingSeason>
+        <InfiniteSeasonDefinitionName>InfiniteWinter</InfiniteSeasonDefinitionName>
+        <InfiniteSeasonStartingTurn>3001</InfiniteSeasonStartingTurn>
+      </Season>
+      <Orb>
+        <WorldContinentalOrbSpawnTilePercentage>0.04</WorldContinentalOrbSpawnTilePercentage>
+        <WorldOceanicOrbSpawnTilePercentage>0.02</WorldOceanicOrbSpawnTilePercentage>
+        <OrbsPerTile>0.07</OrbsPerTile>
+        <PrayerOrbCost>$Property(ClassEmpire:PrayerCostByPastWinter) * $Property(ClassEmpire:NumberOfPastWinters) + $Property(ClassEmpire:PrayerCostByTurnsSinceSeasonStart) * $Property(ClassEmpire:NumberOfTurnsSinceSummerStart)</PrayerOrbCost>
+        <OrbUnlocksProgressionSteps>0,1,2,3</OrbUnlocksProgressionSteps>
+      </Orb>
+      <Pathfinding>
+        <MinimumTransitionCost>0.25</MinimumTransitionCost>
+        <!-- Don't set this value to 0 ! -->
+        <ZoneOfControlMovementPointMalus>1</ZoneOfControlMovementPointMalus>
+      </Pathfinding>
+      <Pillar>
+        <LineOfSightVisionHeight>1</LineOfSightVisionHeight>
+        <LineOfSightVisionRange>1</LineOfSightVisionRange>
+      </Pillar>
+      <Science>
+        <ArcheologyTechnologyDefinitionName>TechnologyDefinitionMapActionArchaeology</ArcheologyTechnologyDefinitionName>
+      </Science>
+      <VictoryManager>
+        <LobbyDataFilter>WorldSize,GameDifficulty,GameSpeed</LobbyDataFilter>
+      </VictoryManager>
+      <Visibility>
+        <RidgeHeight>4</RidgeHeight>
+      </Visibility>
+      <MapBoost>
+        <WorldContinentalMapBoostSpawnTilePercentage>0.04</WorldContinentalMapBoostSpawnTilePercentage>
+        <WorldOceanicMapBoostSpawnTilePercentage>0.02</WorldOceanicMapBoostSpawnTilePercentage>
+        <MapBoostPerTile>0.07</MapBoostPerTile>
+      </MapBoost>
+      <Weather>
+        <LightningDamageInPercent>0.45</LightningDamageInPercent>
+        <WeatherControlCooldownFormula>30 * $Property(ClassEmpire:GameSpeedMultiplier)</WeatherControlCooldownFormula>
+        <WeatherControlTurnToLastFormula>10 * $Property(ClassEmpire:GameSpeedMultiplier)</WeatherControlTurnToLastFormula>
+      </Weather>
+    </Ancillaries>
+    <Battle>
+      <DeploymentAreaWidth>3</DeploymentAreaWidth>
+      <DeploymentAreaDepth>2</DeploymentAreaDepth>
+    </Battle>
+    <FactionTrait>
+      <BrokenLords>
+        <EncounterRewardDroplist>DroplistSmallDust</EncounterRewardDroplist>
+      </BrokenLords>
+      <Drakkens>
+        <TechnologyDefinitionDrakkenEndQuestReward>TechnologyDefinitionDrakkens5</TechnologyDefinitionDrakkenEndQuestReward>
+        <TechnologyDefinitionDrakkenVisionDuringFirstTurn>TechnologyDefinitionDrakkens7</TechnologyDefinitionDrakkenVisionDuringFirstTurn>
+      </Drakkens>
+      <Replicants>
+        <VillageRewardDroplist>DroplistRuins</VillageRewardDroplist>
+      </Replicants>
+    </FactionTrait>
+    <MinorEmpire>
+      <GarrisonInitialSize>2</GarrisonInitialSize>
+      <EraFactorForUnitLevel>0.5</EraFactorForUnitLevel>
+      <TurnFactorForUnitLevel>0</TurnFactorForUnitLevel>
+    </MinorEmpire>
+    <Quest>
+      <InteractGainedXp>10</InteractGainedXp>
+    </Quest>
+  </Gameplay>
+  <Settings>
+    <Views>
+      <WorldView>
+        <DefaultResourceRenderer>
+          <Scale>0.88</Scale>
+        </DefaultResourceRenderer>
+        <DefaultRenderStatisticsPatchRenderer>
+          <!-- Adrien's factor -->
+          <ElevationFactor>2</ElevationFactor>
+          <TerrainTypesToTrack>Ocean,DriftIce,CoralReef,CoastalWaters,InlandWater,FrozenWaters,TundraWaters,ChillyWaters,CoastalWaters,TropicalWaters,DesertWaters</TerrainTypesToTrack>
+        </DefaultRenderStatisticsPatchRenderer>
+      </WorldView>
+    </Views>
+  </Settings>
+</Registry>

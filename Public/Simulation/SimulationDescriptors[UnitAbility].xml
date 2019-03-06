@@ -485,22 +485,22 @@
   <!-- Buyout Bonus -->
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor1"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true"    Operation="Addition" Value="0.1" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true"    Operation="Addition" Value="0.1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.1" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor2"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"         MultiplicativeStacking="true"   Operation="Addition" Value="0.2" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"     MultiplicativeStacking="true"   Operation="Addition" Value="0.2" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.2" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.2" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor3"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true"   Operation="Addition" Value="0.3" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true"    Operation="Addition" Value="0.3" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.3" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.3" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1877,6 +1877,32 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
+  <!-- KaijuSlayer -->
+  <SimulationDescriptor Name="UnitAbilityKaijuSlayerDescriptor1"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstKaijuEfficiency" Value="0.2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityKaijuSlayerDescriptor2"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstKaijuEfficiency" Value="0.5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityKaijuSlayerDescriptor3"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstKaijuEfficiency" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Kaiju Brotherhood -->
+  <SimulationDescriptor Name="UnitAbilityKaijuBrotherhoodDescriptor1"                 Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InitialAgainstKaijuEfficiency" Value="0.5" Operation="Subtraction" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
   <!-- Minor Faction Slayer -->
   <SimulationDescriptor Name="UnitAbilityMinorSlayerDescriptor1"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
@@ -2612,6 +2638,13 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
+  <!-- Volcanic Army Regen -->
+  <SimulationDescriptor Name="UnitAbilityArmyVolcanicRegenDescriptor" Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VolcanicRegen" Operation="Force" Value="1" Path="../Garrison/ClassUnit" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
   <!-- Lava Flow Immunity -->
   <SimulationDescriptor Name="UnitAbilityFlamewalkerDescriptor" Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
@@ -2625,5 +2658,24 @@
   <!-- ######################################################### -->
   <!-- ########################## TEMP ######################### -->
   <!-- ######################################################### -->
-   
+
+  <!-- ################################################ -->
+  <!-- ######           MIMICS EXPANSION         ###### -->
+  <!-- ################################################ -->
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorWinterCold" Type="UnitAbilityDescriptor">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="WinterPenaltyModifier"                       BaseValue="1"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack"  Operation="Percent" Left="$(WinterPenaltyModifier)" Right="-0.25" BinaryOperation="Multiplication" Path="#Winter" Priority="1" />
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDefense"  Operation="Percent" Left="$(WinterPenaltyModifier)" Right="-0.25" BinaryOperation="Multiplication" Path="#Winter" Priority="1" />
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeInitiative"  Operation="Percent" Left="$(WinterPenaltyModifier)" Right="-0.25" BinaryOperation="Multiplication" Path="#Winter" Priority="1" />
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDamage"  Operation="Percent" Left="$(WinterPenaltyModifier)" Right="-0.25" BinaryOperation="Multiplication" Path="#Winter" Priority="1" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Node Regeneration -->
+  <SimulationDescriptor Name="UnitAbilityNodeRegenerationDescriptor" Type="UnitAbilityDescriptor"/>
+  
 </Datatable>

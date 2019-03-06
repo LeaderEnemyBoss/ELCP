@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="ItemDefinitions.xsl"?>
+
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--LoreQuest Droplist Reward: Delvers'Mask - Strategic 3-->
+  <ItemDefinition Name="ItemHeadStrategic3LoreQuest1" SubCategory="SubCategoryHead">
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHeadBase"/>
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic3LoreQuest1" />
+	<SimulationDescriptorReference Name="HeroesOnly" />
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemHeadStrategic3LoreQuest1</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitRankHero</PathPrerequisite>
+    <CustomCost ResourceName="Strategic3" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Lore Quest: Blade of Mercy - Strategic 4-->
+  <ItemDefinition Name="ItemSword1Strategic4LoreQuest6" AudioID="SwordUnique" SubCategory="SubCategorySword1">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassSword1" />
+    <Slot Name="MainHand"/>
+    <Slot Name="OffHand">
+      <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,UnitAbilityDualWield</PathPrerequisite>
+    </Slot>
+    <Tags>NeverObsolete</Tags>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemSword1Strategic4LoreQuest6</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,SlotPrerequisite" Inverted="false">../ClassUnit,UnitRankHero,ItemSlotSword1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitRankHero</PathPrerequisite>
+    <!--Should be HeroTypeSisterofMercy-->
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemQuest1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesSword1Strategic4LoreQuest6"/>
+    <SimulationDescriptorReference Name="HeroesOnly" />
+    <UnitAbilityReference Name="UnitAbilityWarriorSlayer" Level="2"/>
+    <CustomCost ResourceName="Strategic4" Instant="true">7 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- ########## 2H_Spear ########### -->
+  <!--Lore Quest Item: Strategic2-->
+  <ItemDefinition Name="ItemSpear2Strategic2LoreQuest10" AudioID="SpearUnique" SubCategory="SubCategorySpear2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassSpear2" />
+    <Slot Name="MainHand;OffHand"/>
+    <Tags>NeverObsolete</Tags>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotSpear2</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemSpear2Strategic2LoreQuest10</TechnologyPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesSpear2Strategic2LoreQuest10"/>
+    <UnitAbilityReference Name="UnitAbilityKnightSlayer" Level="2"/>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- ########## Shield ########### -->
+  <!--Lore Quest Droplist Reward: Strategic 1 - Disharmony Shield-->
+  <ItemDefinition Name="ItemShield1Strategic1LoreQuest9" SubCategory="SubCategoryShield1">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassShield1" />
+    <Slot Name="OffHand"/>
+    <Tags>NeverObsolete</Tags>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotShield1</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemShield1Strategic1LoreQuest9</TechnologyPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemQuest1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesShield1Strategic1LoreQuest9" />
+    <UnitAbilityReference Name="UnitAbilityBlock" Level="1"/>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Lore Quest Droplist Reward: Strategic 2 - Mother's Protection-->
+  <ItemDefinition Name="ItemShield1Strategic2LoreQuest14" SubCategory="SubCategoryShield1">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassShield1" />
+    <Slot Name="OffHand"/>
+    <Tags>NeverObsolete</Tags>
+    <PathPrerequisite Flags="Prerequisite,SlotPrerequisite" Inverted="false">../ClassUnit,UnitHero,ItemSlotShield1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitRankHero</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemShield1Strategic2LoreQuest14</TechnologyPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesShield1Strategic2LoreQuest14" />
+    <SimulationDescriptorReference Name="HeroesOnly" />
+    <UnitAbilityReference Name="UnitAbilityBlock" Level="1"/>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- ########## Armor ########### -->
+  <!--Lore Quest Droplist Reward: Tetike's Skin - Dust-->
+  <ItemDefinition Name="ItemTorsoDustLoreQuest12" SubCategory="SubCategoryTorso">
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemTorsoBase"/>
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoDustLoreQuest12" />
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemTorsoDustLoreQuest12</TechnologyPrerequisite>
+    <SimulationDescriptorReference Name="HeroesOnly" />
+    <UnitAbilityReference Name="UnitAbilityImmuneToWinterMovementPenalty"/>
+    <Cost ResourceName="EmpireMoney" Instant="true">30</Cost>
+  </ItemDefinition>
+
+  <!-- ########## Ring ########### -->  
+  <!--Lore Quest: Urce's Sheep - Dust-->
+  <ItemDefinition Name="ItemPetDustLoreQuest4" SubCategory="SubCategoryPet">
+    <SimulationDescriptorReference Name="ItemCategoryAccessory" />
+    <SimulationDescriptorReference Name="ItemClassAccessory" />
+    <Slot Name="Accessory"/>
+    <Tags>NeverObsolete</Tags>
+    <SimulationDescriptorReference Name="HeroesOnly" />
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesPetDustLoreQuest4" />
+    <PathPrerequisite Flags="Prerequisite,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotAccessory</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitRankHero</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesPetDustLoreQuest4</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemPetDustLoreQuest4</TechnologyPrerequisite>
+    <TechnologyPrerequisite Inverted="true" Flags="Prerequisite,Discard,Technology">TechnologyItemPetDustLoreQuest4Erased</TechnologyPrerequisite>
+    <Cost ResourceName="EmpireMoney" Instant="true">1</Cost>
+  </ItemDefinition>
+
+  <!--Lore Quest: Delver's Stein - Dust-->
+  <ItemDefinition Name="ItemRingDustLoreQuest2" SubCategory="SubCategoryRing">
+    <SimulationDescriptorReference Name="ItemCategoryAccessory" />
+    <SimulationDescriptorReference Name="ItemClassAccessory" />
+    <Slot Name="Accessory"/>
+    <Tags>NeverObsolete</Tags>
+    <SimulationDescriptorReference Name="HeroesOnly" />
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesRingDustLoreQuest2" />
+    <PathPrerequisite Flags="Prerequisite,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotAccessory</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitRankHero</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustLoreQuest2</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemRingDustLoreQuest2</TechnologyPrerequisite>
+    <Cost ResourceName="EmpireMoney" Instant="true">44</Cost>
+  </ItemDefinition>
+
+  <!-- ########## Talisman ########### -->   
+  <!--LoreQuest: Hurna's Head-->
+  <ItemDefinition Name="ItemTalismanDustLoreQuest12" SubCategory="SubCategoryTalisman">
+    <SimulationDescriptorReference Name="ItemCategoryAccessory" />
+    <SimulationDescriptorReference Name="ItemClassAccessory" />
+    <Slot Name="Accessory"/>
+    <Tags>NeverObsolete</Tags>
+    <SimulationDescriptorReference Name="HeroesOnly" />
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanDustLoreQuest12" />
+    <PathPrerequisite Flags="Prerequisite,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotAccessory</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitRankHero</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustLoreQuest12</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyItemTalismanDustLoreQuest12</TechnologyPrerequisite>
+    <UnitAbilityReference Name="UnitAbilityImprovedInitiative" Level="1"/>
+    <Cost ResourceName="EmpireMoney" Instant="true">30</Cost>
+  </ItemDefinition>
+
+</Datatable>

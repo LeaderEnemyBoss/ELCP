@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <ArmyAction_Aspirate              Name="ArmyActionAspirate"               ExperienceReward="3">
+    <PathPrerequisite  Flags="Prerequisite,Discard">ClassArmy/UnitAbilityHarbingerDescriptor</PathPrerequisite>
+    <AnimationParameterName>Assimilation</AnimationParameterName>
+    <AnimationParameterType>Boolean</AnimationParameterType>
+  </ArmyAction_Aspirate>
+
+  <ArmyAction_Attack                Name="ArmyActionAttack">
+    <Cost ResourceName="ActionPoint" Instant="true">1</Cost>
+  </ArmyAction_Attack>
+
+  <ArmyAction_AutoExplore           Name="ArmyActionAutoExplore">
+  </ArmyAction_AutoExplore>
+
+  <ArmyAction_Bribe                 Name="ArmyActionBribe"                  ExperienceReward="4">
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyMapActionParley</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">ClassArmy,Privateers</PathPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+  </ArmyAction_Bribe>
+
+  <ArmyAction_Colonization          Name="ArmyActionColonization"           ExperienceReward="0">
+    <!--
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassArmy/UnitAbilityColonizationDescriptor</PathPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologySettler</TechnologyPrerequisite>
+    -->
+  </ArmyAction_Colonization>
+
+  <ArmyAction_Convert               Name="ArmyActionConvert"                ExperienceReward="6">
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">ClassArmy,Privateers</PathPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+  </ArmyAction_Convert>
+
+  <ArmyAction_DetachLeader          Name="ArmyActionDetachLeader">
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">ClassArmy,!ClassKaijuArmy</PathPrerequisite>
+  </ArmyAction_DetachLeader>
+
+  <ArmyAction_Guard                 Name="ArmyActionGuard">
+  </ArmyAction_Guard>
+
+  <ArmyAction_Parley                Name="ArmyActionParley"                 ExperienceReward="4">
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyMapActionParley</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">ClassArmy,Privateers</PathPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+  </ArmyAction_Parley>
+
+  <ArmyAction_PortableForge                Name="ArmyActionPortableForge">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <ToggledOffDescriptionOverride>ArmyActionPortableForgeDescription</ToggledOffDescriptionOverride>
+    <ToggledOnDescriptionOverride>ArmyActionPortableForgeAlreadyActiveDescription</ToggledOnDescriptionOverride>
+    <Cost ResourceName="ActionPoint" Instant="true">1</Cost>
+  </ArmyAction_PortableForge>
+
+  <ArmyAction_Privateers            Name="ArmyActionPrivateers">
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyPrivateers</TechnologyPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+  </ArmyAction_Privateers>
+    
+  <ArmyAction_Resettle              Name="ArmyActionResettle"               ExperienceReward="0">
+  </ArmyAction_Resettle>
+
+  <ArmyAction_ReleaseCatspaw        Name="ArmyActionReleaseCatspaw"         ExperienceReward="0">
+  </ArmyAction_ReleaseCatspaw>
+
+  <ArmyAction_Search                Name="ArmyActionSearch"                 ExperienceReward="8">
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">ClassArmy,Privateers</PathPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+  </ArmyAction_Search>
+
+  <ArmyAction_Siege                 Name="ArmyActionSiege"                  ExperienceReward="0">
+  </ArmyAction_Siege>
+
+  <ArmyAction_ToggleEarthquake  Name="ArmyActionEarthquake" AllowInfectedCities="true">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology" OverrideSimulationPath=".../ClassEmpire">TechnologyAllKaijuUnlock</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassKaijuArmy</PathPrerequisite>
+  </ArmyAction_ToggleEarthquake>
+
+  <!-- Vaulters/Mezari standard teleport, disabled on HeatWave-->
+  <ArmyAction_Teleport              Name="ArmyActionTeleport"               AllowTeleportToHeroLedArmy="false">
+    <PathPrerequisite Inverted="true">#HeatWave</PathPrerequisite>
+  </ArmyAction_Teleport>
+  
+  <!-- Vaulters/Mezari standard teleport plus unit transfer by teleport, during Heat Wave only.-->
+  <ArmyAction_Teleport              Name="ArmyActionTeleportOrTransfer"     AllowTransferToHeroLedArmy="true">
+    <PathPrerequisite Inverted="false">#HeatWave</PathPrerequisite>
+  </ArmyAction_Teleport>
+
+  <ArmyAction_FastTravel            Name="ArmyActionFastTravel"             ShowInModalPanel="false">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">ClassArmy,!ClassKaijuArmy</PathPrerequisite>
+    <NodeInterpreterPrerequisite Flags="Entry">$Path(EntryTravelNodeDescriptor)</NodeInterpreterPrerequisite>
+    <NodeInterpreterPrerequisite Flags="Exit">$Path(ExitTravelNodeDescriptor)</NodeInterpreterPrerequisite>
+    <Cost ResourceName="ActionPoint" Instant="true">1</Cost>
+  </ArmyAction_FastTravel>
+
+  <ArmyAction_TogglePillage         Name="ArmyActionPillage"                ExperienceReward="8">
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyMapActionPillage</TechnologyPrerequisite>
+  </ArmyAction_TogglePillage>
+
+  <ArmyAction_ToggleDismantleDevice Name="ArmyActionDismantleDevice"        ExperienceReward="8">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+  </ArmyAction_ToggleDismantleDevice>
+  
+  <ArmyAction_TransferUnits         Name="ArmyActionTransferUnits"          AllowedTransferTarget="Army">
+  </ArmyAction_TransferUnits>
+
+  <ArmyAction_TransferToCity        Name="ArmyActionTransferUnitsToGarrison">
+  </ArmyAction_TransferToCity>
+
+  <!-- Colossus Army Actions -->
+  <ArmyAction_DestroyRegionBuilding Name="ArmyActionDestroyRegionBuilding">
+    <PointOfInterestCategory>ResourceDeposit_Strategic</PointOfInterestCategory>
+    <PointOfInterestCategory>ResourceDeposit_Luxury</PointOfInterestCategory>
+    <PointOfInterestCategory>WatchTower</PointOfInterestCategory>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassArmy/UnitTypeColossusWater</PathPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+    <ZeroMovement>false</ZeroMovement>
+    <CooldownDuration>6</CooldownDuration>
+    <AnimationParameterName>ArmyAction_Cast</AnimationParameterName>
+    <AnimationParameterType>Trigger</AnimationParameterType>
+    <WorldFX>Prefabs/Effects/ArmyActions/FX_ArmyActions_ColossusWater_BuildingBreaker</WorldFX>
+  </ArmyAction_DestroyRegionBuilding>
+
+  <ArmyAction_Fortify               Name="ArmyActionFortify">
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassArmy/UnitTypeColossusEarth</PathPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+    <ZeroMovement>false</ZeroMovement>
+    <CooldownDuration>6</CooldownDuration>
+    <WorldFX>Prefabs/Effects/ArmyActions/FX_ArmyActions_ColossusEarth_Fortification</WorldFX>
+  </ArmyAction_Fortify>
+
+  <ArmyAction_Heal                  Name="ArmyActionHeal">
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassArmy/UnitTypeColossusDust</PathPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+    <ZeroMovement>false</ZeroMovement>
+    <CooldownDuration>8</CooldownDuration>
+    <AnimationParameterName>ArmyAction_Cast</AnimationParameterName>
+    <AnimationParameterType>Trigger</AnimationParameterType>
+    <WorldFX>Prefabs/Effects/ArmyActions/FX_ArmyActions_ColossusDust_Regeneration</WorldFX>
+  </ArmyAction_Heal>
+
+  <ArmyAction_TeleportInRange       Name="ArmyActionTeleportInRange">
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassArmy/UnitTypeColossusAir</PathPrerequisite>
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+    <ZeroMovement>false</ZeroMovement>
+    <CooldownDuration>6</CooldownDuration>
+    <AnimationParameterName>ArmyAction_Cast</AnimationParameterName>
+    <AnimationParameterType>Trigger</AnimationParameterType>
+    <WorldFX>Prefabs/Effects/ArmyActions/FX_ArmyActions_ColossusAir_Reach</WorldFX>
+  </ArmyAction_TeleportInRange>
+    
+  <ArmyAction_Terraform              Name="ArmyActionTerraform">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <PathPrerequisite>.../ClassEmpire,FactionTraitFlames1</PathPrerequisite>
+    <Cost ResourceName="Lavapool" Instant="true">1</Cost>
+  </ArmyAction_Terraform>
+
+  <ArmyAction_Ward                  Name="ArmyActionWard">
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassArmy/UnitTypeColossusFire</PathPrerequisite>
+    <PillarDefinition Name="WardOfTrueSight" />
+    <!--<Cost ResourceName="ActionPoint" Instant="true">1</Cost>-->
+    <ZeroMovement>false</ZeroMovement>
+    <CooldownDuration>4</CooldownDuration>
+    <AnimationParameterName>ArmyAction_Cast</AnimationParameterName>
+    <AnimationParameterType>Trigger</AnimationParameterType>
+    <WorldFX>Prefabs/Effects/ArmyActions/FX_ArmyActions_ColossusFire_VisionBoost</WorldFX>
+  </ArmyAction_Ward>
+
+  <!-- Fleet Actions -->
+  <FleetAction_Attack Name="FleetActionAttack">
+    <Cost ResourceName="ActionPoint" Instant="true">1</Cost>
+  </FleetAction_Attack>
+
+  <FleetAction_Siege Name="FleetActionSiege">
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassArmy/SeafaringUnit</PathPrerequisite>
+  </FleetAction_Siege>
+    
+  <FleetAction_Dive Name="FleetActionDive" ExperienceReward="12">
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">ClassArmy,Privateers</PathPrerequisite>
+  </FleetAction_Dive>
+
+  <FleetAction_Parley Name="FleetActionParley" ExperienceReward="4">
+    <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyMapActionParley</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">ClassArmy,Privateers</PathPrerequisite>
+  </FleetAction_Parley>
+
+  <FleetAction_TransferToFortress Name="FleetActionTransferToFortress">
+  </FleetAction_TransferToFortress>
+
+  <ArmyAction_TameKaiju               Name="ArmyActionTameKaiju">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+    <TameCost>
+      <CostDefinition EraNumber="1,2" LuxuryTier="Tier1">10 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+      <CostDefinition EraNumber="3" LuxuryTier="Tier2">8 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">5 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+    </TameCost>
+  </ArmyAction_TameKaiju>
+  
+  <ArmyAction_TameUnstunnedKaiju               Name="ArmyActionTameUnstunnedKaiju">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+    <TameCost>
+      <CostDefinition EraNumber="1,2" LuxuryTier="Tier1">40 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
+      <CostDefinition EraNumber="3" LuxuryTier="Tier2">30 + 15 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
+      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">15 + 10 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
+    </TameCost>
+  </ArmyAction_TameUnstunnedKaiju>
+  
+  <ArmyAction_SettleKaiju             Name="ArmyActionSettleKaiju">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassKaijuArmy</PathPrerequisite>
+    <Cost ResourceName="ActionPoint" Instant="true">1</Cost>
+  </ArmyAction_SettleKaiju>
+
+  <ArmyAction_SetFreeKaiju             Name="ArmyActionSetFreeKaiju">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassKaijuArmy</PathPrerequisite>
+  </ArmyAction_SetFreeKaiju>
+
+  <ArmyAction_ToggleDismantleCreepingNode Name="ArmyActionDismantleCreepingNode"        ExperienceReward="8">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+  </ArmyAction_ToggleDismantleCreepingNode>
+
+</Datatable>

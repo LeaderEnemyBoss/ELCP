@@ -1,0 +1,1290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Datatable xmlns:xsi="http://BrokenLordsw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://BrokenLordsw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ======== GLOBAL QUEST COMPET 1 =========
+     ======================================== -->
+  
+  <QuestDefinition Name="GlobalQuestCompet#0001" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
+    
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfPacifiedVillages) ge (4 * $(NumberOfEmpires)) or $(NumberOfConvertedVillages) ge (4 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfPacifiedVillages) lt (8 * $(NumberOfEmpires)) or $(NumberOfConvertedVillages) lt (8 * $(NumberOfEmpires))</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfPacifiedVillages" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/PacifiedVillage)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfConvertedVillages" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ConvertedVillage)</Expression>
+      </InterpretedVar>
+      
+      <Var VarName="$NeutralRegion">
+        <Any>
+          <From Source="$Regions">
+            <Where>
+              <FilterRegionIsColonized Inverted="true"/>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NeutralRegionLocations">
+        <From Source="$NeutralRegion.$Positions"/>
+      </Var>
+
+      <Var VarName="$1stQuestPOI">
+        <First>
+          <From Source="$NeutralRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$2ndQuestPOI">
+        <Last>
+          <From Source="$NeutralRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Last>
+      </Var>
+
+      <Var VarName="$1stQuestPOILocation">
+        <From Source="$1stQuestPOI.$Position"/>
+      </Var>
+      
+      <Var VarName="$2ndQuestPOILocation">
+        <From Source="$2ndQuestPOI.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$NeutralRegion"/>
+      <LocalizationVar LocalizationKey="$1stQuestPOIName" Source="$1stQuestPOI"/>
+      <LocalizationVar LocalizationKey="$2ndQuestPOIName" Source="$2ndQuestPOI"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <Action_LockQuestTarget TargetVarName="$1stQuestPOI" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$2ndQuestPOI" LockOption="Lock"/>
+
+      <Action_AddQuestMarker TargetEntityVarName="$1stQuestPOI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$1stQuestPOIMarker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$2ndQuestPOI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$2ndQuestPOIMarker"/>
+      
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$NeutralRegionLocations" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0001" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="Roaming"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="GlobalQuestCompet#0001-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+        
+        <Controller_Parallel CompletionPolicy="All">
+          
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$1stQuestPOI" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteGlobalQuestCompet#0001">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 50000</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+          
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$1stQuestPOI" Initiator="Empire"/>
+            <Action_RemoveQuestMarker TargetQuestMarkerVarName="$1stQuestPOIMarker"/>
+          </Controller_Sequence>
+        
+        </Controller_Parallel>
+
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$2ndQuestPOI" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$2ndQuestPOIMarker"/>
+          <Action_LockQuestTarget TargetVarName="$1stQuestPOI" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$2ndQuestPOI" LockOption="Unlock"/>
+
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$1stQuestPOIMarker"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$2ndQuestPOIMarker"/>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+      
+      <Action_UpdateStep StepName="GlobalQuestCompet#0001-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0001-Step1">
+        <Reward Droplist="DroplistGlobalQuestStrategicResource" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  
+  
+
+  <!-- ======================================
+     ======== GLOBAL QUEST COMPET 2 =========
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalQuestCompet#0002" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empires)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$Path(EmpireTypeMajor/ClassCity/PacifiedVillage,VillageTypeDorgeshi) or $Path(EmpireTypeMajor/ClassCity/ConvertedVillage,VillageTypeDorgeshi)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (6 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfPacifiedVillages) ge (3 * $(NumberOfEmpires)) or $(NumberOfConvertedVillages) ge (3 * $(NumberOfEmpires))</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfPacifiedVillages" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/PacifiedVillage)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfConvertedVillages" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ConvertedVillage)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$NeutralRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsColonized Inverted="true"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      
+      <!--Check that at least 1 region has at least 1 Dorgeshi village-->
+      <Var VarName="$DorgeshiVillageInNeutralRegion">
+        <Any>
+          <From Source="$NeutralRegions.$MinorEmpire">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">AffinityDorgeshi</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="GlobalQuestCompet#0002-Step1" State="InProgress" />
+      <Decorator_FactionAssimilated FactionName="Dorgeshi" Initiator="Empire"/>
+      <Action_UpdateStep StepName="GlobalQuestCompet#0002-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0002-Step1">
+        <Reward Droplist="DroplistGlobalQuestLuxuryResource" Picks="1"/>
+        <Reward Droplist="DroplistDust" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+  <!-- =================================================
+     ==== GLOBAL QUEST COMPET 3A - Dust Guardian =======
+     =================================================== -->
+
+  <QuestDefinition Name="GlobalQuestCompet#0003A-Prelude" GlobalCooldownLiability="ForceCheck" GlobalCooldown="16" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true"> 
+
+    <!--============ TAGS ============-->
+    <Tags>Hidden,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfDustGuardianTechsUnlocked) ge (0.4 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge ((18 * $(NumberOfEmpires)) + 7)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfEra4Reached) ge 1</InterpreterPrerequisite>
+    
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003B" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003C" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003D" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003E" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003B" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003C" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003D" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003E" QuestState="Unstarted"/>
+
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfDustGuardianTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyColossusDust)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfEra4Reached" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyEra4)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$NeutralRegion">
+        <Any>
+          <From Source="$Regions">
+            <Where>
+              <FilterRegionIsColonized Inverted="true"/>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$Strategic1POI">
+        <Any>
+          <From Source="$NeutralRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>ResourceDepositTypeStrategic1</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NeutralRegionLocations">
+        <From Source="$NeutralRegion.$Positions"/>
+      </Var>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Decorator_EndTurn Initiator="Empire" />
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$NeutralRegionLocations" DroplistRewardOnDeathName="DroplistGlobalQuestDust" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0003A" Output_EnemyArmyGUIDVarName="$Global_ArmyID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_ArmyID" BehaviourName="PacifistRoaming"/>
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+  <QuestDefinition Name="GlobalQuestCompet#0003A" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)" >
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite QuestDefinitionName="GlobalQuestCompet#0003A-Prelude" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$Global_ArmyID" FromGlobal="true" />
+
+      <Var VarName="$ArmyPosition">
+        <From Source="$Global_ArmyID.$Position"/>
+      </Var>
+
+      <Var VarName="$ArmyRegion">
+        <From Source="$ArmyPosition.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$ArmyRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="GlobalQuestCompet#0003-Step1" State="InProgress" />
+
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        <EnemyArmyGUIDVarName>$Global_ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <Action_UpdateStep StepName="GlobalQuestCompet#0003-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0003-Step1">
+        <Reward Droplist="DroplistGlobalQuestCompet#0003ATechnologyReward" Picks="1"/>
+        <Reward Droplist="GlobalQuestCompetColossusReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+
+
+  <!-- =================================================
+     ==== GLOBAL QUEST COMPET 3B - Earth Guardian ======
+     =================================================== -->
+
+  <QuestDefinition Name="GlobalQuestCompet#0003B-Prelude" GlobalCooldownLiability="ForceCheck" GlobalCooldown="16" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">
+
+    <!--============ TAGS ============-->
+    <Tags>Hidden,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfEarthGuardianTechsUnlocked) ge (0.5 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge ((27 * $(NumberOfEmpires)) + 7)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfEra5Reached) ge 1</InterpreterPrerequisite>
+	  
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003A" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003C" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003D" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003E" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003A" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003C" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003D" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003E" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfCities" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfEarthGuardianTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyColossusEarth)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+      
+      <InterpretedVar VarName="NumberOfEra5Reached" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyEra5)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$NeutralRegion">
+        <Any>
+          <From Source="$Regions">
+            <Where>
+              <FilterRegionIsColonized Inverted="true"/>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$Strategic3POI">
+        <Any>
+          <From Source="$NeutralRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>ResourceDepositTypeStrategic3</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NeutralRegionLocations">
+        <From Source="$NeutralRegion.$Positions"/>
+      </Var>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Decorator_EndTurn Initiator="Empire" />
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$NeutralRegionLocations" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0003B" Output_EnemyArmyGUIDVarName="$Global_ArmyID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true" />
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_ArmyID" BehaviourName="PacifistRoaming"/>
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+  <QuestDefinition Name="GlobalQuestCompet#0003B" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)" >
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite QuestDefinitionName="GlobalQuestCompet#0003B-Prelude" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$Global_ArmyID" FromGlobal="true" />
+
+      <Var VarName="$ArmyPosition">
+        <From Source="$Global_ArmyID.$Position"/>
+      </Var>
+
+      <Var VarName="$ArmyRegion">
+        <From Source="$ArmyPosition.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$ArmyRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="GlobalQuestCompet#0003-Step1" State="InProgress" />
+
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        <EnemyArmyGUIDVarName>$Global_ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <Action_UpdateStep StepName="GlobalQuestCompet#0003-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0003-Step1">
+        <Reward Droplist="DroplistGlobalQuestCompet#0003BTechnologyReward" Picks="1"/>
+        <Reward Droplist="GlobalQuestCompetColossusReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- =================================================
+     ==== GLOBAL QUEST COMPET 3C - Fire Guardian =======
+     =================================================== -->
+
+  <QuestDefinition Name="GlobalQuestCompet#0003C-Prelude" GlobalCooldownLiability="ForceCheck" GlobalCooldown="16" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">
+
+    <!--============ TAGS ============-->
+    <Tags>Hidden,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+      
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfFireGuardianTechsUnlocked) ge (0.4 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge ((27 * $(NumberOfEmpires)) + 7)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfEra5Reached) ge 1</InterpreterPrerequisite>
+	    
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003A" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003B" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003D" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003E" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003A" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003B" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003D" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003E" QuestState="Unstarted"/>
+    </Prerequisites> 
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfCities" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfFireGuardianTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyColossusFire)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfEra5Reached" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyEra5)</Expression>
+      </InterpretedVar>
+
+
+      <Var VarName="$NeutralRegion">
+        <Any>
+          <From Source="$Regions">
+            <Where>
+              <FilterRegionIsColonized Inverted="true"/>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$Strategic4POI">
+        <Any>
+          <From Source="$NeutralRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>ResourceDepositTypeStrategic4</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NeutralRegionLocations">
+        <From Source="$NeutralRegion.$Positions"/>
+      </Var>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Decorator_EndTurn Initiator="Empire" />
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$NeutralRegionLocations" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0003C" Output_EnemyArmyGUIDVarName="$Global_ArmyID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_ArmyID" BehaviourName="PacifistRoaming"/>
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+  <QuestDefinition Name="GlobalQuestCompet#0003C" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)" >
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite QuestDefinitionName="GlobalQuestCompet#0003C-Prelude" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$Global_ArmyID" FromGlobal="true" />
+
+      <Var VarName="$ArmyPosition">
+        <From Source="$Global_ArmyID.$Position"/>
+      </Var>
+
+      <Var VarName="$ArmyRegion">
+        <From Source="$ArmyPosition.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$ArmyRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="GlobalQuestCompet#0003-Step1" State="InProgress" />
+
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        
+        <EnemyArmyGUIDVarName>$Global_ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <Action_UpdateStep StepName="GlobalQuestCompet#0003-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0003-Step1">
+        <Reward Droplist="DroplistGlobalQuestCompet#0003CTechnologyReward" Picks="1"/>
+        <Reward Droplist="GlobalQuestCompetColossusReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+  <!-- =================================================
+     ==== GLOBAL QUEST COMPET 3D - Water Guardian ======
+     =================================================== -->
+
+  <QuestDefinition Name="GlobalQuestCompet#0003D-Prelude" GlobalCooldownLiability="ForceCheck" GlobalCooldown="16" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">
+
+    <!--============ TAGS ============-->
+    <Tags>Hidden,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+     <Prerequisites Target="$(Empire)">
+       <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfWaterGuardianTechsUnlocked) ge (0.5 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge ((36 * $(NumberOfEmpires)) + 7)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfEra6Reached) ge 1</InterpreterPrerequisite>
+	  
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003A" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003B" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003C" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003E" QuestState="InProgress"/>
+	  <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003A" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003B" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003C" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003E" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfCities" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfWaterGuardianTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyColossusWater)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfEra6Reached" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyEra6)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$NeutralRegion">
+        <Any>
+          <From Source="$Regions">
+            <Where>
+              <FilterRegionIsColonized Inverted="true"/>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$Strategic5POI">
+        <Any>
+          <From Source="$NeutralRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>ResourceDepositTypeStrategic5</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NeutralRegionLocations">
+        <From Source="$NeutralRegion.$Positions"/>
+      </Var>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Decorator_EndTurn Initiator="Empire" />
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$NeutralRegionLocations" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0003D" Output_EnemyArmyGUIDVarName="$Global_ArmyID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_ArmyID" BehaviourName="PacifistRoaming"/>
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+  <QuestDefinition Name="GlobalQuestCompet#0003D" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)" >
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite QuestDefinitionName="GlobalQuestCompet#0003D-Prelude" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$Global_ArmyID" FromGlobal="true" />
+
+      <Var VarName="$ArmyPosition">
+        <From Source="$Global_ArmyID.$Position"/>
+      </Var>
+
+      <Var VarName="$ArmyRegion">
+        <From Source="$ArmyPosition.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$ArmyRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="GlobalQuestCompet#0003-Step1" State="InProgress" />
+
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        <EnemyArmyGUIDVarName>$Global_ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <Action_UpdateStep StepName="GlobalQuestCompet#0003-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0003-Step1">
+        <Reward Droplist="DroplistGlobalQuestCompet#0003DTechnologyReward" Picks="1"/>
+        <Reward Droplist="GlobalQuestCompetColossusReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- =================================================
+     ==== GLOBAL QUEST COMPET 4 - Air Guardian =========
+     =================================================== -->
+
+  <QuestDefinition Name="GlobalQuestCompet#0004-Prelude" GlobalCooldownLiability="ForceCheck" GlobalCooldown="16" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">
+
+    <!--============ TAGS ============-->
+    <Tags>Hidden,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+     <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$(NumberOfAirGuardianTechsUnlocked) ge (0.5 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge ((36 * $(NumberOfEmpires)) + 7)</InterpreterPrerequisite>
+	  
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003A" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003B" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003C" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003D" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003B" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003C" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003D" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0003A" QuestState="Unstarted"/>
+    </Prerequisites> 
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfCities" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfAirGuardianTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassResearch,TechnologyColossusAir)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$NeutralRegion">
+        <Any>
+          <From Source="$Regions">
+            <Where>
+              <FilterRegionIsColonized Inverted="true"/>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NeutralRegionLocations">
+        <From Source="$NeutralRegion.$Positions"/>
+      </Var>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence ResetPolicy="onFail">
+          <!--Spawn the army if starting a turn in Winter-->
+          <Decorator_EndTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_EndTurn>
+          <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$NeutralRegionLocations" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0004" Output_EnemyArmyGUIDVarName="$Global_ArmyID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true"/>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_ArmyID" BehaviourName="PacifistRoaming"/>
+          <!--Destroy the army if not starting a turn in Winter-->
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_DestroyArmy ArmyGUIDVarName="$Global_ArmyID" />
+          <Action_Fail/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+            <EnemyArmyGUIDVarName>$Global_ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <Controller_Sequence>
+      <Decorator_EndTurn Initiator="Empire" />
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$NeutralRegionLocations" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0004" Output_EnemyArmyGUIDVarName="$Global_ArmyID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_ArmyID" BehaviourName="PacifistRoaming"/>
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+  <QuestDefinition Name="GlobalQuestCompet#0004" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="false" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)" >
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite QuestDefinitionName="GlobalQuestCompet#0004-Prelude" QuestState="InProgress"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$Global_ArmyID" FromGlobal="true" />
+
+      <Var VarName="$ArmyPosition">
+        <From Source="$Global_ArmyID.$Position"/>
+      </Var>
+
+      <Var VarName="$ArmyRegion">
+        <From Source="$ArmyPosition.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$ArmyRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="GlobalQuestCompet#0004-Step1" State="InProgress" />
+
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        <EnemyArmyGUIDVarName>$Global_ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <Action_UpdateStep StepName="GlobalQuestCompet#0004-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0004-Step1">
+        <Reward Droplist="DroplistGlobalQuestCompet#0004TechnologyReward" Picks="1"/>
+        <Reward Droplist="GlobalQuestCompetColossusReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  
+  <!-- =================================================
+     ==== GLOBAL QUEST COMPET 5 - Guardian killers =====
+     =================================================== -->
+  
+  <QuestDefinition Name="GlobalQuestCompet#0005" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="false" NumberOfOccurencesPerEmpire="1">
+
+  <!--============ TAGS ============-->
+  <Tags>EventFirstColossusCreated</Tags>
+
+  <!--============ PREREQUISITES ============-->
+  <Prerequisites Target="$(Empire)">
+    <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+  </Prerequisites>
+
+  <!--============ VARIABLES ============-->
+  <Vars>
+
+    <!--Check that at least 1 region in the world has a flying unit as minor faction-->
+    <Var VarName="$FlyingMinorFaction">
+      <Any>
+        <From Source="$Regions.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Path(AffinityHaunts) or $Path(AffinityKazanji) or $Path(AffinityBirdhive)</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Any>
+    </Var>
+    
+    <Var VarName="$InstigatorEmpire">
+      <From Source="$Empire"/>
+    </Var>
+
+    <Var VarName="$NeutralRegion">
+      <Any>
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsColonized Inverted="true"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Any>
+    </Var>
+
+    <Var VarName="$NeutralRegionLocations">
+      <From Source="$NeutralRegion.$Positions"/>
+    </Var>
+
+    <Var VarName="$QuestPOI">
+      <First>
+        <From Source="$NeutralRegion.$PointsOfInterest">
+          <Where>
+            <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+          </Where>
+        </From>
+      </First>
+    </Var>
+    <Var VarName="$QuestPOILocation">
+      <From Source="$QuestPOI.$Position"/>
+    </Var>
+    <Var VarName="$QuestPOIRegion">
+      <From Source="$QuestPOILocation.$Region"/>
+    </Var>
+
+    <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOIRegion"/>
+    <LocalizationVar LocalizationKey="$QuestPOIName" Source="$QuestPOI"/>
+
+  </Vars>
+
+  <!--============ SEQUENCE ============-->
+  <Controller_Sequence>
+
+    <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+    <Action_AddQuestMarker TargetEntityVarName="$QuestPOI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOIMarker"/>
+
+    <!--Step 1-->
+    <Action_UpdateStep StepName="GlobalQuestCompet#0005-Step1" State="InProgress" />
+
+    <Decorator_Inspect TargetEntityVarName="$QuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified">
+      <ConditionCheck_Prerequisite>
+        <Prerequisites Target="$InspectionInstigatorSimObject">
+          <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,MovementCapacityFly</PathPrerequisite>
+          <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+          <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) eq 1</InterpreterPrerequisite>
+          <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassArmy/ClassUnit:LevelDisplayed) ge 4</InterpreterPrerequisite>
+        </Prerequisites>
+      </ConditionCheck_Prerequisite>
+    </Decorator_Inspect>
+    <Action_DestroyArmy ArmyGUIDVarName="$InspectionInstigatorGUID" />
+    <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+    <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOIMarker"/>
+
+    <Action_UpdateStep StepName="GlobalQuestCompet#0005-Step1" State="Completed"/>
+   
+    <!--Step 2-->
+    <Action_UpdateStep StepName="GlobalQuestCompet#0005-Step2" State="InProgress" />
+
+    <Controller_Loop LoopCount="5">
+      <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="GlobalQuestCompet#0005-Step2">
+        <ConditionCheck_RegionContainsEnemy Inverted="true" RegionVarName="$QuestPOIRegion"/>
+      </Decorator_BeginTurn>
+    </Controller_Loop>
+    
+    <Action_UpdateStep StepName="GlobalQuestCompet#0005-Step2" State="Completed"/>
+    <Action_SpawnArmy SpawnLocationVarName="$QuestPOILocation" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0005" UseBehaviorInitiatorEmpire="true"/>
+    <Action_UpdateQuest State="Completed" />
+
+  </Controller_Sequence>
+
+  <!--============ REWARDS ============-->
+  <Steps>
+    <Step Name="GlobalQuestCompet#0005-Step1">
+      <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+    </Step>
+    <Step Name="GlobalQuestCompet#0005-Step2">
+      <ProgressionRange StartValue="0" EndValue="5"/>
+      <Reward Droplist="DroplistGlobalQuestCompet#0005Reward" Picks="1"/>
+      <Reward Droplist="DroplistGlobalQuestCompet#0005TechnologyReward" Picks="1"/>
+      <Reward LocalizationKey="%GlobalQuestCompet#0005-Step2Reward"/>
+    </Step>
+  </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =================================================
+     ======= GLOBAL QUEST COMPET 6 - Sea Monster =======
+     =================================================== -->
+
+  <QuestDefinition Name="GlobalQuestCompet#0006-Prelude" GlobalCooldownLiability="ForceCheck" Cooldown="50" GlobalCooldown="16" NumberOfOccurencesPerGame="-1" SingleCheckPerTurn="true">
+
+    <!--============ TAGS ============-->
+    <Tags>Hidden,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <!--<InterpreterPrerequisite Flags="Prerequisite">$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount) gt ($(NumberOfTechsUnlocked)/$(NumberOfEmpires))</InterpreterPrerequisite>-->
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0006" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0006" QuestState="Unstarted"/>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge ((18 * $(NumberOfEmpires)) + 7)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfOccupiedFortresses) ge 4</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="TotalNumberOfFortresses">
+        <Count>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </Count>
+      </Var>
+
+      <Var VarName="NumberOfOccupiedFortresses" UsedInPrerequisites="true">
+        <Count>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">OccupiedCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </Count>
+      </Var>
+
+      <!--All oceanic regions with Min 2 fortresses inside-->
+      <Var VarName="$Min2FortressesOceanicRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOcean/>
+            <FilterRegionIsOceanWithFortresses MinimumNumber="2"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Select 1 citadel POI occupied by a major empire-->
+      <Var VarName="$OccupiedCitadelPOI">
+        <Any>
+          <From Source="$Min2FortressesOceanicRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">OccupiedCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Region of the selected occupied citadel POI-->
+      <Var VarName="$OccupiedCitadelPOIRegion">
+        <From Source="$OccupiedCitadelPOI.$Position.$Region"/>
+      </Var>
+
+      <Var VarName="$SelectedRegionLocations">
+        <From Source="$OccupiedCitadelPOIRegion.$Positions"/>
+      </Var>
+
+      <Var VarName="$SelectedRegionLocations">
+        <From Source="$OccupiedCitadelPOIRegion.$Positions"/>
+      </Var>
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Decorator_EndTurn Initiator="Empire" />
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$SelectedRegionLocations" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0006" Output_EnemyArmyGUIDVarName="$Global_ArmyID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_ArmyID" BehaviourName="SeaMonsterRoaming" TurnBeforeLeavingRegionVarName="10"/>
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+  <QuestDefinition Name="GlobalQuestCompet#0006" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)" >
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite QuestDefinitionName="GlobalQuestCompet#0006-Prelude" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$Global_ArmyID" FromGlobal="true" />
+
+      <Var VarName="$ArmyPosition">
+        <From Source="$Global_ArmyID.$Position"/>
+      </Var>
+
+      <Var VarName="$ArmyRegion">
+        <From Source="$ArmyPosition.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$ArmyRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="GlobalQuestCompet#0006-Step1" State="InProgress" HideRewards="true"/>
+
+      <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+        <EnemyArmyGUIDVarName>$Global_ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <Action_UpdateStep StepName="GlobalQuestCompet#0006-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0006-Step1">
+        <Reward Droplist="DroplistGlobalQuestDust" Picks="1"/>
+        <Reward Droplist="DroplistGlobalQuestStrategicResource" Picks="1"/>
+        <Reward Droplist="DroplistGlobalQuestCompet#0006Reward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =================================================
+     ==== GLOBAL QUEST COMPET 7 A WORLD OF KAIJUS   ======
+     =================================================== -->
+
+  <QuestDefinition Name="GlobalQuestCompet#0007-Prelude" GlobalCooldownLiability="ForceCheck" Cooldown="50" GlobalCooldown="16" NumberOfOccurencesPerGame="-1" SingleCheckPerTurn="true">
+
+    <!--============ TAGS ============-->
+    <Tags>Hidden,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">MimicsPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0007" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="GlobalQuestCompet#0007" QuestState="Unstarted"/>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:SpawnedKaijusGlobalCounter) ge 3</InterpreterPrerequisite>
+    </Prerequisites>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+  <QuestDefinition Name="GlobalQuestCompet#0007" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)" >
+      <DownloadableContentPrerequisite Flags="Prerequisite">MimicsPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite QuestDefinitionName="GlobalQuestCompet#0007-Prelude" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="GlobalQuestCompet#0007-Step1" State="InProgress" HideRewards="true"/>
+
+      <Decorator_BeginTurn Initiator="Empire" >
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:NumberOfResearchedKaijuTechs) ge 13</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:NumberOfTamedKaijus) ge 3</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+
+      <Action_UpdateStep StepName="GlobalQuestCompet#0007-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCompet#0007-Step1">
+        <Reward Droplist="DroplistGlobalQuestDust" Picks="1"/>
+        <Reward Droplist="DroplistFinalKaijuHeadItemReward" Picks="1"/>
+        <Reward Droplist="DroplistFinalKaijuTorsoItemReward" Picks="1"/>
+        <Reward Droplist="DroplistFinalKaijuLegsItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+</Datatable>

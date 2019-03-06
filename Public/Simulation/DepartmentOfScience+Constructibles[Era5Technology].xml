@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <TechnologyEraDefinition Name="TechnologyEraDefinition5" TechnologyEraNumber="5">
+    <SimulationDescriptorReference Name="TechnologyEra5" />
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponDustMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorDustMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryDustMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier2" />
+
+    <InterpreterPrerequisite Flags="Prerequisite,Era">$Property(EmpireTypeMajor/ClassResearch:Era4RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)</InterpreterPrerequisite>
+  </TechnologyEraDefinition>
+
+
+
+  <!-- Double unlock : Improvements Industry6 & Industry8 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionIndustry6">
+    <SimulationDescriptorReference Name="TechnologyIndustry6" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Double unlock : Improvements Dust4 & Dust8 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionDust4">
+    <SimulationDescriptorReference Name="TechnologyDust4" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Dust5 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionDust5">
+    <SimulationDescriptorReference Name="TechnologyDust5" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+  
+  <!-- Double unlock : Improvements Science5 & Science6 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionScience5">
+    <SimulationDescriptorReference Name="TechnologyScience5" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Outpost 2 & Trade Route Bonus 3 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionTradeRouteBonus3">
+    <SimulationDescriptorReference Name="TechnologyTradeRouteBonus3" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+  </TechnologyDefinition>
+  
+  <!-- Outpost 2 & Trade Route Bonus 3 for Replicants only-->
+  <TechnologyDefinition  Name="TechnologyDefinitionTradeRouteBonus3Replicants" TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyTradeRouteBonus3" />
+    <SimulationDescriptorReference Name="TechnologyTradeRouteBonus3Replicants" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,!AffinityReplicants</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Prestige 3 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionEmpirePoint3"               TechnologyFlags="Unique">
+    <SimulationDescriptorReference Name="TechnologyEmpirePoint3" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Prestige 4 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionEmpirePoint4"               TechnologyFlags="Unique">
+    <SimulationDescriptorReference Name="TechnologyEmpirePoint4" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Approval 3 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionApproval3">
+    <SimulationDescriptorReference Name="TechnologyApproval3" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Approval 4 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionApproval4">
+    <SimulationDescriptorReference Name="TechnologyApproval4" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Military XP 5 
+  <TechnologyDefinition  Name="TechnologyDefinitionMilitaryRecruitmentBonus5">
+    <SimulationDescriptorReference Name="TechnologyMilitaryRecruitmentBonus5" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>-->
+
+  <!-- Improvement: Defense 3 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionDefense3">
+    <UnlockCategoryOverride Category="CityImprovement" SubCategory="SubCategoryMilitary"/>
+    <SimulationDescriptorReference Name="TechnologyDefense3" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: HP regen 2 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionLifeRegeneration2">
+    <UnlockCategoryOverride Category="CityImprovement" SubCategory="SubCategoryMilitary"/>
+    <SimulationDescriptorReference Name="TechnologyLifeRegeneration2" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Weapon Uncommon Tier 2 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionWeaponUncommonTier2">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryWeapon"/>
+    <SimulationDescriptorReference Name="TechnologyWeaponUncommonTier2" />
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponUncommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyMasteryUncommonBonus3" />
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponTier2" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Armor Uncommon Tier 2 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionArmorUncommonTier2">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryArmor"/>
+    <SimulationDescriptorReference Name="TechnologyArmorUncommonTier2" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorUncommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorTier2" />
+    <SimulationDescriptorReference Name="TechnologyAccessoryUncommonTier2" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryUncommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyMasteryUncommonBonus4" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier2" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Expansion disapproval 2 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionExpansionDisapprovalReduction2">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryApproval"/>
+    <SimulationDescriptorReference Name="TechnologyExpansionDisapprovalReduction2" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">FactionTraitCultists7,FactionTraitCultists9</PathPrerequisite>
+    
+  </TechnologyDefinition>
+
+  <!-- Water colossus -->
+  <TechnologyDefinition  Name="TechnologyDefinitionColossusWater" >
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyColossusWater" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Air colossus -->
+  <TechnologyDefinition  Name="TechnologyDefinitionColossusAir" >
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyColossusAir" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- AntiSpy 2 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionAntiSpy2" >
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyAntiSpy2" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- unlock : Improvement for volcanic terrain strat resources -->
+  <TechnologyDefinition  Name="TechnologyDefinitionVolcanic1">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyVolcanic1" />
+    <SimulationDescriptorReference Name="TechnologyVolcanicItems2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- ############################# -->
+  <!-- #### Era5 Faction techs ##### -->
+  <!-- ############################# -->
+
+  <!-- Rage Wizards: All pillars' level increase -->
+  <TechnologyDefinition  Name="TechnologyDefinitionRageWizards15"              TechnologyFlags="Affinity">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryArcana"/>
+    <SimulationDescriptorReference Name="TechnologyRageWizards15" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,FactionTraitRageWizards15</PathPrerequisite>
+  </TechnologyDefinition>
+
+
+
+  <!-- ################################# -->
+  <!-- #### Era5 Quest reward techs #### -->
+  <!-- ################################# -->
+
+  <!-- Wild Walkers Ending Reward -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMadFairies6"                TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryIndustry"/>
+    <SimulationDescriptorReference Name="TechnologyMadFairies6" />
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Weapon Uncommon Tier 3 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionWeaponUncommonTier3"        TechnologyFlags="Quest"          Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryWeapon"/>
+    <SimulationDescriptorReference Name="TechnologyWeaponUncommonTier3" />
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponUncommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyMasteryUncommonBonus5" />
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponTier3" />
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Armor Uncommon Tier 3 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionArmorUncommonTier3"         TechnologyFlags="Quest"          Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryArmor"/>
+    <SimulationDescriptorReference Name="TechnologyArmorUncommonTier3" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorUncommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorTier3" />
+    <SimulationDescriptorReference Name="TechnologyAccessoryUncommonTier3" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryUncommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyMasteryUncommonBonus6" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier3" />
+  </TechnologyDefinition>
+
+  <!-- Flames Quest Reward: Endless memorial -->
+  <TechnologyDefinition  Name="TechnologyDefinitionFlames12"        TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="CityImprovement" SubCategory="SubCategoryScience"/>
+    <SimulationDescriptorReference Name="TechnologyFlames12" />
+  </TechnologyDefinition>
+
+  <!-- Flames Quest Ending Reward (Empire Bonus) -->
+  <TechnologyDefinition  Name="TechnologyDefinitionFlames13"                 TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryEmpirePoint"/>
+    <SimulationDescriptorReference Name="TechnologyFlames13" />
+  </TechnologyDefinition>
+
+  <!-- Mimic Quest Ending Reward (Empire Bonus) -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMimics4"                 TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryExploit"/>
+    <SimulationDescriptorReference Name="TechnologyMimics4" />
+  </TechnologyDefinition>
+  <!-- Empire bonus: Accessory Uncommon Tier 3 
+  <TechnologyDefinition  Name="TechnologyDefinitionAccessoryUncommonTier3"  TechnologyFlags="Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryAccessory"/>
+    <AIInfo>
+      <InterpreterPrerequisite Flags="Forbidden">false</InterpreterPrerequisite>
+    </AIInfo>
+    <SimulationDescriptorReference Name="TechnologyAccessoryUncommonTier3" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryUncommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier3" />
+  </TechnologyDefinition>-->
+
+</Datatable>

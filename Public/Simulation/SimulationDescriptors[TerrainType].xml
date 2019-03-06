@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+  <!-- WATER TILES -->
+  <SimulationDescriptor Name="TerrainTypeOcean" Type="TerrainType">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- FrozenWaters, TundraWaters, ChillyWaters, CoastalWaters, TropicalWaters, DesertWaters-->
+  <SimulationDescriptor Name="TerrainTypeCoastalWaters" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- FrozenInlandWaters, TundraInlandWaters, ChillyInlandWaters, InlandWater, TropicalInlandWaters, DesertInlandWaters -->
+  <SimulationDescriptor Name="TerrainTypeInlandWater" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+
+
+  <!-- FREEZING TEMPERATURE TILES -->
+  <SimulationDescriptor Name="TerrainTypeCrystalIce" Type="TerrainType">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeSnow" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeFrozenGrass" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeFrozenSpikes" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeCrystalForest" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeCrystalField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+
+  <!-- COLD TEMPERATURE TILES -->
+  <SimulationDescriptor Name="TerrainTypeTaiga" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTundraRocks" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTundraGrass" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTundraDirtField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTundraRockyField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="TerrainTypeTundraHighMountainForest" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTundraSnowyRockyField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTundraSnowyField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+
+
+  <!-- CHILLY TEMPERATURE TILES -->
+  <SimulationDescriptor Name="TerrainTypeSnowyField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeColdDirtField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeColdGrassland" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeRockyField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeColdForest" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="TerrainTypeHighSnowyField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeHighMountainForest" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeSnowyDirtField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeSnowyRockyField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+
+
+  <!-- SPECIAL TILES -->
+  <SimulationDescriptor Name="TerrainTypeDirtField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+
+
+  <!-- MILD TEMPERATURE TILES -->
+  <SimulationDescriptor Name="TerrainTypeEnchantedForest" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTemperateForest" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeWetland" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeGrassland" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypePrairie" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- WARM TEMPERATURE TILES -->
+  <SimulationDescriptor Name="TerrainTypeHotPrairie" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeRedSoil" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeRedRock" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTropicalWetland" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypePalmTrees" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="TerrainTypeTropicalDirtField" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTropicalMountainRock" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeTropicalMountainForest" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+
+
+  <!-- HOT TEMPERATURE TILES -->
+  <SimulationDescriptor Name="TerrainTypeShrubland" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeSavanna" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"     Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeDrySoil" Type="TerrainType">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeSandstone" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeSandDunes" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="TerrainTypeSandstoneSwirls" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!--<SimulationDescriptor Name="TerrainTypeSandPlain" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>-->
+
+  <!-- VOLCANIC BIOME TILES -->
+  <SimulationDescriptor Name="TerrainTypeLavaPlains" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"   Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="2"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeScorchedPrairie" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"   Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"       Operation="Addition" Value="2"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="TerrainTypeAshPrairie" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"       Operation="Addition" Value="2"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="TerrainTypeLavaSwirls" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="2"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"       Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeCharredForest" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"   Operation="Addition" Value="2"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"       Operation="Addition" Value="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="TerrainTypeBadlands" Type="TerrainType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"       Operation="Addition" Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"       Operation="Addition" Value="3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>
