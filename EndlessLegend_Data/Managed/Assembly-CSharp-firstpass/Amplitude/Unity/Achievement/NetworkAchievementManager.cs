@@ -14,7 +14,7 @@ namespace Amplitude.Unity.Achievement
 
 		public override IEnumerator BindServices()
 		{
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && !Amplitude.Unity.Framework.Application.Preferences.ELCPDevMode)
 			{
 				Diagnostics.LogWarning("The network achievement manager has been disabled because the modding tools are enabled...");
 				this.IsDisabled = true;
@@ -126,7 +126,7 @@ namespace Amplitude.Unity.Achievement
 		{
 			this.LoadStatistics();
 			this.LoadAchievements();
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && !Amplitude.Unity.Framework.Application.Preferences.ELCPDevMode)
 			{
 				Diagnostics.LogWarning("The network achievement manager has been disabled because the modding tools are enabled...");
 				this.IsDisabled = true;

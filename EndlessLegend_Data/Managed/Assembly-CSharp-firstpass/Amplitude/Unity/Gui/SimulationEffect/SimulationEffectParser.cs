@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Amplitude.Path;
+using Amplitude.Unity.Framework;
+using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.SimulationModifierDescriptors;
 using UnityEngine;
@@ -108,6 +110,28 @@ namespace Amplitude.Unity.Gui.SimulationEffect
 					}
 					EffectDescription effectDescription2 = new EffectDescription();
 					effectDescription2.Override = AgeLocalizer.Instance.LocalizeString(guiElement.Title);
+					if (guiElement.Name == "TechnologyNecrophages8")
+					{
+						int num = 1;
+						ISessionService service = Services.GetService<ISessionService>();
+						if (service != null && service.Session != null)
+						{
+							string lobbyData = service.Session.GetLobbyData<string>("GameSpeed", "Normal");
+							if (lobbyData == "Normal")
+							{
+								num = 2;
+							}
+							if (lobbyData == "Slow")
+							{
+								num = 3;
+							}
+							if (lobbyData == "Endless")
+							{
+								num = 4;
+							}
+						}
+						effectDescription2.Override = effectDescription2.Override.Replace("+1", "+" + num);
+					}
 					if (parseTitle)
 					{
 						effectDescription2.Title = AgeLocalizer.Instance.LocalizeString(guiElement.Title);
