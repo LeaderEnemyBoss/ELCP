@@ -19,36 +19,44 @@ public class DissentTask_Empire : DissentTask
 
 	public override void Behave()
 	{
-		if (base.AssociateRequest == null || base.AssociateRequest.EvaluationState != EvaluableMessage.EvaluableMessageState.Validate)
+		float villageCost = this.GetVillageCost();
+		float num;
+		base.Owner.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.Owner.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num, false);
+		bool flag = base.Owner.GetAgency<DepartmentOfForeignAffairs>().IsAtWarWith(this.OtherEmpire);
+		if (base.AssociateRequest == null || (base.AssociateRequest.EvaluationState != EvaluableMessage.EvaluableMessageState.Validate && (!flag || villageCost * 3f > num)))
 		{
-			this.State = TickableState.NoTick;
+			base.State = TickableState.NoTick;
 			return;
 		}
 		if (this.villagePOI.Count == 0)
 		{
-			this.State = TickableState.NoTick;
+			base.State = TickableState.NoTick;
 			return;
 		}
 		float value = this.villagePOI[0].Score.Value;
-		for (int i = 0; i < this.villagePOI.Count; i++)
+		int num2 = 0;
+		while (num2 < this.villagePOI.Count && value <= this.villagePOI[num2].Score.Value * 2f)
 		{
-			if (value > this.villagePOI[i].Score.Value * 2f)
+			if (this.visibilityService.IsWorldPositionVisibleFor(this.villagePOI[num2].Village.WorldPosition, base.Owner))
 			{
-				break;
-			}
-			if (this.visibilityService.IsWorldPositionVisibleFor(this.villagePOI[i].Village.WorldPosition, base.Owner))
-			{
-				OrderDissentVillage order = new OrderDissentVillage(base.Owner.Index, this.villagePOI[i].Village.WorldPosition);
+				OrderDissentVillage order = new OrderDissentVillage(base.Owner.Index, this.villagePOI[num2].Village.WorldPosition);
 				Ticket ticket;
 				base.Owner.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.DissentOrder_TicketRaised));
-				base.AssociateRequest.SetBeingObtained(this.villagePOI[i].Village.GUID);
-				this.State = TickableState.NoTick;
-				break;
+				if (base.AssociateRequest.ChosenBuyEvaluation != null)
+				{
+					base.AssociateRequest.SetBeingObtained(this.villagePOI[num2].Village.GUID);
+				}
+				base.State = TickableState.NoTick;
+				if (!flag || base.AssociateRequest.EvaluationState != EvaluableMessage.EvaluableMessageState.Validate)
+				{
+					break;
+				}
 			}
+			num2++;
 		}
-		if (this.State == TickableState.NeedTick)
+		if (base.State == TickableState.NeedTick)
 		{
-			this.State = TickableState.Optional;
+			base.State = TickableState.Optional;
 		}
 	}
 
@@ -64,7 +72,7 @@ public class DissentTask_Empire : DissentTask
 			this.OtherEmpire.LocalizedName,
 			this.OtherEmpire.Index,
 			text,
-			this.State
+			base.State
 		});
 		this.overallFoldout = GUILayout.Toggle(this.overallFoldout, text2, new GUILayoutOption[0]);
 		if (this.overallFoldout)
@@ -86,26 +94,24 @@ public class DissentTask_Empire : DissentTask
 		this.ComputeVillageScoring();
 		if (this.villagePOI.Count == 0)
 		{
-			this.State = TickableState.NoTick;
+			base.State = TickableState.NoTick;
+			return;
 		}
-		else
+		if (base.AssociateRequest != null && !base.AssociateRequest.IsValidForNewTurn())
 		{
-			if (base.AssociateRequest != null && !base.AssociateRequest.IsValidForNewTurn())
-			{
-				base.AssociateRequest.Cancel();
-				base.AssociateRequest = null;
-			}
-			if (base.AssociateRequest == null)
-			{
-				base.AssociateRequest = new DissentRequest();
-				dissentLayer.AIEntity.AIPlayer.Blackboard.AddMessage(base.AssociateRequest);
-			}
-			HeuristicValue localOpportunity = new HeuristicValue(0f);
-			base.AssociateRequest.SetInterest(dissentLayer.GlobalPriority, localOpportunity);
-			base.AssociateRequest.TimeOut = 1;
-			float villageCost = this.GetVillageCost();
-			base.AssociateRequest.UpdateBuyEvaluation("DissentVillage", 0UL, villageCost, (int)BuyEvaluation.MaxTurnGain, 0f, 0UL);
+			base.AssociateRequest.Cancel();
+			base.AssociateRequest = null;
 		}
+		if (base.AssociateRequest == null)
+		{
+			base.AssociateRequest = new DissentRequest();
+			dissentLayer.AIEntity.AIPlayer.Blackboard.AddMessage(base.AssociateRequest);
+		}
+		HeuristicValue localOpportunity = new HeuristicValue(0f);
+		base.AssociateRequest.SetInterest(dissentLayer.GlobalPriority, localOpportunity);
+		base.AssociateRequest.TimeOut = 1;
+		float villageCost = this.GetVillageCost();
+		base.AssociateRequest.UpdateBuyEvaluation("DissentVillage", 0UL, villageCost, (int)BuyEvaluation.MaxTurnGain, 0f, 0UL);
 	}
 
 	private void DissentOrder_TicketRaised(object sender, TicketRaisedEventArgs e)
@@ -113,11 +119,9 @@ public class DissentTask_Empire : DissentTask
 		if (e.Result == PostOrderResponse.Processed)
 		{
 			base.AssociateRequest.SetObtained();
+			return;
 		}
-		else
-		{
-			base.AssociateRequest.SetFailedToObtain();
-		}
+		base.AssociateRequest.SetFailedToObtain();
 	}
 
 	private float GetVillageCost()
@@ -136,20 +140,27 @@ public class DissentTask_Empire : DissentTask
 		DepartmentOfTheInterior agency = this.OtherEmpire.GetAgency<DepartmentOfTheInterior>();
 		for (int i = 0; i < agency.Cities.Count; i++)
 		{
-			Region region = agency.Cities[i].Region;
-			MinorEmpire minorEmpire = region.MinorEmpire;
+			MinorEmpire minorEmpire = agency.Cities[i].Region.MinorEmpire;
 			if (minorEmpire != null)
 			{
 				BarbarianCouncil council = minorEmpire.GetAgency<BarbarianCouncil>();
 				if (council != null)
 				{
 					bool flag = agency.IsAssimilated(minorEmpire.MinorFaction);
+					int villageIndex2;
 					int villageIndex;
-					for (villageIndex = 0; villageIndex < council.Villages.Count; villageIndex++)
+					Predicate<DissentTask_Empire.VillageScoring> <>9__1;
+					for (villageIndex = 0; villageIndex < council.Villages.Count; villageIndex = villageIndex2 + 1)
 					{
 						if (council.Villages[villageIndex].HasBeenPacified && !council.Villages[villageIndex].HasBeenConverted)
 						{
-							DissentTask_Empire.VillageScoring villageScoring = this.villagePOI.Find((DissentTask_Empire.VillageScoring match) => match.Village.GUID == council.Villages[villageIndex].GUID);
+							List<DissentTask_Empire.VillageScoring> list = this.villagePOI;
+							Predicate<DissentTask_Empire.VillageScoring> match2;
+							if ((match2 = <>9__1) == null)
+							{
+								match2 = (<>9__1 = ((DissentTask_Empire.VillageScoring match) => match.Village.GUID == council.Villages[villageIndex].GUID));
+							}
+							DissentTask_Empire.VillageScoring villageScoring = list.Find(match2);
 							if (villageScoring == null)
 							{
 								villageScoring = new DissentTask_Empire.VillageScoring(council.Villages[villageIndex]);
@@ -165,6 +176,7 @@ public class DissentTask_Empire : DissentTask
 								villageScoring.Score.Boost(0.2f, "Visible", new object[0]);
 							}
 						}
+						villageIndex2 = villageIndex;
 					}
 				}
 			}

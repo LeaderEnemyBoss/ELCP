@@ -21,17 +21,21 @@ public class AssignationData_Spy : AssignationData
 	public override void ComputeSpecialtyNeed()
 	{
 		base.ComputeSpecialtyNeed();
+		if (this.cityToInfiltrate.IsInfected)
+		{
+			return;
+		}
 		float num = 0f;
-		DepartmentOfForeignAffairs agency = this.spyEmpire.GetAgency<DepartmentOfForeignAffairs>();
-		if (agency.IsEnnemy(this.cityToInfiltrate.Empire))
+		if (this.spyEmpire.GetAgency<DepartmentOfForeignAffairs>().IsEnnemy(this.cityToInfiltrate.Empire))
 		{
 			num = AILayer.Boost(num, 0.5f);
 		}
-		if (this.spyEmpire.SimulationObject.Tags.Contains("FactionTraitReplicants4"))
+		bool flag = this.spyEmpire.SimulationObject.Tags.Contains("FactionTraitReplicants4");
+		if (flag)
 		{
-			DepartmentOfScience agency2 = this.spyEmpire.GetAgency<DepartmentOfScience>();
-			DepartmentOfScience agency3 = this.cityToInfiltrate.Empire.GetAgency<DepartmentOfScience>();
-			if (agency2.GetTechnologyUnlockedCount() < agency3.GetTechnologyUnlockedCount())
+			DepartmentOfScience agency = this.spyEmpire.GetAgency<DepartmentOfScience>();
+			DepartmentOfScience agency2 = this.cityToInfiltrate.Empire.GetAgency<DepartmentOfScience>();
+			if (agency.GetTechnologyUnlockedCount() < agency2.GetTechnologyUnlockedCount())
 			{
 				num = AILayer.Boost(num, 0.2f);
 			}
@@ -45,11 +49,11 @@ public class AssignationData_Spy : AssignationData
 			}
 		}
 		float num2 = 0f;
-		DepartmentOfTheInterior agency4 = this.cityToInfiltrate.Empire.GetAgency<DepartmentOfTheInterior>();
+		DepartmentOfTheInterior agency3 = this.cityToInfiltrate.Empire.GetAgency<DepartmentOfTheInterior>();
 		float propertyValue;
-		for (int j = 0; j < agency4.Cities.Count; j++)
+		for (int j = 0; j < agency3.Cities.Count; j++)
 		{
-			propertyValue = agency4.Cities[j].GetPropertyValue(SimulationProperties.Population);
+			propertyValue = agency3.Cities[j].GetPropertyValue(SimulationProperties.Population);
 			if (num2 < propertyValue)
 			{
 				num2 = propertyValue;
@@ -69,6 +73,14 @@ public class AssignationData_Spy : AssignationData
 		{
 			float num5 = (float)num3 / (float)num4;
 			num = AILayer.Boost(num, -num5 * 0.8f);
+		}
+		if (!this.spyEmpire.GetAgency<DepartmentOfIntelligence>().IsGarrisonVisible(base.Garrison))
+		{
+			num = AILayer.Boost(num, -0.5f);
+		}
+		else if (flag)
+		{
+			num = AILayer.Boost(num, 0.3f);
 		}
 		base.GarrisonSpecialtyNeed[4] = num;
 	}

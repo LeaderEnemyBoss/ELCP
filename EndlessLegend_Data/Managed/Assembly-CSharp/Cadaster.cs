@@ -50,77 +50,99 @@ public class Cadaster : GameAncillary, IXmlSerializable, IService, IDumpable, IC
 			{
 				return null;
 			}
+			DepartmentOfForeignAffairs agency = city.Empire.GetAgency<DepartmentOfForeignAffairs>();
+			this.OceanPathfindingWorldContext.RegionIndexList.Clear();
+			this.OceanPathfindingWorldContext.RegionIndexList.Add((int)this.WorldPositionningService.GetRegionIndex(city.WorldPosition));
+			for (int j = 0; j < city.Region.Borders.Length; j++)
+			{
+				Region region = this.WorldPositionningService.GetRegion(city.Region.Borders[j].NeighbourRegionIndex);
+				if (region.IsOcean && (region.Owner == null || !(region.Owner is MajorEmpire) || region.Owner.Index == city.Empire.Index || agency.GetDiplomaticRelation(region.Owner).HasActiveAbility(DiplomaticAbilityDefinition.TradeRoute)))
+				{
+					this.OceanPathfindingWorldContext.RegionIndexList.Add(city.Region.Borders[j].NeighbourRegionIndex);
+				}
+			}
 			Diagnostics.Assert(city.CadastralMap != null);
 			Diagnostics.Assert((city.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Water) == PathfindingMovementCapacity.Water);
 			List<ushort> list = new List<ushort>();
 			List<Region> list2 = new List<Region>();
 			List<Region> list3 = new List<Region>();
 			list3.Add(city.Region);
-			int j = 0;
-			int k = 2;
-			while (k > 0)
+			int k = 0;
+			int l = 2;
+			while (l > 0)
 			{
-				k--;
+				l--;
 				list2.AddRange(list3);
 				list3.Clear();
-				while (j < list2.Count)
+				while (k < list2.Count)
 				{
-					Region region = list2[j];
-					for (int l = 0; l < region.Borders.Length; l++)
+					Region region2 = list2[k];
+					for (int m = 0; m < region2.Borders.Length; m++)
 					{
-						short regionIndex = (short)region.Borders[l].NeighbourRegionIndex;
-						Region region2 = this.WorldPositionningService.GetRegion((int)regionIndex);
-						if (region2 != null)
+						short regionIndex = (short)region2.Borders[m].NeighbourRegionIndex;
+						Region region3 = this.WorldPositionningService.GetRegion((int)regionIndex);
+						if (region3 != null && !list2.Contains(region3))
 						{
-							if (!list2.Contains(region2))
+							if (region3.City != null)
 							{
-								if (region2.City != null)
+								Diagnostics.Assert(region3.City.CadastralMap != null);
+								if ((region3.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Water) == PathfindingMovementCapacity.Water)
 								{
-									Diagnostics.Assert(region2.City.CadastralMap != null);
-									if ((region2.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Water) == PathfindingMovementCapacity.Water)
+									for (int n = 0; n < region3.City.Districts.Count; n++)
 									{
-										for (int m = 0; m < region2.City.Districts.Count; m++)
+										District district2 = region3.City.Districts[n];
+										if (district2.Type == DistrictType.Improvement && district2.GetDescriptorNameFromType(type) == y)
 										{
-											District district2 = region2.City.Districts[m];
-											if (district2.Type == DistrictType.Improvement && district2.GetDescriptorNameFromType(type) == y)
+											PathfindingFlags pathfindingFlags = PathfindingFlags.IgnoreAll;
+											pathfindingFlags &= ~PathfindingFlags.IgnoreMovementCapacities;
+											pathfindingFlags &= ~PathfindingFlags.IgnorePOI;
+											PathfindingContext pathfindingContext = new PathfindingContext(GameEntityGUID.Zero, city.Empire, PathfindingMovementCapacity.Water);
+											pathfindingContext.RefreshProperties(1f, 1f, false, false, 1f, 1f);
+											bool flag = false;
+											if (!this.OceanPathfindingWorldContext.RegionIndexList.Contains(region2.Borders[m].NeighbourRegionIndex))
 											{
-												PathfindingFlags pathfindingFlags = PathfindingFlags.IgnoreAll;
-												pathfindingFlags &= ~PathfindingFlags.IgnoreMovementCapacities;
-												pathfindingFlags &= ~PathfindingFlags.IgnorePOI;
-												PathfindingContext pathfindingContext = new PathfindingContext(GameEntityGUID.Zero, city.Empire, PathfindingMovementCapacity.Water);
-												pathfindingContext.RefreshProperties(1f, 1f, false, false, 1f, 1f);
-												PathfindingResult pathfindingResult = this.PathfindingService.FindPath(pathfindingContext, start, district2.WorldPosition, PathfindingManager.RequestMode.Default, null, pathfindingFlags, null);
-												if (pathfindingResult != null)
+												flag = true;
+												this.OceanPathfindingWorldContext.RegionIndexList.Add(region2.Borders[m].NeighbourRegionIndex);
+											}
+											PathfindingResult pathfindingResult = this.PathfindingService.FindPath(pathfindingContext, start, district2.WorldPosition, PathfindingManager.RequestMode.Default, this.OceanPathfindingWorldContext, pathfindingFlags, null);
+											if (flag)
+											{
+												this.OceanPathfindingWorldContext.RegionIndexList.Remove(region2.Borders[m].NeighbourRegionIndex);
+											}
+											if (pathfindingResult == null)
+											{
+												pathfindingResult = this.PathfindingService.FindPath(pathfindingContext, start, district2.WorldPosition, PathfindingManager.RequestMode.Default, null, pathfindingFlags, null);
+											}
+											if (pathfindingResult != null)
+											{
+												ushort item = this.Reserve(new Road
 												{
-													ushort item = this.Reserve(new Road
-													{
-														FromRegion = (short)city.Region.Index,
-														ToRegion = (short)region2.Index,
-														WorldPositions = pathfindingResult.GetCompletePath().ToArray<WorldPosition>(),
-														PathfindingMovementCapacity = PathfindingMovementCapacity.Water
-													});
-													list.Add(item);
-												}
+													FromRegion = (short)city.Region.Index,
+													ToRegion = (short)region3.Index,
+													WorldPositions = pathfindingResult.GetCompletePath().ToArray<WorldPosition>(),
+													PathfindingMovementCapacity = PathfindingMovementCapacity.Water
+												});
+												list.Add(item);
 											}
 										}
 									}
 								}
-								bool isOcean = region2.IsOcean;
-								if (isOcean)
-								{
-									list3.AddOnce(region2);
-								}
-								else
-								{
-									list2.Insert(j, region2);
-									j++;
-								}
+							}
+							if (region3.IsOcean)
+							{
+								list3.AddOnce(region3);
+							}
+							else
+							{
+								list2.Insert(k, region3);
+								k++;
 							}
 						}
 					}
-					j++;
+					k++;
 				}
 			}
+			this.OceanPathfindingWorldContext.RegionIndexList.Clear();
 			return list.ToArray();
 		}
 		else
@@ -128,46 +150,43 @@ public class Cadaster : GameAncillary, IXmlSerializable, IService, IDumpable, IC
 			if (city.Region.Borders != null)
 			{
 				List<ushort> list4 = new List<ushort>();
-				for (int n = 0; n < city.Region.Borders.Length; n++)
+				for (int num = 0; num < city.Region.Borders.Length; num++)
 				{
-					short regionIndex2 = (short)city.Region.Borders[n].NeighbourRegionIndex;
-					Region region3 = this.WorldPositionningService.GetRegion((int)regionIndex2);
-					if (region3 != null && region3.City != null)
+					short regionIndex2 = (short)city.Region.Borders[num].NeighbourRegionIndex;
+					Region region4 = this.WorldPositionningService.GetRegion((int)regionIndex2);
+					if (region4 != null && region4.City != null)
 					{
 						if (proxied)
 						{
 							if ((movementCapacity & PathfindingMovementCapacity.Ground) != PathfindingMovementCapacity.Ground)
 							{
-								goto IL_63D;
+								goto IL_766;
 							}
-							Diagnostics.Assert(region3.City.CadastralMap != null);
-							if ((region3.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Ground) != PathfindingMovementCapacity.Ground)
+							Diagnostics.Assert(region4.City.CadastralMap != null);
+							if ((region4.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Ground) != PathfindingMovementCapacity.Ground)
 							{
-								goto IL_63D;
+								goto IL_766;
 							}
 						}
-						bool flag = false;
-						if (region3.City.CadastralMap.Roads != null)
+						bool flag2 = false;
+						if (region4.City.CadastralMap.Roads != null)
 						{
-							for (int num = 0; num < region3.City.CadastralMap.Roads.Count; num++)
+							for (int num2 = 0; num2 < region4.City.CadastralMap.Roads.Count; num2++)
 							{
-								ushort num2 = region3.City.CadastralMap.Roads[num];
-								Road road = this.roads[(int)num2];
-								if (road != null && (city.Region.Index == (int)road.FromRegion || city.Region.Index == (int)road.ToRegion))
+								ushort num3 = region4.City.CadastralMap.Roads[num2];
+								Road road = this.roads[(int)num3];
+								if (road != null && (city.Region.Index == (int)road.FromRegion || city.Region.Index == (int)road.ToRegion) && (road.PathfindingMovementCapacity & movementCapacity) != PathfindingMovementCapacity.None)
 								{
-									if ((road.PathfindingMovementCapacity & movementCapacity) != PathfindingMovementCapacity.None)
+									if (this.RoadModified != null)
 									{
-										if (this.RoadModified != null)
-										{
-											this.RoadModified(this, new RoadEventArgs(num2, road));
-										}
-										flag = true;
-										list4.Add(num2);
+										this.RoadModified(this, new RoadEventArgs(num3, road));
 									}
+									flag2 = true;
+									list4.Add(num3);
 								}
 							}
 						}
-						if (!flag)
+						if (!flag2)
 						{
 							PathfindingFlags pathfindingFlags2 = PathfindingFlags.IgnoreAll;
 							pathfindingFlags2 &= ~PathfindingFlags.IgnoreMovementCapacities;
@@ -175,29 +194,30 @@ public class Cadaster : GameAncillary, IXmlSerializable, IService, IDumpable, IC
 							pathfindingFlags2 &= ~PathfindingFlags.IgnoreRoad;
 							PathfindingContext pathfindingContext2 = new PathfindingContext(GameEntityGUID.Zero, city.Empire, movementCapacity);
 							pathfindingContext2.RefreshProperties(1f, 1f, false, false, 1f, 1f);
+							pathfindingContext2.RemoveMovementCapacity(PathfindingMovementCapacity.FrozenWater);
 							Diagnostics.Assert(this.pathfindingWorldContext != null && this.pathfindingWorldContext.RegionIndexList != null && this.pathfindingWorldContext.RegionIndexList.Count == 2);
 							this.pathfindingWorldContext.RegionIndexList[0] = (int)this.WorldPositionningService.GetRegionIndex(city.WorldPosition);
-							this.pathfindingWorldContext.RegionIndexList[1] = (int)this.WorldPositionningService.GetRegionIndex(region3.City.WorldPosition);
-							PathfindingResult pathfindingResult2 = this.PathfindingService.FindPath(pathfindingContext2, city.WorldPosition, region3.City.WorldPosition, PathfindingManager.RequestMode.Default, this.pathfindingWorldContext, pathfindingFlags2, null);
+							this.pathfindingWorldContext.RegionIndexList[1] = (int)this.WorldPositionningService.GetRegionIndex(region4.City.WorldPosition);
+							PathfindingResult pathfindingResult2 = this.PathfindingService.FindPath(pathfindingContext2, city.WorldPosition, region4.City.WorldPosition, PathfindingManager.RequestMode.Default, this.pathfindingWorldContext, pathfindingFlags2, null);
 							if (pathfindingResult2 == null)
 							{
 								pathfindingFlags2 |= PathfindingFlags.IgnorePOI;
-								pathfindingResult2 = this.PathfindingService.FindPath(pathfindingContext2, city.WorldPosition, region3.City.WorldPosition, PathfindingManager.RequestMode.Default, this.pathfindingWorldContext, pathfindingFlags2, null);
+								pathfindingResult2 = this.PathfindingService.FindPath(pathfindingContext2, city.WorldPosition, region4.City.WorldPosition, PathfindingManager.RequestMode.Default, this.pathfindingWorldContext, pathfindingFlags2, null);
 							}
 							if (pathfindingResult2 != null)
 							{
 								ushort item2 = this.Reserve(new Road
 								{
 									FromRegion = (short)city.Region.Index,
-									ToRegion = (short)region3.Index,
-									WorldPositions = pathfindingResult2.GetCompletePath().ToArray<WorldPosition>(),
+									ToRegion = (short)region4.Index,
+									WorldPositions = pathfindingResult2.GetCompletePath().ToList<WorldPosition>().ToArray(),
 									PathfindingMovementCapacity = movementCapacity
 								});
 								list4.Add(item2);
 							}
 						}
 					}
-					IL_63D:;
+					IL_766:;
 				}
 				return list4.ToArray();
 			}
@@ -235,8 +255,9 @@ public class Cadaster : GameAncillary, IXmlSerializable, IService, IDumpable, IC
 							if (this.RoadModified != null)
 							{
 								this.RoadModified(this, new RoadEventArgs((ushort)i, this.roads[i]));
+								goto IL_1CC;
 							}
-							goto IL_1F0;
+							goto IL_1CC;
 						}
 					}
 				}
@@ -248,7 +269,7 @@ public class Cadaster : GameAncillary, IXmlSerializable, IService, IDumpable, IC
 					Diagnostics.Assert(this.roads[i] == null);
 				}
 			}
-			IL_1F0:;
+			IL_1CC:;
 		}
 		list2.Remove((short)city.Region.Index);
 		if (list2.Count > 0)
@@ -321,45 +342,68 @@ public class Cadaster : GameAncillary, IXmlSerializable, IService, IDumpable, IC
 
 	void ICadasterService.RefreshCadasterMap()
 	{
-		Diagnostics.Assert(this.cadasterMap != null && this.cadasterMap.Data != null);
+		Diagnostics.Assert(this.cadasterMap != null && this.cadasterMap.Data != null, "cadasterMap or its Data are null");
 		Array.Clear(this.cadasterMap.Data, 0, this.cadasterMap.Data.Length);
-		Diagnostics.Assert(this.roads != null);
-		for (int i = 0; i < this.roads.Count; i++)
+		Diagnostics.Assert(this.roads != null, "roads are null");
+		List<Region> list = new List<Region>();
+		if (this.roads != null)
 		{
-			Road road = this.roads[i];
-			if (road != null)
+			for (int i = 0; i < this.roads.Count; i++)
 			{
-				if ((road.PathfindingMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground)
+				Road road = this.roads[i];
+				if (road != null && (road.PathfindingMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground)
 				{
-					Diagnostics.Assert(this.WorldPositionningService != null);
+					Diagnostics.Assert(this.WorldPositionningService != null, "assert1");
 					Region region = this.WorldPositionningService.GetRegion((int)road.FromRegion);
-					Diagnostics.Assert(region != null && region.City != null && region.City.CadastralMap != null);
-					bool flag = (region.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground;
-					Diagnostics.Assert(region.City.Empire != null);
-					int bits = region.City.Empire.Bits;
+					Diagnostics.Assert(region != null && region.City != null && region.City.CadastralMap != null, "assert2");
 					Region region2 = this.WorldPositionningService.GetRegion((int)road.ToRegion);
-					Diagnostics.Assert(region2 != null && region2.City != null && region2.City.CadastralMap != null);
-					bool flag2 = (region2.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground;
-					Diagnostics.Assert(region2.City.Empire != null);
-					int bits2 = region2.City.Empire.Bits;
-					Diagnostics.Assert(road.WorldPositions != null);
-					for (int j = 0; j < road.WorldPositions.Length; j++)
+					Diagnostics.Assert(region2 != null && region2.City != null && region2.City.CadastralMap != null, string.Format("assert4, {0} {1}", (region2 == null) ? "null" : region2.LocalizedName, (region2.City != null) ? region2.City.LocalizedName : "null"));
+					bool flag = false;
+					if (region.City == null)
 					{
-						WorldPosition worldPosition = road.WorldPositions[j];
-						short regionIndex = this.WorldPositionningService.GetRegionIndex(worldPosition);
-						if (regionIndex == road.FromRegion && flag)
+						list.AddOnce(region);
+						flag = true;
+					}
+					if (region2.City == null)
+					{
+						list.AddOnce(region2);
+						flag = true;
+					}
+					if (!flag)
+					{
+						bool flag2 = (region.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground;
+						Diagnostics.Assert(region.City.Empire != null, "assert3");
+						int bits = region.City.Empire.Bits;
+						bool flag3 = (region2.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground;
+						Diagnostics.Assert(region2.City.Empire != null, "assert5");
+						int bits2 = region2.City.Empire.Bits;
+						Diagnostics.Assert(road.WorldPositions != null, "assert6");
+						for (int j = 0; j < road.WorldPositions.Length; j++)
 						{
-							byte value = this.cadasterMap.GetValue(worldPosition);
-							this.cadasterMap.SetValue(worldPosition, (byte)((int)value | bits));
-						}
-						else if (regionIndex == road.ToRegion && flag2)
-						{
-							byte value2 = this.cadasterMap.GetValue(worldPosition);
-							this.cadasterMap.SetValue(worldPosition, (byte)((int)value2 | bits2));
+							WorldPosition worldPosition = road.WorldPositions[j];
+							short regionIndex = this.WorldPositionningService.GetRegionIndex(worldPosition);
+							if (regionIndex == road.FromRegion && flag2)
+							{
+								byte value = this.cadasterMap.GetValue(worldPosition);
+								this.cadasterMap.SetValue(worldPosition, (byte)((int)value | bits));
+							}
+							else if (regionIndex == road.ToRegion && flag3)
+							{
+								byte value2 = this.cadasterMap.GetValue(worldPosition);
+								this.cadasterMap.SetValue(worldPosition, (byte)((int)value2 | bits2));
+							}
 						}
 					}
 				}
 			}
+		}
+		foreach (Region region3 in list)
+		{
+			this.ELCPDisconnect(region3, PathfindingMovementCapacity.All, true);
+			Diagnostics.LogError("ELCP: RefreshCadasterMap detected invalid City in Region {0}, disconnecting ...", new object[]
+			{
+				region3.LocalizedName
+			});
 		}
 	}
 
@@ -487,6 +531,9 @@ public class Cadaster : GameAncillary, IXmlSerializable, IService, IDumpable, IC
 		this.pathfindingWorldContext.RegionIndexList.Add(-1);
 		this.pathfindingWorldContext.RegionIndexList.Add(-1);
 		this.pathfindingWorldContext.RegionIndexListType = PathfindingWorldContext.RegionListType.RegionWhiteList;
+		this.OceanPathfindingWorldContext = new PathfindingWorldContext(null, null);
+		this.OceanPathfindingWorldContext.RegionIndexList = new List<int>();
+		this.OceanPathfindingWorldContext.RegionIndexListType = PathfindingWorldContext.RegionListType.RegionWhiteList;
 		serviceContainer.AddService<ICadasterService>(this);
 		yield break;
 	}
@@ -511,9 +558,72 @@ public class Cadaster : GameAncillary, IXmlSerializable, IService, IDumpable, IC
 		this.WorldPositionningService = null;
 	}
 
+	private void ELCPDisconnect(Region Region, PathfindingMovementCapacity movementCapacity, bool cityAboutToBeDestroyed)
+	{
+		Diagnostics.Assert(this.roads != null);
+		Diagnostics.Assert(Region != null);
+		List<ushort> list = new List<ushort>();
+		List<short> list2 = new List<short>();
+		for (int i = 0; i < this.roads.Count; i++)
+		{
+			if (this.roads[i] != null && (Region.Index == (int)this.roads[i].FromRegion || Region.Index == (int)this.roads[i].ToRegion))
+			{
+				list2.AddOnce(this.roads[i].FromRegion);
+				list2.AddOnce(this.roads[i].ToRegion);
+				if (!cityAboutToBeDestroyed && (movementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground)
+				{
+					short regionIndex = this.roads[i].ToRegion;
+					if ((int)this.roads[i].ToRegion == Region.Index)
+					{
+						regionIndex = this.roads[i].FromRegion;
+					}
+					Region region = this.WorldPositionningService.GetRegion((int)regionIndex);
+					if (region != null)
+					{
+						Diagnostics.Assert(region.City != null);
+						Diagnostics.Assert(region.City.CadastralMap != null);
+						if ((region.City.CadastralMap.ConnectedMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground)
+						{
+							if (this.RoadModified != null)
+							{
+								this.RoadModified(this, new RoadEventArgs((ushort)i, this.roads[i]));
+								goto IL_1AF;
+							}
+							goto IL_1AF;
+						}
+					}
+				}
+				this.roads[i].PathfindingMovementCapacity &= ~movementCapacity;
+				if (this.roads[i].PathfindingMovementCapacity == PathfindingMovementCapacity.None)
+				{
+					list.Add((ushort)i);
+					((ICadasterService)this).Unregister((ushort)i);
+					Diagnostics.Assert(this.roads[i] == null);
+				}
+			}
+			IL_1AF:;
+		}
+		list2.Remove((short)Region.Index);
+		if (list2.Count > 0)
+		{
+			Diagnostics.Assert(this.WorldPositionningService != null);
+			for (int j = 0; j < list2.Count; j++)
+			{
+				Region region2 = this.WorldPositionningService.GetRegion((int)list2[j]);
+				if (region2 != null && region2.City != null && region2.City.CadastralMap.Roads != null)
+				{
+					List<ushort> list3 = region2.City.CadastralMap.Roads.Except(list).ToList<ushort>();
+					region2.City.CadastralMap.Roads = list3;
+				}
+			}
+		}
+	}
+
 	private List<Road> roads = new List<Road>();
 
 	private GridMap<byte> cadasterMap;
 
 	private PathfindingWorldContext pathfindingWorldContext;
+
+	private PathfindingWorldContext OceanPathfindingWorldContext;
 }

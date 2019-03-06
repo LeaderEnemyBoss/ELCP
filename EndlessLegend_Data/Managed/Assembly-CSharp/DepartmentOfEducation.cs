@@ -15,18 +15,18 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderRestoreHero), "RestoreHero")]
-[OrderProcessor(typeof(OrderInjureHeroByInfiltration), "InjureHeroByInfiltration")]
-[OrderProcessor(typeof(OrderInjureHero), "InjureHero")]
-[OrderProcessor(typeof(OrderReleasePrisoner), "ReleasePrisoner")]
 [OrderProcessor(typeof(OrderGenerateHero), "GenerateHero")]
+[OrderProcessor(typeof(OrderCaptureHero), "CaptureHero")]
+[OrderProcessor(typeof(OrderImmolateUnits), "ImmolateUnits")]
 [OrderProcessor(typeof(OrderForceShiftUnits), "ForceShiftUnits")]
 [OrderProcessor(typeof(OrderChangeHeroAssignment), "ChangeHeroAssignment")]
-[OrderProcessor(typeof(OrderCaptureHeroByInfiltration), "CaptureHeroByInfiltration")]
-[OrderProcessor(typeof(OrderImmolateUnits), "ImmolateUnits")]
-[OrderProcessor(typeof(OrderUnlockUnitSkillLevel), "UnlockUnitSkillLevel")]
-[OrderProcessor(typeof(OrderCaptureHero), "CaptureHero")]
+[OrderProcessor(typeof(OrderInjureHero), "InjureHero")]
+[OrderProcessor(typeof(OrderInjureHeroByInfiltration), "InjureHeroByInfiltration")]
+[OrderProcessor(typeof(OrderReleasePrisoner), "ReleasePrisoner")]
 [OrderProcessor(typeof(OrderRemoveHero), "RemoveHero")]
+[OrderProcessor(typeof(OrderRestoreHero), "RestoreHero")]
+[OrderProcessor(typeof(OrderUnlockUnitSkillLevel), "UnlockUnitSkillLevel")]
+[OrderProcessor(typeof(OrderCaptureHeroByInfiltration), "CaptureHeroByInfiltration")]
 public class DepartmentOfEducation : Agency, IXmlSerializable
 {
 	public DepartmentOfEducation(global::Empire empire)
@@ -1916,6 +1916,11 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 		base.Empire.RegisterPass("GameClientState_Turn_Begin", "UnassignHeroNotification", new Agency.Action(this.GameClientState_Turn_Begin_UnassignHeroNotification), new string[0]);
 		this.maximalTurnUnassigned = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<int>("Gameplay/Agencies/DepartmentOfEducation/MaximalTurnUnassigned", this.maximalTurnUnassigned);
 		this.InitializeJail();
+		DepartmentOfScience agency = base.Empire.GetAgency<DepartmentOfScience>();
+		if (agency != null)
+		{
+			agency.TechnologyUnlocked += this.DepartmentOfScience_TechnologyUnlocked;
+		}
 		yield break;
 	}
 
@@ -2138,6 +2143,86 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 				}
 			}
 			this.OnHeroCollectionChange(hero, CollectionChangeAction.Remove);
+		}
+	}
+
+	private void DepartmentOfScience_TechnologyUnlocked(object sender, ConstructibleElementEventArgs e)
+	{
+		if (!ELCPUtilities.UseELCPStockpileRulseset)
+		{
+			return;
+		}
+		float num;
+		if (e.ConstructibleElement.Name == "TechnologyDefinitionAllBoosterLevel1")
+		{
+			DepartmentOfScience.ConstructibleElement technology;
+			if (!base.Empire.GetAgency<DepartmentOfScience>().TechnologyDatabase.TryGetValue("TechnologyDefinitionAllBoosterLevel2", out technology) || base.Empire.GetAgency<DepartmentOfScience>().GetTechnologyState(technology) == DepartmentOfScience.ConstructibleElement.State.Researched)
+			{
+				return;
+			}
+			num = 0.5f;
+		}
+		else
+		{
+			if (!(e.ConstructibleElement.Name == "TechnologyDefinitionAllBoosterLevel2"))
+			{
+				return;
+			}
+			DepartmentOfScience.ConstructibleElement technology2;
+			if (!base.Empire.GetAgency<DepartmentOfScience>().TechnologyDatabase.TryGetValue("TechnologyDefinitionAllBoosterLevel1", out technology2) || base.Empire.GetAgency<DepartmentOfScience>().GetTechnologyState(technology2) == DepartmentOfScience.ConstructibleElement.State.Researched)
+			{
+				num = 0.5f;
+			}
+			else
+			{
+				num = 0.75f;
+			}
+		}
+		if (num > 0f)
+		{
+			List<VaultItem> vaultItems = this.GetVaultItems<BoosterDefinition>();
+			List<VaultItem> list = new List<VaultItem>();
+			List<VaultItem> list2 = new List<VaultItem>();
+			List<VaultItem> list3 = new List<VaultItem>();
+			for (int i = 0; i < vaultItems.Count; i++)
+			{
+				BoosterDefinition boosterDefinition = vaultItems[i].Constructible as BoosterDefinition;
+				if (boosterDefinition != null && boosterDefinition.Name == "BoosterFood")
+				{
+					list.Add(vaultItems[i]);
+				}
+				if (boosterDefinition != null && boosterDefinition.Name == "BoosterScience")
+				{
+					list2.Add(vaultItems[i]);
+				}
+				if (boosterDefinition != null && (boosterDefinition.Name == "BoosterIndustry" || boosterDefinition.Name == "FlamesIndustryBooster"))
+				{
+					list3.Add(vaultItems[i]);
+				}
+			}
+			int num2 = Mathf.FloorToInt((float)list.Count * num);
+			for (int j = 0; j < num2; j++)
+			{
+				this.DestroyVaultItem(list[j]);
+			}
+			num2 = Mathf.FloorToInt((float)list2.Count * num);
+			for (int k = 0; k < num2; k++)
+			{
+				this.DestroyVaultItem(list2[k]);
+			}
+			num2 = Mathf.FloorToInt((float)list3.Count * num);
+			for (int l = 0; l < num2; l++)
+			{
+				this.DestroyVaultItem(list3[l]);
+			}
+		}
+	}
+
+	public List<CapturedHero> MyCapturedHeroes
+	{
+		get
+		{
+			return this.myCapturedHeroes;
 		}
 	}
 

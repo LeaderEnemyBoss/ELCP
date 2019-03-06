@@ -136,10 +136,12 @@ public class DefaultLayerController : WorldViewTechniqueAncillary, IService, ILa
 		else
 		{
 			this.Layers = new Layer[components.Length];
-			for (int index = 0; index < this.Layers.Length; index++)
+			int num;
+			for (int index = 0; index < this.Layers.Length; index = num + 1)
 			{
 				this.Layers[index] = (components[index] as Layer);
 				yield return this.Layers[index].Load(base.WorldViewTechnique);
+				num = index;
 			}
 		}
 		this.NormalizedDeZoomDescriptors = null;
@@ -151,6 +153,7 @@ public class DefaultLayerController : WorldViewTechniqueAncillary, IService, ILa
 		{
 			Diagnostics.LogWarning("The current layer controller has no zoom descriptors defined.");
 		}
+		this.UpdateZoomRatioDetailsBecomeAbstract();
 		this.CurrentZoomDescriptorName = StaticString.Empty;
 		serviceContainer.AddService<ILayerService>(this);
 		yield break;
@@ -292,8 +295,7 @@ public class DefaultLayerController : WorldViewTechniqueAncillary, IService, ILa
 			{
 				for (int k = 0; k < list.Count; k++)
 				{
-					float num4 = list[k].MaximumValue - list[k].MinimumValue;
-					if (num4 <= this.MinimalRange)
+					if (list[k].MaximumValue - list[k].MinimumValue <= this.MinimalRange)
 					{
 						if (list[k].ZoomDescriptor.IsOptional)
 						{
@@ -307,9 +309,9 @@ public class DefaultLayerController : WorldViewTechniqueAncillary, IService, ILa
 							}
 							else if (list[k - 1].ZoomDescriptor.IsOptional ^ !list[k + 1].ZoomDescriptor.IsOptional)
 							{
-								float num5 = (list[k - 1].MaximumValue + list[k + 1].MinimumValue) * 0.5f;
-								list[k - 1].MaximumValue = num5;
-								list[k + 1].MinimumValue = num5;
+								float num4 = (list[k - 1].MaximumValue + list[k + 1].MinimumValue) * 0.5f;
+								list[k - 1].MaximumValue = num4;
+								list[k + 1].MinimumValue = num4;
 							}
 							else if (list[k - 1].ZoomDescriptor.IsOptional)
 							{
@@ -325,24 +327,24 @@ public class DefaultLayerController : WorldViewTechniqueAncillary, IService, ILa
 							flag = true;
 							if (k == 0)
 							{
-								float num6 = list[k].MinimumValue + this.MinimalRange;
-								list[k].MaximumValue = num6;
-								list[k + 1].MinimumValue = num6;
+								float num5 = list[k].MinimumValue + this.MinimalRange;
+								list[k].MaximumValue = num5;
+								list[k + 1].MinimumValue = num5;
 							}
 							else if (k == list.Count - 1)
 							{
-								float num7 = list[k].MaximumValue - this.MinimalRange;
-								list[k - 1].MaximumValue = num7;
-								list[k].MinimumValue = num7;
+								float num6 = list[k].MaximumValue - this.MinimalRange;
+								list[k - 1].MaximumValue = num6;
+								list[k].MinimumValue = num6;
 							}
 							else
 							{
-								float num8 = (list[k - 1].MaximumValue + list[k].MinimumValue) * 0.5f;
-								float num9 = (list[k].MaximumValue + list[k + 1].MinimumValue) * 0.5f;
-								list[k - 1].MaximumValue = num8;
-								list[k].MinimumValue = num8;
-								list[k].MaximumValue = num9;
-								list[k + 1].MinimumValue = num9;
+								float num7 = (list[k - 1].MaximumValue + list[k].MinimumValue) * 0.5f;
+								float num8 = (list[k].MaximumValue + list[k + 1].MinimumValue) * 0.5f;
+								list[k - 1].MaximumValue = num7;
+								list[k].MinimumValue = num7;
+								list[k].MaximumValue = num8;
+								list[k + 1].MinimumValue = num8;
 							}
 						}
 					}
@@ -350,6 +352,7 @@ public class DefaultLayerController : WorldViewTechniqueAncillary, IService, ILa
 			}
 		}
 		this.NormalizedDeZoomDescriptors = list.ToArray();
+		this.theMaximumNormalizedDeZoom = maximumNormalizedDeZoom;
 	}
 
 	private void ChangeCurrentZoomDescriptor(StaticString zoomDescriptorName)
@@ -381,78 +384,104 @@ public class DefaultLayerController : WorldViewTechniqueAncillary, IService, ILa
 		{
 			return float.Parse(value);
 		}
-		if (array.Length == 2)
+		if (array.Length != 2)
 		{
-			string text = array[0].Trim();
-			switch (text)
+			Diagnostics.LogError("Bad format for zoom descriptor value (string: '{0}'), expecting or '[format:]value'.", new object[]
 			{
-			case "ndz":
-			case "nz":
-				return float.Parse(array[1]);
-			case "mndz":
-			case "mnz":
-				return float.Parse(array[1]) * maximumNormalizedDeZoom;
-			}
+				value
+			});
+			throw new InvalidOperationException();
+		}
+		string a = array[0].Trim();
+		if (a == "ndz" || a == "nz")
+		{
+			return float.Parse(array[1]);
+		}
+		if (!(a == "mndz") && !(a == "mnz"))
+		{
 			Diagnostics.LogError("Bad format for zoom descriptor value (input: '{0}'), expecting 'fmt:value' with fmt=[e|ne|ndz|nz|mne|mndz|mdz|h|t].", new object[]
 			{
 				value
 			});
 			throw new InvalidOperationException();
 		}
-		Diagnostics.LogError("Bad format for zoom descriptor value (string: '{0}'), expecting or '[format:]value'.", new object[]
+		return float.Parse(array[1]) * maximumNormalizedDeZoom;
+	}
+
+	public void UpdateZoomRatioDetailsBecomeAbstract()
+	{
+		string text = "mnz:" + Amplitude.Unity.Framework.Application.Registry.GetValue<float>(GuiManager.Registers.ZoomRatioDetailsBecomeAbstract, 0.5f).ToString();
+		for (int i = 0; i < this.ZoomDescriptors.Length; i++)
 		{
-			value
-		});
-		throw new InvalidOperationException();
+			string name = this.ZoomDescriptors[i].Name;
+			if (!(name == "MidLevel"))
+			{
+				if (name == "View2D")
+				{
+					this.ZoomDescriptors[i].MinimumValue = text;
+				}
+			}
+			else
+			{
+				this.ZoomDescriptors[i].MaximumValue = text;
+			}
+		}
+		if (this.theMaximumNormalizedDeZoom < 0f)
+		{
+			return;
+		}
+		this.TrimZoomDescriptors(this.theMaximumNormalizedDeZoom);
 	}
 
 	public ZoomDescriptor[] ZoomDescriptors;
 
-	public float MinimalRange = 0.1f;
+	public float MinimalRange;
 
-	public float ZoomLimitHysteresis = 0.01f;
+	public float ZoomLimitHysteresis;
 
 	[SerializeField]
 	private float deltaAzimut;
 
 	[SerializeField]
-	private UnityEngine.AnimationCurve cameraElevationCurve = new UnityEngine.AnimationCurve();
+	private UnityEngine.AnimationCurve cameraElevationCurve;
 
 	[SerializeField]
-	private UnityEngine.AnimationCurve cameraOrientationCurve = new UnityEngine.AnimationCurve();
+	private UnityEngine.AnimationCurve cameraOrientationCurve;
 
 	[SerializeField]
-	private UnityEngine.AnimationCurve cameraAzimutCurve = new UnityEngine.AnimationCurve();
+	private UnityEngine.AnimationCurve cameraAzimutCurve;
 
 	[SerializeField]
-	private UnityEngine.AnimationCurve cameraSpeedCurve = new UnityEngine.AnimationCurve();
+	private UnityEngine.AnimationCurve cameraSpeedCurve;
 
 	[SerializeField]
-	private float angleAtMaximalElevation = 90f;
+	private float angleAtMaximalElevation;
 
 	[SerializeField]
-	private float angleAtMinimalElevation = 30f;
+	private float angleAtMinimalElevation;
 
 	[SerializeField]
-	private int minimalHorizontalTilePerScreen = 12;
+	private int minimalHorizontalTilePerScreen;
 
 	[SerializeField]
 	private float maxAzimutDeltaAtMaximalElevation;
 
 	[SerializeField]
-	private int maxAzimutDeltaAtMinimalElevation = 20;
+	private int maxAzimutDeltaAtMinimalElevation;
 
 	[SerializeField]
-	private int maximalHorizontalTilePerScreen = 150;
+	private int maximalHorizontalTilePerScreen;
 
 	[SerializeField]
-	private float zoomSpeedFactor = 0.5f;
+	private float zoomSpeedFactor;
 
 	[SerializeField]
-	private float zoomSmoothSpeed = 0.2f;
+	private float zoomSmoothSpeed;
 
 	[SerializeField]
-	private float zoomGap = 0.05f;
+	private float zoomGap;
+
+	private float theMaximumNormalizedDeZoom = -1f;
 
 	public class SortNormalizedDeZoomDescriptorByValue : IComparer<NormalizedDeZoomDescriptor>
 	{

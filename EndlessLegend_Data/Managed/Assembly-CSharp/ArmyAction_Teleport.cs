@@ -282,9 +282,17 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 		{
 			return false;
 		}
-		DepartmentOfTransportation agency = army.Empire.GetAgency<DepartmentOfTransportation>();
+		IEncounterRepositoryService service = Services.GetService<IGameService>().Game.Services.GetService<IEncounterRepositoryService>();
+		if (service != null)
+		{
+			IEnumerable<Encounter> enumerable = service;
+			if (enumerable != null && enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(city.GUID, false)))
+			{
+				return false;
+			}
+		}
 		WorldPosition worldPosition;
-		return agency.TryGetFirstCityTileAvailableForTeleport(city, out worldPosition) && worldPosition.IsValid;
+		return army.Empire.GetAgency<DepartmentOfTransportation>().TryGetFirstCityTileAvailableForTeleport(city, out worldPosition) && worldPosition.IsValid;
 	}
 
 	public static readonly StaticString NoBoosterForTeleport = "ArmyActionNoBoosterActivatedForTeleport";

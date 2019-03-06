@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Amplitude;
+using Amplitude.Unity.AI;
+using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
@@ -38,40 +41,41 @@ public abstract class AILayerCommanderController : AILayer, IXmlSerializable, IA
 	public override void ReadXml(XmlReader reader)
 	{
 		base.ReadXml(reader);
+		if (!reader.IsStartElement("Commanders"))
+		{
+			return;
+		}
 		if (reader.IsStartElement("Commanders") && reader.IsEmptyElement())
 		{
 			reader.Skip();
+			return;
 		}
-		else
+		reader.ReadStartElement("Commanders");
+		while (reader.IsStartElement())
 		{
-			reader.ReadStartElement("Commanders");
-			while (reader.IsStartElement())
+			Type type = Type.GetType(reader.GetAttribute("AssemblyQualifiedName"));
+			if (type == null)
 			{
-				string attribute = reader.GetAttribute("AssemblyQualifiedName");
-				Type type = Type.GetType(attribute);
-				if (type == null)
+				reader.Skip();
+			}
+			else
+			{
+				AICommander aicommander = Activator.CreateInstance(type, true) as AICommander;
+				if (aicommander == null)
 				{
 					reader.Skip();
 				}
 				else
 				{
-					AICommander aicommander = Activator.CreateInstance(type, true) as AICommander;
-					if (aicommander == null)
-					{
-						reader.Skip();
-					}
-					else
-					{
-						aicommander.Empire = base.AIEntity.Empire;
-						aicommander.AIPlayer = base.AIEntity.AIPlayer;
-						aicommander.Initialize();
-						reader.ReadElementSerializable<AICommander>(ref aicommander);
-						this.aiCommanders.Add(aicommander);
-					}
+					aicommander.Empire = base.AIEntity.Empire;
+					aicommander.AIPlayer = base.AIEntity.AIPlayer;
+					aicommander.Initialize();
+					reader.ReadElementSerializable<AICommander>(ref aicommander);
+					this.aiCommanders.Add(aicommander);
 				}
 			}
-			reader.ReadEndElement("Commanders");
 		}
+		reader.ReadEndElement("Commanders");
 	}
 
 	public override void WriteXml(XmlWriter writer)
@@ -225,64 +229,85 @@ public abstract class AILayerCommanderController : AILayer, IXmlSerializable, IA
 	{
 		for (int i = 0; i < commander.Missions.Count; i++)
 		{
+			IGameService service = Services.GetService<IGameService>();
+			Diagnostics.Assert(service != null);
+			IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
+			Diagnostics.Assert(service2 != null);
 			AICommanderMissionWithRequestArmy aicommanderMissionWithRequestArmy = commander.Missions[i] as AICommanderMissionWithRequestArmy;
-			if (aicommanderMissionWithRequestArmy != null && (aicommanderMissionWithRequestArmy.Completion == AICommanderMission.AICommanderMissionCompletion.Initializing || aicommanderMissionWithRequestArmy.Completion == AICommanderMission.AICommanderMissionCompletion.Pending || aicommanderMissionWithRequestArmy.Completion == AICommanderMission.AICommanderMissionCompletion.Running) && aicommanderMissionWithRequestArmy.AIDataArmyGUID.IsValid && aicommanderMissionWithRequestArmy.AllowRetrofit)
+			AIData_Army aidata_Army;
+			if (aicommanderMissionWithRequestArmy != null && (aicommanderMissionWithRequestArmy.Completion == AICommanderMission.AICommanderMissionCompletion.Initializing || aicommanderMissionWithRequestArmy.Completion == AICommanderMission.AICommanderMissionCompletion.Pending || aicommanderMissionWithRequestArmy.Completion == AICommanderMission.AICommanderMissionCompletion.Running) && aicommanderMissionWithRequestArmy.AIDataArmyGUID.IsValid && aicommanderMissionWithRequestArmy.AllowRetrofit && this.aiDataRepository.TryGetAIData<AIData_Army>(aicommanderMissionWithRequestArmy.AIDataArmyGUID, out aidata_Army))
 			{
-				AIData_Army aidata_Army;
-				if (this.aiDataRepository.TryGetAIData<AIData_Army>(aicommanderMissionWithRequestArmy.AIDataArmyGUID, out aidata_Army))
+				bool flag = true;
+				Region region = service2.GetRegion(aidata_Army.Army.WorldPosition);
+				if (region == null || region.Owner != aidata_Army.Army.Empire)
 				{
-					float num = 0f;
-					bool flag = false;
-					AIData_Unit unitData;
-					for (int j = 0; j < aidata_Army.Army.StandardUnits.Count; j++)
+					flag = false;
+				}
+				float num = 0f;
+				bool flag2 = false;
+				AIData_Unit unitData;
+				for (int j = 0; j < aidata_Army.Army.StandardUnits.Count; j++)
+				{
+					if (this.aiDataRepository.TryGetAIData<AIData_Unit>(aidata_Army.Army.StandardUnits[j].GUID, out unitData) && unitData.RetrofitData.MayRetrofit && unitData.RetrofitData.MilitaryPowerDifference > 0f)
 					{
-						if (this.aiDataRepository.TryGetAIData<AIData_Unit>(aidata_Army.Army.StandardUnits[j].GUID, out unitData) && unitData.RetrofitData.MayRetrofit && unitData.RetrofitData.MilitaryPowerDifference > 0f)
-						{
-							flag = true;
-							num += unitData.RetrofitData.MilitaryPowerDifference;
-						}
+						flag2 = true;
+						num += unitData.RetrofitData.MilitaryPowerDifference;
 					}
-					if (flag)
+				}
+				if (flag2)
+				{
+					float propertyValue = aidata_Army.Army.GetPropertyValue(SimulationProperties.MilitaryPower);
+					float num2;
+					bool flag3;
+					bool flag4;
+					aicommanderMissionWithRequestArmy.ComputeNeededArmyPower(out num2, out flag3, out flag4);
+					float num3 = commander.GetPriority(aicommanderMissionWithRequestArmy);
+					if (num <= 0f)
 					{
-						float propertyValue = aidata_Army.Army.GetPropertyValue(SimulationProperties.MilitaryPower);
-						float num2;
-						bool flag2;
-						bool flag3;
-						aicommanderMissionWithRequestArmy.ComputeNeededArmyPower(out num2, out flag2, out flag3);
-						float num3 = commander.GetPriority(aicommanderMissionWithRequestArmy);
-						if (num <= 0f)
+						num3 = AILayer.Boost(num3, -0.9f);
+					}
+					else if (!flag3 && propertyValue < num2)
+					{
+						num3 = AILayer.Boost(num3, 0.2f);
+					}
+					DepartmentOfForeignAffairs agency = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
+					Predicate<EvaluableMessage_RetrofitUnit> <>9__0;
+					for (int k = 0; k < aidata_Army.Army.StandardUnits.Count; k++)
+					{
+						if (this.aiDataRepository.TryGetAIData<AIData_Unit>(aidata_Army.Army.StandardUnits[k].GUID, out unitData) && unitData.RetrofitData.MayRetrofit && unitData.RetrofitData.MilitaryPowerDifference > 0f)
 						{
-							num3 = AILayer.Boost(num3, -0.9f);
-						}
-						else if (!flag2)
-						{
-							if (propertyValue < num2)
+							Blackboard<BlackboardLayerID, BlackboardMessage> blackboard = commander.AIPlayer.Blackboard;
+							BlackboardLayerID blackboardLayerID = BlackboardLayerID.Empire;
+							BlackboardLayerID layerID = blackboardLayerID;
+							Predicate<EvaluableMessage_RetrofitUnit> filter;
+							if ((filter = <>9__0) == null)
 							{
-								num3 = AILayer.Boost(num3, 0.2f);
+								filter = (<>9__0 = ((EvaluableMessage_RetrofitUnit match) => match.ElementGuid == unitData.Unit.GUID));
 							}
-						}
-						for (int k = 0; k < aidata_Army.Army.StandardUnits.Count; k++)
-						{
-							if (this.aiDataRepository.TryGetAIData<AIData_Unit>(aidata_Army.Army.StandardUnits[k].GUID, out unitData) && unitData.RetrofitData.MayRetrofit && unitData.RetrofitData.MilitaryPowerDifference > 0f)
+							EvaluableMessage_RetrofitUnit evaluableMessage_RetrofitUnit = blackboard.FindFirst<EvaluableMessage_RetrofitUnit>(layerID, filter);
+							if (evaluableMessage_RetrofitUnit == null || evaluableMessage_RetrofitUnit.State != BlackboardMessage.StateValue.Message_InProgress)
 							{
-								EvaluableMessage_RetrofitUnit evaluableMessage_RetrofitUnit = commander.AIPlayer.Blackboard.FindFirst<EvaluableMessage_RetrofitUnit>(BlackboardLayerID.Empire, (EvaluableMessage_RetrofitUnit match) => match.ElementGuid == unitData.Unit.GUID);
-								if (evaluableMessage_RetrofitUnit == null || evaluableMessage_RetrofitUnit.State != BlackboardMessage.StateValue.Message_InProgress)
+								evaluableMessage_RetrofitUnit = new EvaluableMessage_RetrofitUnit(unitData.Unit.GUID);
+								commander.AIPlayer.Blackboard.AddMessage(evaluableMessage_RetrofitUnit);
+							}
+							float num4 = 0f;
+							for (int l = 0; l < unitData.RetrofitData.RetrofitCosts.Length; l++)
+							{
+								if (unitData.RetrofitData.RetrofitCosts[l].ResourceName == DepartmentOfTheTreasury.Resources.EmpireMoney)
 								{
-									evaluableMessage_RetrofitUnit = new EvaluableMessage_RetrofitUnit(unitData.Unit.GUID);
-									commander.AIPlayer.Blackboard.AddMessage(evaluableMessage_RetrofitUnit);
+									num4 += unitData.RetrofitData.RetrofitCosts[l].Value;
 								}
-								float num4 = 0f;
-								for (int l = 0; l < unitData.RetrofitData.RetrofitCosts.Length; l++)
-								{
-									if (unitData.RetrofitData.RetrofitCosts[l].ResourceName == DepartmentOfTheTreasury.Resources.EmpireMoney)
-									{
-										num4 += unitData.RetrofitData.RetrofitCosts[l].Value;
-									}
-								}
+							}
+							if (agency.IsInWarWithSomeone() && unitData.RetrofitData.MilitaryPowerDifference > unitData.Unit.UnitDesign.Context.GetPropertyValue(SimulationProperties.MilitaryPower) && flag)
+							{
+								evaluableMessage_RetrofitUnit.SetInterest(1f, 1f);
+							}
+							else
+							{
 								evaluableMessage_RetrofitUnit.SetInterest(this.retrofitGlobalPriority, num3);
-								evaluableMessage_RetrofitUnit.UpdateBuyEvaluation("Retrofit", 0UL, num4, (int)BuyEvaluation.MaxTurnGain, 0f, 0UL);
-								evaluableMessage_RetrofitUnit.TimeOut = 1;
 							}
+							evaluableMessage_RetrofitUnit.UpdateBuyEvaluation("Retrofit", 0UL, num4, (int)BuyEvaluation.MaxTurnGain, 0f, 0UL);
+							evaluableMessage_RetrofitUnit.TimeOut = 1;
 						}
 					}
 				}

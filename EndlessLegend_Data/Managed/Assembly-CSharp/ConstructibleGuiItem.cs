@@ -58,6 +58,10 @@ public class ConstructibleGuiItem : MonoBehaviour
 		this.ConstructibleButton.OnActivateMethod = "OnOptionSelect";
 		this.ConstructibleButton.OnActivateObject = client;
 		this.ConstructibleButton.OnActivateDataObject = constructibleElementDefinition.ConstructibleElement;
+		this.ConstructibleButton.OnMiddleClickMethod = "OnRightClick";
+		this.ConstructibleButton.OnMiddleClickObject = client;
+		this.ConstructibleButton.OnRightClickMethod = "OnRightClick";
+		this.ConstructibleButton.OnRightClickObject = client;
 		this.AgeTransform.Enable = (constructibleElementDefinition.Flags.Length == 0);
 	}
 

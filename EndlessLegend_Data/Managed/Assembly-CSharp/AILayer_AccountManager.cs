@@ -309,6 +309,10 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 				}
 			}
 		}
+		if (account.PromisedAmount > 0f && this.workingMessages.Count == 0)
+		{
+			account.PromisedAmount = 0f;
+		}
 	}
 
 	private int EnsureAccount(StaticString accountTag)

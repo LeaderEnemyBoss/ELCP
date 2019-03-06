@@ -70,12 +70,11 @@ public class AILayer_Assimilation : AILayer
 		for (int i = 0; i < list.Count; i++)
 		{
 			Faction faction = list[i];
-			if (!this.departmentOfTheInterior.IsAssimilated(faction))
+			if ((!this.Empire.SimulationObject.Tags.Contains("FactionTraitBuyOutPopulation") || !(faction.Name == "Bos")) && (!this.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitReplicants1) || !(faction.Name == "Haunts")) && !this.departmentOfTheInterior.IsAssimilated(faction))
 			{
-				IEnumerable<UnitBodyDefinition> enumerable = from match in values
+				foreach (UnitBodyDefinition unitBodyDefinition in from match in values
 				where match.Affinity != null && match.Affinity.Name == faction.Affinity.Name
-				select match;
-				foreach (UnitBodyDefinition unitBodyDefinition in enumerable)
+				select match)
 				{
 					float aistrengthBelief = this.intelligenceAIHelper.GetAIStrengthBelief(base.AIEntity.Empire.Index, unitBodyDefinition.Name);
 					if (num < 0 || aistrengthBelief > num2)

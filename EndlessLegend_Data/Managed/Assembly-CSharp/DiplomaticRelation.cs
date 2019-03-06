@@ -543,7 +543,7 @@ public class DiplomaticRelation : IXmlSerializable, IDumpable, IDiplomaticRelati
 	[CompilerGenerated]
 	private sealed class GetNumberOfScoreModifiersOfType>c__AnonStorey97C
 	{
-		internal bool <>m__460(DiplomaticRelationScoreModifier modifier)
+		internal bool <>m__45F(DiplomaticRelationScoreModifier modifier)
 		{
 			return modifier.Definition.Name == this.modifierName;
 		}
@@ -554,7 +554,7 @@ public class DiplomaticRelation : IXmlSerializable, IDumpable, IDiplomaticRelati
 	[CompilerGenerated]
 	private sealed class RemoveScoreModifiersByType>c__AnonStorey97D
 	{
-		internal bool <>m__461(DiplomaticRelationScoreModifier modifier)
+		internal bool <>m__460(DiplomaticRelationScoreModifier modifier)
 		{
 			return modifier.Definition.Name == this.modifierName;
 		}

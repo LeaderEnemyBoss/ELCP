@@ -5,6 +5,7 @@ using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
 using Amplitude.Unity.Runtime;
+using UnityEngine;
 
 [Diagnostics.TagAttribute("AI")]
 public class AILayer_KaijuAdquisition : AILayerWithObjective
@@ -37,8 +38,7 @@ public class AILayer_KaijuAdquisition : AILayerWithObjective
 				MajorEmpire majorEmpire = empire as MajorEmpire;
 				foreach (Kaiju item in majorEmpire.TamedKaijus)
 				{
-					DepartmentOfForeignAffairs agency2 = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
-					if (agency2 == null || !agency2.IsFriend(majorEmpire))
+					if (!this.departmentOfForeignAffairs.IsFriend(majorEmpire))
 					{
 						list.Add(item);
 					}
@@ -51,17 +51,14 @@ public class AILayer_KaijuAdquisition : AILayerWithObjective
 	public override IEnumerator Initialize(AIEntity aiEntity)
 	{
 		yield return base.Initialize(aiEntity);
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
-		this.worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositionningService != null);
+		this.pathfindingService = service.Game.Services.GetService<IPathfindingService>();
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		this.departmentOfDefense = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
 		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
-		Diagnostics.Assert(gameService != null);
-		IPathfindingService pathfindingService = gameService.Game.Services.GetService<IPathfindingService>();
-		Diagnostics.Assert(pathfindingService != null);
-		this.pathfindingService = pathfindingService;
 		this.aiLayerStrategy = base.AIEntity.GetLayer<AILayer_Strategy>();
 		this.empireDataRepository = AIScheduler.Services.GetService<IAIEmpireDataAIHelper>();
 		this.intelligenceAIHelper = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
@@ -127,6 +124,13 @@ public class AILayer_KaijuAdquisition : AILayerWithObjective
 	{
 		objectiveMessage.GlobalPriority = base.GlobalPriority;
 		objectiveMessage.LocalPriority = new HeuristicValue(0.6f);
+		Region region = this.worldPositionningService.GetRegion(objectiveMessage.RegionIndex);
+		if (region != null && this.departmentOfTheInterior.Cities.Count > 0)
+		{
+			int num = this.worldPositionningService.GetDistance(this.departmentOfTheInterior.Cities[0].WorldPosition, region.Barycenter);
+			num = Mathf.Max(40 - num, 0);
+			objectiveMessage.LocalPriority.Boost((float)num / 80f, "Close distance boost", new object[0]);
+		}
 		objectiveMessage.TimeOut = 1;
 	}
 
@@ -158,47 +162,42 @@ public class AILayer_KaijuAdquisition : AILayerWithObjective
 
 	private bool IsKaijuValidForObjective(Kaiju kaiju)
 	{
-		if (kaiju == null)
+		bool flag = false;
+		if (kaiju != null && kaiju.MajorEmpire != null)
 		{
-			return false;
-		}
-		if (this.departmentOfForeignAffairs != null && kaiju.MajorEmpire != null && this.departmentOfForeignAffairs.IsFriend(kaiju.MajorEmpire))
-		{
-			return false;
-		}
-		if (kaiju.Empire.Index == base.AIEntity.Empire.Index)
-		{
-			return false;
-		}
-		WorldPosition worldPosition = WorldPosition.Invalid;
-		for (int i = 0; i < this.departmentOfTheInterior.Cities.Count; i++)
-		{
-			City city = this.departmentOfTheInterior.Cities[i];
-			if (city != null)
+			if (kaiju.OnArmyMode())
 			{
-				worldPosition = city.WorldPosition;
-				break;
+				District district = this.worldPositionningService.GetDistrict(kaiju.WorldPosition);
+				if (district != null && District.IsACityTile(district))
+				{
+					return false;
+				}
+			}
+			if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
+			{
+				flag = !this.departmentOfForeignAffairs.IsAtWarWith(kaiju.MajorEmpire);
+			}
+			else
+			{
+				flag = this.departmentOfForeignAffairs.IsFriend(kaiju.MajorEmpire);
 			}
 		}
-		Army army = null;
-		for (int j = 0; j < this.departmentOfDefense.Armies.Count; j++)
+		if (kaiju != null && !flag && kaiju.Empire.Index != base.AIEntity.Empire.Index && this.departmentOfTheInterior.Cities.Count > 0)
 		{
-			Army army2 = this.departmentOfDefense.Armies[j];
-			if (army2 != null && !army2.IsSeafaring)
+			foreach (Army army in this.departmentOfDefense.Armies)
 			{
-				army = army2;
-				break;
+				if (!army.IsSeafaring)
+				{
+					if (this.pathfindingService.FindPath(army, this.departmentOfTheInterior.Cities[0].WorldPosition, kaiju.WorldPosition, PathfindingManager.RequestMode.Default, null, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null) == null)
+					{
+						return false;
+					}
+					return true;
+				}
 			}
+			return false;
 		}
-		if (army != null && worldPosition != WorldPosition.Invalid)
-		{
-			PathfindingFlags flags = PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons;
-			if (this.pathfindingService.FindPath(army, worldPosition, kaiju.WorldPosition, PathfindingManager.RequestMode.Default, null, flags, null) == null)
-			{
-				return false;
-			}
-		}
-		return true;
+		return false;
 	}
 
 	public override void Release()
@@ -206,6 +205,9 @@ public class AILayer_KaijuAdquisition : AILayerWithObjective
 		base.Release();
 		this.worldPositionningService = null;
 		this.departmentOfTheInterior = null;
+		this.departmentOfDefense = null;
+		this.departmentOfForeignAffairs = null;
+		this.pathfindingService = null;
 		this.aiLayerStrategy = null;
 	}
 
@@ -262,7 +264,7 @@ public class AILayer_KaijuAdquisition : AILayerWithObjective
 
 	private DepartmentOfDefense departmentOfDefense;
 
-	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
-
 	private IPathfindingService pathfindingService;
+
+	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
 }

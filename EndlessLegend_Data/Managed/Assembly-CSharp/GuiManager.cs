@@ -10,6 +10,7 @@ using Amplitude.Unity.Gui;
 using Amplitude.Unity.Input;
 using Amplitude.Unity.Runtime;
 using Amplitude.Unity.Video;
+using Amplitude.Unity.View;
 using UnityEngine;
 
 public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IGuiService, IService, global::IGuiService, IGuiSettingsService
@@ -61,8 +62,7 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 		}
 		set
 		{
-			string value2 = Amplitude.Unity.Framework.Application.Registry.GetValue<string>(global::GuiManager.Registers.EmpireColorPalette, "Default");
-			if (value2 != value)
+			if (Amplitude.Unity.Framework.Application.Registry.GetValue<string>(global::GuiManager.Registers.EmpireColorPalette, "Default") != value)
 			{
 				Amplitude.Unity.Framework.Application.Registry.SetValue(global::GuiManager.Registers.EmpireColorPalette, value);
 			}
@@ -76,6 +76,10 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 	public override IEnumerator BindServices()
 	{
 		yield return base.BindServices();
+		this.capacityColor1 = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(new StaticString("Settings/ELCP/UI/CapacityColor1"), 0);
+		this.capacityColor2 = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(new StaticString("Settings/ELCP/UI/CapacityColor2"), 2);
+		this.capacityColor3 = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(new StaticString("Settings/ELCP/UI/CapacityColor3"), 8);
+		this.zoomRatioDetailsBecomeAbstract = Amplitude.Unity.Framework.Application.Registry.GetValue<float>(global::GuiManager.Registers.ZoomRatioDetailsBecomeAbstract, 0.5f);
 		this.simulationEffectParser = new SimulationEffectParser();
 		this.simulationEffectParser.GuiService = this;
 		Services.AddService<global::IGuiService>(this);
@@ -129,7 +133,7 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 				Texture2D texture2D = base.AgeManager.FindDynamicTexture(guiCursor.Image.Path, false);
 				if (texture2D != null)
 				{
-					Cursor.SetCursor(texture2D, guiCursor.HotSpot, CursorMode.Auto);
+					UnityEngine.Cursor.SetCursor(texture2D, guiCursor.HotSpot, CursorMode.Auto);
 				}
 			}
 			else
@@ -151,7 +155,7 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 		{
 			flag = true;
 		}
-		TutorialInstructionPanel guiPanel = this.GetGuiPanel<TutorialInstructionPanel>();
+		TutorialInstructionPanel guiPanel = base.GetGuiPanel<TutorialInstructionPanel>();
 		if (!flag && guiPanel != null && guiPanel.IsVisible && guiPanel.ModalFrame.Visible)
 		{
 			flag = true;
@@ -195,27 +199,26 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 			if (base.Panels != null)
 			{
 				Diagnostics.Log("Unloading all panels...");
-				foreach (Amplitude.Unity.Gui.GuiPanel panel in base.Panels)
+				Amplitude.Unity.Gui.GuiPanel[] panels = base.Panels;
+				for (int i = 0; i < panels.Length; i++)
 				{
-					panel.Unload();
+					panels[i].Unload();
 				}
 				base.AgeManager.ReleaseDynamicTextures();
 			}
 		}
 		catch (Exception ex)
 		{
-			Exception exception = ex;
-			Diagnostics.LogError(exception.ToString());
+			Diagnostics.LogError(ex.ToString());
 			throw;
 		}
 		if (base.AgeManager != null && this.RuntimeService != null)
 		{
 			Diagnostics.Assert(this.RuntimeService.Runtime != null);
 			Diagnostics.Assert(this.RuntimeService.Runtime.RuntimeModules != null);
-			for (int index = 0; index < this.RuntimeService.Runtime.RuntimeModules.Count; index++)
+			for (int j = 0; j < this.RuntimeService.Runtime.RuntimeModules.Count; j++)
 			{
-				RuntimeModule runtimeModule = this.RuntimeService.Runtime.RuntimeModules[index];
-				if (runtimeModule.ResourcesFolder != null)
+				if (this.RuntimeService.Runtime.RuntimeModules[j].ResourcesFolder != null)
 				{
 					base.AgeManager.OnLoadDynamicTexture += this.OnLoadDynamicTexture;
 					break;
@@ -244,7 +247,7 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 			Diagnostics.Log("Reinitializing the AGE manager...");
 			base.AgeManager.Init();
 			Diagnostics.Log("MenuMainScreen.");
-			this.GetGuiPanel<MenuMainScreen>().Show(new object[0]);
+			base.GetGuiPanel<MenuMainScreen>().Show(new object[0]);
 		}
 	}
 
@@ -253,11 +256,11 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 		base.Update();
 		if (Input.GetMouseButtonDown(1))
 		{
-			bool flag = this.HandleCancelRequest();
+			this.HandleCancelRequest();
 		}
 		if (this.keyMapperService.GetKeyDown(KeyAction.ControlBindingsCancel))
 		{
-			bool flag = this.HandleCancelRequest();
+			this.HandleCancelRequest();
 		}
 		if (this.keyMapperService.GetKeyDown(KeyAction.ControlBindingsGUIDisplay))
 		{
@@ -272,31 +275,30 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 		{
 			if (global::GameManager.IsInGame)
 			{
-				bool flag = this.ShowHideInGameConsolePanel();
+				this.ShowHideInGameConsolePanel();
 			}
 			else
 			{
-				bool flag = this.FocusOutGameConsolePanel();
+				this.FocusOutGameConsolePanel();
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			bool flag = this.HandleNextRequest();
+			this.HandleNextRequest();
 		}
 		if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
-			bool flag = this.HandlePreviousRequest();
+			this.HandlePreviousRequest();
 		}
 		if (this.keyMapperService.GetKeyDown(KeyAction.ControlBindingsNavigateUp))
 		{
-			bool flag = this.HandleUpRequest();
+			this.HandleUpRequest();
 		}
 		if (this.keyMapperService.GetKeyDown(KeyAction.ControlBindingsNavigateDown))
 		{
-			bool flag = this.HandleDownRequest();
+			this.HandleDownRequest();
 		}
-		bool flag2 = Amplitude.Unity.Framework.Application.Version.Accessibility <= Accessibility.Internal || Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools;
-		if (flag2)
+		if (Amplitude.Unity.Framework.Application.Version.Accessibility <= Accessibility.Internal || Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 		{
 			int empireIndex = -1;
 			if (Input.GetKeyUp(KeyCode.Alpha1) || Input.GetKeyUp(KeyCode.Keypad1))
@@ -352,19 +354,16 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 
 	private void ExceptionHandler(string logMessage, string stackTrace, LogType logType)
 	{
-		ErrorModalPanel guiPanel = this.GetGuiPanel<ErrorModalPanel>();
-		if (guiPanel != null)
+		ErrorModalPanel guiPanel = base.GetGuiPanel<ErrorModalPanel>();
+		if (guiPanel != null && logType == LogType.Exception)
 		{
-			if (logType == LogType.Exception)
-			{
-				guiPanel.Show(logMessage, stackTrace, logType);
-			}
+			guiPanel.Show(logMessage, stackTrace, logType);
 		}
 	}
 
 	private bool FocusOutGameConsolePanel()
 	{
-		MenuNewGameScreen guiPanel = this.GetGuiPanel<MenuNewGameScreen>();
+		MenuNewGameScreen guiPanel = base.GetGuiPanel<MenuNewGameScreen>();
 		return (guiPanel != null || guiPanel.IsVisible) && guiPanel.FocusOutGameConsolePanel();
 	}
 
@@ -385,7 +384,7 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 				if (palette == null)
 				{
 					Palette[] values = database.GetValues();
-					if (values != null && values.Length > 0)
+					if (values != null && values.Length != 0)
 					{
 						text = values[0].Name;
 					}
@@ -408,12 +407,10 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 			RuntimeModule runtimeModule = this.RuntimeService.Runtime.RuntimeModules[i];
 			if (runtimeModule.ResourcesFolder != null)
 			{
-				string path2 = System.IO.Path.Combine(runtimeModule.ResourcesFolder.FullName, path);
-				string text = System.IO.Path.ChangeExtension(path2, "png");
+				string text = System.IO.Path.ChangeExtension(System.IO.Path.Combine(runtimeModule.ResourcesFolder.FullName, path), "png");
 				if (File.Exists(text))
 				{
-					Uri uri = new Uri(text);
-					WWW www = new WWW(uri.AbsoluteUri);
+					WWW www = new WWW(new Uri(text).AbsoluteUri);
 					while (!www.isDone)
 					{
 						Thread.Sleep(0);
@@ -432,7 +429,7 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 
 	private bool ShowHideInGameConsolePanel()
 	{
-		InGameConsolePanel guiPanel = this.GetGuiPanel<InGameConsolePanel>();
+		InGameConsolePanel guiPanel = base.GetGuiPanel<InGameConsolePanel>();
 		if (guiPanel != null)
 		{
 			if (!guiPanel.IsVisible)
@@ -463,6 +460,83 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 		}
 	}
 
+	public int CapacityColor2
+	{
+		get
+		{
+			return this.capacityColor2;
+		}
+		set
+		{
+			if (this.capacityColor2 != value)
+			{
+				this.capacityColor2 = value;
+				Amplitude.Unity.Framework.Application.Registry.SetValue(new StaticString("Settings/ELCP/UI/CapacityColor2"), value.ToString());
+			}
+		}
+	}
+
+	public int CapacityColor1
+	{
+		get
+		{
+			return this.capacityColor1;
+		}
+		set
+		{
+			if (this.capacityColor1 != value)
+			{
+				this.capacityColor1 = value;
+				Amplitude.Unity.Framework.Application.Registry.SetValue(new StaticString("Settings/ELCP/UI/CapacityColor1"), value.ToString());
+			}
+		}
+	}
+
+	public int CapacityColor3
+	{
+		get
+		{
+			return this.capacityColor3;
+		}
+		set
+		{
+			if (this.capacityColor3 != value)
+			{
+				this.capacityColor3 = value;
+				Amplitude.Unity.Framework.Application.Registry.SetValue(new StaticString("Settings/ELCP/UI/CapacityColor3"), value.ToString());
+			}
+		}
+	}
+
+	public float ZoomRatioDetailsBecomeAbstract
+	{
+		get
+		{
+			return this.zoomRatioDetailsBecomeAbstract;
+		}
+		set
+		{
+			if (this.zoomRatioDetailsBecomeAbstract != value)
+			{
+				this.zoomRatioDetailsBecomeAbstract = value;
+				Amplitude.Unity.Framework.Application.Registry.SetValue(new StaticString(global::GuiManager.Registers.ZoomRatioDetailsBecomeAbstract), value.ToString());
+				Amplitude.Unity.View.IViewService service = Services.GetService<Amplitude.Unity.View.IViewService>();
+				if (service != null && service.CurrentView != null)
+				{
+					WorldView worldView = service.CurrentView as WorldView;
+					if (worldView != null)
+					{
+						ILayerService service2 = worldView.CurrentWorldViewTechnique.GetService<ILayerService>();
+						if (service2 != null && service2 as DefaultLayerController != null)
+						{
+							(service2 as DefaultLayerController).UpdateZoomRatioDetailsBecomeAbstract();
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public static readonly int MinimumResolutionWidthForHighDefinitionUI = 1920;
 
 	public static readonly int MinimumResolutionHeightForHighDefinitionUI = 1080;
@@ -475,10 +549,20 @@ public class GuiManager : Amplitude.Unity.Gui.GuiManager, Amplitude.Unity.Gui.IG
 
 	private IKeyMappingService keyMapperService;
 
+	private int capacityColor1;
+
+	private int capacityColor2 = 2;
+
+	private int capacityColor3 = 8;
+
+	private float zoomRatioDetailsBecomeAbstract = 0.5f;
+
 	public static class Registers
 	{
 		public static StaticString HighDefinitionUI = new StaticString("Settings/UI/HighDefinitionUI");
 
 		public static StaticString EmpireColorPalette = new StaticString("Settings/UI/EmpireColorPalette");
+
+		public static StaticString ZoomRatioDetailsBecomeAbstract = new StaticString("Settings/ELCP/UI/ZoomRatioDetailsBecomeAbstract");
 	}
 }
