@@ -20,11 +20,11 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
+[OrderProcessor(typeof(OrderForceUnlockTechnology), "ForceUnlockTechnology")]
+[OrderProcessor(typeof(OrderCancelResearch), "CancelResearch")]
 [OrderProcessor(typeof(OrderBuyOutTechnology), "BuyOutTechnology")]
 [OrderProcessor(typeof(OrderUnlockTechnologyByInfiltration), "UnlockTechnologyByInfiltration")]
-[OrderProcessor(typeof(OrderCancelResearch), "CancelResearch")]
 [OrderProcessor(typeof(OrderQueueResearch), "QueueResearch")]
-[OrderProcessor(typeof(OrderForceUnlockTechnology), "ForceUnlockTechnology")]
 public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSerializable
 {
 	public DepartmentOfScience(global::Empire empire) : base(empire)
@@ -243,6 +243,21 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				}
 			}
 		}
+	}
+
+	public static DepartmentOfScience.ConstructibleElement.State GetTechnologyState(global::Empire empire, StaticString technologyDefinitionName)
+	{
+		DepartmentOfScience agency = empire.GetAgency<DepartmentOfScience>();
+		if (agency != null)
+		{
+			return agency.GetTechnologyState(technologyDefinitionName);
+		}
+		return DepartmentOfScience.ConstructibleElement.State.NotAvailable;
+	}
+
+	public static bool IsTechnologyResearched(global::Empire empire, StaticString technologyDefinitionName)
+	{
+		return DepartmentOfScience.GetTechnologyState(empire, technologyDefinitionName) == DepartmentOfScience.ConstructibleElement.State.Researched;
 	}
 
 	public bool CanBribe()
@@ -752,14 +767,9 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			Diagnostics.LogError("Order preprocessing failed because the target game entity is not a Construction.");
 			return false;
 		}
-		ConstructionQueue constructionQueue = this.ResearchQueue;
-		TechnologyDefinition technologyDefinition = construction.ConstructibleElement as TechnologyDefinition;
-		if (technologyDefinition != null && technologyDefinition.HasTechnologyFlag(DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock))
-		{
-			constructionQueue = this.OrbUnlockQueue;
-		}
-		Diagnostics.Assert(constructionQueue != null);
-		if (!constructionQueue.Contains(construction))
+		ConstructionQueue constructionQueueForTech = this.GetConstructionQueueForTech(construction.ConstructibleElement as TechnologyDefinition);
+		Diagnostics.Assert(constructionQueueForTech != null);
+		if (!constructionQueueForTech.Contains(construction))
 		{
 			Diagnostics.LogError("Order preprocessing failed because the context construction queue does not contains the construction.");
 			return false;
@@ -807,12 +817,7 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				}
 			}
 		}
-		ConstructionQueue selectedQueue = this.ResearchQueue;
-		TechnologyDefinition technologyDefinition = construction.ConstructibleElement as TechnologyDefinition;
-		if (technologyDefinition != null && technologyDefinition.HasTechnologyFlag(DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock))
-		{
-			selectedQueue = this.OrbUnlockQueue;
-		}
+		ConstructionQueue selectedQueue = this.GetConstructionQueueForTech(construction.ConstructibleElement as TechnologyDefinition);
 		Diagnostics.Assert(selectedQueue != null);
 		selectedQueue.Remove(construction);
 		this.OnResearchQueueChanged(construction, ConstructionChangeEventAction.Cancelled);
@@ -974,7 +979,8 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 		Diagnostics.Assert(constructibleElement != null);
 		global::Empire empire = base.Empire as global::Empire;
-		DepartmentOfScience.ConstructibleElement.State technologyState = empire.GetAgency<DepartmentOfScience>().GetTechnologyState(constructibleElement);
+		DepartmentOfScience departmentOfScience = empire.GetAgency<DepartmentOfScience>();
+		DepartmentOfScience.ConstructibleElement.State technologyState = departmentOfScience.GetTechnologyState(constructibleElement);
 		if (technologyState != DepartmentOfScience.ConstructibleElement.State.Available)
 		{
 			Diagnostics.LogError("Skipping queue construction process because the constructible element {0} is not available ({1}).", new object[]
@@ -990,47 +996,41 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		{
 			Diagnostics.Assert(empire != null && empire.Faction != null && empire.Faction.AffinityMapping != null);
 			construction = new Construction(constructibleElement, order.ConstructionGameEntityGUID, empire.Faction.AffinityMapping.Name, empire);
-			IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
-			SimulationDescriptor descriptor;
-			if (database != null && database.TryGetValue("ClassConstruction", out descriptor))
+			IDatabase<SimulationDescriptor> simulationDescriptorDatatable = Databases.GetDatabase<SimulationDescriptor>(false);
+			SimulationDescriptor classImprovementDescriptor;
+			if (simulationDescriptorDatatable != null && simulationDescriptorDatatable.TryGetValue("ClassConstruction", out classImprovementDescriptor))
 			{
-				construction.AddDescriptor(descriptor, false);
+				construction.AddDescriptor(classImprovementDescriptor, false);
 			}
 		}
 		Diagnostics.Assert(this.departmentOfTheTreasury != null);
-		if (constructibleElement.Costs != null && constructibleElement.Costs.Length != 0)
+		if (constructibleElement.Costs != null && constructibleElement.Costs.Length > 0)
 		{
 			Diagnostics.Assert(construction.CurrentConstructionStock != null && construction.CurrentConstructionStock.Length == constructibleElement.Costs.Length);
 			Diagnostics.Assert(order.ResourceStocks != null && order.ResourceStocks.Length == constructibleElement.Costs.Length);
-			for (int i = 0; i < constructibleElement.Costs.Length; i++)
+			for (int index = 0; index < constructibleElement.Costs.Length; index++)
 			{
-				Diagnostics.Assert(constructibleElement.Costs[i] != null);
-				Diagnostics.Assert(construction.CurrentConstructionStock[i] != null);
-				Diagnostics.Assert(order.ResourceStocks[i] != null);
-				construction.CurrentConstructionStock[i].Stock = order.ResourceStocks[i].Stock;
-				if (constructibleElement.Costs[i].Instant && order.ResourceStocks[i].Stock > 0f && !this.departmentOfTheTreasury.TryTransferResources(base.Empire.SimulationObject, constructibleElement.Costs[i].ResourceName, -order.ResourceStocks[i].Stock))
+				Diagnostics.Assert(constructibleElement.Costs[index] != null);
+				Diagnostics.Assert(construction.CurrentConstructionStock[index] != null);
+				Diagnostics.Assert(order.ResourceStocks[index] != null);
+				construction.CurrentConstructionStock[index].Stock = order.ResourceStocks[index].Stock;
+				if (constructibleElement.Costs[index].Instant)
 				{
-					Diagnostics.LogError("Order preprocessing failed because the constructible element '{0}' ask for instant resource '{1}' that can't be retrieve.", new object[]
+					if (order.ResourceStocks[index].Stock > 0f && !this.departmentOfTheTreasury.TryTransferResources(base.Empire.SimulationObject, constructibleElement.Costs[index].ResourceName, -order.ResourceStocks[index].Stock))
 					{
-						constructibleElement.Name,
-						constructibleElement.Costs[i].ResourceName
-					});
-					yield break;
+						Diagnostics.LogError("Order preprocessing failed because the constructible element '{0}' ask for instant resource '{1}' that can't be retrieve.", new object[]
+						{
+							constructibleElement.Name,
+							constructibleElement.Costs[index].ResourceName
+						});
+						yield break;
+					}
 				}
 			}
 		}
-		ConstructionQueue constructionQueue = this.ResearchQueue;
-		TechnologyDefinition technologyDefinition = construction.ConstructibleElement as TechnologyDefinition;
-		if (technologyDefinition != null && technologyDefinition.HasTechnologyFlag(DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock))
-		{
-			constructionQueue = this.OrbUnlockQueue;
-		}
-		Diagnostics.Assert(constructionQueue != null);
-		constructionQueue.Enqueue(construction);
-		if (order.InsertAtFirstPlace && constructionQueue.Length > 1)
-		{
-			constructionQueue.Move(construction, 0);
-		}
+		ConstructionQueue selectedQueue = this.GetConstructionQueueForTech(construction.ConstructibleElement as TechnologyDefinition);
+		Diagnostics.Assert(selectedQueue != null);
+		selectedQueue.Enqueue(construction);
 		Diagnostics.Assert(this.researchInProgress != null);
 		if (!this.researchInProgress.Any((Construction match) => match.GUID == construction.GUID))
 		{
@@ -1167,23 +1167,18 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		{
 			throw new ArgumentNullException("technology");
 		}
-		ConstructionQueue constructionQueue = this.ResearchQueue;
-		TechnologyDefinition technologyDefinition = technology as TechnologyDefinition;
-		if (technologyDefinition != null && technologyDefinition.HasTechnologyFlag(DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock))
-		{
-			constructionQueue = this.OrbUnlockQueue;
-		}
+		ConstructionQueue constructionQueueForTech = this.GetConstructionQueueForTech(technology as TechnologyDefinition);
 		if (technology.IsResearched(this.researchSimulationObjectWrapper))
 		{
 			return DepartmentOfScience.ConstructibleElement.State.Researched;
 		}
-		Diagnostics.Assert(constructionQueue != null);
-		Construction construction = constructionQueue.Peek();
+		Diagnostics.Assert(constructionQueueForTech != null);
+		Construction construction = constructionQueueForTech.Peek();
 		if (construction != null && construction.ConstructibleElement.Name == technology.Name)
 		{
 			return DepartmentOfScience.ConstructibleElement.State.InProgress;
 		}
-		if (constructionQueue.Contains(technology))
+		if (constructionQueueForTech.Contains(technology))
 		{
 			return DepartmentOfScience.ConstructibleElement.State.Queued;
 		}
@@ -1222,12 +1217,7 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		{
 			return;
 		}
-		ConstructionQueue constructionQueue = this.ResearchQueue;
-		TechnologyDefinition technologyDefinition = technology as TechnologyDefinition;
-		if (technologyDefinition != null && technologyDefinition.HasTechnologyFlag(DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock))
-		{
-			constructionQueue = this.OrbUnlockQueue;
-		}
+		ConstructionQueue constructionQueueForTech = this.GetConstructionQueueForTech(technology as TechnologyDefinition);
 		Diagnostics.Assert(this.simulationDescriptorsDatatable != null);
 		foreach (SimulationDescriptorReference reference in simulationDescriptorReferences)
 		{
@@ -1242,9 +1232,9 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		{
 			this.CurrentTechnologyEraNumber = Math.Max(this.CurrentTechnologyEraNumber, (technology as TechnologyEraDefinition).TechnologyEraNumber);
 		}
-		if (constructionQueue.Contains(technology))
+		if (constructionQueueForTech.Contains(technology))
 		{
-			constructionQueue.Remove(technology);
+			constructionQueueForTech.Remove(technology);
 		}
 		Diagnostics.Assert(this.researchInProgress != null);
 		this.researchInProgress.RemoveAll((Construction match) => match.ConstructibleElement.Name == technology.Name);
@@ -1252,6 +1242,16 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		base.Empire.Refresh(false);
 		this.OnTechnologyUnlocked(technology, silent);
 		this.CheckErasUnlock(false);
+	}
+
+	public ConstructionQueue GetConstructionQueueForTech(TechnologyDefinition technologyDefinition)
+	{
+		ConstructionQueue result = this.ResearchQueue;
+		if (technologyDefinition != null && technologyDefinition.HasTechnologyFlag(DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock))
+		{
+			result = this.OrbUnlockQueue;
+		}
+		return result;
 	}
 
 	protected override IEnumerator OnInitialize()
@@ -1941,7 +1941,8 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			Available,
 			Queued,
 			InProgress,
-			Researched
+			Researched,
+			ResearchedButUnavailable
 		}
 
 		[Flags]
@@ -1951,7 +1952,8 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			Quest = 2,
 			Medal = 4,
 			Unique = 8,
-			OrbUnlock = 16
+			OrbUnlock = 16,
+			KaijuUnlock = 32
 		}
 	}
 

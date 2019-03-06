@@ -7,7 +7,6 @@ public class OrderEditHeroUnitDesign : OrderEditUnitDesign
 {
 	public OrderEditHeroUnitDesign(int empireIndex, UnitDesign unitDesign) : base(empireIndex, unitDesign)
 	{
-		this.ForceEdit = false;
 	}
 
 	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByServerPreprocessor)]
@@ -55,19 +54,5 @@ public class OrderEditHeroUnitDesign : OrderEditUnitDesign
 		}
 	}
 
-	public bool ForceEdit
-	{
-		get
-		{
-			return this.forceEdit;
-		}
-		set
-		{
-			this.forceEdit = value;
-		}
-	}
-
 	public new static StaticString AuthenticationPath = "DepartmentOfDefense/OrderEditHeroUnitDesign";
-
-	private bool forceEdit;
 }

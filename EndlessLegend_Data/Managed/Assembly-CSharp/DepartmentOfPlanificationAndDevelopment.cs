@@ -17,17 +17,18 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderBuyoutAndActivateBooster), "BuyoutAndActivateBooster")]
-[OrderProcessor(typeof(OrderBuyoutTradableUnit), "BuyoutTradable")]
-[OrderProcessor(typeof(OrderBuyoutAndActivateBoosterByInfiltration), "BuyoutAndActivateBoosterByInfiltration")]
-[OrderProcessor(typeof(OrderSelloutTradableBooster), "SelloutTradableBooster")]
+[OrderProcessor(typeof(OrderSwitchCheatMode), "SwitchCheatMode")]
 [OrderProcessor(typeof(OrderSelloutTradableHero), "SelloutTradableHero")]
+[OrderProcessor(typeof(OrderBuyoutAndActivateBooster), "BuyoutAndActivateBooster")]
+[OrderProcessor(typeof(OrderBuyoutAndActivateBoosterThroughArmy), "BuyoutAndActivateBoosterThroughArmy")]
+[OrderProcessor(typeof(OrderIntegrateFaction), "IntegrateFaction")]
+[OrderProcessor(typeof(OrderBuyoutTradableUnit), "BuyoutTradable")]
 [OrderProcessor(typeof(OrderSelloutTradableResource), "SelloutTradableResource")]
+[OrderProcessor(typeof(OrderBuyoutTradable), "BuyoutTradable")]
+[OrderProcessor(typeof(OrderBuyoutAndActivateBoosterByInfiltration), "BuyoutAndActivateBoosterByInfiltration")]
 [OrderProcessor(typeof(OrderSelloutTradableUnits), "SelloutTradableUnits")]
 [OrderProcessor(typeof(OrderChangeEmpirePlan), "ChangeEmpirePlan")]
-[OrderProcessor(typeof(OrderBuyoutTradable), "BuyoutTradable")]
-[OrderProcessor(typeof(OrderBuyoutAndActivateBoosterThroughArmy), "BuyoutAndActivateBoosterThroughArmy")]
-[OrderProcessor(typeof(OrderSwitchCheatMode), "SwitchCheatMode")]
+[OrderProcessor(typeof(OrderSelloutTradableBooster), "SelloutTradableBooster")]
 public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable, IEmpirePlanProvider
 {
 	public DepartmentOfPlanificationAndDevelopment(global::Empire empire) : base(empire)
@@ -59,12 +60,9 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			throw new ArgumentNullException("boosterDefinition");
 		}
 		float duration = boosterDefinition.GetDuration(context);
-		float num = empire.GetPropertyValue(SimulationProperties.BoosterDurationMultiplier);
-		if (boosterDefinition.ToString().Contains("Luxury"))
-		{
-			num *= empire.GetPropertyValue(SimulationProperties.AllayiBoosterDurationMultiplier);
-		}
-		return Mathf.Max(Mathf.RoundToInt(duration * num), 1);
+		float propertyValue = empire.GetPropertyValue(SimulationProperties.BoosterDurationMultiplier);
+		int a = Mathf.RoundToInt(duration * propertyValue);
+		return Mathf.Max(a, 1);
 	}
 
 	public void ActivateBooster(BoosterDefinition boosterDefinition, GameEntityGUID boosterGuid, int boosterDuration, SimulationObjectWrapper context, GameEntityGUID targetGuid, int instigatorEmpireIndex)
@@ -395,6 +393,25 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		return list.ToArray();
 	}
 
+	public bool HasIntegratedFaction(Faction faction)
+	{
+		if (faction == null || faction.Affinity == null)
+		{
+			return false;
+		}
+		StaticString staticString = faction.Affinity.Name;
+		if (staticString.Equals(new StaticString("AffinityMezari")))
+		{
+			staticString = new StaticString("AffinityVaulters");
+		}
+		return this.integratedAffinities.Contains(staticString);
+	}
+
+	public int IntegratedFactionsCount()
+	{
+		return this.integratedAffinities.Count;
+	}
+
 	public IEnumerable<EmpirePlanDefinition> GetUnlockedEmpirePlanForEra(StaticString empirePlanClass)
 	{
 		int empirePlanAvailableLevel = this.GetEmpirePlanAvailableLevel(empirePlanClass);
@@ -517,11 +534,23 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			}
 			reader.ReadEndElement("Statistics");
 		}
+		if (num >= 7)
+		{
+			int attribute6 = reader.GetAttribute<int>("Count");
+			reader.ReadStartElement("IntegratedAffinities");
+			for (int l = 0; l < attribute6; l++)
+			{
+				StaticString item2 = new StaticString(reader.GetAttribute("AffinityName"));
+				this.integratedAffinities.Add(item2);
+				reader.Skip("IntegratedAffinity");
+			}
+			reader.ReadEndElement("IntegratedAffinities");
+		}
 	}
 
 	public override void WriteXml(XmlWriter writer)
 	{
-		int num = writer.WriteVersionAttribute(6);
+		int num = writer.WriteVersionAttribute(7);
 		writer.WriteAttributeString<int>("TurnWithoutPillar", this.turnWithoutPillar);
 		base.WriteXml(writer);
 		writer.WriteStartElement("EmpirePlans");
@@ -580,6 +609,15 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		writer.WriteElementString<int>("StatPeaceDeclarations", this.StatPeaceDeclarations);
 		writer.WriteElementString<int>("StatQuestCompleted", this.StatQuestCompleted);
 		writer.WriteElementString<float>("StatDustSpentMarket", this.StatDustSpentMarket);
+		writer.WriteEndElement();
+		writer.WriteStartElement("IntegratedAffinities");
+		writer.WriteAttributeString<int>("Count", this.integratedAffinities.Count);
+		for (int i = 0; i < this.integratedAffinities.Count; i++)
+		{
+			writer.WriteStartElement("IntegratedAffinity");
+			writer.WriteAttributeString("AffinityName", this.integratedAffinities[i].ToString());
+			writer.WriteEndElement();
+		}
 		writer.WriteEndElement();
 	}
 
@@ -1656,6 +1694,93 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		yield break;
 	}
 
+	private bool IntegrateFactionPreprocessor(OrderIntegrateFaction order)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		if (service == null || service.Game == null || !(service.Game is global::Game))
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Game Service is not valid.");
+			return false;
+		}
+		global::Game game = service.Game as global::Game;
+		global::Empire empireByIndex = game.GetEmpireByIndex(order.IntegratingEmpireIndex);
+		if (empireByIndex == null)
+		{
+			Diagnostics.LogError("Order prepreprocessor failed because the integrating Empire could not be retrieved.");
+			return false;
+		}
+		Faction faction = empireByIndex.Faction;
+		if (faction == null)
+		{
+			Diagnostics.LogError("Order preprocessor failed because the integrating Faction could not be retrieved.");
+			return false;
+		}
+		if (this.HasIntegratedFaction(faction))
+		{
+			return false;
+		}
+		int integrationDescriptorsCount = faction.GetIntegrationDescriptorsCount();
+		if (integrationDescriptorsCount <= 0)
+		{
+			return false;
+		}
+		List<string> list = new List<string>();
+		foreach (SimulationDescriptor simulationDescriptor in faction.GetIntegrationDescriptors())
+		{
+			if (!base.Empire.SimulationObject.Tags.Contains(simulationDescriptor.Name))
+			{
+				list.Add(simulationDescriptor.Name);
+			}
+		}
+		if (list.Count > 0)
+		{
+			order.IntegrationDescriptors = list.ToArray();
+			return true;
+		}
+		return false;
+	}
+
+	private IEnumerator IntegrateFactionProcessor(OrderIntegrateFaction order)
+	{
+		IGameService gameService = Services.GetService<IGameService>();
+		if (gameService == null || gameService.Game == null || !(gameService.Game is global::Game))
+		{
+			Diagnostics.LogError("Order processor failed because the Game Service is not valid.");
+			yield break;
+		}
+		global::Game game = gameService.Game as global::Game;
+		global::Empire integratingEmpire = game.GetEmpireByIndex(order.IntegratingEmpireIndex);
+		if (integratingEmpire == null)
+		{
+			Diagnostics.LogError("Order processor failed because the integrating Empire could not be retrieved.");
+			yield break;
+		}
+		Faction integratingFaction = integratingEmpire.Faction;
+		if (integratingFaction == null)
+		{
+			Diagnostics.LogError("Order processor failed because the integrating Faction could not be retrieved.");
+			yield break;
+		}
+		for (int descriptorIndex = 0; descriptorIndex < order.IntegrationDescriptors.Length; descriptorIndex++)
+		{
+			SimulationDescriptor descriptor = null;
+			if (this.simulationDescriptorDatabase.TryGetValue(order.IntegrationDescriptors[descriptorIndex], out descriptor))
+			{
+				base.Empire.AddDescriptor(descriptor, false);
+			}
+		}
+		StaticString integratingAffinityName = integratingFaction.Affinity.Name;
+		if (integratingAffinityName.Equals(new StaticString("AffinityMezari")))
+		{
+			integratingAffinityName = new StaticString("AffinityVaulters");
+		}
+		this.integratedAffinities.Add(integratingAffinityName);
+		base.Empire.SetPropertyBaseValue("IntegratedMajorFactionCount", (float)this.integratedAffinities.Count);
+		base.Empire.Refresh(false);
+		this.eventService.Notify(new EventFactionIntegrated(base.Empire, integratingEmpire, order.IntegrationDescriptors));
+		yield break;
+	}
+
 	private bool SelloutTradableBoosterPreprocessor(OrderSelloutTradableBooster order)
 	{
 		if (order == null)
@@ -2054,7 +2179,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 						{
 							if (garrison.IsEmpty)
 							{
-								departmentOfDefense.RemoveArmy(garrison as Army);
+								departmentOfDefense.RemoveArmy(garrison as Army, true);
 								if (besiegingSeafaringArmies != null)
 								{
 									besiegingSeafaringArmies.Remove(garrison as Army);
@@ -2256,6 +2381,11 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		return this.boosters.Values.ToArray<Booster>();
 	}
 
+	public SimulationDescriptor[] GetActiveFactionIntegrationDescriptors()
+	{
+		return base.Empire.GetDescriptorsFromType(DepartmentOfPlanificationAndDevelopment.FactionIntegrationDescriptorType);
+	}
+
 	public bool IsThereSomeActiveStrategicResourceBooster()
 	{
 		foreach (Booster booster in this.boosters.Values)
@@ -2307,7 +2437,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 	{
 		yield return base.OnInitialize();
 		this.EmpirePlanChoiceRemainingTurn = int.MaxValue;
-		this.simulationDescriptorsDatatable = Databases.GetDatabase<SimulationDescriptor>(false);
+		this.simulationDescriptorDatabase = Databases.GetDatabase<SimulationDescriptor>(false);
 		this.empirePlanDatabase = Databases.GetDatabase<DepartmentOfPlanificationAndDevelopment.ConstructibleElement>(false);
 		this.departmentOfTheTreasury = base.Empire.GetAgency<DepartmentOfTheTreasury>();
 		Diagnostics.Assert(this.departmentOfTheTreasury != null);
@@ -2360,14 +2490,14 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			"CollectResources"
 		});
 		this.empirePlanSimulationWrapper = new SimulationObjectWrapper("EmpirePlan");
-		Diagnostics.Assert(this.simulationDescriptorsDatatable != null);
+		Diagnostics.Assert(this.simulationDescriptorDatabase != null);
 		SimulationDescriptor descriptor;
-		if (!this.simulationDescriptorsDatatable.TryGetValue("ClassEmpirePlan", out descriptor))
+		if (!this.simulationDescriptorDatabase.TryGetValue("ClassEmpirePlan", out descriptor))
 		{
 			Diagnostics.LogError("Can't found Class Empire Plan descriptor.");
 		}
 		this.empirePlanSimulationWrapper.AddDescriptor(descriptor, false);
-		if (!this.simulationDescriptorsDatatable.TryGetValue("ClassTimedBonus", out descriptor))
+		if (!this.simulationDescriptorDatabase.TryGetValue("ClassTimedBonus", out descriptor))
 		{
 			Diagnostics.LogError("Can't found Class Timed bonus descriptor.");
 		}
@@ -2515,7 +2645,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			this.empirePlanQueue.Dispose();
 			this.empirePlanQueue = null;
 		}
-		this.simulationDescriptorsDatatable = null;
+		this.simulationDescriptorDatabase = null;
 		this.empirePlanDatabase = null;
 		this.eventService = null;
 		this.gameEntityRepositoryService = null;
@@ -2570,7 +2700,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 							tradeRoute.SimulationObject.RemoveDescriptorByName(TradeRoute.TradeRouteStatusSiegeBlocked);
 							flag2 &= this.CheckWhetherTradeRouteIsRealyAffectedBySiege(eventCitySiegeUpdate.City);
 							SimulationDescriptor descriptor;
-							if (flag2 && eventCitySiegeUpdate.City.BesiegingEmpireIndex != -1 && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusSiegeBlocked, out descriptor))
+							if (flag2 && eventCitySiegeUpdate.City.BesiegingEmpireIndex != -1 && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusSiegeBlocked, out descriptor))
 							{
 								tradeRoute.SimulationObject.AddDescriptor(descriptor);
 							}
@@ -2623,7 +2753,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					if (flag4)
 					{
 						SimulationDescriptor descriptor2;
-						if (tradeRoute2.SimulationObject != null && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusBroken, out descriptor2) && !tradeRoute2.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusBroken))
+						if (tradeRoute2.SimulationObject != null && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusBroken, out descriptor2) && !tradeRoute2.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusBroken))
 						{
 							tradeRoute2.SimulationObject.AddDescriptor(descriptor2);
 							tradeRoute2.SimulationObject.Refresh();
@@ -2690,7 +2820,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					if (flag7)
 					{
 						SimulationDescriptor descriptor3;
-						if (tradeRoute3.SimulationObject != null && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out descriptor3) && !tradeRoute3.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked))
+						if (tradeRoute3.SimulationObject != null && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out descriptor3) && !tradeRoute3.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked))
 						{
 							tradeRoute3.SimulationObject.AddDescriptor(descriptor3);
 							tradeRoute3.SimulationObject.Refresh();
@@ -2804,7 +2934,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					if (flag11)
 					{
 						SimulationDescriptor descriptor4;
-						if (tradeRoute4.SimulationObject != null && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out descriptor4) && !tradeRoute4.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked))
+						if (tradeRoute4.SimulationObject != null && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out descriptor4) && !tradeRoute4.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked))
 						{
 							tradeRoute4.SimulationObject.AddDescriptor(descriptor4);
 							tradeRoute4.SimulationObject.Refresh();
@@ -2890,7 +3020,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 						if (flag15)
 						{
 							SimulationDescriptor descriptor5;
-							if (tradeRoute5.SimulationObject != null && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out descriptor5) && !tradeRoute5.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked))
+							if (tradeRoute5.SimulationObject != null && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out descriptor5) && !tradeRoute5.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked))
 							{
 								tradeRoute5.SimulationObject.AddDescriptor(descriptor5);
 								tradeRoute5.SimulationObject.Refresh();
@@ -2945,7 +3075,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					if (flag19)
 					{
 						SimulationDescriptor descriptor6;
-						if (tradeRoute6.SimulationObject != null && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out descriptor6) && !tradeRoute6.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked))
+						if (tradeRoute6.SimulationObject != null && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out descriptor6) && !tradeRoute6.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked))
 						{
 							tradeRoute6.SimulationObject.AddDescriptor(descriptor6);
 							tradeRoute6.SimulationObject.Refresh();
@@ -3030,7 +3160,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 				string otherName = "TradeRoute#" + objects.Count;
 				SimulationObject other = new SimulationObject(otherName);
 				SimulationDescriptor simulationDescriptor;
-				if (this.simulationDescriptorsDatatable.TryGetValue("ClassTradeRoute", out simulationDescriptor))
+				if (this.simulationDescriptorDatabase.TryGetValue("ClassTradeRoute", out simulationDescriptor))
 				{
 					other.AddDescriptor(simulationDescriptor);
 				}
@@ -3071,22 +3201,22 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 				bool tradeRouteIsAffectedBySiege = false;
 				bool tradeRouteIsAffectedByDiplomaticRelation = false;
 				SimulationDescriptor simulationDescriptor2;
-				if ((tradeRoute.PathfindingMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteMovementCapacityGround, out simulationDescriptor2))
+				if ((tradeRoute.PathfindingMovementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.Ground && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteMovementCapacityGround, out simulationDescriptor2))
 				{
 					tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor2);
 				}
 				SimulationDescriptor simulationDescriptor3;
-				if ((tradeRoute.PathfindingMovementCapacity & PathfindingMovementCapacity.Water) == PathfindingMovementCapacity.Water && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteMovementCapacityWater, out simulationDescriptor3))
+				if ((tradeRoute.PathfindingMovementCapacity & PathfindingMovementCapacity.Water) == PathfindingMovementCapacity.Water && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteMovementCapacityWater, out simulationDescriptor3))
 				{
 					tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor3);
 				}
 				SimulationDescriptor simulationDescriptor4;
-				if ((tradeRoute.TradeRouteFlags & TradeRouteFlags.PassingThroughOceanicRegionOfMine) == TradeRouteFlags.PassingThroughOceanicRegionOfMine && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRoutePassingThroughOceanicRegionOfMine, out simulationDescriptor4))
+				if ((tradeRoute.TradeRouteFlags & TradeRouteFlags.PassingThroughOceanicRegionOfMine) == TradeRouteFlags.PassingThroughOceanicRegionOfMine && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRoutePassingThroughOceanicRegionOfMine, out simulationDescriptor4))
 				{
 					tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor4);
 				}
 				SimulationDescriptor simulationDescriptor5;
-				if ((tradeRoute.TradeRouteFlags & TradeRouteFlags.PassingThroughOceanicRegionOfSomeAllyOfMine) == TradeRouteFlags.PassingThroughOceanicRegionOfSomeAllyOfMine && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRoutePassingThroughOceanicRegionOfSomeAllyOfMine, out simulationDescriptor5))
+				if ((tradeRoute.TradeRouteFlags & TradeRouteFlags.PassingThroughOceanicRegionOfSomeAllyOfMine) == TradeRouteFlags.PassingThroughOceanicRegionOfSomeAllyOfMine && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRoutePassingThroughOceanicRegionOfSomeAllyOfMine, out simulationDescriptor5))
 				{
 					tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor5);
 				}
@@ -3132,7 +3262,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 							}
 						}
 						SimulationDescriptor simulationDescriptor6;
-						if (tradeRouteIsAffectedBySiege && !tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusSiegeBlocked) && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusSiegeBlocked, out simulationDescriptor6))
+						if (tradeRouteIsAffectedBySiege && !tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusSiegeBlocked) && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusSiegeBlocked, out simulationDescriptor6))
 						{
 							tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor6);
 						}
@@ -3152,7 +3282,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 							}
 						}
 						SimulationDescriptor simulationDescriptor7;
-						if (tradeRouteIsAffectedByDiplomaticRelation && !tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked) && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out simulationDescriptor7))
+						if (tradeRouteIsAffectedByDiplomaticRelation && !tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusRelationBlocked) && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusRelationBlocked, out simulationDescriptor7))
 						{
 							tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor7);
 						}
@@ -3167,7 +3297,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					if (!tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteStatusBroken))
 					{
 						SimulationDescriptor simulationDescriptor8;
-						if (this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteStatusBroken, out simulationDescriptor8))
+						if (this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteStatusBroken, out simulationDescriptor8))
 						{
 							tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor8);
 						}
@@ -3184,7 +3314,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					if (commercialAgreement)
 					{
 						SimulationDescriptor simulationDescriptor9;
-						if (!tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteCommercialAgreement) && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteCommercialAgreement, out simulationDescriptor9))
+						if (!tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteCommercialAgreement) && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteCommercialAgreement, out simulationDescriptor9))
 						{
 							tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor9);
 						}
@@ -3200,7 +3330,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					if (researchAgreement)
 					{
 						SimulationDescriptor simulationDescriptor10;
-						if (!tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteResearchAgreement) && this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRouteResearchAgreement, out simulationDescriptor10))
+						if (!tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRouteResearchAgreement) && this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRouteResearchAgreement, out simulationDescriptor10))
 						{
 							tradeRoute.SimulationObject.AddDescriptor(simulationDescriptor10);
 						}
@@ -3259,7 +3389,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			Diagnostics.Assert(city.TradeRoutes.Count == 0, "Trade routes must have been cleared at the end of the previous turn, or musn't they?");
 			Diagnostics.Assert(city.CadastralMap != null);
 			city.TradeRoutes.Clear();
-			if (city.CadastralMap.ConnectedMovementCapacity != PathfindingMovementCapacity.None)
+			if (city.IsInfected || city.CadastralMap.ConnectedMovementCapacity != PathfindingMovementCapacity.None)
 			{
 				if (city.BesiegingEmpireIndex != -1)
 				{
@@ -3316,7 +3446,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 										{
 											regionCanBeTraversed = false;
 										}
-										else if (toRegion.City.CadastralMap.ConnectedMovementCapacity == PathfindingMovementCapacity.None)
+										else if (!toRegion.City.IsInfected && toRegion.City.CadastralMap.ConnectedMovementCapacity == PathfindingMovementCapacity.None)
 										{
 											regionCanBeTraversed = false;
 										}
@@ -3385,7 +3515,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 											{
 												openListOfRegions.Add(toRegion);
 											}
-											TradeRoute tradeRoute4 = new TradeRoute
+											TradeRoute tradeRoute = new TradeRoute
 											{
 												Distance = 0,
 												IntermediateRegions = new List<short>(),
@@ -3395,26 +3525,26 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 											};
 											if (existingTradeRouteFromRegion != null)
 											{
-												TradeRoute tradeRoute2 = tradeRoute4;
+												TradeRoute tradeRoute2 = tradeRoute;
 												tradeRoute2.Distance += existingTradeRouteFromRegion.Distance;
-												tradeRoute4.IntermediateRegions.AddRange(existingTradeRouteFromRegion.IntermediateRegions);
-												tradeRoute4.IntermediateRegionsOfTypeOceanic.AddRange(existingTradeRouteFromRegion.IntermediateRegionsOfTypeOceanic);
-												tradeRoute4.TradeRouteFlags |= existingTradeRouteFromRegion.TradeRouteFlags;
+												tradeRoute.IntermediateRegions.AddRange(existingTradeRouteFromRegion.IntermediateRegions);
+												tradeRoute.IntermediateRegionsOfTypeOceanic.AddRange(existingTradeRouteFromRegion.IntermediateRegionsOfTypeOceanic);
+												tradeRoute.TradeRouteFlags |= existingTradeRouteFromRegion.TradeRouteFlags;
 											}
-											TradeRoute tradeRoute3 = tradeRoute4;
+											TradeRoute tradeRoute3 = tradeRoute;
 											tradeRoute3.Distance += (short)road.WorldPositions.Length;
-											tradeRoute4.IntermediateRegions.Add(toRegionIndex);
-											tradeRoute4.IntermediateRegionsOfTypeOceanic.AddRange(intermediateRegionsOfTypeOceanic);
-											tradeRoute4.TradeRouteFlags |= tradeRouteFlags;
-											tradeRoute4.PathfindingMovementCapacity |= road.PathfindingMovementCapacity;
+											tradeRoute.IntermediateRegions.Add(toRegionIndex);
+											tradeRoute.IntermediateRegionsOfTypeOceanic.AddRange(intermediateRegionsOfTypeOceanic);
+											tradeRoute.TradeRouteFlags |= tradeRouteFlags;
+											tradeRoute.PathfindingMovementCapacity |= road.PathfindingMovementCapacity;
 											int existingTradeRouteToRegionIndex = -1;
 											for (int index2 = 0; index2 < existingTradeRoutes.Count; index2++)
 											{
 												if (existingTradeRoutes[index2].ToRegionIndex == toRegionIndex)
 												{
-													if (existingTradeRoutes[index2].Distance < tradeRoute4.Distance)
+													if (existingTradeRoutes[index2].Distance < tradeRoute.Distance)
 													{
-														existingTradeRoutes[index2] = tradeRoute4;
+														existingTradeRoutes[index2] = tradeRoute;
 													}
 													existingTradeRouteToRegionIndex = index2;
 													break;
@@ -3422,7 +3552,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 											}
 											if (existingTradeRouteToRegionIndex == -1)
 											{
-												existingTradeRoutes.Add(tradeRoute4);
+												existingTradeRoutes.Add(tradeRoute);
 											}
 										}
 									}
@@ -3432,16 +3562,31 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 							openListOfRegions.Clear();
 						}
 					}
-					int empireBit = 1 << base.Empire.Index;
-					existingTradeRoutes.RemoveAll(delegate(TradeRoute tradeRoute)
+					for (int routeIndex = existingTradeRoutes.Count - 1; routeIndex >= 0; routeIndex--)
 					{
-						Region region2 = worldPositionningService.GetRegion((int)tradeRoute.ToRegionIndex);
-						return (worldPositionningService.GetExplorationBits(region2.City.WorldPosition) & empireBit) == 0;
-					});
+						TradeRoute route = existingTradeRoutes[routeIndex];
+						Region toRegion2 = worldPositionningService.GetRegion((int)route.ToRegionIndex);
+						if ((worldPositionningService.GetExplorationBits(toRegion2.City.WorldPosition) & 1 << base.Empire.Index) == 0)
+						{
+							existingTradeRoutes.RemoveAt(routeIndex);
+						}
+						else if (toRegion2.City.IsInfected)
+						{
+							existingTradeRoutes.RemoveAt(routeIndex);
+						}
+					}
 					existingTradeRoutes.Sort(new DepartmentOfPlanificationAndDevelopment.TradeRouteComparer());
 					city.TradeRoutes = existingTradeRoutes.Take(maximumNumberOfTradeRoutes).ToList<TradeRoute>();
 					this.OnTradeRouteChanged(null);
 				}
+			}
+		}
+		for (int cityIndex = 0; cityIndex < this.departmentOfTheInterior.Cities.Count; cityIndex++)
+		{
+			City city2 = this.departmentOfTheInterior.Cities[cityIndex];
+			if (city2.IsInfected)
+			{
+				city2.TradeRoutes = new List<TradeRoute>();
 			}
 		}
 		yield break;
@@ -4140,7 +4285,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 				if ((tradeRouteFlags & TradeRouteFlags.PassingThroughOceanicRegionOfMine) == TradeRouteFlags.PassingThroughOceanicRegionOfMine)
 				{
 					SimulationDescriptor descriptor;
-					if (this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRoutePassingThroughOceanicRegionOfMine, out descriptor) && !tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRoutePassingThroughOceanicRegionOfMine))
+					if (this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRoutePassingThroughOceanicRegionOfMine, out descriptor) && !tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRoutePassingThroughOceanicRegionOfMine))
 					{
 						tradeRoute.SimulationObject.AddDescriptor(descriptor);
 						tradeRoute.SimulationObject.Refresh();
@@ -4156,7 +4301,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 				if ((tradeRouteFlags & TradeRouteFlags.PassingThroughOceanicRegionOfSomeAllyOfMine) == TradeRouteFlags.PassingThroughOceanicRegionOfSomeAllyOfMine)
 				{
 					SimulationDescriptor descriptor;
-					if (this.simulationDescriptorsDatatable.TryGetValue(TradeRoute.TradeRoutePassingThroughOceanicRegionOfSomeAllyOfMine, out descriptor) && !tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRoutePassingThroughOceanicRegionOfSomeAllyOfMine))
+					if (this.simulationDescriptorDatabase.TryGetValue(TradeRoute.TradeRoutePassingThroughOceanicRegionOfSomeAllyOfMine, out descriptor) && !tradeRoute.SimulationObject.Tags.Contains(TradeRoute.TradeRoutePassingThroughOceanicRegionOfSomeAllyOfMine))
 					{
 						tradeRoute.SimulationObject.AddDescriptor(descriptor);
 						tradeRoute.SimulationObject.Refresh();
@@ -4180,6 +4325,8 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 
 	public static readonly StaticString AlternateEmpirePlan = new StaticString("AlternateEmpirePlan");
 
+	public static readonly StaticString FactionIntegrationDescriptorType = new StaticString("FactionIntegration");
+
 	private readonly Dictionary<StaticString, EmpirePlanDefinition[]> empirePlanDefinitionsByClass = new Dictionary<StaticString, EmpirePlanDefinition[]>();
 
 	private readonly Dictionary<StaticString, EmpirePlanDefinition> currentEmpirePlanDefinitionByClass = new Dictionary<StaticString, EmpirePlanDefinition>();
@@ -4202,6 +4349,8 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 
 	private SimulationObjectWrapper empirePlanSimulationWrapper;
 
+	private List<StaticString> integratedAffinities = new List<StaticString>();
+
 	private IGameEntityRepositoryService gameEntityRepositoryService;
 
 	private ITradeManagementService tradeManagementService;
@@ -4214,7 +4363,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 
 	private IDownloadableContentService downloadableContentService;
 
-	private IDatabase<SimulationDescriptor> simulationDescriptorsDatatable;
+	private IDatabase<SimulationDescriptor> simulationDescriptorDatabase;
 
 	private int empirePlanImminentNotificationTurnCount;
 

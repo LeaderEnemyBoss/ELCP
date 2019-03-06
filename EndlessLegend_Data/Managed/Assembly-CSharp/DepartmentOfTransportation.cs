@@ -10,22 +10,25 @@ using Amplitude.Unity.Game.Orders;
 using Amplitude.Unity.Input;
 using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
+using Amplitude.Unity.Simulation.Advanced;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
-[OrderProcessor(typeof(OrderGoToAndAttack), "GoToAndAttack")]
-[OrderProcessor(typeof(OrderCancelMove), "CancelMove")]
-[OrderProcessor(typeof(OrderTeleportArmyToCity), "TeleportArmyToCity")]
-[OrderProcessor(typeof(OrderGoTo), "GoTo")]
-[OrderProcessor(typeof(OrderGoToAndMerge), "GoToAndMerge")]
 [OrderProcessor(typeof(OrderTeleportArmy), "TeleportArmy")]
-[OrderProcessor(typeof(OrderGoToAndResettle), "OrderGoToAndResettle")]
-[OrderProcessor(typeof(OrderGoToAndTerraform), "OrderGoToAndTerraform")]
-[OrderProcessor(typeof(OrderGoToAndColonize), "OrderGoToAndColonize")]
+[OrderProcessor(typeof(OrderTeleportArmyToCity), "TeleportArmyToCity")]
 [OrderProcessor(typeof(OrderGoToAndExecute), "GoToAndExecute")]
-[OrderProcessor(typeof(OrderMoveTo), "MoveTo")]
+[OrderProcessor(typeof(OrderCancelMove), "CancelMove")]
 [OrderProcessor(typeof(OrderContinueGoToInstruction), "ContinueGoToInstruction")]
+[OrderProcessor(typeof(OrderFastTravel), "FastTravel")]
+[OrderProcessor(typeof(OrderGoToAndAttack), "GoToAndAttack")]
+[OrderProcessor(typeof(OrderGoToAndResettle), "OrderGoToAndResettle")]
+[OrderProcessor(typeof(OrderGoToAndSettleKaiju), "OrderGoToAndSettleKaiju")]
 [OrderProcessor(typeof(OrderResetGoToInstruction), "ResetGoToInstruction")]
+[OrderProcessor(typeof(OrderGoToAndTerraform), "OrderGoToAndTerraform")]
+[OrderProcessor(typeof(OrderGoTo), "GoTo")]
+[OrderProcessor(typeof(OrderMoveTo), "MoveTo")]
+[OrderProcessor(typeof(OrderGoToAndMerge), "GoToAndMerge")]
+[OrderProcessor(typeof(OrderGoToAndColonize), "OrderGoToAndColonize")]
 public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUpdatable<GameServerState_Turn_Main>, IGameStateUpdatable<GameServerState_Turn_Finished>
 {
 	public DepartmentOfTransportation(global::Empire empire) : base(empire)
@@ -173,6 +176,131 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 				}
 			}
 		}
+	}
+
+	public IFastTravelNodeGameEntity[] GetEntryTravelNodesFor(Army army, Prerequisite[] prerequisites = null)
+	{
+		if (!(base.Empire is MajorEmpire))
+		{
+			return new IFastTravelNodeGameEntity[0];
+		}
+		if (army.Empire != base.Empire)
+		{
+			return new IFastTravelNodeGameEntity[0];
+		}
+		List<IFastTravelNodeGameEntity> list = new List<IFastTravelNodeGameEntity>();
+		foreach (IFastTravelNodeGameEntity fastTravelNodeGameEntity in this.GetTravelNodesWithEntrancePosition())
+		{
+			if (this.IsValidEntryNodeFor(fastTravelNodeGameEntity, army))
+			{
+				if (prerequisites == null || this.CheckTravelNodePrerequisites(fastTravelNodeGameEntity, prerequisites))
+				{
+					list.Add(fastTravelNodeGameEntity);
+				}
+			}
+		}
+		return list.ToArray();
+	}
+
+	public IFastTravelNodeGameEntity[] GetExitTravelNodesFor(Army army, Prerequisite[] prerequisites = null)
+	{
+		if (!(base.Empire is MajorEmpire))
+		{
+			return new IFastTravelNodeGameEntity[0];
+		}
+		if (army.Empire != base.Empire)
+		{
+			return new IFastTravelNodeGameEntity[0];
+		}
+		List<IFastTravelNodeGameEntity> list = new List<IFastTravelNodeGameEntity>();
+		foreach (IFastTravelNodeGameEntity fastTravelNodeGameEntity in this.GetTravelNodesWithExitPosition())
+		{
+			if (this.IsValidExitNodeFor(fastTravelNodeGameEntity, army))
+			{
+				if (prerequisites == null || this.CheckTravelNodePrerequisites(fastTravelNodeGameEntity, prerequisites))
+				{
+					list.Add(fastTravelNodeGameEntity);
+				}
+			}
+		}
+		return list.ToArray();
+	}
+
+	public IFastTravelNodeGameEntity[] GetTravelNodes()
+	{
+		if (!(base.Empire is MajorEmpire))
+		{
+			return new IFastTravelNodeGameEntity[0];
+		}
+		if (base.Empire.Bits == 0)
+		{
+			return new IFastTravelNodeGameEntity[0];
+		}
+		List<IFastTravelNodeGameEntity> list = new List<IFastTravelNodeGameEntity>();
+		foreach (IFastTravelNodeGameEntity fastTravelNodeGameEntity in this.FastTravelNodeRepositoryService.Nodes)
+		{
+			if (this.IsTravelAllowedInNode(fastTravelNodeGameEntity))
+			{
+				list.Add(fastTravelNodeGameEntity);
+			}
+		}
+		return list.ToArray();
+	}
+
+	private bool CheckTravelNodePrerequisites(IFastTravelNodeGameEntity node, Prerequisite[] prerequisites)
+	{
+		SimulationObject travelNodeContext = node.GetTravelNodeContext();
+		for (int i = 0; i < prerequisites.Length; i++)
+		{
+			if (!prerequisites[i].Check(travelNodeContext))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private IFastTravelNodeGameEntity[] GetTravelNodesWithEntrancePosition()
+	{
+		List<IFastTravelNodeGameEntity> list = new List<IFastTravelNodeGameEntity>();
+		foreach (IFastTravelNodeGameEntity fastTravelNodeGameEntity in this.GetTravelNodes())
+		{
+			if (fastTravelNodeGameEntity.GetTravelEntrancePositions().Length != 0)
+			{
+				list.Add(fastTravelNodeGameEntity);
+			}
+		}
+		return list.ToArray();
+	}
+
+	private IFastTravelNodeGameEntity[] GetTravelNodesWithExitPosition()
+	{
+		List<IFastTravelNodeGameEntity> list = new List<IFastTravelNodeGameEntity>();
+		foreach (IFastTravelNodeGameEntity fastTravelNodeGameEntity in this.GetTravelNodes())
+		{
+			if (fastTravelNodeGameEntity.GetTravelExitPositions().Length != 0)
+			{
+				list.Add(fastTravelNodeGameEntity);
+			}
+		}
+		return list.ToArray();
+	}
+
+	private bool IsValidEntryNodeFor(IFastTravelNodeGameEntity node, Army army)
+	{
+		List<WorldPosition> list = new List<WorldPosition>(node.GetTravelEntrancePositions());
+		return list.Count > 0 && list.Contains(army.WorldPosition);
+	}
+
+	private bool IsValidExitNodeFor(IFastTravelNodeGameEntity node, Army army)
+	{
+		List<WorldPosition> list = new List<WorldPosition>(node.GetTravelExitPositions());
+		return list.Count > 0 && !list.Contains(army.WorldPosition);
+	}
+
+	private bool IsTravelAllowedInNode(IFastTravelNodeGameEntity node)
+	{
+		return base.Empire.Bits != 0 && node.TravelAllowedBitsMask != 0 && (node.TravelAllowedBitsMask & base.Empire.Bits) == base.Empire.Bits;
 	}
 
 	public override void ReadXml(XmlReader reader)
@@ -368,6 +496,137 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 		}
 		army.SetWorldPathWithEstimatedTimeOfArrival(order.WorldPath, order.EstimatedTimeOfArrival);
 		yield break;
+	}
+
+	protected bool FastTravelPreprocessor(OrderFastTravel order)
+	{
+		if (order == null)
+		{
+			throw new ArgumentNullException("order");
+		}
+		if (order.EmpireIndex != base.Empire.Index)
+		{
+			Diagnostics.LogError("Order preprocessor failed because the processing empire is not the traveling army Empire.");
+			return false;
+		}
+		if (!order.ArmyGUID.IsValid || !order.DestinationNodeGUID.IsValid)
+		{
+			Diagnostics.LogError("Order preprocessor failed because the GameEntityGUID is not valid.");
+			return false;
+		}
+		if (this.GameEntityRepositoryService == null)
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Game Entity Repository Service is not valid.");
+			return false;
+		}
+		if (this.FastTravelNodeRepositoryService == null)
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Fast Travel Node Repository Service is not valid.");
+			return false;
+		}
+		Army army = null;
+		if (!this.GameEntityRepositoryService.TryGetValue<Army>(order.ArmyGUID, out army))
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Army could not be retrieved.");
+			return false;
+		}
+		IFastTravelNodeGameEntity fastTravelNodeGameEntity = null;
+		if (!this.FastTravelNodeRepositoryService.TryGetNode<IFastTravelNodeGameEntity>(order.DestinationNodeGUID, out fastTravelNodeGameEntity))
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Destination Node could not be retrieved.");
+			return false;
+		}
+		if (!this.IsTravelAllowedInNode(fastTravelNodeGameEntity))
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Empire is not allowed to travel in node.");
+			return false;
+		}
+		WorldPosition validatedDestination = this.OrderFastTravel_GetValidatedDestinationPosition(fastTravelNodeGameEntity);
+		if (!validatedDestination.IsValid)
+		{
+			Diagnostics.LogError("Order preprocessor failed because no destination position could be defined.");
+			return false;
+		}
+		order.ValidatedDestination = validatedDestination;
+		return true;
+	}
+
+	protected IEnumerator FastTravelProcessor(OrderFastTravel order)
+	{
+		Army army = this.DepartmentOfDefense.GetArmy(order.ArmyGUID);
+		if (!this.GameEntityRepositoryService.TryGetValue<Army>(order.ArmyGUID, out army))
+		{
+			Diagnostics.LogError("Order processor failed because the Army could not be retrieved.");
+			yield break;
+		}
+		if (army.IsPillaging)
+		{
+			PointOfInterest poi = null;
+			if (this.GameEntityRepositoryService.TryGetValue<PointOfInterest>(army.PillageTarget, out poi))
+			{
+				DepartmentOfDefense.StopPillage(army, poi);
+			}
+		}
+		if (army.IsDismantlingDevice)
+		{
+			TerraformDevice device = null;
+			if (this.GameEntityRepositoryService.TryGetValue<TerraformDevice>(army.DismantlingDeviceTarget, out device))
+			{
+				this.DepartmentOfDefense.StopDismantelingDevice(army, device);
+			}
+		}
+		if (army.IsDismantlingCreepingNode)
+		{
+			CreepingNode node = null;
+			if (this.GameEntityRepositoryService.TryGetValue<CreepingNode>(army.DismantlingCreepingNodeTarget, out node))
+			{
+				this.DepartmentOfDefense.StopDismantelingCreepingNode(army, node);
+			}
+		}
+		if (army.IsEarthquaker)
+		{
+			army.SetEarthquakerStatus(false, false, null);
+		}
+		army.SetWorldPositionAndTeleport(order.ValidatedDestination, true);
+		foreach (Unit unit in army.Units)
+		{
+			unit.SetPropertyBaseValue(SimulationProperties.MovementRatio, 0f);
+			unit.Refresh(false);
+		}
+		if (order.ActionPointsCost > 0f)
+		{
+			ArmyAction.SpendSomeNumberOfActionPoints(army, order.ActionPointsCost);
+		}
+		army.Refresh(false);
+		army.OnMoveStop();
+		yield break;
+	}
+
+	private WorldPosition OrderFastTravel_GetValidatedDestinationPosition(IFastTravelNodeGameEntity destinationNode)
+	{
+		List<WorldPosition> list = new List<WorldPosition>();
+		foreach (WorldPosition worldPosition in destinationNode.GetTravelExitPositions())
+		{
+			if (worldPosition.IsValid)
+			{
+				if (DepartmentOfDefense.CheckWhetherTargetPositionIsValidForUseAsArmySpawnLocation(worldPosition, PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water))
+				{
+					if (this.PathfindingService.IsTileStopable(worldPosition, PathfindingMovementCapacity.Ground, (PathfindingFlags)0))
+					{
+						if (!this.WorldPositionningService.IsWaterTile(worldPosition))
+						{
+							list.Add(worldPosition);
+						}
+					}
+				}
+			}
+		}
+		if (list.Count > 0)
+		{
+			list.Sort((WorldPosition left, WorldPosition right) => this.WorldPositionningService.GetDistance(destinationNode.WorldPosition, left).CompareTo(this.WorldPositionningService.GetDistance(destinationNode.WorldPosition, right)));
+			return list[0];
+		}
+		return WorldPosition.Invalid;
 	}
 
 	protected bool GoToPreprocessor(OrderGoTo order)
@@ -1017,6 +1276,68 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 		yield break;
 	}
 
+	private bool OrderGoToAndSettleKaijuPreprocessor(OrderGoToAndSettleKaiju order)
+	{
+		if (!order.GameEntityGUID.IsValid)
+		{
+			Diagnostics.LogError("Order preprocessing failed because the army guid is not valid.");
+			return false;
+		}
+		Army army = this.DepartmentOfDefense.GetArmy(order.GameEntityGUID);
+		if (army != null)
+		{
+			if (army.WorldPosition == order.Destination || !order.Destination.IsValid)
+			{
+				return false;
+			}
+			Region region = this.WorldPositionningService.GetRegion(army.WorldPosition);
+			if (region != null && region.City != null && region.City.Empire == army.Empire && region.City.BesiegingEmpire != null)
+			{
+				bool flag = region.City.Districts.Any((District match) => match.Type != DistrictType.Exploitation && match.WorldPosition == army.WorldPosition);
+				if (flag)
+				{
+					Diagnostics.LogWarning("Order preprocessor failed because the army is in a besieged city.");
+					return false;
+				}
+			}
+			PathfindingResult pathfindingResult = this.PathfindingService.FindPath(army, army.WorldPosition, order.Destination, PathfindingManager.RequestMode.Default, null, PathfindingFlags.IgnoreArmies, null);
+			if (pathfindingResult != null)
+			{
+				order.WorldPath.Build(pathfindingResult, army.GetPropertyValue(SimulationProperties.MovementRatio), int.MaxValue, false);
+				ArmyGoToInstruction armyGoToInstruction = this.armiesWithPendingGoToInstructions.Find((ArmyGoToInstruction match) => match.ArmyGUID == army.GUID);
+				if (order.WorldPath.IsValid)
+				{
+					if (armyGoToInstruction != null && !(armyGoToInstruction is ArmyGoToAndSettleKaijuInstruction))
+					{
+						armyGoToInstruction.Cancel(true);
+						this.armiesWithPendingGoToInstructions.Remove(armyGoToInstruction);
+						armyGoToInstruction = null;
+					}
+					if (armyGoToInstruction == null)
+					{
+						armyGoToInstruction = new ArmyGoToAndSettleKaijuInstruction(army, order.ArmyActionName, order.KaijuTypeDefinitionName);
+						this.armiesWithPendingGoToInstructions.Add(armyGoToInstruction);
+					}
+					armyGoToInstruction.Reset(order.WorldPath);
+					armyGoToInstruction.Resume();
+				}
+				else if (armyGoToInstruction != null)
+				{
+					armyGoToInstruction.Cancel(false);
+				}
+				order.EstimatedTimeOfArrival = global::Game.Time + 1.0 * (double)order.WorldPath.ShortestLength;
+				return true;
+			}
+		}
+		return true;
+	}
+
+	private IEnumerator OrderGoToAndSettleKaijuProcessor(OrderGoToAndSettleKaiju order)
+	{
+		yield return this.GoToProcessor(order);
+		yield break;
+	}
+
 	private bool OrderGoToAndTerraformPreprocessor(OrderGoToAndTerraform order)
 	{
 		if (!order.GameEntityGUID.IsValid)
@@ -1116,13 +1437,15 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 			});
 			flag = true;
 		}
-		if (army.GetPropertyValue(SimulationProperties.Movement) <= 0f)
+		float propertyValue = army.GetPropertyValue(SimulationProperties.Movement);
+		if (propertyValue <= 0f)
 		{
 			flag = true;
 		}
 		Diagnostics.Assert(this.GameService != null);
 		Diagnostics.Assert(this.GameService.Game != null);
-		if (this.WorldPositionningService.GetArmyAtPosition(order.To) != null)
+		Army armyAtPosition = this.WorldPositionningService.GetArmyAtPosition(order.To);
+		if (armyAtPosition != null)
 		{
 			flag = true;
 		}
@@ -1193,9 +1516,13 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 					});
 					flag = true;
 				}
-				else if (!flag2 && unit2.GetPropertyValue(SimulationProperties.MovementRatio) - num2 <= 0f && armyGoToInstruction != null && armyGoToInstruction.Progress < armyGoToInstruction.WorldPositions.Length)
+				else if (!flag2)
 				{
-					flag2 = true;
+					float num4 = unit2.GetPropertyValue(SimulationProperties.MovementRatio) - num2;
+					if (num4 <= 0f && armyGoToInstruction != null && armyGoToInstruction.Progress < armyGoToInstruction.WorldPositions.Length)
+					{
+						flag2 = true;
+					}
 				}
 			}
 			if (flag)
@@ -1238,32 +1565,18 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 					order.BreakSiege = true;
 					for (int j = 0; j < this.DepartmentOfDefense.Armies.Count; j++)
 					{
-						District district = this.WorldPositionningService.GetDistrict(this.DepartmentOfDefense.Armies[j].WorldPosition);
-						if (district != null && district.City == region.City && district.Type == DistrictType.Exploitation && !this.WorldPositionningService.IsWaterTile(district.WorldPosition))
+						if (this.DepartmentOfDefense.Armies[j] != army)
 						{
-							int k = 0;
-							while (k < region.City.Districts.Count)
+							District district = this.WorldPositionningService.GetDistrict(this.DepartmentOfDefense.Armies[j].WorldPosition);
+							if (district != null && district.City == region.City && district.Type == DistrictType.Exploitation && !this.WorldPositionningService.IsWaterTile(district.WorldPosition))
 							{
-								if (region.City.Districts[k].Type == DistrictType.Extension || region.City.Districts[k].Type == DistrictType.Center)
+								for (int k = 0; k < region.City.Districts.Count; k++)
 								{
-									if (this.DepartmentOfDefense.Armies[j] == army && !this.WorldPositionningService.IsWaterTile(order.To))
-									{
-										if (this.PathfindingService.IsTransitionPassable(order.To, region.City.Districts[k].WorldPosition, army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreDistrict, null))
-										{
-											order.BreakSiege = false;
-											break;
-										}
-									}
-									else if (this.DepartmentOfDefense.Armies[j] != army && this.PathfindingService.IsTransitionPassable(this.DepartmentOfDefense.Armies[j].WorldPosition, region.City.Districts[k].WorldPosition, army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreDistrict, null))
+									if ((region.City.Districts[k].Type == DistrictType.Exploitation || region.City.Districts[k].Type == DistrictType.Center) && this.PathfindingService.IsTransitionPassable(order.To, region.City.Districts[k].WorldPosition, army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreDistrict | PathfindingFlags.IgnoreKaijuGarrisons, null))
 									{
 										order.BreakSiege = false;
 										break;
 									}
-									k++;
-								}
-								else
-								{
-									k++;
 								}
 							}
 						}
@@ -1296,7 +1609,8 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 			region = this.WorldPositionningService.GetRegion(order.To);
 			if (region != null && region.City != null && region.City.Districts.Any((District match) => match.WorldPosition == order.To))
 			{
-				if (army.Units.Sum((Unit unit) => unit.GetPropertyValue(SimulationProperties.CityDefensePointLossPerTurn)) > 0f)
+				float num5 = army.Units.Sum((Unit unit) => unit.GetPropertyValue(SimulationProperties.CityDefensePointLossPerTurn));
+				if (num5 > 0f)
 				{
 					if (region.City.BesiegingSeafaringArmies.Exists((Army besiegingSeafaringArmy) => besiegingSeafaringArmy.Empire.Index == army.Empire.Index))
 					{
@@ -1330,6 +1644,13 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 					order.BreakPillage = true;
 				}
 			}
+		}
+		Region region2 = this.WorldPositionningService.GetRegion(order.From);
+		Region region3 = this.WorldPositionningService.GetRegion(order.To);
+		if (region2 != null && region3 != null && region2 != region3)
+		{
+			region2.OnArmyLeave(army);
+			region3.OnArmyEnter(army);
 		}
 		return true;
 	}
@@ -1471,13 +1792,15 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 		IEventService eventService = Services.GetService<IEventService>();
 		eventService.Notify(new EventWorldArmyMoveTo(army, order.From, order.To));
 		IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
-		if (downloadableContentService == null)
+		if (!downloadableContentService.IsShared(DownloadableContent19.ReadOnlyName))
 		{
 			yield break;
 		}
-		if (downloadableContentService.IsShared(DownloadableContent19.ReadOnlyName))
+		int armyCountBeforeTerrainDamage = army.UnitsCount;
+		if (this.DepartmentOfDefense.CheckTerrainDamageForUnits(army))
 		{
-			this.DepartmentOfDefense.CheckArmyOnDamageableTerrain(army);
+			ArmyHitInfo hitInfo = new ArmyHitInfo(army, armyCountBeforeTerrainDamage, army.WorldPosition, ArmyHitInfo.HitType.Travel);
+			eventService.Notify(new EventArmyHit(base.Empire, hitInfo, false));
 			yield break;
 		}
 		yield break;
@@ -1724,7 +2047,7 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 				unit.SwitchToEmbarkedUnit(this.PathfindingService.GetTileMovementCapacity(order.Destination, (PathfindingFlags)0) == PathfindingMovementCapacity.Water);
 			}
 		}
-		army.SetWorldPositionAndTeleport(order.Destination);
+		army.SetWorldPositionAndTeleport(order.Destination, true);
 		if (army.IsPillaging)
 		{
 			DepartmentOfDefense.StopPillage(army);
@@ -1889,7 +2212,7 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 			Diagnostics.LogError("The destination is invalid.");
 			yield break;
 		}
-		army.SetWorldPositionAndTeleport(order.Destination);
+		army.SetWorldPositionAndTeleport(order.Destination, true);
 		foreach (Unit unit in army.Units)
 		{
 			unit.SetPropertyBaseValue(SimulationProperties.MovementRatio, 0f);
@@ -1909,6 +2232,9 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 
 	[Service]
 	private IGameService GameService { get; set; }
+
+	[Ancillary]
+	private IFastTravelNodeRepositoryService FastTravelNodeRepositoryService { get; set; }
 
 	[Ancillary]
 	private IGameEntityRepositoryService GameEntityRepositoryService { get; set; }
@@ -1975,6 +2301,11 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 		{
 			Diagnostics.LogError("Failed to retrieve the world positionning service.");
 		}
+		this.FastTravelNodeRepositoryService = this.GameService.Game.Services.GetService<IFastTravelNodeRepositoryService>();
+		if (this.FastTravelNodeRepositoryService == null)
+		{
+			Diagnostics.LogError("Failed to retrieve the fast travel node repository service.");
+		}
 		base.Empire.RegisterPass("GameClientState_Turn_End", "ResetArmyMovement", new Agency.Action(this.ResetArmyMovement), new string[0]);
 		base.Empire.RegisterPass("GameServerState_Turn_Begin", "ResetArmyGoToInstruction", new Agency.Action(this.ResetArmyGoToInstruction), new string[0]);
 		base.Empire.RegisterPass("GameServerState_Turn_Finished", "ContinueGoToInstruction", new Agency.Action(this.GameServerState_Turn_Finished_ContinueGoToInstruction), new string[0]);
@@ -2000,6 +2331,7 @@ public class DepartmentOfTransportation : Agency, IXmlSerializable, IGameStateUp
 		this.PlayerControllerRepositoryService = null;
 		this.GameEntityRepositoryService = null;
 		this.WorldPositionningService = null;
+		this.FastTravelNodeRepositoryService = null;
 		this.DepartmentOfDefense = null;
 		this.DepartmentOfTheInterior = null;
 		this.DepartmentOfIntelligence = null;

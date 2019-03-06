@@ -542,10 +542,6 @@ public class RuntimeState_Lobby : RuntimeState
 					string factionNameOrDescriptor = text.Substring(array[0].Length + 1);
 					flag = this.TryChangeFaction(array[0], array[1], factionNameOrDescriptor);
 				}
-				else if (array[0].StartsWith("Handicap"))
-				{
-					flag = this.TryChangeHandicap(array[0], array[1]);
-				}
 				else if (array[0].StartsWith("LockEmpire"))
 				{
 					string x = array[0];
@@ -629,9 +625,9 @@ public class RuntimeState_Lobby : RuntimeState
 		string text = e.Key;
 		if (text != null)
 		{
-			if (RuntimeState_Lobby.<>f__switch$map1D == null)
+			if (RuntimeState_Lobby.<>f__switch$map1E == null)
 			{
-				RuntimeState_Lobby.<>f__switch$map1D = new Dictionary<string, int>(2)
+				RuntimeState_Lobby.<>f__switch$map1E = new Dictionary<string, int>(2)
 				{
 					{
 						"NumberOfMajorFactions",
@@ -644,7 +640,7 @@ public class RuntimeState_Lobby : RuntimeState
 				};
 			}
 			int num;
-			if (RuntimeState_Lobby.<>f__switch$map1D.TryGetValue(text, out num))
+			if (RuntimeState_Lobby.<>f__switch$map1E.TryGetValue(text, out num))
 			{
 				if (num != 0)
 				{
@@ -1739,12 +1735,6 @@ public class RuntimeState_Lobby : RuntimeState
 		default:
 			throw new ArgumentOutOfRangeException();
 		}
-	}
-
-	private bool TryChangeHandicap(string HandicapKey, string HandicapValue)
-	{
-		this.Session.SetLobbyData(HandicapKey, HandicapValue, true);
-		return true;
 	}
 
 	private global::Session session;

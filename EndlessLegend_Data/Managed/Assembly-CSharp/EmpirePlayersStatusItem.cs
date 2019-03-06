@@ -115,22 +115,9 @@ public class EmpirePlayersStatusItem : MonoBehaviour
 		{
 			this.LogoImage.Image = this.GuiFaction.GetImageTexture(global::GuiPanel.IconSize.LogoSmall, false);
 		}
+		GuiElement guiElement;
 		if (this.IsKnownByActivePlayer)
 		{
-			if (!this.MajorEmpire.IsEliminated)
-			{
-				this.AgeControlButton.OnMiddleClickMethod = "OnRightClick";
-				this.AgeControlButton.OnMiddleClickObject = service.GetGuiPanel<EndTurnPanel>().gameObject;
-				this.AgeControlButton.OnRightClickMethod = "OnRightClick";
-				this.AgeControlButton.OnRightClickObject = service.GetGuiPanel<EndTurnPanel>().gameObject;
-			}
-			else
-			{
-				this.AgeControlButton.OnMiddleClickMethod = string.Empty;
-				this.AgeControlButton.OnMiddleClickObject = null;
-				this.AgeControlButton.OnRightClickMethod = string.Empty;
-				this.AgeControlButton.OnRightClickObject = null;
-			}
 			this.AgeTransform.AgeTooltip.Content = this.MajorEmpire.LocalizedName + " - " + this.MajorEmpire.Faction.LocalizedName;
 			if (!this.MajorEmpire.IsControlledByAI && this.MajorEmpire != this.ActivePlayerEmpire)
 			{
@@ -139,17 +126,14 @@ public class EmpirePlayersStatusItem : MonoBehaviour
 				this.AgeControlButton.OnActivateMethod = "OnWhisperToEmpireCB";
 				this.AgeControlButton.OnActivateObject = service.GetGuiPanel<InGameConsolePanel>().gameObject;
 				this.AgeControlButton.OnActivateData = this.MajorEmpire.LocalizedName;
-				return;
 			}
+		}
+		else if (!service.GuiPanelHelper.TryGetGuiElement(DiplomaticRelationState.Names.Unknown, out guiElement))
+		{
+			this.AgeTransform.AgeTooltip.Content = "Missing GuiElement " + DiplomaticRelationState.Names.Unknown;
 		}
 		else
 		{
-			GuiElement guiElement;
-			if (!service.GuiPanelHelper.TryGetGuiElement(DiplomaticRelationState.Names.Unknown, out guiElement))
-			{
-				this.AgeTransform.AgeTooltip.Content = "Missing GuiElement " + DiplomaticRelationState.Names.Unknown;
-				return;
-			}
 			this.AgeTransform.AgeTooltip.Content = guiElement.Title;
 			this.AgeControlButton.OnActivateMethod = string.Empty;
 			this.AgeControlButton.OnActivateObject = null;

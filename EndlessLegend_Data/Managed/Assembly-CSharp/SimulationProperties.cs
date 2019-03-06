@@ -366,6 +366,8 @@ public static class SimulationProperties
 
 	public static readonly StaticString NumberOfActiveTradeRoutes = "NumberOfActiveTradeRoutes";
 
+	public static readonly StaticString NumberOfCities = "NumberOfCities";
+
 	public static readonly StaticString IsInteractionBlocked = "IsInteractionBlocked";
 
 	public static readonly StaticString JailPower = "JailPower";
@@ -674,5 +676,51 @@ public static class SimulationProperties
 
 	public static readonly StaticString SeasonIntensityMultiplier = "SeasonIntensityMultiplier";
 
-	public static readonly StaticString AllayiBoosterDurationMultiplier = "AllayiBoosterDurationMultiplier";
+	public static readonly StaticString IntegratedMajorFactionCount = "IntegratedMajorFactionCount";
+
+	public static readonly StaticString SpawnedKaijusCounter = "SpawnedKaijusCounter";
+
+	public static readonly StaticString SpawnedKaijusGlobalCounter = "SpawnedKaijusGlobalCounter";
+
+	public static readonly StaticString KaijuUnitProductionTimer = "KaijuUnitProductionTimer";
+
+	public static readonly StaticString KaijuStunTimer = "KaijuStunnedTimer";
+
+	public static readonly StaticString KaijuNextTurnToSpawnUnit = "NextTurnToSpawnUnit";
+
+	public static readonly StaticString KaijuNextTurnToRecoverFromStun = "NextTurnToRecoverFromStun";
+
+	public static readonly StaticString SharedSightActive = "SharedSightActive";
+
+	public static readonly StaticString SharedSightExploration = "SharedSightExploration";
+
+	public static readonly StaticString SharedSightHeight = "SharedSightHeight";
+
+	public static readonly StaticString SharedSightRange = "SharedSightRange";
+
+	public static readonly StaticString CreepingNodeTurnsCounter = "TurnsCounter";
+
+	public static readonly StaticString CreepingNodeTimesUpgraded = "TimesUpgraded";
+
+	public static readonly StaticString CreepingNodesFoodUpkeep = "CreepingNodesFoodUpkeep";
+
+	public static readonly StaticString CreepingNodeDismantleDefense = "CreepingNodeDismantleDefense";
+
+	public static readonly StaticString CreepingNodeDismantlePower = "CreepingNodeDismantlePower";
+
+	public static readonly StaticString CreepingNodeRetaliationDamage = "RetaliationDamage";
+
+	public static readonly StaticString NumberOfCreepingNodes = "NumberOfCreepingNodes";
+
+	public static readonly StaticString NumberOfFinishedCreepingNodes = "NumberOfFinishedCreepingNodes";
+
+	public static readonly StaticString NodeCostIncrement = "NodeCostIncrement";
+
+	public static readonly StaticString CityPointEarthquakeDamage = "CityPointEarthquakeDamage";
+
+	public static readonly StaticString CityGarrisonEarthquakeDamage = "CityGarrisonEarthquakeDamage";
+
+	public static readonly StaticString CityOwnedTurn = "CityOwnedTurn";
+
+	public static readonly StaticString OvergrownCityRazeCityCooldownInTurns = "OvergrownCityRazeCityCooldownInTurns";
 }

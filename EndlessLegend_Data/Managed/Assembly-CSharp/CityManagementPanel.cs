@@ -217,12 +217,12 @@ public class CityManagementPanel : GuiModalPanel
 			}
 			return;
 		}
-		if (this.City != null && this.City.GetPropertyValue(SimulationProperties.Ownership) != 1f)
+		if (this.City != null && this.City.IsInfected)
 		{
 			this.DestroyButton.Enable = false;
 			if (this.DestroyButton.AgeTooltip != null)
 			{
-				this.DestroyButton.AgeTooltip.Content = "%DestroyButtonCityOwnership";
+				this.DestroyButton.AgeTooltip.Content = "%DestroyButtonCityIsInfectedDescription";
 			}
 			return;
 		}
@@ -252,9 +252,11 @@ public class CityManagementPanel : GuiModalPanel
 		if (this.DestroyButton.AgeTooltip != null && !flag)
 		{
 			this.DestroyButton.AgeTooltip.Content = "%DestroyButtonDescription";
-			return;
 		}
-		this.DestroyButton.AgeTooltip.Content = "%DestroyButtonNoSelectionDescription";
+		else
+		{
+			this.DestroyButton.AgeTooltip.Content = "%DestroyButtonNoSelectionDescription";
+		}
 	}
 
 	private void OnDestroyCB(GameObject obj)

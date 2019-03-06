@@ -151,7 +151,7 @@ public class GuiFormater
 	{
 		if (useKilo)
 		{
-			return string.Format("{0} {1}", (stockValue < 1000f) ? GuiFormater.FormatGui(Mathf.Floor(stockValue), false, false, false, 0) : ((stockValue < 10000f) ? (GuiFormater.FormatGui(Mathf.Floor(stockValue / 1000f), false, false, false, 0) + "." + GuiFormater.FormatGui(Mathf.Floor(stockValue % 1000f / 100f), false, false, false, 0) + "k") : (GuiFormater.FormatGui(Mathf.Floor(stockValue / 1000f), false, false, false, 0) + "k")), Services.GetService<IGuiService>().FormatSymbol(resourceName));
+			return string.Format("{0} {1}", (stockValue < 1000f) ? GuiFormater.FormatGui(Mathf.Floor(stockValue), false, false, false, 0) : (GuiFormater.FormatGui(Mathf.Floor(stockValue / 1000f), false, false, false, 0) + "k"), Services.GetService<IGuiService>().FormatSymbol(resourceName));
 		}
 		return string.Format("{0} {1}", GuiFormater.FormatGui(Mathf.Floor(stockValue), false, false, true, 0), Services.GetService<IGuiService>().FormatSymbol(resourceName));
 	}
@@ -160,7 +160,7 @@ public class GuiFormater
 	{
 		if (useKilo)
 		{
-			return string.Format("{0} {1}({2})", Services.GetService<IGuiService>().FormatSymbol(resourceName), (stockValue < 1000f) ? GuiFormater.FormatGui(Mathf.Floor(stockValue), false, false, false, 0) : ((stockValue < 10000f) ? (GuiFormater.FormatGui(Mathf.Floor(stockValue / 1000f), false, false, false, 0) + "." + GuiFormater.FormatGui(Mathf.Floor(stockValue % 1000f / 100f), false, false, false, 0) + "k") : (GuiFormater.FormatGui(Mathf.Floor(stockValue / 1000f), false, false, false, 0) + "k")), (netValue < 1000f) ? GuiFormater.FormatGui(netValue, false, false, true, 0) : ((netValue < 10000f) ? (GuiFormater.FormatGui(netValue / 1000f, false, false, true, 0) + "." + GuiFormater.FormatGui(netValue % 1000f / 100f, false, false, false, 0) + "k") : (GuiFormater.FormatGui(netValue / 1000f, false, false, true, 0) + "k")));
+			return string.Format("{0} {1}({2})", Services.GetService<IGuiService>().FormatSymbol(resourceName), (stockValue < 1000f) ? GuiFormater.FormatGui(Mathf.Floor(stockValue), false, false, false, 0) : (GuiFormater.FormatGui(Mathf.Floor(stockValue / 1000f), false, false, false, 0) + "k"), (netValue < 1000f) ? GuiFormater.FormatGui(netValue, false, false, true, 0) : (GuiFormater.FormatGui(netValue / 1000f, false, false, true, 0) + "k"));
 		}
 		return string.Format("{0} {1}({2})", Services.GetService<IGuiService>().FormatSymbol(resourceName), GuiFormater.FormatGui(Mathf.Floor(stockValue), false, false, false, 0), GuiFormater.FormatGui(netValue, false, false, true, 0));
 	}

@@ -270,7 +270,7 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 				num2 += num2 * worldPositionMovementCostModifiers[j];
 			}
 		}
-		if ((flags & PathfindingFlags.IgnoreCoast) == (PathfindingFlags)0 && !pathfindingContext.CanFreeEmbark)
+		if ((flags & PathfindingFlags.IgnoreCoast) == (PathfindingFlags)0 && !PathfindingManager.CanFreeEmbark(pathfindingContext.Empire))
 		{
 			PathfindingMovementCapacity tileMovementCapacity = this.GetTileMovementCapacity(start, flags);
 			PathfindingMovementCapacity tileMovementCapacity2 = this.GetTileMovementCapacity(goal, flags);
@@ -284,6 +284,10 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 				float maximumMovementPoints2 = this.GetMaximumMovementPoints(goal, pathfindingContext, flags);
 				num2 = Mathf.Max(num2, pathfindingContext.CurrentMovementRatio * maximumMovementPoints2);
 			}
+		}
+		if ((flags & PathfindingFlags.IgnoreKaijuGarrisons) == (PathfindingFlags)0 && this.OtherEmpireKaijuGarrisonOnPosition(goal, empire))
+		{
+			return float.PositiveInfinity;
 		}
 		return Mathf.Max(num2, this.minimumTransitionCost);
 	}
@@ -459,7 +463,7 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 
 	public static bool CanFreeEmbark(global::Empire empire)
 	{
-		return empire.SimulationObject.Tags.Contains("FactionTraitSeaDemons1");
+		return empire != null && (empire.SimulationObject.Tags.Contains("AffinitySeaDemons") || empire.SimulationObject.Tags.Contains("SeaDemonsIntegrationDescriptor1"));
 	}
 
 	public bool IsTilePassable(WorldPosition tilePosition, IPathfindingContextProvider pathfindingContextProvider, PathfindingFlags flags = (PathfindingFlags)0, PathfindingWorldContext worldContext = null)
@@ -529,6 +533,10 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 			{
 				return false;
 			}
+		}
+		if ((flags & PathfindingFlags.IgnoreKaijuGarrisons) == (PathfindingFlags)0 && this.OtherEmpireKaijuGarrisonOnPosition(tilePosition, empire))
+		{
+			return false;
 		}
 		if (worldContext != null)
 		{
@@ -656,6 +664,10 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 		}
 		Region region = this.world.Regions[(int)this.regionIndexMap.GetValue(tilePosition)];
 		if (region.IsWasteland)
+		{
+			return false;
+		}
+		if ((flags & PathfindingFlags.IgnoreKaijuGarrisons) == (PathfindingFlags)0 && this.KaijuGarrisonOnPosition(tilePosition))
 		{
 			return false;
 		}
@@ -1293,6 +1305,18 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 			}
 		}
 		return !flag;
+	}
+
+	private bool OtherEmpireKaijuGarrisonOnPosition(WorldPosition worldPosition, global::Empire empire)
+	{
+		Region region = this.world.Regions[(int)this.regionIndexMap.GetValue(worldPosition)];
+		return region.Kaiju != null && region.Kaiju.WorldPosition == worldPosition && region.Kaiju.OnGarrisonMode() && region.Kaiju.Empire.Index != empire.Index;
+	}
+
+	private bool KaijuGarrisonOnPosition(WorldPosition worldPosition)
+	{
+		Region region = this.world.Regions[(int)this.regionIndexMap.GetValue(worldPosition)];
+		return region.Kaiju != null && region.Kaiju.WorldPosition == worldPosition && region.Kaiju.OnGarrisonMode();
 	}
 
 	[UnitTestMethod("Pathfinding", UnitTestMethodAttribute.Scope.Game)]

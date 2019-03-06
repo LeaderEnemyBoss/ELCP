@@ -8,7 +8,6 @@ using Amplitude.Extensions;
 using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
-using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.Advanced;
 using Amplitude.Unity.Xml;
@@ -455,15 +454,15 @@ public class BattleSimulation : IDisposable
 		PathfindingWorldContext.TileContext tileContext = this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group].GetTileContext(unit.Position);
 		this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group].SetTileContext(unit.Position, BattleZoneAnalysis.BattleNoUnitSpecification);
 		WorldPosition[] result = null;
-		PathfindingResult pathfindingResult = this.pathfindingService.FindPath(unit, unit.Position, targetPosition, PathfindingManager.RequestMode.Default, this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group], PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges, stopPredicate);
+		PathfindingResult pathfindingResult = this.pathfindingService.FindPath(unit, unit.Position, targetPosition, PathfindingManager.RequestMode.Default, this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group], PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, stopPredicate);
 		if (pathfindingResult == null)
 		{
 			this.validPositions.Clear();
-			this.pathfindingService.FillWithValidLocation(unit, unit.Position, new PathfindingAStar.StopPredicate(this.FillPredicate), ref this.validPositions, this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group], PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges);
-			pathfindingResult = this.pathfindingService.FindLocation(unit, targetPosition, new PathfindingAStar.StopPredicate(this.ChooseBestLocationPredicate), new PathfindingWorldContext(this.battleZone, null), PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges);
+			this.pathfindingService.FillWithValidLocation(unit, unit.Position, new PathfindingAStar.StopPredicate(this.FillPredicate), ref this.validPositions, this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group], PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons);
+			pathfindingResult = this.pathfindingService.FindLocation(unit, targetPosition, new PathfindingAStar.StopPredicate(this.ChooseBestLocationPredicate), new PathfindingWorldContext(this.battleZone, null), PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons);
 			if (pathfindingResult != null)
 			{
-				pathfindingResult = this.pathfindingService.FindPath(unit, unit.Position, pathfindingResult.Goal, PathfindingManager.RequestMode.Default, this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group], PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges, null);
+				pathfindingResult = this.pathfindingService.FindPath(unit, unit.Position, pathfindingResult.Goal, PathfindingManager.RequestMode.Default, this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group], PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null);
 			}
 		}
 		if (pathfindingResult != null)
@@ -587,7 +586,7 @@ public class BattleSimulation : IDisposable
 		this.unitReachablePositionsHelper[startingPosition].Range = range;
 		if (includeStartingPosition)
 		{
-			bool flag = this.pathfindingService.IsTileStopable(startingPosition, unit, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges, null);
+			bool flag = this.pathfindingService.IsTileStopable(startingPosition, unit, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null);
 			if (flag)
 			{
 				reachablePositions.AddOnce(startingPosition);
@@ -618,7 +617,7 @@ public class BattleSimulation : IDisposable
 			float num = 1f;
 			if (takeCareOfPathfinding)
 			{
-				num = this.pathfindingService.GetTransitionCost(startingPosition, worldPosition, unit, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges, null);
+				num = this.pathfindingService.GetTransitionCost(startingPosition, worldPosition, unit, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null);
 				if (float.IsPositiveInfinity(num))
 				{
 					goto IL_138;
@@ -889,7 +888,7 @@ public class BattleSimulation : IDisposable
 			{
 				return true;
 			}
-			if (this.pathfindingService.IsTransitionPassable(unit.Position, targetPosition, unit, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges, null))
+			if (this.pathfindingService.IsTransitionPassable(unit.Position, targetPosition, unit, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null))
 			{
 				return true;
 			}
@@ -1040,7 +1039,18 @@ public class BattleSimulation : IDisposable
 		{
 			num = 1;
 		}
+		List<BattleSimulationUnit> list = unit.Attackers.FindAll((BattleSimulationUnit attacker) => !attacker.IsDead);
 		BattleUnitState_Death battleUnitState_Death = new BattleUnitState_Death(unit, unit.IsComputingMainStates);
+		if (list.Count > 0)
+		{
+			BattleSimulationUnit battleSimulationUnit = list.Last<BattleSimulationUnit>();
+			battleUnitState_Death.KillerGUID = battleSimulationUnit.UnitGUID;
+		}
+		else if (unit.Target != null && unit.Target.Unit != null)
+		{
+			BattleSimulationUnit unit2 = unit.Target.Unit;
+			battleUnitState_Death.KillerGUID = unit2.UnitGUID;
+		}
 		battleUnitState_Death.SyncWithStateID(stateIDToSyncWith, syncMode);
 		this.battleUnitActionController.InitStateUnitActions(battleUnitState_Death, unit, BattleActionUnit.ActionType.Death);
 		this.AddUnitState(unit, battleUnitState_Death, true);
@@ -1048,32 +1058,29 @@ public class BattleSimulation : IDisposable
 		this.pathfindingWorldContextByContenderGroup[(int)(1 - unit.Contender.Group)].SetTileContext(unit.Position, BattleZoneAnalysis.BattleNoUnitSpecification);
 		this.UnapplyGroundActions(unit, battleUnitState_Death);
 		this.ExecuteUnitState(battleUnitState_Death, unit, new BattleSimulationTarget(unit), false);
-		GameEntityGUID killerUnitGUID = GameEntityGUID.Zero;
-		List<BattleSimulationUnit> list = unit.Attackers.FindAll((BattleSimulationUnit attacker) => !attacker.IsDead);
 		if (list.Count > 0)
 		{
 			BattleSimulationTarget target = new BattleSimulationTarget(unit);
 			for (int i = 0; i < list.Count; i++)
 			{
-				BattleSimulationUnit battleSimulationUnit = list[i];
-				BattleUnitState_TargetDeath battleUnitState_TargetDeath = new BattleUnitState_TargetDeath(battleSimulationUnit, battleSimulationUnit.IsComputingMainStates);
+				BattleSimulationUnit battleSimulationUnit2 = list[i];
+				BattleUnitState_TargetDeath battleUnitState_TargetDeath = new BattleUnitState_TargetDeath(battleSimulationUnit2, battleSimulationUnit2.IsComputingMainStates);
 				battleUnitState_TargetDeath.SyncWithStateID(battleUnitState_Death.StateID, BattleUnitState.StateSynchronization.StateSyncMode.StateBegin);
-				this.AddUnitState(battleSimulationUnit, battleUnitState_TargetDeath, true);
-				this.battleUnitActionController.InitStateUnitActions(battleUnitState_TargetDeath, battleSimulationUnit, BattleActionUnit.ActionType.TargetDeath);
-				this.ExecuteUnitState(battleUnitState_TargetDeath, battleSimulationUnit, target, false);
-				killerUnitGUID = battleSimulationUnit.UnitGUID;
+				this.AddUnitState(battleSimulationUnit2, battleUnitState_TargetDeath, true);
+				this.battleUnitActionController.InitStateUnitActions(battleUnitState_TargetDeath, battleSimulationUnit2, BattleActionUnit.ActionType.TargetDeath);
+				this.ExecuteUnitState(battleUnitState_TargetDeath, battleSimulationUnit2, target, false);
 			}
 		}
 		this.battleActionController.OnUnitDeath(unit, battleUnitState_Death.AdditivePostInstructions);
 		unit.SetTargetingIntention(null);
 		if (unit.IsDead)
 		{
-			UnitPerformDeathInstruction item = new UnitPerformDeathInstruction(unit.UnitGUID, killerUnitGUID);
+			UnitPerformDeathInstruction item = new UnitPerformDeathInstruction(unit.UnitGUID, battleUnitState_Death.KillerGUID);
 			battleUnitState_Death.AdditivePostInstructions.Add(item);
 			if (unit.IsBattleSimulated)
 			{
 				IEventService service = Services.GetService<IEventService>();
-				service.Notify(new EventAutomaticBattleUnitDeath(unit.Unit.Garrison.Empire, unit.UnitGUID, killerUnitGUID));
+				service.Notify(new EventAutomaticBattleUnitDeath(unit.Unit.Garrison.Empire, unit.UnitGUID, battleUnitState_Death.KillerGUID));
 			}
 			unit.Attackers.Clear();
 			this.UpdateUnitPositionInPotentialTargets(unit, WorldPosition.Invalid);
@@ -1557,6 +1564,7 @@ public class BattleSimulation : IDisposable
 				if (flag)
 				{
 					battleUnitState_Defense.AddAttack(battleUnitState_Attack);
+					unit.AddAttacker(unit2);
 				}
 				else
 				{
@@ -1644,9 +1652,9 @@ public class BattleSimulation : IDisposable
 		{
 			num4 += unit.GetPropertyValue(SimulationProperties.BattleMoraleBonusPerAttack);
 		}
-		unit.SetPropertyBaseValue(SimulationProperties.BattleMoraleCumulated, (float)Math.Truncate((double)num4), false, null);
+		unit.SetPropertyBaseValue(SimulationProperties.BattleMoraleCumulated, (float)Math.Truncate((double)num4), false, null, false);
 		num += unit.GetPropertyValue(SimulationProperties.BattleMoraleBonus);
-		unit.SetPropertyBaseValue(SimulationProperties.BattleMorale, (float)Math.Truncate((double)num), false, null);
+		unit.SetPropertyBaseValue(SimulationProperties.BattleMorale, (float)Math.Truncate((double)num), false, null, false);
 	}
 
 	private IBattleUnitState ComputeMovement(BattleSimulationUnit unit, int range = 0)
@@ -1723,8 +1731,8 @@ public class BattleSimulation : IDisposable
 		}
 		Diagnostics.Assert(this.battleActionController != null);
 		this.ExecuteUnitState(attack, attack.Unit, attack.Target, false);
-		attack.Unit.SetPropertyBaseValue(SimulationProperties.AttackPerRoundDone, attack.Unit.GetPropertyValue(SimulationProperties.AttackPerRoundDone) + 1f, true, attack.AdditivePostInstructions);
-		attack.Target.Unit.SetPropertyBaseValue(SimulationProperties.AttackPerRoundTaken, attack.Unit.GetPropertyValue(SimulationProperties.AttackPerRoundTaken) + 1f, true, null);
+		attack.Unit.SetPropertyBaseValue(SimulationProperties.AttackPerRoundDone, attack.Unit.GetPropertyValue(SimulationProperties.AttackPerRoundDone) + 1f, true, attack.AdditivePostInstructions, false);
+		attack.Target.Unit.SetPropertyBaseValue(SimulationProperties.AttackPerRoundTaken, attack.Unit.GetPropertyValue(SimulationProperties.AttackPerRoundTaken) + 1f, true, null, false);
 	}
 
 	private void ExecuteDefense(BattleSimulationUnit unit, BattleUnitState_Defense defense)
@@ -1775,7 +1783,7 @@ public class BattleSimulation : IDisposable
 			float num2 = 0f;
 			for (int i = 0; i < battleUnitState_Move.Path.Length - 1; i++)
 			{
-				num2 += this.pathfindingService.GetTransitionCost(battleUnitState_Move.Path[i], battleUnitState_Move.Path[i + 1], unit, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges, null);
+				num2 += this.pathfindingService.GetTransitionCost(battleUnitState_Move.Path[i], battleUnitState_Move.Path[i + 1], unit, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null);
 			}
 			if (float.IsPositiveInfinity(num2))
 			{
@@ -1784,7 +1792,7 @@ public class BattleSimulation : IDisposable
 			}
 			num -= num2;
 			battleUnitState_Move.MovementPointUsed += num2;
-			unit.SetPropertyBaseValue(SimulationProperties.SpentBattleMovement, unit.GetCurrentPropertyValue(SimulationProperties.SpentBattleMovement) + num2, true, moveState.AdditivePostInstructions);
+			unit.SetPropertyBaseValue(SimulationProperties.SpentBattleMovement, unit.GetCurrentPropertyValue(SimulationProperties.SpentBattleMovement) + num2, true, moveState.AdditivePostInstructions, false);
 			unit.RefreshPathfindingContextMovementPoints();
 			this.UnapplyGroundActions(unit, moveState);
 			this.pathfindingWorldContextByContenderGroup[(int)unit.Contender.Group].SetTileContext(unit.Position, BattleZoneAnalysis.BattleNoUnitSpecification);
@@ -2332,14 +2340,6 @@ public class BattleSimulation : IDisposable
 
 	public void EndBattle()
 	{
-		IGameService service = Services.GetService<IGameService>();
-		Diagnostics.Assert(service != null);
-		IEncounterRepositoryService service2 = service.Game.Services.GetService<IEncounterRepositoryService>();
-		Encounter encounter = null;
-		if (this.Encounter != null)
-		{
-			service2.TryGetValue(this.Encounter.EncounterGUID, out encounter);
-		}
 		for (int i = 0; i < this.battleSimulationArmies.Count; i++)
 		{
 			this.battleSimulationArmies[i].Contender.IsDead = this.battleSimulationArmies[i].IsDead;
@@ -2347,38 +2347,8 @@ public class BattleSimulation : IDisposable
 			{
 				BattleSimulationUnit battleSimulationUnit = this.battleSimulationArmies[i].Units[j];
 				battleSimulationUnit.PositionUpdate = (BattleSimulationUnit.PositionUpdateHandler)Delegate.Remove(battleSimulationUnit.PositionUpdate, new BattleSimulationUnit.PositionUpdateHandler(this.BattleSimulationUnit_PositionUpdateHandler));
-				if (battleSimulationUnit.IsBattleSimulated)
-				{
-					float propertyValue = battleSimulationUnit.GetPropertyValue(SimulationProperties.Armor);
-					float propertyValue2 = battleSimulationUnit.GetPropertyValue(SimulationProperties.MaximumArmor);
-					if (propertyValue2 > 0f)
-					{
-						if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-						{
-							Diagnostics.Log("ELCP Battlesimulation EndBattle() simulated for {0}/{3} with armor {1} of {2} {4}", new object[]
-							{
-								battleSimulationUnit.Unit.UnitDesign.LocalizedName,
-								propertyValue,
-								propertyValue2,
-								battleSimulationUnit.UnitGUID,
-								encounter == null
-							});
-						}
-						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.MaximumArmor, propertyValue2, false, null);
-						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Armor, propertyValue, false, null);
-						if (encounter != null && propertyValue < propertyValue2)
-						{
-							EncounterUnit encounterUnitByGUID = encounter.GetEncounterUnitByGUID(battleSimulationUnit.UnitGUID);
-							if (encounterUnitByGUID != null)
-							{
-								encounterUnitByGUID.IsOnBattlefield = true;
-							}
-						}
-					}
-				}
 			}
 		}
-		this.Encounter = null;
 	}
 
 	public float GetUnitsSimulationAverageData(byte group, StaticString propertyName)
@@ -2515,7 +2485,7 @@ public class BattleSimulation : IDisposable
 							BattleSimulationUnit battleSimulationUnit = battleSimulationArmy.Units[k];
 							if (battleSimulationUnit.Position.IsValid && !battleSimulationUnit.IsDead && battleSimulationUnit.SimulationObject.Tags.Contains("UnitActionPhoenixToEgg"))
 							{
-								battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Health, 0f, false, null);
+								battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Health, 0f, false, null, false);
 							}
 						}
 					}
@@ -2615,10 +2585,6 @@ public class BattleSimulation : IDisposable
 		{
 			throw new Exception("Contender deployment is null.");
 		}
-		if (encounter.OrderCreateEncounter.IsAutomaticBattle)
-		{
-			this.Encounter = encounter;
-		}
 		this.battleZone.AddContenderDeployment(contender.Deployment);
 		this.pathfindingWorldContextByContenderGroup[0].SearchArea = this.battleZone;
 		this.pathfindingWorldContextByContenderGroup[1].SearchArea = this.battleZone;
@@ -2663,7 +2629,6 @@ public class BattleSimulation : IDisposable
 		Diagnostics.Assert(contender.Garrison != null && contender.Garrison.Units != null);
 		List<BattleSimulationUnit> list = new List<BattleSimulationUnit>();
 		Unit unit;
-		Predicate<UnitDeployment> <>9__0;
 		foreach (Unit unit2 in contender.Garrison.Units)
 		{
 			unit = unit2;
@@ -2681,20 +2646,15 @@ public class BattleSimulation : IDisposable
 			{
 				battleSimulationUnit.IsBattleSimulated = true;
 			}
+			IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
 			SimulationDescriptor descriptor;
-			if (Databases.GetDatabase<SimulationDescriptor>(false).TryGetValue("ClassBattleUnit", out descriptor))
+			if (database.TryGetValue("ClassBattleUnit", out descriptor))
 			{
 				battleSimulationUnit.SimulationObject.AddDescriptor(descriptor);
 			}
 			battleSimulationUnit.Refresh(false);
-			UnitDeployment[] unitDeployment = contender.Deployment.UnitDeployment;
-			Predicate<UnitDeployment> match;
-			if ((match = <>9__0) == null)
-			{
-				match = (<>9__0 = ((UnitDeployment deployment) => deployment.UnitGUID == unit.GUID));
-			}
-			UnitDeployment unitDeployment2 = Array.Find<UnitDeployment>(unitDeployment, match);
-			battleSimulationUnit.SetPosition((unitDeployment2 != null) ? unitDeployment2.WorldPosition : WorldPosition.Invalid, null);
+			UnitDeployment unitDeployment = Array.Find<UnitDeployment>(contender.Deployment.UnitDeployment, (UnitDeployment deployment) => deployment.UnitGUID == unit.GUID);
+			battleSimulationUnit.SetPosition((unitDeployment != null) ? unitDeployment.WorldPosition : WorldPosition.Invalid, null);
 			BattleActionUnit[] array = this.InitializeBattleActionUnits(unit);
 			if (array != null)
 			{
@@ -2705,56 +2665,23 @@ public class BattleSimulation : IDisposable
 				battleSimulationUnit.AddBattleAction(battleActionUnit, BattleEffect.BattleEffectApplicationMethod.Additive);
 			}
 			Diagnostics.Assert(battleSimulationUnit.SimulationObject != null);
-			if (!BattleSimulation.ELCPFortification())
+			if (encounter is BattleCityAssaultEncounter)
 			{
-				if (encounter is BattleCityAssaultEncounter)
+				BattleCityAssaultEncounter battleCityAssaultEncounter = encounter as BattleCityAssaultEncounter;
+				IGameEntity gameEntity2 = null;
+				if (this.gameEntityRepositoryService.TryGetValue(battleCityAssaultEncounter.CityGuid, out gameEntity2) && gameEntity2 is City)
 				{
-					BattleCityAssaultEncounter battleCityAssaultEncounter = encounter as BattleCityAssaultEncounter;
-					IGameEntity gameEntity2 = null;
-					if (this.gameEntityRepositoryService.TryGetValue(battleCityAssaultEncounter.CityGuid, out gameEntity2) && gameEntity2 is City)
+					City city = gameEntity2 as City;
+					if (city.Empire == contender.Garrison.Empire)
 					{
-						City city = gameEntity2 as City;
-						if (city.Empire == contender.Garrison.Empire)
-						{
-							float num = 1f;
-							if (DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve != null)
-							{
-								num = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(city.Ownership[city.Empire.Index]);
-							}
-							float propertyValue = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
-							battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.MaximumArmor, propertyValue * num, false, null);
-							battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Armor, propertyValue * num, false, null);
-							battleSimulationUnit.Refresh(true);
-						}
-					}
-				}
-			}
-			else
-			{
-				List<BattleContender> list2 = encounter.BattleContenders.FindAll((BattleContender X) => X.IsMainContender);
-				bool flag = false;
-				City city2 = null;
-				if (list2.Count == 2)
-				{
-					flag = BattleSimulation.IsELCPCityBattle(new List<IGarrison>
-					{
-						list2[0].Garrison,
-						list2[1].Garrison
-					}, out city2);
-				}
-				if (flag)
-				{
-					District district = this.worldPositionningService.GetDistrict(contender.WorldPosition);
-					if (district != null && District.IsACityTile(district) && district.City.Empire == contender.Garrison.Empire && district.City == city2)
-					{
-						float propertyValue2 = district.City.GetPropertyValue(SimulationProperties.CityDefensePoint);
-						float num2 = 1f;
+						float num = 1f;
 						if (DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve != null)
 						{
-							num2 = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(district.City.Ownership[district.City.Empire.Index]);
+							num = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(city.Ownership[city.Empire.Index]);
 						}
-						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.MaximumArmor, propertyValue2 * num2, false, null);
-						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Armor, propertyValue2 * num2, false, null);
+						float propertyValue = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
+						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.MaximumArmor, propertyValue * num, false, null, false);
+						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Armor, propertyValue * num, false, null, false);
 						battleSimulationUnit.Refresh(true);
 					}
 				}
@@ -3076,40 +3003,7 @@ public class BattleSimulation : IDisposable
 		}
 	}
 
-	public static bool ELCPFortification()
-	{
-		ISessionService service = Services.GetService<ISessionService>();
-		Diagnostics.Assert(service != null);
-		return service.Session.GetLobbyData<string>("FortificationRules", "Vanilla") == "ELCP";
-	}
-
-	public static bool IsELCPCityBattle(List<IGarrison> MainContenders, out City city)
-	{
-		city = null;
-		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
-		foreach (IGarrison garrison in MainContenders)
-		{
-			District district = service.GetDistrict((garrison as IWorldPositionable).WorldPosition);
-			if (district != null && (District.IsACityTile(district) || district.Type == DistrictType.Exploitation))
-			{
-				city = district.City;
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static bool GetsFortificationBonus(IGarrison garrison, City city)
-	{
-		if (garrison == null || city == null)
-		{
-			return false;
-		}
-		District district = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>().GetDistrict((garrison as IWorldPositionable).WorldPosition);
-		return district != null && District.IsACityTile(district) && district.City == city && district.City.Empire == garrison.Empire;
-	}
-
-	public const PathfindingFlags BattlePathfindingFlags = PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges;
+	public const PathfindingFlags BattlePathfindingFlags = PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons;
 
 	private List<WorldPosition> validPositions = new List<WorldPosition>();
 
@@ -3164,8 +3058,6 @@ public class BattleSimulation : IDisposable
 	private IDatabase<BattleTargetingStrategy> battleTargetingStrategyDatabase;
 
 	private List<SimulationDescriptor> descriptors = new List<SimulationDescriptor>();
-
-	private BattleEncounter Encounter;
 
 	[StructLayout(LayoutKind.Sequential, Size = 1)]
 	public struct GroundAction

@@ -21,31 +21,35 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
+[OrderProcessor(typeof(OrderSwapFortressOccupant), "SwapFortressOccupant")]
+[OrderProcessor(typeof(OrderSwapCityOwner), "SwapCityOwner")]
+[OrderProcessor(typeof(OrderSpawnConvertedVillageUnit), "SpawnConvertedVillageUnit")]
+[OrderProcessor(typeof(OrderTameUnstunnedKaiju), "TameUnstunnedKaiju")]
+[OrderProcessor(typeof(OrderTameKaiju), "TameKaiju")]
+[OrderProcessor(typeof(OrderChangeRegionUserDefinedName), "ChangeRegionUserDefinedName")]
+[OrderProcessor(typeof(OrderSacrificePopulation), "SacrificePopulation")]
+[OrderProcessor(typeof(OrderResettle), "Resettle")]
+[OrderProcessor(typeof(OrderMovePopulation), "MovePopulation")]
+[OrderProcessor(typeof(OrderDissentVillage), "DissentVillage")]
+[OrderProcessor(typeof(OrderUntameKaiju), "UntameKaiju")]
 [OrderProcessor(typeof(OrderUpdateCadastralMap), "UpdateCadastralMap")]
-[OrderProcessor(typeof(OrderDestroyCity), "DestroyCity")]
+[OrderProcessor(typeof(OrderUpgradePointOfInterest), "UpgradePointOfInterest")]
+[OrderProcessor(typeof(OrderDestroyPointOfInterestImprovement), "DestroyPointOfInterestImprovement")]
 [OrderProcessor(typeof(OrderDestroyCityImprovement), "DestroyCityImprovement")]
+[OrderProcessor(typeof(OrderDestroyCity), "DestroyCity")]
+[OrderProcessor(typeof(OrderDestroyCamp), "DestroyCamp")]
 [OrderProcessor(typeof(OrderCreateDistrictImprovement), "CreateDistrictImprovement")]
-[OrderProcessor(typeof(OrderToggleRoundUp), "ToggleRoundUp")]
 [OrderProcessor(typeof(OrderCreateCity), "CreateCity")]
 [OrderProcessor(typeof(OrderCreateCamp), "CreateCamp")]
 [OrderProcessor(typeof(OrderConvertVillage), "ConvertVillage")]
 [OrderProcessor(typeof(OrderColonize), "Colonize")]
-[OrderProcessor(typeof(OrderChangeRegionUserDefinedName), "ChangeRegionUserDefinedName")]
-[OrderProcessor(typeof(OrderDestroyPointOfInterestImprovement), "DestroyPointOfInterestImprovement")]
 [OrderProcessor(typeof(OrderChangeEntityUserDefinedName), "ChangeEntityUserDefinedName")]
 [OrderProcessor(typeof(OrderChangeDryDockWorldPosition), "ChangeDryDockWorldPosition")]
 [OrderProcessor(typeof(OrderBuyOutPopulation), "BuyOutPopulation")]
 [OrderProcessor(typeof(OrderBribeVillage), "BribeVillage")]
-[OrderProcessor(typeof(OrderAssimilateFaction), "AssimilateFaction")]
 [OrderProcessor(typeof(OrderAssignPopulation), "AssignPopulation")]
-[OrderProcessor(typeof(OrderDestroyCamp), "DestroyCamp")]
-[OrderProcessor(typeof(OrderSwapFortressOccupant), "SwapFortressOccupant")]
-[OrderProcessor(typeof(OrderMovePopulation), "MovePopulation")]
-[OrderProcessor(typeof(OrderResettle), "Resettle")]
-[OrderProcessor(typeof(OrderSwapCityOwner), "SwapCityOwner")]
-[OrderProcessor(typeof(OrderSacrificePopulation), "SacrificePopulation")]
-[OrderProcessor(typeof(OrderSpawnConvertedVillageUnit), "SpawnConvertedVillageUnit")]
-[OrderProcessor(typeof(OrderDissentVillage), "DissentVillage")]
+[OrderProcessor(typeof(OrderAssimilateFaction), "AssimilateFaction")]
+[OrderProcessor(typeof(OrderToggleRoundUp), "ToggleRoundUp")]
 public class DepartmentOfTheInterior : Agency, IXmlSerializable
 {
 	public DepartmentOfTheInterior(global::Empire empire) : base(empire)
@@ -55,6 +59,12 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		this.ShowTerraformFIDSI = false;
 	}
 
+	// Note: this type is marked as 'beforefieldinit'.
+	static DepartmentOfTheInterior()
+	{
+		DepartmentOfTheInterior.ArmyStatusEarthquakerDescriptorName = "ArmyStatusEarthquaker";
+	}
+
 	public event CollectionChangeEventHandler AssimilatedFactionsCollectionChanged;
 
 	public event CollectionChangeEventHandler OccupiedFortressesCollectionChanged;
@@ -62,6 +72,112 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 	public event CollectionChangeEventHandler CitiesCollectionChanged;
 
 	public event EventHandler<PopulationRepartitionEventArgs> PopulationRepartitionChanged;
+
+	public static float GetCityPointEarthquakeDamage(City city)
+	{
+		float num = 0f;
+		Army[] cityEarthquakeInstigators = DepartmentOfTheInterior.GetCityEarthquakeInstigators(city);
+		for (int i = 0; i < cityEarthquakeInstigators.Length; i++)
+		{
+			cityEarthquakeInstigators[i].Refresh(true);
+			num += cityEarthquakeInstigators[i].GetPropertyValue(SimulationProperties.CityPointEarthquakeDamage);
+		}
+		return num;
+	}
+
+	public static float GetCityGarrisonEarthquakeDamage(City city)
+	{
+		float num = 0f;
+		Army[] cityEarthquakeInstigators = DepartmentOfTheInterior.GetCityEarthquakeInstigators(city);
+		for (int i = 0; i < cityEarthquakeInstigators.Length; i++)
+		{
+			cityEarthquakeInstigators[i].Refresh(true);
+			num += cityEarthquakeInstigators[i].GetPropertyValue(SimulationProperties.CityGarrisonEarthquakeDamage);
+		}
+		return num;
+	}
+
+	public static Army[] GetCityEarthquakeInstigators(City city)
+	{
+		if (city == null)
+		{
+			throw new ArgumentNullException("city");
+		}
+		List<Army> list = new List<Army>();
+		for (int i = 0; i < city.Region.WorldPositions.Length; i++)
+		{
+			Army armyAtPosition = DepartmentOfTheInterior.WorldPositionningServiceStatic.GetArmyAtPosition(city.Region.WorldPositions[i]);
+			if (armyAtPosition != null && armyAtPosition.IsEarthquaker && armyAtPosition.Empire.Index != city.Empire.Index)
+			{
+				list.Add(armyAtPosition);
+			}
+		}
+		return list.ToArray();
+	}
+
+	public void GameClient_TurnEnd_UpdateEarthquakeDamage(City city)
+	{
+		if (city == null)
+		{
+			throw new ArgumentNullException("city");
+		}
+		if (!city.IsUnderEarthquake)
+		{
+			return;
+		}
+		IEventService service = Services.GetService<IEventService>();
+		Army[] cityEarthquakeInstigators = DepartmentOfTheInterior.GetCityEarthquakeInstigators(city);
+		DepartmentOfDefense agency = base.Empire.GetAgency<DepartmentOfDefense>();
+		foreach (Army army in cityEarthquakeInstigators)
+		{
+			army.Refresh(true);
+			float propertyValue = army.GetPropertyValue(SimulationProperties.CityPointEarthquakeDamage);
+			float num = army.GetPropertyValue(SimulationProperties.CityGarrisonEarthquakeDamage);
+			if (propertyValue > 0f)
+			{
+				float propertyValue2 = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
+				float num2 = propertyValue2 - propertyValue;
+				city.SetPropertyBaseValue(SimulationProperties.CityDefensePoint, Math.Max(0f, num2));
+				if (num2 < 0f)
+				{
+					num -= num2;
+				}
+			}
+			float num3 = 0f;
+			if (num > 0f)
+			{
+				if (city.Hero != null)
+				{
+					agency.WoundUnit(city.Hero, num);
+					num3 += num;
+				}
+				ReadOnlyCollection<Unit> standardUnits = city.StandardUnits;
+				for (int j = standardUnits.Count - 1; j >= 0; j--)
+				{
+					Unit unit = standardUnits[j];
+					agency.WoundUnit(unit, num);
+					num3 += num;
+				}
+				ReadOnlyCollection<Unit> standardUnits2 = city.Militia.StandardUnits;
+				for (int k = standardUnits2.Count - 1; k >= 0; k--)
+				{
+					Unit unit2 = standardUnits2[k];
+					agency.WoundUnit(unit2, num);
+					num3 += num;
+				}
+			}
+			if (service != null)
+			{
+				EventCityDamagedByEarthquake eventToNotify = new EventCityDamagedByEarthquake(army.Empire, army, city, propertyValue, num3);
+				service.Notify(eventToNotify);
+			}
+		}
+		if (service != null)
+		{
+			EventCityEarthquakeUpdate eventToNotify2 = new EventCityEarthquakeUpdate(city.Empire, city);
+			service.Notify(eventToNotify2);
+		}
+	}
 
 	private static IDatabase<SimulationDescriptor> SimulationDescriptorDatabaseStatic { get; set; }
 
@@ -353,6 +469,11 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		return empire.SimulationObject.Tags.Contains("FactionTraitFlames10");
 	}
 
+	public static bool CanPlaceCreepingNodes(global::Empire empire)
+	{
+		return empire.SimulationObject.Tags.Contains("FactionTraitMimics1");
+	}
+
 	public static bool CanUseAffinityStrategicResource(global::Empire empire)
 	{
 		if (empire == null)
@@ -477,6 +598,14 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		DepartmentOfTheInterior.ClearResourceOnConvertedVillage(converter, convertedPointOfInterest);
 	}
 
+	public static void ClearResourcesLeechingForKaijus(Kaiju kaiju)
+	{
+		kaiju.RemoveDescriptorByType("LeechByKaijus");
+		kaiju.Refresh(false);
+		IEventService service = Services.GetService<IEventService>();
+		service.Notify(new EventKaijuLeechUpdated(kaiju, EventKaijuLeechUpdated.UpdateOperation.Clear));
+	}
+
 	public static void DestroyPointOfInterest(PointOfInterest pointOfInterest)
 	{
 		if (pointOfInterest.PointOfInterestImprovement != null)
@@ -533,6 +662,116 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		DepartmentOfTheInterior.GenerateResourceForConvertedVillages(converter, convertedPointOfInterest);
 	}
 
+	public static void GenerateFIMSEForCreepingNode(Amplitude.Unity.Game.Empire empire, CreepingNode node)
+	{
+		int fidsiextractionRange = node.NodeDefinition.FIDSIExtractionRange;
+		int index = node.PointOfInterest.Region.Index;
+		WorldCircle worldCircle = new WorldCircle(node.WorldPosition, fidsiextractionRange);
+		WorldPosition[] worldPositions = worldCircle.GetWorldPositions(DepartmentOfTheInterior.WorldPositionningServiceStatic.World.WorldParameters);
+		for (int i = 0; i < worldPositions.Length; i++)
+		{
+			if ((int)DepartmentOfTheInterior.WorldPositionningServiceStatic.GetRegionIndex(worldPositions[i]) == index)
+			{
+				if (DepartmentOfTheInterior.WorldPositionningServiceStatic.GetDistrict(worldPositions[i]) == null && !DepartmentOfTheInterior.WorldPositionningServiceStatic.HasRidge(worldPositions[i]))
+				{
+					SimulationObject simulationObject = new SimulationObject("CreepingNode_" + i.ToString());
+					DepartmentOfTheInterior.ApplyDistrictProxyDescriptors(empire, simulationObject, worldPositions[i], DistrictType.Exploitation, true, false);
+					SimulationDescriptor descriptor = null;
+					if (DepartmentOfTheInterior.SimulationDescriptorDatabaseStatic.TryGetValue("CreepingNodeDistrict", out descriptor))
+					{
+						simulationObject.AddDescriptor(descriptor);
+					}
+					else
+					{
+						Diagnostics.LogError("Unable to retrieve the 'CreepingNodeDistrict' simulation descriptor from the database.");
+					}
+					node.SimulationObject.AddChild(simulationObject);
+				}
+			}
+		}
+	}
+
+	public static void ClearFIMSEOnCreepingNode(global::Empire empire, CreepingNode node)
+	{
+		for (int i = node.SimulationObject.Children.Count - 1; i >= 0; i--)
+		{
+			SimulationObject simulationObject = node.SimulationObject.Children[i];
+			node.SimulationObject.RemoveChild(simulationObject);
+			simulationObject.Dispose();
+		}
+	}
+
+	public static void GenerateResourcesLeechingForTamedKaijus(Kaiju kaiju)
+	{
+		DepartmentOfTheInterior.ClearResourcesLeechingForKaijus(kaiju);
+		if (!kaiju.IsTamed() || kaiju.OnArmyMode())
+		{
+			return;
+		}
+		global::Empire majorEmpire = kaiju.MajorEmpire;
+		Region region = kaiju.Region;
+		PointOfInterest[] pointOfInterests = region.PointOfInterests;
+		List<PointOfInterest> list = new List<PointOfInterest>();
+		DepartmentOfScience agency = majorEmpire.GetAgency<DepartmentOfScience>();
+		foreach (PointOfInterest pointOfInterest in pointOfInterests)
+		{
+			if (!(pointOfInterest.Type != "ResourceDeposit"))
+			{
+				string empty = string.Empty;
+				if (!pointOfInterest.PointOfInterestDefinition.TryGetValue("VisibilityTechnology", out empty) || agency.GetTechnologyState(empty) == DepartmentOfScience.ConstructibleElement.State.Researched)
+				{
+					list.Add(pointOfInterest);
+				}
+			}
+		}
+		if (list.Count == 0)
+		{
+			return;
+		}
+		Dictionary<StaticString, int> dictionary = new Dictionary<StaticString, int>();
+		for (int j = 0; j < list.Count; j++)
+		{
+			PointOfInterest pointOfInterest2 = list[j];
+			string empty2 = string.Empty;
+			if (pointOfInterest2.PointOfInterestDefinition.TryGetValue("LeechByKaijusDescriptor", out empty2))
+			{
+				if (!dictionary.ContainsKey(empty2))
+				{
+					dictionary.Add(empty2, 1);
+				}
+				else
+				{
+					Dictionary<StaticString, int> dictionary3;
+					Dictionary<StaticString, int> dictionary2 = dictionary3 = dictionary;
+					StaticString key2;
+					StaticString key = key2 = empty2;
+					int num = dictionary3[key2];
+					dictionary2[key] = num + 1;
+				}
+			}
+		}
+		foreach (StaticString x in dictionary.Keys)
+		{
+			string text = x;
+			SimulationDescriptor descriptor = null;
+			if (!DepartmentOfTheInterior.SimulationDescriptorDatabaseStatic.TryGetValue(text, out descriptor))
+			{
+				Diagnostics.LogError("Could not retrieve the simulation descriptor '{0}'.", new object[]
+				{
+					text
+				});
+			}
+			else
+			{
+				kaiju.AddDescriptor(descriptor, false);
+				kaiju.SetPropertyBaseValue(text, (float)dictionary[text]);
+			}
+		}
+		kaiju.Refresh(false);
+		IEventService service = Services.GetService<IEventService>();
+		service.Notify(new EventKaijuLeechUpdated(kaiju, EventKaijuLeechUpdated.UpdateOperation.Clear));
+	}
+
 	public static bool IsArmyAbleToConvert(Army army, bool isOrderCheck = true)
 	{
 		if (!army.Empire.SimulationObject.Tags.Contains("FactionTraitCultists14"))
@@ -540,6 +779,26 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			if (!isOrderCheck)
 			{
 				Diagnostics.LogError("Order preprocessing failed because the empire has not the correct faction trait.");
+			}
+			return false;
+		}
+		DepartmentOfScience agency = army.Empire.GetAgency<DepartmentOfScience>();
+		if (agency.GetTechnologyState("TechnologyDefinitionCultists5") != DepartmentOfScience.ConstructibleElement.State.Researched)
+		{
+			if (!isOrderCheck)
+			{
+				Diagnostics.LogError("Order preprocessing failed because the conversion technology is not researched.");
+			}
+			return false;
+		}
+		if (army.IsInEncounter)
+		{
+			if (!isOrderCheck)
+			{
+				Diagnostics.LogError("Order preprocessing failed because the army is only made of minor units (guid: {0:X8}).", new object[]
+				{
+					army.GUID
+				});
 			}
 			return false;
 		}
@@ -554,13 +813,12 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			}
 			return false;
 		}
-		DepartmentOfTheInterior agency = army.Empire.GetAgency<DepartmentOfTheInterior>();
-		return agency.MainCity != null || agency.Cities.Count >= 1;
+		return true;
 	}
 
 	public static bool IsArmyAbleToTerraform(Army army)
 	{
-		return DepartmentOfTheInterior.CanInvokeTerraformationDevices(army.Empire) && !army.IsInEncounter && !army.IsPillaging;
+		return DepartmentOfTheInterior.CanInvokeTerraformationDevices(army.Empire) && !army.IsInEncounter && !army.IsPillaging && !army.IsDismantlingCreepingNode;
 	}
 
 	public static bool IsPointOfInterestVisible(Amplitude.Unity.Game.Empire empire, PointOfInterest pointOfInterest)
@@ -1246,7 +1504,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			reader.ReadElementSerializable<City>(ref city);
 			if (city != null)
 			{
-				this.AddCity(city, false);
+				this.AddCity(city, false, false);
 				if (this.mainCityGUID != GameEntityGUID.Zero && this.mainCityGUID == city.GUID)
 				{
 					this.MainCity = city;
@@ -1486,9 +1744,26 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 	}
 
-	public int GetNumberOfConvertedOrPacifiedVillage(MinorFaction minorFaction, bool rebuilt = false)
+	public int GetNumberOfOwnedMinorFactionVillages(MinorFaction minorFaction, bool rebuilt = false)
 	{
-		return this.GetNumberOfConvertedVillages(minorFaction) + this.GetNumberOfPacifiedVillages(minorFaction, rebuilt);
+		return this.GetNumberOfInfectedVillages(minorFaction) + this.GetNumberOfConvertedVillages(minorFaction) + this.GetNumberOfPacifiedVillages(minorFaction, rebuilt);
+	}
+
+	public int GetNumberOfInfectedVillages(MinorFaction minorFaction)
+	{
+		int num = 0;
+		MajorEmpire majorEmpire = base.Empire as MajorEmpire;
+		if (majorEmpire != null)
+		{
+			for (int i = 0; i < majorEmpire.InfectedVillages.Count; i++)
+			{
+				if (majorEmpire.InfectedVillages[i].MinorEmpire.MinorFaction.Name == minorFaction.Name)
+				{
+					num++;
+				}
+			}
+		}
+		return num;
 	}
 
 	public int GetNumberOfConvertedVillages(MinorFaction minorFaction)
@@ -1521,7 +1796,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 				{
 					for (int j = 0; j < agency.Villages.Count; j++)
 					{
-						if ((!rebuilt || agency.Villages[j].PointOfInterest.PointOfInterestImprovement != null) && agency.Villages[j].HasBeenPacified)
+						if ((!rebuilt || agency.Villages[j].PointOfInterest.PointOfInterestImprovement != null) && agency.Villages[j].HasBeenPacified && !agency.Villages[j].HasBeenInfected)
 						{
 							num++;
 						}
@@ -1541,7 +1816,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			if (minorEmpire2 != null && minorEmpire2.MinorFaction != null)
 			{
 				BarbarianCouncil agency = minorEmpire2.GetAgency<BarbarianCouncil>();
-				if (agency.HasAtLeastOneVillagePacified)
+				if (agency.HasAtLeastOneNonInfectedVillagePacified)
 				{
 					int num = 0;
 					foreach (Village village in agency.Villages)
@@ -1561,15 +1836,30 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			}
 		}
 		MajorEmpire majorEmpire = base.Empire as MajorEmpire;
-		if (majorEmpire != null && majorEmpire.ConvertedVillages != null)
+		if (majorEmpire != null)
 		{
-			for (int i = 0; i < majorEmpire.ConvertedVillages.Count; i++)
+			if (majorEmpire.ConvertedVillages != null)
 			{
-				Village village2 = majorEmpire.ConvertedVillages[i];
-				MinorEmpire minorEmpire = village2.MinorEmpire;
-				if (minorEmpire != null && minorEmpire.MinorFaction != null && !assimilableMinorFactions.Exists((MinorFaction match) => match.Name == minorEmpire.MinorFaction.Name))
+				for (int i = 0; i < majorEmpire.ConvertedVillages.Count; i++)
 				{
-					assimilableMinorFactions.Add(minorEmpire.MinorFaction);
+					Village village2 = majorEmpire.ConvertedVillages[i];
+					MinorEmpire minorEmpire = village2.MinorEmpire;
+					if (minorEmpire != null && minorEmpire.MinorFaction != null && !assimilableMinorFactions.Exists((MinorFaction match) => match.Name == minorEmpire.MinorFaction.Name))
+					{
+						assimilableMinorFactions.Add(minorEmpire.MinorFaction);
+					}
+				}
+			}
+			if (majorEmpire.InfectedVillages != null)
+			{
+				for (int j = 0; j < majorEmpire.InfectedVillages.Count; j++)
+				{
+					Village village3 = majorEmpire.InfectedVillages[j];
+					MinorEmpire minorEmpire = village3.MinorEmpire;
+					if (minorEmpire != null && minorEmpire.MinorFaction != null && !assimilableMinorFactions.Exists((MinorFaction match) => match.Name == minorEmpire.MinorFaction.Name))
+					{
+						assimilableMinorFactions.Add(minorEmpire.MinorFaction);
+					}
 				}
 			}
 		}
@@ -1709,15 +1999,60 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 					city.RemoveDescriptor(value2);
 				}
 			}
-			if (!this.alreadyNotifyForAssimilation.Contains(minorEmpire.MinorFaction.Name))
-			{
-				this.alreadyNotifyForAssimilation.Add(minorEmpire.MinorFaction.Name);
-				this.EventService.Notify(new EventMinorFactionAssimilable(base.Empire, minorEmpire.MinorFaction));
-			}
+			this.NotifyMinorFactionRdyForAssimilation(minorEmpire);
 		}
 		else
 		{
 			this.UnbindMinorEmpireToCity(city, minorEmpire);
+		}
+	}
+
+	public void NotifyMinorFactionRdyForAssimilation(MinorEmpire minorEmpire)
+	{
+		if (!this.alreadyNotifyForAssimilation.Contains(minorEmpire.MinorFaction.Name))
+		{
+			this.alreadyNotifyForAssimilation.Add(minorEmpire.MinorFaction.Name);
+			this.EventService.Notify(new EventMinorFactionAssimilable(base.Empire, minorEmpire.MinorFaction));
+		}
+	}
+
+	public void UnbindInfectedVillage(Village village)
+	{
+		MajorEmpire majorEmpire = base.Empire as MajorEmpire;
+		if (majorEmpire != null && majorEmpire.InfectedVillages != null && this.IsAssimilated(village.MinorEmpire.MinorFaction))
+		{
+			int num = 0;
+			for (int i = 0; i < majorEmpire.InfectedVillages.Count; i++)
+			{
+				if (!(majorEmpire.InfectedVillages[i].GUID == village.GUID))
+				{
+					if (majorEmpire.InfectedVillages[i].MinorEmpire.Faction.Name == village.MinorEmpire.MinorFaction.Name)
+					{
+						num++;
+						break;
+					}
+				}
+			}
+			if (num == 0)
+			{
+				int num2 = 0;
+				foreach (City city in this.Cities)
+				{
+					if (city.Region != null && city.Region.MinorEmpire != null && !(city.Region.MinorEmpire.Faction.Name != village.MinorEmpire.MinorFaction.Name))
+					{
+						BarbarianCouncil agency = city.Region.MinorEmpire.GetAgency<BarbarianCouncil>();
+						if (agency.HasAtLeastOneVillagePacified)
+						{
+							num2++;
+							break;
+						}
+					}
+				}
+				if (num2 == 0)
+				{
+					this.DeassimilateFaction(village.MinorEmpire.MinorFaction);
+				}
+			}
 		}
 	}
 
@@ -1791,7 +2126,10 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 				{
 					num++;
 					city.RemoveChild(village.PointOfInterest);
-					village.PointOfInterest.Empire = null;
+					if (!village.HasBeenInfected)
+					{
+						village.PointOfInterest.Empire = null;
+					}
 				}
 				else if (village.HasBeenConverted && village.Converter.Index != base.Empire.Index)
 				{
@@ -1847,6 +2185,60 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 				this.DeassimilateFaction(minorEmpire.MinorFaction);
 				EventAssimilationLost eventToNotify = new EventAssimilationLost(base.Empire, minorEmpire.MinorFaction);
 				this.EventService.Notify(eventToNotify);
+			}
+		}
+	}
+
+	public void RebuildVillage(Village village)
+	{
+		Diagnostics.Assert(village.PointOfInterest != null);
+		if (village.PointOfInterest != null && village.PointOfInterest.PointOfInterestImprovement == null)
+		{
+			ConstructibleElement[] availableConstructibleElements = this.departmentOfIndustry.ConstructibleElementDatabase.GetAvailableConstructibleElements(new StaticString[0]);
+			for (int i = 0; i < availableConstructibleElements.Length; i++)
+			{
+				PointOfInterestImprovementDefinition pointOfInterestImprovementDefinition = availableConstructibleElements[i] as PointOfInterestImprovementDefinition;
+				if (pointOfInterestImprovementDefinition != null)
+				{
+					if (!(pointOfInterestImprovementDefinition.PointOfInterestTemplateName != village.PointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName))
+					{
+						if (this.MainCity != null)
+						{
+							this.BuildPointOfInterestImprovement(this.MainCity, village.PointOfInterest, pointOfInterestImprovementDefinition);
+						}
+						else
+						{
+							this.BuildPointOfInterestImprovement(village.PointOfInterest, pointOfInterestImprovementDefinition);
+						}
+						Region region = village.PointOfInterest.Region;
+						if (region.Owner != null && region.City != null)
+						{
+							DepartmentOfIndustry agency = region.Owner.GetAgency<DepartmentOfIndustry>();
+							if (agency != null)
+							{
+								ConstructionQueue constructionQueue = agency.GetConstructionQueue(region.City);
+								if (constructionQueue != null && pointOfInterestImprovementDefinition != null)
+								{
+									for (int j = 0; j < constructionQueue.Length; j++)
+									{
+										Construction construction = constructionQueue.PeekAt(j);
+										if (construction != null && construction.ConstructibleElementName == pointOfInterestImprovementDefinition.Name && construction.WorldPosition == village.WorldPosition)
+										{
+											if (construction.IsInProgress)
+											{
+												agency.RemoveConstructionQueueDescriptors(region.City, construction);
+											}
+											this.GameEntityRepositoryService.Unregister(construction);
+											constructionQueue.Remove(construction);
+											break;
+										}
+									}
+								}
+							}
+						}
+						break;
+					}
+				}
 			}
 		}
 	}
@@ -2516,6 +2908,18 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 							}
 						}
 					}
+					List<Village> infectedVillages = ((MajorEmpire)base.Empire).InfectedVillages;
+					if (infectedVillages != null)
+					{
+						for (int l = 0; l < infectedVillages.Count; l++)
+						{
+							if (infectedVillages[l].MinorEmpire != null && infectedVillages[l].MinorEmpire.Faction.Name == faction.Name)
+							{
+								flag2 = true;
+								break;
+							}
+						}
+					}
 				}
 				if (!flag2)
 				{
@@ -2968,7 +3372,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		{
 			agency2.AddQueueTo<City>(city);
 		}
-		this.AddCity(city, true);
+		this.AddCity(city, true, true);
 		this.GameEntityRepositoryService.Register(city);
 		for (int j = 0; j < city.Districts.Count; j++)
 		{
@@ -2981,6 +3385,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		this.BindMinorFactionToCity(city, city.Region.MinorEmpire);
 		float propertyValue = base.Empire.GetPropertyValue(SimulationProperties.PopulationAmountContainedBySettler);
 		city.SetPropertyBaseValue(SimulationProperties.Population, propertyValue);
+		city.SetPropertyBaseValue(SimulationProperties.CityOwnedTurn, (float)(this.GameService.Game as global::Game).Turn);
 		if (order.FreeCityImprovements != null)
 		{
 			for (int k = 0; k < order.FreeCityImprovements.Count; k++)
@@ -3058,8 +3463,14 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 		if (army.IsEmpty)
 		{
-			agency.RemoveArmy(army);
+			agency.RemoveArmy(army, true);
 		}
+		SimulationDescriptor descriptor;
+		if (base.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics2) && !city.SimulationObject.Tags.Contains(City.MimicsCity) && this.SimulationDescriptorDatabase.TryGetValue(City.MimicsCity, out descriptor))
+		{
+			city.AddDescriptor(descriptor, false);
+		}
+		this.AddDistrictDescriptorExploitableResource(city);
 		return true;
 	}
 
@@ -3389,52 +3800,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		Diagnostics.Assert(village.PointOfInterest != null);
 		if (village.PointOfInterest != null && village.PointOfInterest.PointOfInterestImprovement == null)
 		{
-			PointOfInterestImprovementDefinition pointOfInterestImprovementDefinition = null;
-			ConstructibleElement[] constructibles = this.departmentOfIndustry.ConstructibleElementDatabase.GetAvailableConstructibleElements(new StaticString[0]);
-			for (int index = 0; index < constructibles.Length; index++)
-			{
-				pointOfInterestImprovementDefinition = (constructibles[index] as PointOfInterestImprovementDefinition);
-				if (pointOfInterestImprovementDefinition != null)
-				{
-					if (!(pointOfInterestImprovementDefinition.PointOfInterestTemplateName != village.PointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName))
-					{
-						if (this.MainCity != null)
-						{
-							this.BuildPointOfInterestImprovement(this.MainCity, village.PointOfInterest, pointOfInterestImprovementDefinition);
-						}
-						else
-						{
-							this.BuildPointOfInterestImprovement(village.PointOfInterest, pointOfInterestImprovementDefinition);
-						}
-						if (region.Owner != null)
-						{
-							DepartmentOfIndustry departmentOfIndustry = region.Owner.GetAgency<DepartmentOfIndustry>();
-							if (departmentOfIndustry != null)
-							{
-								ConstructionQueue constructionQueue = departmentOfIndustry.GetConstructionQueue(region.City);
-								if (constructionQueue != null && pointOfInterestImprovementDefinition != null)
-								{
-									for (int jndex = 0; jndex < constructionQueue.Length; jndex++)
-									{
-										Construction construction = constructionQueue.PeekAt(jndex);
-										if (construction != null && construction.ConstructibleElementName == pointOfInterestImprovementDefinition.Name && construction.WorldPosition == village.WorldPosition)
-										{
-											if (construction.IsInProgress)
-											{
-												departmentOfIndustry.RemoveConstructionQueueDescriptors(region.City, construction);
-											}
-											this.GameEntityRepositoryService.Unregister(construction);
-											constructionQueue.Remove(construction);
-											break;
-										}
-									}
-								}
-							}
-						}
-						break;
-					}
-				}
-			}
+			this.RebuildVillage(village);
 		}
 		if (order.NumberOfActionPointsToSpend > 0f)
 		{
@@ -3442,16 +3808,16 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 		if (order.ConvertionCost != null)
 		{
-			for (int index2 = 0; index2 < order.ConvertionCost.Length; index2++)
+			for (int index = 0; index < order.ConvertionCost.Length; index++)
 			{
-				if (order.ConvertionCost[index2].Instant)
+				if (order.ConvertionCost[index].Instant)
 				{
-					float resourceCost = order.ConvertionCost[index2].GetValue(base.Empire);
-					if (!this.departmentOfTheTreasury.TryTransferResources(base.Empire, order.ConvertionCost[index2].ResourceName, -resourceCost))
+					float resourceCost = order.ConvertionCost[index].GetValue(base.Empire);
+					if (!this.departmentOfTheTreasury.TryTransferResources(base.Empire, order.ConvertionCost[index].ResourceName, -resourceCost))
 					{
 						Diagnostics.LogError("Cannot transfert the amount of resources (resource name = '{0}', cost = {0}).", new object[]
 						{
-							order.ConvertionCost[index2].ResourceName,
+							order.ConvertionCost[index].ResourceName,
 							-resourceCost
 						});
 					}
@@ -3670,13 +4036,14 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		{
 			this.GameEntityRepositoryService.Register(camp.Districts[campDistrictIndex]);
 		}
+		this.VerifyOverallPopulation(city);
 		yield break;
 	}
 
 	private bool CreateCityPreprocessor(OrderCreateCity order)
 	{
 		Region region = this.WorldPositionningService.GetRegion(order.WorldPosition);
-		if (region.City != null)
+		if (region.IsRegionColonized())
 		{
 			Diagnostics.LogError("Skipping city creation process because there is already a city in this region.");
 			return false;
@@ -3788,7 +4155,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		{
 			departmentOfIndustry.AddQueueTo<City>(city);
 		}
-		this.AddCity(city, true);
+		this.AddCity(city, true, true);
 		this.GameEntityRepositoryService.Register(city);
 		for (int tileIndex = 0; tileIndex < city.Districts.Count; tileIndex++)
 		{
@@ -3816,6 +4183,12 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 		float wantedPopulation = base.Empire.GetPropertyValue(SimulationProperties.PopulationAmountContainedBySettler);
 		city.SetPropertyBaseValue(SimulationProperties.Population, wantedPopulation);
+		city.SetPropertyBaseValue(SimulationProperties.CityOwnedTurn, (float)(this.GameService.Game as global::Game).Turn);
+		SimulationDescriptor descriptor;
+		if (base.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics2) && !city.SimulationObject.Tags.Contains(City.MimicsCity) && this.SimulationDescriptorDatabase.TryGetValue(City.MimicsCity, out descriptor))
+		{
+			city.AddDescriptor(descriptor, false);
+		}
 		city.Refresh(true);
 		this.ForceGrowthToCurrentPopulation(city, 0f);
 		this.UpdatePointOfInterestImprovement(city);
@@ -3824,6 +4197,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		{
 			departmentOfHealth.RefreshApprovalStatus();
 		}
+		this.AddDistrictDescriptorExploitableResource(city);
 		yield break;
 	}
 
@@ -4138,7 +4512,18 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 					}
 				}
 			}
+			this.AddDistrictDescriptorExploitableResource(city);
 			this.BuildFreePointOfInterestImprovement(city, order.WorldPosition);
+			IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
+			if (downloadableContentService.IsShared(DownloadableContent20.ReadOnlyName))
+			{
+				DepartmentOfCreepingNodes departmentOfCreepingNodes = base.Empire.GetAgency<DepartmentOfCreepingNodes>();
+				if (departmentOfCreepingNodes != null)
+				{
+					departmentOfCreepingNodes.BuildFreeCreepingNodeImprovement(city, order.WorldPosition);
+					departmentOfCreepingNodes.RefreshCityNodesFIMSE(city);
+				}
+			}
 			break;
 		}
 		case DistrictType.Improvement:
@@ -4693,6 +5078,11 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			this.StopSiege(city);
 		}
 		this.StopNavalSiege(city);
+		Army[] earthquakeInstigators = DepartmentOfTheInterior.GetCityEarthquakeInstigators(city);
+		for (int armyIndex = 0; armyIndex < earthquakeInstigators.Length; armyIndex++)
+		{
+			earthquakeInstigators[armyIndex].SetEarthquakerStatus(false, false, null);
+		}
 		if (this.MainCity != null && this.MainCity.GUID == city.GUID)
 		{
 			MajorEmpire majorEmpire = base.Empire as MajorEmpire;
@@ -4904,7 +5294,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			Diagnostics.LogError("Order preprocessing failed because the target city does not contains the city improvement.");
 			return false;
 		}
-		return cityImprovement.City.BesiegingEmpireIndex == -1 && !cityImprovement.City.IsInEncounter;
+		return cityImprovement.City.BesiegingEmpireIndex == -1 && !cityImprovement.City.IsInEncounter && !cityImprovement.City.IsInfected;
 	}
 
 	private IEnumerator DestroyCityImprovementProcessor(OrderDestroyCityImprovement order)
@@ -6035,7 +6425,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 				Army armyAtPosition = this.WorldPositionningService.GetArmyAtPosition(camp.WorldPosition);
 				if (armyAtPosition != null)
 				{
-					armyAtPosition.SetWorldPositionAndTeleport(campGarrisonTransferData.WorldPositionToArmy);
+					armyAtPosition.SetWorldPositionAndTeleport(campGarrisonTransferData.WorldPositionToArmy, true);
 				}
 			}
 		}
@@ -6086,6 +6476,310 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		yield break;
 	}
 
+	private bool TameKaijuPreprocessor(OrderTameKaiju order)
+	{
+		if (!this.MainCityGUID.IsValid)
+		{
+			Diagnostics.LogWarning("Order preprocessing failed because the main city is null.");
+			return false;
+		}
+		if (!order.KaijuGUID.IsValid)
+		{
+			Diagnostics.LogError("Order preprocessing failed because the instigator guid is not valid.");
+			return false;
+		}
+		Kaiju kaiju = null;
+		if (!this.GameEntityRepositoryService.TryGetValue<Kaiju>(order.KaijuGUID, out kaiju))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the entity is not referenced (guid: {0:X8}).", new object[]
+			{
+				order.KaijuGUID
+			});
+			return false;
+		}
+		Army army = null;
+		if (order.ArmyInstigatorGUID.IsValid)
+		{
+			this.GameEntityRepositoryService.TryGetValue<Army>(order.ArmyInstigatorGUID, out army);
+		}
+		ArmyAction armyAction = null;
+		IDatabase<ArmyAction> database = Databases.GetDatabase<ArmyAction>(false);
+		if (database == null || !database.TryGetValue(ArmyAction_TameKaiju.ReadOnlyName, out armyAction))
+		{
+			return false;
+		}
+		KaijuCouncil agency = kaiju.KaijuEmpire.GetAgency<KaijuCouncil>();
+		if (agency == null)
+		{
+			Diagnostics.LogWarning("Invalid null Kaiju council on the region.");
+			return false;
+		}
+		if (agency.Kaiju != kaiju)
+		{
+			Diagnostics.LogWarning("Invalid null Kaiju in Kaiju Council.");
+			return false;
+		}
+		if (army != null)
+		{
+			order.TameCost = armyAction.ComputeConstructionCost(army.Empire).ToArray();
+			for (int i = 0; i < order.TameCost.Length; i++)
+			{
+				float num = -order.TameCost[i].GetValue(base.Empire.SimulationObject);
+				if (!this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.Empire, order.TameCost[i].ResourceName, ref num))
+				{
+					return false;
+				}
+			}
+			order.NumberOfActionPointsToSpend = (double)armyAction.GetCostInActionPoints();
+			if (order.NumberOfActionPointsToSpend > 0.0)
+			{
+				SimulationObjectWrapper simulationObjectWrapper = army;
+				if (simulationObjectWrapper != null)
+				{
+					float propertyValue = simulationObjectWrapper.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
+					float propertyValue2 = simulationObjectWrapper.GetPropertyValue(SimulationProperties.ActionPointsSpent);
+					if (order.NumberOfActionPointsToSpend > (double)(propertyValue - propertyValue2))
+					{
+						Diagnostics.LogWarning("Not enough action points.");
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	private IEnumerator TameKaijuProcessor(OrderTameKaiju order)
+	{
+		Kaiju kaiju = null;
+		if (!this.GameEntityRepositoryService.TryGetValue<Kaiju>(order.KaijuGUID, out kaiju))
+		{
+			yield break;
+		}
+		if (kaiju.MajorEmpire != null)
+		{
+			yield break;
+		}
+		if (kaiju.KaijuGarrison == null)
+		{
+			yield break;
+		}
+		KaijuCouncil kaijuCouncil = kaiju.KaijuEmpire.GetAgency<KaijuCouncil>();
+		if (kaijuCouncil == null)
+		{
+			yield break;
+		}
+		if (!(base.Empire is MajorEmpire))
+		{
+			yield break;
+		}
+		if (kaijuCouncil.Kaiju == null)
+		{
+			yield break;
+		}
+		Army instigator = null;
+		if (order.ArmyInstigatorGUID.IsValid)
+		{
+			this.GameEntityRepositoryService.TryGetValue<Army>(order.ArmyInstigatorGUID, out instigator);
+		}
+		if (instigator != null)
+		{
+			if (order.NumberOfActionPointsToSpend > 0.0)
+			{
+				ArmyAction.SpendSomeNumberOfActionPoints(instigator, (float)order.NumberOfActionPointsToSpend);
+			}
+			for (int index = 0; index < order.TameCost.Length; index++)
+			{
+				if (order.TameCost[index].Instant)
+				{
+					float resourceCost = order.TameCost[index].GetValue(instigator.Empire);
+					if (!this.departmentOfTheTreasury.TryTransferResources(instigator.Empire, order.TameCost[index].ResourceName, -resourceCost))
+					{
+						Diagnostics.LogError("Cannot transfert the amount of resources (resource name = '{0}', cost = {0}).", new object[]
+						{
+							order.TameCost[index].ResourceName,
+							-resourceCost
+						});
+					}
+				}
+			}
+		}
+		global::Empire lastConverter = kaiju.MajorEmpire;
+		kaijuCouncil.MajorEmpireTameKaiju((MajorEmpire)base.Empire, false);
+		if (instigator != null)
+		{
+			instigator.Refresh(false);
+		}
+		kaiju.RefreshSharedSight();
+		this.VisibilityService.NotifyVisibilityHasChanged((global::Empire)base.Empire);
+		this.VisibilityService.NotifyVisibilityHasChanged((MajorEmpire)base.Empire);
+		if (lastConverter != null)
+		{
+			this.VisibilityService.NotifyVisibilityHasChanged(lastConverter);
+		}
+		DepartmentOfTheInterior.GenerateResourcesLeechingForTamedKaijus(kaiju);
+		base.Empire.Refresh(false);
+		IGuiService guiService = Services.GetService<IGuiService>();
+		ArmyActionModalPanel armyActionModalPanel = guiService.GetGuiPanel<ArmyActionModalPanel>();
+		if (armyActionModalPanel != null && armyActionModalPanel.IsVisible)
+		{
+			armyActionModalPanel.RefreshContent();
+		}
+		yield break;
+	}
+
+	private bool TameUnstunnedKaijuPreprocessor(OrderTameUnstunnedKaiju order)
+	{
+		if (!this.MainCityGUID.IsValid)
+		{
+			Diagnostics.LogWarning("Order preprocessing failed because the main city is null.");
+			return false;
+		}
+		if (!order.KaijuGUID.IsValid)
+		{
+			Diagnostics.LogError("Order preprocessing failed because the instigator guid is not valid.");
+			return false;
+		}
+		Kaiju kaiju = null;
+		if (!this.GameEntityRepositoryService.TryGetValue<Kaiju>(order.KaijuGUID, out kaiju))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the entity is not referenced (guid: {0:X8}).", new object[]
+			{
+				order.KaijuGUID
+			});
+			return false;
+		}
+		Army army = null;
+		if (order.ArmyInstigatorGUID.IsValid)
+		{
+			this.GameEntityRepositoryService.TryGetValue<Army>(order.ArmyInstigatorGUID, out army);
+		}
+		ArmyAction armyAction = null;
+		IDatabase<ArmyAction> database = Databases.GetDatabase<ArmyAction>(false);
+		if (database == null || !database.TryGetValue(ArmyAction_TameUnstunnedKaiju.ReadOnlyName, out armyAction))
+		{
+			return false;
+		}
+		KaijuCouncil agency = kaiju.KaijuEmpire.GetAgency<KaijuCouncil>();
+		if (agency == null)
+		{
+			Diagnostics.LogWarning("Invalid null Kaiju council on the region.");
+			return false;
+		}
+		if (agency.Kaiju != kaiju)
+		{
+			Diagnostics.LogWarning("Invalid null Kaiju in Kaiju Council.");
+			return false;
+		}
+		if (army != null)
+		{
+			order.TameCost = armyAction.ComputeConstructionCost(army.Empire).ToArray();
+			for (int i = 0; i < order.TameCost.Length; i++)
+			{
+				float num = -order.TameCost[i].GetValue(base.Empire.SimulationObject);
+				if (!this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.Empire, order.TameCost[i].ResourceName, ref num))
+				{
+					return false;
+				}
+			}
+			order.NumberOfActionPointsToSpend = (double)armyAction.GetCostInActionPoints();
+			if (order.NumberOfActionPointsToSpend > 0.0)
+			{
+				SimulationObjectWrapper simulationObjectWrapper = army;
+				if (simulationObjectWrapper != null)
+				{
+					float propertyValue = simulationObjectWrapper.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
+					float propertyValue2 = simulationObjectWrapper.GetPropertyValue(SimulationProperties.ActionPointsSpent);
+					if (order.NumberOfActionPointsToSpend > (double)(propertyValue - propertyValue2))
+					{
+						Diagnostics.LogWarning("Not enough action points.");
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	private IEnumerator TameUnstunnedKaijuProcessor(OrderTameUnstunnedKaiju order)
+	{
+		Kaiju kaiju = null;
+		if (!this.GameEntityRepositoryService.TryGetValue<Kaiju>(order.KaijuGUID, out kaiju))
+		{
+			yield break;
+		}
+		if (kaiju.MajorEmpire != null)
+		{
+			yield break;
+		}
+		if (kaiju.KaijuGarrison == null)
+		{
+			yield break;
+		}
+		KaijuCouncil kaijuCouncil = kaiju.KaijuEmpire.GetAgency<KaijuCouncil>();
+		if (kaijuCouncil == null)
+		{
+			yield break;
+		}
+		if (!(base.Empire is MajorEmpire))
+		{
+			yield break;
+		}
+		if (kaijuCouncil.Kaiju == null)
+		{
+			yield break;
+		}
+		Army instigator = null;
+		if (order.ArmyInstigatorGUID.IsValid)
+		{
+			this.GameEntityRepositoryService.TryGetValue<Army>(order.ArmyInstigatorGUID, out instigator);
+		}
+		if (instigator != null)
+		{
+			if (order.NumberOfActionPointsToSpend > 0.0)
+			{
+				ArmyAction.SpendSomeNumberOfActionPoints(instigator, (float)order.NumberOfActionPointsToSpend);
+			}
+			for (int index = 0; index < order.TameCost.Length; index++)
+			{
+				if (order.TameCost[index].Instant)
+				{
+					float resourceCost = order.TameCost[index].GetValue(instigator.Empire);
+					if (!this.departmentOfTheTreasury.TryTransferResources(instigator.Empire, order.TameCost[index].ResourceName, -resourceCost))
+					{
+						Diagnostics.LogError("Cannot transfert the amount of resources (resource name = '{0}', cost = {0}).", new object[]
+						{
+							order.TameCost[index].ResourceName,
+							-resourceCost
+						});
+					}
+				}
+			}
+		}
+		global::Empire lastConverter = kaiju.MajorEmpire;
+		kaijuCouncil.MajorEmpireTameKaiju((MajorEmpire)base.Empire, false);
+		if (instigator != null)
+		{
+			instigator.Refresh(false);
+		}
+		kaiju.RefreshSharedSight();
+		this.VisibilityService.NotifyVisibilityHasChanged((global::Empire)base.Empire);
+		this.VisibilityService.NotifyVisibilityHasChanged((MajorEmpire)base.Empire);
+		if (lastConverter != null)
+		{
+			this.VisibilityService.NotifyVisibilityHasChanged(lastConverter);
+		}
+		DepartmentOfTheInterior.GenerateResourcesLeechingForTamedKaijus(kaiju);
+		base.Empire.Refresh(false);
+		IGuiService guiService = Services.GetService<IGuiService>();
+		ArmyActionModalPanel armyActionModalPanel = guiService.GetGuiPanel<ArmyActionModalPanel>();
+		if (armyActionModalPanel != null && armyActionModalPanel.IsVisible)
+		{
+			armyActionModalPanel.RefreshContent();
+		}
+		yield break;
+	}
+
 	private bool ToggleRoundUpPreprocessor(OrderToggleRoundUp order)
 	{
 		if (order == null)
@@ -6132,6 +6826,189 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 				this.ToggleCityRoundUp(gameEntity as City);
 			}
 			(gameEntity as City).Refresh(false);
+			yield break;
+		}
+		yield break;
+	}
+
+	private bool UntameKaijuPreprocessor(OrderUntameKaiju order)
+	{
+		if (!this.MainCityGUID.IsValid)
+		{
+			Diagnostics.LogWarning("Order preprocessing failed because the Main City GUID is not valid.");
+			return false;
+		}
+		if (!order.KaijuGUID.IsValid)
+		{
+			Diagnostics.LogError("Order preprocessing failed because the Kaiju GUID is not valid.");
+			return false;
+		}
+		Kaiju kaiju = null;
+		if (!this.GameEntityRepositoryService.TryGetValue<Kaiju>(order.KaijuGUID, out kaiju))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the Kaiju game entity could not be retrieved. GUID: {0}).", new object[]
+			{
+				order.KaijuGUID
+			});
+			return false;
+		}
+		if (!kaiju.IsTamed())
+		{
+			Diagnostics.LogWarning("Order preprocessing failed because Kaiju is not tamed.");
+			return false;
+		}
+		if (kaiju.MajorEmpire == null)
+		{
+			Diagnostics.LogWarning("Order preprocessing failed because Kaiju's MajorEmpire is not valid.");
+			return false;
+		}
+		if (kaiju.KaijuEmpire == null)
+		{
+			Diagnostics.LogWarning("Order preprocessing failed because Kaiju's KaijuEmpire is not valid.");
+			return false;
+		}
+		if (kaiju.KaijuEmpire.GetAgency<KaijuCouncil>() == null)
+		{
+			Diagnostics.LogWarning("Order preprocessing failed because Kaiju Council is not valid.");
+			return false;
+		}
+		if (order.StunningEmpireIndex != -1 && order.AutoTameAfterDefeat)
+		{
+			global::Empire empireByIndex = (this.GameService.Game as global::Game).GetEmpireByIndex<global::Empire>(order.StunningEmpireIndex);
+			if (!(empireByIndex is MajorEmpire))
+			{
+				order.StunnerEmpireCanTameKaiju = false;
+			}
+			else
+			{
+				MajorEmpire majorEmpire = empireByIndex as MajorEmpire;
+				if (majorEmpire != null)
+				{
+					DepartmentOfTheInterior agency = majorEmpire.GetAgency<DepartmentOfTheInterior>();
+					if (agency != null && agency.Cities.Count <= 0)
+					{
+						order.StunnerEmpireCanTameKaiju = false;
+					}
+				}
+			}
+		}
+		if (order.Relocate || !order.StunnerEmpireCanTameKaiju)
+		{
+			Region validKaijuRegion = KaijuCouncil.GetValidKaijuRegion();
+			if (validKaijuRegion == null)
+			{
+				if (kaiju.OnArmyMode())
+				{
+					order.Relocate = false;
+				}
+				else if (kaiju.Region != null)
+				{
+					order.Relocate = false;
+				}
+				else
+				{
+					Region region = this.WorldPositionningService.GetRegion(kaiju.WorldPosition);
+					if (region != null && region.Owner == null)
+					{
+						order.SpawnWorldPosition = kaiju.WorldPosition;
+					}
+				}
+			}
+			else
+			{
+				WorldPosition validKaijuPosition = KaijuCouncil.GetValidKaijuPosition(validKaijuRegion, false);
+				if (validKaijuPosition == WorldPosition.Zero)
+				{
+					validKaijuPosition = KaijuCouncil.GetValidKaijuPosition(validKaijuRegion, true);
+				}
+				order.SpawnWorldPosition = validKaijuPosition;
+			}
+		}
+		return true;
+	}
+
+	private IEnumerator UntameKaijuProcessor(OrderUntameKaiju order)
+	{
+		Kaiju kaiju = null;
+		if (!this.GameEntityRepositoryService.TryGetValue<Kaiju>(order.KaijuGUID, out kaiju))
+		{
+			Diagnostics.LogError("Order processing failed because the Kaiju game entity could not be retrieved. GUID: {0}).", new object[]
+			{
+				order.KaijuGUID
+			});
+			yield break;
+		}
+		if (kaiju.MajorEmpire.Index != base.Empire.Index)
+		{
+			Diagnostics.LogWarning("Something went wrong, OrderUntameKaiju is being processed by a foreign empire's department.");
+		}
+		global::Empire lastOwnerEmpire = kaiju.Empire;
+		KaijuArmy kaijuArmy = kaiju.KaijuArmy;
+		bool keepOnArmyMode = !order.Relocate && kaiju.OnArmyMode();
+		if (keepOnArmyMode)
+		{
+			MajorEmpire ownerEmpire = kaiju.MajorEmpire;
+			ownerEmpire.GetAgency<DepartmentOfDefense>().RemoveArmy(kaijuArmy, false);
+			ownerEmpire.Refresh(false);
+			kaijuArmy.Empire = null;
+		}
+		KaijuCouncil kaijuCouncil = kaiju.KaijuEmpire.GetAgency<KaijuCouncil>();
+		kaijuCouncil.MajorEmpireUntameKaiju(kaiju, order.StunningEmpireIndex, order.ClearMilitias);
+		if (order.StunningEmpireIndex != -1 && !order.AutoTameAfterDefeat && !order.Relocate)
+		{
+			global::Empire stunningEmpire = (this.GameService.Game as global::Game).GetEmpireByIndex<global::Empire>(order.StunningEmpireIndex);
+			kaiju.ChangeToStunState(stunningEmpire);
+		}
+		if (!keepOnArmyMode && !kaiju.OnGarrisonMode())
+		{
+			kaiju.ChangeToGarrisonMode(false);
+		}
+		kaiju.RefreshSharedSight();
+		this.VisibilityService.NotifyVisibilityHasChanged(lastOwnerEmpire);
+		DepartmentOfTheInterior.ClearResourcesLeechingForKaijus(kaiju);
+		base.Empire.Refresh(false);
+		bool relocated = false;
+		if (order.Relocate)
+		{
+			kaiju.MoveToRegion(order.SpawnWorldPosition);
+			relocated = true;
+		}
+		bool autoTame = order.AutoTameAfterDefeat;
+		if (autoTame && order.StunningEmpireIndex != -1)
+		{
+			if (order.StunnerEmpireCanTameKaiju)
+			{
+				global::Empire stunningEmpire2 = (this.GameService.Game as global::Game).GetEmpireByIndex<global::Empire>(order.StunningEmpireIndex);
+				if (stunningEmpire2 is MajorEmpire)
+				{
+					MajorEmpire stunningMajorEmpire = stunningEmpire2 as MajorEmpire;
+					if (stunningMajorEmpire != null)
+					{
+						kaijuCouncil.MajorEmpireTameKaiju(stunningMajorEmpire, false);
+					}
+				}
+			}
+			else
+			{
+				kaiju.ChangeToWildState();
+				kaiju.MoveToRegion(order.SpawnWorldPosition);
+				relocated = true;
+			}
+		}
+		if (relocated)
+		{
+			this.EventService.Notify(new EventKaijuRelocated(kaiju));
+		}
+		kaijuCouncil.ResetRelocationETA();
+		IGuiService guiService = Services.GetService<IGuiService>();
+		ArmyActionModalPanel armyActionModalPanel = guiService.GetGuiPanel<ArmyActionModalPanel>();
+		if (!(armyActionModalPanel != null))
+		{
+			yield break;
+		}
+		if (armyActionModalPanel.IsVisible)
+		{
+			armyActionModalPanel.RefreshContent();
 			yield break;
 		}
 		yield break;
@@ -6260,6 +7137,68 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			break;
 		}
 		cadasterService.RefreshCadasterMap();
+		yield break;
+	}
+
+	private bool UpgradePointOfInterestPreprocessor(OrderUpgradePointOfInterest order)
+	{
+		IGameEntity gameEntity;
+		if (!this.GameEntityRepositoryService.TryGetValue(order.PointOfInterestGUID, out gameEntity))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the target game entity is not valid.");
+			return false;
+		}
+		PointOfInterest pointOfInterest = gameEntity as PointOfInterest;
+		if (pointOfInterest == null)
+		{
+			Diagnostics.LogError("Order GUID does not belong to a point of interest.");
+			return false;
+		}
+		if (pointOfInterest.Region.City == null)
+		{
+			Diagnostics.LogError("Can not upgrade a point of interest that does not belong to a city");
+			return false;
+		}
+		return true;
+	}
+
+	private IEnumerator UpgradePointOfInterestProcessor(OrderUpgradePointOfInterest order)
+	{
+		IGameService gameService = Services.GetService<IGameService>();
+		if (gameService == null)
+		{
+			Diagnostics.LogError("Order preprocessing failed because we cannot retrieve the game service.");
+			yield break;
+		}
+		global::Game game = gameService.Game as global::Game;
+		if (game == null)
+		{
+			Diagnostics.LogError("gameService.Game isn't an instance of Game.");
+			yield break;
+		}
+		IGameEntity gameEntity;
+		if (!this.GameEntityRepositoryService.TryGetValue(order.PointOfInterestGUID, out gameEntity))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the target game entity is not valid.");
+			yield break;
+		}
+		if (!(gameEntity is SimulationObjectWrapper))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the target game entity is not a simulation object wrapper.");
+			yield break;
+		}
+		PointOfInterest pointOfInterest = gameEntity as PointOfInterest;
+		if (pointOfInterest == null)
+		{
+			Diagnostics.LogError("Order GUID does not belong to a point of interest.");
+			yield break;
+		}
+		if (pointOfInterest.Region.City == null)
+		{
+			Diagnostics.LogError("Can not upgrade a point of interest that does not belong to a city");
+			yield break;
+		}
+		this.UpdatePointOfInterestImprovement(pointOfInterest.Region.City, pointOfInterest);
 		yield break;
 	}
 
@@ -6432,7 +7371,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			if (city.Districts[i].Type == DistrictType.Exploitation && !this.WorldPositionningService.IsWaterTile(city.Districts[i].WorldPosition))
 			{
 				Army armyAtPosition = this.WorldPositionningService.GetArmyAtPosition(city.Districts[i].WorldPosition);
-				if (armyAtPosition != null && armyAtPosition.Empire == city.BesiegingEmpire && !armyAtPosition.IsNaval)
+				if (armyAtPosition != null && armyAtPosition.Empire == city.BesiegingEmpire && !armyAtPosition.IsNaval && armyAtPosition.SimulationObject.Tags.Contains(DepartmentOfTheInterior.ArmyStatusBesiegerDescriptorName))
 				{
 					result = false;
 					break;
@@ -6641,7 +7580,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 				}
 			}
 		}
-		else
+		else if (!city.IsUnderEarthquake)
 		{
 			float propertyValue = city.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
 			float num10 = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
@@ -6669,6 +7608,11 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		if (city.BesiegingEmpire != null)
 		{
 			this.StopSiege(city);
+		}
+		Army[] cityEarthquakeInstigators = DepartmentOfTheInterior.GetCityEarthquakeInstigators(city);
+		for (int i = 0; i < cityEarthquakeInstigators.Length; i++)
+		{
+			cityEarthquakeInstigators[i].SetEarthquakerStatus(false, false, null);
 		}
 		if (city.BesiegingSeafaringArmies.Count != 0)
 		{
@@ -6741,6 +7685,11 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			DepartmentOfEducation agency4 = base.Empire.GetAgency<DepartmentOfEducation>();
 			agency4.UnassignHero(city.Hero);
 		}
+		SimulationDescriptor descriptor;
+		if (empireWhichReceives.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics2) && !city.SimulationObject.Tags.Contains(City.MimicsCity) && this.SimulationDescriptorDatabase.TryGetValue(City.MimicsCity, out descriptor))
+		{
+			city.AddDescriptor(descriptor, false);
+		}
 		city.SetPropertyBaseValue(SimulationProperties.Ownership, city.Ownership[empireWhichReceives.Index]);
 		city.AdministrationSpeciality = StaticString.Empty;
 		DepartmentOfIndustry agency5 = empireWhichReceives.GetAgency<DepartmentOfIndustry>();
@@ -6751,30 +7700,46 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		DepartmentOfTheInterior agency6 = empireWhichReceives.GetAgency<DepartmentOfTheInterior>();
 		if (agency6 != null)
 		{
-			agency6.AddCity(city, true);
+			agency6.AddCity(city, true, true);
 			agency6.BindMinorFactionToCity(city, city.Region.MinorEmpire);
 			agency6.UpdatePointOfInterestImprovement(city);
 		}
+		city.SetPropertyBaseValue(SimulationProperties.CityOwnedTurn, (float)(this.GameService.Game as global::Game).Turn);
 		this.VisibilityService.NotifyVisibilityHasChanged(base.Empire as global::Empire);
 		this.VisibilityService.NotifyVisibilityHasChanged(empireWhichReceives);
 		city.NotifyCityOwnerChange();
-		for (int i = 0; i < city.Region.PointOfInterests.Length; i++)
+		for (int j = 0; j < city.Region.PointOfInterests.Length; j++)
 		{
-			if (city.Region.PointOfInterests[i].ArmyPillaging.IsValid)
+			if (city.Region.PointOfInterests[j].ArmyPillaging.IsValid)
 			{
 				IGameEntity gameEntity;
-				if (this.GameEntityRepositoryService.TryGetValue(city.Region.PointOfInterests[i].ArmyPillaging, out gameEntity))
+				if (this.GameEntityRepositoryService.TryGetValue(city.Region.PointOfInterests[j].ArmyPillaging, out gameEntity))
 				{
 					Army army = gameEntity as Army;
-					if (army != null && DepartmentOfDefense.CanStartPillage(army, city.Region.PointOfInterests[i], true))
+					if (army != null && DepartmentOfDefense.CanStartPillage(army, city.Region.PointOfInterests[j], true))
 					{
-						goto IL_40C;
+						goto IL_4AD;
 					}
 				}
-				DepartmentOfDefense.StopPillage(city.Region.PointOfInterests[i]);
+				DepartmentOfDefense.StopPillage(city.Region.PointOfInterests[j]);
 			}
-			IL_40C:;
+			IL_4AD:;
 		}
+		this.AddDistrictDescriptorExploitableResource(city);
+		if (empireWhichReceives.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics3) && city.IsInfected)
+		{
+			MajorEmpire majorEmpire2 = empireWhichReceives as MajorEmpire;
+			if (majorEmpire2 != null)
+			{
+				DepartmentOfCreepingNodes agency7 = majorEmpire2.GetAgency<DepartmentOfCreepingNodes>();
+				agency7.ReplacePOIImprovementsWhitCreepingNodeImprovements(city);
+			}
+		}
+		if (agency5 != null)
+		{
+			agency5.QueueIntegrationIFN(city);
+		}
+		city.CallRefreshAppliedRegionEffects();
 	}
 
 	private void CitySiegeUpdate(City city)
@@ -6895,6 +7860,38 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 	}
 
+	public ReadOnlyCollection<City> NonInfectedCities
+	{
+		get
+		{
+			List<City> list = new List<City>();
+			for (int i = 0; i < this.cities.Count; i++)
+			{
+				if (!this.cities[i].IsInfected)
+				{
+					list.Add(this.cities[i]);
+				}
+			}
+			return list.AsReadOnly();
+		}
+	}
+
+	public ReadOnlyCollection<City> InfectedCities
+	{
+		get
+		{
+			List<City> list = new List<City>();
+			for (int i = 0; i < this.cities.Count; i++)
+			{
+				if (this.cities[i].IsInfected)
+				{
+					list.Add(this.cities[i]);
+				}
+			}
+			return list.AsReadOnly();
+		}
+	}
+
 	public ReadOnlyCollection<Camp> Camps
 	{
 		get
@@ -6920,6 +7917,21 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			{
 				MajorEmpire majorEmpire = base.Empire as MajorEmpire;
 				list = majorEmpire.ConvertedVillages;
+			}
+			return list.AsReadOnly();
+		}
+	}
+
+	public ReadOnlyCollection<KaijuGarrison> TamedKaijuGarrisons
+	{
+		get
+		{
+			List<KaijuGarrison> list = new List<KaijuGarrison>();
+			if (base.Empire is MajorEmpire)
+			{
+				MajorEmpire majorEmpire = base.Empire as MajorEmpire;
+				list.AddRange(from m in majorEmpire.TamedKaijus
+				select m.KaijuGarrison);
 			}
 			return list.AsReadOnly();
 		}
@@ -7049,7 +8061,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 	public bool CanColonizeRegion(WorldPosition worldPosition, ArmyAction armyAction, bool silent = true)
 	{
 		Region region = this.WorldPositionningService.GetRegion(worldPosition);
-		if (region.City != null)
+		if (region.IsRegionColonized())
 		{
 			if (!silent)
 			{
@@ -7315,12 +8327,13 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			}
 		}
 		city.SetPropertyBaseValue(SimulationProperties.Population, 3f);
+		city.SetPropertyBaseValue(SimulationProperties.CityOwnedTurn, (float)(this.GameService.Game as global::Game).Turn);
 		DepartmentOfIndustry agency = base.Empire.GetAgency<DepartmentOfIndustry>();
 		if (agency != null)
 		{
 			agency.AddQueueTo<City>(city);
 		}
-		this.AddCity(city, true);
+		this.AddCity(city, true, true);
 		float growthLimit = this.GetGrowthLimit(city.GetPropertyValue(SimulationProperties.Population));
 		float num2;
 		if (!this.departmentOfTheTreasury.TryGetResourceStockValue(city.SimulationObject, DepartmentOfTheTreasury.Resources.CityGrowth, out num2, false))
@@ -7333,6 +8346,12 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 		float amount = growthLimit - num2;
 		this.departmentOfTheTreasury.TryTransferResources(city.SimulationObject, DepartmentOfTheTreasury.Resources.CityGrowth, amount);
+		SimulationDescriptor descriptor;
+		if (base.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics2) && !city.SimulationObject.Tags.Contains(City.MimicsCity) && this.SimulationDescriptorDatabase.TryGetValue(City.MimicsCity, out descriptor))
+		{
+			city.AddDescriptor(descriptor, false);
+		}
+		this.AddDistrictDescriptorExploitableResource(city);
 		this.MainCity = city;
 	}
 
@@ -7544,6 +8563,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		if (empire.Index == base.Empire.Index)
 		{
 			this.UnoccupyFortresses();
+			this.DestroyInfectedCities();
 		}
 	}
 
@@ -7626,6 +8646,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		{
 			Diagnostics.LogError("Failed to retrieve the event service.");
 		}
+		this.EventService.EventRaise += this.EventService_EventRaise;
 		if (DepartmentOfTheInterior.PathfindingServiceStatic == null)
 		{
 			IPathfindingService pathFindingService = this.GameService.Game.Services.GetService<IPathfindingService>();
@@ -7635,6 +8656,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		Diagnostics.Assert(this.departmentOfTheTreasury != null, "Department of the interior can't get the department of treasury.");
 		this.departmentOfForeignAffairs = base.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		Diagnostics.Assert(this.departmentOfForeignAffairs != null, "Department of the interior can't get the department of foreign affairs.");
+		this.departmentOfForeignAffairs.DiplomaticRelationStateChange += this.DepartmentOfForeignAffairs_DiplomaticRelationStateChange;
 		IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
 		if (downloadableContentService != null && downloadableContentService.IsShared(DownloadableContent11.ReadOnlyName))
 		{
@@ -7727,6 +8749,10 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 	protected override IEnumerator OnLoad()
 	{
 		yield return base.OnLoad();
+		if (this.eventHandlers == null)
+		{
+			this.RegisterEventHandlers();
+		}
 		yield break;
 	}
 
@@ -7736,6 +8762,10 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		for (int index = 0; index < this.cities.Count; index++)
 		{
 			City city = this.cities[index];
+			if (city.LastNonInfectedOwnerIndex != -1)
+			{
+				city.LastNonInfectedOwner = DepartmentOfTheInterior.Game.Empires[city.LastNonInfectedOwnerIndex];
+			}
 			this.GameEntityRepositoryService.Register(city);
 			for (int tileIndex = 0; tileIndex < city.Districts.Count; tileIndex++)
 			{
@@ -7807,20 +8837,41 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 					}
 				}
 			}
+			SimulationDescriptor descriptor;
+			if (base.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics2) && !city.SimulationObject.Tags.Contains(City.MimicsCity) && this.SimulationDescriptorDatabase.TryGetValue(City.MimicsCity, out descriptor))
+			{
+				city.AddDescriptor(descriptor, false);
+			}
 			this.VerifyOverallPopulation(city);
+			this.AddDistrictDescriptorExploitableResource(city);
+			if (city.IsUnderEarthquake)
+			{
+				foreach (Army earthQuakeInstigator in DepartmentOfTheInterior.GetCityEarthquakeInstigators(city))
+				{
+					District districtCenter = city.GetDistrictCenter();
+					if (districtCenter != null)
+					{
+						districtCenter.EmpireEarthquakeBits |= 1 << earthQuakeInstigator.Empire.Index;
+					}
+				}
+			}
 		}
 		for (int index2 = 0; index2 < this.occupiedFortresses.Count; index2++)
 		{
 			this.AttachFortress(this.occupiedFortresses[index2]);
 		}
+		for (int index3 = 0; index3 < this.occupiedFortresses.Count; index3++)
+		{
+			this.AttachFortress(this.occupiedFortresses[index3]);
+		}
 		if (base.Empire.SimulationObject.Tags.Contains("FactionTraitCultists14"))
 		{
 			bool factionTraitCultists14ConversionPatched = false;
-			for (int index3 = 0; index3 < this.Cities.Count; index3++)
+			for (int index4 = 0; index4 < this.Cities.Count; index4++)
 			{
-				if (this.Cities[index3].Region != null && this.Cities[index3].Region.MinorEmpire != null)
+				if (this.Cities[index4].Region != null && this.Cities[index4].Region.MinorEmpire != null)
 				{
-					BarbarianCouncil barbarianCouncil = this.Cities[index3].Region.MinorEmpire.GetAgency<BarbarianCouncil>();
+					BarbarianCouncil barbarianCouncil = this.Cities[index4].Region.MinorEmpire.GetAgency<BarbarianCouncil>();
 					if (barbarianCouncil != null)
 					{
 						foreach (Village village in barbarianCouncil.Villages)
@@ -7836,18 +8887,18 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 									{
 										village.Name,
 										base.Empire.Index,
-										this.Cities[index3].Name
+										this.Cities[index4].Name
 									});
 								}
-								if (village.PointOfInterest.SimulationObject != null && village.PointOfInterest.SimulationObject.Parent != this.Cities[index3].SimulationObject)
+								if (village.PointOfInterest.SimulationObject != null && village.PointOfInterest.SimulationObject.Parent != this.Cities[index4].SimulationObject)
 								{
-									this.Cities[index3].SimulationObject.AddChild(village.PointOfInterest.SimulationObject);
+									this.Cities[index4].SimulationObject.AddChild(village.PointOfInterest.SimulationObject);
 									factionTraitCultists14ConversionPatched = true;
 									Diagnostics.LogWarning("Fixed: village's (name: '{0}', pacified) point of interest has been reattached to the city (empire index: {1}, city: '{2}')", new object[]
 									{
 										village.Name,
 										base.Empire.Index,
-										this.Cities[index3].Name
+										this.Cities[index4].Name
 									});
 								}
 							}
@@ -7881,15 +8932,15 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			}
 			if (factionTraitCultists14ConversionPatched)
 			{
-				for (int index4 = 0; index4 < this.Cities.Count; index4++)
+				for (int index5 = 0; index5 < this.Cities.Count; index5++)
 				{
-					this.VerifyOverallPopulation(this.Cities[index4]);
+					this.VerifyOverallPopulation(this.Cities[index5]);
 				}
 			}
 		}
-		for (int index5 = 0; index5 < this.assimilatedFactions.Count; index5++)
+		for (int index6 = 0; index6 < this.assimilatedFactions.Count; index6++)
 		{
-			MinorFaction minorFaction = this.assimilatedFactions[index5] as MinorFaction;
+			MinorFaction minorFaction = this.assimilatedFactions[index6] as MinorFaction;
 			this.AssimilateMinorFactionEmpires(minorFaction);
 			this.AssimilateMinorFactionTraits(minorFaction, false);
 		}
@@ -7903,9 +8954,9 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 		if (this.OccupiedFortresses != null)
 		{
-			for (int index6 = 0; index6 < this.OccupiedFortresses.Count; index6++)
+			for (int index7 = 0; index7 < this.OccupiedFortresses.Count; index7++)
 			{
-				Fortress fortress = this.OccupiedFortresses[index6];
+				Fortress fortress = this.OccupiedFortresses[index7];
 				fortress.Empire = null;
 				Diagnostics.Assert(fortress.PointOfInterest != null);
 				Diagnostics.Assert(fortress.PointOfInterest.Region != null);
@@ -7921,23 +8972,23 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			try
 			{
 				string[] tokens = this.serializableBesiegingSeafaringArmies.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
-				for (int index7 = 0; index7 < tokens.Length; index7++)
+				for (int index8 = 0; index8 < tokens.Length; index8++)
 				{
 					string[] array = tokens;
 					int num;
-					index7 = (num = index7) + 1;
+					index8 = (num = index8) + 1;
 					GameEntityGUID gameEntityGuid = ulong.Parse(array[num]);
 					City city2 = this.cities.First((City iterator) => iterator.GUID == gameEntityGuid);
 					string[] array2 = tokens;
-					index7 = (num = index7) + 1;
+					index8 = (num = index8) + 1;
 					int numberOfBesiegingSeafaringArmies = int.Parse(array2[num]);
 					for (int jndex = 0; jndex < numberOfBesiegingSeafaringArmies; jndex++)
 					{
 						string[] array3 = tokens;
-						index7 = (num = index7) + 1;
+						index8 = (num = index8) + 1;
 						int empireIndex = int.Parse(array3[num]);
 						string[] array4 = tokens;
-						index7 = (num = index7) + 1;
+						index8 = (num = index8) + 1;
 						gameEntityGuid = ulong.Parse(array4[num]);
 						Army army = (game as global::Game).Empires[empireIndex].GetAgency<DepartmentOfDefense>().Armies.First((Army iterator) => iterator.GUID == gameEntityGuid);
 						city2.BesiegingSeafaringArmies.Add(army);
@@ -7981,6 +9032,11 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		{
 			this.departmentOfTheTreasury = null;
 		}
+		if (this.departmentOfForeignAffairs != null)
+		{
+			this.departmentOfForeignAffairs.DiplomaticRelationStateChange -= this.DepartmentOfForeignAffairs_DiplomaticRelationStateChange;
+			this.departmentOfForeignAffairs = null;
+		}
 		if (this.uniques != null)
 		{
 			if (base.Empire != null)
@@ -8007,6 +9063,16 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		{
 			this.endTurnService.UnregisterValidator(new Func<bool, bool>(this.EndTurnValidator));
 			this.endTurnService = null;
+		}
+		if (this.EventService != null)
+		{
+			this.EventService.EventRaise -= this.EventService_EventRaise;
+			this.EventService = null;
+		}
+		if (this.eventHandlers != null)
+		{
+			this.eventHandlers.Clear();
+			this.eventHandlers = null;
 		}
 		this.SimulationDescriptorDatabase = null;
 		this.AnomalyTypeMappingDatabase = null;
@@ -8042,7 +9108,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		DepartmentOfTheInterior.PathfindingServiceStatic = null;
 	}
 
-	private void AddCity(City city, bool verifyPopulation = true)
+	private void AddCity(City city, bool verifyPopulation = true, bool updateInfectionStatus = true)
 	{
 		if (city.Empire != null && city.Empire != base.Empire)
 		{
@@ -8068,6 +9134,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			return;
 		}
 		this.cities.Insert(~num, city);
+		base.Empire.SetPropertyBaseValue(SimulationProperties.NumberOfCities, base.Empire.GetPropertyValue(SimulationProperties.NumberOfCities) + 1f);
 		Region region = this.WorldPositionningService.GetRegion(city.WorldPosition);
 		region.City = city;
 		city.Region = region;
@@ -8087,9 +9154,33 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			}
 		}
 		base.Empire.AddChild(city);
-		if (this.MainCity == null && (this.MainCityGUID == GameEntityGUID.Zero || this.MainCityGUID == city.GUID))
+		if (updateInfectionStatus)
 		{
-			this.MainCity = city;
+			city.UpdateInfectionStatus();
+		}
+		if (!city.IsInfected)
+		{
+			if (this.MainCity == null && (this.MainCityGUID == GameEntityGUID.Zero || this.MainCityGUID == city.GUID))
+			{
+				this.MainCity = city;
+			}
+		}
+		else if (updateInfectionStatus)
+		{
+			global::Game game = this.GameService.Game as global::Game;
+			for (int j = 0; j < game.Empires.Length; j++)
+			{
+				global::Empire empire = game.Empires[j];
+				if (empire is MajorEmpire)
+				{
+					MajorEmpire majorEmpire = empire as MajorEmpire;
+					DepartmentOfIntelligence agency = majorEmpire.GetAgency<DepartmentOfIntelligence>();
+					if (majorEmpire.Index != city.Empire.Index)
+					{
+						agency.CheckStopInfiltrationAgainstGarrisonChange(city.GUID);
+					}
+				}
+			}
 		}
 		base.Empire.Refresh(true);
 		if (verifyPopulation)
@@ -8378,6 +9469,22 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 	}
 
+	private void DepartmentOfForeignAffairs_DiplomaticRelationStateChange(object sender, DiplomaticRelationStateChangeEventArgs e)
+	{
+		for (int i = 0; i < this.TamedKaijuGarrisons.Count; i++)
+		{
+			this.TamedKaijuGarrisons[i].Kaiju.CallRefreshProvidedRegionEffects();
+		}
+		for (int j = 0; j < this.cities.Count; j++)
+		{
+			this.cities[j].CallRefreshAppliedRegionEffects();
+		}
+		for (int k = 0; k < this.TamedKaijuGarrisons.Count; k++)
+		{
+			this.TamedKaijuGarrisons[k].CallRefreshAppliedRegionEffects();
+		}
+	}
+
 	private void DepartmentOfIndustry_CityImprovementConstructionChange(object sender, ConstructionChangeEventArgs e)
 	{
 		Diagnostics.Assert(e.Context is City);
@@ -8440,57 +9547,72 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			if (action == ConstructionChangeEventAction.Completed)
 			{
 				string text = cityConstructibleActionDefinition.Action;
-				if (text != null)
+				switch (text)
 				{
-					if (DepartmentOfTheInterior.<>f__switch$map12 == null)
+				case "Raze":
+				{
+					SimulationDescriptor descriptor;
+					if (this.SimulationDescriptorDatabase.TryGetValue(City.TagCityStatusRazed, out descriptor))
 					{
-						DepartmentOfTheInterior.<>f__switch$map12 = new Dictionary<string, int>(2)
-						{
-							{
-								"Raze",
-								0
-							},
-							{
-								"Migrate",
-								1
-							}
-						};
+						city.AddDescriptor(descriptor, true);
+						city.TurnWhenToProceedWithRazing = (this.GameService.Game as global::Game).Turn + 1;
+						city.ShouldRazeRegionBuildingWithSelf = this.DoesRazingDetroyRegionBuilding;
+						city.ShouldInjureSpyOnRaze = true;
 					}
-					int num;
-					if (DepartmentOfTheInterior.<>f__switch$map12.TryGetValue(text, out num))
+					goto IL_2F3;
+				}
+				case "Migrate":
+				{
+					SimulationDescriptor descriptor2;
+					if (this.SimulationDescriptorDatabase.TryGetValue(City.TagCityStatusRazed, out descriptor2))
 					{
-						if (num == 0)
+						city.AddDescriptor(descriptor2, true);
+						city.TurnWhenToProceedWithRazing = (this.GameService.Game as global::Game).Turn + 1;
+						city.ShouldRazeRegionBuildingWithSelf = false;
+						city.ShouldInjureSpyOnRaze = false;
+					}
+					goto IL_2F3;
+				}
+				case "PurgeTheLand":
+				{
+					PointOfInterest[] pointOfInterests = city.Region.PointOfInterests;
+					for (int i = 0; i < pointOfInterests.Length; i++)
+					{
+						if (pointOfInterests[i].CreepingNodeGUID != GameEntityGUID.Zero)
 						{
-							SimulationDescriptor descriptor;
-							if (this.SimulationDescriptorDatabase.TryGetValue(City.TagCityStatusRazed, out descriptor))
+							IGameEntity gameEntity = null;
+							if (this.GameEntityRepositoryService.TryGetValue(pointOfInterests[i].CreepingNodeGUID, out gameEntity))
 							{
-								city.AddDescriptor(descriptor, true);
-								city.TurnWhenToProceedWithRazing = (this.GameService.Game as global::Game).Turn + 1;
-								city.ShouldRazeRegionBuildingWithSelf = this.DoesRazingDetroyRegionBuilding;
-								city.ShouldInjureSpyOnRaze = true;
+								CreepingNode creepingNode = gameEntity as CreepingNode;
+								global::PlayerController server = (base.Empire as global::Empire).PlayerControllers.Server;
+								if (server != null && creepingNode != null && creepingNode.Empire.Index != city.Empire.Index)
+								{
+									OrderDestroyCreepingNode order = new OrderDestroyCreepingNode(creepingNode.Empire.Index, pointOfInterests[i].CreepingNodeGUID);
+									server.PostOrder(order);
+								}
 							}
-							goto IL_1AA;
-						}
-						if (num == 1)
-						{
-							SimulationDescriptor descriptor2;
-							if (this.SimulationDescriptorDatabase.TryGetValue(City.TagCityStatusRazed, out descriptor2))
-							{
-								city.AddDescriptor(descriptor2, true);
-								city.TurnWhenToProceedWithRazing = (this.GameService.Game as global::Game).Turn + 1;
-								city.ShouldRazeRegionBuildingWithSelf = false;
-								city.ShouldInjureSpyOnRaze = false;
-							}
-							goto IL_1AA;
 						}
 					}
+					goto IL_2F3;
+				}
+				case "IntegrateFaction":
+					if (city.LastNonInfectedOwner != null)
+					{
+						global::PlayerController server2 = (base.Empire as global::Empire).PlayerControllers.Server;
+						if (server2 != null)
+						{
+							OrderIntegrateFaction order2 = new OrderIntegrateFaction(base.Empire.Index, city.LastNonInfectedOwner.Index);
+							server2.PostOrder(order2);
+						}
+					}
+					goto IL_2F3;
 				}
 				Diagnostics.LogError("Unhandled city constructible action (name: '{0}', action: '{1}').", new object[]
 				{
 					cityConstructibleActionDefinition.Name,
 					cityConstructibleActionDefinition.Action
 				});
-				IL_1AA:;
+				IL_2F3:;
 			}
 		}
 	}
@@ -8513,9 +9635,9 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			string constructionName = constructibleDistrictDefinition.ConstructionName;
 			if (constructionName != null)
 			{
-				if (DepartmentOfTheInterior.<>f__switch$map13 == null)
+				if (DepartmentOfTheInterior.<>f__switch$map14 == null)
 				{
-					DepartmentOfTheInterior.<>f__switch$map13 = new Dictionary<string, int>(1)
+					DepartmentOfTheInterior.<>f__switch$map14 = new Dictionary<string, int>(1)
 					{
 						{
 							"Camp",
@@ -8524,7 +9646,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 					};
 				}
 				int num;
-				if (DepartmentOfTheInterior.<>f__switch$map13.TryGetValue(constructionName, out num))
+				if (DepartmentOfTheInterior.<>f__switch$map14.TryGetValue(constructionName, out num))
 				{
 					if (num == 0)
 					{
@@ -8598,48 +9720,82 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		if (list.Count > 0)
 		{
 			MajorEmpire majorEmpire = base.Empire as MajorEmpire;
-			if (majorEmpire != null && majorEmpire.ConvertedVillages != null)
+			if (majorEmpire != null)
 			{
-				for (int j = 0; j < majorEmpire.ConvertedVillages.Count; j++)
+				if (majorEmpire.ConvertedVillages != null)
 				{
-					DepartmentOfTheInterior.GenerateResourceForConvertedVillages(base.Empire, majorEmpire.ConvertedVillages[j].PointOfInterest);
+					for (int j = 0; j < majorEmpire.ConvertedVillages.Count; j++)
+					{
+						DepartmentOfTheInterior.GenerateResourceForConvertedVillages(base.Empire, majorEmpire.ConvertedVillages[j].PointOfInterest);
+					}
+				}
+				if (majorEmpire.TamedKaijus != null)
+				{
+					for (int k = 0; k < majorEmpire.TamedKaijus.Count; k++)
+					{
+						DepartmentOfTheInterior.GenerateResourcesLeechingForTamedKaijus(majorEmpire.TamedKaijus[k]);
+					}
 				}
 			}
 		}
 		List<StaticString> lastFailureFlags = new List<StaticString>();
-		for (int k = 0; k < this.cities.Count; k++)
+		for (int l = 0; l < this.cities.Count; l++)
 		{
-			City city = this.cities[k];
-			for (int l = 0; l < city.Region.PointOfInterests.Length; l++)
+			City city = this.cities[l];
+			for (int m = 0; m < city.Region.PointOfInterests.Length; m++)
 			{
-				PointOfInterest pointOfInterest = city.Region.PointOfInterests[l];
+				PointOfInterest pointOfInterest = city.Region.PointOfInterests[m];
 				string x;
 				if (pointOfInterest.PointOfInterestDefinition.TryGetValue("VisibilityTechnology", out x) && x == e.ConstructibleElement.Name && !city.SimulationObject.Children.Contains(pointOfInterest))
 				{
 					city.AddChild(pointOfInterest);
 					pointOfInterest.Empire = (base.Empire as global::Empire);
-					for (int m = 0; m < city.Districts.Count; m++)
+					for (int n = 0; n < city.Districts.Count; n++)
 					{
-						if (city.Districts[m].WorldPosition == pointOfInterest.WorldPosition)
+						if (city.Districts[n].WorldPosition == pointOfInterest.WorldPosition)
 						{
-							DepartmentOfTheInterior.ApplyPointOfInterestDescriptors(base.Empire, city.Districts[m], pointOfInterest, city.Districts[m].Type);
+							DepartmentOfTheInterior.ApplyPointOfInterestDescriptors(base.Empire, city.Districts[n], pointOfInterest, city.Districts[n].Type);
 						}
 					}
 				}
 				if (list.Contains(pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName))
 				{
-					if (pointOfInterest.PointOfInterestImprovement == null)
+					if (pointOfInterest.IsResourceDeposit())
 					{
-						for (int n = 0; n < city.Districts.Count; n++)
+						for (int num = 0; num < city.Districts.Count; num++)
 						{
-							if (pointOfInterest.WorldPosition == city.Districts[n].WorldPosition && city.Districts[n].Type != DistrictType.Exploitation)
+							District district = city.Districts[num];
+							SimulationDescriptor descriptor;
+							if (district.WorldPosition == pointOfInterest.WorldPosition && !district.SimulationObject.Tags.Contains("DistrictExploitableResource") && this.SimulationDescriptorDatabase.TryGetValue("DistrictExploitableResource", out descriptor))
+							{
+								district.AddDescriptor(descriptor, false);
+								break;
+							}
+						}
+					}
+					if (pointOfInterest.PointOfInterestImprovement == null && pointOfInterest.CreepingNodeImprovement == null)
+					{
+						for (int num2 = 0; num2 < city.Districts.Count; num2++)
+						{
+							if (pointOfInterest.WorldPosition == city.Districts[num2].WorldPosition && city.Districts[num2].Type != DistrictType.Exploitation)
 							{
 								ConstructibleElement constructibleElement;
 								this.BuildFreePointOfInterestImprovement(city, pointOfInterest, out constructibleElement);
 							}
 						}
+						if (city.Camp != null)
+						{
+							for (int num3 = 0; num3 < city.Camp.Districts.Count; num3++)
+							{
+								if (pointOfInterest.WorldPosition == city.Camp.Districts[num3].WorldPosition && city.Camp.Districts[num3].Type != DistrictType.Exploitation)
+								{
+									ConstructibleElement constructibleElement2;
+									this.BuildFreePointOfInterestImprovement(city, pointOfInterest, out constructibleElement2);
+								}
+							}
+						}
 					}
-					else
+					else if (pointOfInterest.CreepingNodeImprovement == null)
 					{
 						PointOfInterestImprovementDefinition bestImprovementDefinition = this.GetBestImprovementDefinition(city, pointOfInterest, pointOfInterest.PointOfInterestImprovement as PointOfInterestImprovementDefinition, lastFailureFlags);
 						if (bestImprovementDefinition != null)
@@ -8673,7 +9829,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 					}
 				}
 				ConstructionQueue constructionQueue = this.departmentOfIndustry.GetConstructionQueue(this.cities[i]);
-				if (constructionQueue.Length == 0)
+				if (constructionQueue.Length == 0 && !this.cities[i].IsInfected)
 				{
 					this.EventService.Notify(new EventCityIdle(base.Empire, this.cities[i]));
 					result = false;
@@ -8709,18 +9865,22 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			Diagnostics.Assert(departmentOfDefense != null);
 			for (int index = 0; index < this.cities.Count; index++)
 			{
-				if (this.cities[index].BesiegingEmpire == null)
+				if (this.cities[index].BesiegingEmpire == null && !this.cities[index].IsUnderEarthquake)
 				{
 					if (this.cities[index].Militia != null)
 					{
 						UnitDesign bestUnitDesignAvailableForMilitiaUnits = departmentOfDefense.FindBestUnitDesignAvailableForMilitiaUnits();
 						List<Unit> replacementUnits = new List<Unit>();
+						List<float> replacementUnitsXp = new List<float>();
+						List<Unit> unitsToReplace = new List<Unit>();
 						foreach (Unit unit in this.cities[index].Militia.StandardUnits)
 						{
 							if (unit.UnitDesign.Model < bestUnitDesignAvailableForMilitiaUnits.Model)
 							{
 								Unit replacementUnit = DepartmentOfDefense.CreateUnitByDesign(unit.GUID, bestUnitDesignAvailableForMilitiaUnits);
+								replacementUnitsXp.Add(unit.GetPropertyValue(SimulationProperties.UnitAccumulatedExperience));
 								replacementUnits.Add(replacementUnit);
+								unitsToReplace.Add(unit);
 							}
 							else
 							{
@@ -8732,19 +9892,21 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 								}
 							}
 						}
-						if (replacementUnits != null && replacementUnits.Count > 0)
+						if (replacementUnits != null && replacementUnits.Count > 0 && unitsToReplace.Count > 0)
 						{
-							while (this.cities[index].Militia.StandardUnits.Count > 0)
+							for (int militiaUnitIndex = unitsToReplace.Count - 1; militiaUnitIndex >= 0; militiaUnitIndex--)
 							{
-								Unit unit2 = this.cities[index].Militia.StandardUnits[0];
-								this.cities[index].Militia.RemoveUnit(unit2);
-								this.GameEntityRepositoryService.Unregister(unit2.GUID);
-								unit2.Dispose();
+								Unit unitToReplace = unitsToReplace[militiaUnitIndex];
+								this.cities[index].Militia.RemoveUnit(unitToReplace);
+								this.GameEntityRepositoryService.Unregister(unitToReplace.GUID);
+								unitToReplace.Dispose();
 							}
-							foreach (Unit replacementUnit2 in replacementUnits)
+							unitsToReplace.Clear();
+							for (int uIndex = 0; uIndex < replacementUnits.Count; uIndex++)
 							{
-								this.cities[index].Militia.AddUnit(replacementUnit2);
-								this.GameEntityRepositoryService.Register(replacementUnit2);
+								this.cities[index].Militia.AddUnit(replacementUnits[uIndex]);
+								this.GameEntityRepositoryService.Register(replacementUnits[uIndex]);
+								replacementUnits[uIndex].GainXp(replacementUnitsXp[uIndex], false, true);
 							}
 						}
 					}
@@ -8768,6 +9930,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		for (int index = 0; index < this.cities.Count; index++)
 		{
 			this.UpdateSiegeAtEndTurn(this.cities[index]);
+			this.GameClient_TurnEnd_UpdateEarthquakeDamage(this.cities[index]);
 		}
 		yield break;
 	}
@@ -8861,7 +10024,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 				}
 				this.cities[index].Camp.Refresh(false);
 			}
-			if (this.cities[index].BesiegingEmpire == null)
+			if (this.cities[index].BesiegingEmpire == null && !this.cities[index].IsUnderEarthquake)
 			{
 				foreach (Unit unit2 in this.cities[index].Units)
 				{
@@ -8891,7 +10054,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 						if (maximumNumberOfUnitsPerArmy <= 0)
 						{
 							Diagnostics.LogWarning("The maximum number Of units per army doesn't allow for transfer.");
-							goto IL_649;
+							goto IL_64B;
 						}
 						WorldArea worldArea = new WorldArea(new WorldPosition[]
 						{
@@ -8988,7 +10151,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 							{
 								GameEntityGUID[] selection = new GameEntityGUID[numberOfUnitsToTransfer];
 								Array.Copy(guids, startIndex, selection, 0, numberOfUnitsToTransfer);
-								OrderTransferGarrisonToNewArmy orderTransferGarrisonToNewArmy = new OrderTransferGarrisonToNewArmy(base.Empire.Index, cities[index].GUID, selection, worldPosition, StaticString.Empty, false);
+								OrderTransferGarrisonToNewArmy orderTransferGarrisonToNewArmy = new OrderTransferGarrisonToNewArmy(base.Empire.Index, cities[index].GUID, selection, worldPosition, StaticString.Empty, false, true, true);
 								((global::Empire)base.Empire).PlayerControllers.Server.PostOrder(orderTransferGarrisonToNewArmy);
 								startIndex += numberOfUnitsToTransfer;
 								continue;
@@ -9004,7 +10167,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 					yield return null;
 				}
 			}
-			IL_649:;
+			IL_64B:;
 		}
 		yield break;
 	}
@@ -9019,48 +10182,51 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		{
 			for (int index = 0; index < this.cities.Count; index++)
 			{
-				if (this.cities[index].BesiegingEmpire == null)
+				if (this.cities[index].BesiegingEmpire == null && !this.cities[index].IsUnderEarthquake)
 				{
-					if (this.cities[index].Militia != null && !this.cities[index].SimulationObject.Tags.Contains(City.TagCityStatusRazed))
+					if (!this.cities[index].IsInfected)
 					{
-						float recoverPercentageByOwnership = 1f;
-						if (DepartmentOfTheInterior.MilitiaRecoverByOwnershipCurve != null)
+						if (this.cities[index].Militia != null && !this.cities[index].SimulationObject.Tags.Contains(City.TagCityStatusRazed))
 						{
-							recoverPercentageByOwnership = DepartmentOfTheInterior.MilitiaRecoverByOwnershipCurve.Evaluate(this.cities[index].Ownership[base.Empire.Index]);
-						}
-						int numberOfUnitsInMilitia = this.cities[index].Militia.UnitsCount;
-						int maximumNumberOfUnitsInMilitia = (int)this.cities[index].Militia.GetPropertyValue(SimulationProperties.MaximumUnitSlotCount);
-						int maximumMilitiaUnitsByOwnership = (int)((float)maximumNumberOfUnitsInMilitia * recoverPercentageByOwnership);
-						if (numberOfUnitsInMilitia < maximumMilitiaUnitsByOwnership)
-						{
-							int numberOfUnitsToCreate = Math.Min(maximumMilitiaUnitsByOwnership - numberOfUnitsInMilitia, 10);
-							GameEntityGUID[] guids = new GameEntityGUID[numberOfUnitsToCreate];
-							for (int jndex = 0; jndex < guids.Length; jndex++)
+							float recoverPercentageByOwnership = 1f;
+							if (DepartmentOfTheInterior.MilitiaRecoverByOwnershipCurve != null)
 							{
-								guids[jndex] = this.GameEntityRepositoryService.GenerateGUID();
+								recoverPercentageByOwnership = DepartmentOfTheInterior.MilitiaRecoverByOwnershipCurve.Evaluate(this.cities[index].Ownership[base.Empire.Index]);
 							}
-							OrderCreateMilitiaUnits orderCreateMilitiaUnits = new OrderCreateMilitiaUnits(base.Empire.Index)
+							int numberOfUnitsInMilitia = this.cities[index].Militia.UnitsCount;
+							int maximumNumberOfUnitsInMilitia = (int)this.cities[index].Militia.GetPropertyValue(SimulationProperties.MaximumUnitSlotCount);
+							int maximumMilitiaUnitsByOwnership = (int)((float)maximumNumberOfUnitsInMilitia * recoverPercentageByOwnership);
+							if (numberOfUnitsInMilitia < maximumMilitiaUnitsByOwnership)
 							{
-								CityGameEntityGUID = this.cities[index].GUID,
-								GameEntityGUIDs = guids
-							};
-							((MajorEmpire)base.Empire).PlayerControllers.Server.PostOrder(orderCreateMilitiaUnits);
-						}
-						if (maximumMilitiaUnitsByOwnership < numberOfUnitsInMilitia)
-						{
-							Unit[] militiaUnits = this.cities[index].Militia.StandardUnitsAsArray;
-							int numberOfUnitsToDestroy = Math.Min(numberOfUnitsInMilitia - maximumMilitiaUnitsByOwnership, militiaUnits.Length);
-							GameEntityGUID[] guids2 = new GameEntityGUID[numberOfUnitsToDestroy];
-							for (int jndex2 = 0; jndex2 < guids2.Length; jndex2++)
-							{
-								guids2[jndex2] = militiaUnits[militiaUnits.Length - jndex2 - 1].GUID;
+								int numberOfUnitsToCreate = Math.Min(maximumMilitiaUnitsByOwnership - numberOfUnitsInMilitia, 10);
+								GameEntityGUID[] guids = new GameEntityGUID[numberOfUnitsToCreate];
+								for (int jndex = 0; jndex < guids.Length; jndex++)
+								{
+									guids[jndex] = this.GameEntityRepositoryService.GenerateGUID();
+								}
+								OrderCreateMilitiaUnits orderCreateMilitiaUnits = new OrderCreateMilitiaUnits(base.Empire.Index)
+								{
+									CityGameEntityGUID = this.cities[index].GUID,
+									GameEntityGUIDs = guids
+								};
+								((MajorEmpire)base.Empire).PlayerControllers.Server.PostOrder(orderCreateMilitiaUnits);
 							}
-							OrderDestroyMilitiaUnits orderDestroyMilitiaUnits = new OrderDestroyMilitiaUnits(base.Empire.Index)
+							if (maximumMilitiaUnitsByOwnership < numberOfUnitsInMilitia)
 							{
-								CityGameEntityGUID = this.cities[index].GUID,
-								GameEntityGUIDs = guids2
-							};
-							((MajorEmpire)base.Empire).PlayerControllers.Server.PostOrder(orderDestroyMilitiaUnits);
+								Unit[] militiaUnits = this.cities[index].Militia.StandardUnitsAsArray;
+								int numberOfUnitsToDestroy = Math.Min(numberOfUnitsInMilitia - maximumMilitiaUnitsByOwnership, militiaUnits.Length);
+								GameEntityGUID[] guids2 = new GameEntityGUID[numberOfUnitsToDestroy];
+								for (int jndex2 = 0; jndex2 < guids2.Length; jndex2++)
+								{
+									guids2[jndex2] = militiaUnits[militiaUnits.Length - jndex2 - 1].GUID;
+								}
+								OrderDestroyMilitiaUnits orderDestroyMilitiaUnits = new OrderDestroyMilitiaUnits(base.Empire.Index)
+								{
+									CityGameEntityGUID = this.cities[index].GUID,
+									GameEntityGUIDs = guids2
+								};
+								((MajorEmpire)base.Empire).PlayerControllers.Server.PostOrder(orderDestroyMilitiaUnits);
+							}
 						}
 					}
 				}
@@ -9299,6 +10465,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			city.SetHero(null);
 		}
 		this.cities.RemoveAt(num);
+		base.Empire.SetPropertyBaseValue(SimulationProperties.NumberOfCities, base.Empire.GetPropertyValue(SimulationProperties.NumberOfCities) - 1f);
 		if (this.MainCity == city)
 		{
 			this.MainCity = null;
@@ -9313,7 +10480,7 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			if (!region.PointOfInterests[i].PointOfInterestDefinition.TryGetValue("Type", out a) || !(a == "Village"))
 			{
 				city.RemoveChild(region.PointOfInterests[i]);
-				if (region.PointOfInterests[i].Empire == base.Empire)
+				if (region.PointOfInterests[i].Empire == base.Empire && region.PointOfInterests[i].CreepingNodeGUID == GameEntityGUID.Zero)
 				{
 					region.PointOfInterests[i].Empire = null;
 				}
@@ -9331,6 +10498,17 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 			}
 			city.CadastralMap.Roads.Clear();
 			city.CadastralMap.Roads = null;
+		}
+		this.RemoveDistrictDescriptorExploitableResource(city);
+		SimulationDescriptor descriptor;
+		if (city.SimulationObject.Tags.Contains(City.MimicsCity) && this.SimulationDescriptorDatabase.TryGetValue(City.MimicsCity, out descriptor))
+		{
+			city.RemoveDescriptor(descriptor);
+		}
+		SimulationDescriptor descriptor2;
+		if (city.IsIntegrated && this.SimulationDescriptorDatabase.TryGetValue(City.TagCityStatusIntegrated, out descriptor2))
+		{
+			city.RemoveDescriptor(descriptor2);
 		}
 		region.City = null;
 		this.RefreshDefensiveTowerPower(region);
@@ -9411,36 +10589,42 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 
 	private void UpdatePointOfInterestImprovement(City city)
 	{
+		for (int i = 0; i < city.Region.PointOfInterests.Length; i++)
+		{
+			PointOfInterest pointOfInterest = city.Region.PointOfInterests[i];
+			this.UpdatePointOfInterestImprovement(city, pointOfInterest);
+		}
+	}
+
+	private void UpdatePointOfInterestImprovement(City city, PointOfInterest pointOfInterest)
+	{
 		List<StaticString> lastFailureFlags = new List<StaticString>();
 		global::Empire empire = base.Empire as global::Empire;
 		SimulationDescriptor value = this.SimulationDescriptorDatabase.GetValue(empire.Faction.AffinityMapping);
 		Diagnostics.Assert(value != null);
-		for (int i = 0; i < city.Region.PointOfInterests.Length; i++)
+		if (pointOfInterest.PointOfInterestImprovement != null)
 		{
-			PointOfInterest pointOfInterest = city.Region.PointOfInterests[i];
-			if (pointOfInterest.PointOfInterestImprovement != null)
+			pointOfInterest.SwapDescriptor(value);
+		}
+		if (!DepartmentOfTheInterior.IsPointOfInterestVisible(base.Empire, pointOfInterest))
+		{
+			return;
+		}
+		if (pointOfInterest.PointOfInterestImprovement != null)
+		{
+			PointOfInterestImprovementDefinition bestImprovementDefinition = this.GetBestImprovementDefinition(city, pointOfInterest, pointOfInterest.PointOfInterestImprovement as PointOfInterestImprovementDefinition, lastFailureFlags);
+			if (bestImprovementDefinition != null && bestImprovementDefinition.Name != pointOfInterest.PointOfInterestImprovement.Name)
 			{
-				pointOfInterest.SwapDescriptor(value);
+				this.BuildPointOfInterestImprovement(city, pointOfInterest, bestImprovementDefinition);
 			}
-			if (DepartmentOfTheInterior.IsPointOfInterestVisible(base.Empire, pointOfInterest))
+		}
+		else
+		{
+			for (int i = 0; i < city.Districts.Count; i++)
 			{
-				if (pointOfInterest.PointOfInterestImprovement != null)
+				if (city.Districts[i].WorldPosition == pointOfInterest.WorldPosition && city.Districts[i].Type != DistrictType.Exploitation)
 				{
-					PointOfInterestImprovementDefinition bestImprovementDefinition = this.GetBestImprovementDefinition(city, pointOfInterest, pointOfInterest.PointOfInterestImprovement as PointOfInterestImprovementDefinition, lastFailureFlags);
-					if (bestImprovementDefinition != null && bestImprovementDefinition.Name != pointOfInterest.PointOfInterestImprovement.Name)
-					{
-						this.BuildPointOfInterestImprovement(city, pointOfInterest, bestImprovementDefinition);
-					}
-				}
-				else
-				{
-					for (int j = 0; j < city.Districts.Count; j++)
-					{
-						if (city.Districts[j].WorldPosition == pointOfInterest.WorldPosition && city.Districts[j].Type != DistrictType.Exploitation)
-						{
-							this.BuildFreePointOfInterestImprovement(city, pointOfInterest.WorldPosition);
-						}
-					}
+					this.BuildFreePointOfInterestImprovement(city, pointOfInterest.WorldPosition);
 				}
 			}
 		}
@@ -9478,9 +10662,131 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 		}
 	}
 
+	private void AddDistrictDescriptorExploitableResource(City city)
+	{
+		List<StaticString> list = new List<StaticString>();
+		IDatabase<DepartmentOfScience.ConstructibleElement> database = Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false);
+		DepartmentOfScience.ConstructibleElement[] values = database.GetValues();
+		for (int i = 0; i < values.Length; i++)
+		{
+			TechnologyDefinition technologyDefinition = values[i] as TechnologyDefinition;
+			if (technologyDefinition != null && technologyDefinition.Visibility == TechnologyDefinitionVisibility.Visible && this.departmentOfScience.GetTechnologyState(technologyDefinition) == DepartmentOfScience.ConstructibleElement.State.Researched)
+			{
+				List<ConstructibleElement> unlocksByTechnology = values[i].GetUnlocksByTechnology();
+				if (unlocksByTechnology != null && unlocksByTechnology.Count > 0)
+				{
+					for (int j = 0; j < unlocksByTechnology.Count; j++)
+					{
+						PointOfInterestImprovementDefinition pointOfInterestImprovementDefinition = unlocksByTechnology[j] as PointOfInterestImprovementDefinition;
+						if (pointOfInterestImprovementDefinition != null)
+						{
+							list.Add(pointOfInterestImprovementDefinition.PointOfInterestTemplateName);
+						}
+					}
+				}
+			}
+		}
+		for (int k = 0; k < city.Region.PointOfInterests.Length; k++)
+		{
+			PointOfInterest pointOfInterest = city.Region.PointOfInterests[k];
+			if (pointOfInterest.IsResourceDeposit() && list.Contains(pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName))
+			{
+				for (int l = 0; l < city.Districts.Count; l++)
+				{
+					District district = city.Districts[l];
+					SimulationDescriptor descriptor;
+					if (district.WorldPosition == pointOfInterest.WorldPosition && !district.SimulationObject.Tags.Contains("DistrictExploitableResource") && this.SimulationDescriptorDatabase.TryGetValue("DistrictExploitableResource", out descriptor))
+					{
+						district.AddDescriptor(descriptor, false);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	private void RemoveDistrictDescriptorExploitableResource(City city)
+	{
+		for (int i = 0; i < city.Districts.Count; i++)
+		{
+			District district = city.Districts[i];
+			SimulationDescriptor descriptor;
+			if (district.SimulationObject.Tags.Contains("DistrictExploitableResource") && this.SimulationDescriptorDatabase.TryGetValue("DistrictExploitableResource", out descriptor))
+			{
+				district.RemoveDescriptor(descriptor);
+			}
+		}
+	}
+
+	private void EventService_EventRaise(object sender, EventRaiseEventArgs e)
+	{
+		DepartmentOfTheInterior.EventHandler eventHandler;
+		if (this.eventHandlers != null && e.RaisedEvent != null && this.eventHandlers.TryGetValue(e.RaisedEvent.EventName, out eventHandler))
+		{
+			eventHandler(e.RaisedEvent);
+		}
+	}
+
+	private void RegisterEventHandlers()
+	{
+		this.eventHandlers = new Dictionary<StaticString, DepartmentOfTheInterior.EventHandler>();
+		this.eventHandlers.Add(EventFactionIntegrated.Name, new DepartmentOfTheInterior.EventHandler(this.OnEventFactionIntegrated));
+	}
+
+	private void OnEventFactionIntegrated(Amplitude.Unity.Event.Event eventRaised)
+	{
+		EventFactionIntegrated eventFactionIntegrated = eventRaised as EventFactionIntegrated;
+		if (eventFactionIntegrated != null && eventFactionIntegrated.Empire == base.Empire)
+		{
+			Faction faction = (eventFactionIntegrated.IntegratedEmpire as global::Empire).Faction;
+			StaticString name = faction.Affinity.Name;
+			SimulationDescriptor descriptor;
+			if (this.SimulationDescriptorDatabase.TryGetValue(City.TagCityStatusIntegrated, out descriptor))
+			{
+				for (int i = 0; i < this.Cities.Count; i++)
+				{
+					if (this.Cities[i].IsInfected)
+					{
+						global::Empire empire = (this.GameService.Game as global::Game).Empires[this.Cities[i].LastNonInfectedOwnerIndex];
+						string text = (empire == null) ? string.Empty : empire.Faction.Affinity.Name.ToString();
+						bool flag = name == "AffinityMezari" || name == "AffinityVaulters";
+						bool flag2 = text == "AffinityMezari" || text == "AffinityVaulters";
+						if (name == text || (flag && flag2))
+						{
+							this.Cities[i].AddDescriptor(descriptor, false);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void DestroyInfectedCities()
+	{
+		City[] array = this.Cities.ToArray<City>();
+		if (array != null && array.Length > 0)
+		{
+			int num = array.Length;
+			for (int i = num - 1; i >= 0; i--)
+			{
+				if (array[i].IsInfected)
+				{
+					global::PlayerController server = (base.Empire as global::Empire).PlayerControllers.Server;
+					if (server != null)
+					{
+						OrderDestroyCity order = new OrderDestroyCity(base.Empire.Index, array[i].GUID, array[i].ShouldRazeRegionBuildingWithSelf, array[i].ShouldInjureSpyOnRaze, -1);
+						server.PostOrder(order);
+					}
+				}
+			}
+		}
+	}
+
 	private const int MaximumNumberOfAssimilatedEmpires = 3;
 
 	private const int MaximumNumberOfNeighbourTiles = 6;
+
+	public static StaticString ArmyStatusEarthquakerDescriptorName;
 
 	private string serializableBesiegingSeafaringArmies;
 
@@ -9523,6 +10829,8 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 	public static Amplitude.Unity.Framework.AnimationCurve MilitiaRecoverByOwnershipCurve;
 
 	public static Amplitude.Unity.Framework.AnimationCurve FortificationRecoverByOwnershipCurve;
+
+	public static readonly StaticString InfectionAllowedSubcategory = "SubCategoryAssimilation";
 
 	internal static readonly StaticString SimulationLayerName = "Simulation";
 
@@ -9570,6 +10878,8 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 
 	private ISeasonService seasonService;
 
+	private Dictionary<StaticString, DepartmentOfTheInterior.EventHandler> eventHandlers;
+
 	private City mainCity;
 
 	private GameEntityGUID mainCityGUID;
@@ -9606,4 +10916,6 @@ public class DepartmentOfTheInterior : Agency, IXmlSerializable
 
 		public int Priority { get; set; }
 	}
+
+	private delegate void EventHandler(Amplitude.Unity.Event.Event raisedEvent);
 }

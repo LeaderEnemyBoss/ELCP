@@ -25,55 +25,7 @@ public class FeaturePlayerStatusItem : Behaviour
 				value = gameScore.Value;
 			}
 		}
-		bool flag = false;
-		ISessionService service = Services.GetService<ISessionService>();
-		Diagnostics.Assert(service != null && service.Session != null);
-		string lobbyData = service.Session.GetLobbyData<string>(EmpireInfo.EmpireInfoAccessibility, "Default");
-		switch ((int)Enum.Parse(typeof(EmpireInfo.Accessibility), lobbyData))
-		{
-		case 0:
-			flag = true;
-			break;
-		case 1:
-			if (player.Empire == playerEmpire)
-			{
-				flag = true;
-			}
-			else if (playerEmpire.GetAgency<DepartmentOfForeignAffairs>().GetDiplomaticRelation(player.Empire).State.Name == DiplomaticRelationState.Names.Dead)
-			{
-				flag = true;
-			}
-			break;
-		case 2:
-			if (player.Empire == playerEmpire)
-			{
-				flag = true;
-			}
-			else
-			{
-				DepartmentOfIntelligence agency = playerEmpire.GetAgency<DepartmentOfIntelligence>();
-				if (agency != null && agency.IsEmpireInfiltrated(player.Empire))
-				{
-					flag = true;
-				}
-				else if (playerEmpire.GetAgency<DepartmentOfForeignAffairs>().GetDiplomaticRelation(player.Empire).State.Name == DiplomaticRelationState.Names.Dead)
-				{
-					flag = true;
-				}
-			}
-			break;
-		default:
-			flag = true;
-			break;
-		}
-		if (flag)
-		{
-			this.EmpireScore.Text = GuiFormater.FormatGui(value, false, false, false, 1);
-		}
-		else
-		{
-			this.EmpireScore.Text = "???";
-		}
+		this.EmpireScore.Text = GuiFormater.FormatGui(value, false, false, false, 1);
 		this.EmpireScore.TintColor = player.Empire.Color;
 		if (player.Empire == playerEmpire)
 		{
@@ -82,10 +34,10 @@ public class FeaturePlayerStatusItem : Behaviour
 		}
 		else
 		{
-			DepartmentOfForeignAffairs agency2 = playerEmpire.GetAgency<DepartmentOfForeignAffairs>();
-			if (agency2 != null)
+			DepartmentOfForeignAffairs agency = playerEmpire.GetAgency<DepartmentOfForeignAffairs>();
+			if (agency != null)
 			{
-				DiplomaticRelation diplomaticRelation = agency2.GetDiplomaticRelation(player.Empire);
+				DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(player.Empire);
 				GuiElement guiElement;
 				if (helper.TryGetGuiElement(diplomaticRelation.State.Name, out guiElement))
 				{
@@ -108,6 +60,8 @@ public class FeaturePlayerStatusItem : Behaviour
 				}
 			}
 		}
+		ISessionService service = Services.GetService<ISessionService>();
+		Diagnostics.Assert(service != null && service.Session != null);
 		string key = string.Empty;
 		this.EmpireStatus.Text = string.Empty;
 		PlayerHelper.ComputePlayerState(ref player);

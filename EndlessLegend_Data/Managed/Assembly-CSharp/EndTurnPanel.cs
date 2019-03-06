@@ -531,9 +531,9 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		string name = e.GameClientStateType.Name;
 		if (name != null)
 		{
-			if (EndTurnPanel.<>f__switch$map1C == null)
+			if (EndTurnPanel.<>f__switch$map1D == null)
 			{
-				EndTurnPanel.<>f__switch$map1C = new Dictionary<string, int>(2)
+				EndTurnPanel.<>f__switch$map1D = new Dictionary<string, int>(2)
 				{
 					{
 						"GameClientState_Turn_Main",
@@ -546,7 +546,7 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 				};
 			}
 			int num;
-			if (EndTurnPanel.<>f__switch$map1C.TryGetValue(name, out num))
+			if (EndTurnPanel.<>f__switch$map1D.TryGetValue(name, out num))
 			{
 				if (num != 0)
 				{
@@ -809,7 +809,7 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		{
 			Season nextSeason = this.SeasonService.GetNextSeason(null);
 			GuiElement guiElement;
-			if (nextSeason.SeasonDefinition.SeasonType == Season.ReadOnlyHeatWave && base.Empire.SimulationObject.Tags.Contains("FactionTraitFlames7"))
+			if (nextSeason.SeasonDefinition.SeasonType == Season.ReadOnlyHeatWave && (base.Empire.SimulationObject.Tags.Contains("FactionTraitFlames7") || base.Empire.SimulationObject.Tags.Contains("FlamesIntegrationDescriptor1")))
 			{
 				this.MadSeasonContainer.Visible = true;
 				string text = (this.SeasonService.GetExactSeasonStartTurn(nextSeason) - this.EndTurnService.Turn).ToString();
@@ -828,7 +828,7 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 			}
 			if (season.SeasonDefinition.SeasonType == Season.ReadOnlyHeatWave)
 			{
-				if (base.Empire.SimulationObject.Tags.Contains("FactionTraitFlames7"))
+				if (base.Empire.SimulationObject.Tags.Contains("FactionTraitFlames7") || base.Empire.SimulationObject.Tags.Contains("FlamesIntegrationDescriptor1"))
 				{
 					this.MadSeasonContainer.Visible = true;
 					if (base.GuiService.GuiPanelHelper.TryGetGuiElement(season.SeasonDefinition.Name, out guiElement))
@@ -1059,17 +1059,20 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 							{
 								if (!army.IsDismantlingDevice)
 								{
-									if (!army.IsAspirating)
+									if (!army.IsDismantlingCreepingNode)
 									{
-										if (!army.IsBombarding)
+										if (!army.IsAspirating)
 										{
-											if (army.GetPropertyBaseValue(SimulationProperties.Movement) > 0.001f)
+											if (!army.IsBombarding)
 											{
-												if (!this.worldPositionningService.IsFrozenWaterTile(army.WorldPosition) || !army.IsNavalOrPartiallySo)
+												if (army.GetPropertyBaseValue(SimulationProperties.Movement) > 0.001f)
 												{
-													if (!encounters.Any((Encounter encounter) => encounter != null && encounter.EncounterState != EncounterState.BattleHasEnded && encounter.Contenders != null && encounter.Contenders.Any((Contender contender) => contender != null && contender.GUID == army.GUID)))
+													if (!this.worldPositionningService.IsFrozenWaterTile(army.WorldPosition) || !army.IsNavalOrPartiallySo)
 													{
-														yield return army;
+														if (!encounters.Any((Encounter encounter) => encounter != null && encounter.EncounterState != EncounterState.BattleHasEnded && encounter.Contenders != null && encounter.Contenders.Any((Contender contender) => contender != null && contender.GUID == army.GUID)))
+														{
+															yield return army;
+														}
 													}
 												}
 											}
@@ -1120,32 +1123,6 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		}
 		this.FocusCircle.Visible = false;
 		yield break;
-	}
-
-	private void OnRightClick(GameObject obj)
-	{
-		if (!base.IsVisible)
-		{
-			return;
-		}
-		MajorEmpire majorEmpire = obj.GetComponent<EmpirePlayersStatusItem>().MajorEmpire;
-		if (majorEmpire == null)
-		{
-			return;
-		}
-		GameNegotiationScreen guiPanel = base.GuiService.GetGuiPanel<GameNegotiationScreen>();
-		if (guiPanel != null)
-		{
-			if (guiPanel.IsVisible)
-			{
-				guiPanel.ReShow(majorEmpire);
-				return;
-			}
-			guiPanel.Show(new object[]
-			{
-				majorEmpire
-			});
-		}
 	}
 
 	public const float DisableAlpha = 0.7f;

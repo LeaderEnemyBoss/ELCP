@@ -33,77 +33,81 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			localizationService = service;
 		});
 		Diagnostics.Assert(localizationService != null);
-		base.RegisterCommand(new Command("/?", "Displays a list of all available commands."), new Func<string[], string>(this.Command_Help));
-		base.RegisterCommand(new Command("/Quit", "Quits the application and returns to desktop."), new Func<string[], string>(this.Command_Quit));
-		base.RegisterCommand(new Command("/WhoAmI", "Displays information about the current user."), new Func<string[], string>(this.Command_WhoAmI));
-		base.RegisterCommand(new Command("/Ping", "Displays your latency with the server."), new Func<string[], string>(this.Command_Ping));
+		this.RegisterCommand(new Command("/?", "Displays a list of all available commands."), new Func<string[], string>(this.Command_Help));
+		this.RegisterCommand(new Command("/Quit", "Quits the application and returns to desktop."), new Func<string[], string>(this.Command_Quit));
+		this.RegisterCommand(new Command("/WhoAmI", "Displays information about the current user."), new Func<string[], string>(this.Command_WhoAmI));
+		this.RegisterCommand(new Command("/Ping", "Displays your latency with the server."), new Func<string[], string>(this.Command_Ping));
 		base.RegisterAliasForCommand("/?", "/Help");
-		base.RegisterCommand(new Command("/Whisper", localizationService.Localize("%ChatWhisperCommandHelp")), new Func<string[], string>(this.Command_ChatWhisper));
-		base.RegisterCommand(new Command("/Empire", localizationService.Localize("%ChatEmpireCommandHelp")), new Func<string[], string>(this.Command_ChatToEmpire));
+		this.RegisterCommand(new Command("/Whisper", localizationService.Localize("%ChatWhisperCommandHelp")), new Func<string[], string>(this.Command_ChatWhisper));
+		this.RegisterCommand(new Command("/Empire", localizationService.Localize("%ChatEmpireCommandHelp")), new Func<string[], string>(this.Command_ChatToEmpire));
 		base.RegisterAliasForCommand("/Whisper", "/w");
 		base.RegisterAliasForCommand("/Empire", "/e");
 		if (Amplitude.Unity.Framework.Application.Version.Accessibility <= Accessibility.ProtectedInternal || Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 		{
-			base.RegisterCommand(new Command("/ShowMeTheStockpiles", "Orders the transfer of a specific amount of Stockpiles."), new Func<string[], string>(this.Command_ShowMeTheStockpiles));
-			base.RegisterCommand(new Command("/AutoTurn", "Plays some number of turns automatically."), new Func<string[], string>(this.Command_AutoTurn));
-			base.RegisterCommand(new Command("/Bind", "Syntax : /Bind [KeyAction] [KeyCode] [bool]. Display bindings with no arguments, Call to bind function with arguments"), new Func<string[], string>(this.Command_Bind));
-			base.RegisterCommand(new Command("/BringThePain", "Force the health of selected army units at half the maximum value. (Network non supported)."), new Func<string[], string>(this.Command_BringThePain));
-			base.RegisterCommand(new Command("/ForceCurrentQuestsCompletion", "Will complete all the quests in progress (/ForceCurrentQuestsCompletion Failed to fail them all)."), new Func<string[], string>(this.Command_ForceCurrentQuestsCompletion));
-			base.RegisterCommand(new Command("/ForceQuestTriggering", "Force a quest to be triggered."), new Func<string[], string>(this.Command_ForceQuestTriggering));
-			base.RegisterCommand(new Command("/ForceUnlockTechnology", "Will unlock a technology without checking any prerequisite."), new Func<string[], string>(this.Command_ForceUnlockTechnology));
-			base.RegisterCommand(new Command("/GetRegistryValue", "Get a registry value."), new Func<string[], string>(this.Command_GetRegistryValue));
-			base.RegisterCommand(new Command("/IAmACheater", "Unlocks cheat items; 'NoMore' to get the real game back."), new Func<string[], string>(this.Command_IAmACheater));
-			base.RegisterCommand(new Command("/INeedAHero", "Orders one hero creation; The Unit profile name could be provided, otherwise, the hero profile will be random."), new Func<string[], string>(this.Command_INeedAHero));
-			base.RegisterCommand(new Command("/IPutASpellOnYou", "Capture the select army hero and push it to the second empire jail."), new Func<string[], string>(this.Command_IPutASpellOnYou));
-			base.RegisterCommand(new Command("/LetTheSunshineIn", "Change season to summer."), new Func<string[], string>(this.Command_LetTheSunshineIn));
-			base.RegisterCommand(new Command("/LightMeUp", "Disables the fog of war; 'NoMore' to get the fog of war back."), new Func<string[], string>(this.Command_LightMeUp));
-			base.RegisterCommand(new Command("/LookAt", "Center camera on a specific world position."), new Func<string[], string>(this.Command_LookAt));
-			base.RegisterCommand(new Command("/KnowledgeIsPower", "Unlock every technology. +\"all\" to include affinity & quest technologies."), new Func<string[], string>(this.Command_KnowledgeIsPower));
-			base.RegisterCommand(new Command("/PowerMeUp", "Give to all of your selected world army's units enough xp to level up."), new Func<string[], string>(this.Command_PowerMeUp));
-			base.RegisterCommand(new Command("/ShowMeTheMoney", "Orders the transfer of a specific amount of Dust."), new Func<string[], string>(this.Command_ShowMeTheMoney));
-			base.RegisterCommand(new Command("/ShowMeTheResources", "Orders the transfer of a specific amount of Dust, Influence, Science & Growth."), new Func<string[], string>(this.Command_ShowMeTheResources));
-			base.RegisterCommand(new Command("/ShowMeTheWay", "Orders the exploration of the whole world."), new Func<string[], string>(this.Command_ShowMeTheWay));
-			base.RegisterCommand(new Command("/Slap", "Deal damage (random or given as parameter) to all the units (including hero) in your selected army or city."), new Func<string[], string>(this.Command_Slap));
-			base.RegisterCommand(new Command("/TimeToDie", "Destroy the selected army."), new Func<string[], string>(this.Command_TimeToDie));
-			base.RegisterCommand(new Command("/TransferResources", "Orders the transfer of a specific amount of resources."), new Func<string[], string>(this.Command_TransferResources));
-			base.RegisterCommand(new Command("/WinterIsComing", "Change season to winter."), new Func<string[], string>(this.Command_WinterIsComming));
-			base.RegisterCommand(new Command("/WhatIsYoursIsMine", "Toggle Catspaw action on minor/naval armies."), new Func<string[], string>(this.Command_WhatIsYoursIsMine));
-			base.RegisterCommand(new Command("/SetWindPreferences", "Set the direction and strength of the wind."), new Func<string[], string>(this.Command_SetWindPreferences));
-			base.RegisterCommand(new Command("/SeasonEffect", "Handle season effects."), new Func<string[], string>(this.Command_SeasonEffect));
-			base.RegisterCommand(new Command("/Orb", "Give some data concerning orbs."), new Func<string[], string>(this.Command_Orb));
-			base.RegisterCommand(new Command("/WeatherControl", "Activate the weather control using a given preset."), new Func<string[], string>(this.Command_WeatherControl));
-			base.RegisterCommand(new Command("/BringTheHeat", "Change season to Heat Wave."), new Func<string[], string>(this.Command_BringTheHeat));
-			base.RegisterCommand(new Command("/Visions", "Generate season mirages."), new Func<string[], string>(this.Command_Visions));
-			base.RegisterCommand(new Command("/AIDebugMode", "Active the AI debug mode."), new Func<string[], string>(this.Command_AIDebugMode));
-			base.RegisterCommand(new Command("/SimulationDebugMode", "Active the Simulation debug mode."), new Func<string[], string>(this.Command_SimulationDebugMode));
+			this.RegisterCommand(new Command("/Bind", "Syntax : /Bind [KeyAction] [KeyCode] [bool]. Display bindings with no arguments, Call to bind function with arguments"), new Func<string[], string>(this.Command_Bind));
+			this.RegisterCommand(new Command("/BringThePain", "Force the health of selected army units at half the maximum value. (Network non supported)."), new Func<string[], string>(this.Command_BringThePain));
+			this.RegisterCommand(new Command("/ForceCurrentQuestsCompletion", "Will complete all the quests in progress (/ForceCurrentQuestsCompletion Failed to fail them all)."), new Func<string[], string>(this.Command_ForceCurrentQuestsCompletion));
+			this.RegisterCommand(new Command("/ForceQuestTriggering", "Force a quest to be triggered."), new Func<string[], string>(this.Command_ForceQuestTriggering));
+			this.RegisterCommand(new Command("/ForceUnlockTechnology", "Will unlock a technology without checking any prerequisite."), new Func<string[], string>(this.Command_ForceUnlockTechnology));
+			this.RegisterCommand(new Command("/GetRegistryValue", "Get a registry value."), new Func<string[], string>(this.Command_GetRegistryValue));
+			this.RegisterCommand(new Command("/IAmACheater", "Unlocks cheat items; 'NoMore' to get the real game back."), new Func<string[], string>(this.Command_IAmACheater));
+			this.RegisterCommand(new Command("/INeedAHero", "Orders one hero creation; The Unit profile name could be provided, otherwise, the hero profile will be random."), new Func<string[], string>(this.Command_INeedAHero));
+			this.RegisterCommand(new Command("/IPutASpellOnYou", "Capture the select army hero and push it to the second empire jail."), new Func<string[], string>(this.Command_IPutASpellOnYou));
+			this.RegisterCommand(new Command("/LetTheSunshineIn", "Change season to summer."), new Func<string[], string>(this.Command_LetTheSunshineIn));
+			this.RegisterCommand(new Command("/LightMeUp", "Disables the fog of war; 'NoMore' to get the fog of war back."), new Func<string[], string>(this.Command_LightMeUp));
+			this.RegisterCommand(new Command("/LookAt", "Center camera on a specific world position."), new Func<string[], string>(this.Command_LookAt));
+			this.RegisterCommand(new Command("/KnowledgeIsPower", "Unlock every technology. +\"all\" to include affinity & quest technologies."), new Func<string[], string>(this.Command_KnowledgeIsPower));
+			this.RegisterCommand(new Command("/PowerMeUp", "Give to all of your selected world army's units enough xp to level up."), new Func<string[], string>(this.Command_PowerMeUp));
+			this.RegisterCommand(new Command("/ShowMeTheMoney", "Orders the transfer of a specific amount of Dust."), new Func<string[], string>(this.Command_ShowMeTheMoney));
+			this.RegisterCommand(new Command("/ShowMeTheResources", "Orders the transfer of a specific amount of Dust, Influence, Science & Growth."), new Func<string[], string>(this.Command_ShowMeTheResources));
+			this.RegisterCommand(new Command("/ShowMeTheWay", "Orders the exploration of the whole world."), new Func<string[], string>(this.Command_ShowMeTheWay));
+			this.RegisterCommand(new Command("/Slap", "Deal damage (random or given as parameter) to all the units (including hero) in your selected army or city."), new Func<string[], string>(this.Command_Slap));
+			this.RegisterCommand(new Command("/TimeToDie", "Destroy the selected army."), new Func<string[], string>(this.Command_TimeToDie));
+			this.RegisterCommand(new Command("/TransferResources", "Orders the transfer of a specific amount of resources."), new Func<string[], string>(this.Command_TransferResources));
+			this.RegisterCommand(new Command("/WinterIsComing", "Change season to winter."), new Func<string[], string>(this.Command_WinterIsComming));
+			this.RegisterCommand(new Command("/WhatIsYoursIsMine", "Toggle Catspaw action on minor/naval armies."), new Func<string[], string>(this.Command_WhatIsYoursIsMine));
+			this.RegisterCommand(new Command("/SetWindPreferences", "Set the direction and strength of the wind."), new Func<string[], string>(this.Command_SetWindPreferences));
+			this.RegisterCommand(new Command("/SeasonEffect", "Handle season effects."), new Func<string[], string>(this.Command_SeasonEffect));
+			this.RegisterCommand(new Command("/Orb", "Give some data concerning orbs."), new Func<string[], string>(this.Command_Orb));
+			this.RegisterCommand(new Command("/WeatherControl", "Activate the weather control using a given preset."), new Func<string[], string>(this.Command_WeatherControl));
+			this.RegisterCommand(new Command("/BringTheHeat", "Change season to Heat Wave."), new Func<string[], string>(this.Command_BringTheHeat));
+			this.RegisterCommand(new Command("/Visions", "Generate season mirages."), new Func<string[], string>(this.Command_Visions));
+			this.RegisterCommand(new Command("/TameKaiju", "Tames Kaiju on Army region."), new Func<string[], string>(this.Command_TameKaiju));
+			this.RegisterCommand(new Command("/UntameKaiju", "Utames Kaiju on Army region."), new Func<string[], string>(this.Command_UntameKaiju));
+			this.RegisterCommand(new Command("/RelocateKaiju", "Triggers relocation of all kaiju in the world."), new Func<string[], string>(this.Command_RelocateKaijus));
+			this.RegisterCommand(new Command("/KaijuIChooseYou", "Convert selected Kaiju Garrison to Kaiju Army."), new Func<string[], string>(this.Command_KaijuIChooseYou));
+			this.RegisterCommand(new Command("/KaijuComeBack", "Come Back Kaiju Army to Kaiju Garrison."), new Func<string[], string>(this.Command_KaijuComeBack));
+			this.RegisterCommand(new Command("/SpawnKaiju", "Summoning the beast!!"), new Func<string[], string>(this.Command_SpawnKaiju));
+			this.RegisterCommand(new Command("/AIDebugMode", "Active the AI debug mode."), new Func<string[], string>(this.Command_AIDebugMode));
+			this.RegisterCommand(new Command("/SimulationDebugMode", "Active the Simulation debug mode."), new Func<string[], string>(this.Command_SimulationDebugMode));
 			base.RegisterAliasForCommand("/ShowMeTheMoney", "/TransferMoney");
 			base.RegisterAliasForCommand("/TransferResources", "/Transfer");
 			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 			{
-				base.RegisterCommand(new Command("/UnitBodyInspector", "Activate the remapping tool."), new Func<string[], string>(this.CommandManager_UnitBodyInspector));
+				this.RegisterCommand(new Command("/UnitBodyInspector", "Activate the remapping tool."), new Func<string[], string>(this.CommandManager_UnitBodyInspector));
 				base.RegisterAliasForCommand("/UnitBodyInspector", "/ShowMeYourBody");
 			}
 		}
 		if (Amplitude.Unity.Framework.Application.Version.Accessibility <= Accessibility.ProtectedInternal)
 		{
-			base.RegisterCommand(new Command("/CutTheRope", "Disconnect the game client."), new Func<string[], string>(this.Command_DisconnectClient));
-			base.RegisterCommand(new Command("/Time", "Show the game time."), new Func<string[], string>(this.Command_GameTime));
-			base.RegisterCommand(new Command("/WorldViewStatistics", "Display the world view statistics."), new Func<string[], string>(this.Command_WorldViewStatistics));
-			base.RegisterCommand(new Command("/GetLobbyData", "Gets a lobby data value."), new Func<string[], string>(this.Command_GetLobbyData));
+			this.RegisterCommand(new Command("/CutTheRope", "Disconnect the game client."), new Func<string[], string>(this.Command_DisconnectClient));
+			this.RegisterCommand(new Command("/Time", "Show the game time."), new Func<string[], string>(this.Command_GameTime));
+			this.RegisterCommand(new Command("/WorldViewStatistics", "Display the world view statistics."), new Func<string[], string>(this.Command_WorldViewStatistics));
+			this.RegisterCommand(new Command("/GetLobbyData", "Gets a lobby data value."), new Func<string[], string>(this.Command_GetLobbyData));
 			base.RegisterAliasForCommand("/CutTheRope", "/Disc");
 		}
 		if (Amplitude.Unity.Framework.Application.Version.Accessibility <= Accessibility.Internal)
 		{
-			base.RegisterCommand(new Command("/Dump", "Dumps the game content."), new Func<string[], string>(this.Command_Dump));
-			base.RegisterCommand(new Command("/ListPlayers", "List the players."), new Func<string[], string>(this.Command_ListPlayers));
-			base.RegisterCommand(new Command("/ToggleVisibility", "Toggle visibility of render element."), new Func<string[], string>(this.Command_ToggleVisibility));
-			base.RegisterCommand(new Command("/LoadDynamicBitmaps", "Loads all dynamic available bitmaps."), new Func<string[], string>(this.Command_LoadDynamicBitmaps));
-			base.RegisterCommand(new Command("/EpicMusicTime", "Orders the lauch of a faction music."), new Func<string[], string>(this.Command_EpicMusicTime));
-			base.RegisterCommand(new Command("/EndlessDay", "Toggles the endless day status."), new Func<string[], string>(this.Command_ToggleEndlessDay));
+			this.RegisterCommand(new Command("/Dump", "Dumps the game content."), new Func<string[], string>(this.Command_Dump));
+			this.RegisterCommand(new Command("/ListPlayers", "List the players."), new Func<string[], string>(this.Command_ListPlayers));
+			this.RegisterCommand(new Command("/ToggleVisibility", "Toggle visibility of render element."), new Func<string[], string>(this.Command_ToggleVisibility));
+			this.RegisterCommand(new Command("/LoadDynamicBitmaps", "Loads all dynamic available bitmaps."), new Func<string[], string>(this.Command_LoadDynamicBitmaps));
+			this.RegisterCommand(new Command("/EpicMusicTime", "Orders the lauch of a faction music."), new Func<string[], string>(this.Command_EpicMusicTime));
+			this.RegisterCommand(new Command("/EndlessDay", "Toggles the endless day status."), new Func<string[], string>(this.Command_ToggleEndlessDay));
 			base.RegisterAliasForCommand("/ListPlayers", "/lp");
-			base.RegisterCommand(new Command("/AutoTurn", "Plays some number of turns automatically."), new Func<string[], string>(this.Command_AutoTurn));
-			base.RegisterCommand(new Command("/GCCollect", "Forces a full garbage collection to free some memory."), new Func<string[], string>(this.CommandManager_GCCollect));
-			base.RegisterCommand(new Command("/UnloadUnusedAssets", "Unloads all unused assets in Unity."), new Func<string[], string>(this.CommandManager_UnloadUnusedAssets));
+			this.RegisterCommand(new Command("/AutoTurn", "Plays some number of turns automatically."), new Func<string[], string>(this.Command_AutoTurn));
+			this.RegisterCommand(new Command("/GCCollect", "Forces a full garbage collection to free some memory."), new Func<string[], string>(this.CommandManager_GCCollect));
+			this.RegisterCommand(new Command("/UnloadUnusedAssets", "Unloads all unused assets in Unity."), new Func<string[], string>(this.CommandManager_UnloadUnusedAssets));
 		}
 		yield break;
 	}
@@ -224,13 +228,13 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 
 	private IEnumerator Command_AutoTurnAsync(int numberOfTurns = 10, double delay = 10.0)
 	{
-		ISessionService service = Services.GetService<ISessionService>();
-		if (service == null || service.Session == null)
+		ISessionService sessionService = Services.GetService<ISessionService>();
+		if (sessionService == null || sessionService.Session == null)
 		{
 			Diagnostics.LogError("Cannot find the running session.");
 			yield break;
 		}
-		global::Session session = service.Session as global::Session;
+		global::Session session = sessionService.Session as global::Session;
 		if (session == null)
 		{
 			Diagnostics.LogError("Invalid session.");
@@ -250,13 +254,13 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		}
 		MajorEmpire empire = session.GameServer.Game.Empires[0] as MajorEmpire;
 		Diagnostics.Assert(empire != null);
-		AIPlayer_MajorEmpire aiplayer_MajorEmpire;
-		if (!gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(empire, out aiplayer_MajorEmpire))
+		AIPlayer_MajorEmpire player;
+		if (!gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(empire, out player))
 		{
 			Diagnostics.LogError("Can't get the AI player state.");
 			yield break;
 		}
-		AIPlayer.PlayerState backupPlayerState = aiplayer_MajorEmpire.AIState;
+		AIPlayer.PlayerState backupPlayerState = player.AIState;
 		gameServer.AIScheduler.ChangeMajorEmpireAIState(empire, AIPlayer.PlayerState.EmpireControlledByAI);
 		StaticString keyLobbyDataEmpire = string.Format("Empire{0}", empire.Index);
 		string lobbyDataEmpire0 = session.GetLobbyData<string>(keyLobbyDataEmpire, null);
@@ -265,7 +269,7 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		DateTime timestamp = DateTime.Now;
 		Diagnostics.AssertionFailed += this.Diagnostics_AssertionFailed;
 		Diagnostics.MessageLogged += this.Diagnostics_MessageLogged;
-		while (counter <= numberOfTurns)
+		while (counter <= numberOfTurns && !this.needToStop)
 		{
 			yield return null;
 			if (endTurnControl.LastGameClientState is GameClientState_Turn_Main)
@@ -282,8 +286,7 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			}
 			if (endTurnControl.EndTurn())
 			{
-				int num = counter;
-				counter = num + 1;
+				counter++;
 				timestamp = DateTime.MaxValue;
 			}
 		}
@@ -811,6 +814,54 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		return "You need to select an army or a city with an hero for this command to work.";
 	}
 
+	public string Command_KaijuComeBack(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		ICursorService service3 = Services.GetService<ICursorService>();
+		if (service3 != null && service3.CurrentCursor is ArmyWorldCursor)
+		{
+			ArmyWorldCursor armyWorldCursor = service3.CurrentCursor as ArmyWorldCursor;
+			Army army = armyWorldCursor.Army;
+			if (army != null && army is KaijuArmy)
+			{
+				KaijuArmy kaijuArmy = army as KaijuArmy;
+				Kaiju kaiju = kaijuArmy.Kaiju;
+				OrderKaijuChangeMode order = new OrderKaijuChangeMode(kaiju, true, false, false);
+				service2.ActivePlayerController.PostOrder(order);
+				return "The beast now rest again!";
+			}
+		}
+		return "You need to select a world Kaiju Army for this command to work.";
+	}
+
+	public string Command_KaijuIChooseYou(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		ICursorService service3 = Services.GetService<ICursorService>();
+		if (service3 != null && service3.CurrentCursor is KaijuWorldCursor)
+		{
+			KaijuWorldCursor kaijuWorldCursor = service3.CurrentCursor as KaijuWorldCursor;
+			Kaiju kaiju = kaijuWorldCursor.Kaiju;
+			if (kaiju != null)
+			{
+				if (service != null)
+				{
+					IWorldPositionningService service4 = service.Game.Services.GetService<IWorldPositionningService>();
+					if (service4 != null)
+					{
+						OrderKaijuChangeMode order = new OrderKaijuChangeMode(kaiju, false, true, false);
+						service2.ActivePlayerController.PostOrder(order);
+						return "The beast now joins the battle!";
+					}
+				}
+				return "Game service could not be found";
+			}
+		}
+		return "You need to select a Kaiju Garrison for this command to work.";
+	}
+
 	private string Command_KnowledgeIsPower(string[] commandLineArgs)
 	{
 		IGameService service = Services.GetService<IGameService>();
@@ -962,9 +1013,9 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			string text2 = text;
 			if (text2 != null)
 			{
-				if (global::CommandManager.<>f__switch$map5 == null)
+				if (global::CommandManager.<>f__switch$map6 == null)
 				{
-					global::CommandManager.<>f__switch$map5 = new Dictionary<string, int>(1)
+					global::CommandManager.<>f__switch$map6 = new Dictionary<string, int>(1)
 					{
 						{
 							"count",
@@ -973,7 +1024,7 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 					};
 				}
 				int num;
-				if (global::CommandManager.<>f__switch$map5.TryGetValue(text2, out num))
+				if (global::CommandManager.<>f__switch$map6.TryGetValue(text2, out num))
 				{
 					if (num == 0)
 					{
@@ -1037,6 +1088,29 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 	{
 		Amplitude.Unity.Framework.Application.Quit();
 		return string.Empty;
+	}
+
+	public string Command_RelocateKaijus(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		if (service == null || service.Game == null)
+		{
+			return string.Empty;
+		}
+		global::Game game = service.Game as global::Game;
+		if (game == null)
+		{
+			return string.Empty;
+		}
+		for (int i = 0; i < game.Empires.Length; i++)
+		{
+			if (game.Empires[i] is KaijuEmpire)
+			{
+				KaijuEmpire kaijuEmpire = game.Empires[i] as KaijuEmpire;
+				kaijuEmpire.GetAgency<KaijuCouncil>().TryRelocateKaijuOrResetETA();
+			}
+		}
+		return "The giants have moved";
 	}
 
 	private string Command_RequestGameSave(string[] commandLineArgs)
@@ -1388,6 +1462,34 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 				return "Your city's units have been poisoned...";
 			}
 		}
+		else if (service != null && service.CurrentCursor is GarrisonWorldCursor)
+		{
+			GarrisonWorldCursor garrisonWorldCursor = service.CurrentCursor as GarrisonWorldCursor;
+			if (garrisonWorldCursor.Garrison != null && garrisonWorldCursor.Garrison.Units != null)
+			{
+				float damage3 = 0f;
+				if (commandLineArgs.Length > 1)
+				{
+					float.TryParse(commandLineArgs[1], NumberStyles.Any, CultureInfo.InvariantCulture, out damage3);
+				}
+				this.WoundUnits(garrisonWorldCursor.Garrison.Units, damage3);
+				return "Your Garrison's units are now bleeding...";
+			}
+		}
+		else if (service != null && service.CurrentCursor is KaijuWorldCursor)
+		{
+			KaijuWorldCursor kaijuWorldCursor = service.CurrentCursor as KaijuWorldCursor;
+			if (kaijuWorldCursor.Kaiju != null && kaijuWorldCursor.Kaiju.GetActiveTroops() != null)
+			{
+				float damage4 = 0f;
+				if (commandLineArgs.Length > 1)
+				{
+					float.TryParse(commandLineArgs[1], NumberStyles.Any, CultureInfo.InvariantCulture, out damage4);
+				}
+				this.WoundUnits(kaijuWorldCursor.Kaiju.GetActiveTroops().Units, damage4);
+				return "Your Kaiju's units are now bleeding...";
+			}
+		}
 		return "You need to select an army or a city for this command to work.";
 	}
 
@@ -1416,6 +1518,79 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		}
 	}
 
+	public string Command_SpawnKaiju(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		if (service == null || service.Game == null)
+		{
+			return string.Empty;
+		}
+		global::Game game = service.Game as global::Game;
+		if (game == null)
+		{
+			return string.Empty;
+		}
+		IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		KaijuEmpire[] array = Array.ConvertAll<global::Empire, KaijuEmpire>(Array.FindAll<global::Empire>(game.Empires, (global::Empire match) => match is KaijuEmpire), (global::Empire empire) => empire as KaijuEmpire);
+		int num = -1;
+		float num2 = float.MaxValue;
+		for (int i = 0; i < array.Length; i++)
+		{
+			KaijuCouncil agency = array[i].GetAgency<KaijuCouncil>();
+			if (!agency.KaijuEmpire.HasSpawnedAnyKaiju)
+			{
+				float industryNeededToSpawn = agency.GetIndustryNeededToSpawn();
+				if (industryNeededToSpawn < num2)
+				{
+					num2 = industryNeededToSpawn;
+					num = i;
+				}
+			}
+		}
+		if (num != -1)
+		{
+			OrderSpawnKaiju order = new OrderSpawnKaiju(array[num].Index);
+			service2.ActivePlayerController.PostOrder(order);
+			return "A Kaiju has spawned";
+		}
+		return "No more Kaijus to spawn";
+	}
+
+	private string Command_TameKaiju(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		Diagnostics.Assert(service2 != null);
+		ICursorService service3 = Services.GetService<ICursorService>();
+		Diagnostics.Assert(service3 != null);
+		if (service3 != null && service3.CurrentCursor is KaijuWorldCursor)
+		{
+			KaijuWorldCursor kaijuWorldCursor = service3.CurrentCursor as KaijuWorldCursor;
+			Kaiju kaiju = kaijuWorldCursor.Kaiju;
+			if (kaiju != null && !kaiju.IsTamed())
+			{
+				global::Empire empire = service2.ActivePlayerController.Empire as global::Empire;
+				OrderTameKaiju order = new OrderTameKaiju(empire.Index, kaiju, null);
+				service2.ActivePlayerController.PostOrder(order);
+				return "The beast now belongs to you.";
+			}
+		}
+		else if (service3 != null && service3.CurrentCursor is ArmyWorldCursor)
+		{
+			ArmyWorldCursor armyWorldCursor = service3.CurrentCursor as ArmyWorldCursor;
+			KaijuArmy kaijuArmy = armyWorldCursor.Army as KaijuArmy;
+			if (kaijuArmy != null && kaijuArmy.Kaiju != null)
+			{
+				global::Empire empire2 = service2.ActivePlayerController.Empire as global::Empire;
+				OrderTameKaiju order2 = new OrderTameKaiju(empire2.Index, kaijuArmy.Kaiju, null);
+				service2.ActivePlayerController.PostOrder(order2);
+				return "The beast now belongs to you.";
+			}
+		}
+		return "You need to select a Kaiju for this command to work.";
+	}
+
 	private string Command_TimeToDie(string[] commandLineArgs)
 	{
 		ICursorService service = Services.GetService<ICursorService>();
@@ -1427,7 +1602,7 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 				DepartmentOfDefense agency = armyWorldCursor.Army.Empire.GetAgency<DepartmentOfDefense>();
 				if (agency != null)
 				{
-					agency.RemoveArmy(armyWorldCursor.Army);
+					agency.RemoveArmy(armyWorldCursor.Army, true);
 					return "Veni, vidi, not vici AT ALL";
 				}
 				return "Hm, no Department of Defense associated with this army... That shouldn't happen.";
@@ -1446,9 +1621,9 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			text2 = text;
 			if (text2 != null)
 			{
-				if (global::CommandManager.<>f__switch$map7 == null)
+				if (global::CommandManager.<>f__switch$map8 == null)
 				{
-					global::CommandManager.<>f__switch$map7 = new Dictionary<string, int>(3)
+					global::CommandManager.<>f__switch$map8 = new Dictionary<string, int>(3)
 					{
 						{
 							"on",
@@ -1465,7 +1640,7 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 					};
 				}
 				int num;
-				if (global::CommandManager.<>f__switch$map7.TryGetValue(text2, out num))
+				if (global::CommandManager.<>f__switch$map8.TryGetValue(text2, out num))
 				{
 					if (num != 0)
 					{
@@ -1484,9 +1659,9 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		text2 = DownloadableContent8.EndlessDay.ProtectedOverride;
 		if (text2 != null)
 		{
-			if (global::CommandManager.<>f__switch$map8 == null)
+			if (global::CommandManager.<>f__switch$map9 == null)
 			{
-				global::CommandManager.<>f__switch$map8 = new Dictionary<string, int>(2)
+				global::CommandManager.<>f__switch$map9 = new Dictionary<string, int>(2)
 				{
 					{
 						"on",
@@ -1499,7 +1674,7 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 				};
 			}
 			int num;
-			if (global::CommandManager.<>f__switch$map8.TryGetValue(text2, out num))
+			if (global::CommandManager.<>f__switch$map9.TryGetValue(text2, out num))
 			{
 				if (num == 0)
 				{
@@ -1620,6 +1795,64 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 	{
 		yield return Resources.UnloadUnusedAssets();
 		yield break;
+	}
+
+	private string Command_UntameKaiju(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		ICursorService service3 = Services.GetService<ICursorService>();
+		if (service3 != null && service3.CurrentCursor is KaijuWorldCursor)
+		{
+			KaijuWorldCursor kaijuWorldCursor = service3.CurrentCursor as KaijuWorldCursor;
+			Kaiju kaiju = kaijuWorldCursor.Kaiju;
+			if (kaiju != null)
+			{
+				if (kaiju.IsTamed() && kaiju.Empire is MajorEmpire)
+				{
+					if (service != null)
+					{
+						IWorldPositionningService service4 = service.Game.Services.GetService<IWorldPositionningService>();
+						if (service4 != null && kaiju.KaijuGarrison != null && kaiju.KaijuGarrison.Owner != null)
+						{
+							MajorEmpire owner = kaiju.KaijuGarrison.Owner;
+							OrderUntameKaiju order = new OrderUntameKaiju(kaiju, true);
+							service2.ActivePlayerController.PostOrder(order);
+							return "The beast now returns to wild!";
+						}
+					}
+					return "Game service could not be found";
+				}
+				return "Kaiju Garrison must be Tamed!.";
+			}
+		}
+		else if (service3 != null && service3.CurrentCursor is ArmyWorldCursor)
+		{
+			ArmyWorldCursor armyWorldCursor = service3.CurrentCursor as ArmyWorldCursor;
+			KaijuArmy kaijuArmy = armyWorldCursor.Army as KaijuArmy;
+			if (kaijuArmy != null && kaijuArmy.Kaiju != null)
+			{
+				if (kaijuArmy.Kaiju.IsTamed() && kaijuArmy != null && kaijuArmy.Empire is MajorEmpire)
+				{
+					if (service != null)
+					{
+						IWorldPositionningService service5 = service.Game.Services.GetService<IWorldPositionningService>();
+						if (service5 != null && kaijuArmy != null && kaijuArmy.Owner != null)
+						{
+							MajorEmpire owner2 = kaijuArmy.Owner;
+							Kaiju kaiju2 = kaijuArmy.Kaiju;
+							OrderUntameKaiju order2 = new OrderUntameKaiju(kaiju2, true);
+							service2.ActivePlayerController.PostOrder(order2);
+							return "The beast now returns to wild!";
+						}
+					}
+					return "Game service could not be found";
+				}
+				return "Kaiju Army must be Tamed!.";
+			}
+		}
+		return "You need to select a Kaiju for this command to work.";
 	}
 
 	private string Command_Visions(string[] commandLineArgs)
@@ -1798,33 +2031,6 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			}
 		}
 		return text2;
-	}
-
-	private string Command_ShowMeTheStockpiles(string[] commandLineArgs)
-	{
-		IGameService service = Services.GetService<IGameService>();
-		if (service != null && service.Game != null)
-		{
-			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-			if (service2 != null && service2.ActivePlayerController != null)
-			{
-				int num = 10;
-				if (commandLineArgs.Length > 1)
-				{
-					int.TryParse(commandLineArgs[1], out num);
-				}
-				for (int i = 0; i < num; i++)
-				{
-					OrderBuyoutAndActivateBooster order = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, "BoosterIndustry", 0UL, false);
-					service2.ActivePlayerController.PostOrder(order);
-					OrderBuyoutAndActivateBooster order2 = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, "BoosterFood", 0UL, false);
-					service2.ActivePlayerController.PostOrder(order2);
-					OrderBuyoutAndActivateBooster order3 = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, "BoosterScience", 0UL, false);
-					service2.ActivePlayerController.PostOrder(order3);
-				}
-			}
-		}
-		return string.Empty;
 	}
 
 	private const GameDisconnectionReason Flag = GameDisconnectionReason._Debug;

@@ -20,83 +20,90 @@ using Amplitude.Unity.Steam;
 using ICSharpCode.SharpZipLib.BZip2;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderSendAIAttitudeFeedback), "SendAIAttitudeFeedback")]
-[OrderProcessor(typeof(OrderChangeUnitDeployment), "ChangeUnitDeployment")]
-[OrderProcessor(typeof(OrderSelectAffinityStrategicResource), "SelectAffinityStrategicResource")]
-[OrderProcessor(typeof(OrderRunTerraformationForDevice), "RunTerraformationForDevice")]
-[OrderProcessor(typeof(OrderResetPointOfInterestInteractionBits), "ResetPointOfInterestInteractionBits")]
-[OrderProcessor(typeof(OrderChangeDeployment), "ChangeDeployment")]
-[OrderProcessor(typeof(OrderChangeUnitStrategy), "ChangeUnitStrategy")]
-[OrderProcessor(typeof(OrderReportEncounter), "ReportEncounter")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnits), "ReplicateMarketplaceUnits")]
-[OrderProcessor(typeof(OrderChangeContenderState), "ChangeContenderState")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnitProfile), "ReplicateMarketplaceUnitProfile")]
-[OrderProcessor(typeof(OrderLockInteraction), "LockInteraction")]
-[OrderProcessor(typeof(OrderChangeStrategy), "ChangeStrategy")]
-[OrderProcessor(typeof(OrderChangeSeason), "ChangeSeason")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnitDesign), "ReplicateMarketplaceUnitDesign")]
-[OrderProcessor(typeof(OrderJoinEncounter), "JoinEncounter")]
-[OrderProcessor(typeof(OrderInteractWith), "InteractWith")]
-[OrderProcessor(typeof(OrderIncludeContenderInEncounter), "IncludeContenderInEncounter")]
-[OrderProcessor(typeof(OrderSetDeploymentFinished), "SetDeploymentFinished")]
-[OrderProcessor(typeof(OrderChangeContenderReinforcementRanking), "ChangeContenderReinforcementRanking")]
-[OrderProcessor(typeof(OrderChangeContenderEncounterOption), "ChangeContenderEncounterOption")]
-[OrderProcessor(typeof(OrderRemoveMapBoosts), "RemoveMapBoosts")]
-[OrderProcessor(typeof(OrderVoteForSeasonEffect), "VoteForSeasonEffect")]
-[OrderProcessor(typeof(OrderNotifyEmpireDiscovery), "NotifyEmpireDiscovery")]
-[OrderProcessor(typeof(OrderWinterImmunityBid), "WinterImmunityBid")]
-[OrderProcessor(typeof(OrderChangeDiplomaticRelationState), "ChangeDiplomaticRelationState")]
-[OrderProcessor(typeof(OrderChangeDiplomaticContractTermsCollection), "ChangeDiplomaticContractTermsCollection")]
-[OrderProcessor(typeof(OrderGetAIDiplomaticContractEvaluation), "GetAIDiplomaticContractEvaluation")]
-[OrderProcessor(typeof(OrderGetAIAttitude), "GetAIAttitude")]
-[OrderProcessor(typeof(OrderGenerateNewWeather), "GenerateNewWeather")]
-[OrderProcessor(typeof(OrderEndEncounter), "EndEncounter")]
-[OrderProcessor(typeof(OrderSetEncounterDeployementEndTime), "SetEncounterDeployementEndTime")]
-[OrderProcessor(typeof(OrderRefreshMarketplace), "RefreshMarketplace")]
-[OrderProcessor(typeof(OrderChangeUnitTargeting), "ChangeUnitTargeting")]
-[OrderProcessor(typeof(OrderEncounterTargetingPhaseUpdate), "EncounterTargetingPhaseUpdate")]
-[OrderProcessor(typeof(OrderEncounterRoundUpdate), "EncounterRoundUpdate")]
-[OrderProcessor(typeof(OrderBuyoutSpellAndPlayBattleAction), "BuyoutSpellAndPlayBattleAction")]
-[OrderProcessor(typeof(OrderReadyForNextRound), "ReadyForNextRound")]
-[OrderProcessor(typeof(OrderReadyForNextPhase), "ReadyForNextPhase")]
-[OrderProcessor(typeof(OrderEncounterDeploymentStart), "EncounterDeploymentStart")]
-[OrderProcessor(typeof(OrderReadyForDeployment), "ReadyForDeployment")]
-[OrderProcessor(typeof(OrderGetAIDiplomaticTermEvaluation), "GetAIDiplomaticTermEvaluation")]
-[OrderProcessor(typeof(OrderSwapUnitDeployment), "SwapUnitDeployment")]
-[OrderProcessor(typeof(OrderChangeDiplomaticContractState), "ChangeDiplomaticContractState")]
-[OrderProcessor(typeof(OrderUpdateWinterImmunityBids), "UpdateWinterImmunityBids")]
-[OrderProcessor(typeof(OrderToggleEndlessDay), "ToggleEndlessDay")]
-[OrderProcessor(typeof(OrderBuyoutAndPlaceTerraformationDevice), "BuyoutAndPlaceTerraformationDevice")]
-[OrderProcessor(typeof(OrderBuyoutAndActivatePillarThroughArmy), "BuyoutAndActivatePillarThroughArmy")]
+[OrderProcessor(typeof(OrderChangeAdministrationSpeciality), "ChangeAdministrationSpeciality")]
 [OrderProcessor(typeof(OrderReadyForBattle), "ReadyForBattle")]
-[OrderProcessor(typeof(OrderSetMapBoostSpawn), "SetMapBoostSpawn")]
+[OrderProcessor(typeof(OrderReadyForDeployment), "ReadyForDeployment")]
+[OrderProcessor(typeof(OrderReadyForNextPhase), "ReadyForNextPhase")]
+[OrderProcessor(typeof(OrderReadyForNextRound), "ReadyForNextRound")]
+[OrderProcessor(typeof(OrderChangeContenderEncounterOption), "ChangeContenderEncounterOption")]
+[OrderProcessor(typeof(OrderChangeContenderReinforcementRanking), "ChangeContenderReinforcementRanking")]
+[OrderProcessor(typeof(OrderBeginEncounter), "BeginEncounter")]
+[OrderProcessor(typeof(OrderAnnounceFirstKaiju), "AnnounceKaiju")]
+[OrderProcessor(typeof(OrderAllocateEncounterDroppableTo), "AllocateEncounterDroppableTo")]
+[OrderProcessor(typeof(OrderActivateWeatherControl), "ActivateWeatherControl")]
+[OrderProcessor(typeof(OrderChangeContenderState), "ChangeContenderState")]
+[OrderProcessor(typeof(OrderChangeDeployment), "ChangeDeployment")]
+[OrderProcessor(typeof(OrderChangeDiplomaticContractState), "ChangeDiplomaticContractState")]
+[OrderProcessor(typeof(OrderChangeDiplomaticContractTermsCollection), "ChangeDiplomaticContractTermsCollection")]
+[OrderProcessor(typeof(OrderChangeDiplomaticRelationState), "ChangeDiplomaticRelationState")]
+[OrderProcessor(typeof(OrderChangeReinforcementPriority), "ChangeReinforcementPriority")]
+[OrderProcessor(typeof(OrderChangeSeason), "ChangeSeason")]
+[OrderProcessor(typeof(OrderChangeUnitDeployment), "ChangeUnitDeployment")]
+[OrderProcessor(typeof(OrderCancelKaijuResearch), "CancelKaijuResearch")]
+[OrderProcessor(typeof(OrderChangeUnitStrategy), "ChangeUnitStrategy")]
+[OrderProcessor(typeof(OrderChangeUnitTargeting), "ChangeUnitTargeting")]
+[OrderProcessor(typeof(OrderRazePointOfInterest), "RazePointOfInterest")]
 [OrderProcessor(typeof(OrderChangeUnitsTargetingAndStrategy), "OrderChangeUnitsStrategies")]
 [OrderProcessor(typeof(OrderCityEncounterEnd), "CityEncounterEnd")]
-[OrderProcessor(typeof(OrderNotifyEncounter), "NotifyEncounter")]
-[OrderProcessor(typeof(OrderOrbsChange), "OrbsChange")]
-[OrderProcessor(typeof(OrderRemoveAffinityStrategicResource), "RemoveAffinityStrategicResource")]
 [OrderProcessor(typeof(OrderClaimDiplomacyPoints), "ClaimDiplomacyPoints")]
 [OrderProcessor(typeof(OrderCompleteQuest), "CompleteQuest")]
-[OrderProcessor(typeof(OrderChangeAdministrationSpeciality), "ChangeAdministrationSpeciality")]
-[OrderProcessor(typeof(OrderSwitchContendersReinforcementRanking), "SwitchContendersReinforcementRanking")]
+[OrderProcessor(typeof(OrderBuyoutSpellAndPlayBattleAction), "BuyoutSpellAndPlayBattleAction")]
+[OrderProcessor(typeof(OrderRegisterRegionalEffects), "RegisterRegionalEffects")]
+[OrderProcessor(typeof(OrderRelocateKaiju), "RelocateKaiju")]
+[OrderProcessor(typeof(OrderRemoveAffinityStrategicResource), "RemoveAffinityStrategicResource")]
+[OrderProcessor(typeof(OrderQueueKaijuResearch), "QueueKaijuResearch")]
+[OrderProcessor(typeof(OrderBuyoutAndPlaceTerraformationDevice), "BuyoutAndPlaceTerraformationDevice")]
+[OrderProcessor(typeof(OrderRemoveMapBoosts), "RemoveMapBoosts")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnitDesign), "ReplicateMarketplaceUnitDesign")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnitProfile), "ReplicateMarketplaceUnitProfile")]
+[OrderProcessor(typeof(OrderVoteForSeasonEffect), "VoteForSeasonEffect")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnits), "ReplicateMarketplaceUnits")]
+[OrderProcessor(typeof(OrderQuestWorldEffect), "QuestWorldEffect")]
+[OrderProcessor(typeof(OrderPlayBattleAction), "PlayBattleAction")]
+[OrderProcessor(typeof(OrderReportEncounter), "ReportEncounter")]
+[OrderProcessor(typeof(OrderResetPointOfInterestInteractionBits), "ResetPointOfInterestInteractionBits")]
+[OrderProcessor(typeof(OrderRunTerraformationForDevice), "RunTerraformationForDevice")]
+[OrderProcessor(typeof(OrderPacifyMinorFaction), "PacifyMinorFaction")]
+[OrderProcessor(typeof(OrderOrbsChange), "OrbsChange")]
+[OrderProcessor(typeof(OrderNotifyEncounter), "NotifyEncounter")]
+[OrderProcessor(typeof(OrderSelectAffinityStrategicResource), "SelectAffinityStrategicResource")]
+[OrderProcessor(typeof(OrderNotifyEmpireDiscovery), "NotifyEmpireDiscovery")]
+[OrderProcessor(typeof(OrderBuyoutAndActivatePillarThroughArmy), "BuyoutAndActivatePillarThroughArmy")]
+[OrderProcessor(typeof(OrderLockInteraction), "LockInteraction")]
+[OrderProcessor(typeof(OrderJoinEncounterAcknowledge), "JoinEncounterAcknowledge")]
 [OrderProcessor(typeof(OrderCreateDiplomaticContract), "CreateDiplomaticContract")]
 [OrderProcessor(typeof(OrderCreateEncounter), "CreateEncounter")]
 [OrderProcessor(typeof(OrderCreateCityAssaultEncounter), "CreateCityAssaultEncounter")]
-[OrderProcessor(typeof(OrderBuyoutAndActivatePillar), "BuyoutAndActivatePillar")]
-[OrderProcessor(typeof(OrderPlayBattleAction), "PlayBattleAction")]
-[OrderProcessor(typeof(OrderSetWindPreferences), "SetWindPreferences")]
-[OrderProcessor(typeof(OrderSpawnMapBoosts), "SpawnMapBoosts")]
-[OrderProcessor(typeof(OrderChangeReinforcementPriority), "ChangeReinforcementPriority")]
-[OrderProcessor(typeof(OrderRazePointOfInterest), "RazePointOfInterest")]
 [OrderProcessor(typeof(OrderDebugInfo), "DebugInfo")]
-[OrderProcessor(typeof(OrderBeginEncounter), "BeginEncounter")]
-[OrderProcessor(typeof(OrderAllocateEncounterDroppableTo), "AllocateEncounterDroppableTo")]
-[OrderProcessor(typeof(OrderPacifyMinorFaction), "PacifyMinorFaction")]
-[OrderProcessor(typeof(OrderQuestWorldEffect), "QuestWorldEffect")]
-[OrderProcessor(typeof(OrderSetOrbSpawn), "SetOrbSpawn")]
-[OrderProcessor(typeof(OrderJoinEncounterAcknowledge), "JoinEncounterAcknowledge")]
+[OrderProcessor(typeof(OrderJoinEncounter), "JoinEncounter")]
 [OrderProcessor(typeof(OrderDestroyEncounter), "DestroyEncounter")]
-[OrderProcessor(typeof(OrderActivateWeatherControl), "ActivateWeatherControl")]
+[OrderProcessor(typeof(OrderEncounterDeploymentStart), "EncounterDeploymentStart")]
+[OrderProcessor(typeof(OrderEncounterRoundUpdate), "EncounterRoundUpdate")]
+[OrderProcessor(typeof(OrderEncounterTargetingPhaseUpdate), "EncounterTargetingPhaseUpdate")]
+[OrderProcessor(typeof(OrderBuyoutAndActivatePillar), "BuyoutAndActivatePillar")]
+[OrderProcessor(typeof(OrderSendAIAttitudeFeedback), "SendAIAttitudeFeedback")]
+[OrderProcessor(typeof(OrderBuyOutKaijuTechnology), "BuyOutKaijuTechnology")]
+[OrderProcessor(typeof(OrderEndEncounter), "EndEncounter")]
+[OrderProcessor(typeof(OrderGenerateNewWeather), "GenerateNewWeather")]
+[OrderProcessor(typeof(OrderSetDeploymentFinished), "SetDeploymentFinished")]
+[OrderProcessor(typeof(OrderGetAIAttitude), "GetAIAttitude")]
+[OrderProcessor(typeof(OrderSetEncounterDeployementEndTime), "SetEncounterDeployementEndTime")]
+[OrderProcessor(typeof(OrderSetMapBoostSpawn), "SetMapBoostSpawn")]
+[OrderProcessor(typeof(OrderSetOrbSpawn), "SetOrbSpawn")]
+[OrderProcessor(typeof(OrderSetWindPreferences), "SetWindPreferences")]
+[OrderProcessor(typeof(OrderGetAIDiplomaticContractEvaluation), "GetAIDiplomaticContractEvaluation")]
+[OrderProcessor(typeof(OrderSpawnKaiju), "SpawnKaiju")]
+[OrderProcessor(typeof(OrderGetAIDiplomaticTermEvaluation), "GetAIDiplomaticTermEvaluation")]
+[OrderProcessor(typeof(OrderSpawnMapBoosts), "SpawnMapBoosts")]
+[OrderProcessor(typeof(OrderWinterImmunityBid), "WinterImmunityBid")]
+[OrderProcessor(typeof(OrderSwapUnitDeployment), "SwapUnitDeployment")]
+[OrderProcessor(typeof(OrderRefreshMarketplace), "RefreshMarketplace")]
+[OrderProcessor(typeof(OrderIncludeContenderInEncounter), "IncludeContenderInEncounter")]
+[OrderProcessor(typeof(OrderChangeStrategy), "ChangeStrategy")]
+[OrderProcessor(typeof(OrderSwitchContendersReinforcementRanking), "SwitchContendersReinforcementRanking")]
+[OrderProcessor(typeof(OrderToggleEndlessDay), "ToggleEndlessDay")]
+[OrderProcessor(typeof(OrderUpdateWinterImmunityBids), "UpdateWinterImmunityBids")]
+[OrderProcessor(typeof(OrderInteractWith), "InteractWith")]
 public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBattleEncounterRepositoryService, IEnumerable<BattleEncounter>, IRepositoryService<BattleEncounter>, IGameInterface, IGameServer
 {
 	public GameServer(global::Session session) : base(session)
@@ -570,8 +577,71 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 		return droplist != null;
 	}
 
+	private bool AnnounceKaijuPreprocessor(OrderAnnounceFirstKaiju order)
+	{
+		return true;
+	}
+
 	private bool BeginEncounterPreprocessor(OrderBeginEncounter order)
 	{
+		return true;
+	}
+
+	private bool BuyOutKaijuTechnologyPreprocessor(OrderBuyOutKaijuTechnology order)
+	{
+		if (order == null)
+		{
+			throw new ArgumentNullException("order");
+		}
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		IDatabase<DepartmentOfScience.ConstructibleElement> database = Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false);
+		Diagnostics.Assert(database != null);
+		IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
+		Diagnostics.Assert(service2 != null);
+		IKaijuTechsService service3 = service.Game.Services.GetService<IKaijuTechsService>();
+		Diagnostics.Assert(service3 != null);
+		global::Game game = service.Game as global::Game;
+		global::Empire empire = game.Empires[order.EmpireIndex];
+		if (empire == null)
+		{
+			return false;
+		}
+		if (order.TechnologyName == string.Empty)
+		{
+			return false;
+		}
+		DepartmentOfScience.ConstructibleElement constructibleElement;
+		if (!database.TryGetValue(order.TechnologyName, out constructibleElement))
+		{
+			return false;
+		}
+		DepartmentOfScience.ConstructibleElement.State technologyState = service3.GetTechnologyState(constructibleElement, empire);
+		if (technologyState == DepartmentOfScience.ConstructibleElement.State.Researched || technologyState == DepartmentOfScience.ConstructibleElement.State.NotAvailable)
+		{
+			Diagnostics.LogError("Order preprocessing failed because the technology {0} is not available. State = {1}", new object[]
+			{
+				order.TechnologyName,
+				technologyState.ToString()
+			});
+			return false;
+		}
+		DepartmentOfTheTreasury agency = empire.GetAgency<DepartmentOfTheTreasury>();
+		for (int i = 0; i < constructibleElement.Costs.Length; i++)
+		{
+			if (constructibleElement.Costs[i] != null)
+			{
+				float num = -constructibleElement.Costs[i].GetValue(empire.SimulationObject);
+				if (num != 0f)
+				{
+					if (!agency.IsTransferOfResourcePossible(game.Empires[order.EmpireIndex], constructibleElement.Costs[i].ResourceName, ref num))
+					{
+						Diagnostics.LogWarning("Order preprocessing failed because we don't have enough resources.");
+						return false;
+					}
+				}
+			}
+		}
 		return true;
 	}
 
@@ -780,7 +850,7 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 			string text = constructionCost.ResourceName;
 			if (!string.IsNullOrEmpty(text) && !text.Equals(DepartmentOfTheTreasury.Resources.ActionPoint))
 			{
-				float costForResource = value.GetCostForResource(text);
+				float costForResource = value.GetCostForResource(text, empire);
 				if (costForResource != 0f)
 				{
 					DepartmentOfTheTreasury agency = empire.GetAgency<DepartmentOfTheTreasury>();
@@ -872,6 +942,50 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 		}
 		order.ConstructionResourceStocks = constructionResourceStocks;
 		return battleEncounter.LaunchSpell(battleContender, spellDefinition, order.TargetPosition);
+	}
+
+	private bool CancelKaijuResearchPreprocessor(OrderCancelKaijuResearch order)
+	{
+		if (order == null)
+		{
+			throw new ArgumentNullException("order");
+		}
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
+		Diagnostics.Assert(service2 != null);
+		IKaijuTechsService service3 = service.Game.Services.GetService<IKaijuTechsService>();
+		Diagnostics.Assert(service3 != null);
+		global::Game game = service.Game as global::Game;
+		global::Empire empire = game.Empires[order.EmpireIndex];
+		if (empire == null)
+		{
+			return false;
+		}
+		Diagnostics.Assert(service2 != null);
+		IGameEntity gameEntity;
+		if (!service2.TryGetValue(order.ConstructionGameEntityGUID, out gameEntity))
+		{
+			Diagnostics.LogError("CancelKaijuResearchPreprocessor: Order preprocessing failed because the target game entity is not valid (GUID: {0}).", new object[]
+			{
+				order.ConstructionGameEntityGUID
+			});
+			return false;
+		}
+		Construction construction = gameEntity as Construction;
+		if (construction == null)
+		{
+			Diagnostics.LogError("CancelKaijuResearchPreprocessor: Order preprocessing failed because the target game entity is not a Construction.");
+			return false;
+		}
+		ConstructionQueue constructionQueueForEmpire = service3.GetConstructionQueueForEmpire(empire);
+		Diagnostics.Assert(constructionQueueForEmpire != null);
+		if (!constructionQueueForEmpire.Contains(construction))
+		{
+			Diagnostics.LogError("CancelKaijuResearchPreprocessor: Order preprocessing failed because the context construction queue does not contains the construction.");
+			return false;
+		}
+		return true;
 	}
 
 	private bool ChangeAdministrationSpecialityPreprocessor(OrderChangeAdministrationSpeciality order)
@@ -1001,7 +1115,7 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 			Diagnostics.LogError("ContractGUID is invalid.");
 			return false;
 		}
-		IDiplomaticContractRepositoryService service = base.Game.Services.GetService<IDiplomaticContractRepositoryService>();
+		IDiplomaticContractRepositoryService service = this.Game.Services.GetService<IDiplomaticContractRepositoryService>();
 		Diagnostics.Assert(service != null);
 		DiplomaticContract diplomaticContract;
 		if (!service.TryGetValue(order.ContractGUID, out diplomaticContract))
@@ -1037,24 +1151,14 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 					{
 						if (!(diplomaticCost.ResourceName != DepartmentOfTheTreasury.Resources.EmpirePoint))
 						{
-							float num5 = diplomaticCost.GetValueFor(diplomaticContract.EmpireWhichProposes, diplomaticTerm);
-							float factor;
-							if (diplomaticTerm is DiplomaticTermTechnologyExchange && num5 > 0f && DepartmentOfForeignAffairs.ProgressiveTechTradeCost(out factor))
-							{
-								num5 = this.AddProgressiveTechCost(diplomaticContract, diplomaticTerm, num5, factor);
-							}
-							num += num5;
-							float num6 = diplomaticCost.GetValueFor(diplomaticContract.EmpireWhichReceives, diplomaticTerm);
-							float factor2;
-							if (diplomaticTerm is DiplomaticTermTechnologyExchange && num6 > 0f && DepartmentOfForeignAffairs.ProgressiveTechTradeCost(out factor2))
-							{
-								num6 = this.AddProgressiveTechCost(diplomaticContract, diplomaticTerm, num6, factor2);
-							}
-							num2 += num6;
+							float valueFor = diplomaticCost.GetValueFor(diplomaticContract.EmpireWhichProposes, diplomaticTerm);
+							num += valueFor;
+							float valueFor2 = diplomaticCost.GetValueFor(diplomaticContract.EmpireWhichReceives, diplomaticTerm);
+							num2 += valueFor2;
 							if (diplomaticCost.CanBeConvertedToPeacePoint)
 							{
-								num3 += num5;
-								num4 += num6;
+								num3 += valueFor;
+								num4 += valueFor2;
 							}
 						}
 					}
@@ -1065,27 +1169,27 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 			Diagnostics.Assert(diplomaticContract.EmpireWhichProposes != null && diplomaticContract.EmpireWhichReceives != null);
 			DepartmentOfTheTreasury agency = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfTheTreasury>();
 			Diagnostics.Assert(agency != null);
-			float num7 = -num;
-			if (!agency.IsTransferOfResourcePossible(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, ref num7))
+			float num5 = -num;
+			if (!agency.IsTransferOfResourcePossible(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, ref num5))
 			{
 				Diagnostics.LogError("Can't change the status of the diplomatic contract {0} to {1} because the empire which proposes can't afford the cost of {2} empire points.", new object[]
 				{
 					diplomaticContract.GUID,
 					order.DiplomaticContractNewState,
-					num7
+					num5
 				});
 				return false;
 			}
-			DepartmentOfTheTreasury agency2 = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
-			Diagnostics.Assert(agency2 != null);
-			num7 = -num2;
-			if (!agency2.IsTransferOfResourcePossible(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, ref num7))
+			agency = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
+			Diagnostics.Assert(agency != null);
+			num5 = -num2;
+			if (!agency.IsTransferOfResourcePossible(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, ref num5))
 			{
 				Diagnostics.LogError("Can't change the status of the diplomatic contract {0} to {1} because the empire which receives can't afford the cost of {2} empire points.", new object[]
 				{
 					diplomaticContract.GUID,
 					order.DiplomaticContractNewState,
-					num7
+					num5
 				});
 				return false;
 			}
@@ -1125,17 +1229,9 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 				order.DiplomaticContractNewState = DiplomaticContractState.Refused;
 			}
 		}
-		if (order.DiplomaticContractNewState == DiplomaticContractState.Signed && diplomaticContract.IsTransitionPossible(DiplomaticContractState.Signed))
+		if (order.DiplomaticContractNewState == DiplomaticContractState.Negotiation)
 		{
-			Diagnostics.Log("ELCP: Contract signed between {0}/{1} and {2}: {3}", new object[]
-			{
-				diplomaticContract.EmpireWhichInitiated,
-				diplomaticContract.EmpireWhichProposes,
-				diplomaticContract.EmpireWhichReceives,
-				diplomaticContract.ToString()
-			});
 		}
-		DiplomaticContractState diplomaticContractNewState = order.DiplomaticContractNewState;
 		if (order.DiplomaticContractNewState == DiplomaticContractState.Refused || order.DiplomaticContractNewState == DiplomaticContractState.Ignored)
 		{
 			order.EmpireWhichProposesEmpirePointCost = -diplomaticContract.EmpireWhichProposesEmpirePointInvestment;
@@ -1547,7 +1643,7 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 					{
 						num = 1f;
 					}
-					order.EmpirePointsCost = armyAction.GetCostForResource(DepartmentOfTheTreasury.Resources.EmpirePoint) * num;
+					order.EmpirePointsCost = armyAction.GetCostForResource(DepartmentOfTheTreasury.Resources.EmpirePoint, empire) * num;
 				}
 			}
 			else
@@ -2241,76 +2337,76 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 
 	private bool JoinEncounterPreprocessor(OrderJoinEncounter order)
 	{
-		GameServer.<JoinEncounterPreprocessor>c__AnonStorey9C5 <JoinEncounterPreprocessor>c__AnonStorey9C = new GameServer.<JoinEncounterPreprocessor>c__AnonStorey9C5();
+		GameServer.<JoinEncounterPreprocessor>c__AnonStoreyA74 <JoinEncounterPreprocessor>c__AnonStoreyA = new GameServer.<JoinEncounterPreprocessor>c__AnonStoreyA74();
 		if (!order.EncounterGUID.IsValid)
 		{
 			return false;
 		}
-		<JoinEncounterPreprocessor>c__AnonStorey9C.battleEncounter = null;
-		if (!this.TryGetValue(order.EncounterGUID, out <JoinEncounterPreprocessor>c__AnonStorey9C.battleEncounter))
+		<JoinEncounterPreprocessor>c__AnonStoreyA.battleEncounter = null;
+		if (!this.TryGetValue(order.EncounterGUID, out <JoinEncounterPreprocessor>c__AnonStoreyA.battleEncounter))
 		{
 			return false;
 		}
-		<JoinEncounterPreprocessor>c__AnonStorey9C.battleEncounter.IncommingJoinContendersCount--;
+		<JoinEncounterPreprocessor>c__AnonStoreyA.battleEncounter.IncommingJoinContendersCount--;
 		IGameEntityRepositoryService service = this.Game.GetService<IGameEntityRepositoryService>();
 		Diagnostics.Assert(service != null);
 		IBattleEncounterRepositoryService service2 = base.GameService.Game.Services.GetService<IBattleEncounterRepositoryService>();
 		BattleContender battleContender = null;
 		for (int i = 0; i < order.ContenderInfos.Count; i++)
 		{
-			GameServer.<JoinEncounterPreprocessor>c__AnonStorey9C6 <JoinEncounterPreprocessor>c__AnonStorey9C2 = new GameServer.<JoinEncounterPreprocessor>c__AnonStorey9C6();
-			<JoinEncounterPreprocessor>c__AnonStorey9C2.<>f__ref$2501 = <JoinEncounterPreprocessor>c__AnonStorey9C;
-			<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender = order.ContenderInfos[i];
-			<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsTakingPartInBattle = true;
-			<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsValid = true;
-			if (!service.TryGetValue(<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.ContenderGUID, out <JoinEncounterPreprocessor>c__AnonStorey9C2.gameEntity))
+			GameServer.<JoinEncounterPreprocessor>c__AnonStoreyA75 <JoinEncounterPreprocessor>c__AnonStoreyA2 = new GameServer.<JoinEncounterPreprocessor>c__AnonStoreyA75();
+			<JoinEncounterPreprocessor>c__AnonStoreyA2.<>f__ref$2676 = <JoinEncounterPreprocessor>c__AnonStoreyA;
+			<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender = order.ContenderInfos[i];
+			<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsTakingPartInBattle = true;
+			<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsValid = true;
+			if (!service.TryGetValue(<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.ContenderGUID, out <JoinEncounterPreprocessor>c__AnonStoreyA2.gameEntity))
 			{
-				<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsValid = false;
+				<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsValid = false;
 			}
 			else
 			{
-				if (<JoinEncounterPreprocessor>c__AnonStorey9C2.gameEntity is Garrison)
+				if (<JoinEncounterPreprocessor>c__AnonStoreyA2.gameEntity is Garrison)
 				{
-					Garrison garrison = <JoinEncounterPreprocessor>c__AnonStorey9C2.gameEntity as Garrison;
+					Garrison garrison = <JoinEncounterPreprocessor>c__AnonStoreyA2.gameEntity as Garrison;
 					if (garrison.IsInEncounter)
 					{
-						<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsTakingPartInBattle = false;
+						<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsTakingPartInBattle = false;
 					}
 				}
-				bool flag = service2.Any((BattleEncounter encounter) => encounter.EncounterGUID != <JoinEncounterPreprocessor>c__AnonStorey9C2.<>f__ref$2501.battleEncounter.EncounterGUID && encounter.IsGarrisonInEncounter(<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.ContenderGUID));
+				bool flag = service2.Any((BattleEncounter encounter) => encounter.EncounterGUID != <JoinEncounterPreprocessor>c__AnonStoreyA2.<>f__ref$2676.battleEncounter.EncounterGUID && encounter.IsGarrisonInEncounter(<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.ContenderGUID));
 				if (flag)
 				{
-					<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsTakingPartInBattle = false;
+					<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsTakingPartInBattle = false;
 				}
-				Army army = <JoinEncounterPreprocessor>c__AnonStorey9C2.gameEntity as Army;
+				Army army = <JoinEncounterPreprocessor>c__AnonStoreyA2.gameEntity as Army;
 				if (army != null)
 				{
 					DepartmentOfTransportation agency = army.Empire.GetAgency<DepartmentOfTransportation>();
-					ArmyGoToInstruction armyGoToInstruction = agency.ArmiesWithPendingGoToInstructions.Find((ArmyGoToInstruction match) => match.ArmyGUID == <JoinEncounterPreprocessor>c__AnonStorey9C2.gameEntity.GUID);
+					ArmyGoToInstruction armyGoToInstruction = agency.ArmiesWithPendingGoToInstructions.Find((ArmyGoToInstruction match) => match.ArmyGUID == <JoinEncounterPreprocessor>c__AnonStoreyA2.gameEntity.GUID);
 					if (armyGoToInstruction != null && armyGoToInstruction.IsMoving)
 					{
 						armyGoToInstruction.Cancel(false);
 					}
 				}
-				City city = <JoinEncounterPreprocessor>c__AnonStorey9C2.gameEntity as City;
-				Camp camp = <JoinEncounterPreprocessor>c__AnonStorey9C2.gameEntity as Camp;
-				Village village = <JoinEncounterPreprocessor>c__AnonStorey9C2.gameEntity as Village;
-				<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsCity = (city != null);
-				<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsCamp = (camp != null);
-				<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsVillage = (village != null);
-				if (!<JoinEncounterPreprocessor>c__AnonStorey9C.battleEncounter.Join(<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.ContenderGUID, <JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsCity, <JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsCamp, <JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsVillage, <JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.Group, <JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsReinforcement, <JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.ReinforcementRanking, <JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsTakingPartInBattle, out battleContender))
+				City city = <JoinEncounterPreprocessor>c__AnonStoreyA2.gameEntity as City;
+				Camp camp = <JoinEncounterPreprocessor>c__AnonStoreyA2.gameEntity as Camp;
+				Village village = <JoinEncounterPreprocessor>c__AnonStoreyA2.gameEntity as Village;
+				<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsCity = (city != null);
+				<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsCamp = (camp != null);
+				<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsVillage = (village != null);
+				if (!<JoinEncounterPreprocessor>c__AnonStoreyA.battleEncounter.Join(<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.ContenderGUID, <JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsCity, <JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsCamp, <JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsVillage, <JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.Group, <JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsReinforcement, <JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.ReinforcementRanking, <JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsTakingPartInBattle, out battleContender))
 				{
-					<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsValid = false;
+					<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsValid = false;
 				}
 				else
 				{
-					<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.Deployment = battleContender.Deployment;
-					<JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender.IsReinforcement = !battleContender.IsMainContender;
-					GameServer.<JoinEncounterPreprocessor>c__AnonStorey9C6 <JoinEncounterPreprocessor>c__AnonStorey9C3 = <JoinEncounterPreprocessor>c__AnonStorey9C2;
-					<JoinEncounterPreprocessor>c__AnonStorey9C3.currentContender.IsTakingPartInBattle = (<JoinEncounterPreprocessor>c__AnonStorey9C3.currentContender.IsTakingPartInBattle & battleContender.IsTakingPartInBattle);
+					<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.Deployment = battleContender.Deployment;
+					<JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender.IsReinforcement = !battleContender.IsMainContender;
+					GameServer.<JoinEncounterPreprocessor>c__AnonStoreyA75 <JoinEncounterPreprocessor>c__AnonStoreyA3 = <JoinEncounterPreprocessor>c__AnonStoreyA2;
+					<JoinEncounterPreprocessor>c__AnonStoreyA3.currentContender.IsTakingPartInBattle = (<JoinEncounterPreprocessor>c__AnonStoreyA3.currentContender.IsTakingPartInBattle & battleContender.IsTakingPartInBattle);
 				}
 			}
-			order.ContenderInfos[i] = <JoinEncounterPreprocessor>c__AnonStorey9C2.currentContender;
+			order.ContenderInfos[i] = <JoinEncounterPreprocessor>c__AnonStoreyA2.currentContender;
 		}
 		return true;
 	}
@@ -2517,6 +2613,49 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 		return true;
 	}
 
+	private bool QueueKaijuResearchPreprocessor(OrderQueueKaijuResearch order)
+	{
+		if (order == null)
+		{
+			throw new ArgumentNullException("order");
+		}
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		IDatabase<DepartmentOfScience.ConstructibleElement> database = Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false);
+		Diagnostics.Assert(database != null);
+		IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
+		Diagnostics.Assert(service2 != null);
+		IKaijuTechsService service3 = service.Game.Services.GetService<IKaijuTechsService>();
+		Diagnostics.Assert(service3 != null);
+		DepartmentOfScience.ConstructibleElement technology;
+		if (!database.TryGetValue(order.ConstructibleElementName, out technology))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the technology {0} is not in the technology database.", new object[]
+			{
+				order.ConstructibleElementName
+			});
+			return false;
+		}
+		global::Game game = service.Game as global::Game;
+		global::Empire empire = game.Empires[order.EmpireIndex];
+		if (empire == null)
+		{
+			return false;
+		}
+		DepartmentOfScience.ConstructibleElement.State technologyState = service3.GetTechnologyState(technology, empire);
+		if (technologyState != DepartmentOfScience.ConstructibleElement.State.Available)
+		{
+			Diagnostics.LogError("Order preprocessing failed because the technology {0} is not available. State = {1}", new object[]
+			{
+				order.ConstructibleElementName,
+				technologyState.ToString()
+			});
+			return false;
+		}
+		order.ConstructionGameEntityGUID = service2.GenerateGUID();
+		return true;
+	}
+
 	private bool RazePointOfInterestPreprocessor(OrderRazePointOfInterest order)
 	{
 		IGameEntityRepositoryService service = this.Game.Services.GetService<IGameEntityRepositoryService>();
@@ -2651,6 +2790,184 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 			}
 		}
 		return false;
+	}
+
+	private bool RegisterRegionalEffectsPreprocessor(OrderRegisterRegionalEffects order)
+	{
+		IGameEntityRepositoryService service = base.GameService.Game.Services.GetService<IGameEntityRepositoryService>();
+		IWorldPositionningService service2 = base.GameService.Game.Services.GetService<IWorldPositionningService>();
+		IDatabase<RegionalEffectDefinition> database = Databases.GetDatabase<RegionalEffectDefinition>(false);
+		IRegionalEffectsProviderGameEntity regionalEffectsProviderGameEntity = null;
+		if (!service.TryGetValue<IRegionalEffectsProviderGameEntity>(order.EffectsProviderGUID, out regionalEffectsProviderGameEntity))
+		{
+			Diagnostics.LogError("Order preprocessor failed because the GameEntity could not be found. GUID: {0}.", new object[]
+			{
+				order.EffectsProviderGUID
+			});
+			return false;
+		}
+		Region region = service2.GetRegion(regionalEffectsProviderGameEntity.WorldPosition);
+		if (region == null || region.IsWasteland)
+		{
+			Diagnostics.LogError("Preprocessor failed because the GameEntity position is not valid. Row:{0} Colum;{1}.", new object[]
+			{
+				regionalEffectsProviderGameEntity.WorldPosition.Row,
+				regionalEffectsProviderGameEntity.WorldPosition.Column
+			});
+			return false;
+		}
+		List<RegionalEffectDefinition> list = new List<RegionalEffectDefinition>();
+		List<OrderRegisterRegionalEffects.EffectData> list2 = new List<OrderRegisterRegionalEffects.EffectData>();
+		foreach (RegionalEffectDefinition regionalEffectDefinition in database.GetValues())
+		{
+			if (regionalEffectDefinition.CheckPrerequisites(regionalEffectsProviderGameEntity.GetRegionalEffectsProviderContext(), false))
+			{
+				list.Add(regionalEffectDefinition);
+			}
+		}
+		for (int j = 0; j < list.Count; j++)
+		{
+			RegionalEffectDefinition regionalEffectDefinition2 = list[j];
+			List<Region> list3 = new List<Region>();
+			switch (regionalEffectDefinition2.TargetArea)
+			{
+			case RegionalEffectDefinition.TargetAreas.Self:
+				list3.Add(region);
+				break;
+			case RegionalEffectDefinition.TargetAreas.Neighbours:
+				list3.AddRange(service2.GetNeighbourRegions(region, false, false));
+				break;
+			case RegionalEffectDefinition.TargetAreas.NeighboursSelfIncluded:
+				list3.AddRange(service2.GetNeighbourRegions(region, true, false));
+				break;
+			}
+			for (int k = 0; k < list3.Count; k++)
+			{
+				if (list3[k].Effects.GetEffectsByDefinitionFromOwner(regionalEffectDefinition2.Name, order.EffectsProviderGUID).Length <= 0)
+				{
+					OrderRegisterRegionalEffects.EffectData item = new OrderRegisterRegionalEffects.EffectData
+					{
+						DefinitionName = regionalEffectDefinition2.Name,
+						TargetRegionIndex = list3[k].Index,
+						GUID = service.GenerateGUID()
+					};
+					list2.Add(item);
+				}
+			}
+		}
+		if (list2.Count == 0)
+		{
+			return false;
+		}
+		order.EffectsData = list2.ToArray();
+		return true;
+	}
+
+	private bool RelocateKaijuPreprocessor(OrderRelocateKaiju order)
+	{
+		IGameEntityRepositoryService service = base.GameService.Game.Services.GetService<IGameEntityRepositoryService>();
+		if (service == null)
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Game Entity Repository Service is not valid.");
+			return false;
+		}
+		Kaiju kaiju = null;
+		if (!service.TryGetValue<Kaiju>(order.KaijuGUID, out kaiju))
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Kaiju could not be retrieved. GUID: {0}.", new object[]
+			{
+				order.KaijuGUID
+			});
+			return false;
+		}
+		WorldPosition targetPosition = order.TargetPosition;
+		if (!KaijuCouncil.IsPositionValidForSettleKaiju(targetPosition, null))
+		{
+			Diagnostics.LogError("Order processor failed because the Target Position is not valid. Row: {0}, Column: {1}", new object[]
+			{
+				targetPosition.Row,
+				targetPosition.Column
+			});
+			return false;
+		}
+		IWorldPositionningService service2 = this.Game.Services.GetService<IWorldPositionningService>();
+		if (service2 == null)
+		{
+			Diagnostics.LogError("Order preprocessor failed because the World Positionning Service is not valid.");
+			return false;
+		}
+		Region region = service2.GetRegion(order.TargetPosition);
+		if (!KaijuCouncil.IsRegionValidForSettleKaiju(region))
+		{
+			Diagnostics.LogError("Order preprocessor failed because the Target Region is not valid. Region Index: {0}, Name: {1}", new object[]
+			{
+				region.Index,
+				region.Name
+			});
+			return false;
+		}
+		if (!StaticString.IsNullOrEmpty(order.GarrisonActionName))
+		{
+			IDatabase<GarrisonAction> database = Databases.GetDatabase<GarrisonAction>(false);
+			if (database == null)
+			{
+				Diagnostics.LogError("Order preprocessor failed because the Garrison Action Database could not be retrieved.");
+				return false;
+			}
+			GarrisonAction garrisonAction = null;
+			if (!database.TryGetValue(order.GarrisonActionName, out garrisonAction))
+			{
+				Diagnostics.LogError("Order preprocessor failed because the Garrison Action could not be retrieved.");
+				return false;
+			}
+			MajorEmpire majorEmpire = kaiju.MajorEmpire;
+			if (majorEmpire == null)
+			{
+				Diagnostics.LogError("Order preprocessor failed because the Kaiju's Owner is not a Major Empire.");
+				return false;
+			}
+			DepartmentOfTheTreasury agency = majorEmpire.GetAgency<DepartmentOfTheTreasury>();
+			if (agency == null)
+			{
+				Diagnostics.LogError("Order preprocessor failed because the Kaiju's Owner does not have a Department of the Treasury.");
+				return false;
+			}
+			IConstructionCost[] resourceCosts = garrisonAction.ResourceCosts;
+			if (resourceCosts != null && resourceCosts.Length > 0)
+			{
+				if (!agency.CanAfford(resourceCosts))
+				{
+					Diagnostics.LogError("Order preprocessor failed because the action is not affordable.");
+					return false;
+				}
+				List<KeyValuePair<StaticString, float>> list = new List<KeyValuePair<StaticString, float>>();
+				foreach (IConstructionCost constructionCost in resourceCosts)
+				{
+					list.Add(new KeyValuePair<StaticString, float>(constructionCost.ResourceName, -constructionCost.GetValue(majorEmpire)));
+				}
+				order.EmpireCosts = list.ToArray();
+			}
+			float costInActionPoints = garrisonAction.GetCostInActionPoints();
+			if (costInActionPoints > 0f)
+			{
+				order.NumberOfActionPointsToSpend = costInActionPoints;
+			}
+			if (garrisonAction is GarrisonActionWithCooldown)
+			{
+				GarrisonActionWithCooldown garrisonActionWithCooldown = garrisonAction as GarrisonActionWithCooldown;
+				if (garrisonActionWithCooldown != null)
+				{
+					if (!garrisonActionWithCooldown.CooldownPrerequisites(kaiju.KaijuGarrison))
+					{
+						Diagnostics.LogError("Order preprocessor failed because the action is not affordable in Cooldown.");
+						return false;
+					}
+					float garrisonActionCooldownDuration = garrisonActionWithCooldown.ComputeCooldownDuration(kaiju.KaijuGarrison);
+					order.GarrisonActionCooldownDuration = garrisonActionCooldownDuration;
+				}
+			}
+		}
+		return true;
 	}
 
 	private bool RemoveAffinityStrategicResourcePreprocessor(OrderRemoveAffinityStrategicResource order)
@@ -2805,6 +3122,50 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 		return true;
 	}
 
+	private bool SpawnKaijuPreprocessor(OrderSpawnKaiju order)
+	{
+		IGameEntityRepositoryService service = this.Game.GetService<IGameEntityRepositoryService>();
+		KaijuEmpire kaijuEmpire = this.Game.GetEmpireByIndex(order.EmpireIndex) as KaijuEmpire;
+		if (kaijuEmpire == null)
+		{
+			Diagnostics.LogError("Order preprocessor failed because KaijuEmpire is not valid.");
+			return false;
+		}
+		if (kaijuEmpire.HasSpawnedAnyKaiju)
+		{
+			Diagnostics.LogError("Order preprocessor failed because KaijuEmpire already spawned a Kaiju.");
+			return false;
+		}
+		if (kaijuEmpire.GetAgency<KaijuCouncil>() == null)
+		{
+			Diagnostics.LogError("Order preprocessor failed because KaijuCouncil is not valid.");
+			return false;
+		}
+		Region validKaijuRegion = KaijuCouncil.GetValidKaijuRegion();
+		if (validKaijuRegion == null)
+		{
+			Diagnostics.LogError("Order preprocessor failed because Region is not valid.");
+			return false;
+		}
+		WorldPosition validKaijuPosition = KaijuCouncil.GetValidKaijuPosition(validKaijuRegion, true);
+		if (!validKaijuPosition.IsValid)
+		{
+			Diagnostics.LogError("Order preprocessor failed because WorldPosition is not valid.");
+			return false;
+		}
+		order.KaijuPosition = validKaijuPosition;
+		order.KaijuGUID = service.GenerateGUID();
+		order.GarrisonGUID = service.GenerateGUID();
+		order.ArmyGUID = service.GenerateGUID();
+		order.MonsterGUID = service.GenerateGUID();
+		order.LicesGUIDs = new GameEntityGUID[kaijuEmpire.KaijuFaction.InitialLices];
+		for (int i = 0; i < order.LicesGUIDs.Length; i++)
+		{
+			order.LicesGUIDs[i] = service.GenerateGUID();
+		}
+		return true;
+	}
+
 	private bool SpawnMapBoostsPreprocessor(OrderSpawnMapBoosts order)
 	{
 		if (order == null)
@@ -2910,8 +3271,8 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 			return false;
 		}
 		IPathfindingArea battleZone = battleEncounter.BattleController.BattleSimulation.BattleZone;
-		PathfindingResult pathfindingResult = service2.FindPath(encounterUnit.Unit, worldPosition, order.FinalUnit1Position, PathfindingManager.RequestMode.Default, new PathfindingWorldContext(battleZone, null), PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges, null);
-		PathfindingResult pathfindingResult2 = service2.FindPath(encounterUnit2.Unit, worldPosition2, order.FinalUnit2Position, PathfindingManager.RequestMode.Default, new PathfindingWorldContext(battleZone, null), PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges, null);
+		PathfindingResult pathfindingResult = service2.FindPath(encounterUnit.Unit, worldPosition, order.FinalUnit1Position, PathfindingManager.RequestMode.Default, new PathfindingWorldContext(battleZone, null), PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null);
+		PathfindingResult pathfindingResult2 = service2.FindPath(encounterUnit2.Unit, worldPosition2, order.FinalUnit2Position, PathfindingManager.RequestMode.Default, new PathfindingWorldContext(battleZone, null), PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null);
 		if (pathfindingResult == null || pathfindingResult2 == null)
 		{
 			Diagnostics.LogError("Can't swap unit deployment positions because one of the unit can't found a path the its destination.");
@@ -3919,55 +4280,6 @@ public class GameServer : GameInterface, IDisposable, IService, IEnumerable, IBa
 	private void IVictoryManagementService_VictoryConditionRaised(object sender, VictoryConditionRaisedEventArgs e)
 	{
 		base.Session.SetLobbyData("_GameHasEnded", true, true);
-	}
-
-	private float AddProgressiveTechCost(DiplomaticContract diplomaticContract, DiplomaticTerm diplomaticTerm, float cost, float factor)
-	{
-		IDiplomaticContractRepositoryService service = (Services.GetService<IGameService>().Game as global::Game).Services.GetService<IDiplomaticContractRepositoryService>();
-		int num = 0;
-		int num2 = 0;
-		Predicate<DiplomaticContract> match = (DiplomaticContract contract) => (contract.EmpireWhichProposes == diplomaticTerm.EmpireWhichProposes || contract.EmpireWhichReceives == diplomaticTerm.EmpireWhichProposes) && contract.State == DiplomaticContractState.Signed;
-		foreach (DiplomaticContract diplomaticContract2 in service.FindAll(match))
-		{
-			if (diplomaticContract2 != diplomaticContract)
-			{
-				bool flag = false;
-				if ((diplomaticContract2.EmpireWhichProposes == diplomaticContract.EmpireWhichProposes && diplomaticContract2.EmpireWhichReceives == diplomaticContract.EmpireWhichReceives) || (diplomaticContract2.EmpireWhichProposes == diplomaticContract.EmpireWhichReceives && diplomaticContract2.EmpireWhichReceives == diplomaticContract.EmpireWhichProposes))
-				{
-					flag = true;
-				}
-				using (IEnumerator<DiplomaticTerm> enumerator2 = diplomaticContract2.Terms.GetEnumerator())
-				{
-					while (enumerator2.MoveNext())
-					{
-						if (enumerator2.Current is DiplomaticTermTechnologyExchange)
-						{
-							num++;
-							if (flag)
-							{
-								num2++;
-							}
-						}
-					}
-				}
-			}
-		}
-		foreach (DiplomaticTerm diplomaticTerm2 in diplomaticContract.Terms)
-		{
-			DiplomaticTermTechnologyExchange diplomaticTermTechnologyExchange = diplomaticTerm2 as DiplomaticTermTechnologyExchange;
-			if (diplomaticTermTechnologyExchange != null)
-			{
-				if (diplomaticTermTechnologyExchange.Equals(diplomaticTerm) && diplomaticTermTechnologyExchange.Index > -1)
-				{
-					break;
-				}
-				num++;
-				num2++;
-			}
-		}
-		float num3 = factor * diplomaticTerm.EmpireWhichProposes.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-		cost += num3 * (float)num + 2f * num3 * (float)num2;
-		return cost;
 	}
 
 	private ISynchronizationService synchronizationService;

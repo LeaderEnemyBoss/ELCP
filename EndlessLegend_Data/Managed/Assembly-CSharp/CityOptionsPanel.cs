@@ -93,6 +93,7 @@ public class CityOptionsPanel : GuiCollapsingPanel
 		this.keyMappingService = Services.GetService<IKeyMappingService>();
 		this.FilterTable.Visible = !this.IsOtherEmpire;
 		this.DepartmentOfTheTreasury = this.City.Empire.GetAgency<DepartmentOfTheTreasury>();
+		this.departmentOfPlanificationAndDevelopment = this.city.Empire.GetAgency<DepartmentOfPlanificationAndDevelopment>();
 	}
 
 	public void Unbind()
@@ -173,6 +174,58 @@ public class CityOptionsPanel : GuiCollapsingPanel
 						{
 							this.lastFailureFlags.Add(ConstructionFlags.Disable);
 						}
+						if (this.City.IsInfected)
+						{
+							Diagnostics.Assert(this.City.LastNonInfectedOwner != null);
+							if (StaticString.IsNullOrEmpty(constructibleElement.SubCategory) || !constructibleElement.SubCategory.Equals(DepartmentOfTheInterior.InfectionAllowedSubcategory))
+							{
+								continue;
+							}
+							if (constructibleElement is CityConstructibleActionDefinition)
+							{
+								CityConstructibleActionDefinition cityConstructibleActionDefinition = constructibleElement as CityConstructibleActionDefinition;
+								if (cityConstructibleActionDefinition.Action.Name == "IntegrateFaction")
+								{
+									if (string.IsNullOrEmpty(cityConstructibleActionDefinition.InfectedAffinityConstraint) || !cityConstructibleActionDefinition.InfectedAffinityConstraint.Equals(this.city.LastNonInfectedOwner.Faction.Affinity.Name))
+									{
+										continue;
+									}
+									if (this.City.LastNonInfectedOwner.Faction.GetIntegrationDescriptorsCount() <= 0 || this.departmentOfPlanificationAndDevelopment.HasIntegratedFaction(this.City.LastNonInfectedOwner.Faction))
+									{
+										continue;
+									}
+								}
+							}
+						}
+						if (constructibleElement is CityConstructibleActionDefinition)
+						{
+							CityConstructibleActionDefinition cityConstructibleActionDefinition2 = constructibleElement as CityConstructibleActionDefinition;
+							if (cityConstructibleActionDefinition2.Action.Name == "PurgeTheLand")
+							{
+								bool flag = false;
+								PointOfInterest[] pointOfInterests = this.City.Region.PointOfInterests;
+								for (int j = 0; j < pointOfInterests.Length; j++)
+								{
+									if (pointOfInterests[j].CreepingNodeGUID != GameEntityGUID.Zero)
+									{
+										IGameEntity gameEntity = null;
+										if (this.gameEntityRepositoryService.TryGetValue(pointOfInterests[j].CreepingNodeGUID, out gameEntity))
+										{
+											CreepingNode creepingNode = gameEntity as CreepingNode;
+											if (creepingNode != null && creepingNode.Empire.Index != this.City.Empire.Index)
+											{
+												flag = true;
+												break;
+											}
+										}
+									}
+								}
+								if (!flag)
+								{
+									continue;
+								}
+							}
+						}
 						if (constructibleElement is PointOfInterestImprovementDefinition)
 						{
 							this.CheckPointOfInterestImprovementPrerequisites((PointOfInterestImprovementDefinition)constructibleElement, ref this.lastFailureFlags);
@@ -221,6 +274,7 @@ public class CityOptionsPanel : GuiCollapsingPanel
 		yield return base.OnLoadGame();
 		this.playerControllerRepository = base.Game.Services.GetService<IPlayerControllerRepositoryService>();
 		this.EndTurnService = Services.GetService<IEndTurnService>();
+		this.gameEntityRepositoryService = base.Game.Services.GetService<IGameEntityRepositoryService>();
 		yield break;
 	}
 
@@ -231,6 +285,7 @@ public class CityOptionsPanel : GuiCollapsingPanel
 		this.OptionsTable.DestroyAllChildren();
 		this.EndTurnService = null;
 		this.playerControllerRepository = null;
+		this.gameEntityRepositoryService = null;
 		base.OnUnloadGame(game);
 	}
 
@@ -440,20 +495,6 @@ public class CityOptionsPanel : GuiCollapsingPanel
 	{
 	}
 
-	private void OnRightClick(GameObject obj)
-	{
-		DepartmentOfIndustry.ConstructibleElement constructibleElement = obj.GetComponent<AgeControlButton>().OnActivateDataObject as DepartmentOfIndustry.ConstructibleElement;
-		Diagnostics.Assert(constructibleElement != null);
-		if (constructibleElement is UnitDesign)
-		{
-			base.GuiService.GetGuiPanel<UnitDesignModalPanel>().CreateMode = false;
-			base.GuiService.GetGuiPanel<UnitDesignModalPanel>().Show(new object[]
-			{
-				constructibleElement as UnitDesign
-			});
-		}
-	}
-
 	public AgeControlScrollView OptionsScrollview;
 
 	public AgeTransform OptionsTable;
@@ -489,6 +530,10 @@ public class CityOptionsPanel : GuiCollapsingPanel
 	private IKeyMappingService keyMappingService;
 
 	private DepartmentOfTheTreasury departmentOfTheTreasury;
+
+	private DepartmentOfPlanificationAndDevelopment departmentOfPlanificationAndDevelopment;
+
+	private IGameEntityRepositoryService gameEntityRepositoryService;
 
 	[Flags]
 	public enum OptionCategory

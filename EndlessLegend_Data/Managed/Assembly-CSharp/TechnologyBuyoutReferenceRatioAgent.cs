@@ -94,8 +94,9 @@ public class TechnologyBuyoutReferenceRatioAgent : Agent
 		float num2 = this.moneyIncomeBuyoutPercent * num;
 		float a = (num2 <= 0f) ? 1f : ((unnormalizedValue <= 0f) ? 0f : (unnormalizedValue / num2));
 		float num3 = (float)this.game.Turn;
-		float num4 = this.departmentOfScience.GetResearchPropertyValue("UnlockedTechnologyCount") * this.idealTechnologyUnlockPeriod;
-		float num5 = Mathf.Clamp((num3 - num4) / this.idealTechnologyUnlockPeriod, -1f, 1f);
+		float researchPropertyValue = this.departmentOfScience.GetResearchPropertyValue("UnlockedTechnologyCount");
+		float num4 = researchPropertyValue * this.idealTechnologyUnlockPeriod;
+		float num5 = Mathf.Clamp((num4 - num3) / this.idealTechnologyUnlockPeriod, -1f, 1f);
 		num5 = (num5 + 1f) / 2f;
 		float val = Mathf.Min(a, num5);
 		base.Value = Math.Max(base.ValueMin, Math.Min(val, base.ValueMax));
