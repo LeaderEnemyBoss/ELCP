@@ -14,34 +14,32 @@
 			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
 			<Controller_Selector>
-
+				<!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
+				<Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
+				<!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
+				<Include SubTreeName="TryAttackNearbyWildKaiju"/>
+				<!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
+				<Include SubTreeName="TryAttackNearbyTamedKaiju"/>
+			
 				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
-
-        <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
-        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
-        
-        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
-        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
-
-        <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
-        <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
-        
-        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
-        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
-        
-        <!--IF we could collect orbs THEN Change path -->
+				<Include SubTreeName="ParleyWithVillage"/>
+				<Include SubTreeName="ExploreNearbyRuin"/>
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				
+				
+				<!--IF we could collect orbs THEN Change path -->
 				<Include SubTreeName="OrbsOpportunity">
 					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
 				</Include>
 
-        <!--IF we could collect a map boost then change path -->
-        <Include SubTreeName="MapBoostOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
-        </Include>
+				<!--IF we could collect a map boost then change path -->
+				<Include SubTreeName="MapBoostOpportunity">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+				</Include>
         
-				<Include SubTreeName="ExploreNearbyRuin"/>
+			
 
 				<!--IF City need vision for spy THEN move to get a look at the city -->
 				<Controller_Sequence Debug="Opportunity_CityToSpy">
@@ -64,11 +62,11 @@
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
 				</Include>
 
-        <!--If there is a creeping node, destroy it -->
-        <Include SubTreeName="OpportunityDestroyCreepingNode">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
-        </Include>
+				<!--If there is a creeping node, destroy it -->
+				<Include SubTreeName="OpportunityDestroyCreepingNode">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+				</Include>
 
 				<!--IF nothing else to do THEN Move to Destination-->
 				<Controller_Sequence Debug="Exploration_TryToFollowTheBorder">
@@ -90,7 +88,21 @@
 							<Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
 							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
 						</Controller_Sequence>
-
+						
+						<!--ELCP: LastResortRoaming if no valid path has been found-->		
+						<Controller_Sequence Debug="LastResortRoaming">
+							<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+							<Controller_Selector>
+								<Controller_Sequence>
+									<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination"/>
+									<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+								</Controller_Sequence>
+								<Controller_Sequence>
+									<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+									<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+								</Controller_Sequence>
+							</Controller_Selector>
+						</Controller_Sequence>
 					</Controller_Selector>
 
 					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
@@ -117,7 +129,8 @@
 			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
 			<Controller_Selector>
-
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				<Include SubTreeName="ParleyWithVillage"/>
 				<Include SubTreeName="ExploreNearbyRuin"/>
 
 				<!--IF we could collect orbs THEN Change path -->
@@ -154,9 +167,7 @@
 
         <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
         <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
-        
-        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
-        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
+
      
         
         <Controller_Sequence Debug="ScoutRegion_AlreadyAtDestination">

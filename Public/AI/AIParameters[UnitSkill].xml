@@ -6,8 +6,8 @@
   <!-- #################################### -->
   <!-- Necrotic Agriculture - Food -->
   <AIParameterDatatableElement Name="HeroSkillGovernor01" >
-    <AIParameter Name="GovernorCity"   Value="0.9"/>
- <AIParameter Name="GovernorEmpire"   Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.25 + (0.65 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2)))"/>
+	<AIParameter Name="GovernorEmpire" Value="0.25 + (0.15 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2)))"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -16,7 +16,7 @@
   <!-- Natural Resources - Industry -->
   <AIParameterDatatableElement Name="HeroSkillGovernor02" >
     <AIParameter Name="GovernorCity"   Value="0.9"/>
- <AIParameter Name="GovernorEmpire"   Value="0.1"/>
+	<AIParameter Name="GovernorEmpire" Value="0.4"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -24,8 +24,8 @@
 
   <!-- Renaissance Thinker - Science -->
   <AIParameterDatatableElement Name="HeroSkillGovernor03" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.4 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1))"/>
+	<AIParameter Name="GovernorEmpire" Value="0.9 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1))"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -51,7 +51,7 @@
 
   <!-- Narrative Master - Influence -->
   <AIParameterDatatableElement Name="HeroSkillGovernor05" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.4"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -60,8 +60,8 @@
 
   <!-- Irrigation Expert - Food on river -->
   <AIParameterDatatableElement Name="HeroSkillGovernor06" >
-    <AIParameter Name="GovernorCity"   Value="0.8"/>
- <AIParameter Name="GovernorEmpire"   Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.25 + (0.55 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2)))"/>
+    <AIParameter Name="GovernorEmpire" Value="0.25 + (0.15 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2)))"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -70,7 +70,7 @@
   <!-- Woodland Forager - industry on Forest-->
   <AIParameterDatatableElement Name="HeroSkillGovernor07" >
     <AIParameter Name="GovernorCity"   Value="0.9"/>
- <AIParameter Name="GovernorEmpire"   Value="0.1"/>
+    <AIParameter Name="GovernorEmpire"   Value="0.4"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -78,7 +78,7 @@
 
   <!-- Dust Diviner - Dust on tile with dust-->
   <AIParameterDatatableElement Name="HeroSkillGovernor08" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.4"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -87,7 +87,7 @@
 
   <!-- Aquatic Dust - Dust on river -->
   <AIParameterDatatableElement Name="HeroSkillGovernor09" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.4"/>
     <AIParameter Name="GovernorEmpire" Value="0.8"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -96,7 +96,7 @@
 
   <!-- Travelling Salesman - Dust on anomaly -->
   <AIParameterDatatableElement Name="HeroSkillGovernor10" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.4"/>
     <AIParameter Name="GovernorEmpire" Value="0.8"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -105,8 +105,8 @@
 
   <!-- Scientific Literacy - Science on anomaly -->
   <AIParameterDatatableElement Name="HeroSkillGovernor11" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.8"/>
+    <AIParameter Name="GovernorCity"   Value="0.4 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1))"/>
+    <AIParameter Name="GovernorEmpire" Value="0.8 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1))"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -114,26 +114,26 @@
 
   <!-- Alchemical Genius - Science -->
   <AIParameterDatatableElement Name="HeroSkillGovernor12" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.9"/>
-    <AIParameter Name="ArmySupport"    Value="0"/>
-    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="GovernorCity"   Value="0.25 + (0.15 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1)))"/>
+    <AIParameter Name="GovernorEmpire" Value="0.25 + (0.65 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1)))"/>
+    <AIParameter Name="ArmySupport"    Value="0.5"/>
+    <AIParameter Name="ArmyHero"       Value="0.7"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Cadaverous Pesticides - Food -->
   <AIParameterDatatableElement Name="HeroSkillGovernor13" >
-    <AIParameter Name="GovernorCity"   Value="0.9"/>
- <AIParameter Name="GovernorEmpire"   Value="0.1"/>
-    <AIParameter Name="ArmySupport"    Value="0"/>
-    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="GovernorCity"   Value="0.9 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2))"/>
+    <AIParameter Name="GovernorEmpire" Value="0.9 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2))"/>
+    <AIParameter Name="ArmySupport"    Value="0.3"/>
+    <AIParameter Name="ArmyHero"       Value="0.3"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Natural Architect - industry-->
   <AIParameterDatatableElement Name="HeroSkillGovernor14" >
     <AIParameter Name="GovernorCity"   Value="0.9"/>
- <AIParameter Name="GovernorEmpire"   Value="0.1"/>
+ <AIParameter Name="GovernorEmpire"   Value="0.4"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -141,8 +141,8 @@
 
   <!-- Dust Trickery - Dust -->
   <AIParameterDatatableElement Name="HeroSkillGovernor15" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.4"/>
+	<AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -150,8 +150,8 @@
 
   <!-- TBD name - Dust -->
   <AIParameterDatatableElement Name="HeroSkillGovernor15Cultists" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.4"/>
+	<AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -159,8 +159,8 @@
 
   <!-- Firestarter - Science-->
   <AIParameterDatatableElement Name="HeroSkillGovernor16" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.4 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1))"/>
+	<AIParameter Name="GovernorEmpire" Value="0.9 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1))"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -168,8 +168,8 @@
 
   <!-- TBD name - Science -->
   <AIParameterDatatableElement Name="HeroSkillGovernor16Cultists" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.35 + (0.05 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1)))"/>
+	<AIParameter Name="GovernorEmpire" Value="0.35 + (0.55 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1)))"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -186,7 +186,7 @@
 
   <!-- Living Walls - upkeep reduction -->
   <AIParameterDatatableElement Name="HeroSkillGovernor18" >
-    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorCity"   Value="0.7"/>
     <AIParameter Name="GovernorEmpire" Value="0.7"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -195,7 +195,7 @@
 
   <!-- Slave Driver - city unit cost reduction -->
   <AIParameterDatatableElement Name="HeroSkillGovernor19Necrophages" >
-    <AIParameter Name="GovernorCity"   Value="0.3"/>
+    <AIParameter Name="GovernorCity"   Value="0.8"/>
     <AIParameter Name="GovernorEmpire" Value="0.8"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -204,8 +204,8 @@
 
   <!-- Game Theory - unit cost reduction -->
   <AIParameterDatatableElement Name="HeroSkillGovernor19RovingClans" >
-    <AIParameter Name="GovernorCity"   Value="0.3"/>
-    <AIParameter Name="GovernorEmpire" Value="0.8"/>
+    <AIParameter Name="GovernorCity"   Value="0.9"/>
+    <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -222,7 +222,7 @@
 
   <!-- Mining Authority - Resource Extraction -->
   <AIParameterDatatableElement Name="HeroSkillGovernor21" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+	<AIParameter Name="GovernorCity"   Value="0.9"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -231,7 +231,7 @@
 
   <!-- Safe Passage - Trade route boost-->
   <AIParameterDatatableElement Name="HeroSkillGovernor22" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+ <AIParameter Name="GovernorCity"   Value="0.9"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -240,7 +240,7 @@
 
   <!-- Fast Trader - Trade route boost-->
   <AIParameterDatatableElement Name="HeroSkillGovernor23" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+ <AIParameter Name="GovernorCity"   Value="0.9"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -249,8 +249,8 @@
 
   <!-- Mechanical Exhibitionist - Trade route boost-->
   <AIParameterDatatableElement Name="HeroSkillGovernor24" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.9 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1))"/>
+    <AIParameter Name="GovernorEmpire" Value="0.9 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1))"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -258,7 +258,7 @@
 
   <!-- Black Marketeer - Trade route boost-->
   <AIParameterDatatableElement Name="HeroSkillGovernor25" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+ <AIParameter Name="GovernorCity"   Value="0.9"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -267,8 +267,8 @@
 
   <!-- Defender - City defense-->
   <AIParameterDatatableElement Name="HeroSkillGovernor26" >
-    <AIParameter Name="GovernorCity"   Value="0.3"/>
-    <AIParameter Name="GovernorEmpire" Value="0.3"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorEmpire" Value="0.5"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -276,8 +276,8 @@
   
   <!-- Subterranean Networker - City defense bonus-->
   <AIParameterDatatableElement Name="HeroSkillGovernor27" >
-    <AIParameter Name="GovernorCity"   Value="0.3"/>
-    <AIParameter Name="GovernorEmpire" Value="0.3"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorEmpire" Value="0.5"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -285,8 +285,8 @@
 
   <!-- Tunnel Rat - FIDS while at siege -->
   <AIParameterDatatableElement Name="HeroSkillGovernor28" >
-    <AIParameter Name="GovernorCity"   Value="0.3"/>
-    <AIParameter Name="GovernorEmpire" Value="0.3"/>
+    <AIParameter Name="GovernorCity"   Value="0.6"/>
+    <AIParameter Name="GovernorEmpire" Value="0.6"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -294,8 +294,16 @@
 
   <!-- Inspirational Leader - FIDS Boost -->
   <AIParameterDatatableElement Name="HeroSkillGovernor29" >
-    <AIParameter Name="GovernorCity"   Value="0.8"/>
-    <AIParameter Name="GovernorEmpire" Value="0.8"/>
+    <AIParameter Name="GovernorCity"   Value="0.7"/>
+    <AIParameter Name="GovernorEmpire" Value="0.7"/>
+    <AIParameter Name="ArmySupport"    Value="0"/>
+    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="HeroSkillGovernor29ReplicantsPack" >
+    <AIParameter Name="GovernorCity"   Value="0.7"/>
+    <AIParameter Name="GovernorEmpire" Value="0.7"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -303,7 +311,7 @@
 
   <!-- TBD name - Influence boost-->
   <AIParameterDatatableElement Name="HeroSkillGovernor30" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -312,7 +320,7 @@
 
   <!-- TBD name - Ownership-->
   <AIParameterDatatableElement Name="HeroSkillGovernor31" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+ <AIParameter Name="GovernorCity"   Value="0.2"/>
     <AIParameter Name="GovernorEmpire" Value="0.3"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -321,8 +329,8 @@
 
   <!-- TBD name - ???-->
   <AIParameterDatatableElement Name="HeroSkillGovernor32" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.4"/>
+	<AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -330,7 +338,7 @@
 
   <!-- TBD name - Science Ruins-->
   <AIParameterDatatableElement Name="HeroSkillGovernor33" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+ <AIParameter Name="GovernorCity"   Value="0.5"/>
     <AIParameter Name="GovernorEmpire" Value="0.8"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -339,7 +347,7 @@
 
   <!-- TBD name - Science during winter-->
   <AIParameterDatatableElement Name="HeroSkillGovernor34" >
- <AIParameter Name="GovernorCity"   Value="0.1"/>
+ <AIParameter Name="GovernorCity"   Value="0.5"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -348,7 +356,7 @@
 
   <!-- TBD - Dust on Forest -->
   <AIParameterDatatableElement Name="HeroSkillGovernor35">
-    <AIParameter Name="GovernorCity"   Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
@@ -357,11 +365,11 @@
 
   <!-- Counterintelligence -->
   <AIParameterDatatableElement Name="HeroSkillGovernor36">
-    <AIParameter Name="GovernorCity"   Value="0.5"/>
-    <AIParameter Name="GovernorEmpire" Value="0.8"/>
+    <AIParameter Name="GovernorCity"   Value="0.6"/>
+    <AIParameter Name="GovernorEmpire" Value="0.6"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
-    <AIParameter Name="Spy"            Value="0.5"/>
+    <AIParameter Name="Spy"            Value="0.2"/>
   </AIParameterDatatableElement>
 
   <!-- TBD . City garrison Upkeep -->
@@ -435,7 +443,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -444,7 +452,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -453,7 +461,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -462,7 +470,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -471,7 +479,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -480,7 +488,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -489,7 +497,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -498,7 +506,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -507,7 +515,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -516,7 +524,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -525,7 +533,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -534,7 +542,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
   
@@ -543,7 +551,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -551,25 +559,25 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle15Infantry">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.5"/>
-    <AIParameter Name="ArmyHero"       Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="1"/>
+    <AIParameter Name="ArmyHero"       Value="1"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Keen Observer - Reinforcement Size-->
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle15Support">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.5"/>
-    <AIParameter Name="ArmyHero"       Value="0.5"/>
+    <AIParameter Name="GovernorCity"   Value="0.1"/>
+    <AIParameter Name="GovernorEmpire" Value="0.1"/>
+    <AIParameter Name="ArmySupport"    Value="1"/>
+    <AIParameter Name="ArmyHero"       Value="1"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Armor Engineer - Hero Accessory-->
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle16Infantry">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorEmpire" Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
     <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
@@ -579,24 +587,24 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Spare Quiver - Hero Accessory -->
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle17Ranged">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorEmpire" Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
     <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Armor Ergonomics - Hero Accessory -->
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle17Support">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorEmpire" Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
     <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
@@ -614,8 +622,8 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle19">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="ArmySupport"    Value="0.6"/>
+	<AIParameter Name="ArmyHero"       Value="0.6"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -623,8 +631,8 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle20">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -632,8 +640,8 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle21">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -642,7 +650,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -650,8 +658,8 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle23">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="ArmySupport"    Value="0.7"/>
+	<AIParameter Name="ArmyHero"       Value="0.7"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -659,17 +667,17 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle23SistersOfMercy">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- TBD - Hero Accessory -->
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle24">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorEmpire" Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -678,7 +686,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -687,7 +695,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -697,10 +705,10 @@
   <!-- #################################### -->
   <!-- Roadside Picnic - Army HP Regen-->
   <AIParameterDatatableElement Name="HeroSkillLeaderMap01">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="GovernorCity"   Value="0.3"/>
+    <AIParameter Name="GovernorEmpire" Value="0.3"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -709,7 +717,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -718,7 +726,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -726,8 +734,8 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderMap03">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmySupport"    Value="0.5"/>
+    <AIParameter Name="ArmyHero"       Value="0.5"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -735,18 +743,18 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderMap04">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmySupport"    Value="0.4"/>
+    <AIParameter Name="ArmyHero"       Value="0.4"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Indiana Bones - Ruin Explorer-->
   <AIParameterDatatableElement Name="HeroSkillLeaderMap05">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="GovernorCity"   Value="0.2"/>
+    <AIParameter Name="GovernorEmpire" Value="0.2"/>
     <AIParameter Name="ArmySupport"    Value="0.1"/>
     <AIParameter Name="ArmyHero"       Value="0.1"/>
-    <AIParameter Name="Spy"            Value="0"/>
+    <AIParameter Name="Spy"            Value="0.3"/>
   </AIParameterDatatableElement>
 
   <!-- Friendly Banner - Roaming Army Truce -->
@@ -762,8 +770,8 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderMap08">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmySupport"    Value="0.7"/>
+    <AIParameter Name="ArmyHero"       Value="0.7"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -787,8 +795,8 @@
 
   <!-- Siege Engine - Siege efficiency -->
   <AIParameterDatatableElement Name="HeroSkillLeaderMap12">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorEmpire" Value="0.5"/>
     <AIParameter Name="ArmySupport"    Value="0.1"/>
     <AIParameter Name="ArmyHero"       Value="0.1"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -816,8 +824,8 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderMap16">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.5"/>
-    <AIParameter Name="ArmyHero"       Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="0.6"/>
+    <AIParameter Name="ArmyHero"       Value="0.6"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -825,9 +833,9 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderMap17">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.5"/>
-    <AIParameter Name="ArmyHero"       Value="0.5"/>
-    <AIParameter Name="Spy"            Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="1"/>
+    <AIParameter Name="ArmyHero"       Value="1"/>
+    <AIParameter Name="Spy"            Value="0.3"/>
   </AIParameterDatatableElement>
 
   <!-- #################################### -->
@@ -835,37 +843,37 @@
   <!-- #################################### -->
   <!-- Fast Healer . Hero recovery -->
   <AIParameterDatatableElement Name="HeroSkillCommon01">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
-    <AIParameter Name="Spy"            Value="0.7"/>
+    <AIParameter Name="GovernorCity"   Value="0.3"/>
+    <AIParameter Name="GovernorEmpire" Value="0.3"/>
+    <AIParameter Name="ArmySupport"    Value="0.5"/>
+    <AIParameter Name="ArmyHero"       Value="0.5"/>
+    <AIParameter Name="Spy"            Value="0.6"/>
   </AIParameterDatatableElement>
 
   <!-- Functioning Insomniac - Assignement Speed -->
   <AIParameterDatatableElement Name="HeroSkillCommon02">
-    <AIParameter Name="GovernorCity"   Value="0.9"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.6"/>
-    <AIParameter Name="ArmyHero"       Value="0"/>
-    <AIParameter Name="Spy"            Value="0.6"/>
+    <AIParameter Name="GovernorCity"   Value="0.3"/>
+    <AIParameter Name="GovernorEmpire" Value="0.3"/>
+    <AIParameter Name="ArmySupport"    Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="Spy"            Value="0.4"/>
   </AIParameterDatatableElement>
 
   <!-- Functioning Insomniac - Assignement Speed -->
   <AIParameterDatatableElement Name="HeroSkillCommon02Replicants">
-    <AIParameter Name="GovernorCity"   Value="0.9"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.6"/>
-    <AIParameter Name="ArmyHero"       Value="0"/>
-    <AIParameter Name="Spy"            Value="0.6"/>
+    <AIParameter Name="GovernorCity"   Value="0.2"/>
+    <AIParameter Name="GovernorEmpire" Value="0.2"/>
+    <AIParameter Name="ArmySupport"    Value="0.3"/>
+    <AIParameter Name="ArmyHero"       Value="0.3"/>
+    <AIParameter Name="Spy"            Value="0.5"/>
   </AIParameterDatatableElement>
 
   <!-- Escape Artist - Assignement in siege -->
   <AIParameterDatatableElement Name="HeroSkillCommon03">
-    <AIParameter Name="GovernorCity"   Value="0.9"/>
-    <AIParameter Name="GovernorEmpire" Value="0.1"/>
+    <AIParameter Name="GovernorCity"   Value="0.3"/>
+    <AIParameter Name="GovernorEmpire" Value="0.3"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="ArmyHero"       Value="0.5"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -873,8 +881,8 @@
   <AIParameterDatatableElement Name="HeroSkillCommon04">
     <AIParameter Name="GovernorCity"   Value="0.9"/>
     <AIParameter Name="GovernorEmpire" Value="0.9"/>
-    <AIParameter Name="ArmySupport"    Value="0.5"/>
-    <AIParameter Name="ArmyHero"       Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -888,7 +896,7 @@
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
-    <AIParameter Name="Spy"            Value="0.9"/>
+    <AIParameter Name="Spy"            Value="1"/>
   </AIParameterDatatableElement>
 
   <!-- Counterintelligence -->
@@ -918,8 +926,8 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.5"/>
-    <AIParameter Name="Spy"            Value="0.6"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="Spy"            Value="0.2"/>
   </AIParameterDatatableElement>
 
   <!-- Improved Auriga affinity (Winter Shifters) -->
@@ -928,7 +936,7 @@
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
     <AIParameter Name="ArmyHero"       Value="0.6"/>
-    <AIParameter Name="Spy"            Value="0.3"/>
+    <AIParameter Name="Spy"            Value="0.1"/>
   </AIParameterDatatableElement>
 
   <!-- Bribe cost reduction (Winter Shifters) -->
@@ -944,9 +952,9 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle27">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="1.0"/>
-    <AIParameter Name="ArmyHero"       Value="0.3"/>
-    <AIParameter Name="Spy"            Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="0.8"/>
+    <AIParameter Name="ArmyHero"       Value="0.8"/>
+    <AIParameter Name="Spy"            Value="0.1"/>
   </AIParameterDatatableElement>
 
   <!-- Killer Instinct (Winter Shifters) -->
@@ -973,10 +981,10 @@
 
   <!-- Ancient Mariner (Sea Demons) -->
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle29">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.4"/>
-    <AIParameter Name="ArmyHero"       Value="1"/>
+    <AIParameter Name="GovernorCity"   Value="0.3"/>
+    <AIParameter Name="GovernorEmpire" Value="0.3"/>
+    <AIParameter Name="ArmySupport"    Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.1"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -984,15 +992,15 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle30">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="1"/>
-    <AIParameter Name="ArmyHero"       Value="0.4"/>
+    <AIParameter Name="ArmySupport"    Value="0.1"/>
+    <AIParameter Name="ArmyHero"       Value="0.1"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Cult of Tides (Sea Demons) -->
   <AIParameterDatatableElement Name="HeroSkillGovernor40">
-    <AIParameter Name="GovernorCity"   Value="1"/>
-    <AIParameter Name="GovernorEmpire" Value="0.8"/>
+    <AIParameter Name="GovernorCity"   Value="0.6"/>
+    <AIParameter Name="GovernorEmpire" Value="0.6"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -1000,8 +1008,8 @@
   
   <!-- Ship Builder (Sea Demons) -->
   <AIParameterDatatableElement Name="HeroSkillGovernor41">
-    <AIParameter Name="GovernorCity"   Value="0.8"/>
-    <AIParameter Name="GovernorEmpire" Value="1"/>
+    <AIParameter Name="GovernorCity"   Value="0.6"/>
+    <AIParameter Name="GovernorEmpire" Value="0.6"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -1043,16 +1051,16 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Extra-large saddle - Hero Accessory-->
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle32Cavalry">
-    <AIParameter Name="GovernorCity"   Value="0"/>
-    <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="GovernorCity"   Value="0.5"/>
+    <AIParameter Name="GovernorEmpire" Value="0.5"/>
+    <AIParameter Name="ArmySupport"    Value="1"/>
+    <AIParameter Name="ArmyHero"       Value="1"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -1060,8 +1068,8 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle33">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.1"/>
-    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="ArmySupport"    Value="0.9"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -1070,7 +1078,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -1078,42 +1086,42 @@
   <AIParameterDatatableElement Name="HeroSkillLeaderBattle35">
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
-    <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="ArmySupport"    Value="1"/>
+    <AIParameter Name="ArmyHero"       Value="1"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Keen Prospector - FIDSI on volcanic-->
   <AIParameterDatatableElement Name="HeroSkillGovernor42">
-    <AIParameter Name="GovernorCity"   Value="0.9"/>
-    <AIParameter Name="GovernorEmpire" Value="0.1"/>
-    <AIParameter Name="ArmySupport"    Value="0"/>
-    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="GovernorCity"   Value="0.8"/>
+    <AIParameter Name="GovernorEmpire" Value="0.8"/>
+    <AIParameter Name="ArmySupport"    Value="0.2"/>
+    <AIParameter Name="ArmyHero"       Value="0.2"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Extracting tricks - provides extra resources-->
   <AIParameterDatatableElement Name="HeroSkillGovernor43">
-    <AIParameter Name="GovernorCity"   Value="0.3"/>
-    <AIParameter Name="GovernorEmpire" Value="0.7"/>
-    <AIParameter Name="ArmySupport"    Value="0"/>
-    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="GovernorCity"   Value="1"/>
+    <AIParameter Name="GovernorEmpire" Value="1"/>
+    <AIParameter Name="ArmySupport"    Value="0.2"/>
+    <AIParameter Name="ArmyHero"       Value="0.2"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Hearth’s Warmth - approval on volcanic-->
   <AIParameterDatatableElement Name="HeroSkillGovernor44">
-    <AIParameter Name="GovernorCity"   Value="0.8"/>
-    <AIParameter Name="GovernorEmpire" Value="0.2"/>
-    <AIParameter Name="ArmySupport"    Value="0"/>
-    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="GovernorCity"   Value="0.6"/>
+    <AIParameter Name="GovernorEmpire" Value="0.3"/>
+    <AIParameter Name="ArmySupport"    Value="0.2"/>
+    <AIParameter Name="ArmyHero"       Value="0.2"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
   <!-- Restless Ingenuity - science on city-->
   <AIParameterDatatableElement Name="HeroSkillGovernor45">
-    <AIParameter Name="GovernorCity"   Value="0.9"/>
-    <AIParameter Name="GovernorEmpire" Value="0.1"/>
+	<AIParameter Name="GovernorCity"   Value="0.3 + (0.6 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1)))"/>
+    <AIParameter Name="GovernorEmpire" Value="0.3 + (0.2 * (1 - $Count(../ClassEmpire,FactionTraitReplicants1)))"/>
     <AIParameter Name="ArmySupport"    Value="0"/>
     <AIParameter Name="ArmyHero"       Value="0"/>
     <AIParameter Name="Spy"            Value="0"/>
@@ -1124,7 +1132,7 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
-    <AIParameter Name="ArmyHero"       Value="0.1"/>
+	<AIParameter Name="ArmyHero"       Value="0.9"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 
@@ -1133,7 +1141,74 @@
     <AIParameter Name="GovernorCity"   Value="0"/>
     <AIParameter Name="GovernorEmpire" Value="0"/>
     <AIParameter Name="ArmySupport"    Value="0.9"/>
+    <AIParameter Name="ArmyHero"       Value="0.9"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+  
+  <!-- ELCP: Mykara skills -->
+  <AIParameterDatatableElement Name="HeroSkillGovernor46">
+	<AIParameter Name="GovernorCity"   Value="0.6 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2))"/>
+    <AIParameter Name="GovernorEmpire" Value="0.6 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2))"/>
+    <AIParameter Name="ArmySupport"    Value="0.3"/>
+    <AIParameter Name="ArmyHero"       Value="0.3"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="HeroSkillGovernor47">
+	<AIParameter Name="GovernorCity"   Value="1 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2))"/>
+    <AIParameter Name="GovernorEmpire" Value="1 * (1 - $Count(../ClassEmpire,FactionTraitBrokenLords2))"/>
+    <AIParameter Name="ArmySupport"    Value="0"/>
+    <AIParameter Name="ArmyHero"       Value="0"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+ 
+  <AIParameterDatatableElement Name="HeroSkillGovernor48">
+	<AIParameter Name="GovernorCity"   Value="0.7"/>
+    <AIParameter Name="GovernorEmpire" Value="0.7"/>
+    <AIParameter Name="ArmySupport"    Value="0.1"/>
     <AIParameter Name="ArmyHero"       Value="0.1"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="HeroSkillLeaderMap26">
+	<AIParameter Name="GovernorCity"   Value="0"/>
+    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="ArmySupport"    Value="1"/>
+    <AIParameter Name="ArmyHero"       Value="1"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="HeroSkillLeaderMap27">
+	<AIParameter Name="GovernorCity"   Value="0"/>
+    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="ArmySupport"    Value="1"/>
+    <AIParameter Name="ArmyHero"       Value="1"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+  
+  <AIParameterDatatableElement Name="HeroSkillLeaderMap28">
+	<AIParameter Name="GovernorCity"   Value="0"/>
+    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="ArmySupport"    Value="0.6"/>
+    <AIParameter Name="ArmyHero"       Value="0.6"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+  
+  <!-- ELCP: Haunts Hero skills -->
+  <!-- Practiced Strike - Army Initiative -->
+  <AIParameterDatatableElement Name="HeroSkillLeaderBattle11Flying">
+    <AIParameter Name="GovernorCity"   Value="0"/>
+    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="ArmySupport"    Value="0.6"/>
+	<AIParameter Name="ArmyHero"       Value="0.6"/>
+    <AIParameter Name="Spy"            Value="0"/>
+  </AIParameterDatatableElement>
+
+  <AIParameterDatatableElement Name="HeroSkillLeaderMap15">
+    <AIParameter Name="GovernorCity"   Value="0"/>
+    <AIParameter Name="GovernorEmpire" Value="0"/>
+    <AIParameter Name="ArmySupport"    Value="0.5"/>
+	<AIParameter Name="ArmyHero"       Value="0.5"/>
     <AIParameter Name="Spy"            Value="0"/>
   </AIParameterDatatableElement>
 </Datatable>

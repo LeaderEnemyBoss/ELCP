@@ -26,6 +26,7 @@
 
   <!-- "Endless Recycling" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionVaulters4">
+	<AIParameter Name="AITechMustHave" Value="0.20 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 2))"/>
     <!-- "Endless Recycling": 20 holy resource required -->
     <AIParameter Name="DistrictScienceLevelUpExtension" Value="14
         * (0.4 max (1 min ((   
@@ -55,14 +56,15 @@
     
   <!-- "Dust mechanics" (battle magic upgrade) -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards14">
-    <AIParameter Name="EmpireBattleMagicArcana"        Value="1"  />
+    <AIParameter Name="EmpirePillarArcana"        Value="1"  />
   </AIParameterDatatableElement>
 
   <!-- "Learn from Others" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionReplicants5">
+	<AIParameter Name="AITechMustHave" Value="0.2 * (($Count(ClassEmpire/Garrison/UnitHero))+$Count(ClassEmpire/UnitHero))"/>
     <AIParameter Name="EmpireHeroExperienceGainPerTurn"        Value="5"  />
   </AIParameterDatatableElement>
-
+  
   <!-- "Cargo Docks" (Flames later version) -->
   <AIParameterDatatableElement Name="TechnologyFlamesDefinitionShip">
     <AIParameter Name="EmpireUnlockSeaTrade" Value="$Property(EmpireTypeMajor:AIHasAnyCoastalCity)"  />
@@ -70,17 +72,17 @@
 
   <!-- "Tribal Council" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionAssimilationLimitMax2Drakkens">
-    <AIParameter Name="EmpireUnlockAssimilation" Value="1"  />
+    <AIParameter Name="EmpireUnlockAssimilation" Value="1 + (0 max (($Count(ClassEmpire/ClassCity/PacifiedVillage) - 9)/2)) + (0 max (($Count(ClassEmpire/ClassCity/ConvertedVillage) - 9)/2))" />
+	<AIParameter Name="AITechMustHave" Value="0.2 * ((0 max ($Count(ClassEmpire/ClassCity/PacifiedVillage) - 9)) + (0 max ($Count(ClassEmpire/ClassCity/ConvertedVillage) - 9)))"/>
   </AIParameterDatatableElement>
-
-  <!-- "Tribal Council" -->
+  
   <AIParameterDatatableElement Name="TechnologyDefinitionFlames9">
-    <AIParameter Name="CityIndustry"          Value="5"/>
+    <AIParameter Name="CityIndustry"          Value="10"/>
+	<AIParameter Name="AITechMustHave" Value="2 * ($Property(ClassEmpire:WarCount))"/>
   </AIParameterDatatableElement>
-
+  
   <!-- "Kaiju Diplomacy" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMimics2">
     <AIParameter Name="CityCityPointPercent" Value="1 * $Property(EmpireTypeMajor:NumberOfTamedKaijus)"/>
   </AIParameterDatatableElement>
-  
 </Datatable>

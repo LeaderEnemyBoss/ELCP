@@ -12,30 +12,34 @@
   <AIParameterDatatableElement Name="TechnologyDefinitionIndustry0">
     <AIParameter Name="CityProduction"        Value="6"/>
     <AIParameter Name="CityProductionPercent" Value="0.15"/>
+	<AIParameter Name="AITechMustHave" Value="0.25 * $Property(../EmpireTypeMajor:CurrentEra)"/>	
   </AIParameterDatatableElement>
 
   <!-- "Empire Mint" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionDust0">
     <AIParameter Name="CityMoney"           Value="5"/>
     <AIParameter Name="CityMoneyPercent"    Value="0.15"/>
+	<AIParameter Name="AITechMustHave" Value="0.20 * $Property(../EmpireTypeMajor:CurrentEra)"/>
   </AIParameterDatatableElement>
 
   <!-- "Aquapulvistics" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionDust1">
-    <AIParameter Name="DistrictDustRiver"   Value="2"/>
-    <AIParameter Name="DistrictDustWater"   Value="3"/>
+    <AIParameter Name="DistrictDustRiver"   Value="1"/>
+    <AIParameter Name="DistrictDustWater"   Value="0.8"/>
   </AIParameterDatatableElement>
 
-  <!-- "Public Mibrary" -->
+  <!-- "Public Library" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionScience0">
     <AIParameter Name="CityScience"         Value="10"/>
     <AIParameter Name="CitySciencePercent"  Value="0.1"/>
+	<AIParameter Name="AITechMustHave" Value="0.20 * $Property(../EmpireTypeMajor:CurrentEra)"/>
   </AIParameterDatatableElement>
 
   <!-- "Topography" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionScience8">
     <AIParameter Name="DistrictScienceScience"     Value="2"/>
     <AIParameter Name="BaseSciencePerPopulation_NationalBuilding"   Value="5"/>
+	<AIParameter Name="AITechMustHave" Value="0.5 * $(VictoryFocusTechnology)"/>
   </AIParameterDatatableElement>
 
   <!-- "Sewer System" -->
@@ -53,17 +57,19 @@
 
   <!-- "Alchemist's Furnace" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionStrategicExtractionCommon">
-    <AIParameter Name="EmpireUnlockResourceExtractor_Strategic1"  Value="1"  />
-    <AIParameter Name="EmpireUnlockResourceExtractor_Strategic2"  Value="1"  />
+	<AIParameter Name="AITechMustHave" Value="0.5 * (0 max ($Count(AffinityMimics))) * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 4)) * (1 - $Count(ClassEmpire/ClassResearch,TechnologyStrategicExtractionCommon))"/>  
+    <AIParameter Name="EmpireUnlockResourceExtractor_Strategic1"  Value="1.5"  />
+    <AIParameter Name="EmpireUnlockResourceExtractor_Strategic2"  Value="1.5"  />
   </AIParameterDatatableElement>
 
   <!-- "Open Pit Mine" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionLuxuryExtractionCommon">
-    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury1" Value="1"  />
-    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury2" Value="1"  />
-    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury3" Value="1"  />
-    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury4" Value="1"  />
-    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury5" Value="1"  />
+	<AIParameter Name="AITechMustHave" Value="0.5 * (0 max ($Count(AffinityMimics))) * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 4)) * (1 - $Count(ClassEmpire/ClassResearch,TechnologyLuxuryExtractionCommon))"/>  
+    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury1" Value="2"  />
+    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury2" Value="2"  />
+    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury3" Value="2"  />
+    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury4" Value="2"  />
+    <AIParameter Name="EmpireUnlockResourceExtractor_Luxury5" Value="2"  />
   </AIParameterDatatableElement>
 
   <!-- "Search Party" -->
@@ -78,16 +84,17 @@
 
   <!-- "Advanced Alloys" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionWeaponCommonTier1">
-    <AIParameter Name="EmpireUnlockWeaponCommon" Value="1"/>
+    <AIParameter Name="EmpireUnlockWeaponCommon" Value="0.3 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3)) * (1 - $Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2))"/>
   </AIParameterDatatableElement>
 
   <!-- "Advanced Armor" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionArmorCommonTier1">
-    <AIParameter Name="EmpireUnlockArmorCommon" Value="1"/>
+    <AIParameter Name="EmpireUnlockArmorCommon" Value="0.3 * (1 - $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier3)) * (1 - $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier2))"/>
   </AIParameterDatatableElement>
   
   <!-- "Mercenary Marketplace" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMarketplaceMercenaries">
+	<AIParameter Name="AITechMustHave" Value="0.1 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))"/>  
     <AIParameter Name="EmpireUnlockMarketUnit" Value="1"/>
   </AIParameterDatatableElement>
 
@@ -98,6 +105,6 @@
 
   <!-- "Fomorian Boarding Vessel" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionNavalUnit1">
-    <AIParameter Name="EmpireUnlockUnitInterceptor" Value="1"/>
+    <AIParameter Name="EmpireUnlockUnitInterceptor" Value="1 * (1 - $Count(AffinitySeaDemons)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyNavalUnit2))) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyNavalUnit4)))"/>
   </AIParameterDatatableElement>
 </Datatable>

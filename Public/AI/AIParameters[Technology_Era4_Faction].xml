@@ -3,12 +3,13 @@
   
   <!-- "Way of the Woodlands" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMadFairies2">
-    <AIParameter Name="EmpireUnitDefensePercent" Value="0.25" />
+    <AIParameter Name="AITechMustHave" Value="0.5 * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyMadFairies2))) * (1 min ($Property(ClassEmpire:WarCount)))"/>
+	<AIParameter Name="EmpireUnitDefensePercent" Value="0.25" />
   </AIParameterDatatableElement>
 
   <!-- "Painosphere" (upgrade pillars) -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards13">
-    <AIParameter Name="EmpirePillarArcana"      Value="1"  />
+    <AIParameter Name="EmpireBattleMagicArcana"        Value="1"  />
   </AIParameterDatatableElement>
 
   <!-- "Arcana of Renewal" -->

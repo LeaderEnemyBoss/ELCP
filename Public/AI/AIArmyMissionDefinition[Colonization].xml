@@ -42,11 +42,11 @@
 					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>                
 				</Include>
 
-        <!--IF we could collect a map boost then change path -->
-        <Include SubTreeName="MapBoostOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
-        </Include>
+				<!--IF we could collect a map boost then change path -->
+				<Include SubTreeName="MapBoostOpportunity">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+				</Include>
 
 				<!--IF EnnemyDetected AND I can not defeat him THEN colonize right here -->
 				<Controller_Sequence Debug="BewareOfEnemies">
@@ -103,6 +103,14 @@
 					<Action_Colonize />
 					<Decorator_IsRegionMine Inverted="false" PositionVarName="$WorldPositionDestination"/>
 				</Controller_Sequence>
+				
+				<!--ELCP: If no valid position was found, just roam around (prevents lag that can occure in regions with unreachable positions)-->
+				<Controller_Sequence Debug="LastResortRoaming">
+					<Decorator_GetNextRoamingPosition PositionVarName="$WorldPositionDestination" Output_DestinationVarName="$BorderDestination"/>
+					<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+				</Controller_Sequence>	
 
 			</Controller_Selector>
 

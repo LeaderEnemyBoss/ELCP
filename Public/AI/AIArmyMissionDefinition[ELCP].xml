@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	
+	<!-- ELCP: a simple wait order-->
+	<AIArmyMissionDefinition Name="ELCPWait">
+		<Controller_Sequence Debug="ELCPWait">
+			<Decorator_Successor />
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP: New Tree for visiting predetermined quest ruins-->
+	<AIArmyMissionDefinition Name="VisitQuestRuin">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+			<Parameter ParameterIndex="1" VarName="$RuinToVisit"/>
+		</Parameters>
+		<Controller_Sequence Debug="ConvertVillage_Root">
+			
+		
+			<!-- If army locked, wait some.-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetPosition TargetVarName="$RuinToVisit" Output_DestinationVarName="$WorldPositionDestination"/>
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+			<Controller_Selector>
+				<Controller_Sequence Debug="DefendIfStillAtHome">
+					<Decorator_IsInOwnRegion Inverted="false"/>
+					<Include SubTreeName="DefendBesiegedCities"/>
+				</Controller_Sequence>
+				
+				<Include SubTreeName="TryToAttackEnemyInRangeOrIgnore"/>
+
+				<!--IF we could collect orbs THEN Change path -->
+				<Include SubTreeName="MapBoostOpportunity">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+				</Include>
+			
+				<Controller_Sequence Debug="Explore_Target">
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$RuinToVisit"/>
+				</Controller_Sequence>
+				
+				<Decorator_WaitForAllies TargetVarName="$RuinToVisit" Output_LeaderVarName="$LeadingArmy"/>	
+				<!-- follow the leader if we arent it -->
+				<Controller_Sequence>
+					<Decorator_VariableCheck VarName="$LeadingArmy" CheckOperation="Exists"/>
+					<Decorator_GetTargetPosition TargetVarName="$LeadingArmy" Output_DestinationVarName="$LeaderDestination"/>
+					<Action_GeneratePath DestinationVarName="$LeaderDestination" Output_PathVarName="$Path" AllowFastTravel="true"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+				</Controller_Sequence>
+
+				<Controller_Sequence Debug="MoveToTarget">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$RuinPath" AllowFastTravel="true"/>
+					<Action_Move PathVarName="$RuinPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$RuinPath"/>
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$RuinToVisit"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP: New Tree for visiting predetermined quest ruins-->
+	<AIArmyMissionDefinition Name="VisitQuestRuinFinal">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+			<Parameter ParameterIndex="1" VarName="$RuinToVisit"/>
+		</Parameters>
+		<Controller_Sequence Debug="ConvertVillage_Root">
+			
+		
+			<!-- If army locked, wait some.-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetPosition TargetVarName="$RuinToVisit" Output_DestinationVarName="$WorldPositionDestination"/>
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+			<Controller_Selector>				
+				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+			
+				<Controller_Sequence Debug="Explore_Target">
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$RuinToVisit"/>
+				</Controller_Sequence>
+
+				<Controller_Sequence Debug="MoveToTarget">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$RuinPath" AllowFastTravel="true"/>
+					<Action_Move PathVarName="$RuinPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$RuinPath"/>
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$RuinToVisit"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
+	
+</Datatable>

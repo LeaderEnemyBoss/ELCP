@@ -39,7 +39,9 @@
     <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
       <PathPrerequisite>EmpireTypeMajor,AffinityDrakkens</PathPrerequisite>
     </DiplomaticRelationStateEmpirePrerequisite>
-
+	<!--ELCP: added new CooldownPrerequisite, 5 turn cooldown after this empire started war-->
+	<DiplomaticCooldownPrerequisite Inverted="false" Flags="Prerequisite,Discard" Cooldown="5" OnlyWhenProposer="true">PeaceToWar,TruceToWar,ColdWarToWar,AllianceToWar</DiplomaticCooldownPrerequisite>
+	
     <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">34 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(RelationStateChaosScore) + $(ForceRelationStateChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
 
     <DiplomaticRelationStateReference>DiplomaticRelationStateTruce</DiplomaticRelationStateReference>
