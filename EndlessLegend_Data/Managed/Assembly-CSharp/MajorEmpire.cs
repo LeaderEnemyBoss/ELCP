@@ -819,20 +819,6 @@ public class MajorEmpire : global::Empire
 		yield break;
 	}
 
-	public void OnLoadEliminationBackupCheck()
-	{
-		Diagnostics.Log("ELCP {0} OnLoadEliminationBackupCheck, {1}, {2}", new object[]
-		{
-			base.Index,
-			this.IsEliminated,
-			this.ConvertedVillages.Count
-		});
-		if (this.IsEliminated && this.ConvertedVillages.Count > 0)
-		{
-			this.UnconvertAndPacifyAllConvertedVillages();
-		}
-	}
-
 	private List<Kaiju> tamedKaijus;
 
 	private Dictionary<string, MajorEmpire.VictoryConditionStatus> victoryConditionStatuses = new Dictionary<string, MajorEmpire.VictoryConditionStatus>();

@@ -20,7 +20,6 @@
       <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value=".5" Operation="Addition" Path="../ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
-	  <SimulationModifierDescriptor TargetProperty="FortressRessourcesPerEra"  Operation="Addition"    Value="0.1" Path="../EmpireTypeMajor/ClassFortress,FortressBonusesOnRegionControlled"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -37,7 +36,6 @@
       <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value="1"  Operation="Addition" Path="../ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"  Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
-	  <SimulationModifierDescriptor TargetProperty="FortressRessourcesPerEra"  Operation="Addition"    Value="0.1" Path="../EmpireTypeMajor/ClassFortress,FortressBonusesOnRegionControlled"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -54,7 +52,6 @@
       <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value="1.5" Operation="Addition" Path="../ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
-	  <SimulationModifierDescriptor TargetProperty="FortressRessourcesPerEra"  Operation="Addition"    Value="0.1" Path="../EmpireTypeMajor/ClassFortress,FortressBonusesOnRegionControlled"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -71,7 +68,6 @@
       <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value="2"   Operation="Addition" Path="../ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
-	  <SimulationModifierDescriptor TargetProperty="FortressRessourcesPerEra"  Operation="Addition"    Value="0.1" Path="../EmpireTypeMajor/ClassFortress,FortressBonusesOnRegionControlled"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -88,7 +84,6 @@
       <SimulationModifierDescriptor TargetProperty="CostIncreaseFromEra"        Value="2.5" Operation="Addition"  Path="../ClassEmpire"/>
       <SimulationModifierDescriptor TargetProperty="CurrentEra"                 Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="EmpirePlanLevelUnlocked"    Value="1"   Operation="Addition" Path="../ClassEmpire,EmpireTypeMajor"/>
-	  <SimulationModifierDescriptor TargetProperty="FortressRessourcesPerEra"  Operation="Addition"    Value="0.1" Path="../EmpireTypeMajor/ClassFortress,FortressBonusesOnRegionControlled"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -244,7 +239,7 @@
   <!-- Mad Fairies - Empire Bonus (Ending Reward) -->
   <SimulationDescriptor Name="TechnologyMadFairies6"                            Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true"  Value="0.25" Operation="Addition"  Path="../EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"        Value="0.25" Operation="Addition"  Path="../EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -455,8 +450,8 @@
   <SimulationDescriptor Name="TechnologyMilitaryRecruitmentBonus1"              Type="Technology" />
   <SimulationDescriptor Name="TechnologyConstructionBuyout"                     Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true" Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true" Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    Operation ="Addition" Value="0.25"  Path="./EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <!--<SimulationDescriptor Name="TechnologyUnitCostReduction1"             Type="Technology"/>-->
@@ -640,9 +635,8 @@
   <!-- Winter Shifters Quest Reward: Luxury Booster bonus -->
   <SimulationDescriptor Name="TechnologyWinterShifters7"                        Type="Technology">
     <SimulationModifierDescriptors>
-      <!--<BinarySimulationModifierDescriptor TargetProperty="BoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>-->
-	  <BinarySimulationModifierDescriptor TargetProperty="AllayiBoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>
-	</SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BoosterDurationMultiplier"  Operation="Addition"     Left="0.2"      BinaryOperation="Multiplication"    Right="$(ActivatedLuxuryBoosterCountMinusOne)" Path="./EmpireTypeMajor" Priority="1"/>
+    </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Sea Demons Quest Reward: City Improvement giving XP at seafaring unit creation -->
@@ -883,11 +877,7 @@
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"             Operation="Addition"  Value="2"     Path="./EmpireTypeMajor/ClassArmy"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-  <SimulationDescriptor Name="TechnologyPrivateers"                             Type="Technology">
-    <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="MarketplaceMercCostMultiplier"  Operation="Addition"  Value="-0.20" Priority="1" Path="./EmpireTypeMajor"/>
-    </SimulationModifierDescriptors>
-  </SimulationDescriptor>
+  <SimulationDescriptor Name="TechnologyPrivateers"                             Type="Technology" />
 
   <SimulationDescriptor Name="TechnologyWeaponRareTier1"                        Type="Technology" />
   <SimulationDescriptor Name="TechnologyArmorRareTier1"                         Type="Technology" />
@@ -1200,10 +1190,10 @@
 
   <SimulationDescriptor Name="TechnologyUnitImproved1"                          Type="Technology">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Percent"   Value="1"     Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1359,12 +1349,12 @@
   <SimulationDescriptor Name="TechnologyKaiju1Unlock2"                          Type="KaijuUnlock" />
   <SimulationDescriptor Name="TechnologyKaiju1Unlock3"                          Type="KaijuUnlock" >
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
-      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" TooltipHidden="true"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" TooltipHidden="true"/>
-      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.5"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.35"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.35"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"            Operation="Percent"   Value="0.35"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.35"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.35"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijusUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Operation="Percent"   Value="0.35"     Path="../EmpireTypeMajor/Garrison/ClassUnit,UnitTypeKaijus"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="TechnologyKaiju2Unlock1"                          Type="KaijuUnlock" />
@@ -1414,8 +1404,8 @@
   <!-- Kaiju Diplomacy -->
   <SimulationDescriptor Name="TechnologyMimics2"                                Type="Technology" >
     <SimulationModifierDescriptors>
-      <BinarySimulationModifierDescriptor TargetProperty="DiplomaticDeclarationFactor" Operation="Percent" Left="-0.2" BinaryOperation="Multiplication" Right="$(NumberOfTamedKaijus)" Path="./EmpireTypeMajor"/>
-      <BinarySimulationModifierDescriptor TargetProperty="DiplomaticNegotiationFactor" Operation="Percent" Left="-0.2" BinaryOperation="Multiplication" Right="$(NumberOfTamedKaijus)" Path="./EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DiplomaticDeclarationFactor" Operation="Percent" Left="-0.30" BinaryOperation="Multiplication" Right="$(NumberOfTamedKaijus)" Path="./EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DiplomaticNegotiationFactor" Operation="Percent" Left="-0.30" BinaryOperation="Multiplication" Right="$(NumberOfTamedKaijus)" Path="./EmpireTypeMajor"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   

@@ -646,24 +646,13 @@ public class AILayer_Colossus : AILayerCommanderController
 				else
 				{
 					float num = 0.5f;
-					if (aidata_Army.Army is KaijuArmy)
+					float num2 = 0f;
+					if (aidata_Army.CommanderMission != null)
 					{
-						aidata_Army.SupportScore = 0.4f;
+						num2 = aidata_Army.CommanderMission.Commander.GetPriority(aidata_Army.CommanderMission);
 					}
-					else if (aidata_Army.CommanderMission == null || aidata_Army.CommanderMission is AICommanderMission_ExplorationDefault || aidata_Army.CommanderMission is AICommanderMission_MantaExploration || aidata_Army.CommanderMission is AICommanderMission_Terraform || aidata_Army.CommanderMission is AICommanderMission_ColonizationDefault)
-					{
-						aidata_Army.SupportScore = 0f;
-					}
-					else if (aidata_Army.CommanderMission is AICommanderMission_DefenseRoaming || aidata_Army.CommanderMission is AICommanderMission_Garrison)
-					{
-						aidata_Army.SupportScore = aidata_Army.CommanderMission.Commander.GetPriority(aidata_Army.CommanderMission);
-					}
-					else
-					{
-						float priority = aidata_Army.CommanderMission.Commander.GetPriority(aidata_Army.CommanderMission);
-						num = AILayer.Boost(num, 0.5f * priority);
-						aidata_Army.SupportScore = num;
-					}
+					num = AILayer.Boost(num, 0.5f * num2);
+					aidata_Army.SupportScore = num;
 				}
 			}
 		}

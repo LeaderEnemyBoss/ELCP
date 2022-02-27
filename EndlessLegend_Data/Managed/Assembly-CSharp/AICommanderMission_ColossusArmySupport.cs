@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Amplitude;
-using Amplitude.Unity.Framework;
-using Amplitude.Unity.Session;
 
 public class AICommanderMission_ColossusArmySupport : AICommanderMission
 {
@@ -13,25 +11,11 @@ public class AICommanderMission_ColossusArmySupport : AICommanderMission
 		this.aiDataRepositoryHelper = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
 		this.colossusCommander = (commander as AICommander_Colossus);
 		base.AIDataArmyGUID = commander.ForceArmyGUID;
-		if (base.Commander.Empire != null && base.Commander.Empire is MajorEmpire)
-		{
-			GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
-			AIPlayer_MajorEmpire aiplayer_MajorEmpire;
-			if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(base.Commander.Empire as MajorEmpire, out aiplayer_MajorEmpire))
-			{
-				AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
-				if (entity != null)
-				{
-					this.ailayer_War = entity.GetLayer<AILayer_War>();
-				}
-			}
-		}
 	}
 
 	public override void Release()
 	{
 		base.Release();
-		this.ailayer_War = null;
 	}
 
 	protected override void Running()
@@ -68,10 +52,6 @@ public class AICommanderMission_ColossusArmySupport : AICommanderMission
 		}
 		Diagnostics.Assert(aidata != null);
 		Diagnostics.Assert(aidata.Army != null);
-		if (base.Commander.Empire != null && base.Commander.Empire is MajorEmpire && this.ailayer_War != null)
-		{
-			this.ailayer_War.AssignDefensiveArmyToCity(aidata.Army);
-		}
 		Army item = this.ChooseTheBetterArmyToSupport();
 		return base.TryCreateArmyMission("RoamingArmySupport", new List<object>
 		{
@@ -105,6 +85,4 @@ public class AICommanderMission_ColossusArmySupport : AICommanderMission
 	private AICommander_Colossus colossusCommander;
 
 	private DepartmentOfDefense departmentOfDefense;
-
-	private AILayer_War ailayer_War;
 }

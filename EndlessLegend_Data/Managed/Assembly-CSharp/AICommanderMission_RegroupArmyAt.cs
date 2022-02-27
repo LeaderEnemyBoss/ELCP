@@ -22,9 +22,11 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 				this.UnitGuids[i] = reader.ReadElementString<ulong>("Unit");
 			}
 			reader.ReadEndElement();
-			return;
 		}
-		reader.Skip();
+		else
+		{
+			reader.Skip();
+		}
 	}
 
 	public override void WriteXml(XmlWriter writer)
@@ -194,10 +196,11 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 
 	protected override AICommanderMission.AICommanderMissionCompletion GetCompletionWhenSuccess(AIData_Army armyData, out TickableState tickableState)
 	{
-		tickableState = base.State;
-		if (armyData.Army.GetPropertyValue(SimulationProperties.Movement) <= 0f)
+		tickableState = this.State;
+		float propertyValue = armyData.Army.GetPropertyValue(SimulationProperties.Movement);
+		if (propertyValue <= 0f)
 		{
-			base.State = TickableState.NoTick;
+			this.State = TickableState.NoTick;
 			this.SetRequestMessageExecutionState(RequestUnitListMessage.RequestUnitListState.RegroupingPending);
 		}
 		return AICommanderMission.AICommanderMissionCompletion.Initializing;
@@ -218,13 +221,13 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 				requestUnitListMessage.ExecutionState = RequestUnitListMessage.RequestUnitListState.Pending;
 			}
 		}
-		base.State = TickableState.NoTick;
+		this.State = TickableState.NoTick;
 	}
 
 	protected override void Running()
 	{
 		base.Running();
-		if (base.State == TickableState.NoTick)
+		if (this.State == TickableState.NoTick)
 		{
 			this.SetRequestMessageExecutionState(RequestUnitListMessage.RequestUnitListState.RegroupingPending);
 		}
@@ -249,11 +252,15 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 					Ticket ticket;
 					base.Commander.Empire.PlayerControllers.Client.PostOrder(order, out ticket, null);
 				}
-				if (this.majorEmpireAIEntity != null && this.majorEmpireAIEntity.GetCommanderMissionBasedOnItsArmyRequestArmy(requestArmyMessage.ID) != null)
+				if (this.majorEmpireAIEntity != null)
 				{
-					base.SetArmyFree();
-					this.Process();
-					return;
+					AICommanderMissionWithRequestArmy commanderMissionBasedOnItsArmyRequestArmy = this.majorEmpireAIEntity.GetCommanderMissionBasedOnItsArmyRequestArmy(requestArmyMessage.ID);
+					if (commanderMissionBasedOnItsArmyRequestArmy != null)
+					{
+						base.SetArmyFree();
+						this.Process();
+						return;
+					}
 				}
 			}
 			else
@@ -339,10 +346,13 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 				bool flag = false;
 				for (int i = 0; i < camp.Districts.Count; i++)
 				{
-					if (camp.Districts[i].Type != DistrictType.Exploitation && camp.Districts[i].Type != DistrictType.Improvement && this.worldPositionningService.GetDistance(this.AICommanderRegroupArmies.FinalPosition, camp.Districts[i].WorldPosition) <= 1)
+					if (camp.Districts[i].Type != DistrictType.Exploitation && camp.Districts[i].Type != DistrictType.Improvement)
 					{
-						flag = true;
-						break;
+						if (this.worldPositionningService.GetDistance(this.AICommanderRegroupArmies.FinalPosition, camp.Districts[i].WorldPosition) <= 1)
+						{
+							flag = true;
+							break;
+						}
 					}
 				}
 				if (!flag)
@@ -393,10 +403,13 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 				bool flag2 = false;
 				for (int j = 0; j < city.Districts.Count; j++)
 				{
-					if (city.Districts[j].Type != DistrictType.Exploitation && city.Districts[j].Type != DistrictType.Improvement && this.worldPositionningService.GetDistance(this.AICommanderRegroupArmies.FinalPosition, city.Districts[j].WorldPosition) <= 1)
+					if (city.Districts[j].Type != DistrictType.Exploitation && city.Districts[j].Type != DistrictType.Improvement)
 					{
-						flag2 = true;
-						break;
+						if (this.worldPositionningService.GetDistance(this.AICommanderRegroupArmies.FinalPosition, city.Districts[j].WorldPosition) <= 1)
+						{
+							flag2 = true;
+							break;
+						}
 					}
 				}
 				if (!flag2)
@@ -429,13 +442,16 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 		foreach (AICommanderMission aicommanderMission in this.AICommanderRegroupArmies.Missions)
 		{
 			AICommanderMission_RegroupArmyAt aicommanderMission_RegroupArmyAt = (AICommanderMission_RegroupArmyAt)aicommanderMission;
-			if (aicommanderMission_RegroupArmyAt != this && aicommanderMission_RegroupArmyAt.targetTransferArmy == aidata)
+			if (aicommanderMission_RegroupArmyAt != this)
 			{
-				if (!aidata.Army.IsLocked && !aidata.Army.IsInEncounter)
+				if (aicommanderMission_RegroupArmyAt.targetTransferArmy == aidata)
 				{
-					return false;
+					if (!aidata.Army.IsLocked && !aidata.Army.IsInEncounter)
+					{
+						return false;
+					}
+					aicommanderMission_RegroupArmyAt.targetTransferArmy = null;
 				}
-				aicommanderMission_RegroupArmyAt.targetTransferArmy = null;
 			}
 		}
 		if (this.AICommanderRegroupArmies != null && this.AICommanderRegroupArmies.AIPlayer != null && this.AICommanderRegroupArmies.AIPlayer.AIEntities != null)
@@ -449,7 +465,7 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 					aicommanderMission_PrivateersHarass.TargetCity
 				}))
 				{
-					base.State = TickableState.NeedTick;
+					this.State = TickableState.NeedTick;
 					RequestUnitListMessage requestUnitListMessage = base.Commander.AIPlayer.Blackboard.GetMessage(this.AICommanderRegroupArmies.RequestUnitListMessageID) as RequestUnitListMessage;
 					if (requestUnitListMessage != null)
 					{
@@ -462,7 +478,7 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 		WorldPosition worldPosition;
 		if (this.IsMaster)
 		{
-			if (this.IsArmyBesiegingACity(base.AIDataArmyGUID) && !aidata.Army.IsPrivateers)
+			if (this.IsArmyBesiegingACity(base.AIDataArmyGUID))
 			{
 				return false;
 			}
@@ -516,7 +532,7 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 			}
 			worldPosition = masterMission.GetUnitsToRegroupPosition();
 		}
-		base.State = TickableState.NoTick;
+		this.State = TickableState.NoTick;
 		if (aidata.Army.GetPropertyValue(SimulationProperties.Movement) > 0f)
 		{
 			PathfindingContext pathfindingContext = aidata.Army.GenerateContext();
@@ -526,14 +542,17 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 			{
 				foreach (WorldPosition worldPosition2 in pathfindingResult.GetCompletePath())
 				{
-					if (!(worldPosition2 == pathfindingResult.Start) && !(worldPosition2 == worldPosition) && this.pathfindingService.IsTileStopable(worldPosition2, aidata.Army, (PathfindingFlags)0, null) && base.TryCreateArmyMission("ReachPosition", new List<object>
+					if (!(worldPosition2 == pathfindingResult.Start) && !(worldPosition2 == worldPosition))
 					{
-						worldPosition2
-					}))
-					{
-						base.State = TickableState.NeedTick;
-						this.SetRequestMessageExecutionState(RequestUnitListMessage.RequestUnitListState.Regrouping);
-						return true;
+						if (this.pathfindingService.IsTileStopable(worldPosition2, aidata.Army, (PathfindingFlags)0, null) && base.TryCreateArmyMission("ReachPosition", new List<object>
+						{
+							worldPosition2
+						}))
+						{
+							this.State = TickableState.NeedTick;
+							this.SetRequestMessageExecutionState(RequestUnitListMessage.RequestUnitListState.Regrouping);
+							return true;
+						}
 					}
 				}
 			}
@@ -651,11 +670,6 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 			if (aidata.Army.StandardUnits.Count != this.UnitGuids.Length)
 			{
 				armyPosition = AILayer_ArmyRecruitment.GetValidArmySpawningPosition(aidata.Army, this.worldPositionningService, this.pathfindingService);
-				int num = (int)base.Commander.Empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot);
-				if (aidata.Army.StandardUnits.Count > num)
-				{
-					Array.Resize<GameEntityGUID>(ref this.UnitGuids, num);
-				}
 			}
 			else
 			{
@@ -686,7 +700,8 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 				WorldPosition neighbourTile = this.worldPositionningService.GetNeighbourTile(worldPosition, worldOrientation, 1);
 				if (DepartmentOfDefense.CheckWhetherTargetPositionIsValidForUseAsArmySpawnLocation(neighbourTile, PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water) && this.pathfindingService.IsTransitionPassable(village.WorldPosition, neighbourTile, this.pathfindingContext, PathfindingFlags.IgnoreFogOfWar, null) && this.pathfindingService.IsTilePassable(neighbourTile, this.pathfindingContext, (PathfindingFlags)0, null) && this.pathfindingService.IsTileStopable(neighbourTile, this.pathfindingContext, (PathfindingFlags)0, null))
 				{
-					if (this.worldPositionningService.GetArmyAtPosition(neighbourTile) == null)
+					Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(neighbourTile);
+					if (armyAtPosition == null)
 					{
 						armyPosition = neighbourTile;
 						break;
@@ -737,18 +752,18 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 			}
 			for (int m = 0; m < this.UnitGuids.Length; m++)
 			{
-				AIData_Unit aidata_Unit2;
-				this.aiDataRepository.TryGetAIData<AIData_Unit>(this.UnitGuids[m], out aidata_Unit2);
-				if (aidata_Unit2 == null)
+				AIData_Unit aidata_Unit;
+				this.aiDataRepository.TryGetAIData<AIData_Unit>(this.UnitGuids[m], out aidata_Unit);
+				if (aidata_Unit == null)
 				{
 					Diagnostics.LogWarning("[AICommanderMission_RegroupArmyAt] no AIData for Unit {0}", new object[]
 					{
 						this.UnitGuids[m].ToString()
 					});
 				}
-				else if (!aidata_Unit2.IsUnitLockedByMe(base.InternalGUID))
+				else if (!aidata_Unit.IsUnitLockedByMe(base.InternalGUID))
 				{
-					aidata_Unit2.TryLockUnit(base.InternalGUID, base.GetType().ToString(), AIData_Unit.AIDataReservationExtraTag.Regrouping, base.Commander.GetPriority(this));
+					aidata_Unit.TryLockUnit(base.InternalGUID, base.GetType().ToString(), AIData_Unit.AIDataReservationExtraTag.Regrouping, base.Commander.GetPriority(this));
 				}
 			}
 			OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(base.Commander.Empire.Index, this.SourceGuid, this.UnitGuids, armyPosition, "Regroup", false, true, true);
@@ -768,38 +783,43 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 		{
 			AICommanderMission_RegroupArmyAt aicommanderMission_RegroupArmyAt = (AICommanderMission_RegroupArmyAt)aicommanderMission;
 			AIData_Army aidata2 = this.aiDataRepository.GetAIData<AIData_Army>(aicommanderMission_RegroupArmyAt.AIDataArmyGUID);
-			if (aicommanderMission_RegroupArmyAt != this && aicommanderMission_RegroupArmyAt.AIDataArmyGUID.IsValid && aidata2 != null && aidata2.Army != null && !aidata2.Army.IsLocked && !aidata2.Army.IsInEncounter && aicommanderMission_RegroupArmyAt.targetTransferArmy == null && this.worldPositionningService.GetDistance(aidata.Army.WorldPosition, aidata2.Army.WorldPosition) == 1 && this.pathfindingService.IsTransitionPassable(aidata.Army.WorldPosition, aidata2.Army.WorldPosition, aidata.Army, (PathfindingFlags)0, null))
+			if (aicommanderMission_RegroupArmyAt != this && aicommanderMission_RegroupArmyAt.AIDataArmyGUID.IsValid && aidata2 != null && aidata2.Army != null && !aidata2.Army.IsLocked && !aidata2.Army.IsInEncounter && aicommanderMission_RegroupArmyAt.targetTransferArmy == null)
 			{
-				if (aidata.Army.GetPropertyValue(SimulationProperties.Movement) <= 0f)
+				if (this.worldPositionningService.GetDistance(aidata.Army.WorldPosition, aidata2.Army.WorldPosition) == 1 && this.pathfindingService.IsTransitionPassable(aidata.Army.WorldPosition, aidata2.Army.WorldPosition, aidata.Army, (PathfindingFlags)0, null))
 				{
-					if (this.IsArmyBesiegingACity(aidata2.Army.GUID))
+					float propertyValue = aidata.Army.GetPropertyValue(SimulationProperties.Movement);
+					if (propertyValue <= 0f)
 					{
-						continue;
-					}
-					if (aidata2.Army.GetPropertyValue(SimulationProperties.Movement) > 0f && aicommanderMission_RegroupArmyAt.TransferUnits(aidata.GameEntity.GUID))
-					{
-						aicommanderMission_RegroupArmyAt.targetTransferArmy = aidata;
-						aicommanderMission_RegroupArmyAt.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
-						int num = this.UnitGuids.Length;
-						Array.Resize<GameEntityGUID>(ref this.UnitGuids, this.UnitGuids.Length + aicommanderMission_RegroupArmyAt.UnitGuids.Length);
-						for (int i = 0; i < aicommanderMission_RegroupArmyAt.UnitGuids.Length; i++)
+						if (this.IsArmyBesiegingACity(aidata2.Army.GUID))
 						{
-							this.UnitGuids[num + i] = aicommanderMission_RegroupArmyAt.UnitGuids[i];
+							continue;
+						}
+						propertyValue = aidata2.Army.GetPropertyValue(SimulationProperties.Movement);
+						if (propertyValue > 0f && aicommanderMission_RegroupArmyAt.TransferUnits(aidata.GameEntity.GUID))
+						{
+							aicommanderMission_RegroupArmyAt.targetTransferArmy = aidata;
+							aicommanderMission_RegroupArmyAt.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
+							int num = this.UnitGuids.Length;
+							Array.Resize<GameEntityGUID>(ref this.UnitGuids, this.UnitGuids.Length + aicommanderMission_RegroupArmyAt.UnitGuids.Length);
+							for (int i = 0; i < aicommanderMission_RegroupArmyAt.UnitGuids.Length; i++)
+							{
+								this.UnitGuids[num + i] = aicommanderMission_RegroupArmyAt.UnitGuids[i];
+							}
 						}
 					}
-				}
-				else if (this.TransferUnits(aidata2.GameEntity.GUID))
-				{
-					this.targetTransferArmy = aidata2;
-					base.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
-					int num2 = aicommanderMission_RegroupArmyAt.UnitGuids.Length;
-					Array.Resize<GameEntityGUID>(ref aicommanderMission_RegroupArmyAt.UnitGuids, this.UnitGuids.Length + aicommanderMission_RegroupArmyAt.UnitGuids.Length);
-					for (int j = 0; j < this.UnitGuids.Length; j++)
+					else if (this.TransferUnits(aidata2.GameEntity.GUID))
 					{
-						aicommanderMission_RegroupArmyAt.UnitGuids[num2 + j] = this.UnitGuids[j];
+						this.targetTransferArmy = aidata2;
+						base.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
+						int num2 = aicommanderMission_RegroupArmyAt.UnitGuids.Length;
+						Array.Resize<GameEntityGUID>(ref aicommanderMission_RegroupArmyAt.UnitGuids, this.UnitGuids.Length + aicommanderMission_RegroupArmyAt.UnitGuids.Length);
+						for (int j = 0; j < this.UnitGuids.Length; j++)
+						{
+							aicommanderMission_RegroupArmyAt.UnitGuids[num2 + j] = this.UnitGuids[j];
+						}
 					}
+					return true;
 				}
-				return true;
 			}
 		}
 		return false;
@@ -812,14 +832,18 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 		if (num <= 0)
 		{
 			unitsToGarrison = null;
-			return;
 		}
-		unitsToGarrison = new GameEntityGUID[num];
-		int num2 = 0;
-		while (num2 < unitListCandidate.Length && num2 != num)
+		else
 		{
-			unitsToGarrison[num2] = unitListCandidate[num2];
-			num2++;
+			unitsToGarrison = new GameEntityGUID[num];
+			for (int i = 0; i < unitListCandidate.Length; i++)
+			{
+				if (i == num)
+				{
+					break;
+				}
+				unitsToGarrison[i] = unitListCandidate[i];
+			}
 		}
 	}
 
@@ -836,7 +860,7 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 			return false;
 		}
 		City city = district.City;
-		return city != null && city.Empire != aidata.Army.Empire && city.BesiegingEmpire == aidata.Army.Empire;
+		return city != null && (city.Empire != aidata.Army.Empire && city.BesiegingEmpire == aidata.Army.Empire);
 	}
 
 	private void MoveOrder_TicketRaised(object sender, TicketRaisedEventArgs e)
@@ -867,19 +891,6 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 		this.createFirstArmyTicket = null;
 		if (e.Result != PostOrderResponse.Processed)
 		{
-			for (int i = 0; i < this.UnitGuids.Length; i++)
-			{
-				IGameEntity gameEntity;
-				if (this.gameEntityRepositoryService.TryGetValue(this.UnitGuids[i], out gameEntity))
-				{
-					Unit unit = gameEntity as Unit;
-					if (unit != null && (double)unit.GetPropertyValue(SimulationProperties.Movement) < 0.001)
-					{
-						base.Completion = AICommanderMission.AICommanderMissionCompletion.Fail;
-					}
-					return;
-				}
-			}
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Initializing;
 			return;
 		}
@@ -888,15 +899,15 @@ public class AICommanderMission_RegroupArmyAt : AICommanderMission, IXmlSerializ
 		if (aidata != null)
 		{
 			aidata.UnassignArmyMission();
-			for (int j = 0; j < this.UnitGuids.Length; j++)
+			for (int i = 0; i < this.UnitGuids.Length; i++)
 			{
 				AIData_Unit aidata_Unit;
-				this.aiDataRepository.TryGetAIData<AIData_Unit>(this.UnitGuids[j], out aidata_Unit);
+				this.aiDataRepository.TryGetAIData<AIData_Unit>(this.UnitGuids[i], out aidata_Unit);
 				if (aidata_Unit == null)
 				{
 					Diagnostics.LogWarning("[AICommanderMission_RegroupArmyAt] no AIData for Unit {0}", new object[]
 					{
-						this.UnitGuids[j].ToString()
+						this.UnitGuids[i].ToString()
 					});
 				}
 				else

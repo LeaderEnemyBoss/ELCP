@@ -1,0 +1,1246 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://RovingClansw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://RovingClansw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ======== ROVING CLANS-CHAPTER 1 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter1" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter1,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityRovingClans</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set one Player's city-->
+      <Var VarName="$SelectedPlayerCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCityLocation">
+        <From Source="$SelectedPlayerCity.$Position"/>
+      </Var>
+      <!--Sort by distance all regions that don't belong to Player-->
+      <Var VarName="$SortedAllRegionsButPlayerRegions">
+        <From Source="$AllRegionsButPlayerRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$MinorEmpire">
+        <First>
+          <From Source="$SortedAllRegionsButPlayerRegions.$MinorEmpire"/>
+        </First>
+      </Var>
+
+      <Var VarName="$MinorEmpireVillages">
+        <From Source="$MinorEmpire.$Villages"/>
+      </Var>
+
+      <Var VarName="$MinorEmpireRegion">
+        <From Source="$MinorEmpireVillages.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Set the Quest POI to inspect-->
+      <Var VarName="$QuestPOI">
+        <Any>
+          <From Source="$MinorEmpireRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFactionName" Source="$MinorEmpire"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$MinorEmpireRegion"/>
+      <LocalizationVar LocalizationKey="$QuestPOIName" Source="$QuestPOI"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter1-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--To display the message saying that you need first to pacify all the villages of the region before searching the ruins-->
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI" Initiator="Empire" PrerequisiteNotVerifiedMessage="%RegionNotYetPacified">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 5000</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$MinorEmpireVillages" TargetOption="All" Initiator="AllEmpires"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_VillagesPacified VillagesVarName="$MinorEmpireVillages" TargetOption="All"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter1-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter1-Step2" State="InProgress"/>
+      <Decorator_Inspect TargetEntityVarName="$QuestPOI" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter1-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter1-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRovingClans-Chapter1-Step2">
+        <Reward Droplist="DroplistMainQuestRovingClansChapter1Step2UniqueItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- ======================================
+     ======== ROVING CLANS-CHAPTER 2 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter2</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter2Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter2Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter2Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter2-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitTypeMadFairiesHero/ItemAttributesTomeRovingClansMainQuest1</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter2-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter2-Step2" HideRewards="true" State="InProgress"/>
+      <Decorator_ConstructionEnded ConstructionName="CityImprovementRovingClans2" LinkedStepProgression="MainQuestBrokenLords-Chapter8-Step2" Initiator="Empire"/>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter2-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter2-Step1">
+        <Reward Droplist="DroplistMainQuestRovingClansChapter2Step1TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRovingClans-Chapter2-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ======== ROVING CLANS-CHAPTER 2Alt =====
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter2Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter2</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter2" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter2" QuestState="Unstarted"/>
+    </Prerequisites>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter2Alt-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <PathPrerequisite Inverted="false" Flags="Prerequisite">EmpireTypeMajor/ClassArmy/UnitTypeRageWizardsHero/ItemAttributesTomeRovingClansMainQuest1</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter2Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter2Alt-Step2" HideRewards="true" State="InProgress"/>
+      <Controller_Loop LoopCount="3">
+        <Decorator_Inspect Output_InteractionTargetVarName="$InspectionTarget" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" LinkedStepProgression="MainQuestRovingClans-Chapter2Alt-Step2" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionTarget">
+              <PathPrerequisite>PointOfInterestTypeQuestLocation,QuestLocationTypeTemple</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionInstigatorSimObject">
+              <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeRageWizardsHero/ItemAttributesTomeRovingClansMainQuest1</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_Inspect>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter2Alt-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter2Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRovingClans-Chapter2Alt-Step2">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ======= ROVING CLANS-CHAPTER 3 =========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter3" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter3</Tags>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+    <!--Step 1-->
+    <Action_UpdateStep StepName="MainQuestRovingClans-Chapter3-Step1" State="InProgress"/>
+
+    <Controller_Parallel CompletionPolicy="All">
+
+      <Controller_Sequence>
+
+        <Controller_Parallel CompletionPolicy="Any">
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury1Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_Prerequisite >
+                  <Prerequisites Target="$Empire">
+                    <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury2Stock) ge 50</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury3Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury4Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury5Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury6Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury7Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury8Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury9Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury10Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury11Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury12Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury13Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury14Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_Prerequisite >
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Luxury15Stock) ge 50</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+          </Controller_Parallel>
+
+      </Controller_Sequence>
+
+      <Controller_Sequence>
+
+      <Controller_Parallel CompletionPolicy="Any">
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Strategic1Stock) ge 50</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Strategic2Stock) ge 50</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Strategic3Stock) ge 50</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Strategic4Stock) ge 50</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Strategic5Stock) ge 50</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Strategic6Stock) ge 50</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+      </Controller_Parallel>
+
+      </Controller_Sequence>
+
+    </Controller_Parallel>
+
+    <Action_UpdateStep StepName="MainQuestRovingClans-Chapter3-Step1" State="Completed"/>
+    <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter3-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="2"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter4</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ========================================
+     ======== ROVING CLANS-CHAPTER 4 ==========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter4" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter4</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter4Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter4Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter4Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter4-Step1" State="InProgress"/>
+      <Controller_Loop LoopCount="5">
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter4-Step1">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(EmpireTypeMajor:EmpirePoint) ge 40</InterpreterPrerequisite>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(EmpireTypeMajor:EmpireMoney) ge 60</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter4-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter4-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMainQuestRovingClansChapter4and4AltStep1TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- ========================================
+     ======== ROVING CLANS-CHAPTER 4Alt =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter4Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter4</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter4" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter4" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRovingClans-Chapter4" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter4Alt-Step1" State="InProgress"/>
+      <Controller_Loop LoopCount="5">
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter4Alt-Step1">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly) ge 7</InterpreterPrerequisite>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(EmpireTypeMajor:EmpirePoint) ge 50</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter4Alt-Step1" State="Completed"/>
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter4Alt-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMainQuestRovingClansChapter4and4AltStep1TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ======= ROVING CLANS-CHAPTER 5 =========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter5" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="0" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter5</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter5Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter5Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter5Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set Player's Empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set the City to capture-->
+      <Var VarName="$Cities">
+        <From Source="$Regions.$City">
+          <Where>
+            <FilterCityByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the most defended City among the other empires-->
+      <Var VarName="$CityToCapture">
+        <First>
+          <From Source="$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Ascending" PropertyName="CityDefensePoint"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+
+      <!--Set the Quest POI to inspect in the region-->
+      <Var VarName="$CityToCaptureRegion">
+        <From Source="$CityToCapture.$Region"/>
+      </Var>
+
+      <Var VarName="$QuestPOI">
+        <Any>
+          <From Source="$CityToCaptureRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$QuestPOILocation">
+          <From Source="$QuestPOI.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$CityToCaptureRegion"/>
+      <LocalizationVar LocalizationKey="$QuestPOIName" Source="$QuestPOI"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassArmy/UnitHero:LevelDisplayed) ge 77</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_CaptureCity TargetCityVarName="$CityToCapture" Initiator="Empire"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$CityToCapture">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+      </Controller_Parallel>
+
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5-Step2" State="InProgress"/>
+      <Decorator_Inspect TargetEntityVarName="$QuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassArmy/UnitHero:LevelDisplayed) ge 7</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5-Step2" State="Completed"/>
+      <Action_SpawnArmy SpawnLocationVarName="$QuestPOILocation" ArmyDroplist="DroplistArmyDefinitionMainQuestRovingClansChapter5Step2" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5-Step3" State="InProgress"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5-Step3" State="Completed"/>
+
+      <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter5-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRovingClans-Chapter5-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRovingClans-Chapter5-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ===== ROVING CLANS-CHAPTER 5Alt ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter5Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="0" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter5</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter5" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter5" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestBrokenLords-Chapter5" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set Player's Empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set the City to capture-->
+      <Var VarName="$Cities">
+        <From Source="$Regions.$City">
+          <Where>
+            <FilterCityByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the most defended City among the other empires-->
+      <Var VarName="$CityToCapture">
+        <First>
+          <From Source="$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Ascending" PropertyName="CityDefensePoint"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+
+      <!--Set the Quest POI to inspect in the region-->
+      <Var VarName="$CityToCaptureRegion">
+        <From Source="$CityToCapture.$Region"/>
+      </Var>
+
+      <Var VarName="$QuestPOI">
+        <Any>
+          <From Source="$CityToCaptureRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$QuestPOILocation">
+        <From Source="$QuestPOI.$Position"/>
+      </Var>
+
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$CityToCaptureRegion"/>
+      <LocalizationVar LocalizationKey="$QuestPOIName" Source="$QuestPOI"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5Alt-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassArmy/UnitHero:LevelDisplayed) ge 77</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_CaptureCity TargetCityVarName="$CityToCapture" Initiator="Empire"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$CityToCapture">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+      </Controller_Parallel>
+
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5Alt-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5Alt-Step2" State="InProgress"/>
+      <Decorator_Inspect TargetEntityVarName="$QuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassArmy/UnitHero:LevelDisplayed) ge 7</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter5Alt-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter5Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRovingClans-Chapter5Alt-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ======== ROVING CLANS-CHAPTER 6 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter6" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter6</Tags>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter6-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire" >
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era3UnlockedTechnologyCount) ge 10</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter6-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter6-Step2" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(ClassEmpire/ClassCity:TotalTradeRoutesCityDustIncome;ge;10) ge 3</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter6-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter6-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRovingClans-Chapter6-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+
+
+  <!-- ======================================
+     ========= ROVING CLANS-CHAPTER 7 =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter7" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter7</Tags>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter7-Step1" State="InProgress"/>
+
+      <!--Check that at least 4 villages are pacified and rebuilt by assimilated Minor Faction-->
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitBos</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeBos) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitCeratan</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeCeratan) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitDelvers</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeDelvers) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitErycis</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeErycis) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitHaunts</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeHaunts) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitJotus</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeJotus) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitKazanji</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeKazanji) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitHurnas</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeHurnas) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitSilics</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeSilics) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitSistersOfMercy</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeSistersOfMercy) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitUrces</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeUrces) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitBirdhive</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeBirdhive) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitGeldrius</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeGeldirus) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitEyelessOnes</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeEyelessOnes) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitDorgeshi</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeDorgeshi) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestRovingClans-Chapter7-Step1"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter7-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter7-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMainQuestRovingClansChapter7Step1TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RovingClans,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ========= ROVING CLANS-CHAPTER 8 =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRovingClans-Chapter8" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RovingClans,Chapter8,FinalQuest</Tags>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter8-Step1" HideRewards="true" State="InProgress"/>
+      <Decorator_ConstructionEnded ConstructionName="CityImprovementRovingClans4" Initiator="Empire"/>
+      <Action_UpdateStep StepName="MainQuestRovingClans-Chapter8-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRovingClans-Chapter8-Step1">
+        <Reward Droplist="DroplistMainQuestRovingClansChapter8Step1TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+</Datatable>

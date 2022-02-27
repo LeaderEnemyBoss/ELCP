@@ -100,9 +100,11 @@
   </ArmyAction_TogglePillage>
 
   <ArmyAction_ToggleDismantleDevice Name="ArmyActionDismantleDevice"        ExperienceReward="8">
+    <!--
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    -->
   </ArmyAction_ToggleDismantleDevice>
-  
+
   <ArmyAction_TransferUnits         Name="ArmyActionTransferUnits"          AllowedTransferTarget="Army">
   </ArmyAction_TransferUnits>
 
@@ -192,18 +194,18 @@
   <ArmyAction_TameKaiju               Name="ArmyActionTameKaiju">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
     <TameCost>
-      <CostDefinition EraNumber="1,2" LuxuryTier="Tier1">25 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
-      <CostDefinition EraNumber="3" LuxuryTier="Tier2">25 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
-      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">25 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+      <CostDefinition EraNumber="1,2" LuxuryTier="Tier1">10 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+      <CostDefinition EraNumber="3" LuxuryTier="Tier2">8 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">5 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
     </TameCost>
   </ArmyAction_TameKaiju>
   
   <ArmyAction_TameUnstunnedKaiju               Name="ArmyActionTameUnstunnedKaiju">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
     <TameCost>
-      <CostDefinition EraNumber="1,2" LuxuryTier="Tier2">30 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
-      <CostDefinition EraNumber="3" LuxuryTier="Tier2">30 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
-      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">30 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
+      <CostDefinition EraNumber="1,2" LuxuryTier="Tier1">60 + 30 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
+      <CostDefinition EraNumber="3" LuxuryTier="Tier2">40 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
+      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">30 + 15 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
     </TameCost>
   </ArmyAction_TameUnstunnedKaiju>
   

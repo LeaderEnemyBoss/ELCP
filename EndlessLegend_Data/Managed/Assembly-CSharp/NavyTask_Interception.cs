@@ -11,7 +11,6 @@ public class NavyTask_Interception : NavyTask
 		IGameService service = Services.GetService<IGameService>();
 		this.worldPositionService = service.Game.Services.GetService<IWorldPositionningService>();
 		this.aiDataRepository = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
-		this.visibilityService = service.Game.Services.GetService<IVisibilityService>();
 	}
 
 	public AIData_Army Target
@@ -36,19 +35,11 @@ public class NavyTask_Interception : NavyTask
 		{
 			return false;
 		}
-		if (base.Owner is MajorEmpire && this.Target.Army.Empire is MajorEmpire && base.NavyLayer.diplomacyLayer.GetPeaceWish(this.Target.Army.Empire.Index))
-		{
-			return false;
-		}
 		if (this.worldPositionService.IsFrozenWaterTile(this.Target.Army.WorldPosition))
 		{
 			return false;
 		}
 		if (!this.worldPositionService.IsWaterTile(this.Target.Army.WorldPosition))
-		{
-			return false;
-		}
-		if (this.Target.Army.IsCamouflaged && !this.visibilityService.IsWorldPositionDetectedFor(this.Target.Army.WorldPosition, base.Owner))
 		{
 			return false;
 		}
@@ -82,20 +73,20 @@ public class NavyTask_Interception : NavyTask
 			if (navyTaskEvaluation.Fitness > 0f)
 			{
 				WorldPosition targetPosition = this.GetTargetPosition();
-				float num = (float)this.worldPositionService.GetDistance(navyGarrison.Garrison.WorldPosition, targetPosition) / navyGarrison.GetMaximumMovement();
-				HeuristicValue operand = base.ComputeDistanceFitness(num, navyGarrison.Role);
-				navyTaskEvaluation.Fitness.Multiply(operand, "Distance", new object[0]);
-				if (num <= 1f && propertyValue > enemyPower * 1.2f)
-				{
-					navyTaskEvaluation.Fitness.Boost(0.9f, "Distance", new object[0]);
-				}
+				float num = (float)this.worldPositionService.GetDistance(navyGarrison.Garrison.WorldPosition, targetPosition);
+				float numberOfTurnToReach = num / navyGarrison.GetMaximumMovement();
+				navyTaskEvaluation.Fitness.Multiply(base.ComputeDistanceFitness(numberOfTurnToReach, navyGarrison.Role), "Distance", new object[0]);
 				if (navyGarrison.Role == BaseNavyArmy.ArmyRole.Forteress)
 				{
 					navyTaskEvaluation.Fitness.Boost(-0.2f, "Fortress...", new object[0]);
 				}
-				else if (navyGarrison.Garrison.GetPropertyValue(SimulationProperties.ActionPointsSpent) > 0f)
+				else
 				{
-					navyTaskEvaluation.Fitness.Boost(-0.2f, "No more action point...", new object[0]);
+					float propertyValue2 = navyGarrison.Garrison.GetPropertyValue(SimulationProperties.ActionPointsSpent);
+					if (propertyValue2 > 0f)
+					{
+						navyTaskEvaluation.Fitness.Boost(-0.2f, "No more action point...", new object[0]);
+					}
 				}
 			}
 		}
@@ -134,6 +125,4 @@ public class NavyTask_Interception : NavyTask
 	private IAIDataRepositoryAIHelper aiDataRepository;
 
 	private AIData_Army targetArmy;
-
-	private IVisibilityService visibilityService;
 }

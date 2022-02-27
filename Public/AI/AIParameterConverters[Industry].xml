@@ -137,16 +137,6 @@
     <ToAIParameter AIParameter="AIEmpireGrowth">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagRocks)</ToAIParameter>
     <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagRocks)</ToAIParameter>
   </AIParameterConverter>
-  
-  <!-- == Industry from Lava == -->
-  <AIParameterConverter Name="DistrictIndustryLava">
-	<!-- city -->
-    <ToAIParameter AIParameter="AICityGrowth">$(Input)  * $Property(CityIndustryToCityGrowthConversionFactor) * $Count(ClassCity/TerrainTagLavaRiver)</ToAIParameter>
-    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(CityIndustryToCityProductionConversionFactor) * $Count(ClassCity/TerrainTagLavaRiver)</ToAIParameter>
-    <!-- empire -->
-    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input)  * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagLavaRiver)</ToAIParameter>
-    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) * $Count(ClassEmpire/ClassCity/TerrainTagLavaRiver)</ToAIParameter>
-  </AIParameterConverter>
 
   <!-- == Industry from Resources  == -->
   <AIParameterConverter Name="DistrictIndustryResources">

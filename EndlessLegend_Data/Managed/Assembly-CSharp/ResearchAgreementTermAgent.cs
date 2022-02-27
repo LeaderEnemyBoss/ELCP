@@ -52,10 +52,6 @@ public class ResearchAgreementTermAgent : DiplomaticTermAgent
 			return 0f;
 		}
 		float num = base.GetValueFromAttitude();
-		if (this.VictoryLayer.CurrentFocus == ELCPUtilities.AIVictoryFocus.Technology)
-		{
-			num += 40f;
-		}
 		num *= this.multiplier;
 		return num / 100f;
 	}

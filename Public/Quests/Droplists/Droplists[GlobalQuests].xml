@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Selector="Weighted" (default), "TechnologyEraNumber", -->
+  <!--Constrained="True" (default) = fallback to another reward if the Empire had already the reward, like a Tech -->
+  <!--<Blueprint Name="Nom_De_La_Technologie" Constructible Name="Nom_De_L_Objet_Ou_De_L_Improvement"/>-->
+
+
+  <!--<Droplist Name="DroplistInteractWithQuestLocationTypeRuinEra1">
+    <List Name="DroplistDust" Weight="4"/>
+    -->
+  <!--<Resource Name="Strategic1" Quantity="100" Weight="2"/>-->
+  <!--
+    -->
+  <!-- 
+    <Technology Name="TechnologyDefinitionFood0" Weight="1" Constrained="True"/>
+    <Technology Name="TechnologyDefinitionIndustry0" Weight="1" Constrained="False"/>
+    <Technology Name="TechnologyDefinitionDust0" Weight="1"/>
+    <Hero Name="UnitProfileBrokenLords#StartingHero" Weight="2"/>
+    -->
+  <!--
+  </Droplist>-->
+
+  <!--<Droplist Name="DroplistRandomEra1" Picks="2">
+    <List Name="DroplistTechnologiesEra1" Weight="2" />
+    <List Name="DroplistDustEra1" Weight="3" />
+  </Droplist>-->
+
+
+  <!-- ========================================
+       ============ DROPLIST DUST =============
+       ======================================== -->
+
+  <!--Dust Reward Droplist, depending on current Era-->
+  <Droplist Name="DroplistGlobalQuestDust" Selector="TechnologyEraNumber">
+    <List Name="DroplistGlobalQuestDustEra1"/>
+    <List Name="DroplistGlobalQuestDustEra2"/>
+    <List Name="DroplistGlobalQuestDustEra3"/>
+    <List Name="DroplistGlobalQuestDustEra4"/>
+    <List Name="DroplistGlobalQuestDustEra5"/>
+    <List Name="DroplistGlobalQuestDustEra6"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestDustEra1" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="150"   Weight="8" />
+    <Resource Name="EmpireMoney" Quantity="200"   Weight="3" />
+    <Resource Name="EmpireMoney" Quantity="300"   Weight="1" />
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestDustEra2" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="300"   Weight="8" />
+    <Resource Name="EmpireMoney" Quantity="400"   Weight="3" />
+    <Resource Name="EmpireMoney" Quantity="600"   Weight="1" />
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestDustEra3" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="600"   Weight="8" />
+    <Resource Name="EmpireMoney" Quantity="800"   Weight="3" />
+    <Resource Name="EmpireMoney" Quantity="1200"   Weight="1" />
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestDustEra4" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="1200"   Weight="8" />
+    <Resource Name="EmpireMoney" Quantity="1500"  Weight="3" />
+    <Resource Name="EmpireMoney" Quantity="2000"  Weight="1" />
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestDustEra5" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="2000"  Weight="8" />
+    <Resource Name="EmpireMoney" Quantity="3000"  Weight="3" />
+    <Resource Name="EmpireMoney" Quantity="4000"  Weight="1" />
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestDustEra6" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="3000"  Weight="8" />
+    <Resource Name="EmpireMoney" Quantity="4000"  Weight="3" />
+    <Resource Name="EmpireMoney" Quantity="5000"  Weight="1" />
+  </Droplist>
+
+
+
+  <!-- ========================================
+       ====== DROPLIST LUXURY RESOURCES =======
+       ======================================== -->
+
+  <!--Luxury Resource Reward Droplist, depending on current Era-->
+  <Droplist Name="DroplistGlobalQuestLuxuryResource" Selector="TechnologyEraNumber">
+    <List Name="DroplistGlobalQuestLuxuryResourceEra1"/>
+    <List Name="DroplistGlobalQuestLuxuryResourceEra2"/>
+    <List Name="DroplistGlobalQuestLuxuryResourceEra3"/>
+    <List Name="DroplistGlobalQuestLuxuryResourceEra4"/>
+    <List Name="DroplistGlobalQuestLuxuryResourceEra5"/>
+    <List Name="DroplistGlobalQuestLuxuryResourceEra6"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestLuxuryResourceEra1" Selector="Weighted">
+    <Resource Name="Luxury1"        Quantity="50"   Weight="1"/>
+    <Resource Name="Luxury2"        Quantity="50"   Weight="1"/>
+    <Resource Name="Luxury3"        Quantity="50"   Weight="1"/>
+    <Resource Name="Luxury4"        Quantity="50"   Weight="1"/>
+    <Resource Name="Luxury5"        Quantity="50"   Weight="1"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestLuxuryResourceEra2" Selector="Weighted">
+    <Resource Name="Luxury1"        Quantity="70"   Weight="2"/>
+    <Resource Name="Luxury2"        Quantity="70"   Weight="2"/>
+    <Resource Name="Luxury3"        Quantity="70"   Weight="2"/>
+    <Resource Name="Luxury4"        Quantity="70"   Weight="2"/>
+    <Resource Name="Luxury5"        Quantity="70"   Weight="2"/>
+    <Resource Name="Luxury6"        Quantity="60"   Weight="1"/>
+    <Resource Name="Luxury7"        Quantity="60"   Weight="1"/>
+    <Resource Name="Luxury8"        Quantity="60"   Weight="1"/>
+    <Resource Name="Luxury9"        Quantity="60"   Weight="1"/>
+    <Resource Name="Luxury10"       Quantity="60"   Weight="1"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestLuxuryResourceEra3" Selector="Weighted">
+    <Resource Name="Luxury1"        Quantity="90"   Weight="2"/>
+    <Resource Name="Luxury2"        Quantity="90"   Weight="2"/>
+    <Resource Name="Luxury3"        Quantity="90"   Weight="2"/>
+    <Resource Name="Luxury4"        Quantity="90"   Weight="2"/>
+    <Resource Name="Luxury5"        Quantity="90"   Weight="2"/>
+    <Resource Name="Luxury6"        Quantity="70"   Weight="3"/>
+    <Resource Name="Luxury7"        Quantity="70"   Weight="3"/>
+    <Resource Name="Luxury8"        Quantity="70"   Weight="3"/>
+    <Resource Name="Luxury9"        Quantity="70"   Weight="3"/>
+    <Resource Name="Luxury10"       Quantity="70"   Weight="3"/>
+    <Resource Name="Luxury11"       Quantity="60"   Weight="1"/>
+    <Resource Name="Luxury12"       Quantity="60"   Weight="1"/>
+    <Resource Name="Luxury13"       Quantity="60"   Weight="1"/>
+    <Resource Name="Luxury14"       Quantity="60"   Weight="1"/>
+    <Resource Name="Luxury15"       Quantity="60"   Weight="1"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestLuxuryResourceEra4" Selector="Weighted">
+    <Resource Name="Luxury1"        Quantity="120"   Weight="1"/>
+    <Resource Name="Luxury2"        Quantity="120"   Weight="1"/>
+    <Resource Name="Luxury3"        Quantity="120"   Weight="1"/>
+    <Resource Name="Luxury4"        Quantity="120"   Weight="1"/>
+    <Resource Name="Luxury5"        Quantity="120"   Weight="1"/>
+    <Resource Name="Luxury6"        Quantity="110"   Weight="2"/>
+    <Resource Name="Luxury7"        Quantity="110"   Weight="2"/>
+    <Resource Name="Luxury8"        Quantity="110"   Weight="2"/>
+    <Resource Name="Luxury9"        Quantity="110"   Weight="2"/>
+    <Resource Name="Luxury10"       Quantity="110"   Weight="2"/>
+    <Resource Name="Luxury11"       Quantity="100"   Weight="3"/>
+    <Resource Name="Luxury12"       Quantity="100"   Weight="3"/>
+    <Resource Name="Luxury13"       Quantity="100"   Weight="3"/>
+    <Resource Name="Luxury14"       Quantity="100"   Weight="3"/>
+    <Resource Name="Luxury15"       Quantity="100"   Weight="3"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestLuxuryResourceEra5" Selector="Weighted">
+    <Resource Name="Luxury1"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury2"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury3"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury4"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury5"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury6"        Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury7"        Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury8"        Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury9"        Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury10"       Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury11"       Quantity="150"   Weight="3"/>
+    <Resource Name="Luxury12"       Quantity="150"   Weight="3"/>
+    <Resource Name="Luxury13"       Quantity="150"   Weight="3"/>
+    <Resource Name="Luxury14"       Quantity="150"   Weight="3"/>
+    <Resource Name="Luxury15"       Quantity="150"   Weight="3"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestLuxuryResourceEra6" Selector="Weighted">
+    <Resource Name="Luxury1"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury2"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury3"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury4"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury5"        Quantity="150"   Weight="1"/>
+    <Resource Name="Luxury6"        Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury7"        Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury8"        Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury9"        Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury10"       Quantity="150"   Weight="2"/>
+    <Resource Name="Luxury11"       Quantity="150"   Weight="3"/>
+    <Resource Name="Luxury12"       Quantity="150"   Weight="3"/>
+    <Resource Name="Luxury13"       Quantity="150"   Weight="3"/>
+    <Resource Name="Luxury14"       Quantity="150"   Weight="3"/>
+    <Resource Name="Luxury15"       Quantity="150"   Weight="3"/>
+  </Droplist>
+
+
+
+  <!-- ========================================
+       ===== DROPLIST STRATEGIC RESOURCES =====
+       ======================================== -->
+
+  <Droplist Name="DroplistGlobalQuestStrategicResource" Selector="TechnologyEraNumber">
+    <List Name="DroplistGlobalQuestStrategicResourceEra1"/>
+    <List Name="DroplistGlobalQuestStrategicResourceEra2"/>
+    <List Name="DroplistGlobalQuestStrategicResourceEra3"/>
+    <List Name="DroplistGlobalQuestStrategicResourceEra4"/>
+    <List Name="DroplistGlobalQuestStrategicResourceEra5"/>
+    <List Name="DroplistGlobalQuestStrategicResourceEra6"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestStrategicResourceEra1" Selector="Weighted" Fallback="DroplistTempleRuinsEra1">
+    <Resource Name="Strategic1"     Quantity="30"    Weight="1"/>
+    <Resource Name="Strategic2"     Quantity="30"    Weight="1"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestStrategicResourceEra2" Selector="Weighted" Fallback="DroplistTempleRuinsEra2">
+    <Resource Name="Strategic1"     Quantity="50"    Weight="2"/>
+    <Resource Name="Strategic2"     Quantity="50"    Weight="2"/>
+    <Resource Name="Strategic3"     Quantity="40"    Weight="1"/>
+    <Resource Name="Strategic4"     Quantity="40"    Weight="1"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestStrategicResourceEra3" Selector="Weighted" Fallback="DroplistTempleRuinsEra3">
+    <Resource Name="Strategic1"     Quantity="60"    Weight="2"/>
+    <Resource Name="Strategic2"     Quantity="60"    Weight="2"/>
+    <Resource Name="Strategic3"     Quantity="50"    Weight="3"/>
+    <Resource Name="Strategic4"     Quantity="50"    Weight="3"/>
+    <Resource Name="Strategic5"     Quantity="40"    Weight="1"/>
+    <Resource Name="Strategic6"     Quantity="40"    Weight="1"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestStrategicResourceEra4" Selector="Weighted" Fallback="DroplistTempleRuinsEra4">
+    <Resource Name="Strategic1"     Quantity="80"    Weight="1"/>
+    <Resource Name="Strategic2"     Quantity="80"    Weight="1"/>
+    <Resource Name="Strategic3"     Quantity="70"    Weight="2"/>
+    <Resource Name="Strategic4"     Quantity="70"    Weight="2"/>
+    <Resource Name="Strategic5"     Quantity="60"    Weight="3"/>
+    <Resource Name="Strategic6"     Quantity="60"    Weight="3"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestStrategicResourceEra5" Selector="Weighted" Fallback="DroplistTempleRuinsEra5">
+    <Resource Name="Strategic1"     Quantity="100"   Weight="1"/>
+    <Resource Name="Strategic2"     Quantity="100"   Weight="1"/>
+    <Resource Name="Strategic3"     Quantity="90"   Weight="3"/>
+    <Resource Name="Strategic4"     Quantity="90"   Weight="3"/>
+    <Resource Name="Strategic5"     Quantity="80"   Weight="5"/>
+    <Resource Name="Strategic6"     Quantity="80"   Weight="5"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestStrategicResourceEra6" Selector="Weighted" Fallback="DroplistTempleRuinsEra6">
+    <Resource Name="Strategic1"     Quantity="120"   Weight="1"/>
+    <Resource Name="Strategic2"     Quantity="120"   Weight="1"/>
+    <Resource Name="Strategic3"     Quantity="110"   Weight="3"/>
+    <Resource Name="Strategic4"     Quantity="110"   Weight="3"/>
+    <Resource Name="Strategic5"     Quantity="100"   Weight="5"/>
+    <Resource Name="Strategic6"     Quantity="100"   Weight="5"/>
+  </Droplist>
+
+
+  
+
+  <!--Dust Reward Droplist, depending on current Era-->
+  <Droplist Name="DroplistCoopQuestDust" Selector="TechnologyEraNumber">
+    <List Name="DroplistCoopQuestDustEra1"/>
+    <List Name="DroplistCoopQuestDustEra2"/>
+    <List Name="DroplistCoopQuestDustEra3"/>
+    <List Name="DroplistCoopQuestDustEra4"/>
+    <List Name="DroplistCoopQuestDustEra5"/>
+    <List Name="DroplistCoopQuestDustEra6"/>
+  </Droplist>
+
+  <Droplist Name="DroplistCoopQuestDustEra1" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="50"  Weight="8" />
+  </Droplist>
+
+  <Droplist Name="DroplistCoopQuestDustEra2" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="50" Weight="8" />
+  </Droplist>
+
+  <Droplist Name="DroplistCoopQuestDustEra3" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="100" Weight="8" />
+  </Droplist>
+
+  <Droplist Name="DroplistCoopQuestDustEra4" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="200" Weight="8" />
+  </Droplist>
+
+  <Droplist Name="DroplistCoopQuestDustEra5" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="300" Weight="8" />
+  </Droplist>
+
+  <Droplist Name="DroplistCoopQuestDustEra6" Selector="Weighted">
+    <Resource Name="EmpireMoney" Quantity="300" Weight="8" />
+  </Droplist>
+
+
+  <Droplist Name="DroplistGlobalQuestCoop#0003BestContributor" Selector="GlobalQuestRank">
+    <List Name="DroplistGlobalQuestLuxuryResource"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestCoop#0004BestContributor" Selector="GlobalQuestRank">
+    <List Name="DroplistGlobalQuestStrategicResource"/>
+  </Droplist>
+
+
+
+  <!-- ========================================
+       ======== SPECIFIC REWARDS =============
+       ======================================== -->
+
+  <Droplist Name="DroplistGlobalQuestCompet#0003ATechnologyReward" Fallback="DroplistGlobalQuestDust">
+    <Technology Name="TechnologyDefinitionColossusDust"/>
+  </Droplist>
+  
+  <Droplist Name="DroplistGlobalQuestCompet#0003BTechnologyReward" Fallback="DroplistGlobalQuestDust">
+    <Technology Name="TechnologyDefinitionColossusEarth"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestCompet#0003CTechnologyReward" Fallback="DroplistGlobalQuestDust">
+    <Technology Name="TechnologyDefinitionColossusFire"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestCompet#0003DTechnologyReward" Fallback="DroplistGlobalQuestDust">
+    <Technology Name="TechnologyDefinitionColossusWater"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestCompet#0004TechnologyReward" Fallback="DroplistGlobalQuestDust">
+    <Technology Name="TechnologyDefinitionColossusAir"/>
+  </Droplist>
+
+  <Droplist Name="GlobalQuestCompetColossusReward" Fallback="DroplistGlobalQuestDust">
+    <Blueprint Name="TechnologyDefinitionItemTomeColossusQuest1"  ConstructibleName="ItemTomeColossusQuest1"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestCompet#0005Reward" Fallback="DroplistGlobalQuestDust">
+    <Blueprint Name="TechnologyDefinitionItemSword2DustTier4"  ConstructibleName="ItemSword2DustTier4"/>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestCompet#0005TechnologyReward" Fallback="DroplistGlobalQuestDust">
+    <Technology Name="TechnologyDefinitionGuardianKiller" />
+  </Droplist>
+
+  <!-- Item Reward Final Kaiju Quest-->
+  <Droplist Name="DroplistFinalKaijuHeadItemReward" Fallback="DroplistMadFairiesMainQuestRewards">
+    <Blueprint Name="TechnologyDefinitionKaijuHead" ConstructibleName="ItemHeadKaijuQuest"/>
+  </Droplist>
+
+  <Droplist Name="DroplistFinalKaijuTorsoItemReward" Fallback="DroplistMadFairiesMainQuestRewards">
+    <Blueprint Name="TechnologyDefinitionKaijuTorso" ConstructibleName="ItemTorsoKaijuQuest"/>
+  </Droplist>
+
+  <Droplist Name="DroplistFinalKaijuLegsItemReward" Fallback="DroplistMadFairiesMainQuestRewards">
+    <Blueprint Name="TechnologyDefinitionKaijuLegs" ConstructibleName="ItemLegsKaijuQuest"/>
+  </Droplist>
+
+
+  <!-- ========================================
+       =============== ARMY SPAWN =============
+       ======================================== -->
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0001" Selector="GlobalTechnologyEraNumber">
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era1"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era2"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era3"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era4"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era5"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era6"/>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era1">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era2">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era3">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era4">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era5">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0001Era6">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra6</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#MinorEmpireEra6</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0003A">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignColossusDust#1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0003B">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignColossusEarth#1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0003C">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignColossusFire#1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0003D">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignColossusWater#1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0004">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignColossusAir#1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0005">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignGuardianKillerQuest#1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  
+  
+  <!--<Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0006">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>-->
+
+  
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0006" Selector="GlobalTechnologyEraNumber">
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era1"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era2"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era3"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era4"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era5"/>
+    <List Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era6"/>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era1">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra1</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era2">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra2</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era3">                                    
+    <ArmyDefinition>                                       
+      <UnitDesigns>                                        
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era4">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+        <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra4</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era5">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra5</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra5</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra5</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra5</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestCompet#0006Era6">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage4#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra6</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage2#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage1#QuestEra6</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignSeaMonsterMaw#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+        <UnitDesign>UnitDesignSeaMonsterAppendage3#QuestEra6</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistGlobalQuestCompet#0006Reward" Fallback="DroplistGlobalQuestLuxuryResource">
+    <Blueprint Name="TechnologyDefinitionItemEngineerQuest2" ConstructibleName="ItemEngineerQuest2"/>
+  </Droplist>
+
+
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuest" Selector="Weighted">
+    <List Name="DroplistArmyDefinitionGlobalQuest_Hurnas"       Weight="1" />
+    <List Name="DroplistArmyDefinitionGlobalQuest_Gauran"       Weight="1" />
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuest_Hurnas" Selector="TechnologyEraNumber">
+    <List Name="DroplistArmyDefinitionGlobalQuest_HurnasEra1"/>
+    <List Name="DroplistArmyDefinitionGlobalQuest_HurnasEra2"/>
+    <List Name="DroplistArmyDefinitionGlobalQuest_HurnasEra3"/>
+    <List Name="DroplistArmyDefinitionGlobalQuest_HurnasEra4"/>
+    <List Name="DroplistArmyDefinitionGlobalQuest_HurnasEra5"/>
+    <List Name="DroplistArmyDefinitionGlobalQuest_HurnasEra6"/>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuest_HurnasEra1">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuest_HurnasEra2">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra2</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra2</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuest_HurnasEra3">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuest_HurnasEra4">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra4</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuest_HurnasEra5">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra5</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuest_HurnasEra6">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra6</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionGlobalQuestEra1#HurnasOrc">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignGauranMinotaur#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignGauranMinotaur#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#MinorEmpireEra1</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignTaskolGolemVictoryQuest#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignTaskolGolemVictoryQuest#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignTaskolGolemVictoryQuest#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignTaskolGolemVictoryQuest#MinorEmpireEra3</UnitDesign>
+        <UnitDesign>UnitDesignTaskolGolemVictoryQuest#MinorEmpireEra3</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  
+  
+  <!-- ========================================
+       =============== WONDERS ================
+       ======================================== -->
+
+  <!-- Medals rewards: Wonders-->
+  <Droplist Name="DroplistWonder1Unlock">
+    <Technology Name="TechnologyDefinitionWonder1" />
+  </Droplist>
+  <Droplist Name="DroplistWonder2Unlock">
+    <Technology Name="TechnologyDefinitionWonder2" />
+  </Droplist>
+  <Droplist Name="DroplistWonder3Unlock">
+    <Technology Name="TechnologyDefinitionWonder3" />
+  </Droplist>
+  <Droplist Name="DroplistWonder4Unlock">
+    <Technology Name="TechnologyDefinitionWonder4" />
+  </Droplist>
+  <Droplist Name="DroplistWonder5Unlock">
+    <Technology Name="TechnologyDefinitionWonder5" />
+  </Droplist>
+
+</Datatable>

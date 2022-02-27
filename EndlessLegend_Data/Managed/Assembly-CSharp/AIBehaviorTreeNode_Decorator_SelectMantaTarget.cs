@@ -9,7 +9,7 @@ public class AIBehaviorTreeNode_Decorator_SelectMantaTarget : AIBehaviorTreeNode
 {
 	public AIBehaviorTreeNode_Decorator_SelectMantaTarget()
 	{
-		this.MaximumTurnDistance = 50f;
+		this.MaximumTurnDistance = 5f;
 	}
 
 	[XmlAttribute]

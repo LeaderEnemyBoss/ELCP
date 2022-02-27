@@ -210,28 +210,7 @@ public class GameAcademyScreen : GuiPlayerControllerScreen
 				}
 			}
 		}
-		this.heroesList.Sort(delegate(Unit hero1, Unit hero2)
-		{
-			bool flag = hero1.GetPropertyValue(SimulationProperties.MaximumSkillPoints) - hero1.GetPropertyValue(SimulationProperties.SkillPointsSpent) > 0f;
-			bool flag2 = hero2.GetPropertyValue(SimulationProperties.MaximumSkillPoints) - hero2.GetPropertyValue(SimulationProperties.SkillPointsSpent) > 0f;
-			if (flag && !flag2)
-			{
-				return -1;
-			}
-			if (!flag && flag2)
-			{
-				return 1;
-			}
-			if (hero1.Garrison == null && hero2.Garrison != null)
-			{
-				return -1;
-			}
-			if (hero1.Garrison != null && hero2.Garrison == null)
-			{
-				return 1;
-			}
-			return hero1.GUID.CompareTo(hero2.GUID);
-		});
+		this.heroesList.Sort((Unit hero1, Unit hero2) => hero1.GUID.CompareTo(hero2.GUID));
 		this.HeroesTable.DestroyAllChildren();
 		this.HeroesTable.ReserveChildren(this.heroesList.Count, this.HeroCardPrefab, "HeroCard");
 		this.HeroesTable.RefreshChildrenIList<Unit>(this.heroesList, this.refreshHeroCardDelegate, true, false);
@@ -245,7 +224,7 @@ public class GameAcademyScreen : GuiPlayerControllerScreen
 		{
 			if (this.SelectedHero == null)
 			{
-				this.SelectHeroCardAtIndex(Mathf.Min(this.heroesList.Count - 1, 2));
+				this.SelectHeroCardAtIndex((this.heroesList.Count - 1) / 2);
 			}
 			else
 			{

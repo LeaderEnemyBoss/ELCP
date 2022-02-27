@@ -277,7 +277,7 @@
   <!-- Retreat -->
   <BattleActionUnit Name="BattleActionUnitRetreat" Defensible="false" TerrainConsideration="None" Type="Retreat">
     <BattleEffects TargetsFilter="Initiator">
-      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_RetreatHealth" PropertyName="Health" Operation="Addition" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * (0.6 * (1 - ($Link(Initiator|Property|./ClassArmy:RetreatPenaltyReduction))))))" />
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_RetreatHealth" PropertyName="Health" Operation="Addition" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * (0.5 * (1 - ($Link(Initiator|Property|./ClassArmy:RetreatPenaltyReduction))))))" />
       <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_RetreatMovement" PropertyName="SpentMovement" Operation="Affectation" InterpreterFormula="(0 max ($Link(Initiator|Property|ClassUnit:SpentMovement) - ($Link(Initiator|Property|ClassUnit:MaximumMovement) * 0.5 * ($Link(Initiator|Property|ClassUnit:MaximumNumberOfActionPoints) - $Link(Initiator|Property|ClassUnit:ActionPointsSpent)))))" />
       <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_RetreatActionPoint" PropertyName="ActionPointsSpent" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:MaximumNumberOfActionPoints)" />
     </BattleEffects>

@@ -45,7 +45,8 @@ public class AIBehaviorTreeNode_Decorator_SelectOrbSpawnTarget : AIBehaviorTreeN
 			return State.Failure;
 		}
 		Army army;
-		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
+		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
+		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -58,10 +59,6 @@ public class AIBehaviorTreeNode_Decorator_SelectOrbSpawnTarget : AIBehaviorTreeN
 			this.OpportunityMaximumTurn = (float)aiBehaviorTree.Variables[this.OpportunityMaximumTurnName];
 		}
 		AIEntity_Empire entity = aiBehaviorTree.AICommander.AIPlayer.GetEntity<AIEntity_Empire>();
-		if (this.DiplomacyLayer == null && aiBehaviorTree.AICommander.Empire is MajorEmpire)
-		{
-			this.DiplomacyLayer = entity.GetLayer<AILayer_Diplomacy>();
-		}
 		Region region = this.worldPositionningService.GetRegion(army.WorldPosition);
 		bool flag = false;
 		AIData_Army aidata_Army;
@@ -75,31 +72,35 @@ public class AIBehaviorTreeNode_Decorator_SelectOrbSpawnTarget : AIBehaviorTreeN
 		for (int i = 0; i < this.orbAIHelper.OrbSpawns.Count; i++)
 		{
 			OrbSpawnInfo orbSpawnInfo2 = this.orbAIHelper.OrbSpawns[i];
-			if (orbSpawnInfo2 != null && orbSpawnInfo2.CurrentOrbCount != 0f)
+			if (orbSpawnInfo2 != null)
 			{
-				bool flag2 = this.worldPositionningService.IsWaterTile(orbSpawnInfo2.WorldPosition);
-				if (flag || flag2 != !army.IsSeafaring)
+				if (orbSpawnInfo2.CurrentOrbCount != 0f)
 				{
-					float num2 = 0.5f;
-					if (entity != null)
+					bool flag2 = this.worldPositionningService.IsWaterTile(orbSpawnInfo2.WorldPosition);
+					if (flag || flag2 != !army.IsSeafaring)
 					{
-						num2 = this.ComputeOrbCollectingScore(orbSpawnInfo2, entity, army);
-					}
-					if (num2 > 0f)
-					{
-						Region region2 = this.worldPositionningService.GetRegion(orbSpawnInfo2.WorldPosition);
-						if (flag || region2.ContinentID == region.ContinentID)
+						float num2 = 0.5f;
+						if (entity != null)
 						{
-							float num3 = (float)this.worldPositionningService.GetDistance(army.WorldPosition, orbSpawnInfo2.WorldPosition) / propertyValue;
-							if (num3 <= this.MaximumTurnDistance)
+							num2 = this.ComputeOrbCollectingScore(orbSpawnInfo2, entity, army);
+						}
+						if (num2 > 0f)
+						{
+							Region region2 = this.worldPositionningService.GetRegion(orbSpawnInfo2.WorldPosition);
+							if (flag || region2.ContinentID == region.ContinentID)
 							{
-								float orbDistanceExponent = this.orbAIHelper.GetOrbDistanceExponent(entity.Empire);
-								float num4 = 1f + Mathf.Pow(num3, orbDistanceExponent);
-								num2 /= num4;
-								if (num2 > num)
+								float num3 = (float)this.worldPositionningService.GetDistance(army.WorldPosition, orbSpawnInfo2.WorldPosition);
+								float num4 = num3 / propertyValue;
+								if (num4 <= this.MaximumTurnDistance)
 								{
-									num = num2;
-									orbSpawnInfo = orbSpawnInfo2;
+									float orbDistanceExponent = this.orbAIHelper.GetOrbDistanceExponent(entity.Empire);
+									float num5 = 1f + Mathf.Pow(num4, orbDistanceExponent);
+									num2 /= num5;
+									if (num2 > num)
+									{
+										num = num2;
+										orbSpawnInfo = orbSpawnInfo2;
+									}
 								}
 							}
 						}
@@ -117,17 +118,17 @@ public class AIBehaviorTreeNode_Decorator_SelectOrbSpawnTarget : AIBehaviorTreeN
 		}
 		if (this.OpportunityMaximumTurn >= 0f)
 		{
-			int num5 = 0;
 			int num6 = 0;
+			int num7 = 0;
 			if (aiBehaviorTree.Variables.ContainsKey(this.OpportunityMainTargetPosition))
 			{
 				WorldPosition mainTargetPosition = (WorldPosition)aiBehaviorTree.Variables[this.OpportunityMainTargetPosition];
-				if (!AIBehaviorTreeNode_Decorator_EvaluateOpportunity.IsDetourWorthCheckingFast(this.worldPositionningService, army, orbSpawnInfo.WorldPosition, mainTargetPosition, out num6, out num5))
+				if (!AIBehaviorTreeNode_Decorator_EvaluateOpportunity.IsDetourWorthCheckingFast(this.worldPositionningService, army, orbSpawnInfo.WorldPosition, mainTargetPosition, out num7, out num6))
 				{
 					return State.Failure;
 				}
 			}
-			if ((float)(num5 - num6) > this.OpportunityMaximumTurn)
+			if ((float)(num6 - num7) > this.OpportunityMaximumTurn)
 			{
 				return State.Failure;
 			}
@@ -145,14 +146,6 @@ public class AIBehaviorTreeNode_Decorator_SelectOrbSpawnTarget : AIBehaviorTreeN
 
 	private float ComputeOrbCollectingScore(OrbSpawnInfo orbSpawn, AIEntity_Empire entityEmpire, Army army)
 	{
-		if (this.DiplomacyLayer != null)
-		{
-			Region region = this.worldPositionningService.GetRegion(orbSpawn.WorldPosition);
-			if (region.Owner != null && region.Owner is MajorEmpire && this.DiplomacyLayer.GetPeaceWish(region.Owner.Index))
-			{
-				return -1f;
-			}
-		}
 		return orbSpawn.EmpireNeedModifier[entityEmpire.Empire.Index];
 	}
 
@@ -167,6 +160,4 @@ public class AIBehaviorTreeNode_Decorator_SelectOrbSpawnTarget : AIBehaviorTreeN
 	private IOrbAIHelper orbAIHelper;
 
 	private IAIDataRepositoryAIHelper aiDataRepositoryHelper;
-
-	private AILayer_Diplomacy DiplomacyLayer;
 }

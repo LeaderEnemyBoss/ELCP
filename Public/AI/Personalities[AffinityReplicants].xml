@@ -5,48 +5,34 @@
     <Multipliers>
       <!-- AI Registry -->
       <AI>
-		<AgentDefinition>
-		  
-			<MoneyPrintTermAgent>
-                <Multiplier>0</Multiplier>
-            </MoneyPrintTermAgent>
-			
-			 <!-- 
-			Money-grubbing
-			-->
-			<MoneyReferenceRatioAgent>
-			  <MoneyStockToMaintainUpkeepTurnCount>2</MoneyStockToMaintainUpkeepTurnCount>
-			  <MoneyIncomeGrowthPercent>2</MoneyIncomeGrowthPercent>
-			</MoneyReferenceRatioAgent>
-        </AgentDefinition>
-       
+
+        <!-- 
+        Money-grubbing
+        -->
+        <MoneyReferenceRatioAgent>
+          <MoneyStockToMaintainUpkeepTurnCount>1.2</MoneyStockToMaintainUpkeepTurnCount>
+          <MoneyIncomeGrowthPercent>1.3</MoneyIncomeGrowthPercent>
+        </MoneyReferenceRatioAgent>
+
 
         <MajorEmpire>
-			<!-- ELCP\LeaderEnemyBoss this was missingh and probably a bug-->
-			<AIEntity_Empire>
-			<!-- End ELCP-->
+
+          <AIEntity_Empire>
           <!-- The degree to which various attitude modifiers are taken into account -->
-				<AILayer_Victory>
-					<VictoryFocusMilitary>1.4</VictoryFocusMilitary>
-					<VictoryFocusDiplomacy>1.5</VictoryFocusDiplomacy>
-					<VictoryFocusEconomy>2.5</VictoryFocusEconomy>
-					<VictoryFocusTechnology>0</VictoryFocusTechnology>
-				</AILayer_Victory>
-				
           <AILayer_Attitude>
             <!-- ##### -->
             <!-- TRUST -->
             <!-- ##### -->
             <!-- Positive -->
-            <AttitudeScorePeaceful>0.7</AttitudeScorePeaceful>
-            <AttitudeScoreCommonEnemy>1</AttitudeScoreCommonEnemy>
-            <AttitudeScoreCommonFriend>1</AttitudeScoreCommonFriend>
-            <AttitudeScoreCommonAlly>1</AttitudeScoreCommonAlly>
+            <AttitudeScorePeaceful>0.5</AttitudeScorePeaceful>
+            <AttitudeScoreCommonEnemy>0.6</AttitudeScoreCommonEnemy>
+            <AttitudeScoreCommonFriend>0.6</AttitudeScoreCommonFriend>
+            <AttitudeScoreCommonAlly>0.6</AttitudeScoreCommonAlly>
             <AttitudeScorePositiveContract>0.9</AttitudeScorePositiveContract>
             <AttitudeScoreGift>0.9</AttitudeScoreGift>
             <AttitudeScoreMantaAspiratingInMyTerritory>0.9</AttitudeScoreMantaAspiratingInMyTerritory>
-            <AttitudeScoreLongTermAlliance>0.7</AttitudeScoreLongTermAlliance>
-            <AttitudeScoreLongTermPeace>0.7</AttitudeScoreLongTermPeace>
+            <AttitudeScoreLongTermAlliance>0.1</AttitudeScoreLongTermAlliance>
+            <AttitudeScoreLongTermPeace>0.1</AttitudeScoreLongTermPeace>
             <AttitudeScoreTerraformedInMyTerritoryPositive>0</AttitudeScoreTerraformedInMyTerritoryPositive>
             <AttitudeScoreTerraformedNearMyArmiesPositive>0</AttitudeScoreTerraformedNearMyArmiesPositive>
             <!-- Negative -->
@@ -55,19 +41,19 @@
             <AttitudeScoreAggressiveColonization>0.9</AttitudeScoreAggressiveColonization>
             <AttitudeScoreNegativeContract>1.2</AttitudeScoreNegativeContract>
             <AttitudeScoreVillageConverted>1.3</AttitudeScoreVillageConverted>
-            <AttitudeScoreRegionalBuildingDestroyed>1</AttitudeScoreRegionalBuildingDestroyed>
+            <AttitudeScoreRegionalBuildingDestroyed>1.3</AttitudeScoreRegionalBuildingDestroyed>
             <AttitudeScoreSpy>0.8</AttitudeScoreSpy>
             <AttitudeScorePillaging>0.6</AttitudeScorePillaging>
             <AttitudeScorePillageSucceed>0.6</AttitudeScorePillageSucceed>
             <AttitudeScoreDismantleDeviceSuffered>0.6</AttitudeScoreDismantleDeviceSuffered>
             <AttitudeScoreOrbsStolen>0.4</AttitudeScoreOrbsStolen>
             <AttitudeScoreEliminatedAcquaintance>0.3</AttitudeScoreEliminatedAcquaintance>
-            <AttitudeScoreEliminatedAlly>0.7</AttitudeScoreEliminatedAlly>
-            <AttitudeScoreEliminatedEnemy>0.3</AttitudeScoreEliminatedEnemy>
-            <AttitudeScoreEliminatedFriend>0.7</AttitudeScoreEliminatedFriend>
-            <AttitudeScoreCityTakenFromAlly>0.6</AttitudeScoreCityTakenFromAlly>
-            <AttitudeScoreCityTakenFromEnemy>0.3</AttitudeScoreCityTakenFromEnemy>
-            <AttitudeScoreCityTakenFromFriend>0.6</AttitudeScoreCityTakenFromFriend>
+            <AttitudeScoreEliminatedAlly>0.3</AttitudeScoreEliminatedAlly>
+            <AttitudeScoreEliminatedEnemy>0.9</AttitudeScoreEliminatedEnemy>
+            <AttitudeScoreEliminatedFriend>0.3</AttitudeScoreEliminatedFriend>
+            <AttitudeScoreCityTakenFromAlly>0.3</AttitudeScoreCityTakenFromAlly>
+            <AttitudeScoreCityTakenFromEnemy>0.9</AttitudeScoreCityTakenFromEnemy>
+            <AttitudeScoreCityTakenFromFriend>0.3</AttitudeScoreCityTakenFromFriend>
             <AttitudeScoreAtWarWithMyAlly>0.3</AttitudeScoreAtWarWithMyAlly>
             <AttitudeScoreAlliedWithMyEnemy>1.0</AttitudeScoreAlliedWithMyEnemy>
             <AttitudeScoreBetrayedYourAlly>0.1</AttitudeScoreBetrayedYourAlly>
@@ -82,10 +68,10 @@
             <!-- WAR -->
             <!-- #### -->
             <!-- Positive (towards asking for peace) -->
-            <AttitudeScoreWarFatigue>1.5</AttitudeScoreWarFatigue>
-            <AttitudeScoreMyEmpireUnitsKilledDuringWar>1.5</AttitudeScoreMyEmpireUnitsKilledDuringWar>
+            <AttitudeScoreWarFatigue>1.3</AttitudeScoreWarFatigue>
+            <AttitudeScoreMyEmpireUnitsKilledDuringWar>1.3</AttitudeScoreMyEmpireUnitsKilledDuringWar>
             <AttitudeScoreMyEmpireCitiesBesiegedDuringWar>1.3</AttitudeScoreMyEmpireCitiesBesiegedDuringWar>
-            <AttitudeScoreMyEmpireCitiesTakenDuringWar>1.5</AttitudeScoreMyEmpireCitiesTakenDuringWar>
+            <AttitudeScoreMyEmpireCitiesTakenDuringWar>1.3</AttitudeScoreMyEmpireCitiesTakenDuringWar>
             <AttitudeScoreMyEmpireFortressesTakenDuringWar>1.3</AttitudeScoreMyEmpireFortressesTakenDuringWar>
             <AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>1.3</AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>
             <AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>1.3</AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>
@@ -129,27 +115,15 @@
             <AttitudeScoreOtherEmpireHasUniqueFacility>1.2</AttitudeScoreOtherEmpireHasUniqueFacility>
             <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.2</AttitudeScoreOtherEmpireLeadNavalRegionCount>
           </AILayer_Attitude>
-			<AILayer_Diplomacy>
-			  <SweetenDealThreshold>1.5</SweetenDealThreshold>
-			  <EmergencyGangupLimit>1.25</EmergencyGangupLimit>
-			</AILayer_Diplomacy>
-          
+
             <!--
             Spy masters
             -->
             <AILayer_HeroAssignation>
               <MaximumHeroCount>1.5</MaximumHeroCount>
-	      <!-- ELCP\LeaderEnemyBoss to account for changes in registry.xml (so they dont spam too much heroes)-->
               <MaximumTurnForHero>0.8</MaximumTurnForHero>
-              <MaximumFractionOfHeroesSpy>3</MaximumFractionOfHeroesSpy>
-              <MinimalTurnBeforeSpying>0.25</MinimalTurnBeforeSpying>
-			  <!-- ELCP/LeaderEnemyBoss: needs vision to actually use spies -->
-			  <Utility>
-				<StealVision>
-					<factorForInterestingArmies>2</factorForInterestingArmies>
-				</StealVision>
-			  </Utility>
-			  <!-- End ELCP -->
+              <MaximumFractionOfHeroesSpy>2</MaximumFractionOfHeroesSpy>
+              <MinimalTurnBeforeSpying>0.5</MinimalTurnBeforeSpying>
             </AILayer_HeroAssignation>
 
             <AILayer_Strategy>
@@ -222,11 +196,11 @@
                 <AIEmpireGrowth>1.1</AIEmpireGrowth>
                 <AIEmpireProduction>1.3</AIEmpireProduction>
                 <AIEmpireResearch>0</AIEmpireResearch>
-                <AIEmpireMoney>5</AIEmpireMoney>
+                <AIEmpireMoney>2</AIEmpireMoney>
                 <AIEmpireEmpirePoint>1.5</AIEmpireEmpirePoint>
                 <AIEmpirePillageDefense>1.1</AIEmpirePillageDefense>
-                <AIEmpireAntiSpy>1</AIEmpireAntiSpy>
-                <AIEmpireMilitaryPower>1.1</AIEmpireMilitaryPower>
+                <AIEmpireAntiSpy>1.3</AIEmpireAntiSpy>
+                <AIEmpireMilitaryPower>1.3</AIEmpireMilitaryPower>
                 <AIEmpireCityDefense>1.1</AIEmpireCityDefense>
                 <AIEmpireVision>1.3</AIEmpireVision>
                 <AIEmpireBuyout>2</AIEmpireBuyout>
@@ -237,13 +211,13 @@
                 <AIEmpireUnlockUnit>1.2</AIEmpireUnlockUnit>
                 <AIEmpireUnlockAssimilation>0.8</AIEmpireUnlockAssimilation>
                 <AIEmpireUnlockBribe>0.7</AIEmpireUnlockBribe>
-                <AIEmpireUnlockPillage>1.5</AIEmpireUnlockPillage>
+                <AIEmpireUnlockPillage>2</AIEmpireUnlockPillage>
                 <AIEmpireUnlockPrivateers>2</AIEmpireUnlockPrivateers>
-                <AIEmpireUnlockMarketUnit>2.5</AIEmpireUnlockMarketUnit>
+                <AIEmpireUnlockMarketUnit>2.0</AIEmpireUnlockMarketUnit>
                 <AIEmpireUnlockMarketResource>1.4</AIEmpireUnlockMarketResource>
-                <AIEmpireUnlockBooster>1.2</AIEmpireUnlockBooster>
+                <AIEmpireUnlockBooster>1</AIEmpireUnlockBooster>
                 <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
-                <AIEmpireUnlockDiplomacyPositive>2</AIEmpireUnlockDiplomacyPositive>
+                <AIEmpireUnlockDiplomacyPositive>1.4</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>
           </AIEntity_Empire>

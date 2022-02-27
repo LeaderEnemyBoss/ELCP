@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Critical Hit Bonus-->
+  <SimulationDescriptor Name="UnitActionCriticalHitBonus"                         Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DamageMultiplier" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Confidence-->
+  <SimulationDescriptor Name="UnitActionConfidence"                               Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="$(ConfidenceEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sharp Sense-->
+  <SimulationDescriptor Name="UnitActionSharpSense"                               Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="$(SharpSenseEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Stun -->
+  <SimulationDescriptor Name="UnitActionStun"                                     Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CanPlayBattleRound"     Value="0" Operation="Multiplication" />
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"  Value="0" Operation="Multiplication" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Speed Up -->
+  <SimulationDescriptor Name="UnitActionSpeedUp"                                  Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="2" Operation="Multiplication" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Slow Down -->
+  <SimulationDescriptor Name="UnitActionSlowDown"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="0.5" Operation="Multiplication" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Attack Down -->
+  <SimulationDescriptor Name="UnitActionAttributeAttackDown"                      Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="2" Operation="Subtraction" Duration="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAttributeAttackDownLevel1"                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="-0.12" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAttributeAttackDownLevel2"                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="-0.25" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAttributeAttackDownLevel3"                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="-0.5" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Critical Down -->
+  <SimulationDescriptor Name="UnitActionAttributeCriticalDownLevel1"              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical" Value="-0.12" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAttributeCriticalDownLevel2"              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical" Value="-0.25" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAttributeCriticalDownLevel3"              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeCritical" Value="-0.5" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Critical Down (not used) -->
+  <SimulationDescriptor Name="UnitActionAttributeDamageDownLevel1"                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="-0.12" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAttributeDamageDownLevel2"                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="-0.25" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAttributeDamageDownLevel3"                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="-0.5" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Enrage -->
+  <SimulationDescriptor Name="UnitActionEnrage"                                   Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="2" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cannot be healed-->
+  <SimulationDescriptor Name="CannotBeHealed"                                     Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CanBeHealed" Value="0" Operation="Multiplication" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Blind -->
+  <SimulationDescriptor Name="UnitActionBlindAttack"                              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BlindAttack" Value="$(BarkSkinEfficiency)" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Invincible -->
+  <SimulationDescriptor Name="UnitActionInvincible"                               Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CanTakePhysicalDamage" Value="0" Operation="Multiplication" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Attack Up -->
+  <SimulationDescriptor Name="UnitActionAttributeAttackUp"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="3" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sick -->
+  <SimulationDescriptor Name="UnitActionSick"                                     Type="UnitAction"/>
+
+  <!-- Burning -->
+  <SimulationDescriptor Name="UnitActionBurning"                                  Type="UnitAction"/>
+
+  <!-- Defense Up -->
+  <SimulationDescriptor Name="UnitActionBarkSkin"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="$(BarkSkinEfficiency)" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Attack Up -->
+  <SimulationDescriptor Name="UnitActionIncreasedFire"                            Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="$(IncreasedFireEfficiency)" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cocoon Defense -->
+  <SimulationDescriptor Name="UnitActionCocoonDefense"                            Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="1" Operation="Percent" Priority="99" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Defense from District -->
+  <SimulationDescriptor Name="UnitActionDistrictTileBonus"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BattleMoraleFromGround" Operation="Addition" Left="3" BinaryOperation="Addition" Right="$(ExtraMoraleBonusFromCity)"/>
+      <SimulationModifierDescriptor TargetProperty="AttackPerRound" Value="1" Operation="Addition" Path="ClassUnit,UnitAbilityCityGuardDescriptor3,!UnitAbilityDescriptorUnitAbilityFreeCounter1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Shock -->
+  <SimulationDescriptor Name="UnitActionAbilityShock"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleFromGround" Operation="Addition" Value="$(ShockEfficiency)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Blood Rage -->
+  <SimulationDescriptor Name="UnitActionAbilityBloodRage"                         Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BloodRageBonus" Operation="Addition" Left="0.5" BinaryOperation="Multiplication" Right="$(BloodRageCounter)"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Operation="Multiplication" Value="$(BloodRageBonus)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Defense from Forest -->
+  <SimulationDescriptor Name="UnitActionForestTileBonus"                          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="$(ForestDefenseBonus)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Damage from Volcanic Terrain -->
+  <SimulationDescriptor Name="UnitActionVolcanicTileBonus"                          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Operation="Percent" Value="$(VolcanicDamageBonus)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage from Forest -->
+  <SimulationDescriptor Name="UnitActionForestRageTileBonus"                      Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="0.5" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ardent Fire: Damage or Attack? -->
+  <SimulationDescriptor Name="UnitActionArdentFireBonus"                          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="$(ArdentFireEfficiency)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- Rising Fire: Damage and Attack! -->
+  <SimulationDescriptor Name="UnitActionRisingFireBonus"                          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="$(RisingFireEfficiency)" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Operation="Percent" Value="$(RisingFireEfficiency)" Path="#HeatWave"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Defense from Spell -->
+  <SimulationDescriptor Name="UnitActionSpellDefenseBonus"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Kazanji Intimidation-->
+  <SimulationDescriptor Name="UnitActionReducedInitiative"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative" Operation="Percent" Value="-0.25" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- High Ground Bonus -->
+  <SimulationDescriptor Name="UnitActionHighGroundBonus"                          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="$(HighGroundEfficiency)" />
+      <BinarySimulationModifierDescriptor TargetProperty="HighGroundEfficiency" Operation="Multiplication" Left="1" BinaryOperation="Subtraction" Right="$(AttackPerRoundDone)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Charge Bonus -->
+  <SimulationDescriptor Name="UnitActionChargeBonus"                              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="$(Charge)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Stun Charge Bonus -->
+  <SimulationDescriptor Name="UnitActionStunChargeBonus"                          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="StunChargeProbability" Operation="Addition" Value="$(StunCharge)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Damaging Charge Bonus -->
+  <SimulationDescriptor Name="UnitActionDamagingChargeBonus"                      Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Operation="Percent" Value="$(DamagingCharge)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Defensive Charge Bonus -->
+  <SimulationDescriptor Name="UnitActionDefensiveChargeBonus"                     Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="$(DefensiveCharge)" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Exhaustion-->
+  <SimulationDescriptor Name="UnitActionAbilityExhaustion"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="$(ExhaustionEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Unsteady-->
+  <SimulationDescriptor Name="UnitActionAbilityUnsteady"                          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="$(UnsteadyEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Feebleness-->
+  <SimulationDescriptor Name="UnitActionAbilityFeebleness"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(FeeblenessEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Halt -->
+  <SimulationDescriptor Name="UnitActionAbilityHalt"                              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative" Value="$(HaltEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Swiftness-->
+  <SimulationDescriptor Name="UnitActionAbilitySwiftness"                         Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="$(SwiftnessEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Retaliation-->
+  <SimulationDescriptor Name="UnitActionAbilityRetaliation"                       Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(RetaliationEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Block-->
+  <SimulationDescriptor Name="UnitActionAbilityBlock"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="$(BlockDefenseBonus)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Pointblank Power -->
+  <SimulationDescriptor Name="UnitActionPointblankPower"                          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="$(PointblankPowerEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Warrior Slayer -->
+  <SimulationDescriptor Name="UnitActionWarriorSlayer"                            Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstMeleeEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Range Slayer -->
+  <SimulationDescriptor Name="UnitActionRangeSlayer"                              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstRangeEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mage Slayer -->
+  <SimulationDescriptor Name="UnitActionMageSlayer"                               Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstMageEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cavalry Slayer -->
+  <SimulationDescriptor Name="UnitActionKnightSlayer"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstCavalryEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Flying Slayer -->
+  <SimulationDescriptor Name="UnitActionFlyingSlayer"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstFlyingEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Kaiju Slayer -->
+  <SimulationDescriptor Name="UnitActionKaijuSlayer"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstKaijuEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- Kaiju brotherhood -->
+  <SimulationDescriptor Name="UnitActionKaijuBrotherhood"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstKaijuEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Colossus Slayer -->
+  <SimulationDescriptor Name="UnitActionColossusSlayer"                           Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(InitialAgainstColossusEfficiency)" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="$(InitialAgainstColossusEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Guardian Killer Slayer -->
+  <SimulationDescriptor Name="UnitActionGuardianKillerSlayer"                     Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(InitialAgainstGuardianKillerEfficiency)" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="$(InitialAgainstGuardianKillerEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Minor Faction Slayer -->
+  <SimulationDescriptor Name="UnitActionMinorFactionSlayer"                       Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(InitialAgainstMinorEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Shared Wisdom -->
+  <SimulationDescriptor Name="UnitActionSharedWisdom"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Value="1" Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Phoenix To Egg -->
+  <SimulationDescriptor Name="UnitActionPhoenixToEgg"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CanPlayBattleRound"     Value="0" Operation="Multiplication" />
+      <SimulationModifierDescriptor TargetProperty="CanUpdateFormation"     Value="0" Operation="Multiplication" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionParasite"                                 Type="UnitAction"/>
+
+  <SimulationDescriptor Name="UnitActionAbilityUnleashedPotential"                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"         Value="0.1" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"         Value="0.1" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"        Value="0.1" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"         Value="0.1" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"     Value="0.1" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAbilitySpeedUp"                           Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"         Value="2" Operation="Multiplication"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionCriticalHit"                              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"         Value="1" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mark of the Predator -->
+  <SimulationDescriptor Name="UnitAbilityDescriptorMarkOfThePredatorLevel0"       Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MarkOfThePredatorCounter" Operation="Addition" Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilityDescriptorMarkOfThePredatorLevel1"       Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MarkOfThePredatorCounter" Operation="Addition" Value="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilityDescriptorMarkOfThePredatorLevel2"       Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MarkOfThePredatorCounter" Operation="Addition" Value="3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitAbilityDescriptorMarkOfThePredatorDamageBonus"  Type="UnitAbilityDescriptor">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDamage" Operation="Percent"  Left="0.2"   Right="$(MarkOfThePredatorFactor)" BinaryOperation="Multiplication"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################################ -->
+  <!-- ######                SPELLS              ###### -->
+  <!-- ################################################ -->
+
+  <!-- === SPELL 1 === -->
+
+  <SimulationDescriptor Name="Spell1Level1Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="5" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell1Level2Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="10" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell1Level3Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="15" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell1Level4Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="20" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell1Level5Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="25" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- === SPELL 2 === -->
+
+  <SimulationDescriptor Name="Spell2Level1Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="7"  Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell2Level2Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="14" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell2Level3Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="21" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell2Level4Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="28" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell2Level5Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"  Value="35" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- === SPELL 3 === -->
+
+  <SimulationDescriptor Name="Spell3Level1Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell3Level2Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell3Level3Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="-0.12" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell3Level4Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="-0.25" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Spell3Level5Effect"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="-0.25" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- BONUS FOR AI -->
+  <!-- Minor Slayer -->
+  <SimulationDescriptor Name="UnitActionMinorSlayer"                              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack"        Operation="Percent" Left="1"    BinaryOperation="Multiplication" Right="$(ControlledByMajorAI)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDefense"       Operation="Percent" Left="1"    BinaryOperation="Multiplication" Right="$(ControlledByMajorAI)"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Colossus -->
+  <SimulationDescriptor Name="UnitActionWoodBurner"                               Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(InitialAgainstForestEfficiency)" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################################ -->
+  <!-- ######     "WINTER SHIFTERS" EXPANSION    ###### -->
+  <!-- ################################################ -->
+
+  <!-- Killer Instinct -->
+  <SimulationDescriptor Name="UnitActionKillerInstinct"                           Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="$(KillerInstinctBonus)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--Shifting Charge -->
+  <SimulationDescriptor Name="UnitActionAbilityShiftingCharge_LightForm"          Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeAttack"       Operation="Percent" Left="-1"    BinaryOperation="Multiplication" Right="$(ShiftingChargeDebuff_LightForm)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitActionAbilityShiftingCharge_DarkForm"           Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDefense"       Operation="Percent" Left="-1"    BinaryOperation="Multiplication" Right="$(ShiftingChargeDebuff_DarkForm)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Shifting Combo -->
+  <SimulationDescriptor Name="UnitAbilityDescriptorShiftingComboLevel0_LightForm" Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.2" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="0.2" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilityDescriptorShiftingComboLevel1_LightForm" Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.4" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="0.4" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilityDescriptorShiftingComboLevel0_DarkForm"  Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="0.2" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="0.2" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="UnitAbilityDescriptorShiftingComboLevel1_DarkForm"  Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="0.4" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="0.4" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Shifting Awe -->
+  <SimulationDescriptor Name="UnitActionAbilityShiftingAwe_LightForm"             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BattleMoraleBonus"       Operation="Addition" Left="1"    BinaryOperation="Multiplication" Right="$(ShiftingAweEfficiency_LightForm)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionAbilityShiftingAwe_DarkForm"              Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="BattleMoraleBonus"       Operation="Addition" Left="-1"    BinaryOperation="Multiplication" Right="$(ShiftingAweEfficiency_DarkForm)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ####################################################################################################### -->
+  <!-- ####################################     "SEA DEMONS" EXPANSION    #################################### -->
+  <!-- ####################################################################################################### -->
+
+  <!-- #################### -->
+  <!-- ###### WEATHER ##### -->
+  <!-- #################### -->
+
+  <!-- Lightning -->
+  <SimulationDescriptor Name="UnitActionStruckByLightning"                        Type="UnitAction"/>
+
+  <!-- Fog: +50% Defence against ranged attacks -->
+  <SimulationDescriptor Name="UnitActionFogTileBonus"                             Type="UnitAction" />
+  <SimulationDescriptor Name="UnitActionFogTileBonusActivated"                    Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="0.5" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Floatsam: Increases tile movement cost by 1, -30% Defense -->
+  <SimulationDescriptor Name="UnitActionFlotsamTileBonus"                         Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="-0.3" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rain: -3 Morale -->
+  <SimulationDescriptor Name="UnitActionRainTileBonus"                            Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleFromGround" Operation="Addition" Value="-3"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Turbulence: -30% Attack -->
+  <SimulationDescriptor Name="UnitActionTurbulenceTileBonus"                      Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="-0.3" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  
+  <!-- ######################## -->
+  <!-- ###### SUBMERSIBLE ##### -->
+  <!-- ######################## -->
+
+  <!-- Submerged -->
+  <SimulationDescriptor Name="UnitActionAbilitySubmerged"                         Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Multiplication" Value="5" />
+      <SimulationModifierDescriptor TargetProperty="CanCounter"       Operation="Force"          Value="0" />
+      <SimulationModifierDescriptor TargetProperty="WeatherImmunity"  Operation="Force"          Value="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ############################### -->
+  <!-- ###### NAVAL UNIT WEAPONS ##### -->
+  <!-- ############################### -->
+
+  <!-- Submersible Slayer -->
+  <SimulationDescriptor Name="UnitActionSubmersibleSlayer"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"    Operation="Multiplication" Value="$(InitialAttackAgainstSubmersibleEfficiency)" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"    Operation="Percent"        Value="$(InitialAgainstSubmersibleEfficiency)"   />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Boarding Party -->
+  <SimulationDescriptor Name="UnitActionBoardingParty"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="AttributeDamage"          Operation="Addition"   BinaryOperation="Multiplication" Left="$(Health)" Right="$(BoardingPartyEfficiency)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Blind-->
+  <SimulationDescriptor Name="UnitActionAbilityBlind"                             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"              Value="$(DustFocalBlindness)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- On Fire -->
+  <SimulationDescriptor Name="UnitActionOnFire"                                   Type="UnitAction"/>
+
+  <!-- Corrosion -->
+  <SimulationDescriptor Name="UnitActionCorrosion"                                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"             Value="$(AcidSprayCorrosion)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ############################################## -->
+  <!-- ###### NAVAL UNIT OFFICERS (ACCESSORIES) ##### -->
+  <!-- ############################################## -->
+
+  <!-- Fomorian Slayer (only works on neutral Fomorians) -->
+  <SimulationDescriptor Name="UnitActionFomorianSlayer"                            Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstFomorianEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Forcefield -->
+
+  <SimulationDescriptor Name="UnitActionForcefield"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CanTakePhysicalDamage"  Operation="Force" Value="$(AttackPerRoundTaken)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- ######################## -->
+  <!-- ###### QUEST ITEMS ##### -->
+  <!-- ######################## -->
+
+  <!-- Transport slayer (only works on embarked land units) -->
+  <SimulationDescriptor Name="UnitActionTransportShipSlayer"                      Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="$(AgainstTransportShipEfficiency)" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Galvanization (increases morale by 3) -->
+  <SimulationDescriptor Name="UnitActionGalvanization"                            Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Value="3" Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Trust (improved the morale of adjacent embarked land units) -->
+  <SimulationDescriptor Name="UnitActionTrust"                                    Type="UnitActionTrust">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Value="3" Operation="Addition"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Supercharge (increased damage and inititative when struck by lightning) -->
+  <SimulationDescriptor Name="UnitActionAbilitySuperCharge"                        Type="UnitActionTrust">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"  Value="0.5" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"      Value="0.5" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ############################ -->
+  <!-- ###### FOMORIANS UNITS ##### -->
+  <!-- ############################ -->
+
+  <!-- Artillery: -50% penalty when firing at adjacent units -->
+  <SimulationDescriptor Name="UnitActionArtillery"                                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="-0.5" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Value="-0.5" Operation="Percent"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ############################# -->
+  <!-- ###### SEA DEMONS UNITS ##### -->
+  <!-- ############################# -->
+
+  <!-- Bloodlust: the targeted unit takes damage but gains a considerable attribute bonus -->
+  <SimulationDescriptor Name="UnitActionBloodlust"                                Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"         Value="0.3" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"     Value="0.3" Operation="Percent"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement"   Value="1" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Kamikaze: the targeted unit will explode on death -->
+  <SimulationDescriptor Name="UnitActionKamikaze"                                 Type="UnitAction">
+  </SimulationDescriptor>
+
+  <!-- Turtle: increased defense after being attacked -->
+  <SimulationDescriptor Name="UnitActionAbilityTurtle_Prepare"                            Type="UnitAction"  />
+  <SimulationDescriptor Name="UnitActionAbilityTurtle"                            Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"          Value="0.5" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Death from below: -30% initiative on units adjacent to the instigator -->
+  <SimulationDescriptor Name="UnitActionDeathFromBelow"                           Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"      Value="0.3" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ####################################################################################################### -->
+  <!-- #################################     "SUMMER FLAMES" EXPANSION    #################################### -->
+  <!-- ####################################################################################################### -->
+
+  <!-- #################### -->
+  <!-- ##### GEOMANCY ##### -->
+  <!-- #################### -->
+  
+  <!-- Geomancy: Plains -->
+  <SimulationDescriptor Name="UnitActionPlainsGeomancy"  Type="UnitAction"/>
+  
+  <!-- Geomancy: Forest -->
+  <SimulationDescriptor Name="UnitActionForestGeomancy"  Type="UnitAction"/>
+  
+  <!-- Geomancy: Arid -->
+  <SimulationDescriptor Name="UnitActionAridGeomancy"  Type="UnitAction"/>
+
+  <!-- Geomancy: Rock -->
+  <SimulationDescriptor Name="UnitActionRockGeomancy"  Type="UnitAction"/>
+
+  <!-- Geomancy: Volcanic -->
+  <SimulationDescriptor Name="UnitActionVolcanicGeomancy"  Type="UnitAction"/>
+
+
+  <SimulationDescriptor Name="UnitActionForestGeomancyInitUp"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative" Value="10" Operation="Addition" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionVolcanicGeomancyAttUp"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Value="0.2" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionTerrainDefUp"                        Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Value="0.2" Operation="Percent" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitActionInnerFireBonus"                      Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage" Operation="Percent"  Value="0.2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- #################### -->
+  <!-- ###### WEATHER ##### -->
+  <!-- #################### -->
+
+  <!-- Dust Storm: -30% Attack -->
+  <SimulationDescriptor Name="UnitActionDustStormTileBonus"                      Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack" Operation="Percent" Value="-0.3" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Storm: +50% Defense against ranged attacks -->
+  <SimulationDescriptor Name="UnitActionDustStormTileBonusActivated"             Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense" Operation="Percent" Value="0.5" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Dust Bugs: +50% regen -->
+  <SimulationDescriptor Name="UnitActionDustBugsTileBonus"                      Type="UnitAction">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Map Boost 1 -->
+  <SimulationDescriptor Name="UnitActionMapBoost1Bonus"                      Type="UnitAction"/>
+
+  <!-- Map Boost 2 -->
+  <SimulationDescriptor Name="UnitActionMapBoost2Bonus"                      Type="UnitAction"/>
+
+  <!-- Map Boost 3 -->
+  <SimulationDescriptor Name="UnitActionMapBoost3Bonus"                      Type="UnitAction"/>
+
+  <!-- Lava river battle damage -->
+  <SimulationDescriptor Name="UnitActionLavaRiverBonus"                      Type="UnitAction"/>
+  <SimulationDescriptor Name="UnitActionDisableLavaDamage"                      Type="UnitAction"/>
+
+  <!-- ####################################################################################################### -->
+  <!-- #################################       "SYMBIOSIS" EXPANSION      #################################### -->
+  <!-- ####################################################################################################### -->
+
+  <!-- Snare -->
+  <SimulationDescriptor Name="UnitActionSnare"                                 Type="UnitAction">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Value="0" Operation="Multiplication" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+</Datatable>

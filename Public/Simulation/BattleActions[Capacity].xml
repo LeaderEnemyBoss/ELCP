@@ -1,0 +1,1530 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ####################################################################################################################################### -->
+  <!-- ####################################################################################################################################### -->
+  <!-- #################################         BATTLE ACTIONS WITH THE CAPACITIES GAMEPLAY       ########################################### -->
+  <!-- ####################################################################################################################################### -->
+  <!-- ####################################################################################################################################### -->
+
+
+
+  <!-- ##################################### -->
+  <!-- ######       HIGH GROUND       ###### -->
+  <!-- ##################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityHighGroundBonus" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:Altitude) gt  $Link(Target|Property|ClassUnit:Altitude)</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="HighGroundEfficiencyAffectation" PropertyName="HighGroundEfficiency" Operation="Affectation" InterpreterFormula="$Property(InitialHighGroundEfficiency)" />
+      <!-- for now fixed bonus until I find a solution to make it dynamic -->
+      <BattleEffect_UnitSimulation Name="BattleEffect_HighGroundBonus" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionHighGroundBonus" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######       BARK SKIN         ###### -->
+  <!-- ##################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityBarkSkin" Defensible="false" TerrainConsideration="Range" Type="Support">
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BarkSkinEfficiencyAffectation" PropertyName="BarkSkinEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialBarkSkinEfficiency)" RealizationApplicationMethod="OnHit"  />
+      <BattleEffect_UnitSimulation Name="BattleEffect_BarkSkin" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionBarkSkin" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######       INCREASED FIRE         ###### -->
+  <!-- ########################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityIncreasedFire" Defensible="false" TerrainConsideration="Range" Type="Support">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerIncreasedFire" />
+    </BattleEffects>
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="IncreasedFireEfficiencyAffectation" PropertyName="IncreasedFireEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialIncreasedFireEfficiency)" RealizationApplicationMethod="OnHit"  />
+      <BattleEffect_UnitSimulation Name="BattleEffect_IncreasedFire" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionIncreasedFire" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######       SLOW DOWN         ###### -->
+  <!-- ##################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySlowDown" Defensible="false" TerrainConsideration="Range" Type="Attack">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffect_SlowDownCast" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_AbilitySlowDown" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionSlowDown" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######       SOUL LEECH        ###### -->
+  <!-- ##################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySoulLeech" Type="TargetDeath">
+
+    <!-- Leech on kill -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_SoulLeech_Heal" PropertyName="Health" Operation="Addition" InterpreterFormula="(0 max ( $Link(Initiator|Property|ClassUnit:MaximumHealth) * 0.2))" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_SoulLeech_Heal" />
+    </BattleEffects>
+
+    <!-- used to trigger fx -->
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_SoulLeech_Drain" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######       LIFE SIPHON       ###### -->
+  <!-- ##################################### -->
+
+  <!-- If hit, heal Surounding Allies with your Damage Value: miss a prerequisite -->
+  <BattleActionUnit Name="BattleActionUnitAbilityLifeSiphon" Defensible="false" TerrainConsideration="Range" Type="Attack">
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_SetLifeSiphonAmount" PropertyName="LifeSiphonHealAmount" Operation="Affectation" RealizationApplicationMethod="Instant" InterpreterFormula="$Property(ClassUnit:AttributeDamage) * $Property(ClassUnit:DamageMultiplier) * 0.35"/>
+    </BattleEffects>
+
+
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_LifeSiphon_SiphonOff" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" RealizationVisualEffectName="BattleEffect_AOE_LifeSiphon_Heal" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_LifeSiphon_SiphonOff">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">($Property(ClassUnit:CanBeHealed) gt 0) and ($Link(Initiator|Property|ClassUnit:LifeSiphonHealAmount) ge 1)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_LifeSiphon_HealTransition" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LifeSiphon_Heal" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:LifeSiphonHealAmount)" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_LifeSiphon_HealTransition" />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######       BLOOD RAGE        ###### -->
+  <!-- ##################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityBloodRage" Type="TargetDeath">
+
+    <!-- Leech on kill -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_BloodRage_Counter" PropertyName="BloodRageCounter" Operation="Addition" InterpreterFormula="1" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_BloodRage" Duration="6" IsCumulable="false">
+        <SimulationDescriptorReference Name="UnitActionAbilityBloodRage" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######         CHARGE          ###### -->
+  <!-- ##################################### -->
+
+  <!-- Move -->
+  <BattleActionUnit Name="BattleActionUnitAbilityChargeReset" Type="Deactivation">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectResetCharge" PropertyName="Charge" Operation="Affectation" InterpreterFormula="0" />
+    </BattleEffects>
+
+  </BattleActionUnit>
+
+  <!-- Attack -->
+  <!-- need to check range on the first effect to not charge if adjacent to target -->
+  <BattleActionUnit Name="BattleActionUnitAbilityChargeAttack" Type="PrepareAttack" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:BattleMaximumMovement) gt $Property(ClassUnit:BattleMovement)</InterpreterPrerequisite>
+    <!-- Use the Charge Property to define the Damage Multiplier Modifier  -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_IncreaseChargeFromDistance" PropertyName="Charge" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:ChargeIncrease) + (0.1 * ($Link(Initiator|Property|ClassUnit:BattleMaximumMovement) -$Link(Initiator|Property|ClassUnit:BattleMovement) ))" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionChargeBonus" Duration="1" IsCumulable="false" IsPermanentEffect="true">
+        <SimulationDescriptorReference Name="UnitActionChargeBonus" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ####      CRIPPLING CHARGE       #### -->
+  <!-- ##################################### -->
+
+  <!-- Move -->
+  <BattleActionUnit Name="BattleActionUnitAbilityStunChargeReset" Type="Deactivation">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectResetStunCharge" PropertyName="StunCharge" Operation="Affectation" InterpreterFormula="0" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Attack -->
+  <!-- need to check range on the first effect to not charge if adjacent to target -->
+  <BattleActionUnit Name="BattleActionUnitAbilityStunChargeAttack" Type="PrepareAttack" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:BattleMaximumMovement) gt $Property(ClassUnit:BattleMovement)</InterpreterPrerequisite>
+    <!-- Use the Charge Property to define the Damage Multiplier Modifier  -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_IncreaseStunChargeFromDistance" PropertyName="StunCharge" Operation="Addition" InterpreterFormula="0.1 * ($Link(Initiator|Property|ClassUnit:BattleMaximumMovement) -$Link(Initiator|Property|ClassUnit:BattleMovement) )" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionStunChargeBonus" Duration="1" IsCumulable="false" IsPermanentEffect="true">
+        <SimulationDescriptorReference Name="UnitActionStunChargeBonus" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target Alive"  Probability="$(StunCharge)">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_Stun" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionStun" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######     DAMAGING CHARGE      ##### -->
+  <!-- ##################################### -->
+
+  <!-- Move -->
+  <BattleActionUnit Name="BattleActionUnitAbilityDamagingChargeReset" Type="Deactivation">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectResetCharge" PropertyName="DamagingCharge" Operation="Affectation" InterpreterFormula="0" />
+    </BattleEffects>
+
+  </BattleActionUnit>
+
+  <!-- Attack -->
+  <!-- need to check range on the first effect to not charge if adjacent to target -->
+  <BattleActionUnit Name="BattleActionUnitAbilityDamagingChargeAttack" Type="PrepareAttack" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:BattleMaximumMovement) gt $Property(ClassUnit:BattleMovement)</InterpreterPrerequisite>
+    <!-- Use the Charge Property to define the Damage Multiplier Modifier  -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_IncreaseChargeFromDistance" PropertyName="DamagingCharge" Operation="Addition" InterpreterFormula="0.25 + (0.1 * ($Link(Initiator|Property|ClassUnit:BattleMaximumMovement) -$Link(Initiator|Property|ClassUnit:BattleMovement) ))" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionChargeBonus" Duration="1" IsCumulable="false" IsPermanentEffect="true">
+        <SimulationDescriptorReference Name="UnitActionDamagingChargeBonus" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######    DEFENSIVE CHARGE      ##### -->
+  <!-- ##################################### -->
+
+  <!-- Move -->
+  <BattleActionUnit Name="BattleActionUnitAbilityDefensiveChargeReset" Type="Deactivation">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectResetCharge" PropertyName="DefensiveCharge" Operation="Affectation" InterpreterFormula="0" />
+    </BattleEffects>
+
+  </BattleActionUnit>
+
+  <!-- Attack -->
+  <!-- need to check range on the first effect to not charge if adjacent to target -->
+  <BattleActionUnit Name="BattleActionUnitAbilityDefensiveChargeAttack" Type="PrepareAttack" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:BattleMaximumMovement) gt $Property(ClassUnit:BattleMovement)</InterpreterPrerequisite>
+    <!-- Use the Charge Property to define the Damage Multiplier Modifier  -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_IncreaseChargeFromDistance" PropertyName="DefensiveCharge" Operation="Addition" InterpreterFormula="0.25 + (0.1 * ($Link(Initiator|Property|ClassUnit:BattleMaximumMovement) -$Link(Initiator|Property|ClassUnit:BattleMovement) ))" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionChargeBonus" Duration="1" IsCumulable="false" IsPermanentEffect="true">
+        <SimulationDescriptorReference Name="UnitActionDefensiveChargeBonus" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ##################################### -->
+  <!-- ######          COCOON         ###### -->
+  <!-- ##################################### -->
+
+  <!-- heal a friend, stun it & increase its defense for the round -->
+  <BattleActionUnit Name="BattleActionUnitAbilityCocoon" Defensible="false" TerrainConsideration="Range" Type="Support">
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_Void Name="BattleEffect_CocoonCast" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHeal" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage)" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_CocoonCast" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_Cocoon" Duration="2" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_CocoonCast">
+        <SimulationDescriptorReference Name="UnitActionStun" />
+        <SimulationDescriptorReference Name="UnitActionCocoonDefense" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+
+  </BattleActionUnit>
+
+
+
+  <!-- ####################################### -->
+  <!-- ######       CIRCULAR ATTACK     ###### -->
+  <!-- ####################################### -->
+
+  <!-- attack all adjacent opponent -->
+  <!-- Need to rework the anim / VFX to explicit that -->
+  <BattleActionUnit Name="BattleActionUnitAbilityCircularAttack" Defensible="true" Range="1" TerrainConsideration="PassableTransition" CanBeAppliedByDeadUnit="true" Type="Attack">
+    <!-- Land version -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,!SeafaringUnit)</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_CircularAttack" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.5" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,!SeafaringUnit)</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_CircularAttack" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.5" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+    <!-- Sea version -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,SeafaringUnit)</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_CircularAttack_Naval" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.5" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ####################################### -->
+  <!-- ######       INTIMIDATION AURA   ###### -->
+  <!-- ####################################### -->
+
+  <!-- Lower initiative by 25% -->
+  <BattleActionUnit Name="BattleActionUnitAbilityIntimidationAura" Defensible="false" Range="1" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Attack Defense Hit">
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+        <BattleEffect_UnitSimulation Name="BattleEffect_LowerInitiative" IsCumulable="false" Duration="2" IsPermanentEffect="true">
+          <SimulationDescriptorReference Name="UnitActionReducedInitiative" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ####################################### -->
+  <!-- ######       CHAIN LIGHTNING     ###### -->
+  <!-- ####################################### -->
+
+  <!-- chained attack-->
+  <BattleActionUnit Name="BattleActionUnitAbilityChainLightning" Defensible="true" Range="1" TerrainConsideration="Range" Type="Attack">
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,SeafaringUnit,UnitTypeFomoriansBathysphere) or $Path(ClassUnit,TransportShipUnit,UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+      <BattleEffect_Void Name="BattleEffect_EndlessFlamesIronAttackDefense_Bathysphere" />
+    </BattleEffects>
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,SeafaringUnit,!UnitTypeFomoriansBathysphere) or $Path(ClassUnit,TransportShipUnit,!UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+      <BattleEffect_Void Name="BattleEffect_EndlessFlamesIronAttackDefense_FireShip" />
+    </BattleEffects>
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Property|ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Chain" AvoidCastingUnit="true" Parameter1="-1" RealizationVisualEffectName="BattleEffect_AOE_ChainLightning" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ChainLightning" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:ChainLightningMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+  <!-- ####################################### -->
+  <!-- ######       DEBUFF IMMUNITY     ###### -->
+  <!-- ####################################### -->
+
+  <!-- immune the target ally to debuff-->
+  <BattleActionUnit Name="BattleActionUnitAbilityDebuffImmunity" Defensible="false" TerrainConsideration="Range" Type="Support">
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffect_DebuffImmunityCast" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <InterpreterPrerequisite Inverted="false">!($Link(Initiator|Path|UnitAbilityDebuffImmunityDescriptor3))</InterpreterPrerequisite>
+      <BattleEffect_Void Name="BattleEffect_DebuffImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityCast" RealizationApplicationIgnoreTarget="true" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_DebuffImmunity" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityTransition">
+        <SimulationDescriptorReference Name="UnitAbilityUnstoppableDescriptor1" />
+        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity" />
+      </BattleEffect_UnitSimulation>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.15" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <InterpreterPrerequisite Inverted="false">($Link(Initiator|Path|UnitAbilityDebuffImmunityDescriptor3))</InterpreterPrerequisite>
+      <BattleEffect_Void Name="BattleEffect_DebuffImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityCast" RealizationApplicationIgnoreTarget="true" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_DebuffImmunity" Duration="6" IsCumulable="false" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityTransition">
+        <SimulationDescriptorReference Name="UnitAbilityUnstoppableDescriptor1" />
+        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity" />
+      </BattleEffect_UnitSimulation>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.25" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">  
+        <InterpreterPrerequisite Inverted="false">($Link(Initiator|Path|UnitAbilityDebuffImmunityDescriptor2)) and !($Link(Initiator|Path|UnitAbilityDebuffImmunityDescriptor3))</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_DebuffImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityCast" RealizationApplicationIgnoreTarget="true" />
+        <BattleEffect_UnitSimulation Name="BattleEffect_DebuffImmunity" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityTransition">
+          <SimulationDescriptorReference Name="UnitAbilityUnstoppableDescriptor1"/>
+          <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity"/>
+        </BattleEffect_UnitSimulation>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.15" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">($Link(Initiator|Path|UnitAbilityDebuffImmunityDescriptor3))</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_DebuffImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityCast" RealizationApplicationIgnoreTarget="true" />
+        <BattleEffect_UnitSimulation Name="BattleEffect_DebuffImmunity" Duration="6" IsCumulable="false" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityTransition">
+          <SimulationDescriptorReference Name="UnitAbilityUnstoppableDescriptor1"/>
+          <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity"/>
+        </BattleEffect_UnitSimulation>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.25" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUnit>
+
+
+
+  <!-- ####################################### -->
+  <!-- ######          EXHAUSTION       ###### -->
+  <!-- ####################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityExhaustion" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Attack Defense" Priority="-1">
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="ExhaustionEfficiencyAffectation" PropertyName="ExhaustionEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialExhaustionEfficiency)" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_Exhaustion" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilityExhaustion" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ####################################### -->
+  <!-- ######          UNSTEADY         ###### -->
+  <!-- ####################################### -->
+
+  <!-- lower defense for the round -->
+  <BattleActionUnit Name="BattleActionUnitAbilityUnsteady" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Attack Defense" Priority="-1">
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="UnsteadyEfficiencyAffectation" PropertyName="UnsteadyEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialUnsteadyEfficiency)" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_Unsteady" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilityUnsteady" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######          FEEBLENESS        ###### -->
+  <!-- ######################################## -->
+
+  <!-- lower defense for the round -->
+  <BattleActionUnit Name="BattleActionUnitAbilityFeebleness" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Attack Defense" Priority="-1">
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="FeeblenessEfficiencyAffectation" PropertyName="FeeblenessEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialFeeblenessEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_Feebleness" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilityFeebleness" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ################################## -->
+  <!-- ######          HALT        ###### -->
+  <!-- ################################## -->
+
+  <!-- lower defense for the round -->
+  <BattleActionUnit Name="BattleActionUnitAbilityHalt" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Attack Defense" Priority="-1">
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="HaltEfficiencyAffectation" PropertyName="HaltEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialHaltEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_Halt" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilityHalt" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######          SWIFTNESS         ###### -->
+  <!-- ######################################## -->
+
+  <!-- lower defense for the round -->
+  <BattleActionUnit Name="BattleActionUnitAbilitySwiftness" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Attack Defense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(AttributeInitiative) ge $Link(Target|Property|AttributeInitiative) </InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="SwiftnessEfficiencyAffectation" PropertyName="SwiftnessEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialSwiftnessEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_Swiftness" Duration="1" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilitySwiftness" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######          RETALIATION         ###### -->
+  <!-- ########################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityRetaliation" Defensible="false" TerrainConsideration="Range"  Type="Hit Defense" Priority="-1">
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="RetaliationEfficiencyAffectation" PropertyName="RetaliationEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialRetaliationEfficiency)" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_Retaliation" Duration="2" IsCumulable="false">
+        <SimulationDescriptorReference Name="UnitActionAbilityRetaliation" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######             BLOCK          ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityBlock" Defensible="false" TerrainConsideration="None"  Type="PrepareHit PrepareDefense" Priority="-1">
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_Block" Duration="1" IsCumulable="false">
+        <SimulationDescriptorReference Name="UnitActionAbilityBlock" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################### -->
+  <!-- ######             REGENERATION          ###### -->
+  <!-- ############################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityRegeneration" Defensible="false" TerrainConsideration="Range" Type="Deactivation" Priority="0">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:Health) lt $Property(ClassUnit:MaximumHealth)</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_HealthRegeneration" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:RegenerationBonus) * $Link(Initiator|Property|ClassUnit:LevelDisplayed)" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################## -->
+  <!-- ######             LIFE DRAIN           ###### -->
+  <!-- ############################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityLifeDrain" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack" Priority="1">
+    <InterpreterPrerequisite Inverted="false">($Link(Target|Property|ClassUnit:AttributeArmor) le 0) and ($Link(Target|Property|ClassUnit:CantBeDebuffed) le 0)</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_HealthDrain" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:LifeDrainBonus)" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_HealFromDrain" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:LifeDrainBonus)" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ####################################### -->
+  <!-- ######          BEAM ATTACK      ###### -->
+  <!-- ####################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityBeam" Defensible="true" TerrainConsideration="Range" Type="Attack">
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Line" Parameter1="4" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_Beam" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Beam" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Beam" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######          SWEEP ATTACK      ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySweep" Defensible="true" Range="1" TerrainConsideration="PassableTransition" Type="Attack">
+
+    <!-- INITIAL TARGET -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Sweep" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Sweep" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+
+    <!-- AOE -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Sweep" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:SweepEfficiency)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Sweep" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:SweepEfficiency)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################ -->
+  <!-- ######       SWEEP ATTACK GORILLA     ###### -->
+  <!-- ############################################ -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySweep_Gorrila" Defensible="true" Range="1" TerrainConsideration="PassableTransition" Type="Attack">
+
+    <!-- INITIAL TARGET -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Sweep_Gorilla" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Sweep_Gorilla" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+
+    <!-- AOE -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Sweep_Gorilla" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:SweepEfficiency)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Sweep_Gorilla" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:SweepEfficiency)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######       WARRIOR SLAYER       ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityWarriorSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitClassInfantry) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstMeleeEfficiencyAffectation" PropertyName="AgainstMeleeEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstMeleeEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionWarriorSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionWarriorSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######       RANGE SLAYER         ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityRangeSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitClassRanged) ge 1 or $Link(Target|Count|ClassUnit,UnitClassSupport) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstRangeEfficiencyAffectation" PropertyName="AgainstRangeEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstRangeEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionRangeSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionRangeSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######       MAGE SLAYER          ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityMageSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitClassSupport) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstMageEfficiencyAffectation" PropertyName="AgainstMageEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstMageEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionMageSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionMageSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######       KNIGHT  SLAYER       ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityKnightSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitClassCavalry) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstCavalryEfficiencyAffectation" PropertyName="AgainstCavalryEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstCavalryEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionKnightSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionKnightSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######       FLYING  SLAYER       ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityFlyingSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitClassFlying) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstFlyingEfficiencyAffectation" PropertyName="AgainstFlyingEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstFlyingEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionFlyingSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionFlyingSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+  <!-- ######################################## -->
+  <!-- ######       KAIJU  SLAYER        ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityKaijuSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitTypeKaijus) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstKaijuEfficiencyAffectation" PropertyName="AgainstKaijuEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstKaijuEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionKaijuSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionKaijuSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- ######################################## -->
+  <!-- ######     KAIJU  BROTHERHOOD     ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityKaijuBrotherhood" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitTypeKaijus) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstKaijuEfficiencyAffectation" PropertyName="AgainstKaijuEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstKaijuEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionKaijuBrotherhood" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionKaijuBrotherhood" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######      COLOSSUS  SLAYER      ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityColossusSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitTypeColossus) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionColossusSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionColossusSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+  <!-- ######################################## -->
+  <!-- ######  GUARDIAN KILLER  SLAYER   ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityGuardianKillerSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitTypeGuardianKiller) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionGuardianKillerSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionColossusSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######    MINOR FACTION SLAYER    ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityMinorFactionSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitFactionTypeMinorFaction) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionMinorFactionSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionMinorFactionSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################## -->
+  <!-- ######       STUN       ###### -->
+  <!-- ############################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityStunLevel1" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack">
+    <BattleEffects TargetsFilter="Target Alive"  Probability="0.1">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_Stun" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionStun" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityStunLevel2" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack" >
+    <BattleEffects TargetsFilter="Target Alive" Probability="0.2">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_Stun" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionStun" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityStunLevel3" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack" >
+    <BattleEffects TargetsFilter="Target Alive" Probability="0.3">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_Stun" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionStun" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityStunLevel4" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack" >
+    <BattleEffects TargetsFilter="Target Alive" Probability="0.4">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_Stun" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionStun" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################### -->
+  <!-- ######                DISEASE            ###### -->
+  <!-- ############################################### -->
+  <!-- <InterpreterPrerequisite Inverted="false">!($Link(Target|Property|ClassUnit:BattleRange) gt 1) and !($Link(Target|Path|ClassUnit,UnitAbilityDiseaseImmunity))</InterpreterPrerequisite> -->
+  <BattleActionUnit Name="BattleActionUnitAbilityDisease" Defensible="false" TerrainConsideration="Range" Type="Attack Defense" Priority="0">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Property|ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Operation="Affectation" Name="BattleEffect_SetSufferedDiseaseEfficiency" PropertyName="SufferedDiseaseEfficiency" InterpreterFormula="($Property(ClassBattleUnit:SufferedDiseaseEfficiency) max $Link(Initiator|Property|ClassUnit:DiseaseEfficiency)) max $Link(Initiator|Property|ClassBattleUnit:SufferedDiseaseEfficiency)" />
+    </BattleEffects>
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitActionSick) or($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <BattleEffect_BattleActionUnit Name="BattleEffectAddDiseaseAction" Duration="6" RealizationApplicationMethod="OnHit">
+        <BattleActionUnitReference Name="BattleActionUnitAbilityDisease"/>
+        <BattleActionUnitReference Name="BattleActionUnitAbilityDiseasePassive"/>
+        <BattleActionUnitReference Name="BattleActionUnitAbilityDiseaseSpread"/>
+      </BattleEffect_BattleActionUnit>
+      <BattleEffect_UnitSimulation Name="AddSicknessDescriptor" IsCumulable="false" Duration="6">
+        <SimulationDescriptorReference Name="UnitActionSick" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityDiseasePassive" Defensible="false" TerrainConsideration="None" Type="Activation" Priority="0">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <InterpreterPrerequisite Inverted="true">(($Link(Initiator|Path|ClassUnit,UnitAbilityDiseaseImmunity)) or ($Link(Initiator|Property|ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_DiseaseDamages" PropertyName="Health" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * $Link(Initiator|Property|ClassBattleUnit:SufferedDiseaseEfficiency)))" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+  <!-- ###################################################### -->
+  <!-- ######                DISEASE SPREAD            ###### -->
+  <!-- ###################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityDiseaseSpread" Defensible="false" TerrainConsideration="None" Type="Death" CanBeAppliedByDeadUnit="true">
+
+    <BattleEffectsArea TargetsFilter="Initiator" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Operation="Affectation" Name="BattleEffect_SetSufferedDiseaseEfficiency" PropertyName="SufferedDiseaseEfficiency" InterpreterFormula="($Property(ClassBattleUnit:SufferedDiseaseEfficiency) max $Link(Initiator|Property|ClassUnit:DiseaseEfficiency)) max $Link(Initiator|Property|ClassBattleUnit:SufferedDiseaseEfficiency)" />
+      </BattleEffects>
+      <BattleEffects TargetsFilter="Target Alive">
+        <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitActionSick) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+        <BattleEffect_BattleActionUnit Name="BattleEffectAddDiseaseAction" Duration="6">
+          <BattleActionUnitReference Name="BattleActionUnitAbilityDisease"/>
+          <BattleActionUnitReference Name="BattleActionUnitAbilityDiseasePassive"/>
+          <BattleActionUnitReference Name="BattleActionUnitAbilityDiseaseSpread"/>
+        </BattleEffect_BattleActionUnit>
+        
+        <BattleEffect_UnitSimulation Name="AddSicknessDescriptor" IsCumulable="false" Duration="6">
+          <SimulationDescriptorReference Name="UnitActionSick" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################### -->
+  <!-- ######                      BOOMER                 ###### -->
+  <!-- ######################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityBoomer" Defensible="false" TerrainConsideration="None" Type="Death" CanBeAppliedByDeadUnit="true">
+
+    <BattleEffectsArea TargetsFilter="Initiator" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <!--<InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or ($Property(ClassUnit:CantBeDebuffed) gt 0))</InterpreterPrerequisite>-->
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_BoomerDamages" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)"  />
+        <BattleEffect_BattleActionUnit Name="BattleEffectAddDiseaseAction" Duration="6">
+          <BattleActionUnitReference Name="BattleActionUnitAbilityDisease"/>
+          <BattleActionUnitReference Name="BattleActionUnitAbilityDiseasePassive"/>
+          <BattleActionUnitReference Name="BattleActionUnitAbilityDiseaseSpread"/>
+        </BattleEffect_BattleActionUnit>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################### -->
+  <!-- ######                DEFENSIVE IMPULSE            ###### -->
+  <!-- ######################################################### -->
+
+  <!-- try to add hit in the end -->
+  <BattleActionUnit Name="BattleActionUnitAbilityDefensiveImpulse" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" Priority="1">
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_DefensiveImpulse" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.5" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_DefensiveImpulse" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.5" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################### -->
+  <!-- ######                SWEEP STRIKE BACK             ###### -->
+  <!-- ######################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySweepStrikeBack" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" AvoidCastingUnit="true">
+
+    <BattleEffectsArea TargetsFilter="Initiator" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_SweepStrikeBack" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:SweepStrikeBackEfficiency)" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_SweepStrikeBack" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:SweepStrikeBackEfficiency)" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################### -->
+  <!-- ######         GORILLA SWEEP STRIKE BACK           ###### -->
+  <!-- ######################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySweepStrikeBack_Gorilla" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" AvoidCastingUnit="true">
+
+    <BattleEffectsArea TargetsFilter="Initiator" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_SweepStrikeBack_Gorilla" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:SweepStrikeBackEfficiency)" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_SweepStrikeBack_Gorilla" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:SweepStrikeBackEfficiency)" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################### -->
+  <!-- ######           CIRCULAR ATTACK STRIKE BACK       ###### -->
+  <!-- ######################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityCircularAttackStrikeBack" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" AvoidCastingUnit="true">
+
+    <BattleEffectsArea TargetsFilter="Initiator" Type="Circle" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_CircularAttackStrikeBack" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.5" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_CircularAttackStrikeBack" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.5" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################### -->
+  <!-- ######                  FIRE RAIN                  ###### -->
+  <!-- ######################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityFireRain" Defensible="false" TerrainConsideration="Range" Type="Attack">
+
+    <!-- try to deal damages then check armour -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_FireRain" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"/>
+    </BattleEffects>
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_FireRain" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.25" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_FireRain" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"/>
+    </BattleEffects>
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1" AvoidCastingUnit="false" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_FireRain" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.25" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################### -->
+  <!-- ######                  SHARED WISDOM              ###### -->
+  <!-- ######################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySharedWisdom" Defensible="false" TerrainConsideration="None" Type="Deactivation" >
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="UnitActionSharedWisdom" IsCumulable="false" Duration="2">
+          <SimulationDescriptorReference Name="UnitActionSharedWisdom" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                  POINT BLANK POWER            ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityPointblankPower" Defensible="false" CanBeAppliedByDeadUnit="true" Type="PrepareAttack" >
+    <!-- PrepareDefense -->
+    <InterpreterPrerequisite Inverted="false">$(DistanceInitiatorToTarget) le 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="PointblankPowerEfficiencyAffectation" PropertyName="PointblankPowerEfficiency" Operation="Affectation" InterpreterFormula="$Property(ClassUnit:InitialPointblankPowerEfficiency)"/>
+      <BattleEffect_UnitSimulation Name="UnitActionPointblankPower" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionPointblankPower" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                        HEAL                   ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityHeal" Defensible="false" TerrainConsideration="Range" Range="1" Type="Support" Priority="-1">
+
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Healing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage)" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+  <!-- ########################################################### -->
+  <!-- ######                   LIGHT HEAL                  ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityLightHeal" Defensible="false" TerrainConsideration="Range" Range="1" Type="Support" Priority="-1">
+
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.5" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                    HEALING HALO               ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityHealingHalo" Defensible="false" TerrainConsideration="Range" Range="1" Type="Deactivation" Priority="-1">
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true" >
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_HealingHalo" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.15"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                  PHOENIX TO EGG               ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityPhoenixToEgg" Defensible="false" TerrainConsideration="None" Type="Death" CanBeAppliedByDeadUnit="true">
+    <InterpreterPrerequisite Inverted="true">$Path(ClassUnit,UnitActionPhoenixToEgg)</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_PhoenixToEggRevive" PropertyName="Health" Operation="Affectation" InterpreterFormula="($Link(Initiator|Property|ClassUnit:MaximumHealth) * 0.5)" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_PhoenixToEgg" IsCumulable="false" Duration="3" CanBeCanceled="false" RealizationEndingDuration="1.5">
+        <SimulationDescriptorReference Name="UnitActionPhoenixToEgg" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityEggRegeneration" Defensible="false" TerrainConsideration="None" Type="Activation" CanBeAppliedByDeadUnit="false">
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitActionPhoenixToEgg)</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_EggRegeneration" PropertyName="Health" Operation="Addition" InterpreterFormula="($Link(Initiator|Property|ClassUnit:MaximumHealth) * 0.1)" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                      PARASITE                 ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityParasite" Defensible="false" TerrainConsideration="Range" Type="Attack">
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_Parasite" IsCumulable="false" Duration="6" CanBeCanceled="false">
+        <SimulationDescriptorReference Name="UnitActionParasite" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                     Vaccination               ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityVaccination" Defensible="false" TerrainConsideration="Range" Type="Support">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffect_DiseaseImmunityCast" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_Void Name="BattleEffect_DiseaseImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DiseaseImmunityCast" RealizationApplicationIgnoreTarget="true" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_DiseaseImmunity" Duration="6" IsCumulable="false" RealizationApplicationMethod="OnHit" >
+        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                    ARDENT  FIRE               ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityArdentFire" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="PrepareAttack PrepareDefense" >
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:Health) lt $Property(ClassUnit:MaximumHealth)</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator">
+      <BattleEffect_ChangeSealedPropertyValue Name="ArdentFireEfficiencyAffectation" PropertyName="ArdentFireEfficiency" Operation="Affectation" InterpreterFormula="(1 - ($Link(Initiator|Property|ClassUnit:Health) / $Link(Initiator|Property|ClassUnit:MaximumHealth) ) )"/>
+      <BattleEffect_UnitSimulation Name="UnitActionArdentFireBonus" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionArdentFireBonus" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+  <!-- ########################################################### -->
+  <!-- ######                    RISING  FIRE               ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityRisingFire" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="PrepareAttack PrepareDefense" >
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:Health) lt $Property(ClassUnit:MaximumHealth)</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator">
+      <BattleEffect_ChangeSealedPropertyValue Name="RisingFireEfficiencyAffectation" PropertyName="RisingFireEfficiency" Operation="Affectation" InterpreterFormula="(1 - ($Link(Initiator|Property|ClassUnit:Health) / $Link(Initiator|Property|ClassUnit:MaximumHealth) ) )"/>
+      <BattleEffect_UnitSimulation Name="UnitActionRisingFireBonus" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionRisingFireBonus" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######              UNLEASHED POTENTIAL              ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityUnleashedPotential" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="false" Type="Support" >
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerUnleashedPotential" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_Void Name="BattleEffectApplyUnleashedPotential" />
+      
+      <BattleEffect_UnitSimulation Name="BattleEffect_UnleashedPotential" Duration="3" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilityUnleashedPotential" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                   SPEED UP                    ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySpeedUp" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="false" Type="Support" >
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerSpeedUp" />
+    </BattleEffects>
+    <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_SpeedUp" Duration="3" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilitySpeedUp" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################################### -->
+  <!-- ######                       SHOCK                   ###### -->
+  <!-- ########################################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityShock" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="false" Type="Attack" Priority="-1">
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="ShockEfficiencyAffectation" PropertyName="ShockEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialShockEfficiency)" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_Shock" Duration="3" IsCumulable="true" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilityShock" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######       MINOR   SLAYER       ###### -->
+  <!-- ######################################## -->
+
+  <!-- BONUS FOR AI -->
+  <BattleActionUnit Name="BattleActionUnitAbilityMinorSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">($Link(Target|Property|ClassUnit:ControlledByMinorAI) gt 0) and ($Property(ClassUnit:ControlledByMajorAI) gt 0)</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionMinorSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionMinorSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################### -->
+  <!-- ######             ETERNAL FIRE          ###### -->
+  <!-- ############################################### -->
+
+  <!-- <InterpreterPrerequisite Inverted="false">!($Link(Target|Property|ClassUnit:BattleRange) gt 1) and !($Link(Target|Path|ClassUnit,UnitAbilityDiseaseImmunity))</InterpreterPrerequisite> -->
+  <BattleActionUnit Name="BattleActionUnitAbilityEternalFire" Defensible="false" TerrainConsideration="Range" Type="Attack Defense" Priority="0">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Property|ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitActionSick) or($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <BattleEffect_BattleActionUnit Name="BattleEffectAddEternalFireAction" Duration="6" RealizationApplicationMethod="OnHit">
+        <BattleActionUnitReference Name="BattleActionUnitAbilityEternalFirePassive"/>
+      </BattleEffect_BattleActionUnit>
+      <BattleEffect_UnitSimulation Name="AddBurningDescriptor" IsCumulable="false" Duration="6">
+        <SimulationDescriptorReference Name="UnitActionBurning" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityEternalFirePassive" Defensible="false" TerrainConsideration="None" Type="Activation" Priority="0">
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <InterpreterPrerequisite Inverted="false">$Link(Initiator|Property|ClassUnit:CantBeDebuffed) eq 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_EternalFireDamages" PropertyName="Health" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * 0.15))" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######         WOOD BURNER        ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionWoodBurner" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="0">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Path|UnitActionForestTileBonus)</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_WoodBurner" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionWoodBurner" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######       TSUNAMI CHARGE       ###### -->
+  <!-- ######################################## -->
+
+  <!-- Move -->
+  <BattleActionUnit Name="BattleActionUnitAbilityTsunamiChargeReset" Type="Deactivation">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectResetCharge" PropertyName="TsunamiCharge" Operation="Affectation" InterpreterFormula="0" />
+    </BattleEffects>
+
+  </BattleActionUnit>
+
+  <!-- Attack -->
+  <!-- need to check range on the first effect to not charge if adjacent to target -->
+  <BattleActionUnit Name="BattleActionUnitAbilityTsunamiChargePrepareAttack" Type="PrepareAttack" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:BattleMaximumMovement) gt $Property(ClassUnit:BattleMovement)</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_IncreaseChargeFromDistance" PropertyName="TsunamiCharge" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:BattleMaximumMovement) - $Link(Initiator|Property|ClassUnit:BattleMovement)" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityTsunamiChargeAttack" Type="Attack" >
+
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Link(Initiator|Property|ClassUnit:TsunamiCharge) eq 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectDamage" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+
+    <!-- DestroyArmor -->
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Link(Initiator|Property|ClassUnit:TsunamiCharge) eq 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectDamageArmor" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+
+    <!-- AoE -->
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="$(TsunamiCharge)" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffectAOETsunamiAttack" RealizationApplicationMethod="OnHit">
+      <InterpreterPrerequisite Inverted="false">$Link(Initiator|Property|ClassUnit:TsunamiCharge) gt 0</InterpreterPrerequisite>
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectTsunamiAttack" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectTsunamiAttack" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######       MIND CONTROL         ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityMindcontrol" Defensible="false" TerrainConsideration="Range" Type="Attack">
+    <BattleEffects TargetsFilter="Target Alive"  Probability="0.5">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_MindControl  Name="BattleEffect_MindControl" Duration="2" RealizationApplicationMethod="OnHit">
+        <BattleTargetingUnitBehaviorWeightReference Name="UnitBehaviorMindControlled" />
+      </BattleEffect_MindControl>
+
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################## -->
+  <!-- ######        EARTHQUAKE          ###### -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityEarthquake" Defensible="true" Range="1" TerrainConsideration="PassableTransition" CanBeAppliedByDeadUnit="true" Type="Attack">
+
+    <!-- INITIAL TARGET -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Earthquake" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Earthquake" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+
+    <!-- AOE -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="BattleGround" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Earthquake" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.25" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="BattleGround" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_Earthquake" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.25" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+  <!-- ##################################### -->
+  <!-- ######         SNARE           ###### -->
+  <!-- ##################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySnare" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffect_SnareCast" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_AbilitySnare" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionSnare" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+  
+</Datatable>

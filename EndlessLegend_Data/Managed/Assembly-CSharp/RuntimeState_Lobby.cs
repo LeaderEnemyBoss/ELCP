@@ -542,10 +542,6 @@ public class RuntimeState_Lobby : RuntimeState
 					string factionNameOrDescriptor = text.Substring(array[0].Length + 1);
 					flag = this.TryChangeFaction(array[0], array[1], factionNameOrDescriptor);
 				}
-				else if (array[0].StartsWith("Handicap"))
-				{
-					flag = this.TryChangeHandicap(array[0], array[1]);
-				}
 				else if (array[0].StartsWith("LockEmpire"))
 				{
 					string x = array[0];
@@ -871,8 +867,11 @@ public class RuntimeState_Lobby : RuntimeState
 			{
 				foreach (string text in this.GameSaveDescriptor.GameSaveSessionDescriptor.GetLobbyDataKeys())
 				{
-					string lobbyData = this.GameSaveDescriptor.GameSaveSessionDescriptor.GetLobbyData<string>(text, null);
-					this.Session.SetLobbyData(text, lobbyData, true);
+					if (text != "name")
+					{
+						string lobbyData = this.GameSaveDescriptor.GameSaveSessionDescriptor.GetLobbyData<string>(text, null);
+						this.Session.SetLobbyData(text, lobbyData, true);
+					}
 				}
 				this.Session.SetLobbyData("Owner", this.Session.SteamIDUser, true);
 				this.Session.SetLobbyData("owner", this.Session.SteamIDUser, true);
@@ -899,15 +898,15 @@ public class RuntimeState_Lobby : RuntimeState
 							}
 							if (!lobbyData2.StartsWith("AI"))
 							{
-								goto IL_24C;
+								goto IL_25C;
 							}
 							num++;
 						}
-						goto IL_263;
-						IL_24C:
+						goto IL_273;
+						IL_25C:
 						text2 = text4;
 						text3 = lobbyData2;
-						IL_263:
+						IL_273:
 						Diagnostics.LogWarning("Replacing steam id user {0} from '{1}' by current user's {2} in order to load the single player game.", new object[]
 						{
 							text3,
@@ -1739,12 +1738,6 @@ public class RuntimeState_Lobby : RuntimeState
 		default:
 			throw new ArgumentOutOfRangeException();
 		}
-	}
-
-	private bool TryChangeHandicap(string HandicapKey, string HandicapValue)
-	{
-		this.Session.SetLobbyData(HandicapKey, HandicapValue, true);
-		return true;
 	}
 
 	private global::Session session;

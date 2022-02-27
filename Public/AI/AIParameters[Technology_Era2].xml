@@ -13,7 +13,6 @@
 
   <!-- "Public Granary" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionFood2">
-	<AIParameter Name="AITechMustHave" Value="0.1 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyFood1)))"/>
     <!-- "Public Granary": 5 Glassteel required -->
     <AIParameter Name="CityFood"              Value="15 
       * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
@@ -42,8 +41,6 @@
 
   <!-- "Alchemy Workshop" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionScience3">
-	<AIParameter Name="AITechMustHave" Value="0.15 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 2)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyScience2)))"/>
-	<AIParameter Name="AITechMustHave" Value="0.5 * $(VictoryFocusTechnology)"/>
     <!-- "Alchemy Workshop": 5 Titanium required -->
     <AIParameter Name="CityScience"             Value="15
       * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
@@ -74,21 +71,17 @@
   <!-- "Prisoners, Slaves and Volunteers" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionConstructionBuyout">
     <AIParameter Name="EmpireBuyout" Value="1"  />
-	<AIParameter Name="AITechMustHave" Value="0.05 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))"/>
   </AIParameterDatatableElement>
 
   <!-- "Meritocratic Promotion" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionArmySize1">
-    <AIParameter Name="CityMilitia" Value="0.5"/>
-    <AIParameter Name="EmpireArmySize" Value="1"/>
+    <AIParameter Name="CityMilitia" Value="1"/>
+    <AIParameter Name="EmpireArmySize" Value="2"/>
     <AIParameter Name="EmpireUnitEquipmentSlot" Value="1"/>
-	<AIParameter Name="AITechMustHave" Value="1 * (($Property(ClassEmpire:WarCount)) max ($(WantWarWithSomeone))) * (1 - $Count(ClassEmpire/ClassResearch,TechnologyArmySize1))"/>
-	<AIParameter Name="AITechMustHave" Value="0.3 * $(VictoryFocusMilitary)"/>
   </AIParameterDatatableElement>
 
   <!-- "Shipyard" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionShip">
-	<AIParameter Name="AITechMustHave" Value="0.1 * (0 max ($Count(AffinityMimics))) * ($Property(EmpireTypeMajor:AIHasAnyCoastalCity)) * (0 max ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) - 15)) * (1 - $Count(ClassEmpire/ClassResearch,TechnologyShip))"/>
     <AIParameter Name="EmpireUnlockShip" Value="1" />
   </AIParameterDatatableElement>
 
@@ -97,46 +90,42 @@
     <!-- "Glory of Empire" -->
     <AIParameter Name="CityCityPoint"               Value="5"  />
     <AIParameter Name="BaseCityPointPerPopulation"  Value="1"/>
-	<AIParameter Name="AITechMustHave" Value="0.2 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))"/>
   </AIParameterDatatableElement>
 
   <!-- "Diplomat's Manse" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionDiplomacyPeace">
     <AIParameter Name="EmpireUnlockPeace" Value="1" />
-	<AIParameter Name="AITechMustHave" Value="0.1 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1)) * (0 max ($Count(ClassEmpire/ClassResearch,TechnologyEmpirePoint1)))"/>
   </AIParameterDatatableElement>
 
   <!-- "Alchemical Alloys"-->
   <AIParameterDatatableElement Name="TechnologyDefinitionWeaponCommonTier2">
-    <AIParameter Name="EmpireUnlockWeaponCommon" Value="0.75 * (1 + (1 min ($Property(ClassEmpire:WarCount)))) * (1 - $Count(ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3))"/>
+    <AIParameter Name="EmpireUnlockWeaponCommon" Value="1.5"/>
   </AIParameterDatatableElement>
 
   <!-- "Alchemical Armor" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionArmorCommonTier2">
-    <AIParameter Name="EmpireUnlockArmorCommon" Value="0.75 * (1 + (1 min ($Property(ClassEmpire:WarCount)))) * (1 - $Count(ClassEmpire/ClassResearch,TechnologyArmorCommonTier3))"/>
+    <AIParameter Name="EmpireUnlockArmorCommon" Value="1.5"/>
   </AIParameterDatatableElement>
 
   <!-- "Imperial Coinage" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMarketplaceResources">
     <AIParameter Name="EmpireUnlockMarketResource"     Value="1"/>
-	<AIParameter Name="AITechMustHave" Value="0.1 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))"/>
   </AIParameterDatatableElement>
 
   <!-- "Right of Way" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRoad">
     <AIParameter Name="EmpireUnlockLandTrade" Value="1"/>
-    <AIParameter Name="EmpireFasterMovement" Value="0.2 * (0 max (2 - ($Count(ClassEmpire/ClassCity))))"/>
+    <AIParameter Name="EmpireFasterMovement" Value="0.2 * $Property(EmpireTypeMajor:EmpireScaleFactor)"/>
     <AIParameter Name="EmpireUnlockWatchTowers"  Value="1"/>
   </AIParameterDatatableElement>
 
   <!-- "Native District" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionAssimilationLimitMax1">
-    <AIParameter Name="EmpireUnlockAssimilation" Value="1 + (0 max (($Count(ClassEmpire/ClassCity/PacifiedVillage) - 6)/2)) + (0 max (($Count(ClassEmpire/ClassCity/ConvertedVillage) - 6)/2))" />
-    <AIParameter Name="AITechMustHave" Value="0.20 * ((0 max ($Count(ClassEmpire/ClassCity/PacifiedVillage) - 6)) + (0 max ($Count(ClassEmpire/ClassCity/ConvertedVillage) - 6)))"/>
+    <AIParameter Name="EmpireUnlockAssimilation" Value="1" />
   </AIParameterDatatableElement>
 
   <!-- "Fomorian Fireship" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionNavalUnit2">
-    <AIParameter Name="EmpireUnlockUnitFrigate" Value="1 * (1 - $Count(AffinitySeaDemons)) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyNavalUnit1)))"/>
+    <AIParameter Name="EmpireUnlockUnitFrigate" Value="1"/>
   </AIParameterDatatableElement>
 </Datatable>

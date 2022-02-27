@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Datatable xmlns:xsi="http://BrokenLordsw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://BrokenLordsw.w3.org/2001/XMLSchema">
+  
+  <!-- ======================================
+     ============ GLOBAL EVENT 1 ============
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalEvent#0001" IsGlobal="true" GlobalWinner="Participants" Category="GlobalEvent" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfOccurencesPerEmpire="1" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn,Hidden</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <GlobalEventPrerequisite Flags="Prerequisite" />
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (15 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <!--<InterpreterPrerequisite Flags="Prerequisite">($(NumberOfCities) ge (3*$(NumberOfEmpires))) and ($(NumberOfCities) lt (7*$(NumberOfEmpires)))</InterpreterPrerequisite>-->
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfWaterDistricts) ge ($(NumberOfDistricts)* 0.1)</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--<InterpretedVar VarName="NumberOfCities" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity)</Expression>
+      </InterpretedVar>-->
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ClassDistrict)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfWaterDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/TerrainTagWater)</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Apply Food Bonus on Water tiles-->
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0003" Duration="10" />
+	  <Decorator_EndTurn />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+  
+  
+  <!-- ======================================
+     ============ GLOBAL EVENT 2 ============
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalEvent#0002" IsGlobal="true" GlobalWinner="Participants" Category="GlobalEvent" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="15" NumberOfOccurencesPerEmpire="1" NumberOfGlobalQuestConcurrentInstances="-1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn,Hidden</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <GlobalEventPrerequisite Flags="Prerequisite" />
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (15 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfAnomalyDistricts) ge ($(NumberOfDistricts)* 0.1)</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ClassDistrict)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfAnomalyDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/TerrainTagAnomaly)</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Apply Influence Bonus on Anomaly tiles-->
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0004" Duration="10" />
+	  <Decorator_EndTurn />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+
+  
+  <!-- ======================================
+     ============ GLOBAL EVENT 3 ============
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalEvent#0003" IsGlobal="true" GlobalWinner="Participants" Category="GlobalEvent" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="15" NumberOfOccurencesPerEmpire="1" NumberOfGlobalQuestConcurrentInstances="-1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn,Hidden</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <GlobalEventPrerequisite Flags="Prerequisite" />
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 3</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpirePlanMilitary2) ge ($(NumberOfEmpires)*0.40)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (30 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfAlliances) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfEmpirePlanMilitary2" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/EmpirePlanMilitary2)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfAlliances" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated:AllianceCount)</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Apply Alliance Bonus-->
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0005" Duration="10" />
+	  <Decorator_EndTurn />
+	  
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ============ GLOBAL EVENT 4 ============
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalEvent#0004" IsGlobal="true" GlobalWinner="Participants" Category="GlobalEvent" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="15" NumberOfOccurencesPerEmpire="1" NumberOfGlobalQuestConcurrentInstances="-1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn,Hidden</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <GlobalEventPrerequisite Flags="Prerequisite" />
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (18 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfWatchTowers) ge ($(NumberOfWatchTowerSpots)* 0.4) </InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfWatchTowerSpots" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/PointOfInterestTypeWatchTower)</Expression>
+      </InterpretedVar>
+      
+      <InterpretedVar VarName="NumberOfWatchTowers" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ExploitedPointOfInterest,PointOfInterestTypeWatchTower)</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Apply a Regen Malus on units-->
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0006" Duration="10" />
+	  <Decorator_EndTurn />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+
+  
+  
+  <!-- ======================================
+     ============ GLOBAL EVENT 5 ============
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalEvent#0005" IsGlobal="true" GlobalWinner="Participants" Category="GlobalEvent" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="15" NumberOfOccurencesPerEmpire="1" NumberOfGlobalQuestConcurrentInstances="-1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn,Hidden</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <GlobalEventPrerequisite Flags="Prerequisite" />
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (27 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfForestDistricts) ge ($(NumberOfDistricts)* 0.4)</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ClassDistrict)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfForestDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/TerrainTagForest)</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Apply an Industry malus on Forest tiles-->
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0007" Duration="10" />
+	  <Decorator_EndTurn />
+	</Controller_Sequence>
+  </QuestDefinition>
+
+
+  
+
+  <!-- ======================================
+     ============ GLOBAL EVENT 6 ============
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalEvent#0006" IsGlobal="true" GlobalWinner="Participants" Category="GlobalEvent" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="15" NumberOfOccurencesPerEmpire="1" NumberOfGlobalQuestConcurrentInstances="-1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn,Hidden</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <GlobalEventPrerequisite Flags="Prerequisite" />
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (30* $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">($(NumberOfCities) ge (3*$(NumberOfEmpires))) and ($(NumberOfCities) lt (7*$(NumberOfEmpires)))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfScienceDistricts) ge ($(NumberOfDistricts)* 0.4)</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfCities" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ClassDistrict)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfScienceDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/TerrainTagScience)</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Apply a Science malus-->
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0008" Duration="10" />
+	  <Decorator_EndTurn />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ============ GLOBAL EVENT 7 ============
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalEvent#0007" IsGlobal="true" GlobalWinner="Participants" Category="GlobalEvent" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="15" NumberOfOccurencesPerEmpire="1" NumberOfGlobalQuestConcurrentInstances="-1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn,Hidden</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <GlobalEventPrerequisite Flags="Prerequisite" />
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (18 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfDustDistricts) ge ($(NumberOfDistricts)* 0.5)</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ClassDistrict)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfDustDistricts" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/TerrainTagDust)</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Apply a Dust malus on Dust tiles-->
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0001" Duration="10" />
+      <Decorator_EndTurn />
+    </Controller_Sequence>
+
+  </QuestDefinition>
+
+</Datatable>

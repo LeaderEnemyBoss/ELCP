@@ -1,0 +1,574 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ############################################################################################################################################ -->
+  <!-- ############################################################################################################################################ -->
+  <!-- #################################    BATTLE ACTIONS WITH THE VISUAL DATA AND SPECIFIC GAMEPLAY   ########################################### -->
+  <!-- ############################################################################################################################################ -->
+  <!-- ############################################################################################################################################ -->
+
+  <!-- ===================================== WINTER SHIFTERS SETTLER ===================================== -->
+
+  <!-- ===================================== WINTER SHIFTERS FELINE ====================================== -->
+
+  <!-- ######################################## -->
+  <!-- #########    SHIFTING CHARGE    ######## -->
+  <!-- ######################################## -->
+
+  <!-- Light form debuff: decrease target attack -->
+  <!-- Start SFX -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCharge_LightForm_Start" ShiftingForm="0" Type="Move">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="UnitWinterShiftersFelinePassive_BattleEffectCharging" />
+    </BattleEffects>
+  </BattleActionUnit>
+  <!-- Apply debuff -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCharge_LightForm" ShiftingForm="0" Type="PrepareAttack" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:BattleMaximumMovement) gt $Property(ClassUnit:BattleMovement)</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ApplyShiftingChargeDebuff_LightForm" PropertyName="ShiftingChargeDebuff_LightForm" Operation="Affectation" InterpreterFormula="0.1 * ($Link(Initiator|Property|ClassUnit:BattleMaximumMovement) -$Link(Initiator|Property|ClassUnit:BattleMovement))" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_ShiftingCharge_LightForm" IsCumulable="false" Duration="3" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilityShiftingCharge_LightForm" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+  <!-- End SFX -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCharge_LightForm_End" ShiftingForm="0" Type="Deactivation">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="UnitWinterShiftersFelinePassive_BattleEffectResetCharge" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Dark form debuff: decrease target defence -->
+  <!-- Start SFX -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCharge_DarkForm_Start" ShiftingForm="1" Type="Move">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="UnitWinterShiftersFelinePassive_BattleEffectCharging" />
+    </BattleEffects>
+  </BattleActionUnit>
+  <!-- Apply debuff -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCharge_DarkForm" ShiftingForm="1" Type="PrepareAttack" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:BattleMaximumMovement) gt $Property(ClassUnit:BattleMovement)</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ApplyShiftingChargeDebuff_DarkForm" PropertyName="ShiftingChargeDebuff_DarkForm" Operation="Affectation" InterpreterFormula="0.1 * ($Link(Initiator|Property|ClassUnit:BattleMaximumMovement) -$Link(Initiator|Property|ClassUnit:BattleMovement))" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_ShiftingCharge_DarkForm" IsCumulable="false" Duration="3" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionAbilityShiftingCharge_DarkForm" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+  <!-- End SFX -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCharge_DarkForm_End" ShiftingForm="1" Type="Deactivation">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="UnitWinterShiftersFelinePassive_BattleEffectResetCharge" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+  <!-- ===================================== WINTER SHIFTERS MANTA ======================================= -->
+
+  <!-- Light form buff: chain morale increase -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingAwe_LightForm" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" Type="Support">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+
+    <BattleEffectsArea TargetsFilter="Target SameGroup Alive" Type="Chain" AvoidCastingUnit="false" Parameter1="-1" RealizationVisualEffectName="BattleEffect_AOE_ShiftingAwe_LightForm" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="ShiftingAweEffect_LightFormAffectation" PropertyName="ShiftingAweEfficiency_LightForm" Operation="Addition" InterpreterFormula="1" />
+        <BattleEffect_UnitSimulation Name="BattleEffect_ShiftingAwe_LightForm" Duration="3" IsCumulable="false" RealizationApplicationMethod="OnHit" IsPermanentEffect="true">
+          <SimulationDescriptorReference Name="UnitActionAbilityShiftingAwe_LightForm" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+  <!-- Dark form debuff: chain morale decrease -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingAwe_DarkForm" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Attack Defense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Chain" AvoidCastingUnit="false" Parameter1="-1" RealizationVisualEffectName="BattleEffect_AOE_ShiftingAwe_DarkForm" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="ShiftingAweEffect_DarkFormAffectation" PropertyName="ShiftingAweEfficiency_DarkForm" Operation="Addition" InterpreterFormula="1" />
+        <BattleEffect_UnitSimulation Name="BattleEffect_ShiftingAwe_DarkForm" Duration="3" IsCumulable="false" RealizationApplicationMethod="OnHit" IsPermanentEffect="true">
+          <SimulationDescriptorReference Name="UnitActionAbilityShiftingAwe_DarkForm" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ===================================== WINTER SHIFTERS DARK ANGEL ================================== -->
+
+  <!-- ############################### -->
+  <!-- #######    AOE DEBUG    ####### -->
+  <!-- ############################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo_LightForm_DEBUG" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <!-- Cone with a range of 2  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo_DarkForm_DEBUG" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <!-- Cone with a range of 2  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+  
+  <!-- ######################################## -->
+  <!-- #######    LIGHT COMBO LEVEL 1   ####### -->
+  <!-- ######################################## -->
+
+  <!-- Light form : third counter does significant area damage -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo2_LightForm" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" Priority="1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
+    <!-- Cone with a range of 2  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_LightForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_LightForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+    <!-- Charge 2 -> 0 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_CancelEffect Name="BattleEffect_RemoveShiftingComboLevel1_LightForm" EffectToCancel="BattleEffect_AddShiftingComboLevel1_LightForm" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Light form : counter attack adds a bonus and does area damage -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo1_LightForm" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" Priority="2">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
+    <!-- Cone with a range of 1  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_LightForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_LightForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+    <!-- Charge 1 -> 2 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel1_LightForm" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel1_LightForm" />
+      </BattleEffect_UnitSimulation>
+      <BattleEffect_CancelEffect Name="BattleEffect_RemoveShiftingComboLevel0_LightForm" EffectToCancel="BattleEffect_AddShiftingComboLevel0_LightForm" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Light form : first counter adds a bonus -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo0_LightForm" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" Priority="3">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
+    <!-- Charge 0 -> 1 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel0_LightForm" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel0_LightForm" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+  
+  <!-- ####################################### -->
+  <!-- #######    DARK COMBO LEVEL 1   ####### -->
+  <!-- ####################################### -->
+
+  <!-- Dark form : third attack does significant area damage -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo2_DarkForm" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
+    <!-- Cone with a range of 2  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+    <!-- Charge 2 -> 0 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_CancelEffect Name="BattleEffect_RemoveShiftingComboLevel1_DarkForm" EffectToCancel="BattleEffect_AddShiftingComboLevel1_DarkForm" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Dark form : second attack adds a bonus and does area damage -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo1_DarkForm" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="2">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
+    <!-- Cone with a range of 1  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+    <!-- Charge 1 -> 2 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel1_DarkForm" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel1_DarkForm" />
+      </BattleEffect_UnitSimulation>
+      <BattleEffect_CancelEffect Name="BattleEffect_RemoveShiftingComboLevel0_DarkForm" EffectToCancel="BattleEffect_AddShiftingComboLevel0_DarkForm" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Dark form : first attack adds a bonus -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo0_DarkForm" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="3">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
+    <!-- Charge 0 -> 1 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel0_DarkForm" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel0_DarkForm" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- ######################################## -->
+  <!-- #######    LIGHT COMBO LEVEL 2   ####### -->
+  <!-- ######################################## -->
+
+  <!-- Light form : third counter does significant area damage AND maintains the bonus -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo2_LightForm2" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" Priority="1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
+    <!-- Cone with a range of 2  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_LightForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_LightForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+    <!-- Charge 2 -> 2 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel1_LightForm" IsCumulable="true" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel1_LightForm" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Light form : counter attack adds a bonus and does area damage -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo1_LightForm2" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" Priority="2">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
+    <!-- Cone with a range of 1  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_LightForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_LightForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+    <!-- Charge 1 -> 2 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel1_LightForm" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel1_LightForm" />
+      </BattleEffect_UnitSimulation>
+      <BattleEffect_CancelEffect Name="BattleEffect_RemoveShiftingComboLevel0_LightForm" EffectToCancel="BattleEffect_AddShiftingComboLevel0_LightForm" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Light form : first counter adds a bonus -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo0_LightForm2" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="Defense" Priority="3">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
+    <!-- Charge 0 -> 1 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel0_LightForm" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel0_LightForm" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- ####################################### -->
+  <!-- #######    DARK COMBO LEVEL 2   ####### -->
+  <!-- ####################################### -->
+
+  <!-- Dark form : third attack does significant area damage AND maintains the bonus -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo2_DarkForm2" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="1">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
+    <!-- Cone with a range of 2  -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+    <!-- Charge 2 -> 2 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel1_DarkForm" IsCumulable="true" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel1_DarkForm" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Dark form : second attack adds a bonus and does area damage -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo1_DarkForm2" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="2">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
+    <!-- Cone with a range of 1  -->
+    <BattleEffectsArea TargetsFilter="Target" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+      <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
+      <!-- Damage to health -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Damage to fortification -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingComboRelease_DarkForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+    <!-- Charge 1 -> 2 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel1_DarkForm" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel1_DarkForm" />
+      </BattleEffect_UnitSimulation>
+      <BattleEffect_CancelEffect Name="BattleEffect_RemoveShiftingComboLevel0_DarkForm" EffectToCancel="BattleEffect_AddShiftingComboLevel0_DarkForm" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- Dark form : first attack adds a bonus -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingCombo0_DarkForm2" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="3">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
+    <!-- Charge 0 -> 1 -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddShiftingComboLevel0_DarkForm" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorShiftingComboLevel0_DarkForm" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+  <!-- ===================================== WINTER SHIFTERS HERO ======================================== -->
+    <!-- Default Hit  -->
+  <BattleActionUnit Name="BattleActionUnitWinterShiftersHeroAttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_Vaulters_Arrow_01" RangeRestriction="LongRange" Speed="5" Trajectory="parabolic" Angle="45" OriginBoneName="AuxDummy_Root" TargetBoneName="Hips"  ProgressionRatioBeforeFadeOut="0.90"/>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_Vaulters_Arrow_01" RangeRestriction="CloseRange" Speed="5" Trajectory="linear" OriginBoneName="AuxDummy_Root" TargetBoneName="Hips"  ProgressionRatioBeforeFadeOut="0.90"/>
+    </BattleActionData>
+  </BattleActionUnit>
+
+
+  <!-- ######################################## -->
+  <!-- #########    KILLER INSTINCT    ######## -->
+  <!-- ######################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityKillerInstinct" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Property|ClassUnit:Health) lt $Link(Target|Property|ClassUnit:MaximumHealth)</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="KillerInstinctBonusAffectation" PropertyName="KillerInstinctBonus" Operation="Affectation" InterpreterFormula="(1 - ($Link(InitiatorTarget|Property|ClassUnit:Health) / $Link(InitiatorTarget|Property|ClassUnit:MaximumHealth) ) )"/>
+
+      <BattleEffect_UnitSimulation Name="UnitActionKillerInstinct" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionKillerInstinct" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <!-- ######################################## -->
+  <!-- #########    SHIFTING NOVA     ######### -->
+  <!-- ######################################## -->
+
+  <!-- This replaces default attack: doing so is the only way of taking critical hits into account -->
+
+  <!-- Light form: standard damage to target, heals nearby allies -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingNova_LightForm" ShiftingForm="0" Defensible="false" TerrainConsideration="Range" Type="Attack">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsLight) gt 0</InterpreterPrerequisite>
+
+    <!--  Standard damage to target -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingNova_LightForm_Damage" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"/>
+    </BattleEffects>
+
+    <!--  Armour (fortification) damage to target -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingNova_LightForm_Damage" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"/>
+    </BattleEffects>
+
+    <!-- Heals nearby allies -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true" >
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingNova_LightForm_Heal" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.15"  RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+  <!-- Dark form: damages target and enemies next to target -->
+  <BattleActionUnit Name="BattleActionUnitAbilityShiftingNova_DarkForm" ShiftingForm="1" Defensible="false" TerrainConsideration="Range" Type="Attack">
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ShiftingFormIsDark) gt 0</InterpreterPrerequisite>
+
+    <!--  Standard damage to target -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingNova_DarkForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"/>
+    </BattleEffects>
+
+    <!--  Standard damage to units around the target -->
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingNova_DarkForm" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.15" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+    <!--  Armour (fortification) damage to target -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingNova_DarkForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"/>
+    </BattleEffects>
+
+    <!--  Armour (fortification) to units around to target -->
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1" AvoidCastingUnit="false" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ShiftingNova_DarkForm" PropertyName="AttributeArmor" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.15" RealizationApplicationMethod="OnHit"/>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+</Datatable>

@@ -17,7 +17,8 @@ public class AIBehaviorTreeNode_Decorator_GetSiegingArmiesInRange : AIBehaviorTr
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army inputArmy;
-		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out inputArmy) != AIArmyMission.AIArmyMissionErrorCode.None)
+		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out inputArmy);
+		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -43,20 +44,6 @@ public class AIBehaviorTreeNode_Decorator_GetSiegingArmiesInRange : AIBehaviorTr
 			{
 				this.targetList.Add(armyAtPosition);
 			}
-		}
-		inputArmy.GenerateContext().Greedy = true;
-		IPathfindingService service = Services.GetService<IGameService>().Game.Services.GetService<IPathfindingService>();
-		bool flag = false;
-		foreach (IWorldPositionable worldPositionable in this.targetList)
-		{
-			if (this.worldPositionningService.GetDistance(worldPositionable.WorldPosition, inputArmy.WorldPosition) == 1)
-			{
-				flag = service.IsTransitionPassable(inputArmy.WorldPosition, worldPositionable.WorldPosition, inputArmy, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreSieges, null);
-			}
-		}
-		if (flag)
-		{
-			this.targetList.RemoveAll((IWorldPositionable match) => this.worldPositionningService.GetDistance(match.WorldPosition, inputArmy.WorldPosition) > 1 || !service.IsTransitionPassable(inputArmy.WorldPosition, match.WorldPosition, inputArmy, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreSieges, null));
 		}
 		if (this.targetList.Count != 0)
 		{

@@ -1,0 +1,3329 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--=====================================
+   ========================================
+   ============= NAVAL QUESTS =============
+   ========================================
+   ========================================-->
+
+  <!-- =========== Pestiferous Pirates ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0001" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (15 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+      <!--Get the position of the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+      <!--Get the position of the Quest POI region-->
+      <Var VarName="$InitialSunkenRuinRegionLocation">
+        <From Source="$Region.$Position"/>
+      </Var>
+
+      <!--Get the list of all the regions excluding the Quest POI region-->
+      <Var VarName="$AllRegionsButInitialSunkenRuinRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOceanWithPOI/>
+            <FilterRegionByDistance PositionToCompareVarName="$InitialSunkenRuinRegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Get the nearest region from the Quest POI position (excluding the Quest POI region)-->
+      <Var VarName="$NearestRegionFromInitialSunkenRuin">
+        <From Source="$AllRegionsButInitialSunkenRuinRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialSunkenRuinLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Set the region to spawn the 1st Army-->
+      <Var VarName="$RegionToSpawnArmyID">
+        <First>
+          <From Source="$NearestRegionFromInitialSunkenRuin"/>
+        </First>
+      </Var>
+      <!--Set the region to spawn the 1st Army-->
+      <Var VarName="$LocationsToSpawnArmyID">
+        <From Source="$RegionToSpawnArmyID.$Positions"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$SunkenRuinRegionName" Source="$RegionToSpawnArmyID"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0001-Step1" State="InProgress"/>
+
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$LocationsToSpawnArmyID" ArmyDroplist="DroplistNavalArmyEra" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" BehaviourName="Roaming"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Win condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0001-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0001-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0001-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" />
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Curiosity Kills ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0002" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (10 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 2</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+
+    <Vars>
+
+      <Var VarName="$SunkenRuinName">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$SunkenRuinLocation">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+
+      <Var VarName="$SunkenRuinRegion">
+        <From Source="$TargetPointsOfInterest.$Position.$Region"/>
+      </Var>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$SunkenRuinName" Source="$SunkenRuinName"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0002-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinName" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$SunkenRuinLocation" ArmyDroplist="DroplistNavalArmyEra" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Win condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0002-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0002-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0002-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Things from the Deep ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0003" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+     <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set the initial region as variable-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$Region"/>
+      </Var>
+
+      <Var VarName="$SunkenRuinName">
+        <Any>
+          <From Source="$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <FilterRegionIsOcean/>
+              <FilterRegionIsOnSameContinent RegionContextVarName="$InitialSunkenRuinRegion"/>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the POI to inspect-->
+      <Var VarName="$SunkenRuinNameRegion">
+        <From Source="$SunkenRuinName.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$SunkenRuinName" Source="$SunkenRuinName"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0003-Step1" HideRewards="true" State="InProgress" />
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Win condition-->
+        <Controller_Sequence>
+          <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinName" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+          <Decorator_Dive TargetEntityVarName="$SunkenRuinName" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinName" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0003-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed" />
+        </Controller_Sequence>
+
+        <!--Fail Condition-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinName" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0003-Step1">
+        <Reward Droplist="DroplistNavalInteract0003ItemReward" />
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Sea Lawyers All ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0004" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (10 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Count(ClassEmpire/ClassArmy/ClassUnit) ge 6</InterpreterPrerequisite>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set the Player Empire Index as target for a spawning army below-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+      <!--Get the position of the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+
+      <Var VarName="$AllRegionsButInitialSunkenRuinRegion">
+        <From Source="$Regions">
+          <!-- Exclude InitialQuestPOI's region -->
+          <Where>
+            <FilterRegionIsOcean/>
+            <FilterRegionByDistance PositionToCompareVarName="$InitialSunkenRuinLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the list of all the regions excluding the first city region-->
+      <Var VarName="$NearestRegionFromInitialSunkenRuin">
+        <From Source="$AllRegionsButInitialSunkenRuinRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialSunkenRuinLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$SunkenRuinToInspect1">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$NearestRegionFromInitialSunkenRuin.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$SunkenRuinToInspect1Location">
+        <From Source="$SunkenRuinToInspect1.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinName" Source="$InitialSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$QuestPOI1Type" Source="$SunkenRuinToInspect1"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0004-Step1" HideRewards="true" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$InitialSunkenRuin" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialSunkenRuin"/>
+      <Decorator_Dive TargetEntityVarName="$InitialSunkenRuin" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassArmy/UnitHero:LevelDisplayed) ge 4</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Dive>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialSunkenRuin"/>
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$InitialSunkenRuinLocation" ArmyDroplist="DroplistNavalArmyEra" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Win condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0004-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0004-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== More Than Money ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0005" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityMoney) ge 25</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityMoney) ge 40</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 20</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="DurationObjective" Target="$(Empire)">
+        <Expression>10 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <LocalizationVar LocalizationKey="$TurnDuration" Source="DurationObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0005-Step1" State="InProgress" />
+      <!-- Start a counter -->
+        <Controller_Parallel CompletionPolicy="Any">
+
+          <Controller_Loop LoopCount="20">
+            <!-- Each loop represents a turn with the valid condition -->
+            <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalInteract#0005-Step1">
+              <!-- When this decorator is validated, the progression range is incremented -->
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityMoney) ge 40</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_EndTurn>
+          </Controller_Loop>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_IsStepProgressionComplete StepName="SideQuestNavalInteract#0005-Step1"/>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0005-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0005-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Seeing the light ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0006" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityGrowth) ge 25</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityGrowth) ge 45</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 20</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0006-Step1" State="InProgress" />
+      <!-- Start a counter -->
+      <Controller_Loop LoopCount="10">
+        <!-- Each loop represents a turn with the valid condition -->
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalInteract#0006-Step1">
+          <!-- When this decorator is validated, the progression range is incremented -->
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(ClassEmpire/ClassCity:NetCityGrowth) ge 40</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0006-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0006-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="10"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== A Little Spine ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0007" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:WarCount) eq 0</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,FactionTraitRovingClans8</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestPOI#0018" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestPOI#0018" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0007-Step1" State="InProgress"/>
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:WarCount) ge 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0007-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0007-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Save Your Resources ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0008" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:WarCount) ge 1</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:TruceCount) eq 0</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityNecrophages</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestPOI#0019" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestPOI#0019" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0008-Step1" State="InProgress"/>
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:TruceCount) ge 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0008-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0008-Step1">
+        <Reward Droplist="DroplistTechnologies" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Winter Resurgence ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0009" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (50 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestPOI#0020" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestPOI#0020" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0009-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="2">
+            <Decorator_Dive Output_InteractionTargetVarName="$InspectionTarget" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" LinkedStepProgression="SideQuestNavalInteract#0009-Step1" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <FilterRegionIsOcean/>
+                <Prerequisites Target="$InspectionTarget">
+                  <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Dive>
+          </Controller_Loop>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0009-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition -->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0009-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistTechnologies" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Search and Rescue ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0010" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitCultists7</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitMimics1</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">#Summer</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <!--Initial ruin -->
+      <Var VarName="$InitialRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0010-Step1" State="InProgress" />
+
+      <Action_AddQuestMarker TargetEntityVarName="$InitialRuin" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Dive TargetEntityVarName="$InitialRuin" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) eq 1</InterpreterPrerequisite>
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,SeafaringUnit</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Dive>
+      <Action_DestroyArmy ArmyGUIDVarName="$InspectionInstigatorGUID" />
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0010-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0010-Step1">
+        <Reward Droplist="DroplistLuxuryResources" Picks="1"/> <!--Quest Engineer (+2 Morale on adjacent transport ship)-->
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Principle of Purity ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0011" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="8" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly) ge 5</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly) le 10</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestLore#0015" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestLore#0015" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+
+    <Vars>
+
+      <!--Current Anomalies exploited-->
+      <InterpretedVar VarName="CurrentAnomaliesExploited" Target="$(Empire)">
+        <Expression>$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly)</Expression>
+      </InterpretedVar>
+
+      <!--Anomalies exploited objective -->
+      <InterpretedVar VarName="AnomaliesExploitedObjective" Target="$(Empire)">
+        <Expression>$(CurrentAnomaliesExploited) + 2</Expression>
+      </InterpretedVar>
+
+      <!--Set the city with the more NetCityMoney-->
+      <Var VarName="$CityWithBestNetMoney">
+        <First>
+          <From Source="$Empire.$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Descending" PropertyName="NetCityMoney"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+
+      <!--Current Dust Production-->
+      <InterpretedVar VarName="CurrentDustProduction" Target="$(Empire)">
+        <Expression>$MaxProperty(EmpireTypeMajor:NetCityMoney)</Expression>
+      </InterpretedVar>
+
+      <!--Dust objective -->
+      <InterpretedVar VarName="DustProductionObjective" Target="$(Empire)">
+        <Expression>$(CurrentDustProduction) + 30</Expression>
+      </InterpretedVar>
+
+      <!--For owning units as reward-->
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Initial ruin POI-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Initial ruin Position-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$AnomaliesToExploit" Source="AnomaliesExploitedObjective"/>
+      <LocalizationVar LocalizationKey="$DustProductionObjective" Source="DustProductionObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0011-Step1" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire">
+        <InterpretedVarsToUpdate>
+          <Var>CurrentAnomaliesExploited</Var>
+        </InterpretedVarsToUpdate>
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$(CurrentAnomaliesExploited)" StepName="SideQuestNavalInteract#0011-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0011-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0011-Step2" State="InProgress" />
+      <!-- Start a counter -->
+      <Controller_Loop LoopCount="5">
+        <!-- Each loop represents a turn with the valid condition -->
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalInteract#0011-Step2">
+          <InterpretedVarsToUpdate>
+            <Var>CurrentDustProduction</Var>
+          </InterpretedVarsToUpdate>
+          <!-- When this decorator is validated, the progression range is incremented -->
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$(CurrentDustProduction) ge $(DustProductionObjective)</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0011-Step2" State="Completed" />
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0011-Step3" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$InitialSunkenRuin" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Dive TargetEntityVarName="$InitialSunkenRuin" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0011-Step3" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0011-Step1">
+        <Reward Droplist="DroplistLoreQuest0015-Step1" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValueVarName="AnomaliesExploitedObjective"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0011-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="5"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0011-Step3">
+        <Reward Droplist="DroplistDust" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== A Friendly Fomorian ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0012" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitReplicants1</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestLore#0016" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestLore#0016" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Actual level of Science Empire Plan-->
+      <InterpretedVar VarName="CurrentScienceEmpirePlan" Target="$(Empire)">
+        <Expression>$Property(EmpireTypeMajor:EmpirePlanKnowledgeLevel)</Expression>
+      </InterpretedVar>
+
+      <!--Science Empire Plan objective-->
+      <InterpretedVar VarName="ScienceEmpirePlanObjective" Target="$(Empire)">
+        <Expression>$(CurrentScienceEmpirePlan) + 1</Expression>
+      </InterpretedVar>
+
+      <LocalizationVar LocalizationKey="$ScienceEmpirePlanObjective" Source="ScienceEmpirePlanObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience0</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience1</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience2</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience3</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience4</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience5</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite >
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience6</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyScience8</PathPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch, TechnologyCultists12</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+    </Controller_Parallel>
+
+      <!--Step 2-->
+      <Controller_Sequence>
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step2" State="InProgress" />
+        <Decorator_BeginTurn Initiator="Empire">
+          <InterpretedVarsToUpdate>
+            <Var>CurrentScienceEmpirePlan</Var>
+          </InterpretedVarsToUpdate>
+          <ConditionCheck_Prerequisite>
+           <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$(CurrentScienceEmpirePlan) ge $(ScienceEmpirePlanObjective)</InterpreterPrerequisite>
+           </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0012-Step2" State="Completed" />
+        <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0012-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0012-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValueVarName="ScienceEmpirePlanObjective"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== "Sauve Qui Peut" ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0013" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->v
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestLore#0018" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestLore#0018" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$InitialSunkenRuinLocation.$Region"/>
+      </Var>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0013-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_ConstructionEnded ConstructionName="CityImprovementEmpirePoint1" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0013-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_ConstructionEnded ConstructionName="CityImprovementEmpirePoint2" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0013-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_ConstructionEnded ConstructionName="CityImprovementEmpirePoint5" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0013-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_ConstructionEnded ConstructionName="CityImprovementEmpirePoint3" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0013-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_ConstructionEnded ConstructionName="CityImprovementEmpirePoint4" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestNavalInteract#0013-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Controller_Sequence>
+        <Action_AddQuestMarker TargetEntityVarName="$InitialSunkenRuin" Tags="Ruin" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialSunkenRuin"/>
+
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0013-Step2" State="InProgress"/>
+        <Decorator_Dive TargetEntityVarName="$InitialSunkenRuin" Initiator="Empire"/>
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0013-Step2" State="Completed"/>
+        <Action_UpdateQuest State="Completed"/>
+
+      </Controller_Sequence>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialSunkenRuin"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0013-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0013-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- =========== Nefarious Schemas (1) ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0014" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyNavalUnit2</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0015" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0015" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0015" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Set the initial region as variable-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$Region"/>
+      </Var>
+
+      <Var VarName="$SunkenRuinName">
+        <Any>
+          <From Source="$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <FilterRegionIsOcean/>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the POI to inspect-->
+      <Var VarName="$SunkenRuinNameRegion">
+        <From Source="$SunkenRuinName.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$SunkenRuinName" Source="$SunkenRuinName"/>
+      <LocalizationVar LocalizationKey="$SunkenRuinsRegionName" Source="$SunkenRuinNameRegion"/>
+    </Vars>
+
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+        <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+        <Action_LockQuestTarget TargetVarName="$SunkenRuinName" LockOption="Lock"/>
+
+        <!--Step 1-->
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0014-Step1" State="InProgress" />
+        <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinName" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+        <Decorator_Dive TargetEntityVarName="$SunkenRuinName" Initiator="Empire"/>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0014-Step1" State="Completed" />
+
+        <!--Step 2-->
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0014-Step2" State="InProgress" />
+        <Controller_Loop LoopCount="2">
+          <Decorator_Dive Output_InteractionTargetVarName="$InspectionTarget" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" LinkedStepProgression="SideQuestNavalInteract#0014-Step2" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionTarget">
+                <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Dive>
+        </Controller_Loop>
+        <Action_LockQuestTarget TargetVarName="$SunkenRuinName" LockOption="Unlock"/>
+        <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0014-Step2" State="Completed"/>
+        <Action_UpdateQuest State="Completed"/>
+
+      </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0014-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0014-Step2">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistNavalInteract0014FireShipTechnology" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+  <!-- =========== Nefarious Schemas (2) ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0015" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyNavalUnit2</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0014" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0014" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0014" QuestState="Completed"/>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$Property(ClassArmy/ClassUnit:LevelDisplayed) ge 3</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Set the initial region as variable-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$Region"/>
+      </Var>
+
+      <Var VarName="$SunkenRuinName">
+        <Any>
+          <From Source="$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <FilterRegionIsOcean/>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the POI to inspect-->
+      <Var VarName="$SunkenRuinNameRegion">
+        <From Source="$SunkenRuinName.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$SunkenRuinName" Source="$SunkenRuinName"/>
+      <LocalizationVar LocalizationKey="$SunkenRuinsRegionName" Source="$SunkenRuinNameRegion"/>
+
+    </Vars>
+
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinName" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0015-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinName" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+      <Decorator_Dive TargetEntityVarName="$SunkenRuinName" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0015-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0015-Step2" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinName" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+      <Decorator_Dive TargetEntityVarName="$SunkenRuinName" Output_InteractionTargetVarName="$InspectionTarget" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" LinkedStepProgression="SideQuestNavalInteract#0015-Step2" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassArmy/ClassUnit:LevelDisplayed) ge 3</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Dive>
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinName" LockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0015-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0015-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0015-Step2">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistNavalInteract0014FireShipTechnology" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Priest or Pirate? ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0016" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="5"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="0" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set the initial region as variable-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$Region"/>
+      </Var>
+
+      <Var VarName="$TargetSunkenRuinsName">
+        <Any>
+          <From Source="$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <FilterRegionIsOcean/>
+              <FilterRegionIsOnSameContinent RegionContextVarName="$InitialSunkenRuinRegion"/>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the POI to inspect-->
+      <Var VarName="$TargetSunkenRuinsRegionName">
+        <From Source="$TargetSunkenRuinsName.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$TargetSunkenRuinsRegionName" Source="$TargetSunkenRuinsRegionName"/>
+      <LocalizationVar LocalizationKey="$TargetSunkenRuinsName" Source="$TargetSunkenRuinsName"/>
+    </Vars>
+
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0016-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$TargetSunkenRuinsName" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+      <Decorator_Dive TargetEntityVarName="$TargetSunkenRuinsName" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+      <Action_LockQuestTarget TargetVarName="$TargetSunkenRuinsName" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0016-Step1" State="Completed" />
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <!-- REPLACE REWARD BY UNLOCKING WARSHIP ERA 2 -->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0016-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Precious Wealth ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0017" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Get the initial POI location and region-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$InitialSunkenRuinLocation.$Region"/>
+      </Var>
+
+      <Var VarName="$SecondSunkenRuinToInspect">
+        <From Source="$InitialSunkenRuinRegion.$PointsOfInterest">
+          <Where>
+            <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+          </Where>
+          <OrderBy>
+            <SortPointOfInterestByDistance SortBy="Nearest" PositionToCompareVarName="$InitialSunkenRuinLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$TargetSecondSunkenRuinToInspect">
+        <Last>
+          <From Source="$SecondSunkenRuinToInspect"/>
+        </Last>
+      </Var>
+
+      <!--Set the target sunkens ruins region for loc-->
+      <Var VarName="$TargetRuinsRegionName">
+        <From Source="$TargetSecondSunkenRuinToInspect.$Position.$Region"/>
+      </Var>
+
+
+      <LocalizationVar LocalizationKey="$InitialSunkenRuin" Source="$InitialSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$TargetRuinsRegionName" Source="$TargetRuinsRegionName"/>
+      <LocalizationVar LocalizationKey="$TargetRuinName" Source="$TargetSecondSunkenRuinToInspect"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$TargetSecondSunkenRuinToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0017-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$TargetSecondSunkenRuinToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerTargetRuins"/>
+      <Decorator_Dive TargetEntityVarName="$TargetSecondSunkenRuinToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+       <ConditionCheck_Prerequisite>
+         <Prerequisites Target="$InspectionInstigatorSimObject">
+           <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,TransportShipUnit) ge 3</InterpreterPrerequisite>
+         </Prerequisites>
+       </ConditionCheck_Prerequisite>
+      </Decorator_Dive>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetRuins" />
+      <Action_LockQuestTarget TargetVarName="$TargetSecondSunkenRuinToInspect" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0017-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0017-Step2" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$InitialSunkenRuin" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialSunkenRuin"/>
+      <Decorator_Dive TargetEntityVarName="$InitialSunkenRuin" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,TransportShipUnit) ge 3</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Dive>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialSunkenRuin" />
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0017-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0017-Step1">
+        <Reward Droplist="DroplistResources" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0017-Step2">
+        <Reward Droplist="DroplistNavalInteract0017ItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Only Partially Broken ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0018" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyNavalUnit4</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$InitialSunkenRuin.$Position.$Region"/>
+      </Var>
+
+      <!--Get the initial POI location-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <!--Army spawn 01-->
+      <Var VarName="$InitialSunkenRuinArmySpawn01Locations">
+        <From Source="$InitialSunkenRuinRegion.$Positions">
+          <Where>
+            <FilterWorldPositionByDistance PositionToCompareVarName="$InitialSunkenRuinLocation" DistanceMin="1" DistanceMax="10"/>
+          </Where>
+        </From>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinName" Source="$InitialSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinRegionName" Source="$InitialSunkenRuinRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0018-Step1" State="InProgress" />
+
+      <!--Step 1-->
+      <!--1st Spawn-->
+      <Action_SpawnArmy CanMoveOnSpawn="true" SpawnLocationVarName="$InitialSunkenRuinArmySpawn01Locations" ArmyDroplist="DroplistNavalInteract0018ArmySpawnBathysphereEra" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <!--2nd Spawn-->
+      <!--<Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="9" Initiator="Empire"/>-->
+      <Action_SpawnArmy CanMoveOnSpawn="true" SpawnLocationVarName="$InitialSunkenRuinArmySpawn01Locations" ArmyDroplist="DroplistNavalInteract0018ArmySpawnBathysphereEra" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <!--3rd Spawn-->
+      <!--<Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="8" Initiator="Empire"/>-->
+      <Action_SpawnArmy CanMoveOnSpawn="true" SpawnLocationVarName="$InitialSunkenRuinArmySpawn01Locations" ArmyDroplist="DroplistNavalInteract0018ArmySpawnBathysphereEra" Output_EnemyArmyGUIDVarName="$ArmyID3"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID3" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID3</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+
+      <Action_ForceUnlockTechnology TechnologyDefinitionName="TechnologyDefinitionNavalUnit4"/>
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+      <Action_UpdateQuest State="Completed"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0018-Step1" State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0018-Step1">
+        <Reward Droplist="DroplistNavalInteract0018BathysphereTechnology" Picks="1"/> <!-- Batysphere tech -->
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Discreet Diving ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0019" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+   <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyNavalUnit4</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$InitialSunkenRuin.$Position.$Region"/>
+      </Var>
+
+      <!--Get the initial POI location-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$InitialSunkenRuin.$Position.$Region"/>
+      </Var>
+
+      <!--Set the target sunken ruins to inspect-->
+      <Var VarName="$TargetSunkenRuin">
+        <Any>
+          <From Source="$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <FilterRegionIsOcean/>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$TargetSunkenRuinLocation">
+        <From Source="$TargetSunkenRuin.$Position"/>
+      </Var>
+
+      <Var VarName="$TargetSunkenRuinRegion">
+        <From Source="$TargetSunkenRuin.$Position.$Region"/>
+      </Var>
+
+      <!--Army spawn 01-->
+      <Var VarName="$TargetSunkenRuinArmySpawn01">
+        <From Source="$TargetSunkenRuin">
+          <Where>
+            <FilterWorldPositionByDistance PositionToCompareVarName="$TargetSunkenRuinLocation" DistanceMin="1" DistanceMax="3"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Army spawn 01-->
+      <Var VarName="$TargetSunkenRuinArmySpawnLocation01">
+        <From Source="$TargetSunkenRuinArmySpawn01.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinName" Source="$InitialSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinRegionName" Source="$InitialSunkenRuinRegion"/>
+      <LocalizationVar LocalizationKey="$TargetSunkenRuinName" Source="$TargetSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$TargetSunkenRuinRegionName" Source="$TargetSunkenRuinRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Parallel CompletionPolicy="Any">
+
+      <Controller_Sequence>
+        <Action_AddQuestMarker TargetEntityVarName="$TargetSunkenRuin" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerTargetSunkenRuin"/>
+        <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+        <Action_LockQuestTarget TargetVarName="$TargetSunkenRuin" LockOption="Lock"/>
+        <Action_StartTimer Output_TimerVarName="$Timer"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$Timer"/>
+
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0019-Step1" State="InProgress" />
+
+        <!--Step 1-->
+        <!--1st Spawn-->
+        <Action_SpawnArmy CanMoveOnSpawn="true" SpawnLocationVarName="$TargetSunkenRuinArmySpawnLocation01" ArmyDroplist="DroplistNavalInteract0019ArmySpawnFireShip" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+        <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="Roaming"/>
+        <Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="1" Initiator="Empire"/>
+        <Action_SpawnArmy CanMoveOnSpawn="true" SpawnLocationVarName="$TargetSunkenRuinArmySpawnLocation01" ArmyDroplist="DroplistNavalInteract0019ArmySpawnFireShip" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+        <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" BehaviourName="Roaming"/>
+        <Decorator_TimerEnded TimerVarName="$Timer" TurnCountBeforeTimeOut="2" Initiator="Empire"/>
+        <Action_SpawnArmy CanMoveOnSpawn="true" SpawnLocationVarName="$TargetSunkenRuinArmySpawnLocation01" ArmyDroplist="DroplistNavalInteract0019ArmySpawnFireShip" Output_EnemyArmyGUIDVarName="$ArmyID3"/>
+        <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID3" BehaviourName="Roaming"/>
+        <Decorator_Dive TargetEntityVarName="$TargetSunkenRuin" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionInstigatorSimObject">
+              <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitTypeFomoriansBathysphere) ge 1</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_Dive>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetSunkenRuin" />
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0019-Step1" State="Completed" />
+
+        <!--Step 2-->
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0019-Step2" State="InProgress" />
+        <Action_AddQuestMarker TargetEntityVarName="$InitialSunkenRuin" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialSunkenRuin"/>
+        <Decorator_Dive TargetEntityVarName="$InitialSunkenRuin" Initiator="Empire"/>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialSunkenRuin" />
+        <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+        <Action_LockQuestTarget TargetVarName="$TargetSunkenRuin" LockOption="Unlock"/>
+        <Action_UpdateStep StepName="SideQuestNavalInteract#0019-Step2" State="Completed" />
+        <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+
+      <!--Fail Condition 01-->
+      <Controller_Sequence>
+        <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+          <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+        </Decorator_KillArmy>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetSunkenRuin" />
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialSunkenRuin" />
+        <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+        <Action_LockQuestTarget TargetVarName="$TargetSunkenRuin" LockOption="Unlock"/>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+      <!--Fail Condition 02-->
+      <Controller_Sequence>
+        <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+          <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+        </Decorator_KillArmy>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetSunkenRuin" />
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialSunkenRuin" />
+        <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+        <Action_LockQuestTarget TargetVarName="$TargetSunkenRuin" LockOption="Unlock"/>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+      <!--Fail Condition 03-->
+      <Controller_Sequence>
+        <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+          <EnemyArmyGUIDVarName>$ArmyID3</EnemyArmyGUIDVarName>
+        </Decorator_KillArmy>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetSunkenRuin" />
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialSunkenRuin" />
+        <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+        <Action_LockQuestTarget TargetVarName="$TargetSunkenRuin" LockOption="Unlock"/>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+    </Controller_Parallel>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0019-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0019-Step2">
+        <Reward Droplist="DroplistNavalInteract0019ItemReward" Picks="1"/> <!--Quest Satchel Charges-->
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Cap'n Pikou ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0020" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$InitialSunkenRuin.$Position.$Region"/>
+      </Var>
+
+      <!--Get the initial POI location-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <!--Army spawn 01-->
+      <Var VarName="$SunkenRuinArmySpawnLocation">
+        <From Source="$Region.$Positions"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinName" Source="$InitialSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinRegionName" Source="$InitialSunkenRuinRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0020-Step1" State="InProgress" />
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$SunkenRuinArmySpawnLocation" ArmyDroplist="DroplistNavalInteract0020ArmySpawnEra" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0020-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0020-Step2" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$InitialSunkenRuin" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialSunkenRuin02"/>
+      <Decorator_Dive TargetEntityVarName="$InitialSunkenRuin" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialSunkenRuin02" />
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0020-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0020-Step1">
+        <Reward Droplist="DroplistDust" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalInteract#0020-Step2">
+        <Reward Droplist="DroplistNavalInteract0020ItemReward" Picks="1"/> <!-- Captain Pikou's Blade-->
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Blood Red Crystal ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0021" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyShip</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$InitialSunkenRuin.$Position.$Region"/>
+      </Var>
+
+      <!--Get the initial POI location-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <!--Get the nearby continental region-->
+      <Var VarName="$ContinentalNearbyRegion">
+        <From Source="$InitialSunkenRuinRegion.$NeighbourRegions"/>
+      </Var>
+
+      <!--Set the player target city-->
+      <Var VarName="$PlayerTargetCity">
+        <Any>
+          <From Source="$ContinentalNearbyRegion.$City">
+            <Where>
+              <FilterRegionByEmpire EmpireVarName="$MyEmpire"/>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassCity/DistrictImprovementDocks</PathPrerequisite>
+              <PathPrerequisite Flags="Prerequisite">ClassCity/TerrainTagWater,!TerrainTypeInlandWater</PathPrerequisite> <!--Is coastal-->
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinName" Source="$InitialSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinRegionName" Source="$InitialSunkenRuinRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0021-Step1" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$PlayerTargetCity"> <!-- Target player city -->
+            <PathPrerequisite Flags="Prerequisite">ClassCity/DistrictImprovementDocks</PathPrerequisite> <!-- Cargo dock is built -->
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0021-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0021-Step1">
+        <Reward Droplist="DroplistNavalInteract0021Luxury6" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Bad Neighbors ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0022" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuinPOI">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Get the initial POI location-->
+      <Var VarName="$InitialSunkenRuinPOILocation">
+        <From Source="$InitialSunkenRuinPOI.$Position"/>
+      </Var>
+
+      <!--Get all Fortresses that don't belong to the player-->
+      <Var VarName="$ForeignFortresses">
+        <From Source="$Regions.$Fortresses">
+          <Where>
+            <FilterFortressByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Target Fortress POI-->
+      <Var VarName="$SortedByDistanceForeignFortresses">
+        <From Source="$ForeignFortresses">
+          <OrderBy>
+            <SortFortressByDistance SortBy="Nearest" PositionToCompareVarName="$InitialSunkenRuinPOILocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Get the fortress objective-->
+      <Var VarName="$TargetFortress">
+        <First>
+          <From Source="$SortedByDistanceForeignFortresses"/>
+        </First>
+      </Var>
+
+      <Var VarName="$TargetFortressCitadelPOI">
+        <Any>
+          <From Source="$TargetFortress.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Get target fortress region-->
+      <Var VarName="$TargetFortressRegion">
+        <From Source="$TargetFortressCitadelPOI.$Position.$Region" />
+      </Var>
+
+      <LocalizationVar LocalizationKey="$TargetFortressRegionName" Source="$TargetFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuinPOI" LockOption="Lock"/>
+
+      <!-- Step 1 -->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0022-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$TargetFortressCitadelPOI" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerTargetFortressCitadelPOI"/>
+      <Decorator_OccupyFortress Initiator="Empire" TargetFortressVarName="$TargetFortressCitadelPOI"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0022-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortressCitadelPOI"/>
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuinPOI" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0022-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  <!-- =========== Beyond the Edge of Maps ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0023" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+
+    <Vars>
+
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuinPOI">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialSunkenRuinPOIPosition">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOcean/>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(PointOfInterestTypeQuestLocation,NavalQuestLocationTypeSunkenRuin) ge 2</InterpreterPrerequisite>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Take the farthest region -->
+      <Var VarName="$SunkenRuinRegion">
+        <Last>
+          <From Source="$AllRegionsButPlayerRegions">
+            <OrderBy>
+              <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialSunkenRuinPOIPosition"/>
+            </OrderBy>
+          </From>
+        </Last>
+      </Var>
+
+      <!--Set the wrong Quest POI to inspect-->
+      <Var VarName="$SunkenRuinPOI">
+        <Any>
+          <From Source="$SunkenRuinRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$SunkenRuinRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+      <!--Step 1-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0023-Step1" State="InProgress" />
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuinPOI" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinPOI" LockOption="Lock"/>
+
+      <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinPOI" Tags="Ruins" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+      <Decorator_Dive TargetEntityVarName="$SunkenRuinPOI" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuinPOI" LockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0023-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0023-Step1">
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  <!-- =========== An Indecent Hunger ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0024" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Current Anomalies exploited-->
+      <InterpretedVar VarName="CurrentOceanicRegionsControlled" Target="$(Empire)">
+        <Expression>$Count(EmpireTypeMajor/ClassFortress,FortressBonusesOnRegionControlled)</Expression>
+      </InterpretedVar>
+
+      <!--Anomalies exploited objective-->
+      <InterpretedVar VarName="OceanicRegionsControlledObjective" Target="$(Empire)">
+        <Expression>$(CurrentOceanicRegionsControlled) + 1</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialSunkenRuinRegion">
+        <From Source="$InitialSunkenRuin.$Position.$Region"/>
+      </Var>
+
+      <!--Get the initial POI location-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinName" Source="$InitialSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinRegionName" Source="$InitialSunkenRuinRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+
+      <!-- Step 1 -->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0024-Step1" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire">
+        <InterpretedVarsToUpdate>
+          <Var>CurrentOceanicRegionsControlled</Var>
+        </InterpretedVarsToUpdate>
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$(CurrentOceanicRegionsControlled) ge $(OceanicRegionsControlledObjective)</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0024-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0024-Step1">
+        <Reward Droplist="DroplistNavalInteract0024QuestItem" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== A Unic Way To Conquer Ocean ============ -->
+  <QuestDefinition Name="SideQuestNavalInteract#0025" Category="NavalQuest" SubCategory="Naval"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalInteract</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialSunkenRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Get the initial POI location-->
+      <Var VarName="$InitialSunkenRuinLocation">
+        <From Source="$InitialSunkenRuin.$Position"/>
+      </Var>
+
+      <!--Get all Fortresses that don't belong to the player-->
+      <Var VarName="$ForeignFortresses">
+        <From Source="$Regions.$Fortresses">
+          <Where>
+            <FilterFortressByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$TargetFortress">
+        <Any>
+          <From Source="$ForeignFortresses">
+            <Where>
+              <FilterRegionIsOcean/>
+              <InterpreterPrerequisite Flags="Prerequisite">$Path(ClassFortress/FacilityUnique1,RevealedFacility) or $Path(ClassFortress/FacilityUnique2,RevealedFacility) or $Path(ClassFortress/FacilityUnique3,RevealedFacility) or $Path(ClassFortress/FacilityUnique4,RevealedFacility) or $Path(ClassFortress/FacilityUnique5,RevealedFacility) or $Path(ClassFortress/FacilityUnique6,RevealedFacility) or $Path(ClassFortress/FacilityUnique7,RevealedFacility) or $Path(ClassFortress/FacilityUnique8,RevealedFacility) or $Path(ClassFortress/FacilityUnique9,RevealedFacility) or $Path(ClassFortress/FacilityUnique10,RevealedFacility) or $Path(ClassFortress/FacilityUnique11,RevealedFacility) or $Path(ClassFortress/FacilityUnique12,RevealedFacility) or $Path(ClassFortress/FacilityUnique13,RevealedFacility)</InterpreterPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$TargetUniqueFacilityPOI">
+        <Any>
+          <From Source="$TargetFortress.$PointsOfInterest">
+            <Where>
+              <FilterRegionIsOcean/>
+              <InterpreterPrerequisite Flags="Prerequisite">$Path(FacilityUnique1,RevealedFacility) or $Path(FacilityUnique2,RevealedFacility) or $Path(FacilityUnique3,RevealedFacility) or $Path(FacilityUnique4,RevealedFacility) or $Path(FacilityUnique5,RevealedFacility) or $Path(FacilityUnique6,RevealedFacility) or $Path(FacilityUnique7,RevealedFacility) or $Path(FacilityUnique8,RevealedFacility) or $Path(FacilityUnique9,RevealedFacility) or $Path(FacilityUnique10,RevealedFacility) or $Path(FacilityUnique11,RevealedFacility) or $Path(FacilityUnique12,RevealedFacility) or $Path(FacilityUnique13,RevealedFacility)</InterpreterPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$TargetFortressRegion">
+        <From Source="$TargetFortress.$Region"/>
+      </Var>
+
+      <Var VarName="$TargetFortressCitadel">
+        <Any>
+          <From Source="$TargetFortress.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialSunkenRuinName" Source="$InitialSunkenRuin"/>
+      <LocalizationVar LocalizationKey="$TargetFortressName" Source="$TargetFortressCitadel"/>
+      <LocalizationVar LocalizationKey="$TargetFortressRegionName" Source="$TargetFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$TargetFortress" LockOption="Lock"/>
+
+      <!-- Step 1 -->
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0025-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$TargetFortress" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerTargetFortress"/>
+      <Decorator_OccupyFortress Initiator="Empire" TargetFortressVarName="$TargetFortressCitadel"/>
+      <Action_UpdateStep StepName="SideQuestNavalInteract#0025-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortress" />
+      <Action_LockQuestTarget TargetVarName="$InitialSunkenRuin" LockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$TargetFortress" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalInteract#0025-Step1">
+        <Reward Droplist="DroplistNavalInteract0025QuestItem" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+</Datatable>

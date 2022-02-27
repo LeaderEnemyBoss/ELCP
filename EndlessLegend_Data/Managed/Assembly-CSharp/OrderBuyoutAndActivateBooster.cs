@@ -109,8 +109,5 @@ public class OrderBuyoutAndActivateBooster : global::Order
 		}
 	}
 
-	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
-	public bool IgnoreCost { get; set; }
-
 	public static StaticString AuthenticationPath = "DepartmentOfPlanificationAndDevelopment/OrderBuyoutAndActivateBooster";
 }

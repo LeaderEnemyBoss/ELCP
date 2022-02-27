@@ -1,0 +1,1604 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://Replicantsw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://Replicantsw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ======== REPLICANTS-CHAPTER 1 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter1" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter1,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+      <!--<PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>-->
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$SurroundingRegions1">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$SurroundingRegions1Position">
+        <From Source="$SurroundingRegions1.$Position"/>
+      </Var>
+      
+      <Var VarName="$SurroundingRegions2">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+            <FilterRegionByDistance PositionToCompareVarName="$SurroundingRegions1Position" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      
+      <Var VarName="$VillageToPacify">
+        <Limit LimitMin="4" LimitMax="5">
+          <From Source="$SurroundingRegions1.$Villages" />
+        </Limit>
+      </Var>
+      
+      <Var VarName="$VillageToPacifyPOI">
+        <From Source="$VillageToPacify.$PointOfInterest"/>
+      </Var>
+      <Var VarName="$VillageToPacifyLocation">
+        <From Source="$VillageToPacifyPOI.$Position"/>
+      </Var>
+      <Var VarName="$VillageToPacifyRegion">
+        <From Source="$VillageToPacifyLocation.$Region"/>
+      </Var>
+      <Var VarName="$Minorfaction">
+        <From Source="$VillageToPacifyLocation.$Region.$MinorEmpire"/>
+      </Var>
+      
+      <Var VarName="$RegionWithEnemies">
+        <Limit LimitMin="4" LimitMax="5">
+          <From Source="$SurroundingRegions2"/>
+        </Limit>
+      </Var>
+      <Var VarName="$RegionWithEnemiesPOI">
+        <First>
+          <From Source="$RegionWithEnemies.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      <Var VarName="$RegionWithEnemiesPosition">
+        <From Source="$RegionWithEnemiesPOI.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$EmpireCity" Source="$EmpireCityRegion"/>
+      <LocalizationVar LocalizationKey="$NearbyRegionName" Source="$VillageToPacifyRegion"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$RegionWithEnemies"/>
+      <LocalizationVar LocalizationKey="$MinorFactionName" Source="$Minorfaction"/>
+    </Vars>
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$RegionWithEnemiesPOI" LockOption="Lock"/>
+      <Action_AddQuestMarker TargetEntityVarName="$VillageToPacify" Tags="MainQuest" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerVillageToPacify"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter1-Step1" State="InProgress"/>
+      <Decorator_VillagesPacified VillagesVarName="$VillageToPacify" TargetOption="All" Initiator="AllEmpires" />
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageToPacify"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter1-Step1" State="Completed" />
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter1-Step2" HideRewards="true" State="InProgress"/>
+      <Action_LockQuestTarget TargetVarName="$RegionWithEnemiesPOI" LockOption="Lock"/>
+      <Action_AddQuestMarker TargetEntityVarName="$RegionWithEnemiesPOI" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1"/>
+      <Decorator_Inspect TargetEntityVarName="$RegionWithEnemiesPOI" Initiator="Empire"/>
+      <Action_LockQuestTarget TargetVarName="$RegionWithEnemiesPOI" LockOption="Unlock"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1"/>
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$RegionWithEnemiesPosition" ArmyDroplist="DroplistArmyDefinitionReplicantsMainQuest1" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Decorator_ArmyDestroyed EnemyArmyGUIDVarName="$ArmyID1"/>
+      <!-- <Decorator_BeginTurn Initiator="Empire"/> -->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter1-Step2" State="Completed" />
+      <Action_SpawnArmy SpawnLocationVarName="$RegionWithEnemiesPosition" ArmyDroplist="DroplistArmyDefinitionReplicantsMainQuest1Reward" EmpireArmyOwnerVarName="$InstigatorEmpire"/>
+      <Action_UpdateQuest State="Completed"/>
+      
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter1-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter1-Step2">
+        <Reward LocalizationKey="%MainQuestReplicants-Chapter1-Step2Reward"/>
+      </Step>
+    </Steps>
+    
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  <!-- ======================================
+     ======= REPLICANTS-CHAPTER 1 ALT =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter1Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <!--<Tags>MainQuest,Replicants,Chapter1Alt,BeginTurn</Tags>-->
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$SurroundingRegions1">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$SurroundingRegions1Position">
+        <From Source="$SurroundingRegions1.$Position"/>
+      </Var>
+
+      <Var VarName="$SurroundingRegions2">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+            <FilterRegionByDistance PositionToCompareVarName="$SurroundingRegions1Position" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$VillageToPacify">
+        <Limit LimitMin="4" LimitMax="5">
+          <From Source="$SurroundingRegions1.$Villages" />
+        </Limit>
+      </Var>
+      <Var VarName="$VillageToPacifyPOI">
+        <From Source="$VillageToPacify.$PointOfInterest"/>
+      </Var>
+      <Var VarName="$VillageToPacifyLocation">
+        <From Source="$VillageToPacifyPOI.$Position"/>
+      </Var>
+      <Var VarName="$VillageToPacifyRegion">
+        <From Source="$VillageToPacifyLocation.$Region"/>
+      </Var>
+      <Var VarName="$Minorfaction">
+        <From Source="$VillageToPacifyLocation.$Region.$MinorEmpire"/>
+      </Var>
+
+      <Var VarName="$RegionWithEnemies">
+        <Limit LimitMin="4" LimitMax="5">
+          <From Source="$SurroundingRegions2"/>
+        </Limit>
+      </Var>
+      <Var VarName="$RegionWithEnemiesPOI">
+        <First>
+          <From Source="$RegionWithEnemies.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      <Var VarName="$RegionWithEnemiesPosition">
+        <From Source="$RegionWithEnemiesPOI.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$EmpireCity" Source="$EmpireCityRegion"/>
+      <LocalizationVar LocalizationKey="$NearbyRegionName" Source="$VillageToPacifyRegion"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$RegionWithEnemies"/>
+      <LocalizationVar LocalizationKey="$MinorFactionName" Source="$Minorfaction"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$RegionWithEnemiesPOI" LockOption="Lock"/>
+      <Action_AddQuestMarker TargetEntityVarName="$VillageToPacify" Tags="MainQuest" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerVillageToPacify"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter1Alt-Step1" State="InProgress"/>
+      <Decorator_VillagesDestroyed VillagesVarName="$VillageToPacify" TargetOption="All" Initiator="AllEmpires" />
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageToPacify"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter1Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter1Alt-Step2" HideRewards="true" State="InProgress"/>
+      <Action_LockQuestTarget TargetVarName="$RegionWithEnemiesPOI" LockOption="Lock"/>
+      <Action_AddQuestMarker TargetEntityVarName="$RegionWithEnemiesPOI" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1Alt"/>
+      <Decorator_Inspect TargetEntityVarName="$RegionWithEnemiesPOI" Initiator="Empire"/>
+      <Action_LockQuestTarget TargetVarName="$RegionWithEnemiesPOI" LockOption="Unlock"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1Alt"/>
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$RegionWithEnemiesPosition" ArmyDroplist="DroplistArmyDefinitionReplicantsMainQuest1" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Decorator_ArmyDestroyed EnemyArmyGUIDVarName="$ArmyID1"/>
+      <!-- <Decorator_BeginTurn Initiator="Empire"/> -->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter1Alt-Step2" State="Completed" />
+      <Action_SpawnArmy SpawnLocationVarName="$RegionWithEnemiesPosition" ArmyDroplist="DroplistArmyDefinitionReplicantsMainQuest1Reward" EmpireArmyOwnerVarName="$InstigatorEmpire"/>
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter1Alt-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter1Alt-Step2">
+        <Reward LocalizationKey="%MainQuestReplicants-Chapter1-Step2Reward"/>
+      </Step>
+    </Steps>
+
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>  
+  
+  <!-- ======================================
+     ======== REPLICANTS-CHAPTER 2 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter2</Tags>
+
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+      <!--Set Player's Empire-->
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityPosition">
+        <From Source="$EmpireCity.$Position"/>
+      </Var>
+
+      <Var VarName="$EnemyRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$MyEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$NearestEnemyRegion">
+        <From Source="$EnemyRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$CityToInteractRegion">
+        <From Source="$NearestEnemyRegion"/>
+      </Var>
+
+      <!--Set the City to interact with-->
+      <Var VarName="$CityToInteract">
+          <From Source="$CityToInteractRegion.$City"/>
+      </Var>
+      <Var VarName="$RegionPointOfInterest">
+        <From Source="$CityToInteract.$Region.$PointsOfInterest">
+          <Where>
+            <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$QuestPOILocation">
+        <From Source="$RegionPointOfInterest.$Position"/>
+      </Var>
+      
+      <LocalizationVar LocalizationKey="$RegionName" Source="$CityToInteractRegion"/>
+      <LocalizationVar LocalizationKey="$QuestRuinsName" Source="$RegionPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$CityName" Source="$CityToInteract"/>
+      
+    </Vars>
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter2-Step1" State="InProgress"/>
+
+      <Action_LockQuestTarget TargetVarName="$RegionPointOfInterest" LockOption="Lock"/>
+      <Action_AddQuestMarker TargetEntityVarName="$CityToInteract" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterest1"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Infiltrate CityVarName="$CityToInteract" RequiredLevel="3"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_CaptureCity TargetCityVarName="$CityToInteract" Output_CapturedCityVarName="$MyNewCity" Initiator="Empire"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$CityToInteract">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterest1"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter2-Step1" State="Completed" />
+ 
+      <!--Step 2-->
+      <Action_AddQuestMarker TargetEntityVarName="$RegionPointOfInterest" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterest2"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter2-Step2" State="InProgress"/>
+      <Decorator_Inspect TargetEntityVarName="$RegionPointOfInterest" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterest2"/>
+      <Action_LockQuestTarget TargetVarName="$RegionPointOfInterest" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter2-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter2-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter2-Step2">
+        <Reward Droplist="DroplistMainQuestReplicantsChapter2HeroReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter3</Tags>
+      </OnQuestCompleted>
+      <OnQuestFailed>
+        <Tags>MainQuestReplicants-Chapter2</Tags>
+      </OnQuestFailed>
+    </Triggers>
+
+  </QuestDefinition>
+   
+  
+  
+  <!-- ======================================
+     ======= REPLICANTS-CHAPTER 3 =========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter3" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter3,EventHeroCreated</Tags>
+
+    <!--Add Tag BeginTurn if the Hero is not the reward of the last step of the previous quest + the following prerequisite: 
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="false" QuestDefinitionName="MainQuestReplicants-Chapter2" QuestState="Completed"/>
+    </Prerequisites>-->
+
+    <!--===========VARIABLES=============-->
+    
+    <Vars>
+      <Var VarName="$Ziema">
+        <Any>
+          <From Source="$Empire.$Heroes">
+            <Where>
+              <PathPrerequisite>UnitProfileReplicantsHero7Alt</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      
+      <Var VarName="$StrategicResourceDepositPointOfInterest">
+        <From Source="$Regions.$PointsOfInterest">
+          <Where>
+            <PathPrerequisite Flags="Prerequisite">ResourceDepositTypeStrategic2</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$StrategicName">
+        <From Source="$StrategicResourceDepositPointOfInterest.$ResourceName"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$EmpireCity.$Region.$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position"/>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectRegion">
+        <From Source="$PointOfInterestToInspectLocation.$Region"/>
+      </Var>
+      
+      <DropListVar VarName="$SkillToCheck" DropList="DroplistMainQuestReplicantsChapter3SkillToCheck"/>
+      <DropListVar VarName="$SkillLevelToCheck" DropList="DroplistMainQuestReplicantsChapter3SkillLevelToCheck"/>
+
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransferAmount" DropList="DroplistStrategicResourceTransfertAmount"/>
+
+      <LocalizationVar LocalizationKey="$SkillToCheckName" Source="$SkillToCheck"/>
+      <LocalizationVar LocalizationKey="$SkillLevelToCheckNumber" Source="$SkillLevelToCheck"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$PointOfInterestToInspectRegion"/>
+      <LocalizationVar LocalizationKey="$QuestRuinsName" Source="$PointOfInterestToInspect"/>
+      <LocalizationVar LocalizationKey="$StratName" Source="$StrategicResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$StratAmount" Source="$StrategicResourceAmount"/>
+    </Vars>
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter3-Step1" State="InProgress"/>
+      <Decorator_UnitSkillUnlocked SkillNameVarName="$SkillToCheck" SkillLevelVarName="$SkillLevelToCheck" TargetUnitVarName="$Ziema"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter3-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter3-Step2" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteMainQuestReplicants-Chapter3-Step1" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/UnitProfileReplicantsHero7Alt</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$StrategicName" WantedAmountVarName="$StrategicResourceAmount"/>
+      </Decorator_Inspect>
+      <Action_TransferResource ResourceNameVarName="$StrategicName" AmountVarName="$StrategicResourceTransferAmount"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter3-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+    
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter3-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter3-Step2">
+        <Reward Droplist="DroplistMainQuestReplicantsChapter3HeroReward" Picks="1"/>
+        <Reward Droplist="DroplistMainQuestReplicantsChapter3Step2UniqueItem1Reward" Picks="1"/>
+        <Reward Droplist="DroplistMainQuestReplicantsChapter3Step2UniqueItem2Reward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter4</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- ======================================
+     ======== REPLICANTS - CHAPTER 4 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter4" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+  <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter4</Tags>
+
+    
+  <!--============ VARIABLES ============-->
+    <Vars>
+
+	  <Var VarName="$Ziema">
+        <Any>
+          <From Source="$Empire.$Heroes">
+            <Where>
+              <PathPrerequisite>UnitProfileReplicantsHero7Alt</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+	
+      <InterpretedVar VarName="CurrentEmpireInfluence" Target="$(Empire)">
+        <Expression>$Property(EmpireTypeMajor:EmpirePointStock)</Expression>
+      </InterpretedVar>
+      
+      <InterpretedVar VarName="EmpireInfluenceObjective" Target="$(Empire)">
+        <Expression>($(CurrentEmpireInfluence)* 1.5) + 100</Expression>
+      </InterpretedVar>
+
+      <DropListVar VarName="$InfiltrationAction1" DropList="DroplistMainQuestReplicantsChapter4Action1ToCheck"/>
+      <DropListVar VarName="$InfiltrationAction2" DropList="DroplistMainQuestReplicantsChapter4Action2ToCheck"/>
+
+      <LocalizationVar LocalizationKey="$InfluenceAmount" Source="EmpireInfluenceObjective"/>
+      <LocalizationVar LocalizationKey="$InfiltrationAction1" Source="$InfiltrationAction1"/>
+      <LocalizationVar LocalizationKey="$InfiltrationAction2" Source="$InfiltrationAction2"/>
+      
+    </Vars>
+
+  <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <!--Step 1-->      
+      <Action_RemoveHero TargetUnitVarName="$Ziema"/>
+	  <Action_UpdateStep StepName="MainQuestReplicants-Chapter4-Step1" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire" >
+        <InterpretedVarsToUpdate>
+          <Var>CurrentEmpireInfluence</Var>
+        </InterpretedVarsToUpdate>
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$(CurrentEmpireInfluence)" StepName="MainQuestReplicants-Chapter4-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter4-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter4-Step2" State="InProgress" />
+      
+      <Controller_Parallel CompletionPolicy="Any">
+ 
+        <Controller_Sequence>
+          <Decorator_SpyAction Initiator="Empire" SpyActionVarName="DecreasePopulation_Level4"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_SpyAction Initiator="Empire" SpyActionVarName="DecreasePopulation_Level5"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_SpyAction Initiator="Empire" SpyActionVarName="PoisonGovernor_Level4"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_SpyAction Initiator="Empire" SpyActionVarName="PoisonGovernor_Level5"/>
+        </Controller_Sequence>
+      
+      </Controller_Parallel>
+	  
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter4-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed" />
+
+    </Controller_Sequence>
+
+  <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter4-Step1">
+        <ProgressionRange StartValue="0" EndValueVarName="EmpireInfluenceObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter4-Step2">
+        <Reward Droplist="DroplistMainQuestReplicantsChapter4Step2TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+
+  </QuestDefinition>
+  
+  
+  
+  <!-- ======================================
+     ======= REPLICANTS-CHAPTER 5 =========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter5" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter5</Tags>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="CurrentNumberOfCityImprovement9" Target="$(Empire)">
+        <Expression>$Count(EmpireTypeMajor/ClassCity/CityImprovementReplicants9)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="CurrentNumberOfEra1to3Techs" Target="$(Empire)">
+        <Expression>$Property(EmpireTypeMajor/ClassResearch:Era1UnlockedTechnologyCount) + $Property(EmpireTypeMajor/ClassResearch:Era2UnlockedTechnologyCount) + $Property(EmpireTypeMajor/ClassResearch:Era3UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter5-Step1" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire" >
+        <InterpretedVarsToUpdate>
+          <Var>CurrentNumberOfCityImprovement9</Var>
+        </InterpretedVarsToUpdate>
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$(CurrentNumberOfCityImprovement9)" StepName="MainQuestReplicants-Chapter5-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter5-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter5-Step2" State="InProgress" />
+      <Decorator_TechnologyEnded Initiator="Empire" >
+        <InterpretedVarsToUpdate>
+          <Var>CurrentNumberOfEra1to3Techs</Var>
+        </InterpretedVarsToUpdate>
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$(CurrentNumberOfEra1to3Techs)" StepName="MainQuestReplicants-Chapter5-Step2" />
+      </Decorator_TechnologyEnded>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter5-Step2" State="Completed"/>
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+    
+    
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter5-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMainQuestReplicantsChapter5Step1TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter5-Step2">
+        <ProgressionRange StartValue="0" EndValue="30"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+  
+  
+  
+  <!-- ======================================
+     ======== REPLICANTS-CHAPTER 6 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter6" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter6</Tags>
+
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter6Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter6Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter6Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Select player city with the least of Fortifications-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Select 1 region from another empire, and which is not an island-->
+      <Var VarName="$AllRegionsButMine">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$OtherEmpireContinentRegion">
+        <Limit LimitMin="4" LimitMax="5">
+          <From Source="$AllRegionsButMine">
+            <Where>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <!--Select 2 Quest Ruins--> 
+      <Var VarName="$QuestPOI1">
+        <First>
+          <From Source="$OtherEmpireContinentRegion.$QuestPointsOfInterest"/>
+        </First>
+      </Var>
+      <Var VarName="$QuestPOI2">
+        <Last>
+          <From Source="$OtherEmpireContinentRegion.$QuestPointsOfInterest"/>
+        </Last>
+      </Var>
+
+      <!--Select 1 region next to the first one and on the same continent -->
+      <Var VarName="$SurroundingRegions">
+        <From Source="$OtherEmpireContinentRegion.$NeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$OtherEmpireContinentRegion"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$SurroundingRegion">
+        <Any>
+          <From Source="$SurroundingRegions"/>
+        </Any>
+      </Var>
+
+      <!--Select 2 other Quest Ruins-->
+      <Var VarName="$QuestPOI3">
+        <First>
+          <From Source="$SurroundingRegion.$QuestPointsOfInterest"/>
+        </First>
+      </Var>
+      <Var VarName="$QuestPOI4">
+        <Last>
+          <From Source="$SurroundingRegion.$QuestPointsOfInterest"/>
+        </Last>
+      </Var>
+
+      <Var VarName="$QuestPOI3Location">
+        <From Source="$QuestPOI3.$Position"/>
+      </Var>
+
+      
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI3" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI4" LockOption="Lock"/>
+
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI1" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI1Marker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI2" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI2Marker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI3" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI3Marker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI4" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI4Marker"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter6-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Wrong ruins to search-->
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteMainQuestReplicants-Chapter6and6Alt-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 50000</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire"/>
+            <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI1Marker"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+
+        <!--Wrong ruins to search-->
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI2" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteMainQuestReplicants-Chapter6and6Alt-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 50000</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI2" Initiator="Empire"/>
+            <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI2Marker"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+        
+        <!--Right ruins to search-->
+        <Controller_Sequence>
+          
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI3" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI1Marker"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI2Marker"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI3Marker"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI4Marker"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI3" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI4" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="MainQuestReplicants-Chapter6-Step1" State="Completed" />
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="MainQuestReplicants-Chapter6-Step2" State="InProgress"/>
+          <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$QuestPOI3Location" ArmyDroplist="DroplistArmyDefinitionMainQuestReplicantsChapter6and6AltStep2" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1" Initiator="Empire"/>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="MainQuestReplicants-Chapter6-Step2" State="Completed" />
+            
+        </Controller_Sequence>
+
+        
+        <!--Wrong ruins to search-->
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI4" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteMainQuestReplicants-Chapter6and6Alt-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 50000</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI4" Initiator="Empire"/>
+            <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI4Marker"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+        
+      </Controller_Parallel>
+
+      
+      <Action_UpdateQuest State="Completed"/>
+      
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter6-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter6-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ====== REPLICANTS-CHAPTER 6 Alt ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter6Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter6</Tags>
+
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter6" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter6" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter6" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Select player city with the least of Fortifications-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireCity">
+        <First>
+          <From Source="$InstigatorEmpire.$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Ascending" PropertyName="CityDefensePoint"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+
+      <!--Select the ruins for the army to spawn-->
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+      <Var VarName="$SurroundingRegions">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$SpawnPOI">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$SurroundingRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$SpawnPOILocation">
+        <From Source="$SpawnPOI.$Position"/>
+      </Var>
+
+      <!--Select 1 region from another empire, and which is not an island-->
+      <Var VarName="$AllRegionsButMine">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$OtherEmpireContinentRegion">
+        <Limit LimitMin="4" LimitMax="5">
+          <From Source="$AllRegionsButMine">
+            <Where>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <!--Select 2 Quest Ruins-->
+      <Var VarName="$QuestPOI1">
+        <First>
+          <From Source="$OtherEmpireContinentRegion.$QuestPointsOfInterest"/>
+        </First>
+      </Var>
+      <Var VarName="$QuestPOI2">
+        <Last>
+          <From Source="$OtherEmpireContinentRegion.$QuestPointsOfInterest"/>
+        </Last>
+      </Var>
+
+      <!--Select 1 region next to the first one and on the same continent -->
+      <Var VarName="$SurroundingRegions">
+        <From Source="$OtherEmpireContinentRegion.$NeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$OtherEmpireContinentRegion"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$SurroundingRegion">
+        <Any>
+          <From Source="$SurroundingRegions"/>
+        </Any>
+      </Var>
+
+      <!--Select 2 other Quest Ruins-->
+      <Var VarName="$QuestPOI3">
+        <First>
+          <From Source="$SurroundingRegion.$QuestPointsOfInterest"/>
+        </First>
+      </Var>
+      <Var VarName="$QuestPOI4">
+        <Last>
+          <From Source="$SurroundingRegion.$QuestPointsOfInterest"/>
+        </Last>
+      </Var>
+
+      <Var VarName="$QuestPOI3Location">
+        <From Source="$QuestPOI3.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$CityName" Source="$EmpireCity"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI3" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI4" LockOption="Lock"/>
+
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI1" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI1Marker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI2" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI2Marker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI3" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI3Marker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI4" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI4Marker"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter6Alt-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Wrong ruins to search-->
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteMainQuestReplicants-Chapter6and6Alt-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 50000</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire"/>
+            <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI1Marker"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+
+        <!--The right ruins to search-->
+        <Controller_Sequence>
+
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI2" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI1Marker"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI2Marker"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI3Marker"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI4Marker"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI3" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI4" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="MainQuestReplicants-Chapter6Alt-Step1" State="Completed" />
+
+          <!--Step 2 Alt-->
+          <Action_UpdateStep StepName="MainQuestReplicants-Chapter6Alt-Step2" State="InProgress"/>
+          <Action_SpawnArmy SpawnLocationVarName="$SpawnPOILocation" ArmyDroplist="DroplistArmyDefinitionMainQuestReplicantsChapter6and6AltStep2" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1" Initiator="Empire"/>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetCityVarName="$EmpireCity" BehaviourName="Offense" SiegeTurnsNumberVarName="2"/>
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="MainQuestReplicants-Chapter6Alt-Step2" State="Completed" />
+
+        </Controller_Sequence>
+
+
+        <!--Wrong ruins to search-->
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI3" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteMainQuestReplicants-Chapter6and6Alt-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 50000</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI3" Initiator="Empire"/>
+            <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI3Marker"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+        <!--Wrong ruins to search-->
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI4" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteMainQuestReplicants-Chapter6and6Alt-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 50000</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$QuestPOI4" Initiator="Empire"/>
+            <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI4Marker"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+      </Controller_Parallel>
+
+
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter6Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter6Alt-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+  
+  
+  
+  
+  
+  <!-- ======================================
+     ========= REPLICANTS-CHAPTER 7 =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter7" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter7</Tags>
+
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite  Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter7Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite  Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter7Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite  Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter7Alt" QuestState="Unstarted"/>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfCultistsEmpires) ge 1 </InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfCultistsEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,AffinityCultists,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <!--Set Player's Empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7-Step1" State="InProgress"/>
+      <Controller_Loop LoopCount="3">
+        <Decorator_PillageSucceed Output_TargetVarName="$InspectionTarget" LinkedStepProgression="MainQuestReplicants-Chapter7-Step1" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionTarget">
+              <PathPrerequisite>!PointOfInterestTypeVillage</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_PillageSucceed>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7-Step1" State="Completed" />
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7-Step2" State="InProgress"/>
+      <Controller_Loop LoopCount="2">
+        <Controller_Parallel CompletionPolicy="Any">
+          
+          <Controller_Sequence>
+            <Decorator_VillagesDestroyed Output_TargetPositionVarName="$TargetedVillagePOILocation" LinkedStepProgression="MainQuestReplicants-Chapter7Alt-Step2" Initiator="Empire"/>
+          </Controller_Sequence>
+          
+          <Controller_Sequence>
+            <Decorator_PillageSucceed Output_TargetVarName="$InspectionTarget" Output_TargetPositionVarName="$TargetedVillagePOILocation" LinkedStepProgression="MainQuestReplicants-Chapter7Alt-Step2" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$InspectionTarget">
+                  <PathPrerequisite>PointOfInterestTypeVillage</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_PillageSucceed>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7-Step2" State="Completed" />
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7-Step3" State="InProgress"/>
+      <Action_SpawnArmy SpawnLocationVarName="$TargetedVillagePOILocation" ArmyDroplist="DroplistArmyDefinitionMainQuestReplicantsChapter7and7AltStep3" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Decorator_ArmyDestroyed EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7-Step3" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+    
+    
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter7-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter7-Step2">
+        <ProgressionRange StartValue="0" EndValue="1"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter7-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ======= REPLICANTS-CHAPTER 7 Alt =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter7Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter7</Tags>
+
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter7Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter7Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestReplicants-Chapter7Alt" QuestState="Unstarted"/>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2 </InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <!--Set Player's Empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      
+    </Vars>
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7Alt-Step1" State="InProgress"/>
+      <Controller_Loop LoopCount="2">
+        <Decorator_PillageSucceed Output_TargetVarName="$InspectionTarget" LinkedStepProgression="MainQuestReplicants-Chapter7Alt-Step1" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionTarget">
+              <PathPrerequisite>!PointOfInterestTypeVillage</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_PillageSucceed>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7Alt-Step2" State="InProgress"/>
+      <Controller_Loop LoopCount="2">
+        <Controller_Parallel CompletionPolicy="Any">
+          
+          <Controller_Sequence>
+            <Decorator_VillagesDestroyed Output_TargetPositionVarName="$TargetedVillagePOILocation" LinkedStepProgression="MainQuestReplicants-Chapter7Alt-Step2" Initiator="Empire"/>
+          </Controller_Sequence>
+          
+          <Controller_Sequence>
+            <Decorator_PillageSucceed Output_TargetVarName="$InspectionTarget" Output_TargetPositionVarName="$TargetedVillagePOILocation" LinkedStepProgression="MainQuestReplicants-Chapter7Alt-Step2" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$InspectionTarget">
+                  <PathPrerequisite>PointOfInterestTypeVillage</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_PillageSucceed>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7Alt-Step2" State="Completed" />
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7Alt-Step3" State="InProgress"/>
+      <Action_SpawnArmy SpawnLocationVarName="$TargetedVillagePOILocation" ArmyDroplist="DroplistArmyDefinitionMainQuestReplicantsChapter7and7AltStep3" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Decorator_ArmyDestroyed EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter7Alt-Step3" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter7Alt-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter7Alt-Step2">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter7Alt-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,Replicants,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+
+  <!-- ======================================
+     ========= REPLICANTS-CHAPTER 8 =========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestReplicants-Chapter8" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,Replicants,Chapter8,FinalQuest</Tags>
+
+    
+    <!--============ VARIABLES ============-->
+    <Vars>
+      
+      <!--Set Player's Empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set the other empires-->
+      <Var VarName="$OtherEmpiresRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the richest City among the other empires-->
+      <Var VarName="$TargetedCity">
+        <First>
+          <From Source="$OtherEmpiresRegion.$MajorEmpire.$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Descending" PropertyName="NetCityProduction"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+
+      <!--Set the region of richest City among the other empires-->
+      <Var VarName="$TargetedCityRegion">
+        <From Source="$TargetedCity.$Region"/>
+      </Var>
+
+      <!--Set all the positions of the region -->
+      <Var VarName="$TargetedCityRegionLocations">
+        <From Source="$TargetedCityRegion.$Positions"/>
+      </Var>
+
+      <!--Set 1 Point of Interest in the region -->
+      <Var VarName="$QuestPOI">
+        <Any>
+          <From Source="$TargetedCityRegion.$QuestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$QuestPOILocation">
+        <From Source="$QuestPOI.$Position"/>
+      </Var>
+      
+      <!--Set the empire ownning the richest city -->
+      <Var VarName="$TargetedEmpire">
+        <From Source="$TargetedCity.$Region.$MajorEmpire"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestRuins" Source="$QuestPOI"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$TargetedCityRegion"/>
+      <LocalizationVar LocalizationKey="$EmpireName" Source="$TargetedEmpire"/>
+      
+    </Vars>
+    
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter8-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <PathPrerequisite Flags="Prerequisite">ClassEmpire,ApprovalStatusTagEmpireFervent</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter8-Step1" State="Completed" />
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter8-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="3">
+            <Decorator_KillArmy FocusedEmpireVarName="$TargetedEmpire" Output_LooserVarName="$LooserArmy" TargetOption="Any" LinkedStepProgression="MainQuestReplicants-Chapter8-Step2" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$LooserArmy">
+                  <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_KillArmy>
+          </Controller_Loop>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$TargetedEmpire">
+                <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor,EmpireEliminated</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter8-Step2" State="Completed" />
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOIMarker"/>
+      
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter8-Step3" State="InProgress"/>
+
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$TargetedCityRegionLocations" ArmyDroplist="DroplistArmyDefinitionMainQuestReplicantsChapter8Step3Roaming" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$TargetedCityRegionLocations" ArmyDroplist="DroplistArmyDefinitionMainQuestReplicantsChapter8Step3Roaming" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$TargetedCityRegionLocations" ArmyDroplist="DroplistArmyDefinitionMainQuestReplicantsChapter8Step3Roaming" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID3"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID3" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+
+      <Decorator_Inspect TargetEntityVarName="$QuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteMainQuestReplicants-Chapter8-Step3" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/UnitProfileReplicantsHero7</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOIMarker"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$QuestPOILocation" ArmyDroplist="DroplistArmyDefinitionMainQuestReplicantsChapter8Step3" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID4" Initiator="Empire"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID4" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID4</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Decorator_ArmyDestroyed EnemyArmyGUIDVarName="$ArmyID4"/>
+
+      <Action_DestroyArmy ArmyGUIDVarName="$ArmyID1" />
+      <Action_DestroyArmy ArmyGUIDVarName="$ArmyID2" />
+      <Action_DestroyArmy ArmyGUIDVarName="$ArmyID3" />
+      
+      <Action_UpdateStep StepName="MainQuestReplicants-Chapter8-Step3" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestReplicants-Chapter8-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter8-Step2">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestReplicants-Chapter8-Step3">
+        <Reward Droplist="DroplistMainQuestReplicantsChapter8Step3TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+        <Reward Droplist="DroplistMainQuestReplicantsChapter8Step3Hero1Reward" Hidden="true" Picks="1"/>
+        <Reward Droplist="DroplistMainQuestReplicantsChapter8Step3Hero2Reward" Hidden="true" Picks="1"/>
+        <Reward Droplist="DroplistMainQuestReplicantsChapter8Step3Hero3Reward" Hidden="true" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+</Datatable>

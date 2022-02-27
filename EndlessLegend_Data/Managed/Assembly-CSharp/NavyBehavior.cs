@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Amplitude;
 using Amplitude.Unity.AI.SimpleBehaviorTree;
 using Amplitude.Unity.Game.Orders;
 using UnityEngine;
@@ -742,7 +741,6 @@ public abstract class NavyBehavior : BaseNavyBehavior
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.ComputePathToMain));
 		OrderAction<BaseNavyArmy> orderAction = new OrderAction<BaseNavyArmy>(new Func<BaseNavyArmy, Amplitude.Unity.Game.Orders.Order>(base.MoveMain));
 		BehaviorNode<BaseNavyArmy> behaviorNode = this.OpportunitySequence();
-		BehaviorNode<BaseNavyArmy> behaviorNode2 = this.OpportunityAttackSequence();
 		Sequence<BaseNavyArmy> sequence = new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
 			condition,
@@ -751,18 +749,12 @@ public abstract class NavyBehavior : BaseNavyBehavior
 		Selector<BaseNavyArmy> selector = new Selector<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
 			sequence,
-			behaviorNode2,
 			behaviorNode,
 			orderAction
 		});
-		Selector<BaseNavyArmy> selector2 = new Selector<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
-		{
-			condition2,
-			behaviorNode2
-		});
 		return new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
-			selector2,
+			condition2,
 			action,
 			selector
 		});
@@ -798,84 +790,5 @@ public abstract class NavyBehavior : BaseNavyBehavior
 			action3,
 			orderAction
 		});
-	}
-
-	protected BehaviorNode<BaseNavyArmy> OpportunityAttackSequence()
-	{
-		Condition<BaseNavyArmy> condition = new Condition<BaseNavyArmy>(new Func<BaseNavyArmy, bool>(base.HasEnoughActionPoint));
-		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(this.CollectOpportunityArmies));
-		OrderAction<BaseNavyArmy> orderAction = new OrderAction<BaseNavyArmy>(new Func<BaseNavyArmy, Amplitude.Unity.Game.Orders.Order>(this.GotoAndAttackOpportunity));
-		return new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
-		{
-			condition,
-			action,
-			orderAction
-		});
-	}
-
-	protected BehaviorNodeReturnCode CollectOpportunityArmies(BaseNavyArmy army)
-	{
-		Army navy = army.Garrison as Army;
-		NavyArmy navyArmy = army as NavyArmy;
-		if (navyArmy == null || navy == null || !(navy.Empire is MajorEmpire))
-		{
-			return BehaviorNodeReturnCode.Failure;
-		}
-		float num = navy.GetPropertyValue(SimulationProperties.Movement);
-		if (num < 0.01f)
-		{
-			num = 1f;
-		}
-		List<IGarrison> list = new List<IGarrison>();
-		DepartmentOfForeignAffairs agency = navy.Empire.GetAgency<DepartmentOfForeignAffairs>();
-		AILayer_Military.HasSaveAttackableTargetsNearby(navy, Mathf.CeilToInt(num), agency, out list, true);
-		if (list.Count == 0)
-		{
-			return BehaviorNodeReturnCode.Failure;
-		}
-		list.Sort((IGarrison left, IGarrison right) => this.worldPositionService.GetDistance((left as IWorldPositionable).WorldPosition, navy.WorldPosition).CompareTo(this.worldPositionService.GetDistance((right as IWorldPositionable).WorldPosition, navy.WorldPosition)));
-		foreach (IGarrison garrison in list)
-		{
-			IGameEntityWithWorldPosition gameEntityWithWorldPosition = garrison as IGameEntityWithWorldPosition;
-			IGarrisonWithPosition garrisonWithPosition = garrison as IGarrisonWithPosition;
-			if (gameEntityWithWorldPosition != null && garrisonWithPosition != null)
-			{
-				WorldPosition validTileToAttack = base.GetValidTileToAttack(army, gameEntityWithWorldPosition);
-				navyArmy.PathToSecondaryTarget = base.ComputePathToPosition(army, validTileToAttack, navyArmy.PathToSecondaryTarget);
-				if (navyArmy.PathToSecondaryTarget != null)
-				{
-					if (navyArmy.PathToSecondaryTarget.ControlPoints != null && navyArmy.PathToSecondaryTarget.ControlPoints.Length != 0)
-					{
-						return BehaviorNodeReturnCode.Failure;
-					}
-					Diagnostics.Log("ELCP {0}/{1} found opportunitytarget {2} with path {3}", new object[]
-					{
-						navy.Empire,
-						navy.LocalizedName,
-						garrison.LocalizedName,
-						navyArmy.PathToSecondaryTarget
-					});
-					navyArmy.OpportunityAttackableTarget = garrisonWithPosition;
-					return BehaviorNodeReturnCode.Success;
-				}
-			}
-		}
-		return BehaviorNodeReturnCode.Failure;
-	}
-
-	protected Amplitude.Unity.Game.Orders.Order GotoAndAttackOpportunity(ArmyWithTask army)
-	{
-		NavyArmy navyArmy = army as NavyArmy;
-		if (navyArmy == null || navyArmy.OpportunityAttackableTarget == null)
-		{
-			return null;
-		}
-		Army army2 = navyArmy.Garrison as Army;
-		Diagnostics.Log("ELCP {0}/{1} succesfull GotoAndAttackOpportunity", new object[]
-		{
-			army2.Empire,
-			army2.LocalizedName
-		});
-		return new OrderGoToAndAttack(army.Garrison.Empire.Index, army.Garrison.GUID, navyArmy.OpportunityAttackableTarget.GUID, navyArmy.PathToSecondaryTarget);
 	}
 }

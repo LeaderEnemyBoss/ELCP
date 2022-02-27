@@ -1,0 +1,1898 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--=====================================
+   ========================================
+   ============== POI QUESTS ==============
+   ========================================
+   ========================================-->
+
+  <!--============ TITLE: Lust for Loot ============-->
+  <QuestDefinition Name="SideQuestPOI#0001" Category="SideQuest" SubCategory="Ruins"
+                     Cooldown="20" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="3" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (5 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLE DEFINITIONS ============-->
+    <Vars>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialQuestPOI">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+      <!--Get the position of the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialQuestPOILocation">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+      <!--Get the position of the Quest POI region-->
+      <Var VarName="$InitialQuestPOIRegionLocation">
+        <From Source="$Region.$Position"/>
+      </Var>
+
+      <!--Set the initial region as variable-->
+      <Var VarName="$InitialRuinsRegion">
+        <From Source="$Region"/>
+      </Var>
+
+      <!--Get the list of all the regions excluding the Quest POI region-->
+      <Var VarName="$AllRegionsButInitialQuestPOIRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$InitialRuinsRegion"/>
+            <FilterRegionByDistance PositionToCompareVarName="$InitialQuestPOIRegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the nearest region from the Quest POI position (excluding the Quest POI region)-->
+      <Var VarName="$NearestRegionFromInitialQuestPOI">
+        <From Source="$AllRegionsButInitialQuestPOIRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialQuestPOILocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Get the 1st POI to inspect-->
+      <Var VarName="$1stTo3rdQuestPOIsToInspect">
+        <Limit LimitMin="2" LimitMax="3" Clamp="false">
+          <From Source="$NearestRegionFromInitialQuestPOI.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$QuestPOIToInspect1">
+        <Any>
+          <From Source="$1stTo3rdQuestPOIsToInspect"/>
+        </Any>
+      </Var>
+
+      <!--Get the 2nd POI to inspect-->
+      <Var VarName="$4thTo6thQuestPOIsToInspect">
+        <Limit LimitMin="4" LimitMax="5" Clamp="false">
+          <From Source="$NearestRegionFromInitialQuestPOI.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$QuestPOIToInspect2">
+        <Any>
+          <From Source="$4thTo6thQuestPOIsToInspect"/>
+        </Any>
+      </Var>
+
+      <!--Get the 3rd POI to inspect-->
+      <Var VarName="$7thTo9thQuestPOIsToInspect">
+        <Limit LimitMin="7" LimitMax="8" Clamp="false">
+          <From Source="$NearestRegionFromInitialQuestPOI.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$QuestPOIToInspect3">
+        <Any>
+          <From Source="$7thTo9thQuestPOIsToInspect"/>
+        </Any>
+      </Var>
+
+
+      <!--Get the 4th POI to inspect-->
+      <Var VarName="$10thTo12thQuestPOIsToInspect">
+        <Limit LimitMin="9" LimitMax="10" Clamp="false">
+          <From Source="$NearestRegionFromInitialQuestPOI.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      <Var VarName="$QuestPOIToInspect4">
+        <Any>
+          <From Source="$10thTo12thQuestPOIsToInspect"/>
+        </Any>
+      </Var>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Parallel CompletionPolicy="Any">
+
+      <Controller_Sequence>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect1" LockOption="Lock"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect2" LockOption="Lock"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect3" LockOption="Lock"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect4" LockOption="Lock"/>
+
+        <!--Step 1-->
+        <Action_UpdateStep StepName="SideQuestPOI#0001-Step1" State="InProgress"/>
+        <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+        <Action_AddQuestMarker TargetEntityVarName="$QuestPOIToInspect1" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOIToInspect1"/>
+        <Decorator_Inspect TargetEntityVarName="$QuestPOIToInspect1" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionInstigatorSimObject">
+              <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_Inspect>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect1"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect1" LockOption="Unlock"/>
+        <Action_UpdateStep StepName="SideQuestPOI#0001-Step1" State="Completed"/>
+
+        <!--Step 2-->
+        <Action_UpdateStep StepName="SideQuestPOI#0001-Step2" State="InProgress"/>
+        <Action_AddQuestMarker TargetEntityVarName="$QuestPOIToInspect2" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOIToInspect2"/>
+        <Decorator_Inspect TargetEntityVarName="$QuestPOIToInspect2" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionInstigatorSimObject">
+              <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_Inspect>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect2"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect2" LockOption="Unlock"/>
+        <Action_UpdateStep StepName="SideQuestPOI#0001-Step2" State="Completed"/>
+
+        <!--Step 3-->
+        <Action_UpdateStep StepName="SideQuestPOI#0001-Step3" State="InProgress"/>
+        <Action_AddQuestMarker TargetEntityVarName="$QuestPOIToInspect3" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOIToInspect3"/>
+        <Decorator_Inspect TargetEntityVarName="$QuestPOIToInspect3" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionInstigatorSimObject">
+              <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_Inspect>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect3"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect3" LockOption="Unlock"/>
+        <Action_UpdateStep StepName="SideQuestPOI#0001-Step3" State="Completed"/>
+
+        <!--Step 4-->
+        <Action_UpdateStep StepName="SideQuestPOI#0001-Step4" State="InProgress"/>
+        <Action_AddQuestMarker TargetEntityVarName="$QuestPOIToInspect4" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOIToInspect4"/>
+        <Decorator_Inspect TargetEntityVarName="$QuestPOIToInspect4" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionInstigatorSimObject">
+              <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_Inspect>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect4"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect4" LockOption="Unlock"/>
+        <Action_UpdateStep StepName="SideQuestPOI#0001-Step4" State="Completed"/>
+        <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+
+      <!--Fail Condition-->
+      <Controller_Sequence>
+        <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect1"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect1" LockOption="Unlock"/>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect2"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect2" LockOption="Unlock"/>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect3"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect3" LockOption="Unlock"/>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect4"/>
+        <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect4" LockOption="Unlock"/>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+    </Controller_Parallel>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0001-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestPOI#0001-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestPOI#0001-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestPOI#0001-Step4">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="2"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Master of Luxury ============-->
+  <QuestDefinition Name="SideQuestPOI#0002" Category="SideQuest" SubCategory="Ruins"
+             Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityCultists</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyQuestReward2</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$EmpireRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire EmpireVarName="$InstigatorEmpire"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--<Var VarName="$EmpireNeighbourRegions">
+        <From Source="$Empire.$Cities.$Region.$NeighbourRegions">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>-->
+
+      <Var VarName="$LuxuryResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$EmpireRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">!ExploitedPointOfInterest</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury6</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury7</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury8</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury9</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury11</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury12</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury13</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury14</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury15</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PointOfInterestTypeVillage</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PointOfInterestTypeWatchTower</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0002-Step1" State="InProgress"/>
+      <Controller_Loop LoopCount="2">
+        <Controller_Parallel CompletionPolicy="Any">
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Luxury1" LinkedStepProgression="SideQuestPOI#0002-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Luxury2" LinkedStepProgression="SideQuestPOI#0002-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Luxury3" LinkedStepProgression="SideQuestPOI#0002-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Luxury4" LinkedStepProgression="SideQuestPOI#0002-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_ConstructionEnded ConstructionName="ResourceExtractor_Luxury5" LinkedStepProgression="SideQuestPOI#0002-Step1" Initiator="Empire"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="SideQuestPOI#0002-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0002-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistSideQuestPOI#0002EmpireBonusReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Which treasure army? ============-->
+  <QuestDefinition Name="SideQuestPOI#0003" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (15 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialQuestPOI">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+      <!--Get the position of the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialQuestPOILocation">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+      <!--Get the position of the Quest POI region-->
+      <Var VarName="$InitialQuestPOIRegionLocation">
+        <From Source="$Region.$Position"/>
+      </Var>
+
+      <!--Set the initial region as variable-->
+      <Var VarName="$InitialRuinsRegion">
+        <From Source="$Region"/>
+      </Var>
+
+      <!--Get the list of all the regions excluding the Quest POI region-->
+      <Var VarName="$AllRegionsButInitialQuestPOIRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$InitialRuinsRegion"/>
+            <FilterRegionByDistance PositionToCompareVarName="$InitialQuestPOIRegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Get the nearest region from the Quest POI position (excluding the Quest POI region)-->
+      <Var VarName="$NearestRegionFromInitialQuestPOI">
+        <From Source="$AllRegionsButInitialQuestPOIRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialQuestPOILocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Set the region to spawn the 1st Army-->
+      <Var VarName="$RegionToSpawnArmyID1">
+        <First>
+          <From Source="$NearestRegionFromInitialQuestPOI"/>
+        </First>
+      </Var>
+      <!--Set the region to spawn the 1st Army-->
+      <Var VarName="$LocationsToSpawnArmyID1">
+        <From Source="$RegionToSpawnArmyID1.$Positions"/>
+      </Var>
+
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$RegionToSpawnArmyID1"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0003-Step1" State="InProgress" />
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$LocationsToSpawnArmyID1" ArmyDroplist="DroplistArmyDefinitionSideQuestRuins" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="PacifistRoaming"/>
+      <Action_SpawnArmy CanMoveOnSpawn="false" SpawnLocationVarName="$LocationsToSpawnArmyID1" ArmyDroplist="DroplistArmyDefinitionSideQuestRuins" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" BehaviourName="PacifistRoaming"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Win condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestPOI#0003-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestPOI#0003-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0003-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" />
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: The Accidental Desecrator ============-->
+  <QuestDefinition Name="SideQuestPOI#0004" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (10 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 2</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$Location">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <From Source="$Region.$MinorEmpire"/>
+      </Var>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$TargetPointsOfInterest"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_UpdateStep StepName="SideQuestPOI#0004-Step1" State="InProgress"/>
+
+      <Action_SpawnArmy SpawnLocationVarName="$Location" ArmyDroplist="DroplistArmyDefinitionSideQuestRuins" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective CanMoveOnSpawn="false" ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Win condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestPOI#0004-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestPOI#0004-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0004-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: A Relic of the Past ============-->
+  <QuestDefinition Name="SideQuestPOI#0005" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Cannot be triggered by the tutorial-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyItemShield1Strategic1Tier4SideQuest1</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set the initial region as variable-->
+      <Var VarName="$InitialRuinsRegion">
+        <From Source="$Region"/>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <FilterRegionIsOnSameContinent RegionContextVarName="$InitialRuinsRegion"/>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0005-Step1" HideRewards="true" State="InProgress" />
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Win condition-->
+        <Controller_Sequence>
+          <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+          <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect" />
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0005-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed" />
+        </Controller_Sequence>
+
+        <!--Fail Condition-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect" />
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0005-Step1">
+        <Reward Droplist="DroplistSideQuestPOI#0005Step1ItemReward" />
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Manifestations of Destiny ============-->
+  <QuestDefinition Name="SideQuestPOI#0006" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Count(EmpireTypeMajor/Garrison/UnitSettler) ge 1</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityCultists</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeFailure"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeFailure"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Step 1-->
+        <Controller_Sequence>
+          <Action_UpdateStep StepName="SideQuestPOI#0006-Step1" State="InProgress"/>
+          <Decorator_Colonize Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0006-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeFailure" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0006-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0006-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Legend of the Three ============-->
+  <QuestDefinition Name="SideQuestPOI#0007" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyItemSword1Strategic4Tier4SideQuest1</PathPrerequisite>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set the Player Empire Index as target for a spawning army below-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Get the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialQuestPOI">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+      <!--Get the position of the Quest POI the Player initially inspects-->
+      <Var VarName="$InitialQuestPOILocation">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+
+      <Var VarName="$AllRegionsButInitialQuestPOIRegion">
+        <From Source="$Regions">
+          <!-- Exclude InitialQuestPOI's region -->
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByDistance PositionToCompareVarName="$InitialQuestPOILocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the list of all the regions excluding the first city region-->
+      <Var VarName="$NearestRegionFromInitialQuestPOI">
+        <From Source="$AllRegionsButInitialQuestPOIRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialQuestPOILocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$QuestPOIToInspect1">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$NearestRegionFromInitialQuestPOI.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>QuestLocationTypeTemple</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$QuestPOIToInspect1Location">
+        <From Source="$QuestPOIToInspect1.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialQuestPOIType" Source="$InitialQuestPOI"/>
+      <LocalizationVar LocalizationKey="$QuestPOI1Type" Source="$QuestPOIToInspect1"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialQuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0007-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOIToInspect1" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOIToInspect1"/>
+      <Decorator_Inspect TargetEntityVarName="$QuestPOIToInspect1" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero,UnitClassInfantry</PathPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassArmy/ClassUnit,UnitRankHero,UnitClassInfantry:LevelDisplayed) ge 4</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect1"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOIToInspect1" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestPOI#0007-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="SideQuestPOI#0007-Step2" HideRewards="true" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$InitialQuestPOI" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialQuestPOI"/>
+      <Decorator_Inspect TargetEntityVarName="$InitialQuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero/ItemAttributesItemSword1Strategic4Tier4SideQuest1</PathPrerequisite>
+            <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Count(ClassArmy/ClassUnit) eq 3</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialQuestPOI"/>
+      <Action_LockQuestTarget TargetVarName="$InitialQuestPOI" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$InitialQuestPOILocation" ArmyDroplist="DroplistArmyDefinitionSideQuestPOI#0007" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Win condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestPOI#0007-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail condition-->
+        <Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0007-Step1">
+        <Reward Droplist="DroplistSideQuestRuins0007Step1ItemReward" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestPOI#0007-Step2">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Premonition ============-->
+  <QuestDefinition Name="SideQuestPOI#0008" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities">
+            <Where>
+              <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Count(ClassCity/ClassDistrict,DistrictTypeExtension) ge 2</InterpreterPrerequisite>
+              <InterpreterPrerequisite Inverted="false" Flags="Prerequisite">$Count(ClassCity/ClassDistrict,DistrictLevel1) eq 0</InterpreterPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassCity,CityStatusInfected</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassCity,CityStatusIntegrated</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$EmpireCity" Source="$EmpireCity"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Parallel CompletionPolicy="Any">
+
+      <Controller_Sequence>
+        <!--Step 1-->
+        <Action_UpdateStep StepName="SideQuestPOI#0008-Step1" State="InProgress"/>
+        <Decorator_DistrictLevelUp Level="1" TargetCityVarName="$EmpireCity" Initiator="Empire"/>
+        <Action_UpdateStep StepName="SideQuestPOI#0008-Step1" State="Completed" />
+        <Action_UpdateQuest State="Completed" />
+      </Controller_Sequence>
+
+      <Controller_Sequence>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite Inverted="true">
+            <Prerequisites Target="$EmpireCity">
+              <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+    </Controller_Parallel>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0008-Step1">
+        <Reward Droplist="DroplistTechnologies" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: To Feed the Hungry ============-->
+  <QuestDefinition Name="SideQuestPOI#0009" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$CityWithNegativeGrowth">
+        <Any>
+          <From Source="$Empire.$Cities">
+            <Where>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityGrowth) lt 0</InterpreterPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$CityImprovementToBuild">
+        <Any>
+          <From Source="$CityWithNegativeGrowth.$AvailableCityImprovements">
+            <Where>
+              <FilterConstructibleElementBySubCategory SubCategory="SubCategoryFood" />
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">CityImprovementNecrophages7</PathPrerequisite>
+            </Where>
+            <Select>Name</Select>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$CityImprovementToBuildName">
+        <From Source="$CityImprovementToBuild.$Name"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RandomFoodImprovement" Source="$CityImprovementToBuild"/>
+      <LocalizationVar LocalizationKey="$City" Source="$CityWithNegativeGrowth"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestPOI#0009-Step1" State="InProgress"/>
+      <Decorator_ConstructionEnded ConstructionNameVarName="$CityImprovementToBuildName" TargetCityVarName="$CityWithNegativeGrowth" Initiator="Empire"/>
+      <Action_UpdateStep StepName="SideQuestPOI#0009-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0009-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+  
+  <!--============ TITLE: A Brighter Future ============-->
+    <QuestDefinition Name="SideQuestPOI#0010" Category="SideQuest" SubCategory="Ruins"
+                     Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+      <!--============ TAGS ============-->
+      <Tags>Interact</Tags>
+
+      <!--============ VARIABLES ============-->
+      <Vars>
+        <Var VarName="$AvailableCities">
+          <From Source="$Empire.$Cities">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ClassCity,!CityStatusInfected</PathPrerequisite>
+            </Where>
+          </From>
+        </Var>
+
+        <Var VarName="$CityImprovementToBuild">
+          <Any>
+            <From Source="$AvailableCities.$AvailableCityImprovements">
+              <Where>
+                <FilterConstructibleElementBySubCategory SubCategory="SubCategoryScience" />
+              </Where>
+              <Select>Name</Select>
+            </From>
+          </Any>
+        </Var>
+
+        <Var VarName="$CityImprovementToBuildName">
+          <From Source="$CityImprovementToBuild.$Name"/>
+        </Var>
+
+        <LocalizationVar LocalizationKey="$RandomScienceImprovement" Source="$CityImprovementToBuild"/>
+
+      </Vars>
+
+      <!--============ SEQUENCE ============-->
+          <!--Step 1-->        
+        <Controller_Sequence>
+          <Action_UpdateStep StepName="SideQuestPOI#0010-Step1" State="InProgress"/>
+          <Decorator_ConstructionEnded ConstructionNameVarName="$CityImprovementToBuildName" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0010-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+      
+      <!--============ REWARDS ============-->
+      <Steps>
+        <Step Name="SideQuestPOI#0010-Step1">
+          <Reward Droplist="DroplistTechnologies" Picks="1"/>
+        </Step>
+      </Steps>
+
+    </QuestDefinition>
+
+  <!-- ============ TITLE: Delusion of Grandeur ============-->
+  <QuestDefinition Name="SideQuestPOI#0011" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityProduction) ge 15</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityProduction) ge 25</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 11</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestPOI#0011-Step1" State="InProgress" />
+      <!-- Start a counter -->
+      <Controller_Loop LoopCount="10">
+        <!-- Each loop represents a turn with the valid condition -->
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestPOI#0011-Step1">
+          <!-- When this decorator is validated, the progression range is incremented -->
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityProduction) ge 40</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="SideQuestPOI#0011-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0011-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+        <!-- TBD: resources droplist -->
+        <ProgressionRange StartValue="0" EndValue="10"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Intellectual Jealousy ============-->
+  <QuestDefinition Name="SideQuestPOI#0012" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityResearch) ge 15</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityResearch) ge 25</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 11</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestPOI#0012-Step1" State="InProgress" />
+      <!-- Start a counter -->
+      <Controller_Loop LoopCount="10">
+        <!-- Each loop represents a turn with the valid condition -->
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestPOI#0012-Step1">
+          <!-- When this decorator is validated, the progression range is incremented -->
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(ClassEmpire/ClassCity:NetCityResearch) ge 40</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="SideQuestPOI#0012-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0012-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+        <!-- TBD: resources droplist -->
+        <ProgressionRange StartValue="0" EndValue="10"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Body and Blood (Early Game) ============-->
+  <QuestDefinition Name="SideQuestPOI#0013" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 6</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 8</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestPOI#0013-Step1" State="InProgress" />
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeFailure"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeFailure"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 8</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestPOI#0013-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeFailure" TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0013-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0013-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Body and Blood (Mid Game) ============-->
+  <QuestDefinition Name="SideQuestPOI#0014" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NothingForNow</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 13</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 15</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestPOI#0014-Step1" State="InProgress" />
+
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeFailure"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeFailure"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 15</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestPOI#0014-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeFailure" TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0014-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0014-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Body and Blood (End Game) ============-->
+  <QuestDefinition Name="SideQuestPOI#0015" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>NothingForNow</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 19</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 20</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestPOI#0015-Step1" State="InProgress" />
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeFailure"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeFailure"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestPOI#0015-Step1">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 20</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestPOI#0015-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeFailure" TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0015-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0015-Step1">
+        <Reward Droplist="DroplistPrestige" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- ============ TITLE: Within a Rock in a Hard Place ============-->
+  <QuestDefinition Name="SideQuestPOI#0016" Category="SideQuest" SubCategory="Ruins"
+             Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Cannot be triggered by the cultists-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityCultists</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyItemCrossbow1Strategic2Tier4SideQuest1</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set the initial region and check that the region has no city-->
+      <Var VarName="$InitialRuinsRegion">
+        <From Source="$Region">
+          <Where>
+            <FilterRegionIsColonized Inverted="true"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$StrategicResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$InitialRuinsRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceDepositTypeStrategic2</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$InitialRuinsRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0016-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_Colonize TargetRegionVarName="$InitialRuinsRegion" Output_ColonizedCityVarName="$ColonizedCity" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0016-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail 1-->
+        <Controller_Sequence>
+          <Decorator_Colonize TargetRegionVarName="$InitialRuinsRegion" Initiator="OtherEmpires"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0016-Step1" State="Failed"/>
+          <Action_UpdateStep StepName="SideQuestPOI#0016-Step2" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="SideQuestPOI#0016-Step2" HideRewards="true" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$ColonizedCity">
+                <PathPrerequisite Flags="Prerequisite">ClassCity/ResourceExtractor_Strategic2</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestPOI#0016-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail 2-->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$ColonizedCity">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestPOI#0016-Step2" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0016-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestPOI#0016-Step2">
+        <Reward Droplist="DroplistSideQuestPOI#0016Step2ItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Manual Labor  ===-->
+  <QuestDefinition Name="SideQuestPOI#0017" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyItemCrossbow1Strategic1Tier4SideQuest1</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Get the location of the POI the Player searched-->
+      <Var VarName="$PointOfInterestToInspect">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialRuinsRegionVillage">
+        <Any>
+          <From Source="$Region.$Villages">
+            <Where>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">MinorEmpireVillage/AffinityDelvers</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Check a region has delvers nearby-->
+      <Var VarName="$NearbyDelversVillage">
+        <Any>
+          <From Source="$NeighbourRegions.$Villages">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">MinorEmpireVillage/AffinityDelvers</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$StrategicResourceToGather1">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+              <PathPrerequisite Flags="Prerequisite">ResourceDepositTypeStrategic1</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$NameOfStrategicResourceToGather1">
+        <From Source="$StrategicResourceToGather1.$ResourceName"/>
+      </Var>
+
+      <Var VarName="$StrategicResourceToGather2">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+              <PathPrerequisite Flags="Prerequisite">ResourceDepositTypeStrategic2</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$NameOfStrategicResourceToGather2">
+        <From Source="$StrategicResourceToGather2.$ResourceName"/>
+      </Var>
+
+      <DropListVar VarName="$StrategicResourceAmount1" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount1" DropList="DroplistStrategicResourceTransfertAmount"/>
+      <DropListVar VarName="$StrategicResourceAmount2" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount2" DropList="DroplistStrategicResourceTransfertAmount"/>
+
+      <!--<Var VarName="$StrategicResourceAmount1" Value="10"/>
+      <Var VarName="$StrategicResourceTransfertAmount1" Value="-10"/>
+      <Var VarName="$StrategicResourceAmount2" Value="8"/>
+      <Var VarName="$StrategicResourceTransfertAmount2" Value="-8"/>-->
+
+      <LocalizationVar LocalizationKey="$StrategicResource1" Source="$StrategicResourceToGather1"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter1" Source="$StrategicResourceAmount1"/>
+      <LocalizationVar LocalizationKey="$StrategicResource2" Source="$StrategicResourceToGather2"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter2" Source="$StrategicResourceAmount2"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0017-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="SideQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+
+      <Controller_Sequence>
+        <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionInstigatorSimObject">
+              <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeDelversDwarf</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+          <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather1" WantedAmountVarName="$StrategicResourceAmount1"/>
+          <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather2" WantedAmountVarName="$StrategicResourceAmount2"/>
+        </Decorator_Inspect>
+        <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather1" AmountVarName="$StrategicResourceTransfertAmount1"/>
+        <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather2" AmountVarName="$StrategicResourceTransfertAmount2"/>
+
+        <Action_UpdateStep StepName="SideQuestPOI#0017-Step1" State="Completed"/>
+        <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+        <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0017-Step1">
+        <Reward Droplist="DroplistSideQuestPOI#0017Step1ItemReward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: A Princely Gift  ===-->
+  <QuestDefinition Name="SideQuestPOI#0018" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:WarCount) eq 0</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,FactionTraitRovingClans8</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0007" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0007" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0018-Step1" State="InProgress"/>
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:WarCount) ge 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestPOI#0018-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0018-Step1">
+        <Reward Droplist="DroplistAdvancedTechnologies" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: A History Lesson  ===-->
+  <QuestDefinition Name="SideQuestPOI#0019" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:WarCount) ge 1</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:TruceCount) eq 0</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityNecrophages</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0008" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0008" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0019-Step1" State="InProgress"/>
+      <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:TruceCount) ge 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestPOI#0019-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0019-Step1">
+        <Reward Droplist="DroplistAdvancedTechnologies" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Concrete & Virtual  ===-->
+  <QuestDefinition Name="SideQuestPOI#0020" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (50 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0009" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0009" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0020-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="2">
+            <Decorator_Inspect Output_InteractionTargetVarName="$InspectionTarget" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" LinkedStepProgression="SideQuestPOI#0020-Step1" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$InspectionTarget">
+                  <PathPrerequisite>PointOfInterestTypeQuestLocation,QuestLocationTypeTemple</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_Inspect>
+          </Controller_Loop>
+          <Action_UpdateStep StepName="SideQuestPOI#0020-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition -->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0020-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistAdvancedTechnologies" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  
+  <!--============ TITLE: Halloween Quest  ===-->
+  <QuestDefinition Name="SideQuestPOI#0021" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 7</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+
+    <Vars>
+
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position"/>
+      </Var>
+
+      <Var VarName="$LuxuryResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury1</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury2</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury3</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury4</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury5</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury6</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury7</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury8</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury9</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury13</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury14</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PointOfInterestTypeVillage</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PointOfInterestTypeWatchTower</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$LuxuryName">
+        <From Source="$LuxuryResourceDepositPointOfInterest.$ResourceName"/>
+      </Var>
+
+      <DropListVar VarName="$LuxuryResourceAmount" DropList="DroplistLuxuryAmount"/>
+      <DropListVar VarName="$LuxuryTransferAmount" DropList="DroplistLuxuryTransferAmount"/>
+
+      <LocalizationVar LocalizationKey="$LuxuryName" Source="$LuxuryResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$LuxuryAmount" Source="$LuxuryResourceAmount"/>
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0021-Step1" HideRewards="true" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_HasResourceAmount ResourceNameVarName="$LuxuryName" WantedAmountVarName="$LuxuryResourceAmount"/>
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_TransferResource ResourceNameVarName="$LuxuryName" AmountVarName="$LuxuryTransferAmount"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestPOI#0021-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0021-Step1">
+        <Reward Droplist="DroplistHalloweenSideQuestHeroReward"/>
+        <Reward Droplist="DroplistSideQuestPOI#0021Step1ItemReward" />
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--========= TITLE: Colossus Teaser Quest  ======-->
+  <QuestDefinition Name="SideQuestPOI#0022" Category="SideQuest" SubCategory="Ruins"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:UnlockedTechnologyCount) ge 31</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor/EmpireBoosterLuxury10</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(NumberOfEmpires) ge 2</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InitialQuestPOIRegion">
+        <From Source="$Region"/>
+      </Var>
+
+      <!--Get the position of the Quest POI region-->
+      <Var VarName="$InitialQuestPOIRegionLocation">
+        <From Source="$Region.$Position"/>
+      </Var>
+
+      <!--Get a land region which doesn't belong to the player's Empire and next to the POI region -->
+      <Var VarName="$NearbyRegion">
+        <Any>
+          <From Source="$Region.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsOnSameContinent RegionContextVarName="$InitialQuestPOIRegion"/>
+              <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+              <FilterRegionByDistance PositionToCompareVarName="$InitialQuestPOIRegionLocation" DistanceMin="1"/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$QuestPOI">
+        <Any>
+          <From Source="$NearbyRegion.$QuestPointsOfInterest"/>
+        </Any>
+      </Var>
+      <Var VarName="$QuestPOILocation">
+        <From Source="$QuestPOI.$Position"/>
+      </Var>
+      <Var VarName="$QuestPOIRegion">
+        <From Source="$QuestPOILocation.$Region"/>
+      </Var>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$City">
+        <First>
+          <From Source="$Empire.$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Descending" PropertyName="CityDefensePoint"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$StrongEmpireCity">
+        <First>
+          <From Source="$OtherMajorEmpires.$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Descending" PropertyName="CityDefensePoint"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$StrongEmpire">
+        <From Source="$StrongEmpireCity.$Region.$MajorEmpire"/>
+      </Var>
+
+      <Var VarName="$LuxuryResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$Luxury10Name" Source="$LuxuryResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$CityName" Source="$City"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOIRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestPOI#0022-Step1" State="InProgress"/>
+      <Action_SpawnArmy CanMoveOnSpawn="false" DroplistRewardOnDeathName="DroplistGlobalQuestDust" SpawnLocationVarName="$QuestPOILocation" ArmyDroplist="DroplistArmyDefinitionSideQuestPOI#0022" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetCityVarName="$City" BehaviourName="Offense" SiegeTurnsNumberVarName="5"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_KillArmy Output_LooserVarName="$LooserArmy" TargetOption="All" Initiator="AllEmpires">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$LooserArmy">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeColossus</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_KillArmy>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="2">
+            <Decorator_BoosterActivated BoosterName="BoosterLuxury10" LinkedStepProgression="SideQuestPOI#0022-Step1" Initiator="Empire"/>
+          </Controller_Loop>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" BehaviourName="Roaming" TargetEmpireVarName="$StrongEmpire"/>
+        </Controller_Sequence>
+      </Controller_Parallel>
+
+      <Action_UpdateStep StepName="SideQuestPOI#0022-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestPOI#0022-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" />
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  
+</Datatable>

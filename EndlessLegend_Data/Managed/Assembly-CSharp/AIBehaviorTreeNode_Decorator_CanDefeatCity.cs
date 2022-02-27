@@ -25,7 +25,8 @@ public class AIBehaviorTreeNode_Decorator_CanDefeatCity : AIBehaviorTreeNode_Dec
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
+		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
+		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -44,9 +45,8 @@ public class AIBehaviorTreeNode_Decorator_CanDefeatCity : AIBehaviorTreeNode_Dec
 		{
 			float num = 0f;
 			float num2 = 0f;
-			float num3 = (city.GetPropertyValue(SimulationProperties.CityDefensePoint) > 0f) ? 2f : 1.5f;
 			this.intelligenceAIHelper.EstimateMPInBattleground(army, city, ref num, ref num2);
-			if (num >= num2 * num3)
+			if (num >= num2 * 1.2f)
 			{
 				flag = true;
 			}

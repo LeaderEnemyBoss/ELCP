@@ -6,6 +6,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading;
 using Amplitude;
+using Amplitude.Interop;
 using Amplitude.Unity.Framework;
 
 public class Application : Amplitude.Unity.Framework.Application
@@ -15,11 +16,11 @@ public class Application : Amplitude.Unity.Framework.Application
 		Amplitude.Unity.Framework.Application.Name = "Endless Legend";
 		Amplitude.Unity.Framework.Application.Version = new Amplitude.Unity.Framework.Version
 		{
-			Major = 2,
-			Minor = 3,
-			Revision = 3,
+			Major = 1,
+			Minor = 8,
+			Revision = 52,
 			Serial = 3,
-			Label = "Community Patch",
+			Label = string.Empty,
 			Accessibility = Accessibility.Public
 		};
 		global::Application.SteamAppID = 289130;
@@ -97,6 +98,31 @@ public class Application : Amplitude.Unity.Framework.Application
 
 	public static int SteamAppID { get; private set; }
 
+	public static bool ResolveChineseLanguage(out string chineseLanguage)
+	{
+		if (global::Application.chineseLanguage == null)
+		{
+			global::Application.chineseLanguage = string.Empty;
+			try
+			{
+				Steamworks.SteamApps steamApps = Steamworks.SteamAPI.SteamApps;
+				if (steamApps != null)
+				{
+					string currentGameLanguage = steamApps.GetCurrentGameLanguage();
+					if (currentGameLanguage == "tchinese" || currentGameLanguage == "schinese")
+					{
+						global::Application.chineseLanguage = currentGameLanguage;
+					}
+				}
+			}
+			catch
+			{
+			}
+		}
+		chineseLanguage = global::Application.chineseLanguage;
+		return !string.IsNullOrEmpty(global::Application.chineseLanguage);
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -104,7 +130,6 @@ public class Application : Amplitude.Unity.Framework.Application
 		Amplitude.Unity.Framework.Application.DebugNetwork = global::Application.CommandLineArguments.DebugNetwork;
 		Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools = global::Application.CommandLineArguments.EnableModdingTools;
 		Amplitude.Unity.Framework.Application.Preferences.EnableMultiplayer = !global::Application.CommandLineArguments.EnableModdingTools;
-		Amplitude.Unity.Framework.Application.Preferences.ELCPDevMode = false;
 	}
 
 	protected override IEnumerator OnApplicationIgnitionComplete()
@@ -164,6 +189,8 @@ public class Application : Amplitude.Unity.Framework.Application
 	}
 
 	private static Amplitude.Unity.Framework.CommandLineArguments commandLineArguments;
+
+	private static string chineseLanguage;
 
 	public abstract class FantasyPreferences
 	{

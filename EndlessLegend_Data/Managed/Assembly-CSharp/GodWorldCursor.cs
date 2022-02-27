@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Amplitude;
-using Amplitude.Unity.AI.BehaviourTree;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
 using Amplitude.Unity.Runtime;
-using Amplitude.Unity.Simulation;
 using Amplitude.Unity.View;
 using UnityEngine;
 
@@ -26,9 +23,8 @@ public class GodWorldCursor : WorldCursor
 		if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftControl))
 		{
 			this.SpawnEnnemyArmy();
-			return;
 		}
-		if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftShift))
+		else if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftShift))
 		{
 			IGameService service = Services.GetService<IGameService>();
 			if (service.Game == null || GodWorldCursor.EditorSelectedEmpire == null || GodWorldCursor.EditorSelectedUnitDesigns == null || GodWorldCursor.EditorSelectedUnitDesigns.Length == 0)
@@ -38,48 +34,41 @@ public class GodWorldCursor : WorldCursor
 			if (WorldCursor.HighlightedWorldPosition.IsValid)
 			{
 				OrderSpawnArmy orderSpawnArmy = new OrderSpawnArmy(GodWorldCursor.EditorSelectedEmpire.Index, WorldCursor.HighlightedWorldPosition, GodWorldCursor.EditorSelectedUnitDesigns);
-				service.Game.Services.GetService<IPlayerControllerRepositoryService>().ActivePlayerController.PostOrder(orderSpawnArmy);
+				IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+				service2.ActivePlayerController.PostOrder(orderSpawnArmy);
 				Diagnostics.Log("Posting order: {0}.", new object[]
 				{
 					orderSpawnArmy.ToString()
 				});
-				return;
 			}
 		}
-		else
+		else if (Input.GetKey(KeyCode.RightControl))
 		{
-			if (Input.GetKey(KeyCode.RightControl))
+			this.SpawnWildlingArmy();
+		}
+		else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt))
+		{
+			this.SpawnMinorArmy();
+		}
+		else if (Input.GetKey(KeyCode.LeftShift))
+		{
+			this.SpawnArmy();
+		}
+		else if (Input.GetKey(KeyCode.LeftAlt))
+		{
+			this.SpawnCity();
+		}
+		else if (Input.GetKey(KeyCode.RightShift))
+		{
+			this.SpawnCamp();
+		}
+		else if (Input.GetKey(KeyCode.C))
+		{
+			Amplitude.Unity.View.IViewService service3 = Services.GetService<Amplitude.Unity.View.IViewService>();
+			if (service3.CurrentView != null && service3.CurrentView.CameraController is IWorldViewCameraController)
 			{
-				this.SpawnWildlingArmy();
-				return;
-			}
-			if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftAlt))
-			{
-				this.SpawnMinorArmy();
-				return;
-			}
-			if (Input.GetKey(KeyCode.LeftShift))
-			{
-				this.SpawnArmy();
-				return;
-			}
-			if (Input.GetKey(KeyCode.LeftAlt))
-			{
-				this.SpawnCity();
-				return;
-			}
-			if (Input.GetKey(KeyCode.RightShift))
-			{
-				this.SpawnCamp();
-				return;
-			}
-			if (Input.GetKey(KeyCode.C))
-			{
-				Amplitude.Unity.View.IViewService service2 = Services.GetService<Amplitude.Unity.View.IViewService>();
-				if (service2.CurrentView != null && service2.CurrentView.CameraController is IWorldViewCameraController)
-				{
-					(service2.CurrentView.CameraController as IWorldViewCameraController).FocusCameraAt(WorldCursor.HighlightedWorldPosition, false, true);
-				}
+				IWorldViewCameraController worldViewCameraController = service3.CurrentView.CameraController as IWorldViewCameraController;
+				worldViewCameraController.FocusCameraAt(WorldCursor.HighlightedWorldPosition, false, true);
 			}
 		}
 	}
@@ -95,7 +84,6 @@ public class GodWorldCursor : WorldCursor
 		{
 			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
 			string value = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<string>("Debug/GodCursor/SpawnArmy", string.Empty);
-			int index = service2.ActivePlayerController.Empire.Index;
 			if (string.IsNullOrEmpty(value))
 			{
 				return;
@@ -109,7 +97,7 @@ public class GodWorldCursor : WorldCursor
 				return;
 			}
 			StaticString[] unitDesignsByName = Array.ConvertAll<string, StaticString>(array, (string input) => input);
-			OrderSpawnArmy orderSpawnArmy = new OrderSpawnArmy(index, WorldCursor.HighlightedWorldPosition, unitDesignsByName);
+			OrderSpawnArmy orderSpawnArmy = new OrderSpawnArmy(0, WorldCursor.HighlightedWorldPosition, unitDesignsByName);
 			service2.ActivePlayerController.PostOrder(orderSpawnArmy);
 			Diagnostics.Log("Posting order: {0}.", new object[]
 			{
@@ -161,7 +149,8 @@ public class GodWorldCursor : WorldCursor
 		if (WorldCursor.HighlightedWorldPosition.IsValid && WorldCursor.HighlightedRegion.MinorEmpire != null)
 		{
 			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-			UnitDesign unitDesign = WorldCursor.HighlightedRegion.MinorEmpire.GetAgency<DepartmentOfDefense>().UnitDesignDatabase.UserDefinedUnitDesigns[0];
+			DepartmentOfDefense agency = WorldCursor.HighlightedRegion.MinorEmpire.GetAgency<DepartmentOfDefense>();
+			UnitDesign unitDesign = agency.UnitDesignDatabase.UserDefinedUnitDesigns[0];
 			List<StaticString> list = new List<StaticString>();
 			for (int i = 0; i < 3; i++)
 			{
@@ -225,7 +214,8 @@ public class GodWorldCursor : WorldCursor
 		if (WorldCursor.HighlightedWorldPosition.IsValid)
 		{
 			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-			OrderCreateCamp orderCreateCamp = new OrderCreateCamp(service2.ActivePlayerController.Empire.Index, WorldCursor.HighlightedWorldPosition, true);
+			int index = service2.ActivePlayerController.Empire.Index;
+			OrderCreateCamp orderCreateCamp = new OrderCreateCamp(index, WorldCursor.HighlightedWorldPosition, true);
 			service2.ActivePlayerController.PostOrder(orderCreateCamp);
 			Diagnostics.Log("Posting order: {0}.", new object[]
 			{
@@ -244,181 +234,13 @@ public class GodWorldCursor : WorldCursor
 		if (WorldCursor.HighlightedWorldPosition.IsValid)
 		{
 			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-			OrderCreateCity orderCreateCity = new OrderCreateCity(service2.ActivePlayerController.Empire.Index, WorldCursor.HighlightedWorldPosition);
+			int index = service2.ActivePlayerController.Empire.Index;
+			OrderCreateCity orderCreateCity = new OrderCreateCity(index, WorldCursor.HighlightedWorldPosition);
 			service2.ActivePlayerController.PostOrder(orderCreateCity);
 			Diagnostics.Log("Posting order: {0}.", new object[]
 			{
 				orderCreateCity.ToString()
 			});
 		}
-	}
-
-	protected override void ShowTooltip(WorldPosition worldPosition)
-	{
-		if (this.guiTooltipService == null)
-		{
-			return;
-		}
-		if (AgeManager.IsMouseCovered)
-		{
-			return;
-		}
-		IWorldPositionningService service = base.GameService.Game.Services.GetService<IWorldPositionningService>();
-		if (worldPosition.IsValid)
-		{
-			if (service != null)
-			{
-				if (service == null)
-				{
-					this.guiTooltipService.HideTooltip();
-					return;
-				}
-				if ((service.GetExplorationBits(worldPosition) & base.EmpireBits) == 0)
-				{
-					this.guiTooltipService.HideTooltip();
-					return;
-				}
-				AgeTransform cursorTooltipAnchor = this.guiTooltipService.GetCursorTooltipAnchor();
-				AgeTooltipAnchorMode anchorMode = AgeTooltipAnchorMode.FREE;
-				global::CursorTarget cursorTarget = null;
-				if (base.CursorTargetService.HighlightedCursorTargets.Count > 0)
-				{
-					for (int i = 0; i < base.CursorTargetService.HighlightedCursorTargets.Count; i++)
-					{
-						Diagnostics.Log("Cursortarget {0} at {1} is {2} and has tooltipclass {3}", new object[]
-						{
-							i,
-							worldPosition,
-							base.CursorTargetService.HighlightedCursorTargets[i].GetType(),
-							(base.CursorTargetService.HighlightedCursorTargets[i] as global::CursorTarget).TooltipClass
-						});
-						Diagnostics.Log("Conten: {0}", new object[]
-						{
-							(base.CursorTargetService.HighlightedCursorTargets[i] as global::CursorTarget).TooltipContent
-						});
-						Diagnostics.Log("Context: {0}", new object[]
-						{
-							(base.CursorTargetService.HighlightedCursorTargets[i] as global::CursorTarget).TooltipContext.GetType()
-						});
-						if (cursorTarget == null)
-						{
-							cursorTarget = (base.CursorTargetService.HighlightedCursorTargets[i] as global::CursorTarget);
-						}
-						else if (StaticString.IsNullOrEmpty(cursorTarget.TooltipClass))
-						{
-							cursorTarget = (base.CursorTargetService.HighlightedCursorTargets[i] as global::CursorTarget);
-						}
-					}
-				}
-				string text = string.Format("Worldposition: {0} {1}", worldPosition.Row, worldPosition.Column);
-				PointOfInterest pointOfInterest = service.GetPointOfInterest(worldPosition);
-				if (pointOfInterest != null)
-				{
-					text += "\nhas POI!";
-					IQuestManagementService service2 = base.GameService.Game.Services.GetService<IQuestManagementService>();
-					IQuestRepositoryService service3 = base.GameService.Game.Services.GetService<IQuestRepositoryService>();
-					global::Empire empire = base.GameService.Game.Services.GetService<IPlayerControllerRepositoryService>().ActivePlayerController.Empire as global::Empire;
-					if (empire != null)
-					{
-						text += string.Concat(new object[]
-						{
-							"\n",
-							pointOfInterest.Type,
-							", ",
-							pointOfInterest.Interaction.IsLocked(empire.Index, "ArmyActionSearch").ToString(),
-							", ",
-							pointOfInterest.Interaction.Bits,
-							", ",
-							empire.Bits,
-							", ",
-							(pointOfInterest.Interaction.Bits & empire.Bits) == empire.Bits,
-							", ",
-							pointOfInterest.UntappedDustDeposits.ToString(),
-							", ",
-							SimulationGlobal.GlobalTagsContains(SeasonManager.RuinDustDepositsTag).ToString()
-						}).ToString();
-						foreach (QuestMarker questMarker in service2.GetMarkersByBoundTargetGUID(pointOfInterest.GUID))
-						{
-							Quest quest;
-							if (service3.TryGetValue(questMarker.QuestGUID, out quest))
-							{
-								text = text + "\nhas Questmarker for quest" + quest.QuestDefinition.Name;
-								QuestBehaviour questBehaviour = service3.GetQuestBehaviour(quest.Name, empire.Index);
-								if (questBehaviour != null)
-								{
-									QuestBehaviourTreeNode_ConditionCheck_HasResourceAmount questBehaviourTreeNode_ConditionCheck_HasResourceAmount;
-									if (quest.QuestDefinition.Variables.First((QuestVariableDefinition p) => p.VarName == "$NameOfStrategicResourceToGather1") != null && this.TryGetFirstNodeOfType<QuestBehaviourTreeNode_ConditionCheck_HasResourceAmount>(questBehaviour.Root as BehaviourTreeNodeController, out questBehaviourTreeNode_ConditionCheck_HasResourceAmount))
-									{
-										string resourceName = questBehaviourTreeNode_ConditionCheck_HasResourceAmount.ResourceName;
-										int wantedAmount = questBehaviourTreeNode_ConditionCheck_HasResourceAmount.WantedAmount;
-										text = text + "\nResource: " + resourceName;
-										text = text + "\nAmount: " + wantedAmount;
-										break;
-									}
-								}
-							}
-						}
-					}
-				}
-				if (!(cursorTarget != null) || StaticString.IsNullOrEmpty(cursorTarget.TooltipClass))
-				{
-					if (base.TooltipFilters != null)
-					{
-						if (!Array.Exists<StaticString>(base.TooltipFilters, (StaticString match) => match == "Terrain"))
-						{
-							this.guiTooltipService.HideTooltip();
-							return;
-						}
-					}
-					this.guiTooltipService.ShowTooltip(string.Empty, text, worldPosition, cursorTooltipAnchor, anchorMode, 0f, false);
-					return;
-				}
-				if (base.TooltipFilters == null || Array.Exists<StaticString>(base.TooltipFilters, (StaticString match) => match == cursorTarget.TooltipClass))
-				{
-					this.guiTooltipService.ShowTooltip(string.Empty, text, worldPosition, cursorTooltipAnchor, anchorMode, 0f, false);
-					return;
-				}
-				this.guiTooltipService.HideTooltip();
-				return;
-			}
-		}
-		else
-		{
-			this.guiTooltipService.HideTooltip();
-		}
-	}
-
-	private bool TryGetFirstNodeOfType<T>(BehaviourTreeNodeController controller, out T Node)
-	{
-		foreach (BehaviourTreeNode behaviourTreeNode in controller.Children)
-		{
-			if (behaviourTreeNode is T)
-			{
-				Node = (T)((object)behaviourTreeNode);
-				return true;
-			}
-			if (behaviourTreeNode is BehaviourTreeNodeController)
-			{
-				T t = default(T);
-				if (this.TryGetFirstNodeOfType<T>(behaviourTreeNode as BehaviourTreeNodeController, out t))
-				{
-					Node = t;
-					return true;
-				}
-			}
-			if (behaviourTreeNode is QuestBehaviourTreeNode_Decorator_InteractWith)
-			{
-				foreach (QuestBehaviourTreeNode_ConditionCheck questBehaviourTreeNode_ConditionCheck in (behaviourTreeNode as QuestBehaviourTreeNode_Decorator_InteractWith).ConditionChecks)
-				{
-					if (questBehaviourTreeNode_ConditionCheck is T)
-					{
-						Node = (T)((object)questBehaviourTreeNode_ConditionCheck);
-						return true;
-					}
-				}
-			}
-		}
-		Node = default(T);
-		return false;
 	}
 }

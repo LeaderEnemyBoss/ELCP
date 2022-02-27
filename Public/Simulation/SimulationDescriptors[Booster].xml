@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+  <SimulationDescriptor Name="EfficiencyBoosterEffects"/> <!-- Used by a national building to double the boosters effects-->
+
+  <SimulationDescriptor Name="BoosterFood" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Addition" Value="100" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterFoodBonus1" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Addition" Value="500" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterFoodBonus2" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Addition" Value="1000" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterFoodBonus3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Addition" Value="1500" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="BoosterIndustry" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Addition" Value="100" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterIndustryBonus1" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Addition" Value="500" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterIndustryBonus2" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Addition" Value="1000" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterIndustryBonus3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Addition" Value="1500" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="BoosterScience" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireResearch"           Operation="Addition" Value="100" Path="./ClassEmpire" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterScienceBonus1" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireResearch"           Operation="Addition" Value="500" Path="./ClassEmpire" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterScienceBonus2" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireResearch"           Operation="Addition" Value="1000" Path="./ClassEmpire" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterScienceBonus3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EmpireResearch"           Operation="Addition" Value="1500" Path="./ClassEmpire" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- Necrophages Food booster -->
+  <SimulationDescriptor Name="BoosterCadaver" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Addition" Value="120" Path="./ClassCity" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterCadaverBonus1" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Addition" Value="120" Path="./ClassCity,#Winter" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!--To recognize the 3 tiers of Luxury through Luxury boosters-->
+  <SimulationDescriptor Name="CommonLuxuryBooster" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ActivatedLuxuryBoosterCountMinusOne"  Operation="Addition" Value="1"   Path="./ClassEmpire/TechnologyWinterShifters7" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UncommonLuxuryBooster" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ActivatedLuxuryBoosterCountMinusOne"  Operation="Addition" Value="1"   Path="./ClassEmpire/TechnologyWinterShifters7" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="RareLuxuryBooster" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ActivatedLuxuryBoosterCountMinusOne"  Operation="Addition" Value="1"   Path="./ClassEmpire/TechnologyWinterShifters7" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury1" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"            Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="5"     Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"            Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="5"     Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury2" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"  Operation="Percent"   Value="0.30"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="5"     Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"  Operation="Percent"   Value="0.30"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="5"     Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityMoneyUpkeep"          Operation="Percent"   Value="-0.50" Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="5"     Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityMoneyUpkeep"          Operation="Percent"   Value="-0.50" Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="5"     Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury4" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="5"     Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="5"     Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury5" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="30"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="30"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury6" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"          Operation="Percent"   Value="0.25"  Path="./ClassEmpire/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"          Operation="Percent"   Value="0.25"  Path="./ClassEmpire/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"          Operation="Percent"   Value="0.25"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury7" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome" Operation="Percent"   Value="1"     Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome" Operation="Percent"   Value="1"     Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury8" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury9" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainModifier"   Operation="Percent"   Value="1"     Path="./ClassEmpire/Garrison/UnitRankStandard"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury10" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury11" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                 Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                 Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury12" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                 Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                 Operation="Percent"   Value="0.50"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury13" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"               Operation="Percent"   Value="-0.75" Path="./EmpireTypeMajor/Garrison/UnitRankHero"       Priority="3"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"               Operation="Percent"   Value="-0.75" Path="./EmpireTypeMajor/UnitRankHero"                Priority="3"   TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"               Operation="Percent"   Value="-0.75" Path="./EmpireTypeMajor/SpiedGarrison/UnitRankHero"  Priority="3"   TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects"            TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury14" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Operation="Addition"  Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Operation="Addition"  Value="0.20"  Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterLuxury15" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <!--unlock bonus for heroes in Cities and Armies-->
+      <SimulationModifierDescriptor TargetProperty="ExperienceGainModifier"   Operation="Percent"   Value="1"     Path="./ClassEmpire/Garrison/UnitRankHero"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"  Value="10"    Path="./ClassEmpire/ClassCity,EfficiencyBoosterEffects" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterAffinityStrategicResource" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <!--DEPRECATED-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterStrategic1" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterStrategic2" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                 Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterStrategic3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterStrategic4" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Percent"   Value="0.20"  Path="./ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterStrategic5" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"             Operation="Percent"   Value="0.15"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityDust"                 Operation="Percent"   Value="0.15"  Path="./ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmpireBoosterStrategic6" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                 Operation="Percent"   Value="0.15"  Path="./ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Percent"   Value="0.15"  Path="./ClassEmpire/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorFood" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorIndustry" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorScience" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorFoodBonus1" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorFoodBonus2" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterGeneratorFoodBonus3" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorIndustryBonus1" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorIndustryBonus2" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterGeneratorIndustryBonus3" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorScienceBonus1" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- TBD: temporary SimulationDescriptor added before the implementation of the City boosters. Check if deprecated before removing! -->
+  <SimulationDescriptor Name="BoosterGeneratorScienceBonus2" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterGeneratorScienceBonus3" Type="CityBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterSacrificePopulation" Type="CityBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"       Operation="Addition" Value="30" Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterSacrificePopulationTimer" Type="CityBooster"/>
+
+  <SimulationDescriptor Name="BoosterSacrificePopulationVariableDuration" Type="CityBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="RemainingTime" Operation="Addition"  Value="$(Population)" Path="ClassCity/BoosterSacrificePopulationTimer"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDamageFortification" Type="InfiltrationBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointRecoveryPerTurn" Operation="Multiplication"  Value="0" Path="./ClassCity" Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDamageGovernor" Type="InfiltrationBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitRegenModifier" Operation="Multiplication"  Value="0" Path="./ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="UnitPoison" Operation="Addition" Value="-0.3" Path="./ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="BoosterDecreaseCityProduction2" Type="InfiltrationBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                    Operation="Percent"         Value="-0.50"  Path="./ClassCity" Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDecreaseCityProduction3" Type="InfiltrationBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                    Operation="Percent"         Value="-0.50"  Path="./ClassCity" Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDecreaseCityProduction4" Type="InfiltrationBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityIndustry"                    Operation="Percent"         Value="-1"  Path="./ClassCity" Priority="10"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDecreaseWatchtowerVisionByInfiltration" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Multiplication"  Value="0"  Path="./ClassEmpire/ClassCity/ExploitedPointOfInterest,PointOfInterestTypeWatchTower"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDecreaseBuildingsAndCitiesVisionByInfiltration" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Multiplication"  Value="0"   Path="./ClassEmpire/ClassCity/ExploitedPointOfInterest"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Multiplication"  Value="0"   Path="./ClassEmpire/ClassCity/ClassDistrict"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDecreaseVisionByInfiltration" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Multiplication"  Value="0"   Path="./ClassEmpire/ClassCity/ExploitedPointOfInterest"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Multiplication"  Value="0"   Path="./ClassEmpire/ClassCity/ClassDistrict"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Multiplication"  Value="0"   Path="./ClassEmpire/ClassArmy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="StealVisionFromEmpire0" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionFromEmpire1" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionFromEmpire2" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionFromEmpire3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionFromEmpire4" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionFromEmpire5" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionFromEmpire6" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionFromEmpire7" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionOverArmiesFromEmpire0" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionOverArmiesFromEmpire1" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionOverArmiesFromEmpire2" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionOverArmiesFromEmpire3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionOverArmiesFromEmpire4" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionOverArmiesFromEmpire5" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionOverArmiesFromEmpire6" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="StealVisionOverArmiesFromEmpire7" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="BoosterResearchCostByInfiltration2" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetEmpireResearch" Operation="Percent"  Value="-0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterResearchCostByInfiltration3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetEmpireResearch" Operation="Percent"  Value="-0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterResearchCostByInfiltration4" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetEmpireResearch" Operation="Percent"  Value="-0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterResearchCostByInfiltration5" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NetEmpireResearch" Operation="Percent"  Value="-0.1" Path="./EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="BoosterDecreaseBattleMoraleByInfiltration3" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Operation="Addition"  Value="-1" Path="./EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Operation="Addition"  Value="-1" Path="./EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDecreaseBattleMoraleByInfiltration4" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Operation="Addition"  Value="-2" Path="./EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Operation="Addition"  Value="-2" Path="./EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDecreaseBattleMoraleByInfiltration5" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Operation="Addition"  Value="-3" Path="./EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMoraleBonus" Operation="Addition"  Value="-3" Path="./EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration03" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction0" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration04" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction0" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration05" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction0" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration13" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction1" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration14" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction1" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration15" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction1" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration23" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction2" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration24" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction2" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration25" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction2" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration33" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction3" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration34" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction3" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration35" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction3" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration43" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction4" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration44" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction4" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration45" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction4" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration53" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction5" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration54" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction5" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration55" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction5" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration63" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction6" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration64" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction6" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration65" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction6" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration73" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction7" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration74" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction7" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterDiplomaticCostReductionByInfiltration75" Type="EmpireBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticCostReduction7" Operation="Subtraction" Value="0.2" Path="./ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="BoosterFortify" Type="WorldBooster"/>
+
+  <SimulationDescriptor Name="BoosterFortifyCityDefenses" Type="CityBooster">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint" Operation="Multiplication" Value="2" Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ### SUMMER FLAMES DLC ### -->
+
+  <!-- Battleborn from stockpile -->
+  <SimulationDescriptor Name="BoosterBattlebornHeatWave" Type="EmpireBooster"/>
+
+  <!-- Strategic to lavapool -->
+  <SimulationDescriptor Name="BoosterStrategicLavapool" Type="EmpireBooster"/>
+</Datatable>

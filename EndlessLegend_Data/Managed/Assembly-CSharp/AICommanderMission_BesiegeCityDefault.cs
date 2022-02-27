@@ -121,13 +121,4 @@ public class AICommanderMission_BesiegeCityDefault : AICommanderMissionWithReque
 			this.MayAttack
 		});
 	}
-
-	protected override void Success()
-	{
-		base.Success();
-		if (this.TargetCity == null || this.TargetCity.Empire == base.Commander.Empire)
-		{
-			base.SetArmyFree();
-		}
-	}
 }

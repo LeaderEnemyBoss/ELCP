@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Amplitude;
-using Amplitude.Unity.AI.BehaviourTree;
 using Amplitude.Unity.Framework;
-using Amplitude.Unity.Game;
 using Amplitude.Unity.Session;
 using Amplitude.Xml;
 using UnityEngine;
@@ -35,10 +33,16 @@ public class AILayer_Navy : AILayer_BaseNavy
 		{
 			float num2 = (float)this.worldPositionningService.GetDistance(targetPosition, base.NavyCommanders[i].RegionData.WaterRegion.Barycenter);
 			NavyCommander navyCommander = base.NavyCommanders[i] as NavyCommander;
-			if (navyCommander != null && navyCommander.CommanderState != NavyCommander.NavyCommanderState.Inactive && num2 < num)
+			if (navyCommander != null)
 			{
-				num = num2;
-				result = base.NavyCommanders[i];
+				if (navyCommander.CommanderState != NavyCommander.NavyCommanderState.Inactive)
+				{
+					if (num2 < num)
+					{
+						num = num2;
+						result = base.NavyCommanders[i];
+					}
+				}
 			}
 		}
 		return result;
@@ -51,63 +55,27 @@ public class AILayer_Navy : AILayer_BaseNavy
 		{
 			if (!(this.game.Empires[i] is MajorEmpire))
 			{
-				goto IL_69;
+				goto IL_74;
 			}
 			DiplomaticRelation diplomaticRelation = this.departmentOfForeignAffairs.DiplomaticRelations[i];
 			if (diplomaticRelation.State == null || (!(diplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace) && !(diplomaticRelation.State.Name == DiplomaticRelationState.Names.Alliance)))
 			{
-				goto IL_69;
+				goto IL_74;
 			}
-			IL_63:
+			IL_DC:
 			i++;
 			continue;
-			IL_69:
-			if (!(this.game.Empires[i] is NavalEmpire) || this.IsNavalEmpireHostile)
+			IL_74:
+			if (this.game.Empires[i] is NavalEmpire && !this.IsNavalEmpireHostile)
 			{
-				DepartmentOfDefense agency = this.game.Empires[i].GetAgency<DepartmentOfDefense>();
-				for (int j = 0; j < agency.Armies.Count; j++)
-				{
-					this.GenerateArmyBasedTask(agency.Armies[j]);
-				}
-				goto IL_63;
+				goto IL_DC;
 			}
-			goto IL_63;
-		}
-		IGameService service = Services.GetService<IGameService>();
-		IQuestManagementService service2 = service.Game.Services.GetService<IQuestManagementService>();
-		DepartmentOfDefense agency2 = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
-		if (service2.IsQuestRunningForEmpire("GlobalQuestCompet#0006", base.AIEntity.Empire))
-		{
-			QuestBehaviour questBehaviour = service.Game.Services.GetService<IQuestRepositoryService>().GetQuestBehaviour("GlobalQuestCompet#0006", base.AIEntity.Empire.Index);
-			QuestBehaviourTreeNode_Decorator_KillArmy questBehaviourTreeNode_Decorator_KillArmy;
-			if (questBehaviour != null && ELCPUtilities.TryGetFirstNodeOfType<QuestBehaviourTreeNode_Decorator_KillArmy>(questBehaviour.Root as BehaviourTreeNodeController, out questBehaviourTreeNode_Decorator_KillArmy))
+			DepartmentOfDefense agency = this.game.Empires[i].GetAgency<DepartmentOfDefense>();
+			for (int j = 0; j < agency.Armies.Count; j++)
 			{
-				IGameEntityRepositoryService service3 = service.Game.Services.GetService<IGameEntityRepositoryService>();
-				foreach (ulong x in questBehaviourTreeNode_Decorator_KillArmy.EnemyArmyGUIDs)
-				{
-					IGameEntity gameEntity = null;
-					if (service3.TryGetValue(x, out gameEntity) && gameEntity is Army)
-					{
-						Army army = gameEntity as Army;
-						bool flag = false;
-						if (this.visibilityService.IsWorldPositionDetectedFor(army.WorldPosition, base.AIEntity.Empire) || !army.IsCamouflaged)
-						{
-							foreach (Army army2 in agency2.Armies)
-							{
-								if (army2.HasSeafaringUnits() && army2.GetPropertyValue(SimulationProperties.MilitaryPower) > army.GetPropertyValue(SimulationProperties.MilitaryPower))
-								{
-									flag = true;
-									break;
-								}
-							}
-							if (flag)
-							{
-								this.GenerateInterceptionTaskForEmpire(army);
-							}
-						}
-					}
-				}
+				this.GenerateArmyBasedTask(agency.Armies[j]);
 			}
+			goto IL_DC;
 		}
 	}
 
@@ -123,25 +91,25 @@ public class AILayer_Navy : AILayer_BaseNavy
 
 	private void GenerateArmyBasedTask(Army army)
 	{
-		if (base.AIEntity.Empire.Index != army.Empire.Index)
+		if (base.AIEntity.Empire.Index == army.Empire.Index)
+		{
+			if (army.HasSeafaringUnits() && !army.HasOnlySeafaringUnits(false))
+			{
+				this.GenerateMixedArmyTask(army);
+			}
+			else
+			{
+				this.GenerateReinforcementTasks(army);
+			}
+		}
+		else
 		{
 			this.GenerateInterceptionTaskForEmpire(army);
-			return;
 		}
-		if (army.HasSeafaringUnits() && !army.HasOnlySeafaringUnits(false))
-		{
-			this.GenerateMixedArmyTask(army);
-			return;
-		}
-		this.GenerateReinforcementTasks(army);
 	}
 
 	private void GenerateInterceptionTaskForEmpire(Army army)
 	{
-		if (base.AIEntity.Empire is MajorEmpire && army.Empire is MajorEmpire && this.diplomacyLayer.GetPeaceWish(army.Empire.Index))
-		{
-			return;
-		}
 		if (army.HasSeafaringUnits() && this.NavyStateMachine.CurrentState.Name == NavyState_EarlyWait.ReadonlyName)
 		{
 			return;
@@ -277,88 +245,69 @@ public class AILayer_Navy : AILayer_BaseNavy
 	{
 		for (int i = 0; i < base.NavyRegions.Count; i++)
 		{
-			NavyRegionData navyRegionData8 = base.NavyRegions[i] as NavyRegionData;
-			if (navyRegionData8 != null)
+			NavyRegionData navyRegionData3 = base.NavyRegions[i] as NavyRegionData;
+			if (navyRegionData3 != null)
 			{
-				navyRegionData8.EnemyNavalPower = 0f;
-				navyRegionData8.MyNavalPower = 0f;
-				foreach (Army army in Intelligence.GetArmiesInRegion(navyRegionData8.WaterRegionIndex))
+				navyRegionData3.RegionScore.Reset();
+				if (navyRegionData3.RegionFortress.Count > 0)
 				{
-					if (army.Empire == base.AIEntity.Empire)
-					{
-						navyRegionData8.MyNavalPower += army.GetPropertyValue(SimulationProperties.MilitaryPower);
-					}
-					else if (this.departmentOfForeignAffairs.IsEnnemy(army.Empire))
-					{
-						navyRegionData8.EnemyNavalPower += army.GetPropertyValue(SimulationProperties.MilitaryPower);
-						break;
-					}
+					navyRegionData3.RegionScore.Boost(0.3f, "(constant) There is fortress", new object[0]);
 				}
-				navyRegionData8.RegionScore.Reset();
-				if (navyRegionData8.RegionFortress.Count > 0)
+				for (int j = 0; j < navyRegionData3.NavyRoads.Count; j++)
 				{
-					navyRegionData8.RegionScore.Boost(0.3f, "(constant) There is fortress", new object[0]);
+					this.UpdateRoadData(navyRegionData3, navyRegionData3.NavyRoads[j]);
 				}
-				for (int j = 0; j < navyRegionData8.NavyRoads.Count; j++)
+				navyRegionData3.ForteressOwned = 0;
+				for (int k = 0; k < navyRegionData3.RegionFortress.Count; k++)
 				{
-					this.UpdateRoadData(navyRegionData8, navyRegionData8.NavyRoads[j]);
-				}
-				navyRegionData8.ForteressOwned = 0;
-				for (int k = 0; k < navyRegionData8.RegionFortress.Count; k++)
-				{
-					if (navyRegionData8.RegionFortress[k].Occupant == base.AIEntity.Empire)
+					if (navyRegionData3.RegionFortress[k].Occupant == base.AIEntity.Empire)
 					{
-						NavyRegionData navyRegionData2 = navyRegionData8;
-						int forteressOwned = navyRegionData2.ForteressOwned;
-						navyRegionData2.ForteressOwned = forteressOwned + 1;
-						navyRegionData8.RegionScore.Boost(0.15f, "(constant) We have a fortress", new object[0]);
+						navyRegionData3.ForteressOwned++;
+						navyRegionData3.RegionScore.Boost(0.15f, "(constant) We have a fortress", new object[0]);
 					}
 				}
-				navyRegionData8.NumberOfMyCityOnTheBorder = 0;
-				navyRegionData8.NumberOfEnemyCityOnTheBorder = 0;
-				navyRegionData8.NumberOfMyLandRegionAround = 0;
-				for (int l = 0; l < navyRegionData8.NeighbouringLandRegions.Count; l++)
+				navyRegionData3.NumberOfMyCityOnTheBorder = 0;
+				navyRegionData3.NumberOfEnemyCityOnTheBorder = 0;
+				navyRegionData3.NumberOfMyLandRegionAround = 0;
+				for (int l = 0; l < navyRegionData3.NeighbouringLandRegions.Count; l++)
 				{
-					if (navyRegionData8.NeighbouringLandRegions[l].City != null)
+					if (navyRegionData3.NeighbouringLandRegions[l].City != null)
 					{
-						global::Empire empire = navyRegionData8.NeighbouringLandRegions[l].City.Empire;
+						Empire empire = navyRegionData3.NeighbouringLandRegions[l].City.Empire;
 						if (empire != null && empire == base.AIEntity.Empire)
 						{
-							NavyRegionData navyRegionData3 = navyRegionData8;
-							int numberOfMyLandRegionAround = navyRegionData3.NumberOfMyLandRegionAround;
-							navyRegionData3.NumberOfMyLandRegionAround = numberOfMyLandRegionAround + 1;
+							navyRegionData3.NumberOfMyLandRegionAround++;
 						}
 						AIData_City aidata_City = null;
-						if (this.aiDataRepositoryHelper.TryGetAIData<AIData_City>(navyRegionData8.NeighbouringLandRegions[l].City.GUID, out aidata_City) && aidata_City.NeighbourgRegions.Contains(navyRegionData8.WaterRegionIndex))
+						if (this.aiDataRepositoryHelper.TryGetAIData<AIData_City>(navyRegionData3.NeighbouringLandRegions[l].City.GUID, out aidata_City))
 						{
-							if (aidata_City.City.Empire == base.AIEntity.Empire)
+							if (aidata_City.NeighbourgRegions.Contains(navyRegionData3.WaterRegionIndex))
 							{
-								NavyRegionData navyRegionData4 = navyRegionData8;
-								int numberOfMyCityOnTheBorder = navyRegionData4.NumberOfMyCityOnTheBorder;
-								navyRegionData4.NumberOfMyCityOnTheBorder = numberOfMyCityOnTheBorder + 1;
-								navyRegionData8.RegionScore.Boost(0.3f, "(constant) I have a city in this ocean. {0}", new object[]
+								if (aidata_City.City.Empire == base.AIEntity.Empire)
 								{
-									aidata_City.City.LocalizedName
-								});
-							}
-							else if (this.departmentOfForeignAffairs.IsEnnemy(aidata_City.City.Empire))
-							{
-								NavyRegionData navyRegionData5 = navyRegionData8;
-								int numberOfEnemyCityOnTheBorder = navyRegionData5.NumberOfEnemyCityOnTheBorder;
-								navyRegionData5.NumberOfEnemyCityOnTheBorder = numberOfEnemyCityOnTheBorder + 1;
+									navyRegionData3.NumberOfMyCityOnTheBorder++;
+									navyRegionData3.RegionScore.Boost(0.3f, "(constant) I have a city in this ocean. {0}", new object[]
+									{
+										aidata_City.City.LocalizedName
+									});
+								}
+								else if (this.departmentOfForeignAffairs.IsEnnemy(aidata_City.City.Empire))
+								{
+									navyRegionData3.NumberOfEnemyCityOnTheBorder++;
+								}
 							}
 						}
 					}
 				}
-				if (navyRegionData8.NumberOfMyLandRegionAround > 0)
+				if (navyRegionData3.NumberOfMyLandRegionAround > 0)
 				{
-					navyRegionData8.RegionScore.Boost(0.05f, "Near owned land region.", new object[0]);
+					navyRegionData3.RegionScore.Boost(0.05f, "Near owned land region.", new object[0]);
 				}
-				navyRegionData8.MayTakeRegionOver = true;
-				global::Empire owner = navyRegionData8.WaterRegion.Owner;
+				navyRegionData3.MayTakeRegionOver = true;
+				Empire owner = navyRegionData3.WaterRegion.Owner;
 				if (owner != null)
 				{
-					navyRegionData8.MayTakeRegionOver = this.MightAttackOwner(navyRegionData8.WaterRegion, owner);
+					navyRegionData3.MayTakeRegionOver = this.MightAttackOwner(navyRegionData3.WaterRegion, owner);
 				}
 			}
 		}
@@ -370,25 +319,17 @@ public class AILayer_Navy : AILayer_BaseNavy
 				navyRegionData.NumberOfWaterEnemy = 0;
 				bool flag = false;
 				bool flag2 = false;
-				int num;
 				int neighbourgIndex;
-				Predicate<BaseNavyRegionData> <>9__0;
-				for (neighbourgIndex = 0; neighbourgIndex < navyRegionData.NeighbouringWaterRegions.Count; neighbourgIndex = num + 1)
+				for (neighbourgIndex = 0; neighbourgIndex < navyRegionData.NeighbouringWaterRegions.Count; neighbourgIndex++)
 				{
-					List<BaseNavyRegionData> navyRegions = base.NavyRegions;
-					Predicate<BaseNavyRegionData> match2;
-					if ((match2 = <>9__0) == null)
+					NavyRegionData navyRegionData2 = base.NavyRegions.Find((BaseNavyRegionData match) => match.WaterRegionIndex == navyRegionData.NeighbouringWaterRegions[neighbourgIndex].Index) as NavyRegionData;
+					if (navyRegionData2 != null)
 					{
-						match2 = (<>9__0 = ((BaseNavyRegionData match) => match.WaterRegionIndex == navyRegionData.NeighbouringWaterRegions[neighbourgIndex].Index));
-					}
-					NavyRegionData navyRegionData6 = navyRegions.Find(match2) as NavyRegionData;
-					if (navyRegionData6 != null)
-					{
-						if (navyRegionData6.NumberOfMyCityOnTheBorder > 0)
+						if (navyRegionData2.NumberOfMyCityOnTheBorder > 0)
 						{
 							flag = true;
 						}
-						global::Empire owner2 = navyRegionData6.WaterRegion.Owner;
+						Empire owner2 = navyRegionData2.WaterRegion.Owner;
 						if (owner2 != null)
 						{
 							if (owner2 == base.AIEntity.Empire)
@@ -397,13 +338,10 @@ public class AILayer_Navy : AILayer_BaseNavy
 							}
 							else if (!this.departmentOfForeignAffairs.IsFriend(owner2))
 							{
-								NavyRegionData navyRegionData7 = navyRegionData;
-								num = navyRegionData7.NumberOfWaterEnemy;
-								navyRegionData7.NumberOfWaterEnemy = num + 1;
+								navyRegionData.NumberOfWaterEnemy++;
 							}
 						}
 					}
-					num = neighbourgIndex;
 				}
 				if (flag2)
 				{
@@ -444,32 +382,27 @@ public class AILayer_Navy : AILayer_BaseNavy
 			if (regionOwnerState == NavyRoad.RegionOwnerState.Neutral)
 			{
 				navyRoad.RoadType = NavyRoad.WaterRoadTypes.BothNeutral;
-				return;
 			}
-			if (regionOwnerState == NavyRoad.RegionOwnerState.Allied)
+			else if (regionOwnerState == NavyRoad.RegionOwnerState.Allied)
 			{
 				navyRoad.RoadType = NavyRoad.WaterRoadTypes.BothAllied;
 				regionData.RegionScore.Boost(0.1f, "Both allied", new object[0]);
-				return;
 			}
-			if (regionOwnerState == NavyRoad.RegionOwnerState.Enemy)
+			else if (regionOwnerState == NavyRoad.RegionOwnerState.Enemy)
 			{
 				navyRoad.RoadType = NavyRoad.WaterRoadTypes.BothEnemy;
-				return;
 			}
+		}
+		else if (regionOwnerState == NavyRoad.RegionOwnerState.Enemy || regionOwnerState2 == NavyRoad.RegionOwnerState.Enemy)
+		{
+			navyRoad.RoadType = NavyRoad.WaterRoadTypes.OneEnemy;
+		}
+		else if (regionOwnerState == NavyRoad.RegionOwnerState.Allied || regionOwnerState2 == NavyRoad.RegionOwnerState.Allied)
+		{
+			navyRoad.RoadType = NavyRoad.WaterRoadTypes.OneAllied;
 		}
 		else
 		{
-			if (regionOwnerState == NavyRoad.RegionOwnerState.Enemy || regionOwnerState2 == NavyRoad.RegionOwnerState.Enemy)
-			{
-				navyRoad.RoadType = NavyRoad.WaterRoadTypes.OneEnemy;
-				return;
-			}
-			if (regionOwnerState == NavyRoad.RegionOwnerState.Allied || regionOwnerState2 == NavyRoad.RegionOwnerState.Allied)
-			{
-				navyRoad.RoadType = NavyRoad.WaterRoadTypes.OneAllied;
-				return;
-			}
 			Diagnostics.LogError("invalid owner state. FirstRegion[{0}] = {1}, OtherRegion[{2}] = {3}.", new object[]
 			{
 				region.Index,
@@ -519,9 +452,12 @@ public class AILayer_Navy : AILayer_BaseNavy
 		for (int i = 0; i < base.NavyCommanders.Count; i++)
 		{
 			NavyCommander navyCommander = base.NavyCommanders[i] as NavyCommander;
-			if (navyCommander != null && navyCommander.CommanderState != NavyCommander.NavyCommanderState.Inactive)
+			if (navyCommander != null)
 			{
-				num += navyCommander.WantedNumberOfArmies();
+				if (navyCommander.CommanderState != NavyCommander.NavyCommanderState.Inactive)
+				{
+					num += navyCommander.WantedNumberOfArmies();
+				}
 			}
 		}
 		if (num > 0f)
@@ -537,50 +473,52 @@ public class AILayer_Navy : AILayer_BaseNavy
 		this.NavyImportance = new HeuristicValue(0f);
 		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		InfluencedByPersonalityAttribute.LoadFieldAndPropertyValues(base.AIEntity.Empire, this);
-		IDatabase<Amplitude.Unity.Framework.AnimationCurve> database = Databases.GetDatabase<Amplitude.Unity.Framework.AnimationCurve>(false);
+		IDatabase<Amplitude.Unity.Framework.AnimationCurve> animationCurveDatabase = Databases.GetDatabase<Amplitude.Unity.Framework.AnimationCurve>(false);
 		if (!string.IsNullOrEmpty(this.gameProgressCurveName))
 		{
-			this.gameProgressCurve = database.GetValue(this.gameProgressCurveName);
+			this.gameProgressCurve = animationCurveDatabase.GetValue(this.gameProgressCurveName);
 		}
 		this.NavyStateMachine = new NavyStateMachine(this);
 		this.NavyStateMachine.Initialize();
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		this.departmentOfTheInterior.OccupiedFortressesCollectionChanged += this.DepartmentOfTheInterior_OccupiedFortressesCollectionChanged;
-		for (int i = 0; i < this.game.Empires.Length; i++)
+		for (int index = 0; index < this.game.Empires.Length; index++)
 		{
-			if (i != base.AIEntity.Empire.Index)
+			if (index != base.AIEntity.Empire.Index)
 			{
-				DepartmentOfTransportation agency = this.game.Empires[i].GetAgency<DepartmentOfTransportation>();
-				agency.ArmyPositionChange += this.DepartmentOfTransport_ArmyPositionChange;
-				this.enemyTransportation.Add(agency);
+				DepartmentOfTransportation transport = this.game.Empires[index].GetAgency<DepartmentOfTransportation>();
+				transport.ArmyPositionChange += this.DepartmentOfTransport_ArmyPositionChange;
+				this.enemyTransportation.Add(transport);
 			}
 		}
-		this.diplomacyLayer = base.AIEntity.GetLayer<AILayer_Diplomacy>();
 		yield break;
 	}
 
 	public override IEnumerator Load()
 	{
 		yield return base.Load();
-		int i = 0;
-		while (i < this.game.Empires.Length)
+		int index = 0;
+		while (index < this.game.Empires.Length)
 		{
-			NavalEmpire navalEmpire = this.game.Empires[i] as NavalEmpire;
+			NavalEmpire navalEmpire = this.game.Empires[index] as NavalEmpire;
 			if (navalEmpire != null)
 			{
 				this.pirateCouncil = navalEmpire.GetAgency<PirateCouncil>();
-				AIPlayer_NavalEmpire aiplayer_NavalEmpire;
-				if (((Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer).AIScheduler.TryGetNavalEmpireAIPlayer(out aiplayer_NavalEmpire))
+				ISessionService sessionService = Services.GetService<ISessionService>();
+				global::Session session = sessionService.Session as global::Session;
+				GameServer gameServer = session.GameServer as GameServer;
+				AIPlayer_NavalEmpire navalPlayer;
+				if (!gameServer.AIScheduler.TryGetNavalEmpireAIPlayer(out navalPlayer))
 				{
-					AIEntity_NavalEmpire entity = aiplayer_NavalEmpire.GetEntity<AIEntity_NavalEmpire>();
-					this.raiderLayer = entity.GetLayer<AILayer_Raiders>();
 					break;
 				}
+				AIEntity_NavalEmpire navalEmpireEntity = navalPlayer.GetEntity<AIEntity_NavalEmpire>();
+				this.raiderLayer = navalEmpireEntity.GetLayer<AILayer_Raiders>();
 				break;
 			}
 			else
 			{
-				i++;
+				index++;
 			}
 		}
 		yield break;
@@ -605,31 +543,47 @@ public class AILayer_Navy : AILayer_BaseNavy
 			this.enemyTransportation[i].ArmyPositionChange -= this.DepartmentOfTransport_ArmyPositionChange;
 		}
 		this.enemyTransportation.Clear();
-		this.diplomacyLayer = null;
 	}
 
-	public bool MightAttackOwner(Region targetRegion, global::Empire targetOwner)
+	public bool MightAttackOwner(Region targetRegion, Empire targetOwner)
 	{
 		if (targetOwner.Index == base.AIEntity.Empire.Index)
 		{
 			return false;
 		}
-		DepartmentOfForeignAffairs agency = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
-		if (agency != null)
+		bool flag = targetOwner.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim);
+		if (flag)
 		{
-			DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(targetOwner);
-			if (diplomaticRelation != null)
+			AILayer_Diplomacy layer = base.AIEntity.GetLayer<AILayer_Diplomacy>();
+			if (layer != null)
 			{
-				if (targetRegion.Owner == targetOwner)
+				float wantWarScore = layer.GetWantWarScore(targetOwner);
+				float allyScore = layer.GetAllyScore(targetOwner);
+				if (allyScore > 0.5f || wantWarScore < 0.25f)
 				{
-					if (diplomaticRelation.State.Name != DiplomaticRelationState.Names.War)
+					return false;
+				}
+			}
+		}
+		else
+		{
+			DepartmentOfForeignAffairs agency = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
+			if (agency != null)
+			{
+				DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(targetOwner);
+				if (diplomaticRelation != null)
+				{
+					if (targetRegion.Owner == targetOwner)
+					{
+						if (diplomaticRelation.State.Name != DiplomaticRelationState.Names.War)
+						{
+							return false;
+						}
+					}
+					else if (diplomaticRelation.State.Name == DiplomaticRelationState.Names.Alliance || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Truce)
 					{
 						return false;
 					}
-				}
-				else if (diplomaticRelation.State.Name == DiplomaticRelationState.Names.Alliance || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Truce)
-				{
-					return false;
 				}
 			}
 		}
@@ -646,7 +600,7 @@ public class AILayer_Navy : AILayer_BaseNavy
 				return u;
 			}
 		}
-		return default(U);
+		return (U)((object)null);
 	}
 
 	protected override void RefreshObjectives(StaticString context, StaticString pass)
@@ -725,9 +679,13 @@ public class AILayer_Navy : AILayer_BaseNavy
 		for (int j = 0; j < base.NavyCommanders.Count; j++)
 		{
 			NavyCommander navyCommander = base.NavyCommanders[j] as NavyCommander;
-			if (navyCommander != null && navyCommander.WantedNumberOfArmies() > (float)navyCommander.NumberOfMediumSizedArmies)
+			if (navyCommander != null)
 			{
-				this.TryStealFromNeighbourgs(navyCommander);
+				float num = navyCommander.WantedNumberOfArmies();
+				if (num > (float)navyCommander.NumberOfMediumSizedArmies)
+				{
+					this.TryStealFromNeighbourgs(navyCommander);
+				}
 			}
 		}
 		base.RefreshCommanders(context, pass);
@@ -772,23 +730,26 @@ public class AILayer_Navy : AILayer_BaseNavy
 			{
 				float num2 = (float)this.worldPositionningService.GetDistance(army.Garrison.WorldPosition, base.NavyCommanders[i].RegionData.WaterRegion.Barycenter);
 				NavyCommander navyCommander = base.NavyCommanders[i] as NavyCommander;
-				if (navyCommander != null && navyCommander.CommanderState != NavyCommander.NavyCommanderState.Inactive)
+				if (navyCommander != null)
 				{
-					float num3 = navyCommander.WantedNumberOfArmies();
-					float num4 = (float)navyCommander.NumberOfMediumSizedArmies;
-					if (num3 < num4)
+					if (navyCommander.CommanderState != NavyCommander.NavyCommanderState.Inactive)
 					{
-						num2 *= 10f;
-					}
-					num2 *= (1f - navyCommander.CommanderArmyNeed()) * 2f;
-					if (army.Role == BaseNavyArmy.ArmyRole.Renfort && navyCommander.CommanderState != NavyCommander.NavyCommanderState.BuildUp && navyCommander.CommanderState != NavyCommander.NavyCommanderState.Defense)
-					{
-						num2 *= 2f;
-					}
-					if (num2 < num)
-					{
-						num = num2;
-						baseNavyCommander = base.NavyCommanders[i];
+						float num3 = navyCommander.WantedNumberOfArmies();
+						float num4 = (float)navyCommander.NumberOfMediumSizedArmies;
+						if (num3 < num4)
+						{
+							num2 *= 10f;
+						}
+						num2 *= (1f - navyCommander.CommanderArmyNeed()) * 2f;
+						if (army.Role == BaseNavyArmy.ArmyRole.Renfort && navyCommander.CommanderState != NavyCommander.NavyCommanderState.BuildUp && navyCommander.CommanderState != NavyCommander.NavyCommanderState.Defense)
+						{
+							num2 *= 2f;
+						}
+						if (num2 < num)
+						{
+							num = num2;
+							baseNavyCommander = base.NavyCommanders[i];
+						}
 					}
 				}
 			}
@@ -842,7 +803,8 @@ public class AILayer_Navy : AILayer_BaseNavy
 		}
 		if (flag2)
 		{
-			if (base.AIEntity.Empire.GetAgency<DepartmentOfDefense>().UnitDesignDatabase.AvailableUnitBodyDefinitions.Any((UnitBodyDefinition match) => match.Tags.Contains("Seafaring")))
+			DepartmentOfDefense agency2 = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
+			if (agency2.UnitDesignDatabase.AvailableUnitBodyDefinitions.Any((UnitBodyDefinition match) => match.Tags.Contains("Seafaring")))
 			{
 				this.NavyImportance.Boost(0.1f, "Cities spread on more than one continent.", new object[0]);
 			}
@@ -867,7 +829,8 @@ public class AILayer_Navy : AILayer_BaseNavy
 		HeuristicValue heuristicValue = new HeuristicValue(0f);
 		if (this.pirateCouncil != null && this.departmentOfTheInterior.OccupiedFortresses.Count == 0)
 		{
-			if (this.pirateCouncil.Fortresses.Count((Fortress match) => match.IsOccupied) > 0)
+			int num = this.pirateCouncil.Fortresses.Count((Fortress match) => match.IsOccupied);
+			if (num > 0)
 			{
 				heuristicValue.Add(0.2f, "(constant) Someone has a fortress and I don't.", new object[0]);
 			}
@@ -878,10 +841,13 @@ public class AILayer_Navy : AILayer_BaseNavy
 			if (i != base.AIEntity.Empire.Index)
 			{
 				DepartmentOfTheInterior agency = this.game.Empires[i].GetAgency<DepartmentOfTheInterior>();
-				if (agency != null && agency.Cities.Any((City match) => this.myCityContinentId.Contains(match.Region.ContinentID)))
+				if (agency != null)
 				{
-					flag = true;
-					break;
+					if (agency.Cities.Any((City match) => this.myCityContinentId.Contains(match.Region.ContinentID)))
+					{
+						flag = true;
+						break;
+					}
 				}
 			}
 		}
@@ -944,16 +910,19 @@ public class AILayer_Navy : AILayer_BaseNavy
 		for (int i = 0; i < base.NavyCommanders.Count; i++)
 		{
 			NavyCommander navyCommander = base.NavyCommanders[i] as NavyCommander;
-			if (navyCommander != null && navyCommander.CommanderState != NavyCommander.NavyCommanderState.Inactive)
+			if (navyCommander != null)
 			{
-				float num2 = navyCommander.WantedNumberOfArmies();
-				float num3 = (float)navyCommander.NumberOfMediumSizedArmies;
-				if (num2 >= num3)
+				if (navyCommander.CommanderState != NavyCommander.NavyCommanderState.Inactive)
 				{
-					float num4 = navyCommander.CommanderArmyNeed();
-					if (num < num4)
+					float num2 = navyCommander.WantedNumberOfArmies();
+					float num3 = (float)navyCommander.NumberOfMediumSizedArmies;
+					if (num2 >= num3)
 					{
-						num = num4;
+						float num4 = navyCommander.CommanderArmyNeed();
+						if (num < num4)
+						{
+							num = num4;
+						}
 					}
 				}
 			}
@@ -971,14 +940,17 @@ public class AILayer_Navy : AILayer_BaseNavy
 			if (navyCommander != null)
 			{
 				int numberOfMediumSizedArmies2 = navyCommander.NumberOfMediumSizedArmies;
-				if (numberOfMediumSizedArmies <= numberOfMediumSizedArmies2 && (navyCommander.CommanderArmyNeed() <= num || (float)numberOfMediumSizedArmies2 >= navyCommander.WantedNumberOfArmies()))
+				if (numberOfMediumSizedArmies <= numberOfMediumSizedArmies2)
 				{
-					for (int j = 0; j < navyCommander.NavyArmies.Count; j++)
+					if (navyCommander.CommanderArmyNeed() <= num || (float)numberOfMediumSizedArmies2 >= navyCommander.WantedNumberOfArmies())
 					{
-						if (navyCommander.NavyArmies[j].Role == BaseNavyArmy.ArmyRole.TaskForce)
+						for (int j = 0; j < navyCommander.NavyArmies.Count; j++)
 						{
-							navyCommander.NavyArmies[j].AssignCommander(commander);
-							return;
+							if (navyCommander.NavyArmies[j].Role == BaseNavyArmy.ArmyRole.TaskForce)
+							{
+								navyCommander.NavyArmies[j].AssignCommander(commander);
+								return;
+							}
 						}
 					}
 				}
@@ -994,12 +966,15 @@ public class AILayer_Navy : AILayer_BaseNavy
 		float num3 = 0f;
 		for (int i = 0; i < this.game.Empires.Length; i++)
 		{
-			if (i != base.AIEntity.Empire.Index && this.departmentOfForeignAffairs.IsEnnemy(this.game.Empires[i]))
+			if (i != base.AIEntity.Empire.Index)
 			{
-				float bestNavyArmyPower = this.GetBestNavyArmyPower(this.game.Empires[i]);
-				if (bestNavyArmyPower > num3)
+				if (this.departmentOfForeignAffairs.IsEnnemy(this.game.Empires[i]))
 				{
-					num3 = bestNavyArmyPower;
+					float bestNavyArmyPower = this.GetBestNavyArmyPower(this.game.Empires[i]);
+					if (bestNavyArmyPower > num3)
+					{
+						num3 = bestNavyArmyPower;
+					}
 				}
 			}
 		}
@@ -1008,8 +983,10 @@ public class AILayer_Navy : AILayer_BaseNavy
 		{
 			num3 = bestPirateFortress;
 		}
-		float averageMilitaryPower = base.AIEntity.GetLayer<AILayer_UnitRecruitment>().NavalRecruiter.AverageMilitaryPower;
-		float num4 = base.AIEntity.Empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot) * averageMilitaryPower;
+		AILayer_UnitRecruitment layer = base.AIEntity.GetLayer<AILayer_UnitRecruitment>();
+		float averageMilitaryPower = layer.NavalRecruiter.AverageMilitaryPower;
+		float propertyValue = base.AIEntity.Empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot);
+		float num4 = propertyValue * averageMilitaryPower;
 		if (num4 > num3)
 		{
 			float num5 = num3 / num4;
@@ -1020,7 +997,7 @@ public class AILayer_Navy : AILayer_BaseNavy
 		this.CurrentRatioLimit = new ArmyRatioLimit(num, num2, unitRatioForFull);
 	}
 
-	private float GetBestNavyArmyPower(global::Empire empire)
+	private float GetBestNavyArmyPower(Empire empire)
 	{
 		float num = 0f;
 		DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
@@ -1074,47 +1051,39 @@ public class AILayer_Navy : AILayer_BaseNavy
 	private void DepartmentOfTheInterior_OccupiedFortressesCollectionChanged(object sender, CollectionChangeEventArgs e)
 	{
 		Fortress fortress = e.Element as Fortress;
-		if (e.Action != CollectionChangeAction.Add)
+		if (e.Action == CollectionChangeAction.Add)
 		{
-			if (e.Action == CollectionChangeAction.Remove)
+			NavyCommander navyCommander = base.NavyCommanders.Find((BaseNavyCommander match) => match.RegionData.WaterRegionIndex == fortress.Region.Index) as NavyCommander;
+			if (navyCommander == null)
 			{
-				Predicate<NavyFortress> <>9__2;
-				for (int i = 0; i < base.NavyCommanders.Count; i++)
+				return;
+			}
+			NavyFortress navyFortress = navyCommander.NavyFortresses.Find((NavyFortress match) => match.Fortress.GUID == fortress.GUID);
+			if (navyFortress == null)
+			{
+				navyFortress = new NavyFortress(this, fortress);
+				navyFortress.Initialize();
+				navyFortress.IsActive = this.IsActive();
+			}
+			navyFortress.AssignCommander(navyCommander);
+			this.RefreshFortress(navyFortress);
+			navyCommander.GenerateFillFortress(fortress);
+		}
+		else if (e.Action == CollectionChangeAction.Remove)
+		{
+			for (int i = 0; i < base.NavyCommanders.Count; i++)
+			{
+				NavyCommander navyCommander2 = base.NavyCommanders[i] as NavyCommander;
+				if (navyCommander2 != null)
 				{
-					NavyCommander navyCommander = base.NavyCommanders[i] as NavyCommander;
-					if (navyCommander != null)
+					NavyFortress navyFortress2 = navyCommander2.NavyFortresses.Find((NavyFortress match) => match.Fortress.GUID == fortress.GUID);
+					if (navyFortress2 != null)
 					{
-						List<NavyFortress> navyFortresses = navyCommander.NavyFortresses;
-						Predicate<NavyFortress> match2;
-						if ((match2 = <>9__2) == null)
-						{
-							match2 = (<>9__2 = ((NavyFortress match) => match.Fortress.GUID == fortress.GUID));
-						}
-						NavyFortress navyFortress = navyFortresses.Find(match2);
-						if (navyFortress != null)
-						{
-							navyFortress.Release();
-						}
+						navyFortress2.Release();
 					}
 				}
 			}
-			return;
 		}
-		NavyCommander navyCommander2 = base.NavyCommanders.Find((BaseNavyCommander match) => match.RegionData.WaterRegionIndex == fortress.Region.Index) as NavyCommander;
-		if (navyCommander2 == null)
-		{
-			return;
-		}
-		NavyFortress navyFortress2 = navyCommander2.NavyFortresses.Find((NavyFortress match) => match.Fortress.GUID == fortress.GUID);
-		if (navyFortress2 == null)
-		{
-			navyFortress2 = new NavyFortress(this, fortress);
-			navyFortress2.Initialize();
-			navyFortress2.IsActive = this.IsActive();
-		}
-		navyFortress2.AssignCommander(navyCommander2);
-		this.RefreshFortress(navyFortress2);
-		navyCommander2.GenerateFillFortress(fortress);
 	}
 
 	private void DepartmentOfTransport_ArmyPositionChange(object sender, ArmyMoveEndedEventArgs e)
@@ -1134,7 +1103,8 @@ public class AILayer_Navy : AILayer_BaseNavy
 		{
 			return;
 		}
-		if (!this.worldPositionningService.IsWaterTile(e.To) || region2.IsOcean)
+		bool flag = this.worldPositionningService.IsWaterTile(e.To);
+		if (!flag || region2.IsOcean)
 		{
 			return;
 		}
@@ -1142,7 +1112,8 @@ public class AILayer_Navy : AILayer_BaseNavy
 		{
 			return;
 		}
-		if (this.FindTask<NavyTask_Interception>((NavyTask_Interception match) => match.TargetGuid == army.GUID) != null)
+		NavyTask_Interception navyTask_Interception = this.FindTask<NavyTask_Interception>((NavyTask_Interception match) => match.TargetGuid == army.GUID);
+		if (navyTask_Interception != null)
 		{
 			return;
 		}
@@ -1185,6 +1156,4 @@ public class AILayer_Navy : AILayer_BaseNavy
 	private Amplitude.Unity.Framework.AnimationCurve gameProgressCurve;
 
 	private List<BaseNavyTask> navyTasks = new List<BaseNavyTask>();
-
-	public AILayer_Diplomacy diplomacyLayer;
 }

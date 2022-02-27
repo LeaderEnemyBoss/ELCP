@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="AffinityBrokenLords"    Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityRageWizards"    Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityMadFairies"     Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityNecrophages"    Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityVaulters"       Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityRovingClans"    Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityDrakkens"       Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityCultists"       Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityMezari"         Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityReplicants"     Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityWinterShifters" Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinitySeaDemons"      Type="Affinity">
+    <SimulationPropertyDescriptors>
+      <!-- Mark Of The Damned equipment is unlocked by the faction quest -->
+      <SimulationPropertyDescriptor Name="MarkOfTheDamnedUnitProductionCostReduction"              BaseValue="0.5" MinValue="0"/>
+    </SimulationPropertyDescriptors>
+    <SimulationModifierDescriptors>
+      <!-- Advanced transport -->
+      <SimulationModifierDescriptor TargetProperty="AttributeAttackOnWater"             Operation="Force"   Value="$(AttributeAttackOnWater_AdvancedTransport)"             Priority="1"      Path="ClassEmpire/Garrison/TransportShipUnit"   IsBindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefenseOnWater"            Operation="Force"   Value="$(AttributeDefenseOnWater_AdvancedTransport)"            Priority="1"      Path="ClassEmpire/Garrison/TransportShipUnit"   IsBindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiativeOnWater"         Operation="Force"   Value="$(AttributeInitiativeOnWater_AdvancedTransport)"         Priority="1"      Path="ClassEmpire/Garrison/TransportShipUnit"   IsBindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamageOnWater"             Operation="Force"   Value="$(AttributeDamageOnWater_AdvancedTransport)"             Priority="1"      Path="ClassEmpire/Garrison/TransportShipUnit"   IsBindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealthOnWater"               Operation="Force"   Value="$(MaximumHealthOnWater_AdvancedTransport)"               Priority="1"      Path="ClassEmpire/Garrison/TransportShipUnit"   IsBindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="BaseBattleMaximumMovementOnWater"   Operation="Force"   Value="$(BaseBattleMaximumMovementOnWater_AdvancedTransport)"   Priority="1"      Path="ClassEmpire/Garrison/TransportShipUnit"   IsBindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="VisionRangeOnWater"                 Operation="Force"   Value="$(VisionRangeOnWater_AdvancedTransport)"                 Priority="1"      Path="ClassEmpire/Garrison/TransportShipUnit"   IsBindOnSource="false"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeightOnWater"                Operation="Force"   Value="$(VisionHeightOnWater_AdvancedTransport)"                Priority="1"      Path="ClassEmpire/Garrison/TransportShipUnit"   IsBindOnSource="false"/>
+
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"             Operation="Force"   Value="$(MaximumMovementOnWater_AdvancedTransport)"             Priority="1"      Path="ClassEmpire/Garrison/ClassUnit,!SeafaringUnit"           IsBindOnSource="false"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+    
+  <SimulationDescriptor Name="AffinityFlames"         Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityMimics"         Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityTutorial"       Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityKaijus"         Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityKaijus1"        Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="AffinityKaijus2"        Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="AffinityKaijus3"        Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="AffinityColossus"       Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityGuardianKiller" Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityUrces"          Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityErycis"         Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityCeratan"        Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityKazanji"        Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityBos"            Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinitySilics"         Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityDelvers"        Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinitySistersOfMercy" Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityHaunts"         Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityJotus"          Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityHurnas"         Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityGauran"         Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityBirdhive"       Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityGeldirus"       Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityEyelessOnes"    Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityDorgeshi"       Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityTaskol"         Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityFomorians"      Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityDawnShua"       Type="Affinity">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinityLesser"         Type="Affinity">
+    <SimulationPropertyDescriptors>
+      <!-- Unit health Regen-->
+      <SimulationPropertyDescriptor Name="GlobalUnitRegenImprovement"          BaseValue="0.05"/>
+      <SimulationPropertyDescriptor Name="InAlliedRegionUnitRegenModifier"     BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="InOwnedRegionUnitRegenModifier"      BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="InNoneAlliedRegionUnitRegenModifier" BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="UnassignedHeroRegenModifier"         BaseValue="0"/>
+
+      <SimulationPropertyDescriptor Name="MinorEmpireDifficultyFactor"         BaseValue="1"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"     Operation="Addition" Value="$(GlobalUnitRegenImprovement)"/>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"      Operation="Addition" Value="$(GlobalUnitRegenImprovement)"/>
+      <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier" Operation="Addition" Value="$(GlobalUnitRegenImprovement)"/>
+      <SimulationModifierDescriptor TargetProperty="UnassignedHeroRegenModifier"         Operation="Addition" Value="$(GlobalUnitRegenImprovement)"/>
+
+      <!-- For MinorSlayer -->
+      <SimulationModifierDescriptor TargetProperty="ControlledByMinorAI"                 Operation="Addition" Value="1" Path="ClassEmpire/Garrison/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AffinitySeaMonster"     Type="Affinity">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

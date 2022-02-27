@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <WorldGeneratorScenarioDefinition Name="DLC21" Continents="7">
+
+	<TmxMapName>DLC21map.tmx</TmxMapName>
+	
+    <WorldGeneratorOptionDefinition Name="WorldSize"                     Default="Huge"         Category="World" SubCategory="WorldSize"       GuiControlType="DropList">
+      <ItemDefinition Name="Huge">
+        <OptionDefinitionConstraint OptionName="NumberOfMajorFactions" Type="Control">
+          <Key Name="8"/>
+        </OptionDefinitionConstraint>
+      </ItemDefinition>
+    </WorldGeneratorOptionDefinition>
+	
+    <WorldGeneratorOptionDefinition Name="WorldWrap" Default="True" Category="World" SubCategory="WorldShape" GuiControlType="DropList">
+      <Tags>Advanced</Tags>
+      <ItemDefinition Name="True">
+        <KeyValuePair Key="Wraps">true</KeyValuePair>
+      </ItemDefinition>
+    </WorldGeneratorOptionDefinition>
+
+  </WorldGeneratorScenarioDefinition>
+  
+</Datatable>

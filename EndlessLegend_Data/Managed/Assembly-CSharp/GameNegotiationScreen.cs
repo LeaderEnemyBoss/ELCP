@@ -803,10 +803,6 @@ public class GameNegotiationScreen : GuiPlayerControllerScreen
 		this.TheirTermOptionsPanel.Bind(this.DiplomaticContract, this.SelectedEmpire, base.Empire);
 		this.ContractPanel.Bind(this.DiplomaticContract, base.Empire, this.SelectedEmpire);
 		base.NeedRefresh = true;
-		if (this.selectedEmpire != null && this.selectedEmpire.IsControlledByAI)
-		{
-			this.PostOrderGetAIDiplomaticTermsEvaluation();
-		}
 	}
 
 	private void GetOrCreateContract()
@@ -972,13 +968,6 @@ public class GameNegotiationScreen : GuiPlayerControllerScreen
 			return;
 		}
 		component.RefreshContent(diplomaticAbilityGuiElement);
-	}
-
-	public float GetEvaluationForTerm(DiplomaticTerm term)
-	{
-		float result;
-		this.diplomaticTermsAndEvalutations.TryGetValue(term, out result);
-		return result;
 	}
 
 	public const float MaximumApprovalScore = 4f;

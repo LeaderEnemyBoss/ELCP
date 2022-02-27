@@ -2056,29 +2056,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	private delegate List<Tradable> Collector(global::Game game);
 
 	[CompilerGenerated]
-	private sealed class TryReserveTradable>c__AnonStorey8C2
-	{
-		internal bool <>m__315(Tradable predicate)
-		{
-			return predicate.UID == this.uid;
-		}
-
-		internal ulong uid;
-	}
-
-	[CompilerGenerated]
-	private sealed class TryGetTradableByUID>c__AnonStorey8C3
-	{
-		internal bool <>m__316(Tradable predicate)
-		{
-			return predicate.UID == this.uid;
-		}
-
-		internal ulong uid;
-	}
-
-	[CompilerGenerated]
-	private sealed class TryConsumeTradableAndAllocateTo>c__AnonStorey8C4
+	private sealed class TryReserveTradable>c__AnonStorey8C6
 	{
 		internal bool <>m__317(Tradable predicate)
 		{
@@ -2089,9 +2067,31 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	}
 
 	[CompilerGenerated]
-	private sealed class CollectTradableResource>c__AnonStorey8C5
+	private sealed class TryGetTradableByUID>c__AnonStorey8C7
 	{
-		internal bool <>m__318(Tradable iterator)
+		internal bool <>m__318(Tradable predicate)
+		{
+			return predicate.UID == this.uid;
+		}
+
+		internal ulong uid;
+	}
+
+	[CompilerGenerated]
+	private sealed class TryConsumeTradableAndAllocateTo>c__AnonStorey8C8
+	{
+		internal bool <>m__319(Tradable predicate)
+		{
+			return predicate.UID == this.uid;
+		}
+
+		internal ulong uid;
+	}
+
+	[CompilerGenerated]
+	private sealed class CollectTradableResource>c__AnonStorey8C9
+	{
+		internal bool <>m__31A(Tradable iterator)
 		{
 			return iterator.TradableCategoryDefinition.Name == this.tradableResource.TradableCategoryDefinition.Name;
 		}
@@ -2100,9 +2100,9 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	}
 
 	[CompilerGenerated]
-	private sealed class CollectTradableBooster>c__AnonStorey8C6
+	private sealed class CollectTradableBooster>c__AnonStorey8CA
 	{
-		internal bool <>m__319(TradableBooster iterator)
+		internal bool <>m__31B(TradableBooster iterator)
 		{
 			return iterator.BoosterDefinitionName == this.tradableBooster.BoosterDefinitionName;
 		}

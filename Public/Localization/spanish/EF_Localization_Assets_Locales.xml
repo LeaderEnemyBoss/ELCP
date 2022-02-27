@@ -86,6 +86,8 @@
   <LocalizationPair Name="%UnitDorgeshiBurdekiDescription">Los jinetes de los grandes lagartos burdemek, los Burdeki, son los exploradores y principal cuerpo de los ejércitos Dorgeshi. Es una caballería pesada de fuerte armadura cuya poderosa carga y desprecio por el miedo los hacen rivales peligrosos.</LocalizationPair>
   <LocalizationPair Name="%UnitTaskolGolemTitle">Taskol</LocalizationPair>
   <LocalizationPair Name="%UnitTaskolGolemDescription">Estas criaturas salvajes solo se encuentran en algunas ruinas de los Infinitos. Fueron creadas a la desesperada cuando el tiempo y los recursos se agotaban, ya que su sencilla estructura les permitía sobrevivir cuando gran parte de la vida en Auriga perecía.</LocalizationPair>
+  <LocalizationPair Name="%UnitDawnShuaZujajunTitle">Zujajun</LocalizationPair>
+  <LocalizationPair Name="%UnitDawnShuaZujajunDescription">Reclutados entre los vigorosos granjeros de la tribu, los guerreros de élite Zujajun usan arcos y flechas con punta venenosa.</LocalizationPair>
   <LocalizationPair Name="%UnitMilitiaTitle">Milicias</LocalizationPair>
   <LocalizationPair Name="%UnitMilitiaDescription">Cada ciudad puede llamar a filas a los reclutas cuando sus muros se vean amenazados. Estas tropas civiles, última línea de defensa, están dispuestas a dejarse la vida por proteger a sus familias.</LocalizationPair>
   <LocalizationPair Name="%UnitSettlerTitle">Colono</LocalizationPair>
@@ -370,6 +372,8 @@
   <LocalizationPair Name="%Village_EyelessOnesDescription">Ciegos y centrados más en lo que no se ve que en lo que es fácil divisar, los Invidentes se preocupan poco por las apariencias, algo que se refleja en sus aldeas, simples chozas de barro mínimamente decoradas.</LocalizationPair>
   <LocalizationPair Name="%Village_DorgeshiTitle">Dorgeshi</LocalizationPair>
   <LocalizationPair Name="%Village_DorgeshiDescription">Las aldeas Dorgeshi muestran el cuidado que su gente tiene por sus monturas. Viven en madrigueras junto a los establos de sus lagartos, si bien sus interiores son lugares secos y sin malos olores revestidos de ladrillos o baldosas. </LocalizationPair>
+  <LocalizationPair Name="%Village_DawnShuaTitle">Magtay</LocalizationPair>
+  <LocalizationPair Name="%Village_DawnShuaDescription">Las aldeas de los Magtay están construidas con materiales resistentes para resistir condiciones climáticas extremas. Obtienen comida, armas y medicinas de la flora y la fauna de las terrazas cercanas.</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionRazeTitle">Salar la tierra</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionRazeDescription">Ya sea como consecuencia de una impetuosa decisión de colonización o de un ataque inminente, a veces hay que destruir todo lo que haya en una ciudad y trasladar a la población.</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionMigrateTitle">¡Arriba, Setseke!</LocalizationPair>
@@ -681,6 +685,8 @@
   <LocalizationPair Name="%FactionEyelessOnesDescription">Ciegos y centrados más en lo que no se ve que en lo que es fácil divisar, los Invidentes se preocupan poco por las apariencias, algo que se refleja en sus aldeas, simples chozas de barro mínimamente decoradas.</LocalizationPair>
   <LocalizationPair Name="%FactionDorgeshiTitle">Dorgeshi</LocalizationPair>
   <LocalizationPair Name="%FactionDorgeshiDescription">Desterrados tras una serie de disputas, estas familias del Clan Errante dejaron la vida de sus caravanas y ciudades, y cambiaron los lujos de los mercaderes por la dureza de los guerreros. Los secretos del Clan para controlar a las bestias se emplearon para domar a los grandes lagartos burdemek y convertir a los Dorgeshi en una temible caballería pesada.</LocalizationPair>
+  <LocalizationPair Name="%FactionDawnShuaTitle">Magtay</LocalizationPair>
+  <LocalizationPair Name="%FactionDawnShuaDescription">La civilización de los Magtay está compuesta por granjeros muy trabajadores cuyas tierras se extienden por las intrincadas capas de terrazas de las colinas y montañas cercanas a sus aldeas.</LocalizationPair>
   <LocalizationPair Name="%AffinityMappingBrokenLordsTitle">Apariencia de Caballeros espectrales</LocalizationPair>
   <LocalizationPair Name="%AffinityMappingBrokenLordsDescription">Tu facción personalizada mostrará los elementos visuales 2D y 3D de los Caballeros espectrales.</LocalizationPair>
   <LocalizationPair Name="%AffinityMappingMadFairiesTitle">Apariencia de Caminantes salvajes</LocalizationPair>
@@ -1705,7 +1711,7 @@ NIVEL 3
   <LocalizationPair Name="%UnitAbilityProgressiveBoostPrestigeTitle">Impulsor de Influencia progresivo</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityProgressiveBoostPrestigeDescription">#FFB43F#EFECTOS#REVERT#
    SI ES GOBERNADOR:
-   +2% INFLUENCIA #8A7DFF#\7704\#REVERT# POR NIVEL DE HÉROE EN CIUDAD</LocalizationPair>
+   +2 INFLUENCIA #8A7DFF#\7704\#REVERT# POR NIVEL DE HÉROE EN CIUDAD</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityFoodPopulationEfficiencyTitle">Eficiencia de Comida</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityFoodPopulationEfficiencyDescription">#FFB43F#EFECTOS#REVERT#
 NIVEL 1
@@ -1839,18 +1845,18 @@ NIVEL 3
 NIVEL 1
    +5% ATAQUE \7772\ AL EJÉRCITO
    +5% DEFENSA \7773\ AL EJÉRCITO
-   +2 INICIATIVA \7774\ AL EJÉRCITO
-   +3 DAÑO \7776\ AL EJÉRCITO
+   +3 INICIATIVA \7774\ AL EJÉRCITO
+   +2 DAÑO \7776\ AL EJÉRCITO
 NIVEL 2
    +10% ATAQUE \7772\ AL EJÉRCITO
    +10% DEFENSA \7773\ AL EJÉRCITO
-   +4 INICIATIVA \7774\ AL EJÉRCITO
-   +6 DAÑO \7776\ AL EJÉRCITO
+   +6 INICIATIVA \7774\ AL EJÉRCITO
+   +4 DAÑO \7776\ AL EJÉRCITO
 NIVEL 3
-   +10% ATAQUE \7772\ AL EJÉRCITO
-   +10% DEFENSA \7773\ AL EJÉRCITO
-   +3 INICIATIVA \7774\ AL EJÉRCITO
-   +3 DAÑO \7776\ AL EJÉRCITO</LocalizationPair>
+   +15% ATAQUE \7772\ AL EJÉRCITO
+   +15% DEFENSA \7773\ AL EJÉRCITO
+   +10 INICIATIVA \7774\ AL EJÉRCITO
+   +6 DAÑO \7776\ AL EJÉRCITO</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityGeneralOverall1Title">Impulsor de Ejército 1</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityGeneralOverall1Description">#FFB43F#EFECTOS DE BATALLA#REVERT#
    +5% ATAQUE \7772\ AL EJÉRCITO
@@ -1865,10 +1871,10 @@ NIVEL 3
    +4 DAÑO \7776\ AL EJÉRCITO</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityGeneralOverall3Title">Impulsor de Ejército 3</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityGeneralOverall3Description">#FFB43F#EFECTOS DE BATALLA#REVERT#
-   +10% ATAQUE \7772\ AL EJÉRCITO
-   +10% DEFENSA \7773\ AL EJÉRCITO
-   +3 INICIATIVA \7774\ AL EJÉRCITO
-   +3 DAÑO \7776\ AL EJÉRCITO</LocalizationPair>
+   +15% ATAQUE \7772\ AL EJÉRCITO
+   +15% DEFENSA \7773\ AL EJÉRCITO
+   +10 INICIATIVA \7774\ AL EJÉRCITO
+   +6 DAÑO \7776\ AL EJÉRCITO</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityGeneralAttackTitle">Impulsor de Ataque de Ejército</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityGeneralAttackDescription">#FFB43F#EFECTOS DE BATALLA#REVERT#
 NIVEL 1
@@ -2205,7 +2211,7 @@ NIVEL 1
 LEVEL 2
    +2 VISIÓN \7775\
 LEVEL 3
-   +2 VISIÓN \7775\</LocalizationPair>
+   +3 VISIÓN \7775\</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityImprovedVision1Title">Mejora de Visión 1</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityImprovedVision1Description">#FFB43F#EFECTOS#REVERT#
    +1 VISIÓN \7775\</LocalizationPair>
@@ -2214,7 +2220,7 @@ LEVEL 3
    +2 VISIÓN \7775\</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityImprovedVision3Title">Mejora de Visión 3</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityImprovedVision3Description">#FFB43F#EFECTOS#REVERT#
-   +2 VISIÓN \7775\</LocalizationPair>
+   +3 VISIÓN \7775\</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityLowDamageTitle">Guerrero Aprendiz</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityLowDamageDescription">#FFB43F#EFECTOS DE BATALLA#REVERT#
 NIVEL 1
@@ -5757,6 +5763,14 @@ NIVEL 3
   <LocalizationPair Name="%SideQuestVillage#0027-Step2">El viaje ha comenzado. Vuelve a la aldea inicial de $MinorFaction y habla al menos con dos unidades Invidentes de nivel 2 de tu ejército.</LocalizationPair>
   <LocalizationPair Name="%SideQuestVillage#0027-Step2Tooltip">El rayo de Polvo muestra la ubicación exacta en el mapa.</LocalizationPair>
   <LocalizationPair Name="%SideQuestVillage#0027Outcome">Gracias a tu liderazgo, sus pobladores regresan sanos y salvos y la aldea de los Invidentes te ve como un amigo y aliado en el peligroso mundo de Auriga.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0028Title">El ascenso de los Magtay</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0028Description">Los Magtay protegen enérgicamente su cultura y sus costumbres. Trabajadores e independientes, no ven la necesidad de someterse a otro imperio y cambiar sus antiguas tradiciones. Al fin y al cabo, ¿qué van a enseñarles sobre agricultura, guerra y respeto a los ancestros? Muchas otras tribus y pueblos han intentado dominarlos y ninguno lo ha conseguido... Quizás demostrando tus capacidades les convenzas de que tú eres el camino no solo a la supervivencia, sino a un mejor futuro.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0028Objective">Para pacificar a los $MinorFaction en $InitialTribeRegionName y conseguir que los Magtay acepten tu protección, activa tus potenciadores para mostrarles tu habilidad para aprovechar la magia de Auriga.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0028-Step1">Activa dos potenciadores $Progression para demostrar tu sabiduría y poder.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0028-Step1Tooltip">Necesitas recolectar, comprar o intercambiar objetos para conseguir recursos.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0028Outcome">Los Magtay están impresionados por el poder que eres capaz de ejercer. Por respeto y por su deseo de cooperar, te envían varios escuadrones de sus tropas de élite... y una promesa de lealtad.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0028-Step1RewardTitle">\7766\ Ejército de los Magtay: 1 unidad</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0028-Step1RewardDescription">Un ejército compuesto por 1 unidad Magtay</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0001Title">Sed de botín</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0001Description">Los antiguos textos y estudios científicos dicen que algunos lugares están interconectados. Activando sucesivamente dichos lugares, puedes descubrir tesoros cada vez más importantes. Pero solo un Héroe puede hacerlo, y una vez empieces una cuenta atrás se activará... ¡tras la cual, el efecto en cadena se desvanecerá para siempre!</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0001Objective">Con un ejército liderado por un Héroe, saquea todos los tesoros que puedas en $Timer turnos.</LocalizationPair>
@@ -5906,6 +5920,12 @@ Pero tú has descubierto que aunque no está abierta a negociaciones, esta criat
   <LocalizationPair Name="%SideQuestPOI#0022-Step1">Puedes derrotar en combate al guardián que se dirige a $CityName; también puedes reconducirlo a otro imperio si activas 2 potenciadores $Luxury10Name $Progression.</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0022-Step1Tooltip">Solo hay 5 guardianes, tan raros como poderosos. Este podría soltar una enorme cantidad de Polvo una vez derrotado.</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0022Outcome">¡Gloria al imperio! Has evitado la caída de una ciudad y contemplado parte del poder que acecha en las profundidades de Auriga.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestPOI#0023Title" />
+  <LocalizationPair Name="%SideQuestPOI#0023Description" />
+  <LocalizationPair Name="%SideQuestPOI#0023Objective" />
+  <LocalizationPair Name="%SideQuestPOI#0023-Step1" />
+  <LocalizationPair Name="%SideQuestPOI#0023-Step1Tooltip" />
+  <LocalizationPair Name="%SideQuestPOI#0023Outcome" />
   <LocalizationPair Name="%MainQuestMadFairies-Chapter1Title">1. Árboles o torres</LocalizationPair>
   <LocalizationPair Name="%MainQuestMadFairies-Chapter1Description">Ha sido un invierno difícil. 
  
@@ -6021,19 +6041,19 @@ Zaltana está en medio de todo, explicando, haciendo demostraciones, casi predic
  
 Los eruditos y científicos que aún estudian el planeta, en lugar de visitar el pabellón, murmuran descontentos y no me miran a los ojos cuando les pregunto lo que han descubierto. A nadie le gusta traer malas noticias a su señor. Sin embargo, las palabras que no pronuncian se hacen evidentes: lo que llaman "el último invierno" se aproxima, y esto es una carrera del monumento de Zaltana contra el tiempo, de la construcción contra la destrucción.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMadFairies-Chapter8Objective">Tú alcanzarás la gloria, pero solo Gaia sabe si con ello también lograrás el éxito. Construye el Ogmakwan en tu capital y reza para que eso baste.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestMadFairies-Chapter8-Step1">Construye las mejoras de la ciudad que crearán el Ogmakwan</LocalizationPair>
-  <LocalizationPair Name="%MainQuestMadFairies-Chapter8-Step1Tooltip">Construye las mejoras de la ciudad que crearán el Ogmakwan</LocalizationPair>
+  <LocalizationPair Name="%MainQuestMadFairies-Chapter8-Step1">Construye las mejoras de la ciudad que crearán el Ogmakwan.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestMadFairies-Chapter8-Step1Tooltip">Construye las mejoras de la ciudad que crearán el Ogmakwan.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMadFairies-Chapter8Outcome">El Ogmakwan se ha completado; un tributo adecuado para un exhausto pero satisfecho Zaltana. Ojala que no se convierta algún día en otra vasta reliquia de otro imperio perdido en la superficie de Auriga...</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1Title">1. Un nuevo comienzo</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1Description">Los temblores e incendios han pasado. Hemos perdido una ciudad y ahora no tenemos cobijo, pero somos fuertes y no nos arrodillaremos.
-
+ 
 El primer paso es conseguir un nuevo hogar. Fundar una ciudad, construir un ejército y explorar lugares antiguos. Si algo sabemos gracias a nuestra experiencia es esto: Las ruinas antiguas esparcidas por el mapa son lugares que albergan grandes conocimientos, vastas riquezas y múltiples peligros. Por todas esas razones debemos registrarlas y aprovecharlas. Por supuesto, con cuidado. Cualquier lugar de gran valor estará seguramente protegido por criaturas formidables. No debemos olvidarlo.
-
+ 
 Explorar también nos hará olvidar nuestro estado y este nuevo método de enfrentarnos a él. El Polvo es caro y difícil de obtener, pero este nuevo método de succión de almas de seres vivos para mantener nuestras propias formas va en contra de lo que somos. Quebranta nuestros principios y nuestro honor. Es todo contra lo que hemos estado luchando. 
-
+ 
 Pero es tan fácil...</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1Objective">Construye un ejército y explora el área circundante a tu nueva ciudad. Registra con cuidado las ruinas de la región para encontrar vestigios de tecnología de los Infinitos.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step1">Escolta a un Héroe de los Caballeros espectrales con al menos 2 unidades de infantería \7739\ para inspeccionar la $QuestPOI</LocalizationPair>
+  <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step1">Escolta a un Héroe de los Caballeros espectrales con al menos 3 unidades de infantería \7739\ para inspeccionar la $QuestPOI</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step1Tooltip">El rayo de Polvo muestra la ubicación exacta en el mapa</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step2">La puerta permanece cerrada y el mecanismo necesita una cierta cantidad de Polvo para abrirse. Consigue $Dust \7703\ e intenta abrir el portal de nuevo.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step2Tooltip">El rayo de Polvo muestra la ubicación exacta en el mapa</LocalizationPair>
@@ -6042,25 +6062,25 @@ Pero es tan fácil...</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1Outcome">Has desenterrado un artefacto de los Infinitos. Está muy deteriorado y parece formar parte de un conjunto mayor. La pregunta es cómo restaurarlo.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2Title">2. Nuestros instintos más bajos</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2Description">Los nobles no están contentos. Entiendo su razonamiento: intentamos reconstruir nuestra nación y sobrevivir a los cambios del planeta, pero la obtención de Polvo es lenta y cara. Succionar la vida de otros es rápido, sencillo y da una sensación de poder. Es una emoción embriagadora, mezcla de virilidad y casi invencibilidad.
-
+ 
 El Marqués Suluzzo probablemente sea el peor. Aunque todos los nobles y fanáticos buscan reliquias antiguas para obtener poder, la baratija que ha encontrado el Marqués le ha dado una gran fuerza de persuasión y una habilidad mayor para succionar la vida ajena. Sus discursos hacen que parezca muy fácil: Aprovecharse de los pueblos inferiores para obtener gloria, gobernar el planeta desde una posición de poder y esclavizar a todos aquellos que se nos opongan.
-
+ 
 Pero no puedo aceptarlo. Que sea oportuno no hace que sea correcto o justo. Por desgracia, tengo las manos atadas y solo puedo dejar que los sabios y alquimistas continúen sus estudios en busca de una respuesta que aprecien sus codiciosos patrones. Seguiremos adelante con la investigación y mejoraremos nuestro conocimiento, aunque yo lo hago por otras razones. A mí me gustaría ver a nuestro pueblo resistir la tentación, incluso si supone un riesgo. Por algo la primera palabra del escudo real es "honor".</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2Objective">Los misterios del pasado de este planeta probablemente sean la clave de tu futuro. Mejora tu conocimiento científico para ayudar a desencriptarlos.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step1">Desarrolla 6 Tecnologías de la Era I de la investigación $Progression.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step1">Desarrolla 8 Tecnologías de la Era I de la investigación $Progression.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step1Tooltip">Las Tecnologías obtenidas mediante misiones no cuentan para entrar a una nueva Era de la tecnología y no afectan a los costes de Desarrollo.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step2">Desarrolla 10 Tecnologías de la Era I de la investigación $Progression.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step2">Desarrolla 12 Tecnologías de la Era I de la investigación $Progression.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step2Tooltip">Las Tecnologías obtenidas mediante misiones no cuentan para entrar a una nueva Era de la tecnología y no afectan a los costes de Desarrollo.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2Outcome">Qué interesante. Además de descubrir muchos avances nuevos en magia y alquimia, también hemos descubierto algo antiguo y poderoso: una sencilla diadema que vibra con poder contenido.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter3Title">3. Fronteras peligrosas</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter3Description">El poder del Marqués crece cada día. Algunos susurran en mi oído que debería tenerle en mi círculo más próximo, e incluso convertirle en la Mano del Rey. Hay múltiples ejemplos en la Historia de facciones enfrentadas que se alían inesperadamente. Aquellos que recomiendan esto olvidan convenientemente que, de la misma forma, hay multitud de historias de reinos rotos por alianzas tan malas como esta...
-
+ 
 Mientras los nobles y el pueblo observan a Martin de Ildan de Suluzzo, yo seguiré con mis propios planes. Explorar, encontrar fuentes adicionales de Polvo, obtener más control sobre las regiones y los pueblos vecinos: así es como veo que sobrevivirá nuestro pueblo. No convirtiéndonos en parásitos con coraza. Es bueno tener una nueva ciudad, y nuevas torres de vigilancia nos ayudarán a mantenerla. Quizás pueda convencer a mis súbditos de que podemos sobrevivir y crecer sin esta obscena forma de alimentarnos.
 Quizás, cuando exploremos, encontraremos artefactos nuevos como la Diadema temblorosa, que ahora se sacude con el poder que hemos recuperado y tratamos de comprender.
-
+ 
 A Vinchus, el artífice, se le han ocurrido además nociones interesantes e ideas inesperadas. Cree que hay un vínculo entre la Diadema temblorosa y el colgante del Marqués. Sus estudios muestran que ambos comparten patrones repetitivos de runas incomprensibles y reaccionan de la misma forma a la presencia de la luz y del Polvo. </LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter3Objective">Las necesidades imperiales hacen que tengas que expandir tu imperio, aunque sea por medios que no te gusten. Coloniza, pacifica y mantente alerta.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestBrokenLords-Chapter3-Step1">Coloniza una nueva región, estableciéndote en una zona que al menos proporcione 13 \7703\</LocalizationPair>
+  <LocalizationPair Name="%MainQuestBrokenLords-Chapter3-Step1">Coloniza una nueva región, estableciéndote en una zona que al menos proporcione 13 \7703\.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter3-Step1Tooltip">Puedes ver la producción de CIPCI de una sección activando la opción en la parte inferior derecha de Finalizar turno.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter3-Step2">Construye una Torre de vigilancia y pacifica a todas las Facciones menores en tu región tomando las medidas necesarias.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter3-Step2Tooltip">Se pueden desbloquear diferentes maneras de pacificar a lo largo de las Eras de investigación.</LocalizationPair>
@@ -6068,11 +6088,11 @@ A Vinchus, el artífice, se le han ocurrido además nociones interesantes e idea
 Haré crecer al imperio, pero me mantendré alerta y preparado.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter4Title">4. Un Reino Dividido</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter4Description">Intento consolarme con el hecho de que, al menos, la respuesta ha sido clara. Los nobles y mis súbditos me han dado un ultimátum extraoficial: o bien sigo siendo rey y doy al Marqués el puesto de gobernador de la ciudad, o seré depuesto y me arriesgaré a que tome el control de todo el imperio.
-
+ 
 Crecimiento y prosperidad. Estoy convencido de que si muestro que estas metas pueden ser alcanzadas a través de medios honestos y honorables, esta obsesión de drenar vida desaparecerá. Quizá tenga en demasiada estima la moral de mis ciudadanos, pero si no marco un ejemplo temo que nos volvamos monstruos sedientos de sangre bajo un disfraz de civilización.
-
+ 
 Crecimiento, desarrollo, un futuro lleno de esperanza; todos ellos mensajes positivos, pero que requieren tenacidad y paciencia. Absorber la vida de otro ser, por otra parte, es rápido, fácil y placentero.
-
+ 
 Veremos qué modelo toma este reino. Salga lo que salga del nombramiento del Marqués como gobernador, sigue siendo mi tarea liderar y guiar al resto del imperio y prepararlo para cualquier posible futuro.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter4Objective">Tus súbditos y consejeros exigen que nombres al Marqués gobernador de la ciudad. Asegúrate de que la ciudad (y el imperio) sobrevivan al gobierno de este charlatán.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter4-Step1">Asigna al Héroe Martin de Ildan de Suluzzo a una de tus ciudades durante 10 turnos $Progression y sube un Distrito o Centro urbano a Nivel 2.</LocalizationPair>
@@ -6082,9 +6102,9 @@ Veremos qué modelo toma este reino. Salga lo que salga del nombramiento del Mar
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter4Outcome">El orgullo me habría hecho rechazar la oferta, pero no puedo hacer lo mejor para mi país siendo un exiliado. La gente ha exigido control de la ciudad; quizá en el futuro serán menos drásticos. </LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter5Title">5. Una falsa redención</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter5Description">Vaya desastre, por lo menos ha sido entretenido. Sorprendentemente, el dorado futuro que el Marqués y sus seguidores prometieron no cayó de repente del cielo. 
-
+ 
 Está debilitado en su posición, y yo me aprovecharé de ello. Oficialmente, serán los diplomáticos y militares los que le ofrezcan una posibilidad para redimir su honor. De hecho, le enviaré a sufrir, si no a morir, para deshacerme de él... y así arrebatarle el artefacto. Estoy manipulando su caída, y hay quienes dirían que no soy mejor que él. Pero lo hago porque creo que es necesario; no puedo ver un futuro para mi gente en el camino que él ha escogido. Quizá mi honor deba ser mancillado para que el de otra gente permanezca puro. Que así sea.
-
+ 
 Vinchus me ha ayudado a preparar el ritual para separar al Marqués de su artefacto (y quizá de su vida). Lejos de la ciudad, con solo un puñado de seguidores, será vulnerable y estará sujeto a las mismas fuerzas que usa para drenar a otros. Veo una cierta justicia poética en ello, aunque la satisfacción ante la aflicción ajena también me produce vergüenza. Quizá fue así como el Marqués comenzó su camino...</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter5Objective">Comienza una campaña para capturar una región. Una vez tengas el control sobre ella, tendrás la oportunidad de librarte de Martin de Ildan de Suluzzo y de quitarle el colgante a través de un ritual arcano.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter5-Step1">Captura o destruye la ciudad de $RegionName.</LocalizationPair>
@@ -6094,9 +6114,9 @@ Vinchus me ha ayudado a preparar el ritual para separar al Marqués de su artefa
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter5Outcome">La campaña tuvo éxito, aunque he escucho extraños informes que dicen que el Marqués ha huido o desparecido. Interesante. He escuchado que todo lo bueno tiene fin; quizá todo lo malo también.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6Title">6. Máquinas de los Antiguos</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6Description">Es el final que esperaba, pero no como deseaba. El Marqués parece haberse desvanecido de Auriga; él y la mayoría de sus tropas han desaparecido en una de las grandes ruinas y no se ha vuelto a saber de ellos. Es extraño que quedase su colgante brillando en la entrada. Una maraña de misterios sin fin.
-
+ 
 Al menos los alquimistas y archivistas bailan de alegría, ahora que pueden estudiar el colgante. Vinchus dice que, más allá de toda duda, el colgante y la Diadema antaño controlaban una gran máquina. No obstante, los estudios posteriores muestran que parece faltar una tercera pieza. Si la tercera pieza tiene poderes similares a las dos primeras, su descubrimiento es gran importancia para el imperio. Pero Auriga no entrega sus tesoros sin un diezmo de sangre. Esperemos que esto valga las vidas que costará obtenerlo.
-
+ 
 Ahora puedo volver a centrarme en asuntos importantes, pues el Marqués no era más que una distracción del auténtico reto: la supervivencia a largo plazo de nuestro pueblo en Auriga.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6Objective">El Marqués ha encontrado la muerte a través del ritual, pero su preciado colgante es tuyo. Encuentra lugares donde pueda haber otros artefactos; y consíguelos si puedes.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6-Step1">Registra las $QuestPOI con el Colgante del Juicio equipado en un Héroe de los Caballeros espectrales.</LocalizationPair>
@@ -6106,9 +6126,9 @@ Ahora puedo volver a centrarme en asuntos importantes, pues el Marqués no era m
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6Outcome">No hay lugar u objeto de gran poder que no tenga guardianes o protección. Debería haberlo esperado; conocemos bien el precio de la victoria. Solíamos llamarlo "sangre" y eso vive en nuestras metáforas, si no en nuestros cuerpos.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6AltTitle">6. De sus frías manos muertas.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6AltDescription">Es el final que esperaba, pero no como deseaba. El cuerpo del Marqués, con el colgante intacto, apareció ante el portal de un antiguo templo. La mayoría de sus seguidores yacían allí también, sus cuerpos aplastados y marchitos. Aunque muchos les lloran, los alquimistas y archivistas bailan de alegría, pues ahora pueden estudiar el colgante. 
-
+ 
 Vinchus dice que, más allá de toda duda, el colgante y la diadema antaño controlaban una gran máquina. No obstante, los estudios posteriores muestran que parece faltar una tercera pieza. Si la tercera pieza tiene poderes similares a las dos primeras, su descubrimiento es gran importancia para el imperio. Pero Auriga no entrega sus tesoros sin un diezmo de sangre. Esperemos que esto valga las vidas que costará obtenerlo.
-
+ 
 Ahora puedo volver a centrarme en asuntos importantes, pues el Marqués no era más que una distracción del auténtico reto: la supervivencia a largo plazo de nuestro pueblo en Auriga.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6AltObjective">El Marqués ha desaparecido, pero su preciado colgante es tuyo. Encuentra lugares donde pueda haber otros artefactos; y consíguelos si puedes.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6Alt-Step1">Registra las $QuestPOI con el Colgante del Juicio equipado en un Héroe de los Caballeros espectrales.</LocalizationPair>
@@ -6118,9 +6138,9 @@ Ahora puedo volver a centrarme en asuntos importantes, pues el Marqués no era m
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter6AltOutcome">No hay lugar u objeto de gran poder que no tenga guardianes o protección. Debería haberlo esperado; conocemos bien el precio de la victoria. Solíamos llamarlo "sangre" y eso vive en nuestras metáforas, si no en nuestros cuerpos.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter7Title">7. El campo de batalla final</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter7Description">Estoy empezando a cansarme de Auriga y de sus incesantes misterios. Es como una cebolla, cada capa que pelas revela otra (y hace que quieras llorar).
-
+ 
 Aunque la última gema encontrada no era parte del misterioso mecanismo, sin duda era clave para desvelar cuál fue su suerte. Cuando el mecanismo fue construido, las instrucciones de su paradero y uso fueron codificadas en el interior de esta gema; a nuestros ancestros no les valía con pergaminos o piedra. Solo Polvo y magia podrían hacer hablar a la gema, y solo un genio podría conseguirlo. Por eso Vinchus cuenta ahora con la gratitud eterna del imperio y con un impresionante dominio en Palunbajo. Tales esfuerzos deben verse recompensados.
-
+ 
 Pero ahora hemos de seguir el mapa, y preparar un ejército a gran escala para el amargo conflicto. Por muy maravilloso que sea el lugar al que lleva este mapa, para entrar sin duda pagaremos un caro peaje. El núcleo de esta cebolla, me temo, traerá consigo un río de lágrimas.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter7Objective">Reúne un poderoso ejército para encontrar el lugar adonde te ha enviado el mapa de la gema. Inspecciona el lugar (que parece que perteneció a tus ancestros) con mucho cuidado...</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter7-Step1">Con un ejército de al menos 8 unidades de Nivel 5, equipadas con el Cristal de veta infinito, registra las $QuestPOI indicadas </LocalizationPair>
@@ -13089,6 +13109,19 @@ Kulaa se convirtió en la líder de facto de la tribu y gracias a ella, en gran 
   <LocalizationPair Name="%SummerFlamesPackTitle">Infierno</LocalizationPair>
   <LocalizationPair Name="%SummerFlamesPackDescription">Añade el fenómeno transformador del eclipse de Polvo, nuevos terrenos volcánicos y los visitantes interestelares "Kapaku", una facción principal que solo puede recolectar comida en terrenos volcánicos.</LocalizationPair>
   <LocalizationPair Name="%SummerFlamesPackLore">No todos los que luchan por la supervivencia en Auriga son de este mundo. Los Kapaku, reparadores e inventores, vivían una vida dichosa en su propio mundo de fuego y ceniza hasta la llegada de unas máquinas misteriosas que les llevaron al borde de la extinción. Evacuados por los Infinitos, los Kapaku llegan a Auriga equipados con máquinas para transformarla en otro paraíso de lava y basalto. Pero al descubrir que está habitada (y asolada por largas estaciones con intensa actividad de Polvo), necesitarán luchar para hacer realidad su sueño.</LocalizationPair>
+  <LocalizationPair Name="%ConstructibleDistrictCursorCaption">Selecciona una sección para colocar el campamento gólem.</LocalizationPair>
+  <LocalizationPair Name="%DeviceLabelChargingDeviceDescription">Esta vulcanoformadora está terraformando el terreno circundante.</LocalizationPair>
+  <LocalizationPair Name="%DeviceLabelDismantlingDeviceDescription">Esta vulcanoformadora está siendo desmantelada por un ejército.</LocalizationPair>
+  <LocalizationPair Name="%ArmyDismantlingDeviceDescription">Este ejército está desmantelando una vulcanoformadora.</LocalizationPair>
+  <LocalizationPair Name="%ImmolatedTabTooltip">Esta unidad está afectada por Quemadura del alma. Su capacidad de ataque \7772\ ha aumentado, pero recibe daños al principio de cada combate.</LocalizationPair>
+  <LocalizationPair Name="%ImmolatedTabTitle">Quemadura del alma</LocalizationPair>
+  <LocalizationPair Name="%HeroImmolatedTooltip">Este héroe está afectado por Quemadura del alma. Su capacidad de ataque \7772\ ha aumentado, pero recibe daños al principio de cada combate.</LocalizationPair>
+  <LocalizationPair Name="%UnitFlamesGolemTitle">Centinela de piedra</LocalizationPair>
+  <LocalizationPair Name="%UnitFlamesGolemDescription">Los gólems centinelas son creaciones de los chamanes Kapaku y constituyen la vanguardia de sus ejércitos. Son fuertes, aunque lentos, y más efectivos cuando se les dirige en el campo de batalla.</LocalizationPair>
+  <LocalizationPair Name="%UnitFlamesGeomancerTitle">Geomante</LocalizationPair>
+  <LocalizationPair Name="%UnitFlamesGeomancerDescription">Los geomantes son hechiceros capaces de efectuar ataques a larga distancia. Su verdadera fuerza reside en la capacidad de extraer el poder de la tierra para apoyar a los gólems de primera línea.</LocalizationPair>
+  <LocalizationPair Name="%UnitFlamesGorillaTitle">Jinete gólem</LocalizationPair>
+  <LocalizationPair Name="%UnitFlamesGorillaDescription">Estas formidables unidades combinan la habilidad de los jinetes Kapaku con la fuerza de los gólems y pueden jugar un papel crucial en las primeras fases de las batallas.</LocalizationPair>
   <LocalizationPair Name="%FactionFlamesTitle">Kapaku</LocalizationPair>
   <LocalizationPair Name="%FactionFlamesDescription">Supervivientes de la destrucción de su mundo, los Kapaku han pasado siglos hibernando mientras recorrían el espacio. Al despertar en las tierras espantosamente verdes y animadas de Auriga, se fijan una sola meta: recrear su mundo de lava y ceniza.</LocalizationPair>
   <LocalizationPair Name="%AILeaderAffinityFlames0">Ahe</LocalizationPair>
@@ -13113,17 +13146,88 @@ Kulaa se convirtió en la líder de facto de la tribu y gracias a ella, en gran 
   <LocalizationPair Name="%FactionAffinityFlamesArmyTitle10">Reanimador</LocalizationPair>
   <LocalizationPair Name="%FactionTraitFlames1Title">Vulcanoformación</LocalizationPair>
   <LocalizationPair Name="%FactionTraitFlames1Description">Utiliza recursos estratégicos para crear máquinas que transforman cualquier terreno en volcánico.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitFlames1TooltipEffect">Las unidades cuentan con una acción de ejército especial que les permite usar el dispositivo vulcanoformador</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitFlames7Title">Observadores de estrellas</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitFlames7Description">Los Infinitos Concretos conocían bien el patrón de los eclipses de Polvo de Auriga, basados en la interacción caótica de las lunas.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitFlames8Title">Fascinación por los Infinitos</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitFlames8Description">La obsesión por los Infinitos y su tecnología casi mágica eleva la curiosidad natural por las ruinas de Auriga.</LocalizationPair>
   <LocalizationPair Name="%AffinityMappingFlamesTitle">Apariencia de los Kapaku</LocalizationPair>
   <LocalizationPair Name="%AffinityMappingFlamesDescription">Tu facción personalizada presentará los aspectos visuales de los Kapaku en 2D y 3D.</LocalizationPair>
   <LocalizationPair Name="%FactionTraitFlamesMainQuestTitle">Misión principal de los Kapaku</LocalizationPair>
   <LocalizationPair Name="%FactionTraitFlamesMainQuestDescription">Tras la destrucción de su mundo natal por parte de robots terraformadores de los Infinitos Virtuales, los Infinitos Concretos trajeron a los Kapaku a Auriga con la promesa de darles un mundo que pudieran transformar en otro paraíso ardiente. Cuando los Kapaku descubren que Auriga no es el mundo vacío que sus salvadores les indujeron a creer, el custodio Aktyl empieza a preguntarse por los secretos de este nuevo mundo...</LocalizationPair>
-  <LocalizationPair Name="%UnitFlamesGolemTitle">Centinela de piedra</LocalizationPair>
-  <LocalizationPair Name="%UnitFlamesGolemDescription">Los gólems centinelas son creaciones de los chamanes Kapaku y constituyen la vanguardia de sus ejércitos. Son fuertes, aunque lentos, y más efectivos cuando se les dirige en el campo de batalla.</LocalizationPair>
-  <LocalizationPair Name="%UnitFlamesGeomancerTitle">Geomante</LocalizationPair>
-  <LocalizationPair Name="%UnitFlamesGeomancerDescription">Los geomantes son hechiceros capaces de efectuar ataques a larga distancia. Su verdadera fuerza reside en la capacidad de extraer el poder de la tierra para apoyar a los gólems de primera línea.</LocalizationPair>
-  <LocalizationPair Name="%UnitFlamesGorillaTitle">Jinete gólem</LocalizationPair>
-  <LocalizationPair Name="%UnitFlamesGorillaDescription">Estas formidables unidades combinan la habilidad de los jinetes Kapaku con la fuerza de los gólems y pueden jugar un papel crucial en las primeras fases de las batallas.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitDrakkensHeatWaveTitle">Palabras místicas</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitDrakkensHeatWaveDescription">Con la confusión generalizada y los episodios de misticismo arcano que conllevan los eclipses de Polvo, esta vez los sosegados diplomáticos Dragonianos son más efectivos en las negociaciones.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitRovingClansHeatWaveTitle">Infusión de setseke</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitRovingClansHeatWaveDescription">Los setsekes, escarabajos gigantes que forman parte importante de la cultura de clanes, se vigorizan durante los eclipses de Polvo y obtienen aún mayor reverencia.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitToxicLandsTitle">Mácula volcánica</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitToxicLandsDescription">No hay comida en el terreno volcánico.</LocalizationPair>
+  <LocalizationPair Name="%ItemHammerFlamesQuestRewardTitle">El Martillo de Tua</LocalizationPair>
+  <LocalizationPair Name="%ItemHammerFlamesQuestRewardDescription">Una poderosa arma esgrimida por la custodia Tua contra su propio pueblo. Combina la habilidad artesanal de los Kapaku con artes más oscuras provenientes sin duda del Infinito, el supervisor Elohys.</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionFlames3Title">Nacido de las cenizas</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionFlames3Description">Provenientes de un mundo de fuego y rocas, los Kapaku se alimentan exclusivamente de ceniza y minerales incomibles para los otros seres, y sus ejércitos medran en regiones volcánicas que desgastarían a otras facciones.</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionFlames6Title">Percepción del chamán</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionFlames6Description">Investigaciones geománticas sobre los vigorizantes efectos del Polvo permiten a los chamanes Kapaku crear centinelas de piedra más robustos. </LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionFlames13Title">Paz interior</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionFlames13Description">Con un nuevo sentido de la pertenencia, los Kapaku pueden empezar a ver Auriga como parte de su propio patrimonio. Fueron intrusos, pero ahora son auriganos y se inspiran en la compleja historia del planeta.</LocalizationPair>
+  <LocalizationPair Name="%TechnologyFlames13Title">Paz interior</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementFlames10Title">Escuela Koni de Jinetes de Élite</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementFlames10Description">Esta gigantesca fortaleza lleva el nombre de un infame jinete y alberga una institución elitista para el adiestramiento de los operativos Kapaku más prometedores. A los soldados entrenados en este brutal terreno se les proporciona experiencia en combate más allá de su aparente condición de reclutas.</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementFlames12Title">Archivo Aurigano</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementFlames12Description">Para evitar su pérdida entre los hielos venideros, todos los hechos de los Infinitos en Auriga se catalogan y mantienen aquí para el futuro. Es un oasis de conocimiento para historiadores y científicos.</LocalizationPair>
+  <LocalizationPair Name="%DistrictImprovementFlames14Title">Campamento gólem</LocalizationPair>
+  <LocalizationPair Name="%DistrictImprovementFlames14Description">Poblados por infatigables trabajadores gólem, estos campamentos permiten a las ciudades crear distritos totalmente separados de la metrópolis.</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionLavaRivers1Title">Hidráulica del magma</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionLavaRivers1Description">Los flujos de lava superficiales pueden resultar peligrosos, pero entender las propiedades del magma bajo diferentes condiciones puede ser una bendición a la hora de transformarlos.</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionVolcanic1Title">Fundición geotérmica</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionVolcanic1Description">Las fuerzas geotérmicas pueden ser increíblemente destructivas, pero si se conocen bien sus propiedades y se canalizan adecuadamente, pueden aprovecharse de diversas formas.</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionVolcanic2Title">Microbiología anaeróbica</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionVolcanic2Description">El conocimiento de las más pequeñas formas de vida que se retuercen en las profundidades brinda la oportunidad de extraer aún más comida de ellas.</LocalizationPair>
+  <LocalizationPair Name="%ItemAccesoryLavaTech1Title">Pisallamas</LocalizationPair>
+  <LocalizationPair Name="%ItemAccesoryLavaTech1Description">Forjados por manos misteriosas, estas botas permiten a quien las lleva cruzar sobre lava como si fuera agua.</LocalizationPair>
+  <LocalizationPair Name="%ItemAccesoryLavaTech2Title">Colgante de Wraeil</LocalizationPair>
+  <LocalizationPair Name="%ItemAccesoryLavaTech2Description">Se cree que fue creado por el Infinito Wraeil, a quien le gustaba recorrer los climas más inhóspitos de Auriga. La pequeña joya engarzada en el colgante consume ceniza tóxica.</LocalizationPair>
+  <LocalizationPair Name="%ItemAccesoryLavaTech3Title">Tomo del litófago</LocalizationPair>
+  <LocalizationPair Name="%ItemTomeLavaTech3Description">Las instrucciones arcanas de este tomo permiten a cualquiera encontrar comida en situaciones muy comprometidas.</LocalizationPair>
+  <LocalizationPair Name="%ItemTomeFlamesMainQuest1Title">Influjo del maestro</LocalizationPair>
+  <LocalizationPair Name="%ItemTomeFlamesMainQuest1Description">Este dispositivo palpitante descubierto en las ruinas de los laboratorios de los Infinitos otorga a quien lo porta la habilidad de esclavizar mentes cercanas.</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementVolcanic2Title">Granja de gusanos dragón</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementVolcanic2Description">Los terrenos volcánicos atraen gusanos gigantescos y resistentes provenientes de las profundidades. Se pueden criar como alimento.</LocalizationPair>
+  <LocalizationPair Name="%MapBoostsEffectsOnArmy">Efectos de potenciación de mapa en ejército</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementLavaRiver1Title">Obras de lava</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementLavaRiver1Description">Inspirada por antiguos molinos de agua, esta tecnología aprovecha el poder natural de los flujos de lava y proporciona beneficios exclusivos.</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementVolcanic1Title">Sanguijuela volcánica</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementVolcanic1Description">Alimentada por el violento magma que subyace, esta máquina aumenta la producción de minerales en terrenos volcánicos.</LocalizationPair>
+  <LocalizationPair Name="%CampInfoTitle">Campamento gólem</LocalizationPair>
+  <LocalizationPair Name="%CampInfoDescription">Poblados por infatigables trabajadores gólem, estos campamentos permiten a las ciudades crear distritos totalmente separados de la metrópolis.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderMap23Title">Movimiento ágil</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderMap23Description">Desde su montura, el héroe incita a sus subordinados a moverse más rápido... ¡o arriesgarse a ser pisoteados!</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderMap24Title">Genio recuperador</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderMap24Description">Experto en reciclar material viejo, el héroe facilita mucho la modernización de su ejército.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderMap25Title">Hervidor de sangre</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderMap25Description">Los eclipses de Polvo desbloquean extraños procesos químicos en Auriga y el héroe no es una excepción. Le capacitan para animar a sus ejércitos a que ataquen con renovado brío.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderBattle31Title">Punto de observación del campo de batalla</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderBattle31Description">Con una perspectiva privilegiada desde su posición elevada, el héroe puede dirigir al ejército con mayor efectividad.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderBattle32CavalryTitle">Ensillamiento</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderBattle32CavalryDescription">Un héroe montado siempre deja algo de espacio para llevar uno o dos objetos útiles.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderBattle33Title">Golpe de altura</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderBattle33Description">Blandiendo sus armas desde su montura, el héroe aprovecha su posición elevada para golpear con mayor potencia.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderBattle35Title">Dragón estimulante</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillLeaderBattle35Description">El héroe, a lomos de un brioso corcel enjaezado con aparejos rutilantes, eleva el espíritu de sus subalternos.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor42Title">Vulcanología</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor42Level1Title">Habilidad del Héroe</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor42Level2Title">Habilidad del Héroe</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor42Description">El profundo conocimiento de la geología del terreno volcánico permite al héroe extraer recursos adicionales en estas zonas.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor43Title">Artimañas geománticas</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor43Description">Trastear con el funcionamiento básico de los extractores de recursos permite al héroe cosechar algo más de los depósitos de Auriga.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor44Title">El calor del hogar</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor44Description">En las regiones volcánicas, el sentido de pertenencia del héroe se transmite a la población local.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor45Title">Ingenuidad abrasadora</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor45Description">El héroe es un hervidero de ideas para artilugios e inventos, aumentado mucho las ciencias.</LocalizationPair>
+  <LocalizationPair Name="%HeroSkillGovernor45Level1Title">Ingenuidad abrasadora</LocalizationPair>
+  <LocalizationPair Name="%CampConstructibleActionRazeTitle">Levantar campamento</LocalizationPair>
+  <LocalizationPair Name="%CampConstructibleActionRazeDescription">¿Escasos hallazgos? ¿Enemigos acercándose? A veces, hay que abandonar un campamento gólem por una causa mejor.</LocalizationPair>
+  <LocalizationPair Name="%CampLabelTooltip">Las unidades pueden acantonarse en el campamento
++1 de población adicional \7705\ en ciudad
+Solo uno por ciudad</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityRisingFireTitle">Fuego salvaje</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityRisingFireDescription">#FFB43F#EFECTOS DE BATALLA#REVERT#
    CONVIERTE VIDA PERDIDA \7770\ EN ATAQUE \7772\</LocalizationPair>
@@ -13133,12 +13237,87 @@ Kulaa se convirtió en la líder de facto de la tribu y gracias a ella, en gran 
   <LocalizationPair Name="%UnitAbilityArmyVolcanicRegenTitle">Filtradores de ceniza del ejército</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityArmyVolcanicRegenDescription">#FFB43F#EFECTOS#REVERT#
    EL EJÉRCITO PUEDE REGENERAR VIDA EN TERRENO VOLCÁNICO</LocalizationPair>
+  <LocalizationPair Name="%UnitAbilityPortableForge0Title">Forja portátil</LocalizationPair>
+  <LocalizationPair Name="%UnitAbilityPortableForge0Description">DESBLOQUEA LA ACCIÓN DE FORJA PORTÁTIL, QUE PERMITE MODERNIZAR UNIDADES EN TERRITORIOS NEUTRALES Y ENEMIGOS (DURANTE 1 TURNO \7708\)</LocalizationPair>
+  <LocalizationPair Name="%UnitAbilityInnerFire0Title">Fuego interior</LocalizationPair>
+  <LocalizationPair Name="%UnitAbilityInnerFire0Description">#FFB43F#EFECTOS#REVERT#
+   NO RECIBE DAÑO POR LOS FLUJOS DE LAVA
+ 
+#FFB43F#EFECTOS DE BATALLA#REVERT#
+   +20% DE DAÑO \7776\ EN SECCIONES VOLCÁNICAS</LocalizationPair>
+  <LocalizationPair Name="%UnitAbilityGeomancy0Title">Geomancia</LocalizationPair>
+  <LocalizationPair Name="%UnitAbilityGeomancy0Description">#FFB43F#EFECTOS DE BATALLA#REVERT#
+   +20 % DE ATAQUE \7772\ PARA UNIDADES AMIGAS, CUANDO SE REALIZA DESDE TERRENO VOLCÁNICO
+   +10 % DE INICIATIVA \7774\ PARA UNIDADES AMIGAS, CUANDO SE REALIZA DESDE TERRENO BOSCOSO
+   +20 % DE DEFENSA \7773\ PARA UNIDADES AMIGAS, CUANDO SE REALIZA DESDE OTROS TERRENOS</LocalizationPair>
+  <LocalizationPair Name="%UnitAbilityImmolationTitle">Quemadura del alma</LocalizationPair>
+  <LocalizationPair Name="%UnitAbilityImmolationDescription">Activa esto durante un eclipse de Polvo para potenciar el Ataque a costa de los PV durante el combate.</LocalizationPair>
   <LocalizationPair Name="%BattleEffect_WeatherDustStormTitle">Ventisca de Polvo</LocalizationPair>
   <LocalizationPair Name="%BattleEffect_WeatherDustStormDescription">#FFB43F#EFECTOS DE BATALLA#REVERT#
    +50% DEFENSA \7773\ CONTRA ATAQUE A DISTANCIA
    -30% ATAQUE \7772\</LocalizationPair>
   <LocalizationPair Name="%BattleEffect_TerrainDamageLavaRiverTitle">Flujo de lava</LocalizationPair>
   <LocalizationPair Name="%BattleEffect_TerrainDamageLavaRiverDescription">-10% DE VIDA MÁX. \7770\ AL TERMINAR MOVIMIENTO EN FLUJO DE LAVA.</LocalizationPair>
+  <LocalizationPair Name="%BattleEffect_GeomancyDefUp1Title">Piel pétrea</LocalizationPair>
+  <LocalizationPair Name="%BattleEffect_GeomancyDefUp1Description">+20% DEFENSA \7773\ DURANTE 3 TURNOS \7708\</LocalizationPair>
+  <LocalizationPair Name="%BattleEffect_GeomancyInitUp1Title">Marcha enérgica</LocalizationPair>
+  <LocalizationPair Name="%BattleEffect_GeomancyInitUp1Description">+10 INICIATIVA \7774\ DURANTE 3 TURNOS \7708\</LocalizationPair>
+  <LocalizationPair Name="%BattleEffect_GeomancyAttUp1Title">Puños llameantes</LocalizationPair>
+  <LocalizationPair Name="%BattleEffect_GeomancyAttUp1Description">+20% ATAQUE \7772\ DURANTE 3 TURNOS \7708\</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero1Version1Title">Makani Chay</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero1Version2Title">Makani Chay II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero1Version3Title">Makani Chay III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero1Version4Title">Makani Chay IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero1Version5Title">Makani Chay V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero1Version6Title">Makani Chay VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHero1Title">Makani Chay</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero1Description">Allá en su mundo natal ningún otro Kapaku fue capaz de entender la magnitud de la incursión de las máquinas como Makani. Con una inclinación natural por la exploración, Makani viajó por gran parte del mundo conocido antes de cumplir los 25 y regresó con el anhelo ardiente de aventurarse en lo verdaderamente desconocido. Para ello, se convirtió en un chamán de piedra de habilidades inigualables, creando un séquito de gólems que le permitió alcanzar climas hostiles de fuego y desolación. Makani encontró más focos de actividad de las máquinas que nadie y fue una de las voces que más insistieron en que no debía subestimarse su amenaza. Por desgracia, sus palabras cayeron en saco roto. En Auriga, su apetito por los viajes no ha disminuido, y ahora tiene aún más motivos para recorrer los yermos inexplorados.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero2Version1Title">Ululani Raui</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero2Version2Title">Ululani Raui II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero2Version3Title">Ululani Raui III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero2Version4Title">Ululani Raui IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero2Version5Title">Ululani Raui V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero2Version6Title">Ululani Raui VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHero2Title">Ululani Raui</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero2Description">Ululani es una guerrera del fabuloso clan Raui, natural de las altas laderas del volcán activo Waiyo. Obtuvo experiencia de combate de primera mano durante las Guerras de las Máquinas. Su momento culminante se produjo durante la evacuación de la ciudadela Raui, cuando lideró la heroica resistencia que retrasó el avance de las máquinas durante varios días y permitió escapar a la mayoría del clan. Pese a estar en inferioridad ante un enemigo rápido y móvil que podía comunicarse a la velocidad de la luz, Ululani desplegó diversas estrategias en el campo de batalla que desorientaron a las máquinas. Su mayor logro fue capturar una máquina averiada, a la que sigue estudiando a día de hoy.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero3Version1Title">Takari Mu</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero3Version2Title">Takari Mu II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero3Version3Title">Takari Mu III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero3Version4Title">Takari Mu IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero3Version5Title">Takari Mu V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero3Version6Title">Takari Mu VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHero3Title">Takari Mu</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero3Description">Originalmente una de las Doce del Consejo del Magma, Takari fue expulsada del más alto órgano de autoridad Kapaku cuando cuestionó públicamente los motivos de los salvadores Infinitos. Aterrados ante la posibilidad de que los Infinitos Concretos abandonaran sus planes de evacuar a los Kapaku al mundo virgen de Auriga, muchos miembros del Consejo la acusaron de traición y la encarcelaron en la infame prisión situada en las profundidades de las minas de Simanegra. De no haber sido por el custodio Aktyl, Takari habría sido abandonada en ese pozo de desesperación. Aktyl, sin embargo, comprendió su potencial y la ocultó en la nave con rumbo a Auriga, donde hibernó anónimamente. Libre ahora en Auriga, Takari vuelve a ser una magnífica líder que se guarda sus opiniones sobre los Infinitos para sí misma.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero4Version1Title">Gran clérigo Akuma</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero4Version2Title">Gran clérigo Akuma II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero4Version3Title">Gran clérigo Akuma III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero4Version4Title">Gran clérigo Akuma IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero4Version5Title">Gran clérigo Akuma V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero4Version6Title">Gran clérigo Akuma VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHero4Title">Gran clérigo Akuma</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero4Description">Akuma no parece un héroe Kapaku. Séptimo hijo de un prominente chamán de la Escuela de Químicos de Akamai, se crió a la sombra de su madre y, sobre todo, a la de los logros de sus hermanos mayores. Torpe artesano con escasos conocimientos de las teorías de la química del Polvo, la vida de Akuma fue bastante lastimosa hasta el día en que llegaron los Infinitos. Ya al tanto de la amenaza que las máquinas suponían para la civilización de ceniza y piedra de los Kapaku, Akuma usó sus contactos familiares para crear una plataforma política que erigiera a los Infinitos Concretos en salvadores divinos de su pueblo, logrando rápidamente un seguimiento popular a medida que su fe daba frutos. Fue clave en la fundación del Templo de Nuestros Salvadores. El gran clérigo Akuma es un orador innato que ahora ejerce mucho poder entre su pueblo.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero5Version1Title">Pali Inoa</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero5Version2Title">Pali Inoa II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero5Version3Title">Pali Inoa III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero5Version4Title">Pali Inoa IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero5Version5Title">Pali Inoa V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero5Version6Title">Pali Inoa VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHero5Version1Title">Pali Inoa</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero5Description">Entre todos los Kapaku que escaparon de su mundo arrasado en la nave de los Infinitos, nadie poseía la inventiva mecánica de Pali. Responsable de avances en los campos de la navegación, la precisión, el armamento, la locomoción y la arquitectura, Pali dotó de gran prestigio a la Casa de los Geomantes, que floreció bajo su trabajo inspirador. Cuando llegaron las máquinas, fue una de las primeras en apreciar su complejidad y dedicó mucho tiempo a meditar sobre su origen. Más tarde, después de que los Infinitos Concretos salvaran a los Kapaku de la amenaza de las máquinas, resultó evidente que lo mejor era confiar los dispositivos de vulcanoformación para terraformar Auriga a Pali y sus colegas geomantes.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero6Version1Title">Chamán Rawiri</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero6Version2Title">Chamán Rawiri II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero6Version3Title">Chamán Rawiri III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero6Version4Title">Chamán Rawiri IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero6Version5Title">Chamán Rawiri V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero6Version6Title">Chamán Rawiri VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHero6Title">Chamán Rawiri</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero6Description">El chamán Rawiri poseía una mente aguda y una curiosidad infantil innata. Al principio se alejó de los asuntos políticos interesándose más en ampliar sus conocimientos sobre el vivificante poder de la química del Polvo. Pese a su frustración por la interrupción de sus experimentos sobre creación de nuevas formas de gólems que supuso la llegada de las máquinas, cuando los salvadores Infinitos hablaron sobre Auriga y sus maravillosos eclipses de Polvo, se despertó en Rawiri el intenso deseo de experimentar el fenómeno por sí mismo. Está convencido de que los eventos del eclipse de Polvo podrían revolucionar el destino de los Kapaku en este nuevo e inhóspito mundo, y se muere por empezar a experimentar.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameFlamesHero7Version1Title">Haukea Wai</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHero7Title">Haukea Wai</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHero7Description">Como adolescente en el mundo natal de los Kapaku en la época de la guerra contra las máquinas, Haukea Wai contempló con estupor cómo la lucha hacía trizas su futuro, a sus amigos y a su familia. Esta joven brillante y capaz se sintió perdida ante los acontecimientos y vivió traumatizada durante mucho tiempo antes de que el custodio Aktyl anunciara la fundación de la Escuela Koni de Jinetes de Élite. Por fin capaz de canalizar sus aptitudes y su dolor hacia algo productivo, redescubrió su amor por el aprendizaje y sobresalió en los aspectos tanto filosóficos como físicos de la monta eficaz de los imponentes gólems. Es más, durante sus estudios, Haukea desarrolló un deseo creciente de emplear todas sus energías en proteger a la sociedad. Esto no pasó desapercibido al custodio Aktyl, que la seleccionó como su emisaria personal en Auriga.</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHeroQuestEnemyVersion1Title">Custodia Tua</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHeroQuestEnemyTitle">Custodia Tua</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileFlamesHeroQuestEnemyDescription">Representante del clan Haku en el Consejo del Magma, la custodia Tua sigue siendo una de los Doce pese al aniquilamiento de la mayoría de su clan en una calamidad que señaló el comienzo de la guerra contra las máquinas. Líder incansable y decidida, antes del desastre la custodia Tua era una voz aislada en el Consejo advirtiendo de las consecuencias de ignorar a las máquinas. Desafortunadamente, nadie la escuchó y el clan Haku pagó el enorme precio cuando las máquinas hicieron que el río de lava que rodeaba la ciudadela Haku se desbordase, matando a centenares. A pesar de cargar con un profundo dolor teñido de inconfundible amargor, Tua sigue siendo una presencia firme y obstinada en el Consejo del Magma y su voz se escucha con mayor atención. De todos los Kapaku de Auriga, parece ser también la que tiene relaciones más estrechas con el representante de los Infinitos, el supervisor Elohys.</LocalizationPair>
   <LocalizationPair Name="%MainQuestFlames-Chapter1Title">1. Llegada</LocalizationPair>
   <LocalizationPair Name="%MainQuestFlames-Chapter1Description">Del diario del custodio Aktyl
  
@@ -13357,17 +13536,17 @@ Para mi sorpresa, admitió conocer la historia de los Infinitos en Auriga inclus
 "Antes de pasar al criosueño", explicó, "el supervisor Elohys me dijo que si los Kapaku querían sobrevivir en Auriga, tenía que hacer todo lo que pudiera para ayudarle a destruir ciertos lugares con las máquinas de vulcanoformación. Amenazó con matarnos a todos si alguna vez lo contaba. Creo que me eligió porque mi clan estuvo a punto de ser aniquilado; sabía que yo no vacilaría. Todo lo que hice, los hice por los Kapaku".
  
 El Consejo enmudeció, atónito, mientras las noticias de los hechos de los Infinitos se difundían por la ciudad como el fuego.
-
+ 
 Si el supervisor Elohys cumple su palabra, el hecho de habernos enterado será nuestra perdición. O quizás mintió a la custodia Tua y solo eran amenazas huecas para tenerla controlada. En cualquier caso, la revelación del engaño de los Infinitos ha unido a los Kapaku.
  
 El Templo de Nuestros Salvadores ha sido saqueado e incendiado. Ahora nadie defendería a los Infinitos. Los Kapaku no son la herramienta de nadie ni serán los ejecutores de los otros seres de Auriga.
-
+ 
 Sin duda, muchas de esas razas evolucionaron a partir de los malignos experimentos de los Infinitos. Este mundo es suyo por derecho de nacimiento, adquirido con el mismo sufrimiento que nosotros padecimos en nuestro propio mundo.
  
 Si queremos tener un futuro, tendremos que encontrar un camino común e intentar sobrevivir juntos a los inviernos.
  
 Pero antes hay una cuestión candente. Un exhaustivo registro de los aposentos del supervisor Elohys ha revelado el auténtico plan del Infinito: quiere limpiar Auriga con una oleada de lava usando nuestras máquinas de vulcanoformación para precipitar erupciones volcánicas de polo a polo.
-
+ 
 El reprobable pasado de los Infinitos se borrará junto con toda la vida del planeta. Ni siquiera nosotros, los Kapaku, sobreviviremos.
  
 ¡Hay que detener al supervisor Elohys!</LocalizationPair>
@@ -13434,8 +13613,10 @@ Tanto si la consume el hielo como el fuego, los Kapaku dejaremos nuestra huella 
   <LocalizationPair Name="%MainQuestFlames-Chapter8Alt-Step2Tooltip">Las zonas que registrar pueden ser de templos o ruinas conservadas en su estado natural.</LocalizationPair>
   <LocalizationPair Name="%MainQuestFlames-Chapter8Alt-Step3">Construye el Archivo Aurigano para garantizar que la vergonzosa historia de los Infinitos nunca se olvide.</LocalizationPair>
   <LocalizationPair Name="%MainQuestFlames-Chapter8Alt-Step3Tooltip">Para construir el Archivo Aurigano se requieren recursos estratégicos raros.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitDrakkensHeatWaveTitle">Palabras místicas</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitDrakkensHeatWaveDescription">Con la confusión generalizada y los episodios de misticismo arcano que conllevan los eclipses de Polvo, esta vez los sosegados diplomáticos Dragonianos son más efectivos en las negociaciones.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step1">Necesitamos más magia para precisar la ubicación. Produce $ScienceProductionAmount de Ciencia en tu ciudad $City durante 5 turnos $Progression.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step1Tooltip">Produce la cantidad necesaria de ciencia en tu ciudad.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step2">La entrada del laboratorio estará sellada por la magia. Envía un Héroe de los Magos ardientes con la Vara trascendental de Verda y al frente de un ejército compuesto al menos por 2 fanáticas Ateshi de Nivel 6, para registrar las ruinas de la región $RegionName.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step2Tooltip">La localización exacta de cada ruina viene indicada por un rayo de Polvo en el mapa.</LocalizationPair>
   <LocalizationPair Name="%BoosterBattleborn">Durante los eclipses, las reservas recicladas también crean 2 nacidos para combatir en la ciudad objetivo, además de la bonificación de comida.</LocalizationPair>
   <LocalizationPair Name="%BoosterStrategicLavapoolTooltipEffect">Permite a tus ejércitos transformar secciones de cualquier tipo de terreno en terreno volcánico.</LocalizationPair>
   <LocalizationPair Name="%AnomalyTypeAnomaly54Title">Chimeneas de lava</LocalizationPair>
@@ -13446,119 +13627,10 @@ Tanto si la consume el hielo como el fuego, los Kapaku dejaremos nuestra huella 
   <LocalizationPair Name="%AnomalyTypeAnomaly56Description">Según la leyenda, las fumarolas fueron creadas por un dios de la fundición y la forja, tal es el beneficio industrial de este elemento del terreno volcánico. Es un espectáculo impresionante para quienes trabajan cerca, aunque peligroso.</LocalizationPair>
   <LocalizationPair Name="%AnomalyTypeAnomaly57Title">Lago de caldera</LocalizationPair>
   <LocalizationPair Name="%AnomalyTypeAnomaly57Description">Lo bastante calientes para hacer que el Polvo brille, pero no tanto como para que se escalde, los lagos de caldera son un elemento del terreno volcánico que permite recolectar significativas cantidades de Polvo y al mismo tiempo proporciona una pequeña fuente natural de calor.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero1Version1Title">Makani Chay</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero1Version2Title">Makani Chay II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero1Version3Title">Makani Chay III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero1Version4Title">Makani Chay IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero1Version5Title">Makani Chay V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero1Version6Title">Makani Chay VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHero1Title">Makani Chay</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero1Description">Allá en su mundo natal ningún otro Kapaku fue capaz de entender la magnitud de la incursión de las máquinas como Makani. Con una inclinación natural por la exploración, Makani viajó por gran parte del mundo conocido antes de cumplir los 25 y regresó con el anhelo ardiente de aventurarse en lo verdaderamente desconocido. Para ello, se convirtió en un chamán de piedra de habilidades inigualables, creando un séquito de gólems que le permitió alcanzar climas hostiles de fuego y desolación. Makani encontró más focos de actividad de las máquinas que nadie y fue una de las voces que más insistieron en que no debía subestimarse su amenaza. Por desgracia, sus palabras cayeron en saco roto. En Auriga, su apetito por los viajes no ha disminuido, y ahora tiene aún más motivos para recorrer los yermos inexplorados.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero2Version1Title">Ululani Raui</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero2Version2Title">Ululani Raui II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero2Version3Title">Ululani Raui III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero2Version4Title">Ululani Raui IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero2Version5Title">Ululani Raui V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero2Version6Title">Ululani Raui VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHero2Title">Ululani Raui</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero2Description">Ululani es una guerrera del fabuloso clan Raui, natural de las altas laderas del volcán activo Waiyo. Obtuvo experiencia de combate de primera mano durante las Guerras de las Máquinas. Su momento culminante se produjo durante la evacuación de la ciudadela Raui, cuando lideró la heroica resistencia que retrasó el avance de las máquinas durante varios días y permitió escapar a la mayoría del clan. Pese a estar en inferioridad ante un enemigo rápido y móvil que podía comunicarse a la velocidad de la luz, Ululani desplegó diversas estrategias en el campo de batalla que desorientaron a las máquinas. Su mayor logro fue capturar una máquina averiada, a la que sigue estudiando a día de hoy.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero3Version1Title">Takari Mu</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero3Version2Title">Takari Mu II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero3Version3Title">Takari Mu III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero3Version4Title">Takari Mu IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero3Version5Title">Takari Mu V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero3Version6Title">Takari Mu VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHero3Title">Takari Mu</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero3Description">Originalmente una de las Doce del Consejo del Magma, Takari fue expulsada del más alto órgano de autoridad Kapaku cuando cuestionó públicamente los motivos de los salvadores Infinitos. Aterrados ante la posibilidad de que los Infinitos Concretos abandonaran sus planes de evacuar a los Kapaku al mundo virgen de Auriga, muchos miembros del Consejo la acusaron de traición y la encarcelaron en la infame prisión situada en las profundidades de las minas de Simanegra. De no haber sido por el custodio Aktyl, Takari habría sido abandonada en ese pozo de desesperación. Aktyl, sin embargo, comprendió su potencial y la ocultó en la nave con rumbo a Auriga, donde hibernó anónimamente. Libre ahora en Auriga, Takari vuelve a ser una magnífica líder que se guarda sus opiniones sobre los Infinitos para sí misma.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero4Version1Title">Gran clérigo Akuma</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero4Version2Title">Gran clérigo Akuma II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero4Version3Title">Gran clérigo Akuma III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero4Version4Title">Gran clérigo Akuma IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero4Version5Title">Gran clérigo Akuma V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero4Version6Title">Gran clérigo Akuma VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHero4Title">Gran clérigo Akuma</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero4Description">Akuma no parece un héroe Kapaku. Séptimo hijo de un prominente chamán de la Escuela de Químicos de Akamai, se crió a la sombra de su madre y, sobre todo, a la de los logros de sus hermanos mayores. Torpe artesano con escasos conocimientos de las teorías de la química del Polvo, la vida de Akuma fue bastante lastimosa hasta el día en que llegaron los Infinitos. Ya al tanto de la amenaza que las máquinas suponían para la civilización de ceniza y piedra de los Kapaku, Akuma usó sus contactos familiares para crear una plataforma política que erigiera a los Infinitos Concretos en salvadores divinos de su pueblo, logrando rápidamente un seguimiento popular a medida que su fe daba frutos. Fue clave en la fundación del Templo de Nuestros Salvadores. El gran clérigo Akuma es un orador innato que ahora ejerce mucho poder entre su pueblo.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero5Version1Title">Pali Inoa</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero5Version2Title">Pali Inoa II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero5Version3Title">Pali Inoa III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero5Version4Title">Pali Inoa IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero5Version5Title">Pali Inoa V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero5Version6Title">Pali Inoa VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHero5Version1Title">Pali Inoa</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero5Description">Entre todos los Kapaku que escaparon de su mundo arrasado en la nave de los Infinitos, nadie poseía la inventiva mecánica de Pali. Responsable de avances en los campos de la navegación, la precisión, el armamento, la locomoción y la arquitectura, Pali dotó de gran prestigio a la Casa de los Geomantes, que floreció bajo su trabajo inspirador. Cuando llegaron las máquinas, fue una de las primeras en apreciar su complejidad y dedicó mucho tiempo a meditar sobre su origen. Más tarde, después de que los Infinitos Concretos salvaran a los Kapaku de la amenaza de las máquinas, resultó evidente que lo mejor era confiar los dispositivos de vulcanoformación para terraformar Auriga a Pali y sus colegas geomantes.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero6Version1Title">Chamán Rawiri</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero6Version2Title">Chamán Rawiri II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero6Version3Title">Chamán Rawiri III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero6Version4Title">Chamán Rawiri IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero6Version5Title">Chamán Rawiri V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero6Version6Title">Chamán Rawiri VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHero6Title">Chamán Rawiri</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero6Description">El chamán Rawiri poseía una mente aguda y una curiosidad infantil innata. Al principio se alejó de los asuntos políticos interesándose más en ampliar sus conocimientos sobre el vivificante poder de la química del Polvo. Pese a su frustración por la interrupción de sus experimentos sobre creación de nuevas formas de gólems que supuso la llegada de las máquinas, cuando los salvadores Infinitos hablaron sobre Auriga y sus maravillosos eclipses de Polvo, se despertó en Rawiri el intenso deseo de experimentar el fenómeno por sí mismo. Está convencido de que los eventos del eclipse de Polvo podrían revolucionar el destino de los Kapaku en este nuevo e inhóspito mundo, y se muere por empezar a experimentar.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameFlamesHero7Version1Title">Haukea Wai</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHero7Title">Haukea Wai</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHero7Description">Como adolescente en el mundo natal de los Kapaku en la época de la guerra contra las máquinas, Haukea Wai contempló con estupor cómo la lucha hacía trizas su futuro, a sus amigos y a su familia. Esta joven brillante y capaz se sintió perdida ante los acontecimientos y vivió traumatizada durante mucho tiempo antes de que el custodio Aktyl anunciara la fundación de la Escuela Koni de Jinetes de Élite. Por fin capaz de canalizar sus aptitudes y su dolor hacia algo productivo, redescubrió su amor por el aprendizaje y sobresalió en los aspectos tanto filosóficos como físicos de la monta eficaz de los imponentes gólems. Es más, durante sus estudios, Haukea desarrolló un deseo creciente de emplear todas sus energías en proteger a la sociedad. Esto no pasó desapercibido al custodio Aktyl, que la seleccionó como su emisaria personal en Auriga.</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHeroQuestEnemyVersion1Title">Custodia Tua</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHeroQuestEnemyTitle">Custodia Tua</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileFlamesHeroQuestEnemyDescription">Representante del clan Haku en el Consejo del Magma, la custodia Tua sigue siendo una de los Doce pese al aniquilamiento de la mayoría de su clan en una calamidad que señaló el comienzo de la guerra contra las máquinas. Líder incansable y decidida, antes del desastre la custodia Tua era una voz aislada en el Consejo advirtiendo de las consecuencias de ignorar a las máquinas. Desafortunadamente, nadie la escuchó y el clan Haku pagó el enorme precio cuando las máquinas hicieron que el río de lava que rodeaba la ciudadela Haku se desbordase, matando a centenares. A pesar de cargar con un profundo dolor teñido de inconfundible amargor, Tua sigue siendo una presencia firme y obstinada en el Consejo del Magma y su voz se escucha con mayor atención. De todos los Kapaku de Auriga, parece ser también la que tiene relaciones más estrechas con el representante de los Infinitos, el supervisor Elohys.</LocalizationPair>
-  <LocalizationPair Name="%ItemHammerFlamesQuestRewardTitle">El Martillo de Tua</LocalizationPair>
-  <LocalizationPair Name="%ItemHammerFlamesQuestRewardDescription">Una poderosa arma esgrimida por la custodia Tua contra su propio pueblo. Combina la habilidad artesanal de los Kapaku con artes más oscuras provenientes sin duda del Infinito, el supervisor Elohys.</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionFlames6Title">Percepción del chamán</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionFlames6Description">Investigaciones geománticas sobre los vigorizantes efectos del Polvo permiten a los chamanes Kapaku crear centinelas de piedra más robustos. </LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionFlames13Title">Paz interior</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionFlames13Description">Con un nuevo sentido de la pertenencia, los Kapaku pueden empezar a ver Auriga como parte de su propio patrimonio. Fueron intrusos, pero ahora son auriganos y se inspiran en la compleja historia del planeta.</LocalizationPair>
-  <LocalizationPair Name="%TechnologyFlames13Title">Paz interior</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementFlames10Title">Escuela Koni de Jinetes de Élite</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementFlames10Description">Esta gigantesca fortaleza lleva el nombre de un infame jinete y alberga una institución elitista para el adiestramiento de los operativos Kapaku más prometedores. A los soldados entrenados en este brutal terreno se les proporciona experiencia en combate más allá de su aparente condición de reclutas.</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementFlames12Title">Archivo Aurigano</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementFlames12Description">Para evitar su pérdida entre los hielos venideros, todos los hechos de los Infinitos en Auriga se catalogan y mantienen aquí para el futuro. Es un oasis de conocimiento para historiadores y científicos.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderBattle31Title">Punto de observación del campo de batalla</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderBattle31Description">Con una perspectiva privilegiada desde su posición elevada, el héroe puede dirigir al ejército con mayor efectividad.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderMap23Title">Movimiento ágil</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderMap23Description">Desde su montura, el héroe incita a sus subordinados a moverse más rápido... ¡o arriesgarse a ser pisoteados!</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderBattle32CavalryTitle">Ensillamiento</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderBattle32CavalryDescription">Un héroe montado siempre deja algo de espacio para llevar uno o dos objetos útiles.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderBattle33Title">Golpe de altura</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderBattle33Description">Blandiendo sus armas desde su montura, el héroe aprovecha su posición elevada para golpear con mayor potencia.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderBattle35Title">Dragón estimulante</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderBattle35Description">El héroe, a lomos de un brioso corcel enjaezado con aparejos rutilantes, eleva el espíritu de sus subalternos.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor42Title">Vulcanología</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor42Level1Title">Habilidad del Héroe</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor42Level2Title">Habilidad del Héroe</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor42Description">El profundo conocimiento de la geología del terreno volcánico permite al héroe extraer recursos adicionales en estas zonas.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor43Title">Artimañas geománticas</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor43Description">Trastear con el funcionamiento básico de los extractores de recursos permite al héroe cosechar algo más de los depósitos de Auriga.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor44Title">El calor del hogar</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor44Description">En las regiones volcánicas, el sentido de pertenencia del héroe se transmite a la población local.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor44TooltipEffect">+2 en aprobación \7706\ para el centro y las expansiones de la ciudad en terreno volcánico</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor45Title">Ingenuidad abrasadora</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor45Description">El héroe es un hervidero de ideas para artilugios e inventos, aumentado mucho las ciencias.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillGovernor45Level1Title">Ingenuidad abrasadora</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderMap24Title">Genio recuperador</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderMap24Description">Experto en reciclar material viejo, el héroe facilita mucho la modernización de su ejército.</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderMap24Level1TooltipEffect">Reduce el coste en Polvo de modernización en un 25%</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderMap24Level2TooltipEffect">Proporciona al héroe la habilidad Forja portátil, que permite a las unidades del ejército modernizarse y al héroe reequiparse en territorio neutral o enemigo, durante 1 turno \7708\</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderMap25Title">Hervidor de sangre</LocalizationPair>
-  <LocalizationPair Name="%HeroSkillLeaderMap25Description">Los eclipses de Polvo desbloquean extraños procesos químicos en Auriga y el héroe no es una excepción. Le capacitan para animar a sus ejércitos a que ataquen con renovado brío.</LocalizationPair>
-  <LocalizationPair Name="%UnitAbilityPortableForge0Title">Forja portátil</LocalizationPair>
-  <LocalizationPair Name="%UnitAbilityPortableForge0Description">DESBLOQUEA LA ACCIÓN DE FORJA PORTÁTIL, QUE PERMITE MODERNIZAR UNIDADES EN TERRITORIOS NEUTRALES Y ENEMIGOS (DURANTE 1 TURNO \7708\)</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitRovingClansHeatWaveTitle">Infusión de setseke</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitRovingClansHeatWaveDescription">Los setsekes, escarabajos gigantes que forman parte importante de la cultura de clanes, se vigorizan durante los eclipses de Polvo y obtienen aún mayor reverencia.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitRovingClansHeatWaveTooltipEffect">Durante los eclipses, proporciona un 20% más de regeneración de PV a las unidades destacadas en secciones de ciudad y potencia enormemente los atributos de los setsekes</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionFlames3Title">Nacido de las cenizas</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionFlames3Description">Provenientes de un mundo de fuego y rocas, los Kapaku se alimentan exclusivamente de ceniza y minerales incomibles para los otros seres, y sus ejércitos medran en regiones volcánicas que desgastarían a otras facciones.</LocalizationPair>
   <LocalizationPair Name="%InfiltrationActionStealEmpireMoneyTitle">Oportunistas del Polvo</LocalizationPair>
-  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level2Description">Roba una cantidad fija más un pequeño porcentaje del Polvo del imperio infiltrado.$Amount</LocalizationPair>
-  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level3Description">Roba una pequeña cantidad fija más un porcentaje del Polvo del imperio infiltrado.$Amount</LocalizationPair>
-  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level4Description">Roba una cantidad fija muy pequeña más un gran porcentaje del Polvo del imperio infiltrado.$Amount</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitFlames6TooltipEffect">Los centinelas de piedra no tienen mantenimiento militar</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitFlames7Title">Observadores de estrellas</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitFlames7Description">Los Infinitos Concretos conocían bien el patrón de los eclipses de Polvo de Auriga, basados en la interacción caótica de las lunas.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitFlames7TooltipEffect">En verano, siempre se pueden predecir los próximos eclipses de Polvo</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitFlames8Title">Fascinación por los Infinitos</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitFlames8Description">La obsesión por los Infinitos y su tecnología casi mágica eleva la curiosidad natural por las ruinas de Auriga.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitFlames8TooltipEffect">Ciencia \7702\ recibidas por completar con éxito registro de ruinas</LocalizationPair>
-  <LocalizationPair Name="%CampInfoTitle">Campamento gólem</LocalizationPair>
-  <LocalizationPair Name="%CampInfoDescription">Poblados por infatigables trabajadores gólem, estos campamentos permiten a las ciudades crear distritos totalmente separados de la metrópolis.</LocalizationPair>
+  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level2Description">Roba una cantidad fija más un pequeño porcentaje del Polvo \7703\ del imperio infiltrado.</LocalizationPair>
+  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level3Description">Roba una pequeña cantidad fija más un porcentaje del Polvo \7703\ del imperio infiltrado.</LocalizationPair>
+  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level4Description">Roba una cantidad fija muy pequeña más un gran porcentaje del Polvo \7703\ del imperio infiltrado.</LocalizationPair>
   <LocalizationPair Name="%TerraformDevice1Title">Vulcanoformadora</LocalizationPair>
   <LocalizationPair Name="%TerraformDevice1Description">Desarrolladas por los Infinitos Concretos y alimentadas por las riquezas de Auriga, las vulcanoformadoras pueden transformar cualquier paisaje en llanuras de basalto cubiertas de lava.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionGreetings_Flames">¡Os saludamos, otros seres! Somos los Kapaku, justos herederos de Auriga.</LocalizationPair>
@@ -13840,64 +13912,9 @@ Tanto si la consume el hielo como el fuego, los Kapaku dejaremos nuestra huella 
   <LocalizationPair Name="%EmpoweringMapBoostDescription">Una de las consecuencias de los eclipses de Polvo es este extraño fenómeno asociado a los flujos de Polvo, que es una bendición para la afortunada unidad que pase por allí durante los efectos fortalecedores que se dan durante el eclipse. Los efectos de la confluencia no se acumulan con otros del mismo tipo.</LocalizationPair>
   <LocalizationPair Name="%SwiftMapBoostTitle">Confluencia ligera</LocalizationPair>
   <LocalizationPair Name="%SwiftMapBoostDescription">Una de las consecuencias de los eclipses de Polvo es este extraño fenómeno ligado a las calientes columnas de Polvo, que es una bendición para la afortunada unidad que pase por allí por el aumento de la velocidad y la percepción que se dan durante el eclipse. Los efectos de la confluencia no se acumulan con otros del mismo tipo.</LocalizationPair>
-  <LocalizationPair Name="%ItemTomeFlamesMainQuest1Title">Influjo del maestro</LocalizationPair>
-  <LocalizationPair Name="%ItemTomeFlamesMainQuest1Description">Este dispositivo palpitante descubierto en las ruinas de los laboratorios de los Infinitos otorga a quien lo porta la habilidad de esclavizar mentes cercanas.</LocalizationPair>
-  <LocalizationPair Name="%CampConstructibleActionRazeTitle">Levantar campamento</LocalizationPair>
-  <LocalizationPair Name="%CampConstructibleActionRazeDescription">¿Escasos hallazgos? ¿Enemigos acercándose? A veces, hay que abandonar un campamento gólem por una causa mejor.</LocalizationPair>
-  <LocalizationPair Name="%CampConstructibleActionRazeTooltipEffect">Arrasar este campamento gólem</LocalizationPair>
-  <LocalizationPair Name="%CampLabelTooltip">Las unidades pueden acantonarse en el campamento
-+1 de población adicional \7705\ en ciudad
-Solo uno por ciudad</LocalizationPair>
-  <LocalizationPair Name="%DistrictImprovementFlames14Title">Campamento gólem</LocalizationPair>
-  <LocalizationPair Name="%DistrictImprovementFlames14Description">Poblados por infatigables trabajadores gólem, estos campamentos permiten a las ciudades crear distritos totalmente separados de la metrópolis.</LocalizationPair>
   <LocalizationPair Name="%DistrictProxyCampExploitationTitle">Sección de campamento</LocalizationPair>
-  <LocalizationPair Name="%ConstructibleDistrictCursorCaption">Selecciona una sección para colocar el campamento gólem.</LocalizationPair>
-  <LocalizationPair Name="%DeviceLabelChargingDeviceDescription">Esta vulcanoformadora está terraformando el terreno circundante.</LocalizationPair>
-  <LocalizationPair Name="%DeviceLabelDismantlingDeviceDescription">Esta vulcanoformadora está siendo desmantelada por un ejército.</LocalizationPair>
-  <LocalizationPair Name="%ArmyDismantlingDeviceDescription">Este ejército está desmantelando una vulcanoformadora.</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionLavaRivers1Title">Hidráulica del magma</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionLavaRivers1Description">Los flujos de lava superficiales pueden resultar peligrosos, pero entender las propiedades del magma bajo diferentes condiciones puede ser una bendición a la hora de transformarlos.</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementLavaRiver1Title">Obras de lava</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementLavaRiver1Description">Inspirada por antiguos molinos de agua, esta tecnología aprovecha el poder natural de los flujos de lava y proporciona beneficios exclusivos.</LocalizationPair>
-  <LocalizationPair Name="%RiverLavaNeededTooltipEffect">Hace falta que se explote una sección de flujo de lava para su construcción</LocalizationPair>
-  <LocalizationPair Name="%ImmolatedTabTooltip">Esta unidad está afectada por Quemadura del alma. Su capacidad de ataque \7772\ ha aumentado, pero recibe daños al principio de cada combate.</LocalizationPair>
-  <LocalizationPair Name="%ImmolatedTabTitle">Quemadura del alma</LocalizationPair>
-  <LocalizationPair Name="%HeroImmolatedTooltip">Este héroe está afectado por Quemadura del alma. Su capacidad de ataque \7772\ ha aumentado, pero recibe daños al principio de cada combate.</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementVolcanic1Title">Sanguijuela volcánica</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementVolcanic1Description">Alimentada por el violento magma que subyace, esta máquina aumenta la producción de minerales en terrenos volcánicos.</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionVolcanic1Title">Fundición geotérmica</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionVolcanic1Description">Las fuerzas geotérmicas pueden ser increíblemente destructivas, pero si se conocen bien sus propiedades y se canalizan adecuadamente, pueden aprovecharse de diversas formas.</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionVolcanic2Title">Microbiología anaeróbica</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionVolcanic2Description">El conocimiento de las más pequeñas formas de vida que se retuercen en las profundidades brinda la oportunidad de extraer aún más comida de ellas.</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementVolcanic2Title">Granja de gusanos dragón</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementVolcanic2Description">Los terrenos volcánicos atraen gusanos gigantescos y resistentes provenientes de las profundidades. Se pueden criar como alimento.</LocalizationPair>
-  <LocalizationPair Name="%MapBoostsEffectsOnArmy">Efectos de potenciación de mapa en ejército</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitToxicLandsTitle">Mácula volcánica</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitToxicLandsDescription">No hay comida en el terreno volcánico.</LocalizationPair>
   <LocalizationPair Name="%QuestLocation_TempleEclipseTitle">Templo eclipsado</LocalizationPair>
   <LocalizationPair Name="%QuestLocation_TempleEclipseDescription">La sombra del eclipse revela nuevas posibilidades en este antiguo templo.</LocalizationPair>
-  <LocalizationPair Name="%ItemAccesoryLavaTech1Title">Pisallamas</LocalizationPair>
-  <LocalizationPair Name="%ItemAccesoryLavaTech1Description">Forjados por manos misteriosas, estas botas permiten a quien las lleva cruzar sobre lava como si fuera agua.</LocalizationPair>
-  <LocalizationPair Name="%ItemAccesoryLavaTech1TooltipEffect">Su portador no recibe daño por los flujos de lava</LocalizationPair>
-  <LocalizationPair Name="%ItemAccesoryLavaTech2Title">Colgante de Wraeil</LocalizationPair>
-  <LocalizationPair Name="%ItemAccesoryLavaTech2Description">Se cree que fue creado por el Infinito Wraeil, a quien le gustaba recorrer los climas más inhóspitos de Auriga. La pequeña joya engarzada en el colgante consume ceniza tóxica.</LocalizationPair>
-  <LocalizationPair Name="%ItemAccesoryLavaTech2TooltipEffect">Su portador es inmune a las penalizaciones del terreno volcánico</LocalizationPair>
-  <LocalizationPair Name="%ItemAccesoryLavaTech3Title">Tomo del litófago</LocalizationPair>
-  <LocalizationPair Name="%ItemTomeLavaTech3Description">Las instrucciones arcanas de este tomo permiten a cualquiera encontrar comida en situaciones muy comprometidas.</LocalizationPair>
-  <LocalizationPair Name="%ItemAccesoryLavaTech3TooltipEffect">+15 en comida \7700\ en ciudad</LocalizationPair>
-  <LocalizationPair Name="%BattleEffect_GeomancyDefUp1Title">Piel pétrea</LocalizationPair>
-  <LocalizationPair Name="%BattleEffect_GeomancyDefUp1Description">+20% DEFENSA \7773\ DURANTE 3 TURNOS \7708\</LocalizationPair>
-  <LocalizationPair Name="%BattleEffect_GeomancyInitUp1Title">Marcha enérgica</LocalizationPair>
-  <LocalizationPair Name="%BattleEffect_GeomancyInitUp1Description">+10 INICIATIVA \7774\ DURANTE 3 TURNOS \7708\</LocalizationPair>
-  <LocalizationPair Name="%BattleEffect_GeomancyAttUp1Title">Puños llameantes</LocalizationPair>
-  <LocalizationPair Name="%BattleEffect_GeomancyAttUp1Description">+20% ATAQUE \7772\ DURANTE 3 TURNOS \7708\</LocalizationPair>
-  <LocalizationPair Name="%TechnologyVolcanicItems1TooltipEffect">Desbloquea la pernera de armadura Pisallamas \7761\ para las unidades</LocalizationPair>
-  <LocalizationPair Name="%TechnologyVolcanicItems3TooltipEffect">Desbloquea el accesorio Tomo del litófago \7762\ para los héroes</LocalizationPair>
-  <LocalizationPair Name="%TechnologyVolcanicItems2TooltipEffect">Desbloquea el accesorio Colgante de Wraeil \7762\ para los héroes</LocalizationPair>
-  <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step1">Necesitamos más magia para precisar la ubicación. Produce $ScienceProductionAmount de Ciencia en tu ciudad $City durante 5 turnos $Progression.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step1Tooltip">Produce la cantidad necesaria de ciencia en tu ciudad.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step2">La entrada del laboratorio estará sellada por la magia. Envía un Héroe de los Magos ardientes con la Vara trascendental de Verda y al frente de un ejército compuesto al menos por 2 fanáticas Ateshi de Nivel 6, para registrar las ruinas de la región $RegionName.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step2Tooltip">La localización exacta de cada ruina viene indicada por un rayo de Polvo en el mapa.</LocalizationPair>
   <LocalizationPair Name="%SubtitlesFlames01">Nuestro mundo era un paraíso de fuego y ceniza,</LocalizationPair>
   <LocalizationPair Name="%SubtitlesFlames02">hasta que cayó sobre nosotros la maldición de los dioses.</LocalizationPair>
   <LocalizationPair Name="%SubtitlesFlames03">Ni nuestros gólems ni nuestra ingenuidad</LocalizationPair>
@@ -13909,6 +13926,15 @@ Solo uno por ciudad</LocalizationPair>
   <LocalizationPair Name="%SubtitlesFlames09">... y nuevos poderes para conquistarlo.</LocalizationPair>
   <LocalizationPair Name="%SubtitlesFlames10">Y lo conquistaremos...</LocalizationPair>
   <LocalizationPair Name="%SubtitlesFlames11">sin importar el sacrificio.</LocalizationPair>
+  <LocalizationPair Name="%MimicsPackTitle">Simbiosis</LocalizationPair>
+  <LocalizationPair Name="%MimicsPackDescription">Incorpora las grandes bestias Urkan que habitan en las profundidades de Auriga y la facción Mykara: un colectivo fúngico cuyas redes subterráneas de micelios les permiten colonizar fácilmente territorios vírgenes.</LocalizationPair>
+  <LocalizationPair Name="%MimicsPackLore">Moradores de las más profundas y oscuras cavernas de Auriga, los Mykara son una especie antigua que se ha expandido por el subsuelo durante siglos. Ahora que las grandes bestias Urkan se agitan de nuevo, los Mykara han vuelto a romper la corteza para aparecer en una tierra repleta de culturas y pueblos ambiciosos. ¿A quién enmarañarán esta vez en sus esfuerzos por mantener el equilibrio?</LocalizationPair>
+  <LocalizationPair Name="%UnitMimicsUnit1Title">Ipotane</LocalizationPair>
+  <LocalizationPair Name="%UnitMimicsUnit1Description">Con una gran movilidad pero relativamente débiles, los ipotanes Mykara destacan en las incursiones de acoso encaminadas a debilitar al enemigo desde lejos.</LocalizationPair>
+  <LocalizationPair Name="%UnitMimicsUnit2Title">Gorgona</LocalizationPair>
+  <LocalizationPair Name="%UnitMimicsUnit2Description">Las gorgonas Mykara golpean fuerte y rápido. Estas luchadoras ligeras pueden entablar combate rápidamente, pero lo mejor es desplegarlas en ataques cortos por su constitución relativamente frágil.</LocalizationPair>
+  <LocalizationPair Name="%UnitMimicsUnit3Title">Arrastrado</LocalizationPair>
+  <LocalizationPair Name="%UnitMimicsUnit3Description">Constituidos por las más duras y densas fibras de micelio, los arrastrados Mykara son lentos y pesados; enredan y bloquean al enemigo con sus increíbles defensas.</LocalizationPair>
   <LocalizationPair Name="%UnitKaijusMonster1Title">Kazar</LocalizationPair>
   <LocalizationPair Name="%UnitKaijusMonster1Description">De las tres grandes bestias, el Kazar es la de mayor tamaño y se mueve a un ritmo pausado que oculta su enorme fortaleza y arrogancia. Cubierto a menudo de minerales valiosos al emerger de las profundidades, a veces es objetivo de aventureros valientes o imprudentes que tratan de hacerse con ellos.</LocalizationPair>
   <LocalizationPair Name="%UnitKaijusMonster2Title">Chaka</LocalizationPair>
@@ -13927,13 +13953,75 @@ Solo uno por ciudad</LocalizationPair>
   <LocalizationPair Name="%UnitKaijusUnit1Description">Organismos similares a piojos que proliferan bajo el gran exosqueleto de los Urkan, estas criaturas actúan como fanáticas guardianas de un monarca motivador y luchan para proteger a su anfitrión con inquebrantable determinación y fría inteligencia.</LocalizationPair>
   <LocalizationPair Name="%UnitTypeKaijusTitle">Urkan</LocalizationPair>
   <LocalizationPair Name="%UnitTypeKaijusMilitiaTitle">Piojos de Urkan</LocalizationPair>
-  <LocalizationPair Name="%MimicsPackTitle">Simbiosis</LocalizationPair>
-  <LocalizationPair Name="%MimicsPackDescription">Incorpora las grandes bestias Urkan que habitan en las profundidades de Auriga y la facción Mykara: un colectivo fúngico cuyas redes subterráneas de micelios les permiten colonizar fácilmente territorios vírgenes.</LocalizationPair>
-  <LocalizationPair Name="%MimicsPackLore">Moradores de las más profundas y oscuras cavernas de Auriga, los Mykara son una especie antigua que se ha expandido por el subsuelo durante siglos. Ahora que las grandes bestias Urkan se agitan de nuevo, los Mykara han vuelto a romper la corteza para aparecer en una tierra repleta de culturas y pueblos ambiciosos. ¿A quién enmarañarán esta vez en sus esfuerzos por mantener el equilibrio?</LocalizationPair>
+  <LocalizationPair Name="%FactionMimicsTitle">Mykara</LocalizationPair>
+  <LocalizationPair Name="%FactionMimicsDescription">Moradores de los territorios subterráneos con redes de micelios que se extienden por la corteza, los Mykara son una de las especies más antiguas de Auriga. Según la leyenda, a lo largo de los siglos han roto la superficie terrestre muchas veces, en su eterno conflicto con las grandes bestias Urkan.</LocalizationPair>
+  <LocalizationPair Name="%AffinityMimicsVictoryType">Tipo de victoria principal: Supremacía</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityKaijus1ArmyCaption">de Auriga</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityKaijus1ArmyTitle1">Terror</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityKaijus2ArmyCaption">de Auriga</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityKaijus2ArmyTitle1">Pavor</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityKaijus3ArmyCaption">de Auriga</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityKaijus3ArmyTitle1">Pesadilla</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyCaption">Esporas</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle1">Creciente</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle2">Deslizante</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle3">Fundador</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle4">Flotante</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle5">Planeador</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle6">Enredante</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle7">Descendente</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle8">Ascendente</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle9">Abrumador</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle10">Devorador</LocalizationPair>
+  <LocalizationPair Name="%AILeaderAffinityMimics0">Raíz oscura</LocalizationPair>
+  <LocalizationPair Name="%AILeaderAffinityMimics1">Rizoma</LocalizationPair>
+  <LocalizationPair Name="%AILeaderAffinityMimics2">Cofiadura</LocalizationPair>
+  <LocalizationPair Name="%AILeaderAffinityMimics3">Rednegra</LocalizationPair>
+  <LocalizationPair Name="%AILeaderAffinityMimics4">Fardril</LocalizationPair>
+  <LocalizationPair Name="%AILeaderAffinityMimics5">Gossama</LocalizationPair>
+  <LocalizationPair Name="%AILeaderAffinityMimics6">Debrisate</LocalizationPair>
+  <LocalizationPair Name="%AILeaderAffinityMimics7">Ofages</LocalizationPair>
+  <LocalizationPair Name="%FactionAffinityMimicsArmyColossusTitle">Hongos</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimicsMainQuestTitle">Misión principal de los Mykara</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimicsMainQuestDescription">Una líder de los Saltadores, salvada por los Mykara tras la masacre de su pueblo, acepta poco a poco su nueva existencia... y la extraña simbiosis entre los Mykara y los Urkan.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimicsHeatWaveTitle">Prosperidad crepuscular</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimicsHeatWaveDescription">Con el Polvo que hay en el aire durante los eclipses de Auriga, es posible acelerar el crecimiento de zarcillos, lo que a su vez aligera mucho la proliferación de micelios.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics1Title">Presencia trepadora</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics1Description">Con las redes de micelios extendiéndose por el subsuelo, los zarcillos pueden explotar fácilmente las zonas no defendidas de Auriga.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics1TooltipEffect">Ciudad única
+Sin producción de colonos
+ 
+Puede crear brotes fúngicos en puntos de interés en regiones propias y neutrales, explotando sus secciones y otorgando:
+- Extractores de depósitos de recursos
+- Torres de vigilancia sobre cimientos
+- Posibilidad de asimilación de aldeas de facciones menores pacificadas fuera del territorio
+- Entradas a túneles en templos y ruinas intactas, lo que permite viajes rápidos entre ruinas
+
+La creación de brotes fúngicos consume comida de la ciudad principal durante varios turnos</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics3Title">Ciudades enmarañadas</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics3Description">Los Mykara buscan nuevas razas para evolucionar mediante simbiosis, capturando ciudades de una manera peculiar. Enmarañadas en una red de zarcillos de micelios, las ciudades dejan de desarrollarse, pero se canaliza una cantidad limitada de sus recursos hacia el nexo.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics3TooltipEffect">Las ciudades capturadas se vuelven enmarañadas, lo que da comienzo a un período de simbiosis
+Una vez completada, se obtiene un rasgo único, diferente para cada facción
+Las ciudades enmarañadas solo otorgan la producción de sus secciones a la ciudad principal y quedan imposibilitadas para seguir desarrollándose</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics4Title">Campamento Urkan</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics4Description">Mediante una simbiosis natural con los Urkan debido a su evolución entrelazada, los Mykara pueden encontrar refugio y sustento en los caparazones de las grandes bestias, lo que les permite apostar ejércitos en su interior.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics4TooltipEffect">Te permite acantonar unidades en Urkan domesticados bajo tu control</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics5Title">Políticas Urkan</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics5Description">Domesticar a uno de los grandes Urkan no es fácil (y en absoluto implica tener un siervo fiable al 100%), pero tener a uno de tu lado inspira un temor divino en los rivales.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics5TooltipEffect">-30% en coste de Influencia #8A7DFF#\7704\#REVERT# en interacciones diplomáticas por cada Urkan controlado</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics6Title">Industria orgánica</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics6Description">Siendo el alimento de los Mykara una parte del tejido del nexo viva y entrelazada simbióticamente, la especie fúngica puede aprovechar los frutos de estos huertos para la producción industrial.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics6TooltipEffect">Otorga una bonificación en producción de Industria \7701\ equivalente al 10% de la producción de comida \7700\ en la ciudad principal</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics7Title">Defensa orgánica</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics7Description">Como el propio tejido de la ciudad está hecho de redes de micelios, las defensas son más fuertes que con las quebradizas rocas y ladrillos, además de tener la capacidad de autorrepararse tras sufrir daños.</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics8Title">Extracción ineficiente</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics8Description">Aunque se pueden extraer recursos, la producción se reduce a la mitad de la de los extractores habituales.</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionMimics1Title">Campamento Urkan</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionMimics1Description">Unificando la robusta ingeniería y la manipulación de feromonas, este conocimiento permite usar el caparazón de las grandes bestias para acantonar soldados. </LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionMimics2Title">Políticas Urkan</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionMimics2Description">Entender la manera de ejercer influencia en los Urkan da gran ventaja en las negociaciones diplomáticas y, concretamente, da lugar a muchas propuestas amistosas por parte de los rivales.</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionMimics4Title">Vetas de hierro</LocalizationPair>
+  <LocalizationPair Name="%TechnologyDefinitionMimics4Description">Fortaleciendo los zarcillos y rizomas subterráneos por todo el territorio de micelios se pueden transportar mayores cantidades de recursos valiosos hasta el corazón del colectivo de los Mykara.</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju1Unlock1Title">Agricultura Urkan</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju1Unlock1Description">Con redes de micelios que se expanden por la tierra, cuando una gran bestia está arraigada en una región, puede colaborar procesando duros nutrientes y transfiriendo el sustento de los rivales a los aliados.</LocalizationPair>
   <LocalizationPair Name="%TechnologyKaiju1Unlock1EffectOverride">Con un Urkan arraigado en una región,
@@ -14017,82 +14105,22 @@ Las unidades aliadas en la misma región tienen un 15% más de daño \7776\</Loc
   <LocalizationPair Name="%TechnologyKaiju3Unlock3EffectOverride">Los Urkan y piojos que controlas tienen un 20% más de iniciativa \7774\
 Las unidades de Urkan y piojos que controlas tienen un movimiento de 2 \7757\</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju3Unlock3PrerequisiteDescription">Requiere el Fakir</LocalizationPair>
+  <LocalizationPair Name="%TechnologyLiceUnitsTitle">Piojos de Urkan</LocalizationPair>
+  <LocalizationPair Name="%TechnologyLiceUnitsDescription">A este pequeño monstruo le gusta vivir y alimentarse de los Urkan, protegiéndolos de amenazas externas.</LocalizationPair>
+  <LocalizationPair Name="%ItemHeadKaijuQuestTitle">Casco de los Urkan</LocalizationPair>
+  <LocalizationPair Name="%ItemHeadKaijuQuestDescription">Inspirado en los caparazones de los Urkan, este casco fabricado por un herrero desconocido ofrece una espléndida protección.</LocalizationPair>
+  <LocalizationPair Name="%ItemTorsoKaijuQuestTitle">Coraza de Wainswright</LocalizationPair>
+  <LocalizationPair Name="%ItemTorsoKaijuQuestDescription">Supuestamente forjada por uno de los Caballeros espectrales, el barón Wainswright, muerto hace mucho tiempo, a partir de un fragmento de caparazón de Fakir. Protege de golpes que serían letales de no llevarla.</LocalizationPair>
+  <LocalizationPair Name="%ItemLegsKaijuQuestTitle">Grebas de furia</LocalizationPair>
+  <LocalizationPair Name="%ItemLegsKaijuQuestDescription">Se rumorea que Saoshyant Tahas llevaba puesto este par de grebas cuando pateo hasta la muerte a siete sirvientes de la corte. Tienen un aire sombrío, pero proporcionan una excelente defensa.</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementMimics3Title">Fruto de plenitud</LocalizationPair>
+  <LocalizationPair Name="%CityImprovementMimics3Description">Semilla de procedencia desconocida, lo único cierto es el impresionante poder contenido en ella. Al plantarla crece rápidamente para convertirse en un prodigioso árbol fúngico de sustento y Polvo.</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionPurgeTheLandTitle">Exfoliante fúngico</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionPurgeTheLandDescription">Mediante una operación móvil, el grupo del exfoliante fúngico puede arrasar y quemar toda proliferación de micelios molesta en cualquier región.</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionPurgeTheLandTooltipEffect">Elimina los brotes fúngicos en la región</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionIntegrateFactionTitle">Metrópolis simbiótica</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionIntegrateFactionDescription">El hábitat de cada especie es diferente, pero a los Mykara eso no les afecta. Maestros de la simbiosis, pueden enmarañar rápidamente cualquier ciudad y descubrir sus secretos útiles.</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionIntegrateFactionTooltipEffect">Descripción de efectos de integración de facción</LocalizationPair>
-  <LocalizationPair Name="%FactionMimicsTitle">Mykara</LocalizationPair>
-  <LocalizationPair Name="%FactionMimicsDescription">Moradores de los territorios subterráneos con redes de micelios que se extienden por la corteza, los Mykara son una de las especies más antiguas de Auriga. Según la leyenda, a lo largo de los siglos han roto la superficie terrestre muchas veces, en su eterno conflicto con las grandes bestias Urkan.</LocalizationPair>
-  <LocalizationPair Name="%AffinityMimicsVictoryType">Tipo de victoria principal: Supremacía</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityKaijus1ArmyCaption">de Auriga</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityKaijus1ArmyTitle1">Terror</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityKaijus2ArmyCaption">de Auriga</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityKaijus2ArmyTitle1">Pavor</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityKaijus3ArmyCaption">de Auriga</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityKaijus3ArmyTitle1">Pesadilla</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyCaption">Esporas</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle1">Creciente</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle2">Deslizante</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle3">Fundador</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle4">Flotante</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle5">Planeador</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle6">Enredante</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle7">Descendente</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle8">Ascendente</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle9">Abrumador</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyTitle10">Devorador</LocalizationPair>
-  <LocalizationPair Name="%AILeaderAffinityMimics0">Raíz oscura</LocalizationPair>
-  <LocalizationPair Name="%AILeaderAffinityMimics1">Rizoma</LocalizationPair>
-  <LocalizationPair Name="%AILeaderAffinityMimics2">Cofiadura</LocalizationPair>
-  <LocalizationPair Name="%AILeaderAffinityMimics3">Rednegra</LocalizationPair>
-  <LocalizationPair Name="%AILeaderAffinityMimics4">Fardril</LocalizationPair>
-  <LocalizationPair Name="%AILeaderAffinityMimics5">Gossama</LocalizationPair>
-  <LocalizationPair Name="%AILeaderAffinityMimics6">Debrisate</LocalizationPair>
-  <LocalizationPair Name="%AILeaderAffinityMimics7">Ofages</LocalizationPair>
-  <LocalizationPair Name="%FactionAffinityMimicsArmyColossusTitle">Hongos</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimicsMainQuestTitle">Misión principal de los Mykara</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimicsMainQuestDescription">Una líder de los Saltadores, salvada por los Mykara tras la masacre de su pueblo, acepta poco a poco su nueva existencia... y la extraña simbiosis entre los Mykara y los Urkan.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimicsHeatWaveTitle">Prosperidad crepuscular</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimicsHeatWaveDescription">Con el Polvo que hay en el aire durante los eclipses de Auriga, es posible acelerar el crecimiento de zarcillos, lo que a su vez aligera mucho la proliferación de micelios.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimicsHeatWaveTooltipEffect">Durante los eclipses puedes desplegar brotes fúngicos rápidamente usando Polvo.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics1Title">Presencia trepadora</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics1Description">Con las redes de micelios extendiéndose por el subsuelo, los zarcillos pueden explotar fácilmente las zonas no defendidas de Auriga.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics1TooltipEffect">Ciudad única
-Sin producción de colonos
- 
-Puede crear brotes fúngicos en puntos de interés en regiones propias y neutrales, explotando sus secciones y otorgando:
-- Extractores de depósitos de recursos
-- Torres de vigilancia sobre cimientos
-- Posibilidad de asimilación de aldeas de facciones menores pacificadas fuera del territorio
-- Entradas a túneles en templos y ruinas intactas, lo que permite viajes rápidos entre ruinas
-
-La creación de brotes fúngicos consume comida de la ciudad principal durante varios turnos</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics3Title">Ciudades enmarañadas</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics3Description">Los Mykara buscan nuevas razas para evolucionar mediante simbiosis, capturando ciudades de una manera peculiar. Enmarañadas en una red de zarcillos de micelios, las ciudades dejan de desarrollarse, pero se canaliza una cantidad limitada de sus recursos hacia el nexo.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics3TooltipEffect">Las ciudades capturadas se vuelven enmarañadas, lo que da comienzo a un período de simbiosis
-Una vez completada, se obtiene un rasgo único, diferente para cada facción
-Las ciudades enmarañadas solo otorgan la producción de sus secciones a la ciudad principal y quedan imposibilitadas para seguir desarrollándose</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics4Title">Campamento Urkan</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics4Description">Mediante una simbiosis natural con los Urkan debido a su evolución entrelazada, los Mykara pueden encontrar refugio y sustento en los caparazones de las grandes bestias, lo que les permite apostar ejércitos en su interior.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics4TooltipEffect">Te permite acantonar unidades en Urkan domesticados bajo tu control</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics5Title">Políticas Urkan</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics5Description">Domesticar a uno de los grandes Urkan no es fácil (y en absoluto implica tener un siervo fiable al 100%), pero tener a uno de tu lado inspira un temor divino en los rivales.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics5TooltipEffect">-20% en coste de Influencia #8A7DFF#\7704\#REVERT# en interacciones diplomáticas por cada Urkan controlado</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics6Title">Industria orgánica</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics6Description">Siendo el alimento de los Mykara una parte del tejido del nexo viva y entrelazada simbióticamente, la especie fúngica puede aprovechar los frutos de estos huertos para la producción industrial.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics6TooltipEffect">Otorga una bonificación en producción de Industria \7701\ equivalente al 10% de la producción de comida \7700\ en la ciudad principal</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics7Title">Defensa orgánica</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics7Description">Como el propio tejido de la ciudad está hecho de redes de micelios, las defensas son más fuertes que con las quebradizas rocas y ladrillos, además de tener la capacidad de autorrepararse tras sufrir daños.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics8Title">Extracción ineficiente</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics8Description">Aunque se pueden extraer recursos, la producción se reduce a la mitad de la de los extractores habituales.</LocalizationPair>
-  <LocalizationPair Name="%UnitMimicsUnit1Title">Ipotane</LocalizationPair>
-  <LocalizationPair Name="%UnitMimicsUnit1Description">Con una gran movilidad pero relativamente débiles, los ipotanes Mykara destacan en las incursiones de acoso encaminadas a debilitar al enemigo desde lejos.</LocalizationPair>
-  <LocalizationPair Name="%UnitMimicsUnit2Title">Gorgona</LocalizationPair>
-  <LocalizationPair Name="%UnitMimicsUnit2Description">Las gorgonas Mykara golpean fuerte y rápido. Estas luchadoras ligeras pueden entablar combate rápidamente, pero lo mejor es desplegarlas en ataques cortos por su constitución relativamente frágil.</LocalizationPair>
-  <LocalizationPair Name="%UnitMimicsUnit3Title">Arrastrado</LocalizationPair>
-  <LocalizationPair Name="%UnitMimicsUnit3Description">Constituidos por las más duras y densas fibras de micelio, los arrastrados Mykara son lentos y pesados; enredan y bloquean al enemigo con sus increíbles defensas.</LocalizationPair>
   <LocalizationPair Name="%BrokenLordsIntegrationDescriptor1Title">Penitencia del Polvo</LocalizationPair>
   <LocalizationPair Name="%BrokenLordsIntegrationDescriptor1EffectOverride">+1 \7703\ EN TERRENO CON \7703\
 +1% REGENERACIÓN DE SALUD \7770\ POR ALDEA PACIFICADA EN EL IMPERIO</LocalizationPair>
@@ -14138,6 +14166,18 @@ CAPACIDAD PARA PREDECIR ECLIPSES DE POLVO</LocalizationPair>
   <LocalizationPair Name="%SharedAffinityIntegrationTitle">Afinidad compartida</LocalizationPair>
   <LocalizationPair Name="%SharedAffinityIntegrationDescription">Esta facción comparte tu afinidad y no puede ser integrada. 
 La ciudad proporciona automáticamente CIPCI a tu ciudad principal.</LocalizationPair>
+  <LocalizationPair Name="%CityStatusIntegratedTitle">Ciudades enmarañadas</LocalizationPair>
+  <LocalizationPair Name="%CityStatusIntegratedDescription">Los CIPCI que está proporcionando la ciudad enmarañada.</LocalizationPair>
+  <LocalizationPair Name="%RazeOvergrownCityDescription">Destruye esta ciudad enmarañada.</LocalizationPair>
+  <LocalizationPair Name="%IntegratingCityRemainTurns">La simbiosis se completará en {0} turnos \7708\.</LocalizationPair>
+  <LocalizationPair Name="%IntegratingCityComplete">Simbiosis completa</LocalizationPair>
+  <LocalizationPair Name="%OvergrownCityInformationTitle">Información sobre la ciudad enmarañada</LocalizationPair>
+  <LocalizationPair Name="%RazeOvergrownCityQueuedDescription">Esta ciudad enmarañada se destruirá en el próximo turno, haz clic aquí otra vez para cancelar la acción.</LocalizationPair>
+  <LocalizationPair Name="%OvergrownCityTitle">Ciudad enmarañada</LocalizationPair>
+  <LocalizationPair Name="%OvergrownCityDescription">Esta ciudad ha experimentado una simbiosis.
+Su población y sus mejoras permanecen inactivas, no tiene rutas comerciales, milicia ni gobernadores y no se la puede espiar.
+Las ciudades enmarañadas solo proporcionan CIPCI de sus secciones a la ciudad principal de su captor, pero vuelven a ser ciudades normales al ser reconquistadas.</LocalizationPair>
+  <LocalizationPair Name="%RazeOvergrownCityOnCooldownDescription">Acción no disponible porque la integración está en curso; estará disponible en {0} turno/s.</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityKaijuSlayerTitle">Mataurkan</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityKaijuSlayerDescription">#FFB43F#EFECTOS DE BATALLA#REVERT#
 NIVEL 1
@@ -14195,18 +14235,78 @@ NIVEL 3
   <LocalizationPair Name="%HeroSkillLeaderMap28Description">Por su capacidad de canalizar su intensa y antigua animosidad hacia los Urkan, el héroe Mykara puede convertirse en un adversario temible de las grandes bestias y sus defensores.</LocalizationPair>
   <LocalizationPair Name="%HeroSkillLeaderMap28Level1TooltipEffect">Otorga al héroe la habilidad "Mataurkan" de nivel 2 </LocalizationPair>
   <LocalizationPair Name="%HeroSkillLeaderMap28Level2TooltipEffect">Otorga al héroe la habilidad "Mataurkan" de nivel 3 </LocalizationPair>
-  <LocalizationPair Name="%ItemSwordMimicsQuestRewardTitle">Espada de Zolya</LocalizationPair>
-  <LocalizationPair Name="%ItemSwordMimicsQuestRewardDescription">Según la leyenda, la espada de Zolya es una reliquia del gran linaje de los Saltadores que se forjó en las estrellas hace milenios. Con incrustaciones de hyperium, refleja un leve fulgor de amatista.</LocalizationPair>
-  <LocalizationPair Name="%ItemTomeMimicsQuest1Title">Testamento de los Urkan</LocalizationPair>
-  <LocalizationPair Name="%ItemTomeMimicsQuest1Description">Un tomo críptico con especulaciones y medias verdades sobre las grandes bestias Urkan. Será necesario realizar costosas investigaciones para conseguir sacarle algún conocimiento útil.</LocalizationPair>
-  <LocalizationPair Name="%ItemTomeMimicsQuest2Title">Urkan en la Guía Salvaje</LocalizationPair>
-  <LocalizationPair Name="%ItemTomeMimicsQuest2Description">Redactada a partir de concienzudas investigaciones inspiradas en las teorías especulativas del antiguo "Testamento de los Urkan", la guía proporciona valiosos conocimientos sobre las grandes bestias, además de lecciones sobre liderazgo.</LocalizationPair>
-  <LocalizationPair Name="%ItemTalismanKaijuKillerTitle">Talismán de coraje</LocalizationPair>
-  <LocalizationPair Name="%ItemTalismanKaijuKillerDescription">Imbuido de una extraña tecnología antigua, se rumorea que este amuleto lo llevaban los legendarios Dragonianos que combatieron contra los Urkan hace mucho tiempo.</LocalizationPair>
-  <LocalizationPair Name="%TechnologyLiceUnitsTitle">Piojos de Urkan</LocalizationPair>
-  <LocalizationPair Name="%TechnologyLiceUnitsDescription">A este pequeño monstruo le gusta vivir y alimentarse de los Urkan, protegiéndolos de amenazas externas.</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementMimics3Title">Fruto de plenitud</LocalizationPair>
-  <LocalizationPair Name="%CityImprovementMimics3Description">Semilla de procedencia desconocida, lo único cierto es el impresionante poder contenido en ella. Al plantarla crece rápidamente para convertirse en un prodigioso árbol fúngico de sustento y Polvo.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero1Version1Title">Pólipo especializado 9S</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero1Version2Title">Pólipo especializado 9S II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero1Version3Title">Pólipo especializado 9S III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero1Version4Title">Pólipo especializado 9S IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero1Version5Title">Pólipo especializado 9S V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero1Version6Title">Pólipo especializado 9S VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero1Title">Pólipo especializado 9S</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero1Description">Germinado de un resistente brote fúngico situado en las faldas de las montañas de Targadia, 9S debe su existencia a la presencia de una manada de lobos Jotus considerada una amenaza para las exploraciones Mykara en la región. Dotado de los antiguos recuerdos e instintos de un rastreador Olvidado desaparecido hace tiempo, 9S fue capaz de rastrear a los Jotus hasta su guarida, donde los exterminó sin piedad. Ahora, reflexionando sobre su inclinación a la soledad y la filosofía, 9S prefiere recorrer las tierras carentes de vida que rodean los brotes, aunque sigue siendo un combatiente formidable.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero1Description">Germinado de un resistente brote fúngico situado en las faldas de las montañas de Targadia, 9S debe su existencia a la presencia de una manada de lobos Jotus considerada una amenaza para las exploraciones Mykara en la región. Dotado de los antiguos recuerdos e instintos de un rastreador Olvidado desaparecido hace tiempo, 9S fue capaz de rastrear a los Jotus hasta su guarida, donde los exterminó sin piedad. Ahora, reflexionando sobre su inclinación a la soledad y la filosofía, 9S prefiere recorrer las tierras carentes de vida que rodean los brotes, aunque sigue siendo un combatiente formidable.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero2Version1Title">Pólipo especializado 2D</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero2Version2Title">Pólipo especializado 2D II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero2Version3Title">Pólipo especializado 2D III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero2Version4Title">Pólipo especializado 2D IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero2Version5Title">Pólipo especializado 2D V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero2Version6Title">Pólipo especializado 2D VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero2Title">Pólipo especializado 2D</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero2Description">Cuando los Mykara se toparon con una cría de Dragoniano herida a orillas de un gran océano, su respuesta fue germinar rápidamente a 2D. Dotado de los conocimientos de un condecorado guerrero Dragoniano, se le encomendó la tarea de localizar el nido de la cría, que creían ubicado en un rocoso archipiélago aislado en mitad del mar. Tras salvar a la cría de una muerte segura y cuidarla, 2D forjó un estrecho vínculo con el joven Dragoniano y, posteriormente, lo llevó de vuelta a su isla natal.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero2Description">Cuando los Mykara se toparon con una cría de Dragoniano herida a orillas de un gran océano, su respuesta fue germinar rápidamente a 2D. Dotado de los conocimientos de un condecorado guerrero Dragoniano, se le encomendó la tarea de localizar el nido de la cría, que creían ubicado en un rocoso archipiélago aislado en mitad del mar. Tras salvar a la cría de una muerte segura y cuidarla, 2D forjó un estrecho vínculo con el joven Dragoniano y, posteriormente, lo llevó de vuelta a su isla natal.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero3Version1Title">Pólipo especializado A7</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero3Version2Title">Pólipo especializado A7 II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero3Version3Title">Pólipo especializado A7 III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero3Version4Title">Pólipo especializado A7 IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero3Version5Title">Pólipo especializado A7 V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero3Version6Title">Pólipo especializado A7 VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero3Title">Pólipo especializado A7</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero3Description">A7 germinó a partir de un rizoma que emergió en el emplazamiento de un templo de los Infinitos. Desde sus primeros momentos de consciencia, estuvo imbuido de Polvo. Sus capacidades físicas y mentales se desarrollaron con inusual rapidez, y estuvo totalmente preparado para cortar el vínculo físico con los Mykara mucho antes que sus compañeros y hermanos. Un hecho interesante, sin embargo, es que cuantos más viajes y descubrimientos realizaba, más echaba de menos la ignorancia y simplicidad de ser un capullo en una próspera colonia de infantes unidos. Pese a su fama y a sus hazañas, espera ser reabsorbido algún día para vivir una existencia más sencilla y tranquila.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero3Description">A7 germinó a partir de un rizoma que emergió en el emplazamiento de un templo de los Infinitos. Desde sus primeros momentos de consciencia, estuvo imbuido de Polvo. Sus capacidades físicas y mentales se desarrollaron con inusual rapidez, y estuvo totalmente preparado para cortar el vínculo físico con los Mykara mucho antes que sus compañeros y hermanos. Un hecho interesante, sin embargo, es que cuantos más viajes y descubrimientos realizaba, más echaba de menos la ignorancia y simplicidad de ser un capullo en una próspera colonia de infantes unidos. Pese a su fama y a sus hazañas, espera ser reabsorbido algún día para vivir una existencia más sencilla y tranquila.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero4Version1Title">Pólipo especializado 5X</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero4Version2Title">Pólipo especializado 5X II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero4Version3Title">Pólipo especializado 5X III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero4Version4Title">Pólipo especializado 5X IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero4Version5Title">Pólipo especializado 5X V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero4Version6Title">Pólipo especializado 5X VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero4Title">Pólipo especializado 5X</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero4Description">Aparentemente normal en todos los sentidos, 5X era de hecho una leve mutación de Mykara ligeramente tóxica para otras formas de vida de Auriga. No podía tocar una flor sin matarla y a los arroyos les costaba días recuperar su ecosistema natural si los cruzaba. Para su espanto, era ligeramente venenoso hasta para algunos de sus propios congéneres y, por este motivo, acabó por marcharse a recorrer Auriga en busca de respuestas y de una cura. Tras probar hierbas aromáticas, cortezas exóticas y arbustos medicinales de las montañas y desiertos del planeta, al fin descubrió una poción que, una absorbida por su cuerpo e integrada en él, le hacía inofensivo. Sin embargo, tras los vastos conocimientos que atesoró y las aventuras que vivió, al regresar no fue solo bien recibido, sino reconocido como un respetado líder.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero4Description">Aparentemente normal en todos los sentidos, 5X era de hecho una leve mutación de Mykara ligeramente tóxica para otras formas de vida de Auriga. No podía tocar una flor sin matarla y a los arroyos les costaba días recuperar su ecosistema natural si los cruzaba. Para su espanto, era ligeramente venenoso hasta para algunos de sus propios congéneres y, por este motivo, acabó por marcharse a recorrer Auriga en busca de respuestas y de una cura. Tras probar hierbas aromáticas, cortezas exóticas y arbustos medicinales de las montañas y desiertos del planeta, al fin descubrió una poción que, una absorbida por su cuerpo e integrada en él, le hacía inofensivo. Sin embargo, tras los vastos conocimientos que atesoró y las aventuras que vivió, al regresar no fue solo bien recibido, sino reconocido como un respetado líder.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero5Version1Title">Pólipo especializado Q9</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero5Version2Title">Pólipo especializado Q9 II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero5Version3Title">Pólipo especializado Q9 III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero5Version4Title">Pólipo especializado Q9 IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero5Version5Title">Pólipo especializado Q9 V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero5Version6Title">Pólipo especializado Q9 VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero5Version1Title">Pólipo especializado Q9</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero5Title">Pólipo especializado Q9</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero5Description">Habiendo crecido en las profundidades de Auriga, Q9 nunca imaginó una vida en la superficie ni independiente de la masa de los Mykara. Sin embargo, como desarrollo normal de su vida fúngica, su brote evolucionaba lentamente por fisuras y cavernas cuando se topó con un antiguo laboratorio de los Infinitos. La tecnología no ofrecía mucho interés en aquel momento, pero había suficiente concentración de Polvo para provocar una respuesta. Todo el brote se marchitó rápidamente excepto Q9, que evolucionó durante semanas ingiriendo lentamente la biomasa —y parte del conocimiento— que quedaba en las instalaciones. Cuando por fin se marchó, decidió que los misterios de los espacios subterráneos ya no le bastaban y se dispuso a descubrir la luz del día y a llevar una vida de exploración en la superficie.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero5Description">Habiendo crecido en las profundidades de Auriga, Q9 nunca imaginó una vida en la superficie ni independiente de la masa de los Mykara. Sin embargo, como desarrollo normal de su vida fúngica, su brote evolucionaba lentamente por fisuras y cavernas cuando se topó con un antiguo laboratorio de los Infinitos. La tecnología no ofrecía mucho interés en aquel momento, pero había suficiente concentración de Polvo para provocar una respuesta. Todo el brote se marchitó rápidamente excepto Q9, que evolucionó durante semanas ingiriendo lentamente la biomasa —y parte del conocimiento— que quedaba en las instalaciones. Cuando por fin se marchó, decidió que los misterios de los espacios subterráneos ya no le bastaban y se dispuso a descubrir la luz del día y a llevar una vida de exploración en la superficie.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero6Version1Title">Pólipo especializado 3G</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero6Version2Title">Pólipo especializado 3G II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero6Version3Title">Pólipo especializado 3G III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero6Version4Title">Pólipo especializado 3G IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero6Version5Title">Pólipo especializado 3G V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero6Version6Title">Pólipo especializado 3G VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero6Title">Pólipo especializado 3G</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero6Description">3G era un Mykara totalmente normal hasta que descubrió el queso. Maravillado ante las formas en que los hongos y sus variantes podían alterar y mejorar los sabores, 3G empezó a viajar por Auriga para descubrir lo que hacían otros y cómo lo hacían. Ya fuesen de leche de oveja, vaca o cabra, fresca o añeja, salada o con especias, 3G empezó a estudiar todos los quesos: el duro «panra» de los Clanes errantes que se desmigaja; el atrozmente intenso «chabban» de los Magos ardientes; las duras cáscaras que los Olvidados hierven para dar sabor a sus sopas. Viajando y probando incluso sobre sí mismo, este raro pasatiempo allanó el camino a 3G para evolucionar y convertirse en uno de los líderes Mykara más experimentados, aunque también de los más olorosos.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero6Description">3G era un Mykara totalmente normal hasta que descubrió el queso. Maravillado ante las formas en que los hongos y sus variantes podían alterar y mejorar los sabores, 3G empezó a viajar por Auriga para descubrir lo que hacían otros y cómo lo hacían. Ya fuesen de leche de oveja, vaca o cabra, fresca o añeja, salada o con especias, 3G empezó a estudiar todos los quesos: el duro «panra» de los Clanes errantes que se desmigaja; el atrozmente intenso «chabban» de los Magos ardientes; las duras cáscaras que los Olvidados hierven para dar sabor a sus sopas. Viajando y probando incluso sobre sí mismo, este raro pasatiempo allanó el camino a 3G para evolucionar y convertirse en uno de los líderes Mykara más experimentados, aunque también de los más olorosos.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero7Version1Title">Pólipo especializado Z4</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero7Version2Title">Pólipo especializado Z4 II</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero7Version3Title">Pólipo especializado Z4 III</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero7Version4Title">Pólipo especializado Z4 IV</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero7Version5Title">Pólipo especializado Z4 V</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero7Version6Title">Pólipo especializado Z4 VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero7Title">Pólipo especializado Z4</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHero7Description">Formado a partir de un brote rodeado de territorios de Necrófagos, para cuando Z4 se independizó su constante contacto con ellos le había vuelto un poco diferente a los demás. Con capacidades como desarrollar cepas fúngicas que solo atacaban a Necrófagos a adaptar armas de otras culturas a la extraña morfología de los Mykara, ponía en ventaja a su brote durante las escaramuzas con sus hambrientos vecinos. Cuando los necrófagos al fin infestaron el puesto avanzado, Z4 se marchó a difundir sus ideas y teorías por otros emplazamientos Mykara para que pudieran evitar el mismo destino. Ahora Z4 es un guerrero temible y respetado y se le suele ver a la cabeza de las tropas, un arma nueva y extraña que hace estragos entre sus enemigos.</LocalizationPair>
+  <LocalizationPair Name="%HeroNameMimicsHero7Description">Formado a partir de un brote rodeado de territorios de Necrófagos, para cuando Z4 se independizó su constante contacto con ellos le había vuelto un poco diferente a los demás. Con capacidades como desarrollar cepas fúngicas que solo atacaban a Necrófagos a adaptar armas de otras culturas a la extraña morfología de los Mykara, ponía en ventaja a su brote durante las escaramuzas con sus hambrientos vecinos. Cuando los necrófagos al fin infestaron el puesto avanzado, Z4 se marchó a difundir sus ideas y teorías por otros emplazamientos Mykara para que pudieran evitar el mismo destino. Ahora Z4 es un guerrero temible y respetado y se le suele ver a la cabeza de las tropas, un arma nueva y extraña que hace estragos entre sus enemigos.</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion1Title">Faresh Zima</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion2Title">Faresh Zima II</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion3Title">Faresh Zima III</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion4Title">Faresh Zima IV</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion5Title">Faresh Zima V</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion6Title">Faresh Zima VI</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyTitle">Faresh Zima</LocalizationPair>
+  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyDescription">Descendiente lejana de Faresh Abiz, el legendario Mago ardiente que domesticó a una de las grandes bestias Urkan y obtuvo una famosa victoria sobre un clan escindido de Saltadores. Faresh pretende restaurar el honor de su familia tras un largo período de estancamiento. Nacida en el privilegiado mundo de la alta jerarquía de la sociedad de los Magos, los primeros recuerdos de Zima son de fiestas decadentes, vacuos espectáculos de magia y conversaciones clandestinas en su hacienda. Pronto llegó a despreciar ese mundo y juró no seguir los pasos de sus familiares. Zima se dedicó a los más oscuros rituales de dolor infligiendo gran sufrimiento a su cuerpo para poder obtener los mayores poderes. Hoy día intenta recoger el fruto de esos esfuerzos, sean cuales sean las consecuencias.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter1Title">1. Sueños de masacre</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter1Description">Mis orificios nasales se llenan del hedor a ozono de los ataques luminosos de los Magos y se mezcla con el de la carne abrasada. Avanzo a tropezones por un estrecho pasaje, con mi sombra parpadeando bajo la tenue luz fosforescente de las vetas de micelio en la abrupta piedra. La roca tiembla. Al oír el profundo rugido del Urkan se me eriza el vello. Me aferro a un arma, un hacha poderosa, pero en mis manos parece un peso muerto. ¿Estoy liderando a mis hombres o huyendo del enemigo? El pasaje da paso a otro cuadro de masacre; los míos yacen agonizantes o muertos sobre la fría piedra y su sangre se esparce en arcos de color carmesí o se acumula en oscuros charcos. Me freno en seco.
  
@@ -14293,7 +14393,7 @@ Desde tiempos inmemoriales, los Mykara han sido los custodios de los Urkan. Y ah
 De ese pozo, surge otro pensamiento. Desde el privilegio de que me dan siglos de perspectiva, mi propia vendetta contra los Magos parece... insignificante... intrascendente. Ahora que los Urkan rompen de nuevo la corteza para recorrer las tierras, debo concentrar mi voluntad en un asunto más importante que la venganza. Prepararé a un héroe Mykara...</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5Objective">Ahora que han vuelto los Urkan, es hora de actuar en armonía con los Mykara. Aunque nos debilite, debemos estudiar el antiguo tomo y volver a dominar a las grandes bestias.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5Outcome">El tiempo que hemos dedicado a estudiar las costumbres de los Urkan no ha sido en vano. Hemos domesticado a las grandes bestias y descubierto algunas de sus debilidades. Ahora debo entender mejor el equilibro al que aspiramos y prepararme para el interminable invierno.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestMimics-Chapter5-Step1">Equipa a un héroe con el "Testamento de los Urkan" y haz que gobierne tu ciudad principal durante 8 turnos. $Progression</LocalizationPair>
+  <LocalizationPair Name="%MainQuestMimics-Chapter5-Step1">Equipa a un héroe con el "Testamento de los Urkan" y haz que gobierne tu ciudad principal durante $TurnDuration turnos. $Progression</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5-Step1Tooltip">Este libro tendrá un efecto negativo en tu ciudad, así que actúa en consecuencia.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5-Step2">Con una mayor comprensión de las grandes bestias, es hora de domesticar a otro Urkan... o conservar a los tres si ya están domesticados.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5-Step2Tooltip">Puedes domesticar a los Urkan mediante la conquista o el soborno.</LocalizationPair>
@@ -14307,7 +14407,7 @@ Desde tiempos inmemoriales, los Mykara han sido los custodios de los Urkan. Y ah
 De ese pozo, surge otro pensamiento. Desde el privilegio de que me dan siglos de perspectiva, mi propia vendetta contra los Magos parece... insignificante... intrascendente. Ahora que probablemente los Urkan vuelvan a la superficie, debo concentrar mi voluntad en un asunto más importante que la venganza. Prepararé a un héroe Mykara...</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5AltObjective">Ante el inminente retorno de los Urkan, es hora de actuar en armonía con los Mykara. Aunque nos debilite, debemos estudiar el antiguo tomo y prepararse para las grandes bestias.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5AltOutcome">Espero que el tiempo dedicado a estudiar las costumbres de los Urkan no haya sido en vano. Hemos descubierto algunas de sus debilidades y espero que podamos usar esos conocimientos. Ahora debo entender mejor el equilibro al que aspiramos y prepararme para el interminable invierno.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestMimics-Chapter5Alt-Step1">Equipa a un héroe con el "Testamento de los Urkan" y haz que gobierne tu ciudad principal durante 8 turnos. $Progression</LocalizationPair>
+  <LocalizationPair Name="%MainQuestMimics-Chapter5Alt-Step1">Equipa a un héroe con el "Testamento de los Urkan" y haz que gobierne tu ciudad principal durante $TurnDuration turnos. $Progression</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5Alt-Step1Tooltip">Este libro tendrá un efecto negativo en tu ciudad, así que actúa en consecuencia.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5Alt-Step2">Descubrimos que a los Urkan les atraen los recursos de lujo. Reúne $LuxuryAmount de $LuxuryName y úsalos como cebo para expulsarlos.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter5Alt-Step2Tooltip">Puedes acumular recursos de lujo a través de la explotación o del mercado.</LocalizationPair>
@@ -14375,11 +14475,7 @@ Respecto a los Urkan, no sabemos cómo sobrevivirán al invierno. Probablemente 
   <LocalizationPair Name="%MainQuestMimics-Chapter8-Step1Tooltip">Encontrarás el artefacto en la lista de "construcciones disponibles" de tu ciudad.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter8-Step2">Produce 100 unidades de Comida, Industria, Polvo y Ciencia en tu ciudad principal.</LocalizationPair>
   <LocalizationPair Name="%MainQuestMimics-Chapter8-Step2Tooltip">Usa brotes fúngicos y crea mejoras de ciudad para alcanzar el objetivo.</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionMimics4Title">Vetas de hierro</LocalizationPair>
-  <LocalizationPair Name="%TechnologyDefinitionMimics4Description">Fortaleciendo los zarcillos y rizomas subterráneos por todo el territorio de micelios se pueden transportar mayores cantidades de recursos valiosos hasta el corazón del colectivo de los Mykara.</LocalizationPair>
-  <LocalizationPair Name="%GlobalQuestCompet#0007Title">Esta ciudad ha sido asimilada por otra facción.
-Su población y sus mejoras permanecen inactivas, no tiene rutas comerciales, milicia ni gobernadores y no se la puede espiar.
-Las ciudades enmarañadas vuelven a ser normales cuando son capturadas.</LocalizationPair>
+  <LocalizationPair Name="%GlobalQuestCompet#0007Title">Un mundo de monstruos</LocalizationPair>
   <LocalizationPair Name="%GlobalQuestCompet#0007Description">Los Urkan (esas legendarias bestias antiguas) han emergido de la corteza de Auriga y no están en deuda con nadie. Alzándose sobre la tierra y plagados de agresivos piojos, son enemigos peligrosos que quizás sea mejor evitar, pero también pueden proporcionar un gran poder. Verdaderamente, el imperio que pueda controlar y sacar el máximo rendimiento del Kazar, el Chaka y el Fakir, será sin duda muy poderoso.</LocalizationPair>
   <LocalizationPair Name="%GlobalQuestCompet#0007Objective">Los legendarios Urkan han regresado a la superficie... ¡y hay que domesticarlos!</LocalizationPair>
   <LocalizationPair Name="%GlobalQuestCompet#0007Outcome">¡Lo conseguiste! ¡El Kazar, el Chaka y el Fakir son tuyos! Aún no están totalmente adiestrados, pero los demás imperios se estremecen al saber que posees a los tres Urkan y que están en perfecto estado.</LocalizationPair>
@@ -14397,91 +14493,6 @@ Pero primero, debemos asegurar nuestra nave...</LocalizationPair>
   <LocalizationPair Name="%VictoryQuest-Chapter5Alt2-Step1Tooltip">Ciertas propiedades especiales del cristal pueden ayudarte a sobrevivir durante el viaje. Mantenlo a salvo.</LocalizationPair>
   <LocalizationPair Name="%VictoryQuest-Chapter5Alt2-Step2">El cristal enciende los motores; espera $Timer turnos hasta que los motores estén listos para el despegue.</LocalizationPair>
   <LocalizationPair Name="%VictoryQuest-Chapter5Alt2-Step2Tooltip">Otros imperios, celosos de tu éxito, podrían decidir intervenir.</LocalizationPair>
-  <LocalizationPair Name="%ItemHeadKaijuQuestTitle">Casco de los Urkan</LocalizationPair>
-  <LocalizationPair Name="%ItemHeadKaijuQuestDescription">Inspirado en los caparazones de los Urkan, este casco fabricado por un herrero desconocido ofrece una espléndida protección.</LocalizationPair>
-  <LocalizationPair Name="%ItemTorsoKaijuQuestTitle">Coraza de Wainswright</LocalizationPair>
-  <LocalizationPair Name="%ItemTorsoKaijuQuestDescription">Supuestamente forjada por uno de los Caballeros espectrales, el barón Wainswright, muerto hace mucho tiempo, a partir de un fragmento de caparazón de Fakir. Protege de golpes que serían letales de no llevarla.</LocalizationPair>
-  <LocalizationPair Name="%ItemLegsKaijuQuestTitle">Grebas de furia</LocalizationPair>
-  <LocalizationPair Name="%ItemLegsKaijuQuestDescription">Se rumorea que Saoshyant Tahas llevaba puesto este par de grebas cuando pateo hasta la muerte a siete sirvientes de la corte. Tienen un aire sombrío, pero proporcionan una excelente defensa.</LocalizationPair>
-  <LocalizationPair Name="%CityStatusIntegratedTitle">Ciudades enmarañadas</LocalizationPair>
-  <LocalizationPair Name="%CityStatusIntegratedDescription">Los CIPCI que está proporcionando la ciudad enmarañada.</LocalizationPair>
-  <LocalizationPair Name="%RazeOvergrownCityDescription">Destruye esta ciudad enmarañada.</LocalizationPair>
-  <LocalizationPair Name="%IntegratingCityRemainTurns">La simbiosis se completará en {0} turnos \7708\.</LocalizationPair>
-  <LocalizationPair Name="%IntegratingCityComplete">Simbiosis completa</LocalizationPair>
-  <LocalizationPair Name="%OvergrownCityInformationTitle">Información sobre la ciudad enmarañada</LocalizationPair>
-  <LocalizationPair Name="%RazeOvergrownCityQueuedDescription">Esta ciudad enmarañada se destruirá en el próximo turno, haz clic aquí otra vez para cancelar la acción.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero1Version1Title">Pólipo especializado 9S</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero1Version2Title">Pólipo especializado 9S II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero1Version3Title">Pólipo especializado 9S III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero1Version4Title">Pólipo especializado 9S IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero1Version5Title">Pólipo especializado 9S V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero1Version6Title">Pólipo especializado 9S VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero1Title">Pólipo especializado 9S</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero1Description">Germinado de un resistente brote fúngico situado en las faldas de las montañas de Targadia, 9S debe su existencia a la presencia de una manada de lobos Jotus considerada una amenaza para las exploraciones Mykara en la región. Dotado de los antiguos recuerdos e instintos de un rastreador Olvidado desaparecido hace tiempo, 9S fue capaz de rastrear a los Jotus hasta su guarida, donde los exterminó sin piedad. Ahora, reflexionando sobre su inclinación a la soledad y la filosofía, 9S prefiere recorrer las tierras carentes de vida que rodean los brotes, aunque sigue siendo un combatiente formidable.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero1Description">Germinado de un resistente brote fúngico situado en las faldas de las montañas de Targadia, 9S debe su existencia a la presencia de una manada de lobos Jotus considerada una amenaza para las exploraciones Mykara en la región. Dotado de los antiguos recuerdos e instintos de un rastreador Olvidado desaparecido hace tiempo, 9S fue capaz de rastrear a los Jotus hasta su guarida, donde los exterminó sin piedad. Ahora, reflexionando sobre su inclinación a la soledad y la filosofía, 9S prefiere recorrer las tierras carentes de vida que rodean los brotes, aunque sigue siendo un combatiente formidable.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero2Version1Title">Pólipo especializado 2D</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero2Version2Title">Pólipo especializado 2D II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero2Version3Title">Pólipo especializado 2D III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero2Version4Title">Pólipo especializado 2D IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero2Version5Title">Pólipo especializado 2D V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero2Version6Title">Pólipo especializado 2D VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero2Title">Pólipo especializado 2D</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero2Description">Cuando los Mykara se toparon con una cría de Dragoniano herida a orillas de un gran océano, su respuesta fue germinar rápidamente a 2D. Dotado de los conocimientos de un condecorado guerrero Dragoniano, se le encomendó la tarea de localizar el nido de la cría, que creían ubicado en un rocoso archipiélago aislado en mitad del mar. Tras salvar a la cría de una muerte segura y cuidarla, 2D forjó un estrecho vínculo con el joven Dragoniano y, posteriormente, lo llevó de vuelta a su isla natal.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero2Description">Cuando los Mykara se toparon con una cría de Dragoniano herida a orillas de un gran océano, su respuesta fue germinar rápidamente a 2D. Dotado de los conocimientos de un condecorado guerrero Dragoniano, se le encomendó la tarea de localizar el nido de la cría, que creían ubicado en un rocoso archipiélago aislado en mitad del mar. Tras salvar a la cría de una muerte segura y cuidarla, 2D forjó un estrecho vínculo con el joven Dragoniano y, posteriormente, lo llevó de vuelta a su isla natal.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero3Version1Title">Pólipo especializado A7</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero3Version2Title">Pólipo especializado A7 II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero3Version3Title">Pólipo especializado A7 III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero3Version4Title">Pólipo especializado A7 IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero3Version5Title">Pólipo especializado A7 V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero3Version6Title">Pólipo especializado A7 VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero3Title">Pólipo especializado A7</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero3Description">A7 germinó a partir de un rizoma que emergió en el emplazamiento de un templo de los Infinitos. Desde sus primeros momentos de consciencia, estuvo imbuido de Polvo. Sus capacidades físicas y mentales se desarrollaron con inusual rapidez, y estuvo totalmente preparado para cortar el vínculo físico con los Mykara mucho antes que sus compañeros y hermanos. Un hecho interesante, sin embargo, es que cuantos más viajes y descubrimientos realizaba, más echaba de menos la ignorancia y simplicidad de ser un capullo en una próspera colonia de infantes unidos. Pese a su fama y a sus hazañas, espera ser reabsorbido algún día para vivir una existencia más sencilla y tranquila.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero3Description">A7 germinó a partir de un rizoma que emergió en el emplazamiento de un templo de los Infinitos. Desde sus primeros momentos de consciencia, estuvo imbuido de Polvo. Sus capacidades físicas y mentales se desarrollaron con inusual rapidez, y estuvo totalmente preparado para cortar el vínculo físico con los Mykara mucho antes que sus compañeros y hermanos. Un hecho interesante, sin embargo, es que cuantos más viajes y descubrimientos realizaba, más echaba de menos la ignorancia y simplicidad de ser un capullo en una próspera colonia de infantes unidos. Pese a su fama y a sus hazañas, espera ser reabsorbido algún día para vivir una existencia más sencilla y tranquila.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero4Version1Title">Pólipo especializado 5X</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero4Version2Title">Pólipo especializado 5X II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero4Version3Title">Pólipo especializado 5X III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero4Version4Title">Pólipo especializado 5X IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero4Version5Title">Pólipo especializado 5X V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero4Version6Title">Pólipo especializado 5X VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero4Title">Pólipo especializado 5X</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero4Description">Aparentemente normal en todos los sentidos, 5X era de hecho una leve mutación de Mykara ligeramente tóxica para otras formas de vida de Auriga. No podía tocar una flor sin matarla y a los arroyos les costaba días recuperar su ecosistema natural si los cruzaba. Para su espanto, era ligeramente venenoso hasta para algunos de sus propios congéneres y, por este motivo, acabó por marcharse a recorrer Auriga en busca de respuestas y de una cura. Tras probar hierbas aromáticas, cortezas exóticas y arbustos medicinales de las montañas y desiertos del planeta, al fin descubrió una poción que, una absorbida por su cuerpo e integrada en él, le hacía inofensivo. Sin embargo, tras los vastos conocimientos que atesoró y las aventuras que vivió, al regresar no fue solo bien recibido, sino reconocido como un respetado líder.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero4Description">Aparentemente normal en todos los sentidos, 5X era de hecho una leve mutación de Mykara ligeramente tóxica para otras formas de vida de Auriga. No podía tocar una flor sin matarla y a los arroyos les costaba días recuperar su ecosistema natural si los cruzaba. Para su espanto, era ligeramente venenoso hasta para algunos de sus propios congéneres y, por este motivo, acabó por marcharse a recorrer Auriga en busca de respuestas y de una cura. Tras probar hierbas aromáticas, cortezas exóticas y arbustos medicinales de las montañas y desiertos del planeta, al fin descubrió una poción que, una absorbida por su cuerpo e integrada en él, le hacía inofensivo. Sin embargo, tras los vastos conocimientos que atesoró y las aventuras que vivió, al regresar no fue solo bien recibido, sino reconocido como un respetado líder.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero5Version1Title">Pólipo especializado Q9</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero5Version2Title">Pólipo especializado Q9 II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero5Version3Title">Pólipo especializado Q9 III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero5Version4Title">Pólipo especializado Q9 IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero5Version5Title">Pólipo especializado Q9 V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero5Version6Title">Pólipo especializado Q9 VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero5Version1Title">Pólipo especializado Q9</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero5Title">Pólipo especializado Q9</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero5Description">Habiendo crecido en las profundidades de Auriga, Q9 nunca imaginó una vida en la superficie ni independiente de la masa de los Mykara. Sin embargo, como desarrollo normal de su vida fúngica, su brote evolucionaba lentamente por fisuras y cavernas cuando se topó con un antiguo laboratorio de los Infinitos. La tecnología no ofrecía mucho interés en aquel momento, pero había suficiente concentración de Polvo para provocar una respuesta. Todo el brote se marchitó rápidamente excepto Q9, que evolucionó durante semanas ingiriendo lentamente la biomasa —y parte del conocimiento— que quedaba en las instalaciones. Cuando por fin se marchó, decidió que los misterios de los espacios subterráneos ya no le bastaban y se dispuso a descubrir la luz del día y a llevar una vida de exploración en la superficie.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero5Description">Habiendo crecido en las profundidades de Auriga, Q9 nunca imaginó una vida en la superficie ni independiente de la masa de los Mykara. Sin embargo, como desarrollo normal de su vida fúngica, su brote evolucionaba lentamente por fisuras y cavernas cuando se topó con un antiguo laboratorio de los Infinitos. La tecnología no ofrecía mucho interés en aquel momento, pero había suficiente concentración de Polvo para provocar una respuesta. Todo el brote se marchitó rápidamente excepto Q9, que evolucionó durante semanas ingiriendo lentamente la biomasa —y parte del conocimiento— que quedaba en las instalaciones. Cuando por fin se marchó, decidió que los misterios de los espacios subterráneos ya no le bastaban y se dispuso a descubrir la luz del día y a llevar una vida de exploración en la superficie.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero6Version1Title">Pólipo especializado 3G</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero6Version2Title">Pólipo especializado 3G II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero6Version3Title">Pólipo especializado 3G III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero6Version4Title">Pólipo especializado 3G IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero6Version5Title">Pólipo especializado 3G V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero6Version6Title">Pólipo especializado 3G VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero6Title">Pólipo especializado 3G</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero6Description">3G era un Mykara totalmente normal hasta que descubrió el queso. Maravillado ante las formas en que los hongos y sus variantes podían alterar y mejorar los sabores, 3G empezó a viajar por Auriga para descubrir lo que hacían otros y cómo lo hacían. Ya fuesen de leche de oveja, vaca o cabra, fresca o añeja, salada o con especias, 3G empezó a estudiar todos los quesos: el duro «panra» de los Clanes errantes que se desmigaja; el atrozmente intenso «chabban» de los Magos ardientes; las duras cáscaras que los Olvidados hierven para dar sabor a sus sopas. Viajando y probando incluso sobre sí mismo, este raro pasatiempo allanó el camino a 3G para evolucionar y convertirse en uno de los líderes Mykara más experimentados, aunque también de los más olorosos.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero6Description">3G era un Mykara totalmente normal hasta que descubrió el queso. Maravillado ante las formas en que los hongos y sus variantes podían alterar y mejorar los sabores, 3G empezó a viajar por Auriga para descubrir lo que hacían otros y cómo lo hacían. Ya fuesen de leche de oveja, vaca o cabra, fresca o añeja, salada o con especias, 3G empezó a estudiar todos los quesos: el duro «panra» de los Clanes errantes que se desmigaja; el atrozmente intenso «chabban» de los Magos ardientes; las duras cáscaras que los Olvidados hierven para dar sabor a sus sopas. Viajando y probando incluso sobre sí mismo, este raro pasatiempo allanó el camino a 3G para evolucionar y convertirse en uno de los líderes Mykara más experimentados, aunque también de los más olorosos.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero7Version1Title">Pólipo especializado Z4</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero7Version2Title">Pólipo especializado Z4 II</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero7Version3Title">Pólipo especializado Z4 III</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero7Version4Title">Pólipo especializado Z4 IV</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero7Version5Title">Pólipo especializado Z4 V</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero7Version6Title">Pólipo especializado Z4 VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero7Title">Pólipo especializado Z4</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHero7Description">Formado a partir de un brote rodeado de territorios de Necrófagos, para cuando Z4 se independizó su constante contacto con ellos le había vuelto un poco diferente a los demás. Con capacidades como desarrollar cepas fúngicas que solo atacaban a Necrófagos a adaptar armas de otras culturas a la extraña morfología de los Mykara, ponía en ventaja a su brote durante las escaramuzas con sus hambrientos vecinos. Cuando los necrófagos al fin infestaron el puesto avanzado, Z4 se marchó a difundir sus ideas y teorías por otros emplazamientos Mykara para que pudieran evitar el mismo destino. Ahora Z4 es un guerrero temible y respetado y se le suele ver a la cabeza de las tropas, un arma nueva y extraña que hace estragos entre sus enemigos.</LocalizationPair>
-  <LocalizationPair Name="%HeroNameMimicsHero7Description">Formado a partir de un brote rodeado de territorios de Necrófagos, para cuando Z4 se independizó su constante contacto con ellos le había vuelto un poco diferente a los demás. Con capacidades como desarrollar cepas fúngicas que solo atacaban a Necrófagos a adaptar armas de otras culturas a la extraña morfología de los Mykara, ponía en ventaja a su brote durante las escaramuzas con sus hambrientos vecinos. Cuando los necrófagos al fin infestaron el puesto avanzado, Z4 se marchó a difundir sus ideas y teorías por otros emplazamientos Mykara para que pudieran evitar el mismo destino. Ahora Z4 es un guerrero temible y respetado y se le suele ver a la cabeza de las tropas, un arma nueva y extraña que hace estragos entre sus enemigos.</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion1Title">Faresh Zima</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion2Title">Faresh Zima II</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion3Title">Faresh Zima III</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion4Title">Faresh Zima IV</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion5Title">Faresh Zima V</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyVersion6Title">Faresh Zima VI</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyTitle">Faresh Zima</LocalizationPair>
-  <LocalizationPair Name="%UnitProfileMimicsHeroQuestEnemyDescription">Descendiente lejana de Faresh Abiz, el legendario Mago ardiente que domesticó a una de las grandes bestias Urkan y obtuvo una famosa victoria sobre un clan escindido de Saltadores. Faresh pretende restaurar el honor de su familia tras un largo período de estancamiento. Nacida en el privilegiado mundo de la alta jerarquía de la sociedad de los Magos, los primeros recuerdos de Zima son de fiestas decadentes, vacuos espectáculos de magia y conversaciones clandestinas en su hacienda. Pronto llegó a despreciar ese mundo y juró no seguir los pasos de sus familiares. Zima se dedicó a los más oscuros rituales de dolor infligiendo gran sufrimiento a su cuerpo para poder obtener los mayores poderes. Hoy día intenta recoger el fruto de esos esfuerzos, sean cuales sean las consecuencias.</LocalizationPair>
   <LocalizationPair Name="%CreepingNodeInfoTitle">Información sobre brote fúngico</LocalizationPair>
   <LocalizationPair Name="%CreepingNodeInfoDescription">Todos los recursos generados por este brote fúngico se canalizarán hacia la ciudad principal.</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_Village_ErycisTitle">Aldea de los Erycis Mykara</LocalizationPair>
@@ -14496,6 +14507,8 @@ Pero primero, debemos asegurar nuestra nave...</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_Village_DelversDescription">Los gruesos muros de piedra de la aldea de los Cavadores están enmarañados con redes de micelios.</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_Village_DorgeshiTitle">Aldea de los Dorgeshi Mykara</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_Village_DorgeshiDescription">Bajo las redes enmarañadas, los recursos de lujo de los Dorgeshi aún brillan débilmente.</LocalizationPair>
+  <LocalizationPair Name="%CreepingNode_Village_DawnShuaTitle">Aldea de los Magtay Mykara</LocalizationPair>
+  <LocalizationPair Name="%CreepingNode_Village_DawnShuaDescription">En esta aldea apenas se escucha el murmullo del viento; las terrazas y granjas cuidadosamente atendidas de los Magtay están cubiertas de vegetación y silencio.</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_Village_EyelessOnesTitle">Aldea de los Invidentes Mykara</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_Village_EyelessOnesDescription">Las chozas de barro de los Invidentes están envueltas en redes fúngicas.</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_Village_GauranTitle">Aldea de los Gauran Mykara</LocalizationPair>
@@ -14574,30 +14587,6 @@ Pero primero, debemos asegurar nuestra nave...</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_DefensiveTower0Description">Esta torre sirve como escudo defensivo para los Mykara y ataca a quienes se acercan a su imperio con malas intenciones.</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_DefensiveTower1Title">Torre de la Fidelidad Mykara</LocalizationPair>
   <LocalizationPair Name="%CreepingNode_DefensiveTower1Description">Solo los leales y honestos escapan de la ira de esta torre; quienes vienen a destruir serán alcanzados por su furia.</LocalizationPair>
-  <LocalizationPair Name="%DestroyCreepingNodeTitle">Destruir brote fúngico</LocalizationPair>
-  <LocalizationPair Name="%BuyoutCreepingNodeTitle">Adquirir brote fúngico</LocalizationPair>
-  <LocalizationPair Name="%CreepingNodesUpkeepTitle">Mantenimiento de brote fúngico #FFD768#\7703\#REVERT#</LocalizationPair>
-  <LocalizationPair Name="%CreepingNodeUpkeepTitle">\7703\ Mantenimiento</LocalizationPair>
-  <LocalizationPair Name="%CreepingNodeTitle">Brote fúngico</LocalizationPair>
-  <LocalizationPair Name="%CategoryCreepingNodeImprovementTitle">Brote fúngico</LocalizationPair>
-  <LocalizationPair Name="%CategoryCreepingNodeImprovementDescription">Esto es una clase de nodo que puede crearse en puntos de interés.</LocalizationPair>
-  <LocalizationPair Name="%SubCategoryCreepingNodeTitle">\7845\ Brote fúngico</LocalizationPair>
-  <LocalizationPair Name="%SubCategoryCreepingNodeDescription">Un brote fúngico es un brote de micelios que irrumpe en la superficie en una floración de hongos. Puede explotar los elementos existentes en ese lugar para beneficio de su tierra de origen.</LocalizationPair>
-  <LocalizationPair Name="%FIDSIMultiplierTitle">Multiplicador de CIPCI</LocalizationPair>
-  <LocalizationPair Name="%FullFIDSITitle">CIPCI completos</LocalizationPair>
-  <LocalizationPair Name="%CreepingNode_StrategicExtractorTitle">Extractor estratégico de brote fúngico</LocalizationPair>
-  <LocalizationPair Name="%FeatureDismantleNodeTitle">Brote fúngico</LocalizationPair>
-  <LocalizationPair Name="%FeatureDismantleNodeDismantlingStateTitle">marchito</LocalizationPair>
-  <LocalizationPair Name="%FeatureDismantleNodeRecoveringStateTitle">en recuperación</LocalizationPair>
-  <LocalizationPair Name="%BuyoutCreepingNodeTooltip">Pulsa para adquirir este brote fúngico. Coste: #FFD768#\7703\#REVERT#{0}</LocalizationPair>
-  <LocalizationPair Name="%DestroyCreepingNodeTooltip">Pulsa para destruir el brote fúngico.</LocalizationPair>
-  <LocalizationPair Name="%KaijuUnlockBuyoutTitle">Desbloquea</LocalizationPair>
-  <LocalizationPair Name="%KaijuUnlockBuyoutDescription">Confirma el entrenamiento de tu Urkan gastando recursos de lujo de la lista.</LocalizationPair>
-  <LocalizationPair Name="%OvergrownCityTitle">Ciudad enmarañada</LocalizationPair>
-  <LocalizationPair Name="%OvergrownCityDescription">Esta ciudad ha experimentado una simbiosis.
-Su población y sus mejoras permanecen inactivas, no tiene rutas comerciales, milicia ni gobernadores y no se la puede espiar.
-Las ciudades enmarañadas solo proporcionan CIPCI de sus secciones a la ciudad principal de su captor, pero vuelven a ser ciudades normales al ser reconquistadas.</LocalizationPair>
-  <LocalizationPair Name="%RazeOvergrownCityOnCooldownDescription">Acción no disponible porque la integración está en curso; estará disponible en {0} turno/s.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionGreetings_Mimics">Saludos. Somos los Mykara, custodios de Auriga.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionWarToTruceProposed_Mimics">Las #F3EAD8#guerras#REVERT# dejan cicatrices que nunca sanan. ¿Qué tal una #F3EAD8#tregua#REVERT#?</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionWarToTruceSigned_Mimics">Hemos sido testigos de la necedad de demasiadas #F3EAD8#guerras#REVERT#. Los Mykara aceptan una #F3EAD8#tregua#REVERT#.</LocalizationPair>
@@ -14890,7 +14879,14 @@ Las ciudades enmarañadas solo proporcionan CIPCI de sus secciones a la ciudad p
   <LocalizationPair Name="%DiplomaticInteractionAlliedWithMyEnemyFeedbackPositive_Occurrence1_Mimics">Te #F3EAD8#alías con un enemigo#REVERT#, pero esos vínculos no suelen durar.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionAlliedWithMyEnemyFeedbackNeutral_Occurrence1_Mimics">Te #F3EAD8#alías con un enemigo#REVERT#, pero las consecuencias se ven oscuras y enredadas.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionAlliedWithMyEnemyFeedbackNegative_Occurrence1_Mimics">¿Te atreves a #F3EAD8#aliarte con un enemigo#REVERT#? Te asfixiaremos por semejante insensatez.</LocalizationPair>
-  <LocalizationPair Name="%CreepingNodeConstructionPausedDescription">Crecimiento detenido por falta de comida</LocalizationPair>
+  <LocalizationPair Name="%ItemSwordMimicsQuestRewardTitle">Espada de Zolya</LocalizationPair>
+  <LocalizationPair Name="%ItemSwordMimicsQuestRewardDescription">Según la leyenda, la espada de Zolya es una reliquia del gran linaje de los Saltadores que se forjó en las estrellas hace milenios. Con incrustaciones de hyperium, refleja un leve fulgor de amatista.</LocalizationPair>
+  <LocalizationPair Name="%ItemTomeMimicsQuest1Title">Testamento de los Urkan</LocalizationPair>
+  <LocalizationPair Name="%ItemTomeMimicsQuest1Description">Un tomo críptico con especulaciones y medias verdades sobre las grandes bestias Urkan. Será necesario realizar costosas investigaciones para conseguir sacarle algún conocimiento útil.</LocalizationPair>
+  <LocalizationPair Name="%ItemTomeMimicsQuest2Title">Urkan en la Guía Salvaje</LocalizationPair>
+  <LocalizationPair Name="%ItemTomeMimicsQuest2Description">Redactada a partir de concienzudas investigaciones inspiradas en las teorías especulativas del antiguo "Testamento de los Urkan", la guía proporciona valiosos conocimientos sobre las grandes bestias, además de lecciones sobre liderazgo.</LocalizationPair>
+  <LocalizationPair Name="%ItemTalismanKaijuKillerTitle">Talismán de coraje</LocalizationPair>
+  <LocalizationPair Name="%ItemTalismanKaijuKillerDescription">Imbuido de una extraña tecnología antigua, se rumorea que este amuleto lo llevaban los legendarios Dragonianos que combatieron contra los Urkan hace mucho tiempo.</LocalizationPair>
   <LocalizationPair Name="%SubtitlesMimics01">Desenterré un antiguo organismo</LocalizationPair>
   <LocalizationPair Name="%SubtitlesMimics02">y lo llamé... Mykara.</LocalizationPair>
   <LocalizationPair Name="%SubtitlesMimics03">Robusto, energético, invasivo...</LocalizationPair>

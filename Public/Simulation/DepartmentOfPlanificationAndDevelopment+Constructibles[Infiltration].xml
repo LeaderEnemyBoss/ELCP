@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################ -->
+  <!-- #######       CITY       ####### -->
+  <!-- ################################ -->
+
+  <!-- Damage Fortication -->
+  <BoosterDefinition Name="BoosterDamageFortification"                                          Duration="10" AutoActivation="true" Unsalable="true" TargetType="City" TargetPath="ClassCity">
+    <Effect>
+      <SimulationDescriptorReference Name="BoosterDamageFortification"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <!-- Damage Governor -->
+  <BoosterDefinition Name="BoosterDamageGovernor"                                               Duration="10" AutoActivation="true" Unsalable="true" TargetType="Hero" TargetPath="ClassCity/ClassUnit,UnitHero">
+    <Effect>
+      <SimulationDescriptorReference Name="BoosterDamageGovernor"/>
+    </Effect>
+  </BoosterDefinition>
+
+  <!-- Decrease Industry Production -->
+  <BoosterDefinition Name="BoosterDecreaseCityProduction2"                                      Duration="2"  AutoActivation="true" Unsalable="true" TargetType="City" TargetPath="ClassCity">
+    <SimulationDescriptorReference Name="BoosterDecreaseCityProduction2"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDecreaseCityProduction3"                                      Duration="6"  AutoActivation="true" Unsalable="true" TargetType="City" TargetPath="ClassCity">
+    <SimulationDescriptorReference Name="BoosterDecreaseCityProduction3"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDecreaseCityProduction4"                                      Duration="6"  AutoActivation="true" Unsalable="true" TargetType="City" TargetPath="ClassCity">
+    <SimulationDescriptorReference Name="BoosterDecreaseCityProduction4"/>
+  </BoosterDefinition>
+
+
+
+  <!-- ################################ -->
+  <!-- #######      EMPIRE      ####### -->
+  <!-- ################################ -->
+
+  <!-- Decrease Watchtower Vision  -->
+  <BoosterDefinition Name="BoosterDecreaseWatchtowerVisionByInfiltration"  Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDecreaseWatchtowerVisionByInfiltration"/>
+  </BoosterDefinition>
+
+  <!-- Decrease Building and city Vision  -->
+  <BoosterDefinition Name="BoosterDecreaseBuildingsAndCitiesVisionByInfiltration"            Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDecreaseBuildingsAndCitiesVisionByInfiltration"/>
+  </BoosterDefinition>
+  
+  <!-- Decrease Vision  -->
+  <BoosterDefinition Name="BoosterDecreaseVisionByInfiltration"            Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDecreaseVisionByInfiltration"/>
+  </BoosterDefinition>
+
+  <!-- Decrease Science Production  -->
+  <BoosterDefinition Name="BoosterResearchCostByInfiltration2"             Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterResearchCostByInfiltration2"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterResearchCostByInfiltration3"             Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterResearchCostByInfiltration3"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterResearchCostByInfiltration4"             Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterResearchCostByInfiltration4"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterResearchCostByInfiltration5"             Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterResearchCostByInfiltration5"/>
+  </BoosterDefinition>
+
+  <!-- Steal Vision  -->
+  <BoosterDefinition Name="BoosterStealVisionByInfiltration0"              Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionFromEmpire0"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionByInfiltration1"              Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionFromEmpire1"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionByInfiltration2"              Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionFromEmpire2"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionByInfiltration3"              Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionFromEmpire3"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionByInfiltration4"              Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionFromEmpire4"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionByInfiltration5"              Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionFromEmpire5"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionByInfiltration6"              Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionFromEmpire6"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionByInfiltration7"              Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionFromEmpire7"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionOverArmiesByInfiltration0"    Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionOverArmiesFromEmpire0"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionOverArmiesByInfiltration1"    Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionOverArmiesFromEmpire1"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionOverArmiesByInfiltration2"    Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionOverArmiesFromEmpire2"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionOverArmiesByInfiltration3"    Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionOverArmiesFromEmpire3"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionOverArmiesByInfiltration4"    Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionOverArmiesFromEmpire4"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionOverArmiesByInfiltration5"    Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionOverArmiesFromEmpire5"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionOverArmiesByInfiltration6"    Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionOverArmiesFromEmpire6"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterStealVisionOverArmiesByInfiltration7"    Type="ResettingTime" Duration="5"  AutoActivation="true" Unsalable="true">
+    <ParentSimulationDescriptorReference ParentTags="ClassEmpire">
+      <SimulationDescriptorReference Name="StealVisionOverArmiesFromEmpire7"/>
+    </ParentSimulationDescriptorReference>
+  </BoosterDefinition>
+
+  <!-- Diplomatic Cost Reduction -->
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration03" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration03"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration04" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration04"/>
+  </BoosterDefinition>
+  
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration05" Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration05"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration13" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration13"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration14" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration14"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration15" Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration15"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration23" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration23"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration24" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration24"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration25" Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration25"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration33" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration33"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration34" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration34"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration35" Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration35"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration43" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration43"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration44" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration44"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration45" Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration45"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration53" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration53"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration54" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration54"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration55" Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration55"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration63" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration63"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration64" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration64"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration65" Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration65"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration73" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration73"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration74" Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration74"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDiplomaticCostReductionByInfiltration75" Type="ResettingTime" Duration="20" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDiplomaticCostReductionByInfiltration75"/>
+  </BoosterDefinition>
+
+  <!-- Decrease Morale -->
+  <BoosterDefinition Name="BoosterDecreaseBattleMoraleByInfiltration3"     Type="ResettingTime" Duration="6"  AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDecreaseBattleMoraleByInfiltration3"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDecreaseBattleMoraleByInfiltration4"     Type="ResettingTime" Duration="6"  AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDecreaseBattleMoraleByInfiltration4"/>
+  </BoosterDefinition>
+
+  <BoosterDefinition Name="BoosterDecreaseBattleMoraleByInfiltration5"     Type="ResettingTime" Duration="10" AutoActivation="true" Unsalable="true">
+    <SimulationDescriptorReference Name="BoosterDecreaseBattleMoraleByInfiltration5"/>
+  </BoosterDefinition>
+
+</Datatable>

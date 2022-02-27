@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Amplitude;
-using Amplitude.Unity.AI;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
 using Amplitude.Xml;
@@ -14,26 +12,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 {
 	public AILayer_War() : base("War")
 	{
-		this.cityQualityScoreMultiplier = 0.5f;
-		this.cityToAttack = new List<City>();
-		this.currentRegionResourceCount = new Dictionary<StaticString, float>();
-		this.distanceDeboost = 0.5f;
-		this.empireResourceCount = new Dictionary<StaticString, float>();
-		this.geostraticScoreMultiplier = 0.5f;
-		this.numberOfAlliedRegionAroundMultiplier = 0.5f;
-		this.numberOfColdWarRegionAroundMultiplier = 0.5f;
-		this.numberOfMyRegionAroundMultiplier = 0.5f;
-		this.numberOfNeutralRegionAroundMultiplier = 0.5f;
-		this.numberOfPeaceRegionAroundMultiplier = 0.5f;
-		this.numberOfVillageDestroyedMultiplier = 0.5f;
-		this.numberOfVillagePacifiedAndBuiltMultiplier = 0.5f;
-		this.numberOfVillageUnpacifiedMultiplier = 0.5f;
-		this.numberOfWarRegionAroundMultiplier = 0.5f;
-		this.regionToAttack = new List<AIRegionData>();
-		this.resourceScoreMultiplier = 0.5f;
-		this.villageScoreMultiplier = 0.5f;
-		this.distanceToClosestCity = new List<float>();
-		this.ownershipBoost = 0.2f;
 	}
 
 	public override void ReadXml(XmlReader reader)
@@ -67,9 +45,8 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 					throw;
 				}
 				reader.ReadEndElement("WarStatusByEmpire");
-				return;
 			}
-			if (reader.IsStartElement("WarInfos"))
+			else if (reader.IsStartElement("WarInfos"))
 			{
 				reader.ReadStartElement("WarInfos");
 				try
@@ -84,7 +61,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 					throw;
 				}
 				reader.ReadEndElement("WarInfos");
-				return;
 			}
 		}
 		else
@@ -109,48 +85,33 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 	{
 		this.distanceToClosestCity.Clear();
 		float num = 0f;
-		float num2 = float.MaxValue;
 		for (int i = 0; i < this.cityToAttack.Count; i++)
 		{
 			City city = this.cityToAttack[i];
-			float num3 = float.MaxValue;
+			float num2 = float.MaxValue;
 			for (int j = 0; j < this.departmentOfTheInterior.Cities.Count; j++)
 			{
 				City city2 = this.departmentOfTheInterior.Cities[j];
-				float num4 = (float)this.worldPositionningService.GetDistance(city.WorldPosition, city2.WorldPosition);
-				if (num3 > num4)
+				float num3 = (float)this.worldPositionningService.GetDistance(city.WorldPosition, city2.WorldPosition);
+				if (num2 > num3)
 				{
-					num3 = num4;
+					num2 = num3;
 				}
 			}
-			this.distanceToClosestCity.Add(num3);
-			if (num < num3)
+			this.distanceToClosestCity.Add(num2);
+			if (num < num2)
 			{
-				num = num3;
-			}
-			if (num3 < num2)
-			{
-				num2 = num3;
-			}
-		}
-		for (int k = this.cityToAttack.Count - 1; k >= 0; k--)
-		{
-			City city3 = this.cityToAttack[k];
-			if (base.AIEntity.Empire is MajorEmpire && this.distanceToClosestCity[k] > 2f * num2 && AILayer_War.IsWarTarget(base.AIEntity, city3, 100f) && base.AIEntity.Empire.GetPropertyValue(SimulationProperties.MilitaryPower) < 0.9f * city3.Empire.GetPropertyValue(SimulationProperties.MilitaryPower))
-			{
-				this.cityToAttack.RemoveAt(k);
-				this.distanceToClosestCity.RemoveAt(k);
-				break;
+				num = num2;
 			}
 		}
 		num = Mathf.Max(num, 1f);
-		for (int l = 0; l < this.cityToAttack.Count; l++)
+		for (int k = 0; k < this.cityToAttack.Count; k++)
 		{
-			City city4 = this.cityToAttack[l];
-			AIRegionData regionData = this.worldAtlasAIHelper.GetRegionData(base.AIEntity.Empire.Index, city4.Region.Index);
+			City city3 = this.cityToAttack[k];
+			AIRegionData regionData = this.worldAtlasAIHelper.GetRegionData(base.AIEntity.Empire.Index, city3.Region.Index);
 			regionData.WarAttackScore.Reset();
-			HeuristicValue operand = this.ComputeGeostrategicScore(city4.Region, this.geostraticScoreMultiplier);
-			HeuristicValue operand2 = this.ComputeResourceScore(city4.Region, this.resourceScoreMultiplier);
+			HeuristicValue operand = this.ComputeGeostrategicScore(city3.Region, this.geostraticScoreMultiplier);
+			HeuristicValue operand2 = this.ComputeResourceScore(city3.Region, this.resourceScoreMultiplier);
 			HeuristicValue operand3 = this.ComputeVillageScore(regionData, this.villageScoreMultiplier);
 			HeuristicValue heuristicValue = new HeuristicValue(0f);
 			heuristicValue.Add(1f, "(constant) TODO!!!", new object[0]);
@@ -168,10 +129,10 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 			heuristicValue3.Max(1f, "Avoid dividing by 0", new object[0]);
 			regionData.WarAttackScore.Add(heuristicValue2, "Raw region score", new object[0]);
 			regionData.WarAttackScore.Divide(heuristicValue3, "Region score multiplier", new object[0]);
-			HeuristicValue operand4 = this.ComputeCityVulnerability(city4.Region);
+			HeuristicValue operand4 = this.ComputeCityVulnerability(city3.Region);
 			regionData.WarAttackScore.Multiply(operand4, "City vulnerability", new object[0]);
 			HeuristicValue heuristicValue4 = new HeuristicValue(0f);
-			heuristicValue4.Add(this.distanceToClosestCity[l], "Distance to closest city", new object[0]);
+			heuristicValue4.Add(this.distanceToClosestCity[k], "Distance to closest city", new object[0]);
 			heuristicValue4.Divide(num, "Maximal distance to cities", new object[0]);
 			heuristicValue4.Multiply(this.distanceDeboost, "Xml factor", new object[0]);
 			heuristicValue4.Multiply(-1f, "Invert the boost!", new object[0]);
@@ -289,7 +250,8 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 			DepartmentOfDefense agency = region.City.Empire.GetAgency<DepartmentOfDefense>();
 			for (int i = 0; i < agency.Armies.Count; i++)
 			{
-				if (this.worldPositionningService.GetRegion(agency.Armies[i].WorldPosition).Index == region.Index)
+				Region region2 = this.worldPositionningService.GetRegion(agency.Armies[i].WorldPosition);
+				if (region2.Index == region.Index)
 				{
 					float propertyValue = agency.Armies[i].GetPropertyValue(SimulationProperties.MilitaryPower);
 					heuristicValue3.Add(propertyValue, "Army at {0}", new object[]
@@ -331,33 +293,11 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		List<global::Empire> list = new List<global::Empire>();
 		int num = 0;
 		int num2 = 0;
-		bool flag = false;
-		using (IEnumerator<City> enumerator = this.departmentOfTheInterior.Cities.GetEnumerator())
-		{
-			while (enumerator.MoveNext())
-			{
-				if (enumerator.Current.BesiegingEmpire != null)
-				{
-					flag = true;
-					break;
-				}
-			}
-		}
-		float num3 = 0f;
-		int num4 = -1;
 		int index;
-		Predicate<AIRegionData> <>9__0;
-		int index2;
-		for (index = 0; index < this.globalObjectiveMessages.Count; index = index2 + 1)
+		for (index = 0; index < this.globalObjectiveMessages.Count; index++)
 		{
-			List<AIRegionData> list2 = this.regionToAttack;
-			Predicate<AIRegionData> match2;
-			if ((match2 = <>9__0) == null)
-			{
-				match2 = (<>9__0 = ((AIRegionData match) => match.RegionIndex == this.globalObjectiveMessages[index].RegionIndex));
-			}
-			int num5 = list2.FindIndex(match2);
-			if (num5 >= 0)
+			int num3 = this.regionToAttack.FindIndex((AIRegionData match) => match.RegionIndex == this.globalObjectiveMessages[index].RegionIndex);
+			if (num3 >= 0)
 			{
 				if (this.globalObjectiveMessages[index].ObjectiveState == "Attacking")
 				{
@@ -367,32 +307,21 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 				{
 					num2++;
 				}
-				AIRegionData airegionData = this.regionToAttack[num5];
-				City city = this.cityToAttack[num5];
+				AIRegionData airegionData = this.regionToAttack[num3];
+				City city = this.cityToAttack[num3];
 				HeuristicValue heuristicValue = new HeuristicValue(0f);
 				heuristicValue.Add(airegionData.WarAttackScore, "Attack score from the region", new object[0]);
-				heuristicValue.Boost(0.3f, "constant", new object[0]);
+				heuristicValue.Boost(0.2f, "constant", new object[0]);
 				this.globalObjectiveMessages[index].GlobalPriority = base.GlobalPriority;
 				this.globalObjectiveMessages[index].LocalPriority = heuristicValue;
 				this.globalObjectiveMessages[index].TimeOut = 1;
-				this.regionToAttack.RemoveAt(num5);
-				this.cityToAttack.RemoveAt(num5);
+				this.regionToAttack.RemoveAt(num3);
+				this.cityToAttack.RemoveAt(num3);
 				if (!list.Contains(city.Empire))
 				{
 					list.Add(city.Empire);
 				}
-				if (airegionData.WarAttackScore.Value > num3 && this.departmentOfForeignAffairs.IsAtWarWith(city.Empire) && !flag && base.AIEntity.Empire.GetPropertyValue(SimulationProperties.MilitaryPower) > city.Empire.GetPropertyValue(SimulationProperties.MilitaryPower))
-				{
-					num3 = airegionData.WarAttackScore.Value;
-					num4 = index;
-				}
 			}
-			index2 = index;
-		}
-		if (num4 >= 0)
-		{
-			this.globalObjectiveMessages[num4].GlobalPriority.Boost(1f, "aggro boost", new object[0]);
-			this.globalObjectiveMessages[num4].LocalPriority.Boost(0.7f, "aggro boost", new object[0]);
 		}
 		if (num2 == 0 && this.regionToAttack.Count > 0)
 		{
@@ -405,24 +334,24 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 				{
 					if (!this.myEmpireData.HasShips)
 					{
-						bool flag2 = false;
+						bool flag = false;
 						for (int j = 0; j < this.departmentOfTheInterior.Cities.Count; j++)
 						{
 							if (this.departmentOfTheInterior.Cities[j].Region.ContinentID == region.ContinentID)
 							{
-								flag2 = true;
+								flag = true;
 								break;
 							}
 						}
-						if (!flag2)
+						if (!flag)
 						{
-							goto IL_445;
+							goto IL_356;
 						}
 					}
 					regionData = this.regionToAttack[i];
 					break;
 				}
-				IL_445:;
+				IL_356:;
 			}
 			if (regionData == null)
 			{
@@ -433,16 +362,10 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 			{
 				globalObjectiveMessage = base.GenerateObjective(regionData.RegionIndex);
 			}
-			City city2 = this.worldPositionningService.GetRegion(regionData.RegionIndex).City;
 			HeuristicValue heuristicValue2 = new HeuristicValue(0f);
 			heuristicValue2.Add(regionData.WarAttackScore, "Region war score", new object[0]);
-			heuristicValue2.Boost(0.5f, "constant", new object[0]);
+			heuristicValue2.Boost(0.5f, "(constant) to force the attack", new object[0]);
 			globalObjectiveMessage.GlobalPriority = base.GlobalPriority;
-			if (city2 != null && this.departmentOfForeignAffairs.IsAtWarWith(city2.Empire) && !flag && num4 < 0 && base.AIEntity.Empire.GetPropertyValue(SimulationProperties.MilitaryPower) > city2.Empire.GetPropertyValue(SimulationProperties.MilitaryPower))
-			{
-				heuristicValue2.Boost(0.8f, "aggro boost", new object[0]);
-				globalObjectiveMessage.GlobalPriority.Boost(1f, "aggro boost", new object[0]);
-			}
 			globalObjectiveMessage.LocalPriority = heuristicValue2;
 			globalObjectiveMessage.ObjectiveState = "Preparing";
 			globalObjectiveMessage.TimeOut = 1;
@@ -533,13 +456,15 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 			if (!(region.PointOfInterests[i].Type != "ResourceDeposit"))
 			{
 				string empty = string.Empty;
-				Diagnostics.Assert(region.PointOfInterests[i].PointOfInterestDefinition.TryGetValue("ResourceName", out empty));
+				bool condition = region.PointOfInterests[i].PointOfInterestDefinition.TryGetValue("ResourceName", out empty);
+				Diagnostics.Assert(condition);
 				if (!resourceCount.ContainsKey(empty))
 				{
 					resourceCount.Add(empty, 0f);
 				}
-				StaticString key;
-				float num = resourceCount[key = empty];
+				StaticString key2;
+				StaticString key = key2 = empty;
+				float num = resourceCount[key2];
 				resourceCount[key] = num + 1f;
 			}
 		}
@@ -573,13 +498,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 				}
 			}
 		}
-		for (int l = ennemyCities.Count - 1; l >= 0; l--)
-		{
-			if (!this.CityIsAttackable(ennemyCities[l]))
-			{
-				ennemyCities.RemoveAt(l);
-			}
-		}
 	}
 
 	private void InitializeRegistryValues()
@@ -597,7 +515,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		this.resourceScoreMultiplier = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "ResourceScoreMultiplier"), this.resourceScoreMultiplier);
 		this.villageScoreMultiplier = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "VillageScoreMultiplier"), this.villageScoreMultiplier);
 		this.cityQualityScoreMultiplier = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "CityQualityScoreMultiplier"), this.cityQualityScoreMultiplier);
-		this.distanceDeboost = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "DistanceDeboost"), this.distanceDeboost);
 	}
 
 	public int NumberOfWantedWar { get; set; }
@@ -620,26 +537,25 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		this.intelligenceAIHelper = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
 		this.worldAtlasAIHelper = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
 		this.resourceDatabase = Databases.GetDatabase<ResourceDefinition>(false);
-		AIScheduler.Services.GetService<IAIEmpireDataAIHelper>().TryGet(base.AIEntity.Empire.Index, out this.myEmpireData);
+		IAIEmpireDataAIHelper empireDataHelper = AIScheduler.Services.GetService<IAIEmpireDataAIHelper>();
+		empireDataHelper.TryGet(base.AIEntity.Empire.Index, out this.myEmpireData);
 		Diagnostics.Assert(base.AIEntity.Empire != null);
 		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		Diagnostics.Assert(this.departmentOfForeignAffairs != null);
-		this.departmentOfForeignAffairs.DiplomaticRelationStateChange += this.WarStart;
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		Diagnostics.Assert(this.departmentOfTheInterior != null);
 		this.departmentOfScience = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
 		Diagnostics.Assert(this.departmentOfScience != null);
 		this.warInfoByEmpireIndex = new WarInfo[this.departmentOfForeignAffairs.DiplomaticRelations.Count];
-		for (int i = 0; i < this.warInfoByEmpireIndex.Length; i++)
+		for (int index = 0; index < this.warInfoByEmpireIndex.Length; index++)
 		{
-			this.warInfoByEmpireIndex[i] = new WarInfo();
-			this.warInfoByEmpireIndex[i].EnnemyEmpireIndex = i;
-			this.warInfoByEmpireIndex[i].WarStatus = AILayer_War.WarStatusType.None;
+			this.warInfoByEmpireIndex[index] = new WarInfo();
+			this.warInfoByEmpireIndex[index].EnnemyEmpireIndex = index;
+			this.warInfoByEmpireIndex[index].WarStatus = AILayer_War.WarStatusType.None;
 		}
 		base.AIEntity.RegisterPass(AIEntity.Passes.RefreshObjectives.ToString(), "AILayer_War_RefreshObjectives", new AIEntity.AIAction(this.RefreshObjectives), this, new StaticString[0]);
 		this.ownershipBoost = this.personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_War.registryPath, "OwnershipBoost"), this.ownershipBoost);
 		this.InitializeRegistryValues();
-		this.PathfindingDataBase = Databases.GetDatabase<PathfindingRule>(false);
 		yield break;
 	}
 
@@ -657,14 +573,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 	public override void Release()
 	{
 		base.Release();
-		this.warCityDefenseJobs = null;
-		this.DefensiveArmyAssignations = null;
-		if (this.departmentOfForeignAffairs != null)
-		{
-			this.departmentOfForeignAffairs.DiplomaticRelationStateChange -= this.WarStart;
-			this.departmentOfForeignAffairs = null;
-		}
-		this.PathfindingDataBase = null;
 	}
 
 	public bool WantWarWithSomoeone()
@@ -695,10 +603,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		{
 			return false;
 		}
-		if (!this.regionToAttack.Exists((AIRegionData x) => x.RegionIndex == regionIndex))
-		{
-			return false;
-		}
 		if (!this.myEmpireData.HasShips)
 		{
 			bool flag = false;
@@ -719,7 +623,7 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		{
 			return this.warInfoByEmpireIndex[region.City.Empire.Index].WarStatus == AILayer_War.WarStatusType.War;
 		}
-		return this.GetWarStatusWithEmpire(region.City.Empire.Index) > AILayer_War.WarStatusType.None;
+		return this.GetWarStatusWithEmpire(region.City.Empire.Index) != AILayer_War.WarStatusType.None;
 	}
 
 	protected override void RefreshObjectives(StaticString context, StaticString pass)
@@ -727,14 +631,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		base.RefreshObjectives(context, pass);
 		this.RefreshWarStates();
 		this.ComputeObjectivesPriority();
-		this.DefensiveArmyAssignations.Clear();
-		this.warCityDefenseJobs.Clear();
-		if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
-		{
-			this.CreateCityDefenseJobs();
-			this.RefreshCityDefenseJobs();
-			this.lastTickTime = global::Game.Time;
-		}
 	}
 
 	private void RefreshWarStates()
@@ -766,9 +662,7 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		this.NumberOfWar = 0;
 		this.NumberOfWantedWar = 0;
 		int index;
-		Predicate<WantedDiplomaticRelationStateMessage> <>9__0;
-		int num6;
-		for (index = 0; index < this.warInfoByEmpireIndex.Length; index = num6 + 1)
+		for (index = 0; index < this.warInfoByEmpireIndex.Length; index++)
 		{
 			if (index != base.AIEntity.Empire.Index)
 			{
@@ -791,8 +685,7 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 						{
 							this.warInfoByEmpireIndex[index].WarBeginingTurn = this.endTurnService.Turn;
 						}
-						num6 = this.NumberOfWar;
-						this.NumberOfWar = num6 + 1;
+						this.NumberOfWar++;
 					}
 					else
 					{
@@ -800,15 +693,7 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 						{
 							this.warInfoByEmpireIndex[index].WarBeginingTurn = -1;
 						}
-						Blackboard<BlackboardLayerID, BlackboardMessage> blackboard = base.AIEntity.AIPlayer.Blackboard;
-						BlackboardLayerID blackboardLayerID = BlackboardLayerID.Empire;
-						BlackboardLayerID layerID = blackboardLayerID;
-						Predicate<WantedDiplomaticRelationStateMessage> filter;
-						if ((filter = <>9__0) == null)
-						{
-							filter = (<>9__0 = ((WantedDiplomaticRelationStateMessage message) => message.OpponentEmpireIndex == index));
-						}
-						WantedDiplomaticRelationStateMessage wantedDiplomaticRelationStateMessage = blackboard.FindFirst<WantedDiplomaticRelationStateMessage>(layerID, filter);
+						WantedDiplomaticRelationStateMessage wantedDiplomaticRelationStateMessage = base.AIEntity.AIPlayer.Blackboard.FindFirst<WantedDiplomaticRelationStateMessage>(BlackboardLayerID.Empire, (WantedDiplomaticRelationStateMessage message) => message.OpponentEmpireIndex == index);
 						if (wantedDiplomaticRelationStateMessage != null && wantedDiplomaticRelationStateMessage.WantedDiplomaticRelationStateName == DiplomaticRelationState.Names.War)
 						{
 							if (this.warInfoByEmpireIndex[index].WarStatus == AILayer_War.WarStatusType.None || this.warInfoByEmpireIndex[index].WarStatus == AILayer_War.WarStatusType.War)
@@ -819,8 +704,7 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 							{
 								this.warInfoByEmpireIndex[index].WarStatus = AILayer_War.WarStatusType.Ready;
 							}
-							num6 = this.NumberOfWantedWar;
-							this.NumberOfWantedWar = num6 + 1;
+							this.NumberOfWantedWar++;
 						}
 						else
 						{
@@ -829,288 +713,48 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 					}
 				}
 			}
-			num6 = index;
 		}
 	}
 
-	public static bool IsWarTarget(AIEntity AIEntity, City city)
-	{
-		AILayerCommanderController layer = AIEntity.GetLayer<AILayer_ArmyManagement>();
-		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
-		foreach (AICommander aicommander in layer.AICommanders)
-		{
-			if (aicommander is AICommander_WarWithObjective)
-			{
-				if (aicommander.Missions.Find((AICommanderMission match) => match.AIDataArmyGUID.IsValid || match.State == TickableState.NeedTick) != null)
-				{
-					Region region = service.GetRegion((aicommander as AICommander_WarWithObjective).RegionIndex);
-					if (region != null && region.City != null && region.City == city && city.GetPropertyValue(SimulationProperties.CityDefensePoint) >= 90f)
-					{
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+	private float cityQualityScoreMultiplier = 0.5f;
 
-	private void CreateCityDefenseJobs()
-	{
-		this.warCityDefenseJobs.Clear();
-		foreach (Army key in this.DefensiveArmyAssignations.Keys.ToList<Army>())
-		{
-			this.DefensiveArmyAssignations[key] = null;
-		}
-		foreach (City city in this.departmentOfTheInterior.Cities)
-		{
-			if (this.CityIsAttackable(city) && !AILayer_Military.AreaIsSave(city.WorldPosition, 15, this.departmentOfForeignAffairs, false))
-			{
-				AILayer_War.WarCityDefenseJob item = new AILayer_War.WarCityDefenseJob(city, 0f);
-				this.warCityDefenseJobs.Add(item);
-			}
-		}
-	}
+	private List<City> cityToAttack = new List<City>();
 
-	private void RefreshCityDefenseJobs()
-	{
-		for (int i = this.warCityDefenseJobs.Count - 1; i >= 0; i--)
-		{
-			float score = 0f;
-			float enemyMP = 0f;
-			bool flag = false;
-			AILayer_War.WarCityDefenseJob warCityDefenseJob = this.warCityDefenseJobs[i];
-			if (warCityDefenseJob.city == null || warCityDefenseJob.city.Region == null)
-			{
-				flag = true;
-			}
-			else if (warCityDefenseJob.city.Empire != base.AIEntity.Empire || AILayer_Military.AreaIsSave(warCityDefenseJob.city.WorldPosition, 12, this.departmentOfForeignAffairs, out score, out enemyMP, false))
-			{
-				flag = true;
-			}
-			if (flag)
-			{
-				foreach (Army army in warCityDefenseJob.AssignedArmies)
-				{
-					if (army != null && this.DefensiveArmyAssignations.ContainsKey(army))
-					{
-						this.DefensiveArmyAssignations[army] = null;
-					}
-				}
-				this.warCityDefenseJobs.RemoveAt(i);
-			}
-			else
-			{
-				warCityDefenseJob.score = score;
-				warCityDefenseJob.EnemyMP = enemyMP;
-				warCityDefenseJob.RemoveDisposedArmies();
-				warCityDefenseJob.Refresh();
-			}
-		}
-	}
+	private Dictionary<StaticString, float> currentRegionResourceCount = new Dictionary<StaticString, float>();
 
-	private void WarStart(object sender, DiplomaticRelationStateChangeEventArgs e)
-	{
-		if (e.DiplomaticRelationState.Name == DiplomaticRelationState.Names.War && e.PreviousDiplomaticRelationState.Name != DiplomaticRelationState.Names.War)
-		{
-			this.CreateCityDefenseJobs();
-			this.RefreshCityDefenseJobs();
-			List<Army> list = this.DefensiveArmyAssignations.Keys.ToList<Army>();
-			this.DefensiveArmyAssignations.Clear();
-			foreach (Army army in list)
-			{
-				this.AssignDefensiveArmyToCity(army);
-			}
-		}
-	}
+	private float distanceDeboost = 0.5f;
 
-	private bool CityIsAttackable(City city)
-	{
-		foreach (District district in city.Districts)
-		{
-			if (!District.IsACityTile(district) && !this.worldPositionningService.IsWaterTile(district.WorldPosition))
-			{
-				PointOfInterest pointOfInterest = this.worldPositionningService.GetPointOfInterest(district.WorldPosition);
-				if (pointOfInterest == null)
-				{
-					return true;
-				}
-				PathfindingRule pathfindingRule;
-				if (!this.PathfindingDataBase.TryGetValue("PointOfInterest_" + pointOfInterest.Type, out pathfindingRule))
-				{
-					return true;
-				}
-				if (!pathfindingRule.IsTileUnstopable)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+	private Dictionary<StaticString, float> empireResourceCount = new Dictionary<StaticString, float>();
 
-	public void AssignDefensiveArmyToCity(Army army)
-	{
-		if (army == null || !army.GUID.IsValid)
-		{
-			return;
-		}
-		if (this.DefensiveArmyAssignations.ContainsKey(army))
-		{
-			return;
-		}
-		this.DefensiveArmyAssignations.Add(army, null);
-		if (this.warCityDefenseJobs.Count == 0 || !this.departmentOfForeignAffairs.IsInWarWithSomeone())
-		{
-			return;
-		}
-		if (global::Game.Time - this.lastTickTime > 5.0)
-		{
-			this.RefreshCityDefenseJobs();
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-			{
-				foreach (AILayer_War.WarCityDefenseJob warCityDefenseJob in this.warCityDefenseJobs)
-				{
-					Diagnostics.Log("{0}", new object[]
-					{
-						warCityDefenseJob.ToString()
-					});
-				}
-			}
-			this.lastTickTime = global::Game.Time;
-		}
-		Dictionary<int, float> dictionary = new Dictionary<int, float>();
-		float num = float.MaxValue;
-		for (int i = 0; i < this.warCityDefenseJobs.Count; i++)
-		{
-			AILayer_War.WarCityDefenseJob warCityDefenseJob2 = this.warCityDefenseJobs[i];
-			if (warCityDefenseJob2.NeedmoreMP())
-			{
-				float num2 = Mathf.Max((float)this.worldPositionningService.GetDistance(army.WorldPosition, warCityDefenseJob2.city.WorldPosition) / (army.GetPropertyValue(SimulationProperties.MaximumMovement) * 1.5f), 1f);
-				dictionary.Add(i, num2);
-				if (num2 < num)
-				{
-					num = num2;
-				}
-			}
-		}
-		if (num == 3.40282347E+38f)
-		{
-			return;
-		}
-		bool flag = true;
-		if (!army.IsSolitary)
-		{
-			flag = false;
-		}
-		else
-		{
-			using (IEnumerator<Unit> enumerator2 = army.Units.GetEnumerator())
-			{
-				while (enumerator2.MoveNext())
-				{
-					if (!enumerator2.Current.CheckUnitAbility("UnitAbilityTeleportInRange", -1))
-					{
-						flag = false;
-						break;
-					}
-				}
-			}
-		}
-		float num3 = 0f;
-		int num4 = -1;
-		foreach (KeyValuePair<int, float> keyValuePair in dictionary)
-		{
-			float num5 = this.warCityDefenseJobs[keyValuePair.Key].score * 0.6f;
-			if (flag)
-			{
-				num5 = AILayer.Boost(num5, 0.1f * (num / keyValuePair.Value));
-			}
-			else if (!army.Empire.SimulationObject.Tags.Contains("FactionTraitAffinityStrategic") || !army.Empire.SimulationObject.Tags.Contains("BoosterTeleport") || army.IsSolitary)
-			{
-				num5 = AILayer.Boost(num5, 0.4f * (num / keyValuePair.Value));
-			}
-			if (num5 > num3)
-			{
-				num3 = num5;
-				num4 = keyValuePair.Key;
-			}
-		}
-		if (num4 >= 0)
-		{
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-			{
-				Diagnostics.Log("ELCP: {0} Assigning defensive army {1} to city {2}", new object[]
-				{
-					base.AIEntity.Empire,
-					army.LocalizedName,
-					this.warCityDefenseJobs[num4].city.LocalizedName
-				});
-			}
-			this.warCityDefenseJobs[num4].AssignedArmies.Add(army);
-			this.DefensiveArmyAssignations[army] = this.warCityDefenseJobs[num4].city;
-		}
-	}
-
-	public static bool IsWarTarget(AIEntity AIEntity, City city, float MindDefense = 0f)
-	{
-		AILayerCommanderController layer = AIEntity.GetLayer<AILayer_ArmyManagement>();
-		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
-		foreach (AICommander aicommander in layer.AICommanders)
-		{
-			if (aicommander is AICommander_WarWithObjective)
-			{
-				if (aicommander.Missions.Find((AICommanderMission match) => match.AIDataArmyGUID.IsValid || match.State == TickableState.NeedTick) != null)
-				{
-					Region region = service.GetRegion((aicommander as AICommander_WarWithObjective).RegionIndex);
-					if (region != null && region.City != null && region.City == city && city.GetPropertyValue(SimulationProperties.CityDefensePoint) >= MindDefense)
-					{
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	private float cityQualityScoreMultiplier;
-
-	private List<City> cityToAttack;
-
-	private Dictionary<StaticString, float> currentRegionResourceCount;
-
-	private float distanceDeboost;
-
-	private Dictionary<StaticString, float> empireResourceCount;
-
-	private float geostraticScoreMultiplier;
+	private float geostraticScoreMultiplier = 0.5f;
 
 	private IIntelligenceAIHelper intelligenceAIHelper;
 
-	private float numberOfAlliedRegionAroundMultiplier;
+	private float numberOfAlliedRegionAroundMultiplier = 0.5f;
 
-	private float numberOfColdWarRegionAroundMultiplier;
+	private float numberOfColdWarRegionAroundMultiplier = 0.5f;
 
-	private float numberOfMyRegionAroundMultiplier;
+	private float numberOfMyRegionAroundMultiplier = 0.5f;
 
-	private float numberOfNeutralRegionAroundMultiplier;
+	private float numberOfNeutralRegionAroundMultiplier = 0.5f;
 
-	private float numberOfPeaceRegionAroundMultiplier;
+	private float numberOfPeaceRegionAroundMultiplier = 0.5f;
 
-	private float numberOfVillageDestroyedMultiplier;
+	private float numberOfVillageDestroyedMultiplier = 0.5f;
 
-	private float numberOfVillagePacifiedAndBuiltMultiplier;
+	private float numberOfVillagePacifiedAndBuiltMultiplier = 0.5f;
 
-	private float numberOfVillageUnpacifiedMultiplier;
+	private float numberOfVillageUnpacifiedMultiplier = 0.5f;
 
-	private float numberOfWarRegionAroundMultiplier;
+	private float numberOfWarRegionAroundMultiplier = 0.5f;
 
-	private List<AIRegionData> regionToAttack;
+	private List<AIRegionData> regionToAttack = new List<AIRegionData>();
 
 	private IDatabase<ResourceDefinition> resourceDatabase;
 
-	private float resourceScoreMultiplier;
+	private float resourceScoreMultiplier = 0.5f;
 
-	private float villageScoreMultiplier;
+	private float villageScoreMultiplier = 0.5f;
 
 	private IWorldAtlasAIHelper worldAtlasAIHelper;
 
@@ -1124,13 +768,13 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 
 	private DepartmentOfScience departmentOfScience;
 
-	private List<float> distanceToClosestCity;
+	private List<float> distanceToClosestCity = new List<float>();
 
 	private IEndTurnService endTurnService;
 
 	private IGameService gameService;
 
-	private float ownershipBoost;
+	private float ownershipBoost = 0.2f;
 
 	private IPersonalityAIHelper personalityAIHelper;
 
@@ -1139,16 +783,6 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 	private IWorldPositionningService worldPositionningService;
 
 	private AIEmpireData myEmpireData;
-
-	private int ObjectiveToCancel;
-
-	private double lastTickTime;
-
-	public Dictionary<Army, City> DefensiveArmyAssignations = new Dictionary<Army, City>();
-
-	public List<AILayer_War.WarCityDefenseJob> warCityDefenseJobs = new List<AILayer_War.WarCityDefenseJob>();
-
-	private IDatabase<PathfindingRule> PathfindingDataBase;
 
 	public interface IScoreNode
 	{
@@ -1254,127 +888,5 @@ public class AILayer_War : AILayerWithObjective, IXmlSerializable
 		Preparing,
 		Ready,
 		War
-	}
-
-	public class WarCityDefenseJob
-	{
-		public WarCityDefenseJob(City city, float score = 0f)
-		{
-			this.AssignedArmies = new List<Army>();
-			this.city = city;
-			this.empireIndex = city.Empire.Index;
-			this.score = score;
-			this.NumberOfWantedArmies = 0;
-			this.MaxArmies = 0;
-			this.CityTilePositions = new List<WorldPosition>();
-			this.EnemyMP = 0f;
-		}
-
-		public void Refresh()
-		{
-			IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
-			for (int i = 0; i < this.city.Districts.Count; i++)
-			{
-				if (District.IsACityTile(this.city.Districts[i]))
-				{
-					Army armyAtPosition = service.GetArmyAtPosition(this.city.Districts[i].WorldPosition);
-					if (armyAtPosition == null || this.AssignedArmies.Contains(armyAtPosition))
-					{
-						this.CityTilePositions.Add(this.city.Districts[i].WorldPosition);
-					}
-				}
-			}
-			this.MaxArmies = this.CityTilePositions.Count - 1;
-		}
-
-		public override string ToString()
-		{
-			Services.GetService<IGameService>().Game.Services.GetService<IGameEntityRepositoryService>();
-			if (this.city == null || !this.city.GUID.IsValid)
-			{
-				return string.Format("ELCP: WarCityDefenseJob Error!, City is null", new object[0]);
-			}
-			string text = string.Format("ELCP: {0}/{1} WarCityDefenseJob {2}/{3}/{5}/{4}, Armies:", new object[]
-			{
-				this.city.Empire,
-				this.city.LocalizedName,
-				this.MaxArmies,
-				this.NeedmoreMP(),
-				this.score,
-				this.EnemyMP
-			});
-			foreach (Army army in this.AssignedArmies)
-			{
-				if (army == null || army.GUID == GameEntityGUID.Zero)
-				{
-					text = string.Format("{0} null", text);
-				}
-				else
-				{
-					text = string.Format("{0} {1}", text, army.LocalizedName);
-				}
-			}
-			return text;
-		}
-
-		public void RemoveDisposedArmies()
-		{
-			for (int i = this.AssignedArmies.Count - 1; i >= 0; i--)
-			{
-				if (this.AssignedArmies[i] == null || this.AssignedArmies[i].GUID == GameEntityGUID.Zero)
-				{
-					this.AssignedArmies.RemoveAt(i);
-				}
-			}
-		}
-
-		public bool NeedmoreMP()
-		{
-			if (this.city == null || this.city.Empire == null || this.city.Empire.Index != this.empireIndex)
-			{
-				return false;
-			}
-			float num = 0f;
-			num += this.city.GetPropertyValue(SimulationProperties.MilitaryPower);
-			foreach (Army army in this.AssignedArmies)
-			{
-				if (army != null && army.GUID != GameEntityGUID.Zero)
-				{
-					num += army.GetPropertyValue(SimulationProperties.MilitaryPower);
-				}
-			}
-			return num < this.EnemyMP && this.AssignedArmies.Count < this.MaxArmies;
-		}
-
-		public bool CanTrimMp()
-		{
-			float num = 0f;
-			num += this.city.GetPropertyValue(SimulationProperties.MilitaryPower);
-			for (int i = this.AssignedArmies.Count - 2; i >= 0; i--)
-			{
-				Army army = this.AssignedArmies[i];
-				if (army != null && army.GUID != GameEntityGUID.Zero)
-				{
-					num += army.GetPropertyValue(SimulationProperties.MilitaryPower);
-				}
-			}
-			return num >= this.EnemyMP;
-		}
-
-		public float score;
-
-		public City city;
-
-		public int MaxArmies;
-
-		public List<WorldPosition> CityTilePositions;
-
-		public int NumberOfWantedArmies;
-
-		public List<Army> AssignedArmies;
-
-		public float EnemyMP;
-
-		private int empireIndex;
 	}
 }

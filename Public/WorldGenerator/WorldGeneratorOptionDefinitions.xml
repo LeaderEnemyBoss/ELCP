@@ -393,10 +393,6 @@
       <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
         <Key Name="Normal"/>
       </OptionDefinitionConstraint>
-	  <OptionDefinitionConstraint OptionName="ReplaceInlandSeas" Type="Control">
-        <Key Name="True"/>
-      </OptionDefinitionConstraint>
-
       <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
         <Key Name="None"/>
       </OptionDefinitionConstraint>-->
@@ -414,9 +410,6 @@
       <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
         <Key Name="Normal"/>
       </OptionDefinitionConstraint>
-	  <OptionDefinitionConstraint OptionName="ReplaceInlandSeas" Type="Control">
-        <Key Name="True"/>
-      </OptionDefinitionConstraint>
       <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
         <Key Name="Some"/>
       </OptionDefinitionConstraint>-->
@@ -433,9 +426,6 @@
       </OptionDefinitionConstraint>-->
       <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
         <Key Name="Normal"/>
-      </OptionDefinitionConstraint>
-	  <OptionDefinitionConstraint OptionName="ReplaceInlandSeas" Type="Control">
-        <Key Name="True"/>
       </OptionDefinitionConstraint>
       <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
         <Key Name="Many"/>
@@ -951,16 +941,7 @@
     </ItemDefinition>
     <ItemDefinition Name="Random" />
   </WorldGeneratorOptionDefinition>
-  
-  <WorldGeneratorOptionDefinition Name="ReplaceInlandSeas"   Default="True"   Category="World" SubCategory="ContinentShape"  GuiControlType="Toggle">
-    <Tags>Advanced</Tags>
-    <ItemDefinition Name="False">
-		<KeyValuePair Key="ReplaceInlandSeas">false</KeyValuePair>
-    </ItemDefinition>
-    <ItemDefinition Name="True">
-		<KeyValuePair Key="ReplaceInlandSeas">true</KeyValuePair>
-    </ItemDefinition>
-  </WorldGeneratorOptionDefinition>
+
 
   <!-- Advanced Options, subcategory of 'Topography' -->
   <WorldGeneratorOptionDefinition Name="LakeOdds"                      Default="Many"           Category="World" SubCategory="Topography"      GuiControlType="DropList">
@@ -1289,14 +1270,4 @@
     <ItemDefinition Name="Random" />
   </WorldGeneratorOptionDefinition>
 
-  <WorldGeneratorOptionDefinition Name="Volcanize"   Default="True"   Category="World" SubCategory="Topography"  GuiControlType="Toggle">
-    <Tags>Advanced</Tags>
-	<OptionDefinitionConstraint OptionName="SummerFlamesPack" Type="DownloadableContentConditional" />
-    <ItemDefinition Name="False">
-		<KeyValuePair Key="Volcanize">false</KeyValuePair>
-    </ItemDefinition>
-    <ItemDefinition Name="True">
-		<KeyValuePair Key="Volcanize">true</KeyValuePair>
-    </ItemDefinition>
-  </WorldGeneratorOptionDefinition>
 </Datatable>

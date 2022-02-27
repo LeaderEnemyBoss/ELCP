@@ -66,20 +66,13 @@ public class GuiEmpire
 	{
 		if (this.Empire.SimulationObject.Tags.Contains(Empire.TagEmpireEliminated))
 		{
-			if (size == GuiPanel.IconSize.LogoSmall)
-			{
-				return AgeManager.Instance.FindDynamicTexture("eliminatedLogoSmall", false);
-			}
 			return AgeManager.Instance.FindDynamicTexture("Gui/DynamicBitmaps/Factions/elimination" + size, false);
 		}
-		else
+		if (GuiEmpire.IsKnownByLookingPlayer(this.Empire, empireLooking))
 		{
-			if (GuiEmpire.IsKnownByLookingPlayer(this.Empire, empireLooking))
-			{
-				return this.GuiFaction.GetImageTexture(size, false);
-			}
-			return this.GuiFaction.GetRandomImageTexture(size);
+			return this.GuiFaction.GetImageTexture(size, false);
 		}
+		return this.GuiFaction.GetRandomImageTexture(size);
 	}
 
 	public string GetColorizedLocalizedName(Empire empireLooking, bool useYou = false)

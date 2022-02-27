@@ -5097,6 +5097,9 @@
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
+    
+    <UnitAbilityReference Name="UnitAbilityFlamewalker" />   <!-- Lava inmumity -->
+
 
     <PathPrerequisite Flags="Prerequisite">.../EmpireTypeMajor,AffinityWinterShifters</PathPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyWinterShiftersUnit2</TechnologyPrerequisite>
@@ -5151,6 +5154,7 @@
     </UnitBodyBattleParameters>
 
   </UnitBodyDefinition>
+
 
   <!-- WINTER SHIFTERS DARK ANGEL -->
   <UnitBodyDefinition Name="UnitBodyWinterShiftersDarkAngel"   SubCategory="SubCategoryFlying">
@@ -5730,12 +5734,13 @@
   </UnitBodyDefinition>
 
 
+
   <!-- ########################################## -->
   <!-- ######            FLAMES            ###### -->
   <!-- ########################################## -->
 
   <!-- FLAMES  MILITIA -->
-  <UnitBodyDefinition Name="UnitBodyFlamesMilitia"         SubCategory="SubCategoryInfantry" >
+  <UnitBodyDefinition Name="UnitBodyFlamesMilitia"             SubCategory="SubCategoryInfantry" >
 
     <Tags>Hidden</Tags>
 
@@ -5803,7 +5808,7 @@
   </UnitBodyDefinition>
 
   <!-- FLAMES SETTLER -->
-  <UnitBodyDefinition Name="UnitBodyFlamesSettler"         SubCategory="SubCategoryInfantry">
+  <UnitBodyDefinition Name="UnitBodyFlamesSettler"             SubCategory="SubCategoryInfantry">
 
     <Tags>Settler</Tags>
 
@@ -5874,7 +5879,7 @@
   </UnitBodyDefinition>
 
   <!-- FLAMES GOLEM -->
-  <UnitBodyDefinition Name="UnitBodyFlamesGolem"    SubCategory="SubCategoryInfantry">
+  <UnitBodyDefinition Name="UnitBodyFlamesGolem"               SubCategory="SubCategoryInfantry">
 
     <Tags></Tags>
 
@@ -5942,7 +5947,7 @@
   </UnitBodyDefinition>
     
   <!-- FLAMES GEOMANCER -->
-  <UnitBodyDefinition Name="UnitBodyFlamesGeomancer"          SubCategory="SubCategorySupport">
+  <UnitBodyDefinition Name="UnitBodyFlamesGeomancer"           SubCategory="SubCategorySupport">
 
     <Tags></Tags>
 
@@ -6015,7 +6020,7 @@
   </UnitBodyDefinition>
 
   <!-- FLAMES GOLEM RIDER -->
-  <UnitBodyDefinition Name="UnitBodyFlamesGorilla"          SubCategory="SubCategoryCavalry">
+  <UnitBodyDefinition Name="UnitBodyFlamesGorilla"             SubCategory="SubCategoryCavalry">
 
     <Tags></Tags>
 
@@ -6087,7 +6092,7 @@
   </UnitBodyDefinition>
 
   <!-- FLAMES HERO -->
-  <UnitBodyDefinition Name="UnitBodyFlamesHero"            SubCategory="SubCategoryCavalry">
+  <UnitBodyDefinition Name="UnitBodyFlamesHero"                SubCategory="SubCategoryCavalry">
 
     <Tags>Hidden</Tags>
 
@@ -6169,7 +6174,7 @@
   </UnitBodyDefinition>
   
   <!-- FLAMES QUEST ENEMY HERO -->
-  <UnitBodyDefinition Name="UnitBodyFlamesQuestEnemyHero"            SubCategory="SubCategoryCavalry">
+  <UnitBodyDefinition Name="UnitBodyFlamesQuestEnemyHero"      SubCategory="SubCategoryCavalry">
 
     <Tags>Hidden</Tags>
 
@@ -6250,12 +6255,14 @@
 
   </UnitBodyDefinition>
 
+
+
   <!-- ########################################## -->
   <!-- ######            MIMICS            ###### -->
   <!-- ########################################## -->
 
   <!-- MIMICS  MILITIA -->
-  <UnitBodyDefinition Name="UnitBodyMimicsMilitia"         SubCategory="SubCategoryInfantry" >
+  <UnitBodyDefinition Name="UnitBodyMimicsMilitia"             SubCategory="SubCategoryInfantry" >
 
     <Tags>Hidden</Tags>
 
@@ -6322,7 +6329,7 @@
   </UnitBodyDefinition>
 
   <!-- MIMICS SETTLER -->
-  <UnitBodyDefinition Name="UnitBodyMimicsSettler"         SubCategory="SubCategoryInfantry">
+  <UnitBodyDefinition Name="UnitBodyMimicsSettler"             SubCategory="SubCategoryInfantry">
 
     <Tags>Settler</Tags>
 
@@ -6392,7 +6399,7 @@
   </UnitBodyDefinition>
 
   <!-- MIMICS UNIT 1 - CENTAUR-->
-  <UnitBodyDefinition Name="UnitBodyMimicsUnit1"    SubCategory="SubCategoryRanged">
+  <UnitBodyDefinition Name="UnitBodyMimicsUnit1"               SubCategory="SubCategoryRanged">
 
     <Tags></Tags>
 
@@ -6463,7 +6470,7 @@
   </UnitBodyDefinition>
 
   <!-- MIMICS UNIT 2 - GORGON -->
-  <UnitBodyDefinition Name="UnitBodyMimicsUnit2"    SubCategory="SubCategoryCavalry">
+  <UnitBodyDefinition Name="UnitBodyMimicsUnit2"               SubCategory="SubCategoryCavalry">
 
     <Tags></Tags>
 
@@ -6558,7 +6565,7 @@
   </UnitBodyDefinition>
 
   <!-- MIMICS UNIT 3 - SHAMBLER -->
-  <UnitBodyDefinition Name="UnitBodyMimicsUnit3"    SubCategory="SubCategoryInfantry">
+  <UnitBodyDefinition Name="UnitBodyMimicsUnit3"               SubCategory="SubCategoryInfantry">
 
     <Tags></Tags>
 
@@ -6630,7 +6637,7 @@
   </UnitBodyDefinition>
 
   <!-- MIMICS HERO -->
-  <UnitBodyDefinition Name="UnitBodyMimicsHero"            SubCategory="SubCategoryInfantry">
+  <UnitBodyDefinition Name="UnitBodyMimicsHero"                SubCategory="SubCategoryInfantry">
 
     <Tags>Hidden</Tags>
 
@@ -6708,6 +6715,8 @@
     </UnitBodyBattleParameters>
 
   </UnitBodyDefinition>
+
+
 
   <!-- ########################################## -->
   <!-- ######     FACTION TUTORIAL        ####### -->
@@ -7214,7 +7223,6 @@
     <UnitAbilityReference Name="UnitAbilitySlow" Level="0"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
-	<UnitAbilityReference Name="UnitAbilityFlamewalker" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyColossusEarth</TechnologyPrerequisite>
@@ -7365,8 +7373,8 @@
       <InterpreterPrerequisite Flags="Prerequisite,AIColossusPrerequisite">$Property(.../ClassEmpire:MaximumNumberOfColossi) - $Property(.../ClassEmpire:NumberOfColossi) gt 0</InterpreterPrerequisite>
     </UnitDesignPrerequisites>
 
-    <Cost ResourceName="Production" Instant="false">1600</Cost>
-    <Cost ResourceName="Strategic3" Instant="true">20</Cost>
+    <Cost ResourceName="Production" Instant="false">2000</Cost>
+    <Cost ResourceName="Strategic3" Instant="true">30</Cost>
 
     <SimulationDescriptorReference Name="AffinityColossus" />
     <SimulationDescriptorReference Name="UnitTypeColossus" />
@@ -7421,13 +7429,11 @@
     <UnitAbilityReference Name="UnitAbilityColossusNature"/>
     <UnitAbilityReference Name="UnitAbilitySolitary"/>
     <UnitAbilityReference Name="UnitAbilityBloodRage"/>
-	<UnitAbilityReference Name="UnitAbilityKaijuSlayer" Level="2"/>
     <UnitAbilityReference Name="UnitAbilityWinterWind"/>
     <UnitAbilityReference Name="UnitAbilityFly"/>
     <UnitAbilityReference Name="UnitAbilityTeleportInRange"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
-	<UnitAbilityReference Name="UnitAbilityFlamewalker" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyColossusAir</TechnologyPrerequisite>
@@ -7437,8 +7443,8 @@
       <InterpreterPrerequisite Flags="Prerequisite,AIColossusPrerequisite">$Property(.../ClassEmpire:MaximumNumberOfColossi) - $Property(.../ClassEmpire:NumberOfColossi) gt 0</InterpreterPrerequisite>
     </UnitDesignPrerequisites>
 
-    <Cost ResourceName="Production" Instant="false">1600</Cost>
-    <Cost ResourceName="Strategic5" Instant="true">20</Cost>
+    <Cost ResourceName="Production" Instant="false">2000</Cost>
+    <Cost ResourceName="Strategic5" Instant="true">30</Cost>
 
     <SimulationDescriptorReference Name="AffinityColossus" />
     <SimulationDescriptorReference Name="UnitTypeColossus" />
@@ -7496,7 +7502,6 @@
     <UnitAbilityReference Name="UnitAbilityMindControl"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
-	<UnitAbilityReference Name="UnitAbilityFlamewalker" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyColossusDust</TechnologyPrerequisite>
@@ -7507,9 +7512,9 @@
     </UnitDesignPrerequisites>
 
     <!--<CustomCost ResourceName="Production" Instant="false">0</CustomCost>-->
-    <Cost ResourceName="Production" Instant="false">1200</Cost>
-    <Cost ResourceName="Strategic1" Instant="true">5</Cost>
-    <Cost ResourceName="Strategic2" Instant="true">5</Cost>
+    <Cost ResourceName="Production" Instant="false">2000</Cost>
+    <Cost ResourceName="Strategic1" Instant="true">20</Cost>
+    <Cost ResourceName="Strategic2" Instant="true">20</Cost>
 
     <SimulationDescriptorReference Name="AffinityColossus" />
     <SimulationDescriptorReference Name="UnitTypeColossus" />
@@ -7617,7 +7622,6 @@
     <UnitAbilityReference Name="UnitAbilityBeam"/>
     <UnitAbilityReference Name="UnitAbilityFly"/>
     <UnitAbilityReference Name="UnitAbilityColossusSlayer" Level="1"/>
-	<UnitAbilityReference Name="UnitAbilityKaijuSlayer" Level="1"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
@@ -7761,13 +7765,14 @@
 
     <CostReductionReference Name="MinorFactionUrces"/>
 
+    <UnitAbilityReference Name="UnitAbilityBeam"/>
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
     <Tags></Tags>
 
-    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostCheap) + $Property(../ClassEmpire:UnitProductionCostCheap) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
+    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostLessThanAverage) + $Property(../ClassEmpire:UnitProductionCostLessThanAverage) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
 
     <SimulationDescriptorReference Name="AffinityUrces" />
     <SimulationDescriptorReference Name="UnitFactionTypeMinorFaction" />
@@ -7776,7 +7781,7 @@
     <SimulationDescriptorReference Name="UnitSizeLarge" />
     <SimulationDescriptorReference Name="MovementCapacityWalk" />
     <SimulationDescriptorReference Name="ItemSlotHammer2" />
-    <SimulationDescriptorReference Name="ItemSlotAxe2" />
+    <SimulationDescriptorReference Name="ItemSlotClaw2" />
     <SimulationDescriptorReference Name="ItemSlotHead" />
     <SimulationDescriptorReference Name="ItemSlotTorso" />
     <SimulationDescriptorReference Name="ItemSlotLegs" />
@@ -7789,8 +7794,8 @@
     </UnitDesignPrerequisites>
 
     <UnitEquipmentSet>
-      <Slot Name="MainHand"                        ItemName="ItemAxe2IronTier1#1" />
-      <Slot Name="OffHand"                         ItemName="ItemAxe2IronTier1#1" />
+      <Slot Name="MainHand"                        ItemName="ItemClaw2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2IronTier1#1" />
       <Slot Name="Head"                            ItemName="" />
       <Slot Name="Torso"                           ItemName="" />
       <Slot Name="Legs"                            ItemName="" />
@@ -8605,10 +8610,10 @@
 
     <UnitAbilityReference Name="UnitAbilityShortRanged" />
     <UnitAbilityReference Name="UnitAbilityFreeCounter" />
-	<UnitAbilityReference Name="UnitAbilityTrueSight" />
     <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
+
 
     <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostMoreExpensive) + $Property(../ClassEmpire:UnitProductionCostMoreExpensive) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
 
@@ -9079,7 +9084,7 @@
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
 
-    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostCheap) + $Property(../ClassEmpire:UnitProductionCostCheap) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
+    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostCheaper) + $Property(../ClassEmpire:UnitProductionCostCheaper) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
 
     <InterpreterPrerequisite Flags="Prerequisite,Affinity">$Path(.../EmpireTypeMajor/EmpireTypeMinor,AffinityDorgeshi) or $Path(.../EmpireTypeMinor,AffinityDorgeshi)</InterpreterPrerequisite>
     <UnitDesignPrerequisites>
@@ -9132,6 +9137,93 @@
       <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorCavalryOpportunity"/>
       <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorCavalryHoldPosition"/>
     </UnitBodyBattleParameters>
+  </UnitBodyDefinition>
+
+  <!-- DAWNSHUA ZUJAJUN -->
+  <UnitBodyDefinition Name="UnitBodyDawnShuaZujajun"           SubCategory="SubCategoryRanged">
+
+    <Affinity Name="AffinityDawnShua"/>
+
+    <CostReductionReference Name="MinorFactionDawnShua"/>
+
+    <Tags></Tags>
+
+    <UnitAbilityReference Name="UnitAbilityRanged"/>
+    <UnitAbilityReference Name="UnitAbilityDisease" Level="0"/>
+    <UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
+    <UnitAbilityReference Name="UnitAbilityWeatherfaring" />
+    <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
+    <UnitAbilityReference Name="UnitAbilityMapBoosts" />
+
+    <CustomCost ResourceName="Production" Instant="false">($Property(../ClassEmpire:UnitProductionCostCheap) + $Property(../ClassEmpire:UnitProductionCostCheap) * $Property(../ClassEmpire:CostIncreaseFromEra))</CustomCost>
+
+    <InterpreterPrerequisite Flags="Prerequisite,Affinity">$Path(.../EmpireTypeMajor/EmpireTypeMinor,AffinityDawnShua) or $Path(.../EmpireTypeMinor,AffinityDawnShua)</InterpreterPrerequisite>
+    <UnitDesignPrerequisites>
+      <InterpreterPrerequisite Flags="Prerequisite,Affinity,Validity,Discard">$Path(.../EmpireTypeMajor/EmpireTypeMinor,AffinityDawnShua) or $Path(.../EmpireTypeMinor,AffinityDawnShua)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,SlotPrerequisite">($Property(ClassCity,Garrison:MaximumUnitSlotCount) - $Property(ClassCity,Garrison:UnitSlotCount)) ge 1</InterpreterPrerequisite>
+    </UnitDesignPrerequisites>
+
+    <SimulationDescriptorReference Name="AffinityDawnShua" />
+    <SimulationDescriptorReference Name="UnitFactionTypeMinorFaction" />
+    <SimulationDescriptorReference Name="UnitTypeDawnShuaZujajun" />
+    <SimulationDescriptorReference Name="UnitClassRanged" />
+    <SimulationDescriptorReference Name="UnitSizeSmall" />
+    <SimulationDescriptorReference Name="MovementCapacityWalk" />
+    <SimulationDescriptorReference Name="ItemSlotBow2" />
+    <SimulationDescriptorReference Name="ItemSlotCrossbow1" />
+    <SimulationDescriptorReference Name="ItemSlotShield1" />
+    <SimulationDescriptorReference Name="ItemSlotHead" />
+    <SimulationDescriptorReference Name="ItemSlotTorso" />
+    <SimulationDescriptorReference Name="ItemSlotLegs" />
+    <SimulationDescriptorReference Name="ItemSlotAccessory" />
+
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#2"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+
+    <UnitBodyStance Name="#Default">
+      <Attachment Scale="0.45">
+        <Mapping Name="Item.Generic" />
+        <Slot Name="MainHand" />
+      </Attachment>
+    </UnitBodyStance>
+
+    <UnitBodyStance Name="#OffHandShield">
+      <SimulationPathPrerequisite Path="ClassUnit/OffHand,ItemClassShield1" />
+      <Attachment Scale="0.45">
+        <Mapping Name="Item.Generic" />
+        <Slot Name="MainHand" />
+      </Attachment>
+      <Attachment Scale="0.45">
+        <Mapping Name="Item.Generic" />
+        <Slot Name="OffHand" />
+      </Attachment>
+    </UnitBodyStance>
+
+    <UnitBodyBattleParameters>
+      <BattleActionUnitReference Name="BattleActionUnitAbilityHighGroundBonus"/>
+      <BattleActionUnitReference Name="BattleActionUnitDawnShuaZujajunAttackDefense"/>
+      <BattleActionUnitReference Name="BattleActionUnitRangeDefaultAttack"/>
+      <BattleActionUnitReference Name="BattleActionUnitRangeDefaultDefense"/>
+      <BattleActionUnitReference Name="BattleActionUnitCheckSharpSense"/>
+      <BattleActionUnitReference Name="BattleActionUnitRetreat"/>
+      <BattleActionUnitReference Name="BattleActionUnitAttackResult"/>
+      <BattleActionUnitReference Name="BattleActionUnitAttackVisualSetting"/>
+      <BattleActionUnitReference Name="BattleActionUnitAbilityMinorSlayer"/>
+      <!-- for the AI -->
+      <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorRangeOffense"/>
+      <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorRangeDefense"/>
+      <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorRangeOpportunity"/>
+      <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorRangeHoldPosition"/>
+    </UnitBodyBattleParameters>
+
   </UnitBodyDefinition>
 
   <!-- TASKOL GOLEM VICTORY QUEST -->
@@ -10240,7 +10332,7 @@
   </UnitBodyDefinition>
   
   <!-- RAGE WIZARDS ENEMY HERO QUEST-->
-  <UnitBodyDefinition Name="UnitBodyRageWizardsHeroMimicQuestEnemy"           SubCategory="SubCategorySupport">
+  <UnitBodyDefinition Name="UnitBodyRageWizardsHeroMimicQuestEnemy" SubCategory="SubCategorySupport">
 
     <Tags>Hidden</Tags>
 
@@ -10310,12 +10402,15 @@
     </UnitBodyBattleParameters>
 
   </UnitBodyDefinition>
+
+
+
   <!-- ########################################## -->
   <!-- ######            KAIJUS            ###### -->
   <!-- ########################################## -->
 
   <!-- KAIJU MONSTER UNIT -->
-  <UnitBodyDefinition Name="UnitBodyKaijusMonster"            SubCategory="SubCategoryCavalry">
+  <UnitBodyDefinition Name="UnitBodyKaijusMonster"             SubCategory="SubCategoryCavalry">
 
     <Tags>Hidden</Tags>
 
@@ -10327,7 +10422,6 @@
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
     <UnitAbilityReference Name="UnitAbilityFlamewalker" />
-	<UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
     <UnitAbilityReference Name="UnitAbilityVolcanicRegen" />
 
     <SimulationDescriptorReference Name="UnitKaijusMonster" />
@@ -10388,7 +10482,7 @@
   </UnitBodyDefinition>
 
   <!-- KAIJU MONSTER UNIT2 -->
-  <UnitBodyDefinition Name="UnitBodyKaijusMonster2"            SubCategory="SubCategoryRange">
+  <UnitBodyDefinition Name="UnitBodyKaijusMonster2"            SubCategory="SubCategoryRanged">
 
     <Tags>Hidden</Tags>
 
@@ -10401,7 +10495,6 @@
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
     <UnitAbilityReference Name="UnitAbilityFlamewalker" />
-	<UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
     <UnitAbilityReference Name="UnitAbilityVolcanicRegen" />
     
     <SimulationDescriptorReference Name="UnitKaijusMonster" />
@@ -10476,7 +10569,6 @@
     <UnitAbilityReference Name="UnitAbilityTerrainDamage" />
     <UnitAbilityReference Name="UnitAbilityMapBoosts" />
     <UnitAbilityReference Name="UnitAbilityFlamewalker" />
-	<UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
     <UnitAbilityReference Name="UnitAbilityVolcanicRegen" />
 
     <SimulationDescriptorReference Name="UnitKaijusMonster" />
@@ -10537,7 +10629,7 @@
   </UnitBodyDefinition>
 
   <!-- KAIJU LICE MILITIA -->
-  <UnitBodyDefinition Name="UnitBodyKaijusMilitia"         SubCategory="SubCategoryInfantry" >
+  <UnitBodyDefinition Name="UnitBodyKaijusMilitia"             SubCategory="SubCategoryInfantry" >
 
     <Tags>Hidden</Tags>
 
@@ -10604,7 +10696,7 @@
   </UnitBodyDefinition>
 
   <!-- KAIJU 2 LICE MILITIA -->
-  <UnitBodyDefinition Name="UnitBodyKaijusMilitia 2"         SubCategory="SubCategoryInfantry" >
+  <UnitBodyDefinition Name="UnitBodyKaijusMilitia 2"           SubCategory="SubCategoryInfantry" >
 
     <Tags>Hidden</Tags>
 
@@ -10671,7 +10763,7 @@
   </UnitBodyDefinition>
 
   <!-- KAIJU 3 LICE MILITIA -->
-  <UnitBodyDefinition Name="UnitBodyKaijusMilitia 3"         SubCategory="SubCategoryInfantry" >
+  <UnitBodyDefinition Name="UnitBodyKaijusMilitia 3"           SubCategory="SubCategoryInfantry" >
 
     <Tags>Hidden</Tags>
 
@@ -10738,7 +10830,7 @@
   </UnitBodyDefinition>
 
   <!-- KAIJU LICE UNIT -->
-  <UnitBodyDefinition Name="UnitBodyKaijusUnit"    SubCategory="SubCategoryInfantry">
+  <UnitBodyDefinition Name="UnitBodyKaijusUnit"                SubCategory="SubCategoryInfantry">
 
     <CostReductionReference Name="MajorTypeUnit"/>
 
@@ -10808,7 +10900,7 @@
   </UnitBodyDefinition>
 
   <!-- KAIJU LICE UNIT -->
-  <UnitBodyDefinition Name="UnitBodyKaijusUnit2"    SubCategory="SubCategoryInfantry">
+  <UnitBodyDefinition Name="UnitBodyKaijusUnit2"               SubCategory="SubCategoryInfantry">
 
     <CostReductionReference Name="MajorTypeUnit"/>
 
@@ -10878,7 +10970,7 @@
   </UnitBodyDefinition>
 
   <!-- KAIJU LICE UNIT -->
-  <UnitBodyDefinition Name="UnitBodyKaijusUnit3"    SubCategory="SubCategoryInfantry">
+  <UnitBodyDefinition Name="UnitBodyKaijusUnit3"               SubCategory="SubCategoryInfantry">
 
     <CostReductionReference Name="MajorTypeUnit"/>
 

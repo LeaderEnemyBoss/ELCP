@@ -96,113 +96,123 @@ public class GameClientState_Turn_Begin : GameClientState
 			this.EventService.Notify(new EventBeginTurn(base.GameClient.Game.Turn));
 			if (base.GameClient.Game.Turn == 0 && TutorialManager.IsActivated)
 			{
-				IPlayerControllerRepositoryService service = base.GameClient.Game.Services.GetService<IPlayerControllerRepositoryService>();
-				this.EventService.Notify(new EventTutorialGameStarted(service.ActivePlayerController.Empire));
+				IPlayerControllerRepositoryService playerControllerRepositoryService = base.GameClient.Game.Services.GetService<IPlayerControllerRepositoryService>();
+				this.EventService.Notify(new EventTutorialGameStarted(playerControllerRepositoryService.ActivePlayerController.Empire));
 			}
 			if (base.GameClient.Game.Turn == 0)
 			{
-				IDownloadableContentService service2 = Services.GetService<IDownloadableContentService>();
-				if (service2 != null)
+				IDownloadableContentService downloadableContents = Services.GetService<IDownloadableContentService>();
+				if (downloadableContents != null)
 				{
-					List<DownloadableContent> list = new List<DownloadableContent>();
-					foreach (DownloadableContent downloadableContent in service2)
+					List<DownloadableContent> downloadableContentsToPresent = new List<DownloadableContent>();
+					foreach (DownloadableContent downloadableContent in downloadableContents)
 					{
 						DownloadableContentType type = downloadableContent.Type;
-						if ((type == DownloadableContentType.Exclusive || type == DownloadableContentType.Personal) && service2.IsShared(downloadableContent.Name))
+						if (type == DownloadableContentType.Exclusive || type == DownloadableContentType.Personal)
 						{
-							list.Add(downloadableContent);
-						}
-					}
-					if (list.Count > 0)
-					{
-						for (int i = list.Count - 1; i >= 0; i--)
-						{
-							StaticString key = string.Format("DownloadableContent/{0}/RunOnce/Notified", list[i].Name);
-							if (!Amplitude.Unity.Framework.Application.Registry.GetValue<bool>(key, false))
+							if (downloadableContents.IsShared(downloadableContent.Name))
 							{
-								Amplitude.Unity.Framework.Application.Registry.SetValue<bool>(key, true);
-								this.EventService.Notify(new EventDownloadableContentPresentation(list[i]));
+								downloadableContentsToPresent.Add(downloadableContent);
 							}
 						}
 					}
-					Empire clientEmpire = base.GameClient.GetClientEmpire();
-					if (clientEmpire != null && !clientEmpire.Faction.IsCustom && clientEmpire.Faction.IsStandard)
+					if (downloadableContentsToPresent.Count > 0)
 					{
-						this.EventService.Notify(new EventFactionPresentation(clientEmpire.Faction));
+						for (int c = downloadableContentsToPresent.Count - 1; c >= 0; c--)
+						{
+							StaticString key = string.Format("DownloadableContent/{0}/RunOnce/Notified", downloadableContentsToPresent[c].Name);
+							if (!Amplitude.Unity.Framework.Application.Registry.GetValue<bool>(key, false))
+							{
+								Amplitude.Unity.Framework.Application.Registry.SetValue<bool>(key, true);
+								this.EventService.Notify(new EventDownloadableContentPresentation(downloadableContentsToPresent[c]));
+							}
+						}
+					}
+					Empire playerEmpire = base.GameClient.GetClientEmpire();
+					if (playerEmpire != null && !playerEmpire.Faction.IsCustom && playerEmpire.Faction.IsStandard)
+					{
+						this.EventService.Notify(new EventFactionPresentation(playerEmpire.Faction));
 					}
 				}
 			}
 		}
-		SeasonManager seasonManager = base.GameClient.Game.GetService<ISeasonService>() as SeasonManager;
+		ISeasonService seasonService = base.GameClient.Game.GetService<ISeasonService>();
+		SeasonManager seasonManager = seasonService as SeasonManager;
 		if (seasonManager != null)
 		{
 			seasonManager.GameClient_Turn_Begin();
 		}
-		PillarManager pillarManager = base.GameClient.Game.GetService<IPillarService>() as PillarManager;
+		IPillarService pillarService = base.GameClient.Game.GetService<IPillarService>();
+		PillarManager pillarManager = pillarService as PillarManager;
 		if (pillarManager != null)
 		{
 			pillarManager.OnBeginTurn();
 		}
-		TerraformDeviceManager terraformDeviceManager = base.GameClient.Game.GetService<ITerraformDeviceService>() as TerraformDeviceManager;
+		ITerraformDeviceService terraformDeviceService = base.GameClient.Game.GetService<ITerraformDeviceService>();
+		TerraformDeviceManager terraformDeviceManager = terraformDeviceService as TerraformDeviceManager;
 		if (terraformDeviceManager != null)
 		{
 			terraformDeviceManager.GameClient_Turn_Begin();
 		}
-		WorldEffectManager worldEffectManager = base.GameClient.Game.GetService<IWorldEffectService>() as WorldEffectManager;
+		IWorldEffectService worldEffectService = base.GameClient.Game.GetService<IWorldEffectService>();
+		WorldEffectManager worldEffectManager = worldEffectService as WorldEffectManager;
 		if (worldEffectManager != null)
 		{
 			worldEffectManager.OnBeginTurn();
 		}
-		LeechManager leechManager = base.GameClient.Game.GetService<ILeechService>() as LeechManager;
+		ILeechService leechService = base.GameClient.Game.GetService<ILeechService>();
+		LeechManager leechManager = leechService as LeechManager;
 		if (leechManager != null)
 		{
 			leechManager.OnBeginTurn();
 		}
-		CooldownManager cooldownManager = base.GameClient.Game.GetService<ICooldownManagementService>() as CooldownManager;
+		ICooldownManagementService cooldownManagementService = base.GameClient.Game.GetService<ICooldownManagementService>();
+		CooldownManager cooldownManager = cooldownManagementService as CooldownManager;
 		if (cooldownManager != null)
 		{
 			cooldownManager.OnBeginTurn();
 		}
-		MapBoostManager mapBoostManager = base.GameClient.Game.GetService<IMapBoostService>() as MapBoostManager;
+		IMapBoostService mapBoostService = base.GameClient.Game.GetService<IMapBoostService>();
+		MapBoostManager mapBoostManager = mapBoostService as MapBoostManager;
 		if (mapBoostManager != null)
 		{
 			mapBoostManager.GameClient_OnBeginTurn();
 		}
-		RegionalEffectsManager regionalEffectsManager = base.GameClient.Game.GetService<IRegionalEffectsService>() as RegionalEffectsManager;
+		IRegionalEffectsService regionalEffectsService = base.GameClient.Game.GetService<IRegionalEffectsService>();
+		RegionalEffectsManager regionalEffectsManager = regionalEffectsService as RegionalEffectsManager;
 		if (regionalEffectsManager != null)
 		{
 			regionalEffectsManager.GameClient_Turn_Begin();
 		}
-		WeatherManager weatherManager = base.GameClient.Game.GetService<IWeatherService>() as WeatherManager;
+		IWeatherService weatherService = base.GameClient.Game.GetService<IWeatherService>();
+		WeatherManager weatherManager = weatherService as WeatherManager;
 		if (weatherManager != null)
 		{
 			weatherManager.GameClient_Turn_Begin();
 		}
-		int num;
-		for (int index = 0; index < base.GameClient.Game.Empires.Length; index = num + 1)
+		for (int index = 0; index < base.GameClient.Game.Empires.Length; index++)
 		{
 			yield return base.GameClient.Game.Empires[index].DoPasses("GameClientState_Turn_Begin");
 			base.GameClient.Game.Empires[index].Refresh(true);
-			num = index;
 		}
-		IVisibilityService service3 = base.GameClient.Game.GetService<IVisibilityService>();
-		if (service3 != null)
+		IVisibilityService visibilityService = base.GameClient.Game.GetService<IVisibilityService>();
+		if (visibilityService != null)
 		{
-			IPlayerControllerRepositoryService service4 = base.GameClient.Game.GetService<IPlayerControllerRepositoryService>();
-			if (service4 != null && service4.ActivePlayerController != null && service4.ActivePlayerController.Empire != null)
+			IPlayerControllerRepositoryService playerControllerRepositoryService2 = base.GameClient.Game.GetService<IPlayerControllerRepositoryService>();
+			if (playerControllerRepositoryService2 != null && playerControllerRepositoryService2.ActivePlayerController != null && playerControllerRepositoryService2.ActivePlayerController.Empire != null)
 			{
-				service3.NotifyVisibilityHasChanged((Empire)service4.ActivePlayerController.Empire);
+				visibilityService.NotifyVisibilityHasChanged((Empire)playerControllerRepositoryService2.ActivePlayerController.Empire);
 			}
 		}
-		IVictoryManagementService service5 = base.GameClient.Game.GetService<IVictoryManagementService>();
-		if (service5 != null)
+		IVictoryManagementService victoryManagementService = base.GameClient.Game.GetService<IVictoryManagementService>();
+		if (victoryManagementService != null)
 		{
-			service5.CheckForAlerts(base.GameClient.Game.Turn - 1);
+			victoryManagementService.CheckForAlerts(base.GameClient.Game.Turn - 1);
 		}
-		IWorldPositionningService service6 = base.GameClient.Game.GetService<IWorldPositionningService>();
-		if (service6 != null)
+		IWorldPositionningService worldPositionningService = base.GameClient.Game.GetService<IWorldPositionningService>();
+		if (worldPositionningService != null)
 		{
-			service6.RefreshDefensiveTowerMapForEveryone();
+			worldPositionningService.RefreshDefensiveTowerMapForEveryone();
 		}
 		yield break;
 	}

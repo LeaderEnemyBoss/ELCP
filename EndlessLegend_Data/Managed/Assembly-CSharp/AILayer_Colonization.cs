@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -41,7 +40,7 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 				if (this.continentData[j].Type == AILayer_Colonization.ContinentData.ContinentType.Continent)
 				{
 					this.continentData[j].Type = AILayer_Colonization.ContinentData.ContinentType.Unique;
-					return;
+					break;
 				}
 			}
 		}
@@ -57,7 +56,8 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 
 	public override void ReadXml(XmlReader reader)
 	{
-		if (reader.ReadVersionAttribute() >= 2)
+		int num = reader.ReadVersionAttribute();
+		if (num >= 2)
 		{
 			this.settlerCount = reader.GetAttribute<int>("SettlerCount");
 		}
@@ -66,7 +66,8 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 
 	public override void WriteXml(XmlWriter writer)
 	{
-		if (writer.WriteVersionAttribute(2) >= 2)
+		int num = writer.WriteVersionAttribute(2);
+		if (num >= 2)
 		{
 			writer.WriteAttributeString<int>("SettlerCount", this.settlerCount);
 		}
@@ -88,9 +89,18 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		this.potentialRegions.Clear();
 		for (int i = 0; i < this.continentData.Length; i++)
 		{
-			if (!this.continentData[i].EmpireWithRegion.Contains(base.AIEntity.Empire) && this.continentData[i].LandRegionCount != 0 && this.continentData[i].OverallColonizationPercent <= 0.2f && this.continentData[i].CostalRegionRatio >= 0.8f)
+			if (!this.continentData[i].EmpireWithRegion.Contains(base.AIEntity.Empire))
 			{
-				this.continentData[i].FillPotentialRegion(this.potentialRegions);
+				if (this.continentData[i].LandRegionCount != 0)
+				{
+					if (this.continentData[i].OverallColonizationPercent <= 0.2f)
+					{
+						if (this.continentData[i].CostalRegionRatio >= 0.8f)
+						{
+							this.continentData[i].FillPotentialRegion(this.potentialRegions);
+						}
+					}
+				}
 			}
 		}
 		return this.GetClosestRegion(this.potentialRegions);
@@ -98,32 +108,30 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 
 	private Region ChooseOverseaRegion()
 	{
-		Region result;
 		if (this.departmentOfDefense.TechnologyDefinitionShipState != DepartmentOfScience.ConstructibleElement.State.Researched)
 		{
-			result = null;
+			return null;
 		}
-		else
+		Region region = this.ChooseNeutralIsland();
+		if (region != null)
 		{
-			Region region = this.ChooseNeutralIsland();
-			if (region != null)
+			return region;
+		}
+		this.potentialRegions.Clear();
+		for (int i = 0; i < this.continentData.Length; i++)
+		{
+			if (!this.continentData[i].EmpireWithRegion.Contains(base.AIEntity.Empire))
 			{
-				result = region;
-			}
-			else
-			{
-				this.potentialRegions.Clear();
-				for (int i = 0; i < this.continentData.Length; i++)
+				if (this.continentData[i].LandRegionCount != 0)
 				{
-					if (this.continentData[i].LandRegionCount != 0 && this.continentData[i].OverallColonizationPercent <= 0.8f)
+					if (this.continentData[i].OverallColonizationPercent <= 0.34f)
 					{
 						this.continentData[i].FillPotentialRegion(this.potentialRegions);
 					}
 				}
-				result = this.GetClosestRegion(this.potentialRegions);
 			}
 		}
-		return result;
+		return this.GetClosestRegion(this.potentialRegions);
 	}
 
 	private Region ChooseNeighbourgRegion()
@@ -174,40 +182,33 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		{
 			return null;
 		}
-		list.Sort((Region left, Region right) => this.worldPositionningService.GetDistance(left.Barycenter, army.WorldPosition).CompareTo(this.worldPositionningService.GetDistance(right.Barycenter, army.WorldPosition)));
 		return list[0];
 	}
 
 	private Region GetClosestRegion(List<Region> regions)
 	{
-		DepartmentOfForeignAffairs agency = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		AILayer_Colonization.<GetClosestRegion>c__AnonStorey7F5 <GetClosestRegion>c__AnonStorey7F = new AILayer_Colonization.<GetClosestRegion>c__AnonStorey7F5();
+		<GetClosestRegion>c__AnonStorey7F.regions = regions;
 		int num = int.MaxValue;
 		Region result = null;
 		int index;
-		int index2;
-		for (index = 0; index < regions.Count; index = index2 + 1)
+		for (index = 0; index < <GetClosestRegion>c__AnonStorey7F.regions.Count; index++)
 		{
-			if (regions[index].City == null && regions[index].IsLand && !this.globalObjectiveMessages.Exists((GlobalObjectiveMessage match) => match.RegionIndex == regions[index].Index))
+			if (<GetClosestRegion>c__AnonStorey7F.regions[index].City == null)
 			{
-				if (agency.IsInWarWithSomeone())
+				if (<GetClosestRegion>c__AnonStorey7F.regions[index].IsLand)
 				{
-					foreach (Army army in Intelligence.GetArmiesInRegion(regions[index].Index))
+					if (!this.globalObjectiveMessages.Exists((GlobalObjectiveMessage match) => match.RegionIndex == <GetClosestRegion>c__AnonStorey7F.regions[index].Index))
 					{
-						if (army.Empire != base.AIEntity.Empire && army.Empire is MajorEmpire && agency.IsAtWarWith(army.Empire))
+						int num2 = this.worldAtlasHelper.ComputeBirdEyeDistanceBetweenRegionAndEmpire(base.AIEntity.Empire, <GetClosestRegion>c__AnonStorey7F.regions[index]);
+						if (num2 < num)
 						{
-							goto IL_146;
+							num = num2;
+							result = <GetClosestRegion>c__AnonStorey7F.regions[index];
 						}
 					}
 				}
-				int num2 = this.worldAtlasHelper.ComputeBirdEyeDistanceBetweenRegionAndEmpire(base.AIEntity.Empire, regions[index]);
-				if (num2 < num)
-				{
-					num = num2;
-					result = regions[index];
-				}
 			}
-			IL_146:
-			index2 = index;
 		}
 		return result;
 	}
@@ -217,9 +218,12 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		for (int i = 0; i < source.Borders.Length; i++)
 		{
 			Region region = this.worldPositionningService.GetRegion(source.Borders[i].NeighbourRegionIndex);
-			if (!region.IsRegionColonized() && region.IsLand && source.ContinentID == region.ContinentID && !neighbourgs.Contains(region))
+			if (region.City == null && region.IsLand && source.ContinentID == region.ContinentID)
 			{
-				neighbourgs.Add(region);
+				if (!neighbourgs.Contains(region))
+				{
+					neighbourgs.Add(region);
+				}
 			}
 		}
 	}
@@ -232,7 +236,8 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 
 	public static bool IsAbleToColonize(global::Empire empire)
 	{
-		ReadOnlyCollection<UnitBodyDefinition> availableUnitBodyDefinitions = ((IUnitDesignDatabase)empire.GetAgency<DepartmentOfDefense>()).AvailableUnitBodyDefinitions;
+		DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
+		ReadOnlyCollection<UnitBodyDefinition> availableUnitBodyDefinitions = ((IUnitDesignDatabase)agency).AvailableUnitBodyDefinitions;
 		for (int i = 0; i < availableUnitBodyDefinitions.Count; i++)
 		{
 			if (!availableUnitBodyDefinitions[i].Tags.Contains("Hidden") && availableUnitBodyDefinitions[i].CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) && DepartmentOfTheTreasury.CheckConstructiblePrerequisites(empire, availableUnitBodyDefinitions[i], new string[]
@@ -268,13 +273,14 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 	public override IEnumerator Initialize(AIEntity aiEntity)
 	{
 		yield return base.Initialize(aiEntity);
-		IGameService service = Services.GetService<IGameService>();
-		Diagnostics.Assert(service != null);
+		IGameService gameService = Services.GetService<IGameService>();
+		Diagnostics.Assert(gameService != null);
 		base.AIEntity.RegisterPass(AIEntity.Passes.RefreshObjectives.ToString(), "AILayer_Colonization_RefreshObjectives", new AIEntity.AIAction(this.RefreshObjectives), this, new StaticString[0]);
-		Diagnostics.Assert(AIScheduler.Services.GetService<IWorldPositionEvaluationAIHelper>() != null);
+		IWorldPositionEvaluationAIHelper worldPositionHelper = AIScheduler.Services.GetService<IWorldPositionEvaluationAIHelper>();
+		Diagnostics.Assert(worldPositionHelper != null);
 		this.worldAtlasHelper = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
 		Diagnostics.Assert(this.worldAtlasHelper != null);
-		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
+		this.worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositionningService != null);
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		this.departmentOfDefense = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
@@ -305,18 +311,17 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 	protected override bool IsObjectiveValid(StaticString objectiveType, int regionIndex, bool checkLocalPriority = false)
 	{
 		Region region = this.worldPositionningService.GetRegion(regionIndex);
-		return region.IsLand && !region.IsRegionColonized();
+		return !region.IsRegionColonized();
 	}
 
 	protected override void RefreshObjectives(StaticString context, StaticString pass)
 	{
-		DepartmentOfForeignAffairs agency = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		base.RefreshObjectives(context, pass);
-		this.CurrentSettlerCount = this.GetSettlerCount();
 		this.ComputeGlobalPriority();
 		this.UpdateContinentData();
 		int num = this.GetNumberOfAcceptedColonization();
 		this.WantedNewCity = num;
+		this.CurrentSettlerCount = this.GetSettlerCount();
 		base.GatherObjectives(AICommanderMissionDefinition.AICommanderCategory.Colonization.ToString(), ref this.globalObjectiveMessages);
 		base.ValidateMessages(ref this.globalObjectiveMessages);
 		for (int i = 0; i < this.globalObjectiveMessages.Count; i++)
@@ -324,21 +329,6 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 			GlobalObjectiveMessage globalObjectiveMessage = this.globalObjectiveMessages[i];
 			if (this.IsObjectiveValid(AICommanderMissionDefinition.AICommanderCategory.Colonization.ToString(), globalObjectiveMessage.RegionIndex, false))
 			{
-				if (agency.IsInWarWithSomeone())
-				{
-					using (IEnumerator<Army> enumerator = Intelligence.GetArmiesInRegion(globalObjectiveMessage.RegionIndex).GetEnumerator())
-					{
-						while (enumerator.MoveNext())
-						{
-							Army army = enumerator.Current;
-							if (army.Empire != base.AIEntity.Empire && army.Empire is MajorEmpire && agency.IsAtWarWith(army.Empire))
-							{
-								base.AIEntity.AIPlayer.Blackboard.CancelMessage(this.globalObjectiveMessages[i]);
-							}
-						}
-						goto IL_17C;
-					}
-				}
 				if (num > 0 || this.CurrentSettlerCount > i)
 				{
 					num--;
@@ -349,81 +339,35 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 					base.AIEntity.AIPlayer.Blackboard.CancelMessage(this.globalObjectiveMessages[i]);
 				}
 			}
-			IL_17C:;
 		}
 		if (this.departmentOfTheInterior.Cities.Count == 0 && this.globalObjectiveMessages.Count == 0)
 		{
-			Region region3 = this.ChooseLastHopeRegion();
-			if (region3 == null)
+			Region region2 = this.ChooseLastHopeRegion();
+			if (region2 == null)
 			{
 				return;
 			}
-			this.CreateObjectiveFor(region3);
+			this.CreateObjectiveFor(region2);
 			num--;
 		}
-		Region region2 = null;
 		for (int j = 0; j < num; j++)
 		{
-			region2 = this.GetNextRegionToColonize();
-			if (region2 != null)
+			Region nextRegionToColonize = this.GetNextRegionToColonize();
+			if (nextRegionToColonize != null)
 			{
-				this.CreateObjectiveFor(region2);
+				this.CreateObjectiveFor(nextRegionToColonize);
 			}
 		}
-		if (region2 == null && num > 0)
-		{
-			if (this.worldPositionningService.World.Continents.Length <= 1)
-			{
-				if (!this.continentData.Any((AILayer_Colonization.ContinentData c) => c.LandRegionCount > 0 && c.OverallColonizationPercent <= 0.8f))
-				{
-					goto IL_3B7;
-				}
-			}
-			DepartmentOfScience.ConstructibleElement constructibleElement;
-			if (base.AIEntity.Empire.GetAgency<DepartmentOfScience>().TechnologyDatabase.TryGetValue("TechnologyDefinitionShip", out constructibleElement) && base.AIEntity.Empire.GetAgency<DepartmentOfScience>().GetTechnologyState(constructibleElement) == DepartmentOfScience.ConstructibleElement.State.Available)
-			{
-				bool flag = false;
-				using (IEnumerator<City> enumerator2 = this.departmentOfTheInterior.Cities.GetEnumerator())
-				{
-					while (enumerator2.MoveNext())
-					{
-						if (enumerator2.Current.Districts.Any((District match) => this.worldPositionningService.IsOceanTile(match.WorldPosition)))
-						{
-							flag = true;
-							break;
-						}
-					}
-				}
-				if (flag)
-				{
-					if (!DepartmentOfScience.CanBuyoutResearch(base.AIEntity.Empire))
-					{
-						OrderQueueResearch order = new OrderQueueResearch(base.AIEntity.Empire.Index, constructibleElement, true);
-						base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
-					}
-					else
-					{
-						float num2 = -base.AIEntity.Empire.GetAgency<DepartmentOfScience>().GetBuyOutTechnologyCost(constructibleElement) * 1.05f;
-						if (base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().IsTransferOfResourcePossible(base.AIEntity.Empire, DepartmentOfTheTreasury.Resources.TechnologiesBuyOut, ref num2))
-						{
-							OrderBuyOutTechnology order2 = new OrderBuyOutTechnology(base.AIEntity.Empire.Index, "TechnologyDefinitionShip");
-							Ticket ticket;
-							base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order2, out ticket, null);
-						}
-					}
-				}
-			}
-		}
-		IL_3B7:
 		this.WantToColonizeOversea = false;
 		for (int k = 0; k < this.globalObjectiveMessages.Count; k++)
 		{
 			GlobalObjectiveMessage globalObjectiveMessage2 = this.globalObjectiveMessages[k];
 			Region region = this.worldPositionningService.GetRegion(globalObjectiveMessage2.RegionIndex);
-			if (!Array.Find<AILayer_Colonization.ContinentData>(this.continentData, (AILayer_Colonization.ContinentData match) => match.ContinentId == region.ContinentID).EmpireWithRegion.Contains(base.AIEntity.Empire))
+			AILayer_Colonization.ContinentData continentData = Array.Find<AILayer_Colonization.ContinentData>(this.continentData, (AILayer_Colonization.ContinentData match) => match.ContinentId == region.ContinentID);
+			if (!continentData.EmpireWithRegion.Contains(base.AIEntity.Empire))
 			{
 				this.WantToColonizeOversea = true;
-				return;
+				break;
 			}
 		}
 	}
@@ -465,16 +409,16 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 			for (int j = 0; j < this.departmentOfTheInterior.Cities.Count; j++)
 			{
 				float num8 = this.departmentOfTheInterior.Cities[j].GetPropertyValue(SimulationProperties.NetCityApproval) - (float)num * propertyBaseValue;
-				float propertyValue = this.departmentOfTheInterior.Cities[j].GetPropertyValue(SimulationProperties.Population);
-				num7 += num8 * propertyValue;
-				num6 += propertyValue;
+				float num9 = this.departmentOfTheInterior.Cities[j].GetPropertyValue(SimulationProperties.Population);
+				num7 += num8 * num9;
+				num6 += num9;
 			}
 			for (int k = 0; k < num; k++)
 			{
-				float num9 = propertyBaseValue2 - (float)(this.departmentOfTheInterior.Cities.Count - 1 + num) * propertyBaseValue;
-				float num10 = 1f;
-				num7 += num9 * num10;
-				num6 += num10;
+				float num8 = propertyBaseValue2 - (float)(this.departmentOfTheInterior.Cities.Count - 1 + num) * propertyBaseValue;
+				float num9 = 1f;
+				num7 += num8 * num9;
+				num6 += num9;
 			}
 			num4 = num7 / num6;
 		}
@@ -500,7 +444,8 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		int num = 0;
 		for (int i = 0; i < garrison.StandardUnits.Count; i++)
 		{
-			if (garrison.StandardUnits[i].UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
+			bool flag = garrison.StandardUnits[i].UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1);
+			if (flag)
 			{
 				num++;
 			}
@@ -532,11 +477,11 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		{
 			AILayer_Strategy layer = base.AIEntity.GetLayer<AILayer_Strategy>();
 			base.GlobalPriority.Add(layer.StrategicNetwork.GetAgentValue("Expansion"), "Expansion strategic network score", new object[0]);
-			if (this.aiLayerStrategy.IsAtWar() && this.CurrentSettlerCount < 2)
+			if (this.aiLayerStrategy.IsAtWar())
 			{
 				base.GlobalPriority.Boost(-0.5f, "At war", new object[0]);
 			}
-			else if (this.aiLayerStrategy.WantWarWithSomeone() && this.CurrentSettlerCount < 2)
+			else if (this.aiLayerStrategy.WantWarWithSomeone())
 			{
 				base.GlobalPriority.Boost(-0.2f, "Want war but not at war", new object[0]);
 			}
@@ -544,16 +489,6 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 			{
 				base.GlobalPriority.Boost(0.2f, "I am sure you want more than one city...", new object[0]);
 			}
-		}
-		if (!this.aiLayerStrategy.IsAtWar() && this.departmentOfTheInterior.Cities.Count < 6 && base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireApproval) > 70f)
-		{
-			global::Game game = Services.GetService<IGameService>().Game as global::Game;
-			float num = 0.01f * Mathf.Min((float)game.Turn / base.AIEntity.Empire.SimulationObject.GetPropertyValue(SimulationProperties.GameSpeedMultiplier), 90f);
-			if (num <= 0f)
-			{
-				num = 0.01f;
-			}
-			base.GlobalPriority.Boost(num, "I am sure you want more than one city...", new object[0]);
 		}
 	}
 
@@ -641,8 +576,7 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 				this.Regions.Add(region);
 				if (region.IsLand)
 				{
-					int landRegionCount = this.LandRegionCount;
-					this.LandRegionCount = landRegionCount + 1;
+					this.LandRegionCount++;
 				}
 			}
 			this.CostalRegionRatio = (float)continent.CostalRegionList.Length / (float)this.LandRegionCount;
@@ -650,9 +584,8 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 			if (this.LandRegionCount == 0)
 			{
 				this.Type = AILayer_Colonization.ContinentData.ContinentType.Water;
-				return;
 			}
-			if (this.CostalRegionRatio > 0.8f)
+			else if (this.CostalRegionRatio > 0.8f)
 			{
 				this.Type = AILayer_Colonization.ContinentData.ContinentType.Island;
 			}
@@ -676,18 +609,22 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 					}
 					this.OverallColonizationPercent += 1f;
 					List<float> colonizationPercentByEmpire;
-					int index;
-					float num2 = (colonizationPercentByEmpire = this.ColonizationPercentByEmpire)[index = num];
-					colonizationPercentByEmpire[index] = num2 + 1f;
+					List<float> list = colonizationPercentByEmpire = this.ColonizationPercentByEmpire;
+					int index2;
+					int index = index2 = num;
+					float num2 = colonizationPercentByEmpire[index2];
+					list[index] = num2 + 1f;
 				}
 			}
 			this.OverallColonizationPercent /= (float)this.LandRegionCount;
 			for (int j = 0; j < this.ColonizationPercentByEmpire.Count; j++)
 			{
 				List<float> colonizationPercentByEmpire2;
+				List<float> list2 = colonizationPercentByEmpire2 = this.ColonizationPercentByEmpire;
 				int index2;
-				float num3 = (colonizationPercentByEmpire2 = this.ColonizationPercentByEmpire)[index2 = j];
-				colonizationPercentByEmpire2[index2] = num3 / (float)this.LandRegionCount;
+				int index3 = index2 = j;
+				float num2 = colonizationPercentByEmpire2[index2];
+				list2[index3] = num2 / (float)this.LandRegionCount;
 			}
 		}
 
@@ -695,9 +632,12 @@ public class AILayer_Colonization : AILayerWithObjective, IXmlSerializable
 		{
 			for (int i = 0; i < this.Regions.Count; i++)
 			{
-				if (!this.Regions[i].IsRegionColonized() && this.Regions[i].IsLand)
+				if (this.Regions[i].City == null)
 				{
-					potentialRegions.Add(this.Regions[i]);
+					if (this.Regions[i].IsLand)
+					{
+						potentialRegions.Add(this.Regions[i]);
+					}
 				}
 			}
 		}

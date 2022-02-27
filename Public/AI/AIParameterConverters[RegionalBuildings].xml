@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ######################################################## -->
+  <!-- ################ MINOR FACTION VILLAGES ################ -->
+  <!-- ######################################################## -->
+  
+  <AIParameterConverter Name="CityExtraWorker">
+    <!-- Generates one new population unit, to be allocated as city sees fit -->
+    <ToAIParameter AIParameter="AICityGrowth">$(Input) * $Property(BaseFoodPerPopulation) * 0.5</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">$(Input) * $Property(BaseIndustryPerPopulation) * 0.5</ToAIParameter>
+    <ToAIParameter AIParameter="AICityMoney">$(Input) * $Property(BaseSciencePerPopulation) * 0.5</ToAIParameter>
+    <ToAIParameter AIParameter="AICityResearch">$(Input) * $Property(BaseDustPerPopulation) * 0.5</ToAIParameter>
+    <ToAIParameter AIParameter="AICityEmpirePoint">$(Input) * $Property(BaseCityPointPerPopulation) * 0.5</ToAIParameter>
+    
+    <ToAIParameter AIParameter="AIEmpireGrowth">$(Input) * $SumProperty(ClassEmpire/ClassCity:BaseFoodPerPopulation) * 0.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">$(Input) * $Property(ClassEmpire/ClassCity:BaseIndustryPerPopulation) * 0.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">$(Input) * $Property(ClassEmpire/ClassCity:BaseSciencePerPopulation) * 0.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">$(Input) * $Property(ClassEmpire/ClassCity:BaseDustPerPopulation) * 0.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireEmpirePoint">$(Input) * $Property(ClassEmpire/ClassCity:BaseCityPointPerPopulation) * 0.5</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- #################################################### -->
+  <!-- ################### WATCH TOWERS ################### -->
+  <!-- #################################################### -->
+
+  <AIParameterConverter Name="EmpireUnlockWatchTowers">
+    <ToAIParameter AIParameter ="AIEmpireVision">$(Input) * 0.3 * $Property(EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityWatchTower">
+    <ToAIParameter AIParameter ="AIEmpireVision">$(Input)</ToAIParameter>
+  </AIParameterConverter>
+  
+  <AIParameterConverter Name="EmpireWatchTowerUpgrade">
+    <ToAIParameter AIParameter="AIEmpireVision">$(Input) * 0.3 * (2 - $Count(ClassEmpire/ClassResearch,TechnologyRoad)) * $Property(EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * 10 * $Count(ClassEmpire/ClassCity/WatchTower,ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * 10 * $Count(ClassCity/WatchTower,ExploitedPointOfInterest)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ######################################################################################## -->
+  <!-- ################ FORTIFICATION OF REGIONAL BUILDINGS TO PREVENT PILLAGE ################ -->
+  <!-- ######################################################################################## -->
+
+  <AIParameterConverter Name="EmpirePillageDefense">
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityPillageDefense">
+    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * $Count(ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityPillageDefenseRecovery">
+    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * 8 * $Count(ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * 8 * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
+  </AIParameterConverter>
+  
+  <!-- ################################################ -->
+  <!-- ######     "WINTER SHIFTERS" EXPANSION    ###### -->
+  <!-- ################################################ -->
+  
+  <AIParameterConverter Name="EmpireUnlockDefensiveTowers">
+    <ToAIParameter AIParameter="AIEmpireVision">$(Input) *  ($Count(ClassEmpire/ClassCity) - (0.3*$Count(ClassEmpire/ClassCity/WatchTower,ExploitedPointOfInterest)))</ToAIParameter>
+  </AIParameterConverter>
+  
+</Datatable>

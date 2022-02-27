@@ -1,0 +1,1672 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://RageWizardsw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://RageWizardsw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ============ RW-CHAPTER 1 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter1" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter1,BeginTurn</Tags>
+
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityRageWizards</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$CapitalCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$CapitalPosition">
+        <From Source="$CapitalCity.$Position"/>
+      </Var>
+      <Var VarName="$CapitalRegionPosition">
+        <From Source="$CapitalCity.$Region.$Position"/>
+      </Var>
+
+      <!--Get the list of all the regions excluding the first city region-->
+      <Var VarName="$AllRegionsButInitialCityRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByDistance PositionToCompareVarName="$CapitalRegionPosition" DistanceMax="1"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Get the nearest region from the city position (excluding the initial city region)-->
+      <Var VarName="$NearestRegionFromInitialCity">
+        <From Source="$AllRegionsButInitialCityRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$CapitalPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectChapter1">
+        <First>
+          <From Source="$NearestRegionFromInitialCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectChapter1Location">
+        <From Source="$PointOfInterestToInspectChapter1.$Position"/>
+      </Var>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter1" LockOption="Lock"/>
+      
+    <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1-Step1" State="InProgress" />
+      <Controller_Loop LoopCount="2">
+        <Decorator_Talk LinkedStepProgression="MainQuestRageWizards-Chapter1-Step1" ForceDifferentTargets="true" Initiator="Empire"/>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1-Step1" State="Completed" />
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1-Step2" HideRewards="true" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspectChapter1" Tags="YoplaitFraise" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspectChapter1" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter1" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectChapter1Location" ArmyDroplist="DroplistArmyDefinitionRageWizardsMainQuest1" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID" EmpireArmyOwnerVarName="$MyEmpire"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1-Step2" State="Completed" />
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter1-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter1-Step2">
+        <Reward LocalizationKey="%MainQuestRageWizards-Chapter1-Step1Reward"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  <!-- ======================================
+     ============ RW-CHAPTER 1 Alt==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter1Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter1Alt,BeginTurn</Tags>
+
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityRageWizards</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite> <!--Pitiless trait-->
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$CapitalCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <Var VarName="$CapitalPosition">
+        <From Source="$CapitalCity.$Position"/>
+      </Var>
+      <Var VarName="$CapitalRegionPosition">
+        <From Source="$CapitalCity.$Region.$Position"/>
+      </Var>
+
+      <!--Get the list of all the regions excluding the first city region-->
+      <Var VarName="$AllRegionsButInitialCityRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByDistance PositionToCompareVarName="$CapitalRegionPosition" DistanceMax="1"/>
+          </Where>
+        </From>
+      </Var>
+      
+      <!--Get the nearest region from the city position (excluding the initial city region)-->
+      <Var VarName="$NearestRegionFromInitialCity">
+        <From Source="$AllRegionsButInitialCityRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$CapitalPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectChapter1Alt">
+        <First>
+          <From Source="$NearestRegionFromInitialCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectChapter1AltLocation">
+        <From Source="$PointOfInterestToInspectChapter1Alt.$Position"/>
+      </Var>
+	  
+		<!--Get the village to destroy-->
+		<Var VarName="$VillagesToDestroy">
+		  <First>
+			<From Source="$NearestRegionFromInitialCity.$Villages">
+			  <Where>
+				<PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+				<PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+			  </Where>
+			</From>
+		  </First>
+		</Var>
+
+		<Var VarName="$VillageToDestroy">
+		  <Any>
+			<From Source="$VillagesToDestroy">
+			  <Where>
+				<PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+				<PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+			  </Where>
+			</From>
+		  </Any>
+		</Var>
+
+		<!--Get the POI of the village to destroy for marker -->
+		<Var VarName="$VillageToDestroyPointOfInterest">
+		  <From Source="$VillageToDestroy.$PointOfInterest"/>
+		</Var>
+
+		<!--Get the position of the village to destroy-->
+		<Var VarName="$VillageToDestroyLocation">
+		  <From Source="$VillageToDestroyPointOfInterest.$Position" />
+		</Var>
+	  
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter1Alt" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$VillageToDestroyPointOfInterest" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1Alt-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$VillageToDestroyPointOfInterest" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerVillageToDestroyPointOfInterest"/>
+      <Decorator_VillagesDestroyed VillagesVarName="$VillageToDestroy" TargetOption="All" Initiator="AllEmpires"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageToDestroyPointOfInterest"/>
+      <Action_LockQuestTarget TargetVarName="$VillageToDestroyPointOfInterest" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1Alt-Step1" State="Completed" />
+
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1Alt-Step2" HideRewards="true" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspectChapter1Alt" Tags="YoplaitFraise" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1Alt"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspectChapter1Alt" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1Alt"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter1Alt" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectChapter1AltLocation" ArmyDroplist="DroplistArmyDefinitionRageWizardsMainQuest1" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID" EmpireArmyOwnerVarName="$MyEmpire"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1Alt-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter1Alt-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter1Alt-Step2">
+        <Reward LocalizationKey="%MainQuestRageWizards-Chapter1-Step1Reward"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>  
+
+  <!-- ======================================
+     ============ RW-CHAPTER 2 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter2</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
+    </Prerequisites>
+    
+    <!--============ VARIABLES ============-->
+
+    <Vars>
+
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set one Player's city-->
+      <Var VarName="$SelectedPlayerCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCityLocation">
+        <From Source="$SelectedPlayerCity.$Position"/>
+      </Var>
+      <!--Sort by distance all regions that don't belong to Player-->
+      <Var VarName="$SortedAllRegionsButPlayerRegions">
+        <From Source="$AllRegionsButPlayerRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Set the wrong Quest POI to inspect-->
+      <Var VarName="$QuestPOI1">
+        <First>
+          <From Source="$SortedAllRegionsButPlayerRegions.$QuestPointsOfInterest"/>
+        </First>
+      </Var>
+      <Var VarName="$QuestPOI1Region">
+          <From Source="$QuestPOI1.$Position.$Region"/>
+      </Var>
+      <Var VarName="$QuestPOI1RegionLocation">
+        <From Source="$QuestPOI1Region.$Position"/>
+      </Var>
+
+      <Var VarName="$AllRegionsButPOI1Region">
+        <From Source="$SortedAllRegionsButPlayerRegions">
+          <Where>
+            <FilterRegionByDistance PositionToCompareVarName="$QuestPOI1RegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the right quest POI to inspect and the linked village-->
+      <Var VarName="$VillagePOI">
+        <First>
+          <From Source="$AllRegionsButPOI1Region.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeVillage</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      <Var VarName="$VillagePOILocation">
+        <From Source="$VillagePOI.$Position"/>
+      </Var>-->
+      <Var VarName="$QuestPOI2">
+        <Any>
+          <From Source="$VillagePOILocation.$Region.$QuestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$QuestPOI2Region">
+        <From Source="$QuestPOI2.$Position.$Region"/>
+      </Var>
+      <Var VarName="$Minorfaction">
+        <From Source="$QuestPOI2Region.$MinorEmpire"/>
+      </Var>
+      <Var VarName="$TribeName">
+        <From Source="$Minorfaction.$FactionName"/>
+      </Var>
+
+
+      <Var VarName="$QuestPOI2Location">
+        <From Source="$QuestPOI2.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFactionName" Source="$Minorfaction"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOI2Region"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$VillagePOI" LockOption="Lock"/>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI1" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI2" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI2"/>
+      
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Controller_Parallel CompletionPolicy="Any">
+            
+            <!--To display the message saying that it's the wrong place searched-->
+            <Controller_Sequence>
+              <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire" PrerequisiteNotVerifiedMessage="%NotTheRightSpot">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 5000</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_Inspect>
+            </Controller_Sequence>
+
+            <!--To remove the marker on the wrong place searched-->
+            <Controller_Sequence>
+              <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire"/>
+              <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+              <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+            </Controller_Sequence>
+          </Controller_Parallel>
+
+          <!--If the wrong place has been searched first-->
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI2" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI2" />
+          <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+        <!--To remove the marker if the right place has bee searched first-->
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI2" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI2" />
+          <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+        </Controller_Sequence>
+          
+      </Controller_Parallel>
+
+      <Action_SpawnArmy SpawnLocationVarName="$QuestPOI2Location" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter2Step1" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" ArmyDroplistSuffixVarName="$TribeName" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step1" State="Completed" />
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step2" State="InProgress" />
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step2" State="Completed" />
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step3" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$VillagePOI" Tags="Village" Output_QuestMarkerVarName="$QuestMarkerVillagePOI"/>
+      <Decorator_Talk TargetEntityVarName="$VillagePOI" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI" />
+      <Action_LockQuestTarget TargetVarName="$VillagePOI" LockOption="Unlock"/>
+      <Action_SpawnArmy SpawnLocationVarName="$VillagePOILocation" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter2Step3" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" ArmyDroplistSuffixVarName="$TribeName" Output_EnemyArmyGUIDVarName="$ArmyID2" />
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step3" State="Completed" />
+
+      <!--Step 4-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step4" State="InProgress" />
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step4" State="Completed" />
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter2-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter2-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter2-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter2-Step4">
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter2UniqueItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+    
+  </QuestDefinition>
+
+  <!-- ======================================
+     ============ RW-CHAPTER 2 Alt==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter2Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter2</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
+    </Prerequisites>
+    
+    <!--============ VARIABLES ============-->
+
+    <Vars>
+
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set one Player's city-->
+      <Var VarName="$SelectedPlayerCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCityLocation">
+        <From Source="$SelectedPlayerCity.$Position"/>
+      </Var>
+      <!--Sort by distance all regions that don't belong to Player-->
+      <Var VarName="$SortedAllRegionsButPlayerRegions">
+        <From Source="$AllRegionsButPlayerRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Set the wrong Quest POI to inspect-->
+      <Var VarName="$QuestPOI1">
+        <First>
+          <From Source="$SortedAllRegionsButPlayerRegions.$QuestPointsOfInterest"/>
+        </First>
+      </Var>
+      <Var VarName="$QuestPOI1Region">
+        <From Source="$QuestPOI1.$Position.$Region"/>
+      </Var>
+      <Var VarName="$QuestPOI1RegionLocation">
+        <From Source="$QuestPOI1Region.$Position"/>
+      </Var>
+
+      <Var VarName="$AllRegionsButPOI1Region">
+        <From Source="$SortedAllRegionsButPlayerRegions">
+          <Where>
+            <FilterRegionByDistance PositionToCompareVarName="$QuestPOI1RegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the right quest POI to inspect and the linked village-->
+      <Var VarName="$VillagePOI">
+        <First>
+          <From Source="$AllRegionsButPOI1Region.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeVillage</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      <Var VarName="$VillagePOILocation">
+        <From Source="$VillagePOI.$Position"/>
+      </Var>
+      <Var VarName="$QuestPOI2">
+        <Any>
+          <From Source="$VillagePOILocation.$Region.$QuestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$QuestPOI2Region">
+        <From Source="$QuestPOI2.$Position.$Region"/>
+      </Var>
+      <Var VarName="$Minorfaction">
+        <From Source="$QuestPOI2Region.$MinorEmpire"/>
+      </Var>
+      <Var VarName="$TribeName">
+        <From Source="$Minorfaction.$FactionName"/>
+      </Var>
+
+
+      <Var VarName="$QuestPOI2Location">
+        <From Source="$QuestPOI2.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFactionName" Source="$Minorfaction"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOI2Region"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$VillagePOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2Alt-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI1" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI2" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI2"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <!--To display the message saying that it's the wrong place searched-->
+            <Controller_Sequence>
+              <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire" PrerequisiteNotVerifiedMessage="%NotTheRightSpot">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 5000</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_Inspect>
+            </Controller_Sequence>
+
+            <!--To remove the marker on the wrong place searched-->
+            <Controller_Sequence>
+              <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire"/>
+              <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+              <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+            </Controller_Sequence>
+          </Controller_Parallel>
+
+          <!--If the wrong place has been searched first-->
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI2" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI2" />
+          <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+        <!--To remove the marker if the right place has bee searched first-->
+        <Controller_Sequence>
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI2" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI2" />
+          <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+          <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_SpawnArmy SpawnLocationVarName="$QuestPOI2Location" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter2Step1" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" ArmyDroplistSuffixVarName="$TribeName" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2Alt-Step2" State="InProgress" />
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_SpawnArmy SpawnLocationVarName="$VillagePOILocation" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter2Step3" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" ArmyDroplistSuffixVarName="$TribeName" Output_EnemyArmyGUIDVarName="$ArmyID2" /> <!--Spawn position is the Step 3 village-->
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2Alt-Step2" State="Completed" />
+
+      <!--Step 3-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2Alt-Step3" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$VillagePOI" Tags="Village" Output_QuestMarkerVarName="$QuestMarkerVillagePOI"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI" />
+      <Action_LockQuestTarget TargetVarName="$VillagePOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2Alt-Step3" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter2Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter2Alt-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter2Alt-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter2UniqueItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+  
+  <!-- ======================================
+     ============ RW-CHAPTER 3 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter3" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter3</Tags>
+
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter3-Step1" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage) ge 5</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Count(EmpireTypeMajor/ClassCity/RebuiltVillage)" StepName="MainQuestRageWizards-Chapter3-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter3-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter3-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="5"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter4</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  
+  <!-- ======================================
+     ============ RW-CHAPTER 4 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter4" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="0" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter4,MainQuestRageWizards-Chapter4</Tags>
+
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter4-Step1" State="InProgress" />
+      <Decorator_Colonize Initiator="Empire" Output_ColonizedCityVarName="$ColonizedCity" Output_ColonizedCityVillagesVarName="$ColonizedCitysVillages">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$ColonizedCity">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:DistrictScience) ge 10</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Colonize>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter4-Step1" State="Completed" />
+      
+      <Controller_Parallel CompletionPolicy="Any">
+        
+        <Controller_Sequence>
+          <!--Step 2-->
+          <Action_UpdateStep StepName="MainQuestRageWizards-Chapter4-Step2" State="InProgress" />
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$ColonizedCity">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityResearch) ge 30</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="MainQuestRageWizards-Chapter4-Step2" State="Completed" />
+      
+          <!--Step 3-->
+          <Action_UpdateStep StepName="MainQuestRageWizards-Chapter4-Step3" State="InProgress" />
+          <Decorator_ConstructionEnded ConstructionName="CityImprovementRageWizards2" TargetCityVarName="$ColonizedCity" Initiator="Empire"/>
+          <Action_UpdateStep StepName="MainQuestRageWizards-Chapter4-Step3" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+        
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$ColonizedCity">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      
+    </Controller_Sequence>
+
+    
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter4-Step1">
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter4Step1TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter4-Step2">
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter4Step2TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter4-Step3">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter5</Tags>
+      </OnQuestCompleted>
+      <OnQuestFailed>
+        <Tags>MainQuestRageWizards-Chapter4</Tags>
+      </OnQuestFailed>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ============ RW-CHAPTER 5 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter5" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter5</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityRageWizards</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter5-Step1" State="InProgress" />
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly) ge 6</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly)" StepName="MainQuestRageWizards-Chapter5-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter5-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter5-Step2" State="InProgress"/>
+      <Controller_Loop LoopCount="5">
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRageWizards-Chapter5-Step2">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:NetCityEmpirePoint) ge 30</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter5-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter5-Step1">
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter5and5AltStep1TechnologyReward" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="6"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter5-Step2">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+  
+  
+
+
+  <!-- ======================================
+     ============ RW-CHAPTER 5Alt ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter5Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter5</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityRageWizards</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestNecrophages-Chapter5" QuestState="Unstarted"/>
+    </Prerequisites>
+    
+    
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set one Player's city-->
+      <Var VarName="$SelectedPlayerCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCityLocation">
+          <From Source="$SelectedPlayerCity.$Position"/>
+      </Var>
+      <!--Sort bydtance all regions that doesn't belong to Player-->
+      <Var VarName="$SortedAllRegionsButPlayerRegions">
+        <From Source="$AllRegionsButPlayerRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <!--Set the region of the 1st Quest POI to inspect-->
+      <Var VarName="$QuestPOI1Region">
+        <Limit LimitMin="1" LimitMax="2">
+          <From Source="$SortedAllRegionsButPlayerRegions"/>
+        </Limit>
+      </Var>
+      <!--Set the region of the 2nd Quest POI to inspect-->
+      <Var VarName="$QuestPOI2Region">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$SortedAllRegionsButPlayerRegions"/>
+        </Limit>
+      </Var>
+      <!--Set the 1st Quest POI to inspect-->
+      <Var VarName="$QuestPOI1">
+        <Any>
+          <From Source="$QuestPOI1Region.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <!--Set the 2nd Quest POI to inspect-->
+      <Var VarName="$QuestPOI2">
+        <Any>
+          <From Source="$QuestPOI2Region.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI2" Source="$QuestPOI2"/>
+      <LocalizationVar LocalizationKey="$QuestPOI1" Source="$QuestPOI1"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter5Alt-Step1" State="InProgress" />
+
+      <Controller_Parallel CompletionPolicy="All">
+      
+        <Controller_Sequence>
+          <Action_AddQuestMarker TargetEntityVarName="$QuestPOI1" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI1"/>
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI1" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI1" />
+          <Action_LockQuestTarget TargetVarName="$QuestPOI1" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Action_AddQuestMarker TargetEntityVarName="$QuestPOI2" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI2"/>
+          <Decorator_Inspect TargetEntityVarName="$QuestPOI2" Initiator="Empire" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" >
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI2" />
+          <Action_LockQuestTarget TargetVarName="$QuestPOI2" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+    </Controller_Parallel>
+      
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter5Alt-Step1" State="Completed" />
+        
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter5Alt-Step2" State="InProgress" />
+      <Controller_Loop LoopCount="5">
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRageWizards-Chapter5Alt-Step2">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(ClassEmpire/ClassCity:NetCityEmpirePoint) ge 30</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter5Alt-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+      
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter5Alt-Step1">
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter5and5AltStep1TechnologyReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter5Alt-Step2">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+
+
+  <!-- ======================================
+     ============ RW-CHAPTER 6 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter6" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter6</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite,Affinity">$Path(.../EmpireTypeMajor,FactionTraitRageWizards10)</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter6Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter6Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter6Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set one Player's city-->
+      <Var VarName="$SelectedPlayerCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButOceanRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCityLocation">
+        <From Source="$SelectedPlayerCity.$Position"/>
+      </Var>
+
+      <!--Sort by distance all regions that don't belong to Player-->
+      <Var VarName="$SortedAllRegionsButOceanRegions">
+        <From Source="$AllRegionsButOceanRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Set the wrong Quest POI to inspect-->
+      <Var VarName="$QuestPOI">
+        <Limit LimitMin="20" LimitMax="21">
+          <From Source="$SortedAllRegionsButOceanRegions.$QuestPointsOfInterest"/>
+        </Limit>
+      </Var>
+      <Var VarName="$QuestPOIRegion">
+        <From Source="$QuestPOI.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOIRegion"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter6-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire" >
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Pillar4Count) ge 4</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Property(ClassEmpire:Pillar4Count)" StepName="MainQuestRageWizards-Chapter6-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter6-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter6-Step2" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI"/>
+      <Decorator_Inspect TargetEntityVarName="$QuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeRageWizardsHero/ItemAttributesScepter2RageWizardsMainQuest</PathPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(ClassArmy/UnitTypeRageWizardsWitch:LevelDisplayed;ge;6) ge 2</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter6-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter6-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="4"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter6-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  <!-- ======================================
+     ============ RW-CHAPTER 6 ALT ==========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter6Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter6</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">($Count(EmpireTypeMajor,FactionTraitRageWizards10) eq 0)</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter6" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter6" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter6" QuestState="Unstarted"/>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set one Player's city-->
+      <Var VarName="$SelectedPlayerCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButOceanRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+
+      <InterpretedVar VarName="CurrentMaxScienceProduction" Target="$(Empire)">
+        <Expression>$MaxProperty(EmpireTypeMajor/ClassCity:NetCityResearch)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="MaxScienceProductionObjective" Target="$(Empire)">
+        <Expression>$(CurrentMaxScienceProduction) + 30</Expression>
+      </InterpretedVar>
+      
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCityLocation">
+        <From Source="$SelectedPlayerCity.$Position"/>
+      </Var>
+
+      <!--Sort by distance all regions that don't belong to Player-->
+      <Var VarName="$SortedAllRegionsButOceanRegions">
+        <From Source="$AllRegionsButOceanRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$ScienceProductionEmpireCity">
+        <First>
+          <From Source="$Empire.$Cities">
+            <OrderBy>
+              <SortCitiesBySimulationProperty SortBy="Descending" PropertyName="CityResearch"/>
+            </OrderBy>
+          </From>
+        </First>
+      </Var>
+      
+      <!--Set the wrong Quest POI to inspect-->
+      <Var VarName="$QuestPOI">
+        <Limit LimitMin="20" LimitMax="21">
+          <From Source="$SortedAllRegionsButOceanRegions.$QuestPointsOfInterest"/>
+        </Limit>
+      </Var>
+      <Var VarName="$QuestPOIRegion">
+        <From Source="$QuestPOI.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOIRegion"/>
+      <LocalizationVar LocalizationKey="$ScienceProductionAmount" Source="MaxScienceProductionObjective"/>
+      <LocalizationVar LocalizationKey="$City" Source="$ScienceProductionEmpireCity"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter6Alt-Step1" State="InProgress"/>
+      <Controller_Loop LoopCount="5">
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRageWizards-Chapter6Alt-Step1">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$ScienceProductionEmpireCity">
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityResearch) ge $(MaxScienceProductionObjective)</InterpreterPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter6Alt-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter6Alt-Step2" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOI" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI"/>
+      <Decorator_Inspect TargetEntityVarName="$QuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeRageWizardsHero/ItemAttributesScepter2RageWizardsMainQuest</PathPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(ClassArmy/UnitTypeRageWizardsWitch:LevelDisplayed;ge;6) ge 2</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOI"/>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter6Alt-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter6Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <ProgressionRange StartValue="0" EndValue="5"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter6Alt-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  
+  <!-- ======================================
+     ============ RW-CHAPTER 7 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter7" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter7</Tags>
+    
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      
+      <!--Set Player's empire-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      
+      <!--Set the first Player's city-->
+      <Var VarName="$SelectedPlayerCity1">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCity1Location">
+        <From Source="$SelectedPlayerCity1.$Position"/>
+      </Var>
+      <Var VarName="$SelectedPlayerCity1Region">
+        <From Source="$SelectedPlayerCity1.$Region"/>
+      </Var>
+      
+      <!--Set the second Player's city-->
+      <Var VarName="$SelectedPlayerCity2">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCity2Location">
+        <From Source="$SelectedPlayerCity2.$Position"/>
+      </Var>
+      <Var VarName="$SelectedPlayerCity2Region">
+        <From Source="$SelectedPlayerCity2.$Region"/>
+      </Var>
+
+      <!--Set the second Player's city-->
+      <Var VarName="$SelectedPlayerCity3">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      <!--Set the location of the selected Player's city-->
+      <Var VarName="$SelectedPlayerCity3Location">
+        <From Source="$SelectedPlayerCity3.$Position"/>
+      </Var>
+      <Var VarName="$SelectedPlayerCity3Region">
+        <From Source="$SelectedPlayerCity3.$Region"/>
+      </Var>
+
+      <!--Set all regions but Player's regions-->
+      <Var VarName="$AllRegionsButPlayerRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Sort by distance from the 1st selected Player's city, all regions that doesn't belong to Player -->
+      <Var VarName="$SortedAllRegionsButPlayerRegions">
+        <From Source="$AllRegionsButPlayerRegions">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$SelectedPlayerCity1Location"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Set the possible locations to spawn the 2nd-->
+      <Var VarName="$RegionToSpawnArmyID1andArmyID2">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$SortedAllRegionsButPlayerRegions"/>
+        </Limit>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID1andArmyID2">
+        <From Source="$RegionToSpawnArmyID1andArmyID2.$Positions"/>
+      </Var>
+
+      <!--Set the possible locations to spawn the 2nd-->
+      <Var VarName="$LocationsToSpawnArmyID3">
+        <From Source="$SelectedPlayerCity2Region.$Positions"/>
+      </Var>
+      <Var VarName="$LocationsToSpawnArmyID4">
+        <From Source="$SelectedPlayerCity3Region.$Positions"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$CityName" Source="$SelectedPlayerCity1Region"/>
+      
+    </Vars>
+    
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter7-Step1" State="InProgress"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID1andArmyID2" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter7Step1" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetCityVarName="$SelectedPlayerCity1" BehaviourName="Offense" SiegeTurnsNumberVarName="0"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID3" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter7Step1" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID3"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID3" TargetCityVarName="$SelectedPlayerCity1" BehaviourName="Offense"/>
+      <Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID4" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter7Step1" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID4"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID4" TargetCityVarName="$SelectedPlayerCity1" BehaviourName="Offense"/>
+      <Controller_Parallel CompletionPolicy="Any">
+        
+        <Controller_Loop LoopCount="3">
+          <Decorator_KillArmy CountAllDeadEnemyArmiesForStepProgression="true" LinkedStepProgression="MainQuestRageWizards-Chapter7-Step1" TargetOption="Any" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+            <EnemyArmyGUIDVarName>$ArmyID3</EnemyArmyGUIDVarName>
+            <EnemyArmyGUIDVarName>$ArmyID4</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Loop>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestRageWizards-Chapter7-Step1"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter7-Step1" State="Completed" />
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter7-Step2" State="InProgress"/>
+      <Controller_Loop LoopCount="10">
+        <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRageWizards-Chapter7-Step2">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$SelectedPlayerCity1">
+              <PathPrerequisite Flags="Prerequisite">ClassCity,ApprovalStatusTagCityHappy</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter7-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter7-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter7-Step2">
+        <ProgressionRange StartValue="0" EndValue="10"/>
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter7Step2TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,RageWizards,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  <!-- ======================================
+     ============ RW-CHAPTER 8 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter8" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter8,FinalQuest</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityRageWizards</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyRageWizards4Strategic46</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter8Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter8Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter8Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter8-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire" >
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic4) ge 1</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic6) ge 1</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter8-Step1" State="Completed"/>
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter8-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_ConstructionEnded ConstructionName="CityImprovementRageWizards4Strategic46" Initiator="Empire" >
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic4) ge 1</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic6) ge 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_ConstructionEnded>
+        </Controller_Sequence>
+        
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire" >
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic4) ge 1</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic6) ge 1</InterpreterPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassCity/CityImprovementRageWizards4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter8-Step2" State="Completed"/>
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter8-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter8-Step2">
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter8and8AltStep2TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+    
+  </QuestDefinition>
+
+  
+  
+  <!-- ======================================
+     ============ RW-CHAPTER 8Alt ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestRageWizards-Chapter8Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,RageWizards,Chapter8,FinalQuest</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityRageWizards</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyRageWizards4Strategic35</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter8" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter8" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestRageWizards-Chapter8" QuestState="Unstarted"/>
+    </Prerequisites>
+    
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter8Alt-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire" >
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic3) ge 1</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic5) ge 1</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter8Alt-Step1" State="Completed"/>
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter8Alt-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_ConstructionEnded ConstructionName="CityImprovementRageWizards4Strategic35" Initiator="Empire" >
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic3) ge 1</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic5) ge 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_ConstructionEnded>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire" >
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic3) ge 1</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/ClassCity/ResourceExtractor_Strategic5) ge 1</InterpreterPrerequisite>
+                <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassCity/CityImprovementRageWizards4</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestRageWizards-Chapter8Alt-Step2" State="Completed"/>
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestRageWizards-Chapter8Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestRageWizards-Chapter8Alt-Step2">
+        <Reward Droplist="DroplistMainQuestRageWizardsChapter8and8AltStep2TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+    
+  </QuestDefinition>
+
+</Datatable>

@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://MadFairiesw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://MadFairiesw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ============ MF-CHAPTER 1 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter1" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter1,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityMadFairies</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+    <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter1-Step1" State="InProgress" />
+      <Controller_Loop LoopCount="4">
+        <Decorator_Inspect ForceDifferentTargets="true" Output_InteractionTargetVarName="$InspectionTarget" LinkedStepProgression="MainQuestMadFairies-Chapter1-Step1" Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$InspectionTarget">
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_Inspect>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter1-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter1-Step1">
+        <ProgressionRange StartValue="0" EndValue="4"/>
+        <Reward Droplist="DroplistFallbackMainQuestRewardsEra1" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+
+  <!-- ======================================
+     ============ MF-CHAPTER 2 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter2</Tags>
+    
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter2Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter2Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter2Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter2-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:MinorFactionAssimilatedCount) ge 1</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter2-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter2-Step1">
+        <Reward Droplist="DroplistMainQuestMadFairiesChapter2AltStep1TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+    
+  </QuestDefinition>
+
+
+  
+  <!-- ======================================
+     ============ MF-CHAPTER 2Alt ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter2Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="0" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter2,MainQuestMadFairies-Chapter2Alt</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter2" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter2" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter2Alt-Step1" State="InProgress"/>
+      <Decorator_Colonize Initiator="Empire" Output_ColonizedCityVarName="$ColonizedCity"/>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter2Alt-Step1" State="Completed" />
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter2Alt-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+        
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$ColonizedCity">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityProduction) ge 25</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="MainQuestMadFairies-Chapter2Alt-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$ColonizedCity">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter2Alt-Step1">
+        <Reward Droplist="DroplistTempleRuinsEra1" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestMadFairies-Chapter2Alt-Step2">
+        <Reward Droplist="DroplistMainQuestMadFairiesChapter2AltStep1TechnologyReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter3</Tags>
+      </OnQuestCompleted>
+      <OnQuestFailed>
+        <Tags>MainQuestMadFairies-Chapter2Alt</Tags>
+      </OnQuestFailed>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  
+  <!-- ======================================
+     ============ MF-CHAPTER 3 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter3" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter3</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter3Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter3Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter3Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$City">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+        
+      <Var VarName="$CapitalRegion">
+        <From Source="$City.$Region"/>
+      </Var>
+
+      <Var VarName="$CapitalPosition">
+        <From Source="$City.$Position"/>
+      </Var>
+
+      <Var VarName="$NearestRegionFromCapital">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$CapitalPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+        
+      <Var VarName="$PointOfInterestToInspectChapter3">
+        <First>
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspectChapter3Location">
+        <From Source="$PointOfInterestToInspectChapter3.$Position" />
+      </Var>
+
+      <!--Get PositionToSpawnArmy1On-->
+      <Var VarName="$FirstToThirdNearestPointsOfInterest">
+        <Limit LimitMin="1" LimitMax="2">
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToSpawnArmy1On">
+        <Any>
+          <From Source="$FirstToThirdNearestPointsOfInterest"/>
+        </Any>
+      </Var>
+      
+      <Var VarName="$PositionToSpawnArmy1On">
+        <From Source="$PointOfInterestToSpawnArmy1On.$Position"/>
+      </Var>
+      
+      <!--Get PositionToSpawnArmy2On-->
+      <Var VarName="$SecondTo6thNearestPointsOfInterest">
+        <Limit LimitMin="2" LimitMax="4">
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToSpawnArmy2On">
+        <Any>
+          <From Source="$SecondTo6thNearestPointsOfInterest"/>
+        </Any>
+      </Var>
+      
+      <Var VarName="$PositionToSpawnArmy2On">
+        <From Source="$PointOfInterestToSpawnArmy2On.$Position"/>
+      </Var>
+
+      <!--Get PositionToSpawnArmy3On-->
+      <Var VarName="$4thTo6thNearestPointsOfInterest">
+        <Limit LimitMin="4" LimitMax="6">
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToSpawnArmy3On">
+        <Any>
+          <From Source="$4thTo6thNearestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PositionToSpawnArmy3On">
+        <From Source="$PointOfInterestToSpawnArmy3On.$Position"/>
+      </Var>
+
+      <!--Get PositionToSpawnArmy4On-->
+      <Var VarName="$7thTo9thNearestPointsOfInterest">
+        <Limit LimitMin="7" LimitMax="9">
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToSpawnArmy4On">
+        <Any>
+          <From Source="$7thTo9thNearestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PositionToSpawnArmy4On">
+        <From Source="$PointOfInterestToSpawnArmy4On.$Position"/>
+      </Var>
+        
+      <LocalizationVar LocalizationKey="$QuestPOIName" Source="$PointOfInterestToInspectChapter3"/>
+      <LocalizationVar LocalizationKey="$CityName" Source="$CapitalRegion"/>
+      
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Enables to make sure no side quest can put a marker over a main quest marker-->
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter3" LockOption="Lock"/>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter3-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspectChapter3" Tags="YoplaitFraise" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter3"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspectChapter3" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeMadFairiesHero</PathPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitClassRanged) ge 4</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitFactionTypeMinorFaction) ge 2</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter3"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter3" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter3-Step1" State="Completed"/>
+     
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter3-Step2" State="InProgress"/>
+      <Controller_Sequence ResetPolicy="onFail">
+        <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="1" Initiator="Empire"/>
+            <Action_SpawnArmy SpawnLocationVarName="$PositionToSpawnArmy1On" ArmyDroplist="DroplistArmyDefinitionMainQuestMadFairiesChapter3-3Alt"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="3" Initiator="Empire"/>
+            <Action_SpawnArmy SpawnLocationVarName="$PositionToSpawnArmy3On" ArmyDroplist="DroplistArmyDefinitionMainQuestMadFairiesChapter3-3Alt"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID3" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID3" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+          </Controller_Sequence>
+          
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire">
+            <ConditionCheck_RegionContainsEnemy Inverted="true" IsFailureCondition="true" RegionVarName="$CapitalRegion"/>
+          </Decorator_TimerEnded>
+          
+        </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter3-Step2" State="Completed" />
+        
+      <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter3-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestMadFairies-Chapter3-Step2">
+        <Reward Droplist="DroplistMainQuestMadFairiesChapter3EmpireBonusReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter4</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+
+  <!-- ======================================
+     ============ MF-CHAPTER 3Alt ===========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter3Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter3</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityMadFairies</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter3" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter3" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestMadFairies-Chapter3" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      
+      <Var VarName="$City">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      
+      <Var VarName="$CityRegion">
+        <From Source="$City.$Region"/>
+      </Var>
+
+      <Var VarName="$CapitalPosition">
+        <From Source="$City.$Position"/>
+      </Var>
+
+      <Var VarName="$NearestRegionFromCapital">
+        <From Source="$Region">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$CapitalPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspectChapter3Alt">
+        <Any>
+          <From Source="$CityRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspectChapter3AltLocation">
+        <From Source="$PointOfInterestToInspectChapter3Alt.$Position" />
+      </Var>
+
+      <Var VarName="$FirstToThirdNearestPointsOfInterest">
+        <Limit LimitMin="1" LimitMax="2">
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToSpawnArmy1On">
+        <Any>
+          <From Source="$FirstToThirdNearestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PositionToSpawnArmy1On">
+        <From Source="$PointOfInterestToSpawnArmy1On.$Position"/>
+      </Var>
+
+      <Var VarName="$SecondTo4thNearestPointsOfInterest">
+        <Limit LimitMin="2" LimitMax="4">
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToSpawnArmy2On">
+        <Any>
+          <From Source="$SecondTo4thNearestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PositionToSpawnArmy2On">
+        <From Source="$PointOfInterestToSpawnArmy2On.$Position"/>
+      </Var>
+
+      <Var VarName="$4thTo6thNearestPointsOfInterest">
+        <Limit LimitMin="4" LimitMax="6">
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToSpawnArmy3On">
+        <Any>
+          <From Source="$4thTo6thNearestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PositionToSpawnArmy3On">
+        <From Source="$PointOfInterestToSpawnArmy3On.$Position"/>
+      </Var>
+     
+      <Var VarName="$7thTo9thNearestPointsOfInterest">
+        <Limit LimitMin="7" LimitMax="9">
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$PointOfInterestToSpawnArmy4On">
+        <Any>
+          <From Source="$7thTo9thNearestPointsOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PositionToSpawnArmy4On">
+        <From Source="$PointOfInterestToSpawnArmy4On.$Position"/>
+      </Var>
+      
+      <LocalizationVar LocalizationKey="$QuestPOIName" Source="$PointOfInterestToInspectChapter3Alt"/>
+      <LocalizationVar LocalizationKey="$CityName" Source="$CityRegion"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter3Alt" LockOption="Lock"/>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter3Alt-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspectChapter3Alt" Tags="YoplaitFramboise" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter3Alt"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspectChapter3Alt" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeMadFairiesHero</PathPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitClassRanged) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitFactionTypeMinorFaction) ge 4</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter3Alt"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter3Alt" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter3Alt-Step1" State="Completed"/>
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter3Alt-Step2" State="InProgress"/>
+      <Controller_Sequence ResetPolicy="onFail">
+        <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Controller_Parallel CompletionPolicy="All">
+
+          <Controller_Sequence>
+            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="1" Initiator="Empire"/>
+            <Action_SpawnArmy SpawnLocationVarName="$PositionToSpawnArmy1On" ArmyDroplist="DroplistArmyDefinitionMainQuestMadFairiesChapter3-3Alt"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID1" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="4" Initiator="Empire"/>
+            <Action_SpawnArmy SpawnLocationVarName="$PositionToSpawnArmy3On" ArmyDroplist="DroplistArmyDefinitionMainQuestMadFairiesChapter3-3Alt"  ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" Output_EnemyArmyGUIDVarName="$ArmyID3" Initiator="Empire"/>
+            <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID3" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+          </Controller_Sequence>
+          
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire">
+            <ConditionCheck_RegionContainsEnemy Inverted="true" IsFailureCondition="true" RegionVarName="$CityRegion"/>
+          </Decorator_TimerEnded>
+        
+        </Controller_Parallel>
+
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter3Alt-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+    </Controller_Sequence>
+
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter3Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestMadFairies-Chapter3Alt-Step2">
+        <Reward Droplist="DroplistMainQuestMadFairiesChapter3EmpireBonusReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter4</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  
+  <!-- ======================================
+     ============ MF-CHAPTER 4 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter4" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter4</Tags>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter4-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="All">
+
+        <Controller_Sequence>
+            <Decorator_DistrictLevelUp Level="1" Output_DistrictSimObjectVarName="$District" LinkedStepProgression="MainQuestMadFairies-Chapter4-Step1" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$District">
+                  <PathPrerequisite Flags="Prerequisite">DistrictTypeExtension</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_DistrictLevelUp>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+            <Decorator_DistrictLevelUp Level="1" Output_DistrictSimObjectVarName="$District" LinkedStepProgression="MainQuestMadFairies-Chapter4-Step1" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$District">
+                  <PathPrerequisite Flags="Prerequisite">DistrictTypeCenter</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_DistrictLevelUp>
+        </Controller_Sequence>
+        
+      </Controller_Parallel>      
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter4-Step1" State="Completed" />
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter4-Step1">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  
+  <!-- ======================================
+     ============ MF-CHAPTER 5 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter5" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter5</Tags>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$CapitalCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+      
+      <Var VarName="$CapitalRegion">
+        <From Source="$CapitalCity.$Region"/>
+      </Var>
+
+      <Var VarName="$CapitalPosition">
+        <From Source="$CapitalCity.$Position"/>
+      </Var>
+
+      <Var VarName="$CapitalRegionPosition">
+        <From Source="$CapitalRegion.$Position"/>
+      </Var>
+
+      <Var VarName="$AllRegionsButCapitalRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByDistance PositionToCompareVarName="$CapitalRegionPosition" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      
+      <Var VarName="$NearestRegionFromCapital">
+        <From Source="$AllRegionsButCapitalRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$CapitalPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+      
+      <Var VarName="$PointOfInterestToInspect1">
+        <First>
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>QuestLocationTypeRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      
+      <Var VarName="$PointOfInterestToInspect1Location">
+        <From Source="$PointOfInterestToInspect1.$Position" />
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect2">
+        <First>
+          <From Source="$NearestRegionFromCapital.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>QuestLocationTypeTemple</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+      
+      <Var VarName="$PointOfInterestToInspect2Location">
+        <From Source="$PointOfInterestToInspect2.$Position" />
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect2Region">
+        <From Source="$PointOfInterestToInspect2Location.$Region" />
+      </Var>
+      
+      <Var VarName="$PointOfInterestToInspect2Biome">
+        <From Source="$PointOfInterestToInspect2Location.$BiomeTypeName"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$QuestPOI1" Source="$PointOfInterestToInspect1"/>
+      <LocalizationVar LocalizationKey="$QuestPOI2" Source="$PointOfInterestToInspect2"/>
+      <LocalizationVar LocalizationKey="$Biome2" Source="$PointOfInterestToInspect2Biome"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$PointOfInterestToInspect2Region"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect2" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter5-Step1" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect1" Tags="WitchDen" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect1"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect1" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect1" />
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect1" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter5-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter5-Step2" State="InProgress" />
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect2" Tags="WitchDen" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect2"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect2" Initiator="Empire"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect2" />
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect2" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter5-Step2" State="Completed" />
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+    
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter5-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestMadFairies-Chapter5-Step2">
+        <Reward Droplist="DroplistMainQuestMadFairiesChapter5HeroReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  
+  <!-- ======================================
+     ============ MF-CHAPTER 6 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter6" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter6,EventHeroCreated</Tags>
+
+    <!--Add Tag BeginTurn if the Hero is not the reward of the last step of the previous quest + the following prerequisite: 
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="false" QuestDefinitionName="MainQuestMadFairies-Chapter5" QuestState="Completed"/>
+    </Prerequisites>-->
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$Architect">
+        <Any>
+          <From Source="$Empire.$Heroes">
+            <Where>
+              <PathPrerequisite>UnitProfileMadFairiesHero7</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$CityLocation">
+        <From Source="$EmpireCity.$Position"/>
+      </Var>
+
+      <Var VarName="$NearestRegionFromCity">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$CityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect">
+        <First>
+          <From Source="$NearestRegionFromCity.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>QuestLocationTypeRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position" />
+      </Var>
+
+      <DropListVar VarName="$SkillToCheck" DropList="DroplistMainQuestMadFairiesChapter6SkillToCheck"/>
+      <DropListVar VarName="$SkillLevelToCheck" DropList="DroplistMainQuestMadFairiesChapter6SkillLevelToCheck"/>
+     
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+      <LocalizationVar LocalizationKey="$SkillToCheckName" Source="$SkillToCheck"/>
+      <LocalizationVar LocalizationKey="$SkillLevelToCheckNumber" Source="$SkillLevelToCheck"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter6-Step1" State="InProgress"/>
+      <Decorator_UnitSkillUnlocked SkillNameVarName="$SkillToCheck" SkillLevelVarName="$SkillLevelToCheck" TargetUnitVarName="$Architect"/>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter6-Step1" State="Completed"/>
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter6-Step2" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitProfileMadFairiesHero7</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistArmyDefinitionMainQuestMadFairiesChapter6" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect" />
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter6-Step2" State="Completed" />
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter6-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestMadFairies-Chapter6-Step2">
+        <Reward Droplist="DroplistMainQuestMadFairiesChapter6UniqueItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+  
+  
+  <!-- ======================================
+     ============ MF-CHAPTER 7 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter7" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter7</Tags>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <DropListVar VarName="$WantedEmpirePlanClass" DropList="DroplistMainQuestMadFairiesChapter7EmpirePlanClass"/>
+      <DropListVar VarName="$WantedEmpirePlanLevel" DropList="DroplistMainQuestMadFairiesChapter7EmpirePlanLevel"/>
+
+      <LocalizationVar LocalizationKey="$Ministry" Source="$WantedEmpirePlanClass"/>
+      <LocalizationVar LocalizationKey="$EmpirePlanLevel" Source="$WantedEmpirePlanLevel"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter7-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitProfileMadFairiesHero7/ItemAttributesBow2MadFairiesMainQuest</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>      
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter7-Step1" State="Completed" />
+      
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter7-Step2" State="InProgress"/>      
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_HasEmpirePlan EmpirePlanClassVarName="$WantedEmpirePlanClass" EmpirePlanLevelVarName="$WantedEmpirePlanLevel"/>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter7-Step2" State="Completed" />
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter7-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestMadFairies-Chapter7-Step2">
+        <Reward Droplist="DroplistMainQuestMadFairiesChapter7WonderReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGERS ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,MadFairies,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  
+  <!-- ======================================
+     ============ MF-CHAPTER 8 ==============
+     ======================================== -->
+  <QuestDefinition Name="MainQuestMadFairies-Chapter8" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,MadFairies,Chapter8,FinalQuest</Tags>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter8-Step1" State="InProgress"/>
+      <Decorator_ConstructionEnded ConstructionName="CityImprovementMadFairies5" Initiator="Empire"/>
+      <Action_UpdateStep StepName="MainQuestMadFairies-Chapter8-Step1" State="Completed"/>
+      
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestMadFairies-Chapter8-Step1">
+        <Reward Droplist="DroplistMainQuestMadFairiesChapter8Step1TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+    
+  </QuestDefinition>
+
+</Datatable>

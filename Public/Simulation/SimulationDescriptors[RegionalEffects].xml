@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- FROM KAIJU UNLOCK -->
+
+  <!-- Kaiju 1 -->
+  <SimulationDescriptor Name="Kaiju1TamedBonusFoodPositiveDescriptor"                             Type="RegionalEffect"    IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                             Operation="Percent"     Value="0.30"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="Kaiju1TamedBonusFoodNegativeDescriptor"                             Type="RegionalEffect"    IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"                             Operation="Percent"     Value="-0.15"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Kaiju1TamedArmyHealingDescriptor"                           Type="RegionalEffect"    IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"                     Operation="Percent"      Value="0.20"  Path="ClassArmy/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"     Value="0.20"/>
+      <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"     Value="0.20"/>
+      <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"     Value="0.20"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- Kaiju 2 -->
+  <SimulationDescriptor Name="Kaiju2TamedBonusSciencePositiveDescriptor"                          Type="RegionalEffect"    IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                          Operation="Percent"     Value="0.50"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="Kaiju2TamedBonusScienceNegativeDescriptor"                          Type="RegionalEffect"    IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"                          Operation="Percent"     Value="-0.25"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Kaiju2TamedArmyInitiativeDescriptor"                        Type="RegionalEffect"    IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"                  Operation="Percent"      Value="0.20"  Path="ClassArmy/ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"  Operation="Addition"         Value="2"       Path="ClassArmy/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition"         Value="2"       Path="ClassArmy/ClassUnit"    Priority="101"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMaximumMovement" Operation="Addition"         Value="1"       Path="ClassArmy/ClassUnit"    Priority="101"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Kaiju 3 -->
+  <SimulationDescriptor Name="Kaiju3TamedBonusDustPositiveDescriptor"                      Type="RegionalEffect" IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"               Operation="Percent"    Value="0.20"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="Kaiju3TamedBonusDustNegativeDescriptor"                      Type="RegionalEffect" IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityDust"               Operation="Percent"    Value="-0.1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="Kaiju3TamedArmyAttackDescriptor"                      Type="RegionalEffect" IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"                     Operation="Percent"      Value="0.15"  Path="ClassArmy/ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"                     Operation="Percent"      Value="0.15"  Path="ClassArmy/ClassUnit" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Kaiju 1 and Kaiju 2 -->
+  <SimulationDescriptor Name="Kaiju1and2BodyWarmthDescriptor"                             Type="RegionalEffect"    IsSerializable="false">
+  </SimulationDescriptor>
+
+  <!-- Kaiju 3 and Kaiju 2 -->
+  <SimulationDescriptor Name="Kaiju3and2PositiveDescriptor"                               Type="RegionalEffect"    IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Addition"     Value="50"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Kaiju3and2NegativeDescriptor"                               Type="RegionalEffect"    IsSerializable="false">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"                         Operation="Subtraction"  Value="50"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+</Datatable>

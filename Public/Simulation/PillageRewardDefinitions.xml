@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/3001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/3001/XMLSchema">
+
+  <!-- ########################################## -->
+  <!-- ##### Watch Towers Pillage Reward   ###### -->
+  <!-- ########################################## -->
+
+  <PillageRewardDefinition Name="PillageRewardWatchTower0"                PointOfInterestTags="WatchTower0">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <GarrisonHeal>20 * $Link(PointOfInterest|Property|MaximumPillageCooldown)</GarrisonHeal>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardWatchTower1"                PointOfInterestTags="WatchTower1">
+    <Resource ResourceName="EmpireMoney">40 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <GarrisonHeal>30 * $Link(PointOfInterest|Property|MaximumPillageCooldown)</GarrisonHeal>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardWatchTower2"                PointOfInterestTags="WatchTower2">
+    <Resource ResourceName="EmpireMoney">50 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <GarrisonHeal>40 * $Link(PointOfInterest|Property|MaximumPillageCooldown)</GarrisonHeal>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardWatchTower0ReplicantsPack"  PointOfInterestTags="WatchTower0ReplicantsPack">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <GarrisonHeal>20 * $Link(PointOfInterest|Property|MaximumPillageCooldown)</GarrisonHeal>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardWatchTower1ReplicantsPack"  PointOfInterestTags="WatchTower1ReplicantsPack">
+    <Resource ResourceName="EmpireMoney">40 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <GarrisonHeal>30 * $Link(PointOfInterest|Property|MaximumPillageCooldown)</GarrisonHeal>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardWatchTower2ReplicantsPack"  PointOfInterestTags="WatchTower2ReplicantsPack">
+    <Resource ResourceName="EmpireMoney">50 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <GarrisonHeal>40 * $Link(PointOfInterest|Property|MaximumPillageCooldown)</GarrisonHeal>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardDefensiveTower0"                PointOfInterestTags="DefensiveTower0">
+    <Resource ResourceName="EmpireMoney">20 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Orb">2</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardDefensiveTower1"                PointOfInterestTags="DefensiveTower1">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Orb">3</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardDefensiveTower0ReplicantsPack"                PointOfInterestTags="DefensiveTower0ReplicantsPack">
+    <Resource ResourceName="EmpireMoney">20 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Orb">2</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardDefensiveTower1ReplicantsPack"                PointOfInterestTags="DefensiveTower1ReplicantsPack">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Orb">3</Resource>
+  </PillageRewardDefinition>
+
+  
+  <!-- ######################################################### -->
+  <!-- ##### Strategic Resource Extractors Pillage Reward ###### -->
+  <!-- ######################################################### -->
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Strategic1"       PointOfInterestTags="ResourceExtractor_Strategic1">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Strategic1">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Strategic2"       PointOfInterestTags="ResourceExtractor_Strategic2">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Strategic2">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Strategic3"       PointOfInterestTags="ResourceExtractor_Strategic3">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Strategic3">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Strategic4"       PointOfInterestTags="ResourceExtractor_Strategic4">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Strategic4">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Strategic5"       PointOfInterestTags="ResourceExtractor_Strategic5">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Strategic5">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Strategic6"       PointOfInterestTags="ResourceExtractor_Strategic6">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Strategic6">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+
+
+  <!-- ######################################################### -->
+  <!-- ##### Luxury Resource Extractors Pillage Reward ###### -->
+  <!-- ######################################################### -->
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury1"          PointOfInterestTags="ResourceExtractor_Luxury1">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury1">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury2"          PointOfInterestTags="ResourceExtractor_Luxury2">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury2">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury3"          PointOfInterestTags="ResourceExtractor_Luxury3">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury3">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury4"          PointOfInterestTags="ResourceExtractor_Luxury4">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury4">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury5"          PointOfInterestTags="ResourceExtractor_Luxury5">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury5">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury6"          PointOfInterestTags="ResourceExtractor_Luxury6">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury6">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury7"          PointOfInterestTags="ResourceExtractor_Luxury7">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury7">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury8"          PointOfInterestTags="ResourceExtractor_Luxury8">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury8">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury9"          PointOfInterestTags="ResourceExtractor_Luxury9">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury9">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury10"         PointOfInterestTags="ResourceExtractor_Luxury10">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury10">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury11"         PointOfInterestTags="ResourceExtractor_Luxury11">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury11">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury12"         PointOfInterestTags="ResourceExtractor_Luxury12">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury12">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury13"         PointOfInterestTags="ResourceExtractor_Luxury13">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury13">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury14"         PointOfInterestTags="ResourceExtractor_Luxury14">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury14">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardExtractor_Luxury15"         PointOfInterestTags="ResourceExtractor_Luxury15">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Resource ResourceName="Luxury15">$Link(PointOfInterest|Property|MaximumPillageCooldown) * (1 max ($Link(PointOfInterest|Property|ResourceGain) + $Link(PointOfInterest|Property|ResourceBonus)))</Resource>
+  </PillageRewardDefinition>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######    Villages Pillage Reward   ###### -->
+  <!-- ########################################## -->
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeUrces"           PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeUrces">
+    <Resource ResourceName="EmpireMoney">26 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeErycis"          PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeErycis">
+    <Resource ResourceName="EmpireMoney">28 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeCeratan"         PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeCeratan">
+    <Resource ResourceName="EmpireMoney">24 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+q
+  <PillageRewardDefinition Name="PillageRewardVillageTypeKazanji"         PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeKazanji">
+    <Resource ResourceName="EmpireMoney">32 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeBos"             PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeBos">
+    <Resource ResourceName="EmpireMoney">24 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeSilics"          PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeSilics">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeDelvers"         PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeDelvers">
+    <Resource ResourceName="EmpireMoney">26 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeSistersOfMercy"  PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeSistersOfMercy">
+    <Resource ResourceName="EmpireMoney">24 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeHaunts"          PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeHaunts">
+    <Resource ResourceName="EmpireMoney">34 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeJotus"           PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeJotus">
+    <Resource ResourceName="EmpireMoney">32 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeHurnas"          PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeHurnas">
+    <Resource ResourceName="EmpireMoney">24 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeGauran"          PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeGauran">
+    <Resource ResourceName="EmpireMoney">32 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeBirdhive"        PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeBirdhive">
+    <Resource ResourceName="EmpireMoney">26 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeGeldirus"        PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeGeldirus">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeEyelessOnes"     PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeEyelessOnes">
+    <Resource ResourceName="EmpireMoney">28 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeDorgeshi"        PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeDorgeshi">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+  <PillageRewardDefinition Name="PillageRewardVillageTypeDawnShua"        PointOfInterestTags="PacifiedVillage,RebuiltVillage,VillageTypeDawnShua">
+    <Resource ResourceName="EmpireMoney">30 * $Link(Army|Property|../ClassEmpire:CurrentEra) * $Link(Army|Property|../ClassEmpire:PillageBoost)</Resource>
+    <Droplist DroplistName="DroplistVillagePillageLoot"/>
+  </PillageRewardDefinition>
+
+</Datatable>

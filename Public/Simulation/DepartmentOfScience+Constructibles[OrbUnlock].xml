@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Defensive Tower 1 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock1"                TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock1" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier1"/>
+    <CustomCost ResourceName="Orb">10 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 1</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb City Improvement Minor Villages -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock2"                TechnologyFlags="OrbUnlock">
+    <UnlockCategoryOverride Category="CityImprovement" SubCategory="SubCategoryVillage"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock2" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier2"/>
+    <CustomCost ResourceName="Orb">15 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 2</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb City Improvement Nyctalopian Lenses -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock3"                TechnologyFlags="OrbUnlock">
+    <UnlockCategoryOverride Category="CityImprovement" SubCategory="SubCategoryVision"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock3" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier1"/>
+    <CustomCost ResourceName="Orb">10 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 1</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb City Improvement Ice-works -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock4"                TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock4" />
+    <SimulationDescriptorReference Name="WinterTier2"/>
+    <CustomCost ResourceName="Orb">15 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 2</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Defensive Improvement -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock5"                TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock5" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier3"/>
+    <CustomCost ResourceName="Orb">20 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 3</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb District Anomaly intensifier -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock6"                TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock6" />
+    <SimulationDescriptorReference Name="WinterTier3"/>
+    <CustomCost ResourceName="Orb">20 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 3</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb District Strategic intensifier -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock7"                TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock7" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier3"/>
+    <CustomCost ResourceName="Orb">20 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 3</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb District Luxury intensifier -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock8"                TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock8" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier3"/>
+    <CustomCost ResourceName="Orb">20 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 3</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb District Winter Borough -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock9"                TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock9" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier3"/>
+    <CustomCost ResourceName="Orb">20 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 3</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Defensive Tower 2 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock10"                TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock10" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier3"/>
+    <CustomCost ResourceName="Orb">20 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 3</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb Empire Improvement Orb stockpiles -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock12"               TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock12" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier1"/>
+    <CustomCost ResourceName="Orb">10 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 1</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb Empire Improvement Orb Accessory Item Set -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock14"               TechnologyFlags="OrbUnlock">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryAccessory"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock14" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier2"/>
+    <CustomCost ResourceName="Orb">15 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 2</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb Empire Improvement Orb Armor Item Set -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock15"               TechnologyFlags="OrbUnlock">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryArmor"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock15" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier2"/>
+    <CustomCost ResourceName="Orb">15 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 2</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Force Shift -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock17WinterShifters" TechnologyFlags="OrbUnlock">
+    <UnlockCategoryOverride Category="ArmyAction" SubCategory="SubCategoryShifting"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock17WinterShifters"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier2"/>
+    <CustomCost ResourceName="Orb">15 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,Discard">EmpireTypeMajor,AffinityWinterShifters</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 2</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Orb District Garth of the Allayi -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock18WinterShifters" TechnologyFlags="OrbUnlock">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock18WinterShifters"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier1"/>
+    <CustomCost ResourceName="Orb">10 * $Property(../ClassEmpire:OrbUnlockOrbCostModifier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,Discard">FactionTraitTechnologyDefinitionOrbUnlock18WinterShifters</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 0</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Cost Reduction Blessings of the Mother -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock19WinterShifters" TechnologyFlags="OrbUnlock" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryOrb"/>
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock19WinterShifters" />
+    <SimulationDescriptorReference Name="TechnologyOrbUnlockCountIncrease"/>
+    <SimulationDescriptorReference Name="WinterTier2"/>
+    <PathPrerequisite Flags="Prerequisite,Discard">EmpireTypeMajor,AffinityWinterShifters</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Property(../ClassEmpire:NumberOfWinters) ge 0</InterpreterPrerequisite>
+    <PathPrerequisite Flags="DiplomaticTradable">!EmpireTypeMajor</PathPrerequisite>
+  </TechnologyDefinition>
+
+</Datatable>

@@ -56,7 +56,7 @@
         <NumberOfTurnToReachObjective>5</NumberOfTurnToReachObjective>
       </DiplomacyNeedPrestigeRatioAgent>
       <EconomyAccountNeedMoneyRatioAgent>
-        <NumberOfTurnToReachObjective>9</NumberOfTurnToReachObjective>
+        <NumberOfTurnToReachObjective>10</NumberOfTurnToReachObjective>
       </EconomyAccountNeedMoneyRatioAgent>
       <EmpirePlanNeedPrestigeRatioAgent>
         <!-- The AI will want to stock X% of the wanted empire plan cost. -->
@@ -72,9 +72,9 @@
       </IndustryReferenceTurnCountAgent>
       <MoneyReferenceRatioAgent>
         <!-- We want a bank account at least greater than X turns upkeep. -->
-        <MoneyStockToMaintainUpkeepTurnCount>12</MoneyStockToMaintainUpkeepTurnCount>
+        <MoneyStockToMaintainUpkeepTurnCount>10</MoneyStockToMaintainUpkeepTurnCount>
         <!-- We want an income greater than X% of the bank account (positive snowball effect). -->
-        <MoneyIncomeGrowthPercent>0.12</MoneyIncomeGrowthPercent>
+        <MoneyIncomeGrowthPercent>0.10</MoneyIncomeGrowthPercent>
       </MoneyReferenceRatioAgent>
       <PopulationBuyoutReferenceRatioAgent>
         <MoneyIncomeBuyoutPercent>0.33</MoneyIncomeBuyoutPercent>
@@ -161,9 +161,7 @@
         <OtherEmpireHasUniqueFacilityMultiplier>0.75</OtherEmpireHasUniqueFacilityMultiplier>
         <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
         <!-- GLOBAL -->
-	<!-- ELCP\LeaderenemyBoss slightly higher chance for alliances-->
-        <Multiplier>1.2</Multiplier>
-	<!-- End ELCP-->
+        <Multiplier>1</Multiplier>
         <BonusFromDesireForWarWithOthers>70</BonusFromDesireForWarWithOthers>
         <OpenedTradeBonus>40</OpenedTradeBonus>
       </AllianceTermAgent>
@@ -179,54 +177,54 @@
         <TerraformedInMyTerritoryMultiplier>0</TerraformedInMyTerritoryMultiplier>
         <TerraformedNearMyArmiesMultiplier>0</TerraformedNearMyArmiesMultiplier>
         <LastWarMultiplier>-2</LastWarMultiplier>
-        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>0</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
-        <AggressiveColonizationMultiplier>0</AggressiveColonizationMultiplier>
-        <NegativeContractMultiplier>-0.3</NegativeContractMultiplier>
-        <VillageConvertedMultiplier>-0.1</VillageConvertedMultiplier>
-        <RegionalBuildingDestroyedMultiplier>-0.2</RegionalBuildingDestroyedMultiplier>
-        <SpyMultiplier>-0.1</SpyMultiplier>
-        <PillagingMultiplier>-0.5</PillagingMultiplier>
-        <PillageSucceedMultiplier>-0.5</PillageSucceedMultiplier>
-        <DismantleDeviceSufferedMultplier>-0.5</DismantleDeviceSufferedMultplier>
-        <OrbsStolenMultiplier>0</OrbsStolenMultiplier>
+        <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>-2</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
+        <AggressiveColonizationMultiplier>-0.25</AggressiveColonizationMultiplier>
+        <NegativeContractMultiplier>-0.75</NegativeContractMultiplier>
+        <VillageConvertedMultiplier>-1.5</VillageConvertedMultiplier>
+        <RegionalBuildingDestroyedMultiplier>-1.5</RegionalBuildingDestroyedMultiplier>
+        <SpyMultiplier>-1</SpyMultiplier>
+        <PillagingMultiplier>-1.5</PillagingMultiplier>
+        <PillageSucceedMultiplier>-1.5</PillageSucceedMultiplier>
+        <DismantleDeviceSufferedMultplier>-1.5</DismantleDeviceSufferedMultplier>
+        <OrbsStolenMultiplier>-0.75</OrbsStolenMultiplier>
         <EliminatedAcquaintanceMultiplier>1.5</EliminatedAcquaintanceMultiplier>
-        <EliminatedAllyMultiplier>-0.2</EliminatedAllyMultiplier>
+        <EliminatedAllyMultiplier>-0.5</EliminatedAllyMultiplier>
         <EliminatedEnemyMultiplier>1.5</EliminatedEnemyMultiplier>
-        <EliminatedFriendMultiplier>-0.1</EliminatedFriendMultiplier>
-        <CityTakenFromAllyMultiplier>-0.2</CityTakenFromAllyMultiplier>
+        <EliminatedFriendMultiplier>-0.5</EliminatedFriendMultiplier>
+        <CityTakenFromAllyMultiplier>-0.5</CityTakenFromAllyMultiplier>
         <CityTakenFromEnemyMultiplier>1.5</CityTakenFromEnemyMultiplier>
-        <CityTakenFromFriendMultiplier>-0.2</CityTakenFromFriendMultiplier>
-        <AtWarWithMyAllyMultiplier>-1</AtWarWithMyAllyMultiplier>
-        <AlliedWithMyEnemyMultiplier>-0.1</AlliedWithMyEnemyMultiplier>
+        <CityTakenFromFriendMultiplier>-0.5</CityTakenFromFriendMultiplier>
+        <AtWarWithMyAllyMultiplier>-1.5</AtWarWithMyAllyMultiplier>
+        <AlliedWithMyEnemyMultiplier>-1.5</AlliedWithMyEnemyMultiplier>
         <LongTermAllianceMultiplier>1.5</LongTermAllianceMultiplier>
         <LongTermPeaceMultiplier>1.5</LongTermPeaceMultiplier>
-        <BetrayedYourAllyMultiplier>-1.5</BetrayedYourAllyMultiplier>
-        <BetrayedYourFriendMultiplier>-1</BetrayedYourFriendMultiplier>
+        <BetrayedYourAllyMultiplier>-0.5</BetrayedYourAllyMultiplier>
+        <BetrayedYourFriendMultiplier>-0.5</BetrayedYourFriendMultiplier>
         <!-- FEAR -->
-        <MyEmpireLeadMilitaryPowerMultiplier>0</MyEmpireLeadMilitaryPowerMultiplier>
-        <OtherEmpireLeadMilitaryPowerMultiplier>0.2</OtherEmpireLeadMilitaryPowerMultiplier>
-        <UnitsInMyTerritoryMultiplier>0</UnitsInMyTerritoryMultiplier>
-        <MyEmpireLeadNavalMilitaryPowerMultiplier>0.5</MyEmpireLeadNavalMilitaryPowerMultiplier>
-        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.2</OtherEmpireLeadNavalMilitaryPowerMultiplier>
+        <MyEmpireLeadMilitaryPowerMultiplier>-0.25</MyEmpireLeadMilitaryPowerMultiplier>
+        <OtherEmpireLeadMilitaryPowerMultiplier>0.5</OtherEmpireLeadMilitaryPowerMultiplier>
+        <UnitsInMyTerritoryMultiplier>-1</UnitsInMyTerritoryMultiplier>
+        <MyEmpireLeadNavalMilitaryPowerMultiplier>-0.15</MyEmpireLeadNavalMilitaryPowerMultiplier>
+        <OtherEmpireLeadNavalMilitaryPowerMultiplier>0.4</OtherEmpireLeadNavalMilitaryPowerMultiplier>
         <!-- ENVY  -->
         <MyEmpireLeadScoreMultiplier>0.5</MyEmpireLeadScoreMultiplier>
         <MyEmpireLeadRegionCountMultiplier>0.5</MyEmpireLeadRegionCountMultiplier>
-        <CommonFrontierMultiplier>0.2</CommonFrontierMultiplier>
+        <CommonFrontierMultiplier>1</CommonFrontierMultiplier>
         <OtherEmpireLeadScoreMultiplier>-0.5</OtherEmpireLeadScoreMultiplier>
-        <LivingSpaceTenseMultiplier>0.2</LivingSpaceTenseMultiplier>
+        <LivingSpaceTenseMultiplier>0</LivingSpaceTenseMultiplier>
         <OtherEmpireLeadRegionCountMultiplier>0</OtherEmpireLeadRegionCountMultiplier>
         <VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>-1</VictoryAlertGlobalScoreWhenLastTurnReachedMultiplier>
         <VictoryAlertLastEmpireStandingMultiplier>-1</VictoryAlertLastEmpireStandingMultiplier>
-        <VictoryAlertExpansionMultiplier>-2</VictoryAlertExpansionMultiplier>
-        <VictoryAlertEconomyMultiplier>0</VictoryAlertEconomyMultiplier>
-        <VictoryAlertDiplomacyMultiplier>0</VictoryAlertDiplomacyMultiplier>
-        <VictoryAlertWonderMultiplier>0</VictoryAlertWonderMultiplier>
-        <VictoryAlertMostTechnologiesDiscoveredMultiplier>0</VictoryAlertMostTechnologiesDiscoveredMultiplier>
-        <VictoryAlertSupremacyMultiplier>-2</VictoryAlertSupremacyMultiplier>
-        <VictoryAlertQuestMultiplier>0</VictoryAlertQuestMultiplier>
-        <MyEmpireLeadNavalRegionCountMultiplier>0</MyEmpireLeadNavalRegionCountMultiplier>
-        <FortressesOwnedInTheSameRegionMultiplier>0</FortressesOwnedInTheSameRegionMultiplier>
-        <OtherEmpireHasUniqueFacilityMultiplier>0</OtherEmpireHasUniqueFacilityMultiplier>
+        <VictoryAlertExpansionMultiplier>-1</VictoryAlertExpansionMultiplier>
+        <VictoryAlertEconomyMultiplier>-1</VictoryAlertEconomyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>-1.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertWonderMultiplier>-1</VictoryAlertWonderMultiplier>
+        <VictoryAlertMostTechnologiesDiscoveredMultiplier>-1</VictoryAlertMostTechnologiesDiscoveredMultiplier>
+        <VictoryAlertSupremacyMultiplier>-1</VictoryAlertSupremacyMultiplier>
+        <VictoryAlertQuestMultiplier>-1</VictoryAlertQuestMultiplier>
+        <MyEmpireLeadNavalRegionCountMultiplier>0.5</MyEmpireLeadNavalRegionCountMultiplier>
+        <FortressesOwnedInTheSameRegionMultiplier>-0.5</FortressesOwnedInTheSameRegionMultiplier>
+        <OtherEmpireHasUniqueFacilityMultiplier>-0.5</OtherEmpireHasUniqueFacilityMultiplier>
         <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
         <!-- GLOBAL -->
         <Multiplier>1</Multiplier>
@@ -348,7 +346,7 @@
         <VictoryAlertLastEmpireStandingMultiplier>-0.25</VictoryAlertLastEmpireStandingMultiplier>
         <VictoryAlertExpansionMultiplier>-0.25</VictoryAlertExpansionMultiplier>
         <VictoryAlertEconomyMultiplier>-0.25</VictoryAlertEconomyMultiplier>
-        <VictoryAlertDiplomacyMultiplier>1.5</VictoryAlertDiplomacyMultiplier>
+        <VictoryAlertDiplomacyMultiplier>0.75</VictoryAlertDiplomacyMultiplier>
         <VictoryAlertWonderMultiplier>-0.25</VictoryAlertWonderMultiplier>
         <VictoryAlertMostTechnologiesDiscoveredMultiplier>-0.25</VictoryAlertMostTechnologiesDiscoveredMultiplier>
         <VictoryAlertSupremacyMultiplier>-0.25</VictoryAlertSupremacyMultiplier>
@@ -488,7 +486,7 @@
         <OtherEmpireHasUniqueFacilityMultiplier>1</OtherEmpireHasUniqueFacilityMultiplier>
         <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
         <!-- GLOBAL -->
-        <Multiplier>1.5</Multiplier>
+        <Multiplier>1</Multiplier>
       </ForceAllianceTermAgent>
       <ForcePeaceTermAgent>
         <!-- TRUST -->
@@ -552,7 +550,7 @@
         <OtherEmpireHasUniqueFacilityMultiplier>1</OtherEmpireHasUniqueFacilityMultiplier>
         <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
         <!-- GLOBAL -->
-        <Multiplier>1.5</Multiplier>
+        <Multiplier>1</Multiplier>
       </ForcePeaceTermAgent>
       <ForceTruceTermAgent>
         <!-- TRUST -->
@@ -627,7 +625,7 @@
         <OtherEmpireHasUniqueFacilityMultiplier>-0.5</OtherEmpireHasUniqueFacilityMultiplier>
         <OtherEmpireLeadNavalRegionCountMultiplier>0</OtherEmpireLeadNavalRegionCountMultiplier>
         <!-- GLOBAL -->
-        <Multiplier>1.5</Multiplier>
+        <Multiplier>1</Multiplier>
       </ForceTruceTermAgent>
       <MapExchangeTermAgent>
         <!-- TRUST -->
@@ -760,9 +758,7 @@
         <OtherEmpireLeadNavalRegionCountMultiplier>-0.75</OtherEmpireLeadNavalRegionCountMultiplier>
         <!-- GLOBAL -->
         <BaseValue>75</BaseValue>
-	<!-- ELCP\LeaderenemyBoss Roving clans more likely to offer removal (for a price)-->
-        <Multiplier>3</Multiplier>
-	<!-- End ELCP -->
+        <Multiplier>1</Multiplier>
       </MarketBanRemovalTermAgent>
       <MarketBanTermAgent>
         <!-- TRUST -->
@@ -956,9 +952,7 @@
         <OtherEmpireHasUniqueFacilityMultiplier>-1</OtherEmpireHasUniqueFacilityMultiplier>
         <OtherEmpireLeadNavalRegionCountMultiplier>-0.25</OtherEmpireLeadNavalRegionCountMultiplier>
         <!-- GLOBAL -->
-	<!-- ELCP\LeaderEnemyBoss slightly higher peace chance -->
-        <Multiplier>1.2</Multiplier>
-	<!-- End ELCP -->
+        <Multiplier>1</Multiplier>
         <OpenedTradeBonus>40</OpenedTradeBonus>
       </PeaceTermAgent>
       <PrisonerExchangeTermAgent>
@@ -1246,7 +1240,7 @@
         <LastWarMultiplier>1</LastWarMultiplier>
         <ArmyAggressionInNeutralRegionDuringColdWarMultiplier>1.5</ArmyAggressionInNeutralRegionDuringColdWarMultiplier>
         <AggressiveColonizationMultiplier>0.75</AggressiveColonizationMultiplier>
-        <NegativeContractMultiplier>0.7</NegativeContractMultiplier>
+        <NegativeContractMultiplier>0.5</NegativeContractMultiplier>
         <VillageConvertedMultiplier>1.5</VillageConvertedMultiplier>
         <RegionalBuildingDestroyedMultiplier>1.5</RegionalBuildingDestroyedMultiplier>
         <SpyMultiplier>0.75</SpyMultiplier>
@@ -1519,7 +1513,7 @@
         <OtherEmpireHasUniqueFacilityMultiplier>-0.25</OtherEmpireHasUniqueFacilityMultiplier>
         <OtherEmpireLeadNavalRegionCountMultiplier>-0.5</OtherEmpireLeadNavalRegionCountMultiplier>
         <!-- GLOBAL -->
-        <Multiplier>1.2</Multiplier>
+        <Multiplier>1</Multiplier>
       </AskToBlackSpotTermAgent>
     </AgentDefinition>
 
@@ -1579,23 +1573,21 @@
           <!-- TRUST -->
           <!-- ##### -->
           <!-- Positive -->
-          <AttitudeScorePeaceful>1.2</AttitudeScorePeaceful>
-	  <!-- ELCP\LeaderEnemyBoss AI value common enemies more to encourage block building -->
-          <AttitudeScoreCommonEnemy>1.8</AttitudeScoreCommonEnemy>
-	  <!-- End ELCP -->
-          <AttitudeScoreCommonFriend>1.2</AttitudeScoreCommonFriend>
-          <AttitudeScoreCommonAlly>1.4</AttitudeScoreCommonAlly>
-          <AttitudeScorePositiveContract>1.1</AttitudeScorePositiveContract>
-          <AttitudeScoreGift>1.1</AttitudeScoreGift>
+          <AttitudeScorePeaceful>1</AttitudeScorePeaceful>
+          <AttitudeScoreCommonEnemy>1</AttitudeScoreCommonEnemy>
+          <AttitudeScoreCommonFriend>1</AttitudeScoreCommonFriend>
+          <AttitudeScoreCommonAlly>1</AttitudeScoreCommonAlly>
+          <AttitudeScorePositiveContract>1</AttitudeScorePositiveContract>
+          <AttitudeScoreGift>1</AttitudeScoreGift>
           <AttitudeScoreMantaAspiratingInMyTerritory>1</AttitudeScoreMantaAspiratingInMyTerritory>
-          <AttitudeScoreLongTermAlliance>1.1</AttitudeScoreLongTermAlliance>
-          <AttitudeScoreLongTermPeace>1.1</AttitudeScoreLongTermPeace>
+          <AttitudeScoreLongTermAlliance>1</AttitudeScoreLongTermAlliance>
+          <AttitudeScoreLongTermPeace>1</AttitudeScoreLongTermPeace>
           <AttitudeScoreTerraformedInMyTerritoryPositive>1</AttitudeScoreTerraformedInMyTerritoryPositive>
           <AttitudeScoreTerraformedNearMyArmiesPositive>1</AttitudeScoreTerraformedNearMyArmiesPositive>
           <AttitudeScoreKaijuPlacedNearMyCityPositive>1</AttitudeScoreKaijuPlacedNearMyCityPositive>
           <!-- Negative -->
           <AttitudeScoreLastWar>1</AttitudeScoreLastWar>
-          <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>0.8</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
+          <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
           <AttitudeScoreAggressiveColonization>1</AttitudeScoreAggressiveColonization>
           <AttitudeScoreNegativeContract>1</AttitudeScoreNegativeContract>
           <AttitudeScoreVillageConverted>1</AttitudeScoreVillageConverted>
@@ -1605,18 +1597,16 @@
           <AttitudeScorePillageSucceed>1</AttitudeScorePillageSucceed>
           <AttitudeScoreDismantleCreepingNodeSuffered>1</AttitudeScoreDismantleCreepingNodeSuffered>
           <AttitudeScoreDismantleDeviceSuffered>1</AttitudeScoreDismantleDeviceSuffered>     
-          <AttitudeScoreOrbsStolen>0.7</AttitudeScoreOrbsStolen>
+          <AttitudeScoreOrbsStolen>1</AttitudeScoreOrbsStolen>
           <AttitudeScoreEliminatedAcquaintance>1</AttitudeScoreEliminatedAcquaintance>
-		  <!-- ELCP\LeaderEnemyBoss AI value attacks on friends more to encourage block building -->
-          <AttitudeScoreEliminatedAlly>2</AttitudeScoreEliminatedAlly>
+          <AttitudeScoreEliminatedAlly>1</AttitudeScoreEliminatedAlly>
           <AttitudeScoreEliminatedEnemy>1</AttitudeScoreEliminatedEnemy>
-          <AttitudeScoreEliminatedFriend>1.5</AttitudeScoreEliminatedFriend>
-          <AttitudeScoreCityTakenFromAlly>2</AttitudeScoreCityTakenFromAlly>
+          <AttitudeScoreEliminatedFriend>1</AttitudeScoreEliminatedFriend>
+          <AttitudeScoreCityTakenFromAlly>1</AttitudeScoreCityTakenFromAlly>
           <AttitudeScoreCityTakenFromEnemy>1</AttitudeScoreCityTakenFromEnemy>
-          <AttitudeScoreCityTakenFromFriend>1.5</AttitudeScoreCityTakenFromFriend>
-          <AttitudeScoreAtWarWithMyAlly>4</AttitudeScoreAtWarWithMyAlly>
-          <AttitudeScoreAlliedWithMyEnemy>3.5</AttitudeScoreAlliedWithMyEnemy>
-		  <!-- End ELCP -->
+          <AttitudeScoreCityTakenFromFriend>1</AttitudeScoreCityTakenFromFriend>
+          <AttitudeScoreAtWarWithMyAlly>1</AttitudeScoreAtWarWithMyAlly>
+          <AttitudeScoreAlliedWithMyEnemy>1</AttitudeScoreAlliedWithMyEnemy>
           <AttitudeScoreTerraformedInMyTerritoryNegative>1</AttitudeScoreTerraformedInMyTerritoryNegative>
           <AttitudeScoreTerraformedNearMyArmiesNegative>1</AttitudeScoreTerraformedNearMyArmiesNegative>
           <AttitudeScoreCreepingNodeUpgradeComplete>1</AttitudeScoreCreepingNodeUpgradeComplete>
@@ -1627,19 +1617,19 @@
           <!-- WAR -->
           <!-- #### -->
           <!-- Positive (towards asking for peace) -->
-          <AttitudeScoreWarFatigue>1.5</AttitudeScoreWarFatigue>
-          <AttitudeScoreMyEmpireUnitsKilledDuringWar>1.25</AttitudeScoreMyEmpireUnitsKilledDuringWar>
+          <AttitudeScoreWarFatigue>1</AttitudeScoreWarFatigue>
+          <AttitudeScoreMyEmpireUnitsKilledDuringWar>1</AttitudeScoreMyEmpireUnitsKilledDuringWar>
           <AttitudeScoreMyEmpireCitiesBesiegedDuringWar>1</AttitudeScoreMyEmpireCitiesBesiegedDuringWar>
           <AttitudeScoreMyEmpireCitiesTakenDuringWar>1</AttitudeScoreMyEmpireCitiesTakenDuringWar>
-          <AttitudeScoreMyEmpireFortressesTakenDuringWar>0.5</AttitudeScoreMyEmpireFortressesTakenDuringWar>
-          <AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>0.5</AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>
+          <AttitudeScoreMyEmpireFortressesTakenDuringWar>1</AttitudeScoreMyEmpireFortressesTakenDuringWar>
+          <AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>1</AttitudeScoreMyEmpireLostNavalRegionControlDuringWar>
           <AttitudeScoreMyEmpireCitiesBombardedDuringWar>1</AttitudeScoreMyEmpireCitiesBombardedDuringWar>
           <!-- Negative (towards remaining at war) -->
           <AttitudeScoreOtherEmpireUnitsKilledDuringWar>1</AttitudeScoreOtherEmpireUnitsKilledDuringWar>
           <AttitudeScoreOtherEmpireCitiesBesiegedDuringWar>1</AttitudeScoreOtherEmpireCitiesBesiegedDuringWar>
           <AttitudeScoreOtherEmpireCitiesTakenDuringWar>1</AttitudeScoreOtherEmpireCitiesTakenDuringWar>
-          <AttitudeScoreOtherEmpireFortressesTakenDuringWar>0.5</AttitudeScoreOtherEmpireFortressesTakenDuringWar>
-          <AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>0.5</AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>
+          <AttitudeScoreOtherEmpireFortressesTakenDuringWar>1</AttitudeScoreOtherEmpireFortressesTakenDuringWar>
+          <AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>1</AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar>
           <AttitudeScoreOtherEmpireCitiesBombardedDuringWar>1</AttitudeScoreOtherEmpireCitiesBombardedDuringWar>
           <!-- #### -->
           <!-- FEAR -->
@@ -1659,28 +1649,26 @@
           <AttitudeScoreMyEmpireLeadRegionCount>1</AttitudeScoreMyEmpireLeadRegionCount>
           <AttitudeScoreMyEmpireLeadNavalRegionCount>1</AttitudeScoreMyEmpireLeadNavalRegionCount>
           <!-- Negative (towards declaring war) -->
-          <AttitudeScoreCommonFrontier>0.7</AttitudeScoreCommonFrontier>
-          <AttitudeScoreOtherEmpireLeadScore>1.2</AttitudeScoreOtherEmpireLeadScore>
-          <AttitudeScoreLivingSpaceTense>1.2</AttitudeScoreLivingSpaceTense>
-          <AttitudeScoreOtherEmpireLeadRegionCount>1.2</AttitudeScoreOtherEmpireLeadRegionCount>
-	  <!-- ELCP\LeaderEnemyBoss AI is more likely trying to victories (especially the fast ones) -->
-          <AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>2</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
-          <AttitudeScoreVictoryAlertLastEmpireStanding>1.5</AttitudeScoreVictoryAlertLastEmpireStanding>
-          <AttitudeScoreVictoryAlertExpansion>3</AttitudeScoreVictoryAlertExpansion>
-          <AttitudeScoreVictoryAlertEconomy>4</AttitudeScoreVictoryAlertEconomy>
-          <AttitudeScoreVictoryAlertDiplomacy>5</AttitudeScoreVictoryAlertDiplomacy>
-          <AttitudeScoreVictoryAlertWonder>5</AttitudeScoreVictoryAlertWonder>
-          <AttitudeScoreVictoryAlertMostTechnologiesDiscovered>2</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
-          <AttitudeScoreVictoryAlertSupremacy>3</AttitudeScoreVictoryAlertSupremacy>
-          <AttitudeScoreVictoryAlertQuest>1.5</AttitudeScoreVictoryAlertQuest>
-	  <!-- End ELCP -->
-          <AttitudeScoreFortressesOwnedInTheSameRegion>1.5</AttitudeScoreFortressesOwnedInTheSameRegion>
+          <AttitudeScoreCommonFrontier>1</AttitudeScoreCommonFrontier>
+          <AttitudeScoreOtherEmpireLeadScore>1</AttitudeScoreOtherEmpireLeadScore>
+          <AttitudeScoreLivingSpaceTense>1</AttitudeScoreLivingSpaceTense>
+          <AttitudeScoreOtherEmpireLeadRegionCount>1</AttitudeScoreOtherEmpireLeadRegionCount>
+          <AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
+          <AttitudeScoreVictoryAlertLastEmpireStanding>1</AttitudeScoreVictoryAlertLastEmpireStanding>
+          <AttitudeScoreVictoryAlertExpansion>1</AttitudeScoreVictoryAlertExpansion>
+          <AttitudeScoreVictoryAlertEconomy>1</AttitudeScoreVictoryAlertEconomy>
+          <AttitudeScoreVictoryAlertDiplomacy>1</AttitudeScoreVictoryAlertDiplomacy>
+          <AttitudeScoreVictoryAlertWonder>1</AttitudeScoreVictoryAlertWonder>
+          <AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
+          <AttitudeScoreVictoryAlertSupremacy>1</AttitudeScoreVictoryAlertSupremacy>
+          <AttitudeScoreVictoryAlertQuest>1</AttitudeScoreVictoryAlertQuest>
+          <AttitudeScoreFortressesOwnedInTheSameRegion>1</AttitudeScoreFortressesOwnedInTheSameRegion>
           <AttitudeScoreOtherEmpireHasUniqueFacility>1</AttitudeScoreOtherEmpireHasUniqueFacility>
-          <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.5</AttitudeScoreOtherEmpireLeadNavalRegionCount>
+          <AttitudeScoreOtherEmpireLeadNavalRegionCount>1</AttitudeScoreOtherEmpireLeadNavalRegionCount>
 
           <Facilities>
-           <FacilityUnique1>2</FacilityUnique1>
-           <FacilityUnique2>2</FacilityUnique2>
+           <FacilityUnique1>1</FacilityUnique1>
+           <FacilityUnique2>1</FacilityUnique2>
            <FacilityUnique3>1</FacilityUnique3>
            <FacilityUnique4>1</FacilityUnique4>
            <FacilityUnique5>1</FacilityUnique5>
@@ -1733,39 +1721,35 @@
           PERSONALITY BASE VALUES FOR TECHNOLOGY CHOICE
           #############################################
           -->
-		  
-		  
-		  <IdealBuyoutPeriod>4.5</IdealBuyoutPeriod> <!-- ELCP: New Element to govern tech buyout (TechnologyBuyoutReferenceRatioAgent doesnt work) -->
-		  
           <MaximumUnlockScore>5</MaximumUnlockScore>  
           <ElementEvaluatorContextMultiplier>
-            <AIEmpireApproval>1</AIEmpireApproval>
+            <AIEmpireApproval></AIEmpireApproval>
             <AIEmpireGrowth>1</AIEmpireGrowth>
-            <AIEmpireProduction>1.1</AIEmpireProduction>
-            <AIEmpireResearch>1.3</AIEmpireResearch>
-            <AIEmpireMoney>1.5</AIEmpireMoney>
-            <AIEmpireEmpirePoint>1.1</AIEmpireEmpirePoint>
-            <AIEmpirePillageDefense>0.8</AIEmpirePillageDefense>
-            <AIEmpireAntiSpy>0.9</AIEmpireAntiSpy>
+            <AIEmpireProduction>1</AIEmpireProduction>
+            <AIEmpireResearch>1</AIEmpireResearch>
+            <AIEmpireMoney>1</AIEmpireMoney>
+            <AIEmpireEmpirePoint>1</AIEmpireEmpirePoint>
+            <AIEmpirePillageDefense>1</AIEmpirePillageDefense>
+            <AIEmpireAntiSpy>1</AIEmpireAntiSpy>
             <AIEmpireMilitaryPower>1</AIEmpireMilitaryPower>
-            <AIEmpireCityDefense>0.8</AIEmpireCityDefense>
-            <AIEmpireVision>0.7</AIEmpireVision>
+            <AIEmpireCityDefense>1</AIEmpireCityDefense>
+            <AIEmpireVision>1</AIEmpireVision>
             <AIEmpireBuyout>1</AIEmpireBuyout>
-            <AIEmpireImprovedRuinSearch>0.9</AIEmpireImprovedRuinSearch>
-            <AIEmpireStrategicResource>1.6</AIEmpireStrategicResource>
-            <AIEmpireLuxuryResource>1.5</AIEmpireLuxuryResource>
+            <AIEmpireImprovedRuinSearch>1</AIEmpireImprovedRuinSearch>
+            <AIEmpireStrategicResource>1</AIEmpireStrategicResource>
+            <AIEmpireLuxuryResource>1</AIEmpireLuxuryResource>
             <AIEmpireUnlockShip>1</AIEmpireUnlockShip>
             <AIEmpireUnlockUnit>1</AIEmpireUnlockUnit>
             <AIEmpireUnlockSeafaringUnit>1</AIEmpireUnlockSeafaringUnit>
-            <AIEmpireUnlockAssimilation>1.2</AIEmpireUnlockAssimilation>
+            <AIEmpireUnlockAssimilation>1</AIEmpireUnlockAssimilation>
             <AIEmpireUnlockBribe>1</AIEmpireUnlockBribe>
             <AIEmpireUnlockPillage>1</AIEmpireUnlockPillage>
             <AIEmpireUnlockPrivateers>1</AIEmpireUnlockPrivateers>
-            <AIEmpireUnlockMarketUnit>1.3</AIEmpireUnlockMarketUnit>
-            <AIEmpireUnlockMarketResource>1.4</AIEmpireUnlockMarketResource>
+            <AIEmpireUnlockMarketUnit>1</AIEmpireUnlockMarketUnit>
+            <AIEmpireUnlockMarketResource>1</AIEmpireUnlockMarketResource>
             <AIEmpireUnlockBooster>1</AIEmpireUnlockBooster>
             <AIEmpireUnlockBoosterCultist>1</AIEmpireUnlockBoosterCultist>
-            <AIEmpireUnlockDiplomacyPositive>4</AIEmpireUnlockDiplomacyPositive>
+            <AIEmpireUnlockDiplomacyPositive>1</AIEmpireUnlockDiplomacyPositive>
           </ElementEvaluatorContextMultiplier>
         </AILayer_Research>
         
@@ -1788,13 +1772,6 @@
         </AILayer_AccountManager>
 
         <AILayer_Diplomacy>
-		  <!-- ELCP\LeaderenemyBoss Exposed new property for allowing AIs to initiate more diplomatic interactions per turn-->
-		  <!-- SweetenDealThreshold determines, how willing an AI is to propose a disadvantageous deal in order to achieve an important goal (like a truce), only works when AIs trade amongst each other -->
-		  <!-- EmergencyGangupLimit determines, how many other Empires the AI will consider asking for help if a war breaks out -->
-		  <MaximumNumberDiplomaticProposalsPerTurn>1</MaximumNumberDiplomaticProposalsPerTurn>
-		  <SweetenDealThreshold>4</SweetenDealThreshold>
-		  <EmergencyGangupLimit>2</EmergencyGangupLimit>
-		  <!-- End ELCP-->
           <WantedDiplomaticRelationStateMessageRevaluationPeriod>10</WantedDiplomaticRelationStateMessageRevaluationPeriod>
           <MinimumNumberOfTurnsBetweenPropositions>5</MinimumNumberOfTurnsBetweenPropositions>
           <MaximumNumberOfTurnsBetweenPropositions>10</MaximumNumberOfTurnsBetweenPropositions>
@@ -1802,7 +1779,7 @@
           <DiplomaticRelationStateAgentCriticityThreshold>0.3</DiplomaticRelationStateAgentCriticityThreshold>
           <DiplomaticTermAgentCriticityThreshold>0.5</DiplomaticTermAgentCriticityThreshold>
           <DiplomaticRelationStateAgentCriticityEpsilon>0.05</DiplomaticRelationStateAgentCriticityEpsilon>
-          <MaximumContractPropositionEvaluationScore>2</MaximumContractPropositionEvaluationScore>
+          <MaximumContractPropositionEvaluationScore>3</MaximumContractPropositionEvaluationScore>
           <MinimumContractPropositionEvaluationScore>0</MinimumContractPropositionEvaluationScore>
           <MinimumExchangeAmountRatio>0.05</MinimumExchangeAmountRatio>
           <MaximumExchangeAmountRatio>0.8</MaximumExchangeAmountRatio>
@@ -1875,26 +1852,26 @@
 
           <Network>
             <MilitaryEmpireNeedAgent>
-              <GlobalUnitCountMultiplier>0.8</GlobalUnitCountMultiplier>
+              <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
 
               <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
               <CityUnitNeedStartTurn>50</CityUnitNeedStartTurn>
-              <CityUnitNeedTurnRatio>40</CityUnitNeedTurnRatio>
+              <CityUnitNeedTurnRatio>50</CityUnitNeedTurnRatio>
               <MinimumNumberOfUnitPerCity>0</MinimumNumberOfUnitPerCity>
               <MaximumNumberOfUnitPerCity>5</MaximumNumberOfUnitPerCity>
 
               <!-- Roaming unit need: NumberOfRoamingUnit = CLAMP((turn - RoamingUnitNeedStartTurn) / RoamingUnitNeedTurnRatio, MinimumNumberOfRoamingUnit, MaximumNumberOfRoamingUnit) -->
-              <RoamingUnitNeedStartTurn>10</RoamingUnitNeedStartTurn>
+              <RoamingUnitNeedStartTurn>0</RoamingUnitNeedStartTurn>
               <RoamingUnitNeedTurnRatio>10</RoamingUnitNeedTurnRatio>
               <MinimumNumberOfRoamingUnit>2</MinimumNumberOfRoamingUnit>
-              <MaximumNumberOfRoamingUnit>10</MaximumNumberOfRoamingUnit>
+              <MaximumNumberOfRoamingUnit>8</MaximumNumberOfRoamingUnit>
 
               <!-- War unit need: NumberOfWarUnit = CLAMP(WarUnitNeedOffset + (turn - WarUnitNeedStartTurn) / WarUnitNeedTurnRatio, MinimumNumberOfWarUnit, MaximumNumberOfWarUnit) -->
-              <WarUnitNeedOffset>3</WarUnitNeedOffset>
-              <WarUnitNeedStartTurn>30</WarUnitNeedStartTurn>
+              <WarUnitNeedOffset>4</WarUnitNeedOffset>
+              <WarUnitNeedStartTurn>100</WarUnitNeedStartTurn>
               <WarUnitNeedTurnRatio>10</WarUnitNeedTurnRatio>
-              <MinimumNumberOfWarUnit>3</MinimumNumberOfWarUnit>
-              <MaximumNumberOfWarUnit>15</MaximumNumberOfWarUnit>
+              <MinimumNumberOfWarUnit>6</MinimumNumberOfWarUnit>
+              <MaximumNumberOfWarUnit>12</MaximumNumberOfWarUnit>
 
               <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
             </MilitaryEmpireNeedAgent>
@@ -1922,13 +1899,12 @@
           <ResourceScoreMultiplier>0.5</ResourceScoreMultiplier>
           <VillageScoreMultiplier>0.5</VillageScoreMultiplier>
           <CityQualityScoreMultiplier>0.5</CityQualityScoreMultiplier>
-		  <DistanceDeboost>0.9</DistanceDeboost> <!-- ELCP: Exposed new var: How important is the distance when deciding which region to attack (default was 0.5)-->
 
           <RetrofitGlobalPriority>0.8</RetrofitGlobalPriority>
           <AICommander>
-            <CityMilitaryPowerFactor>2</CityMilitaryPowerFactor>
-            <KaijuMilitaryPowerFactor>4</KaijuMilitaryPowerFactor>
-            <CommanderMaxArmiesHuntingSameKaiju>5</CommanderMaxArmiesHuntingSameKaiju>
+            <CityMilitaryPowerFactor>1.2</CityMilitaryPowerFactor>
+            <KaijuMilitaryPowerFactor>3.0</KaijuMilitaryPowerFactor>
+            <CommanderMaxArmiesHuntingSameKaiju>4</CommanderMaxArmiesHuntingSameKaiju>
             <KaijuAdquisitionFactor>1.0</KaijuAdquisitionFactor>
             <KaijuAdquisitionIncludeTamedKaijus>1</KaijuAdquisitionIncludeTamedKaijus>
           </AICommander>
@@ -1940,11 +1916,11 @@
 
         <AILayer_UnitDesigner>
           <MaximumModifierValues>
-            <AIEquipmentAttack>95</AIEquipmentAttack>
-            <AIEquipmentDefense>24</AIEquipmentDefense>
-            <AIEquipmentInitiative>30</AIEquipmentInitiative>
-            <AIEquipmentDamage>70</AIEquipmentDamage>
-            <AIEquipmentMaximumHealth>50</AIEquipmentMaximumHealth>
+            <AIEquipmentAttack>84</AIEquipmentAttack>
+            <AIEquipmentDefense>16</AIEquipmentDefense>
+            <AIEquipmentInitiative>21</AIEquipmentInitiative>
+            <AIEquipmentDamage>56</AIEquipmentDamage>
+            <AIEquipmentMaximumHealth>20</AIEquipmentMaximumHealth>
 
             <AIEquipmentAttackPercent>1</AIEquipmentAttackPercent>
             <AIEquipmentDefensePercent>1</AIEquipmentDefensePercent>
@@ -1973,9 +1949,6 @@
             <Spy>1</Spy>
 
           </MaximumModifierValues>
-		  <MinimumModifierValues>
-          </MinimumModifierValues>
-		  
           <NavalMaximumModifierValues>
             <AIEquipmentAttack>35</AIEquipmentAttack>
             <AIEquipmentDefense>40</AIEquipmentDefense>
@@ -2011,16 +1984,16 @@
 
           </NavalMaximumModifierValues>
 
-          <ItemCostRatioBoost>0.8</ItemCostRatioBoost>
-          <ItemScoreLimit>0.02</ItemScoreLimit>
-          <NewUnitDesignScoreModifier>0.8</NewUnitDesignScoreModifier>
+          <ItemCostRatioBoost>0.5</ItemCostRatioBoost>
+          <ItemScoreLimit>0.05</ItemScoreLimit>
+          <NewUnitDesignScoreModifier>0.5</NewUnitDesignScoreModifier>
 
           <TierModifier>
             <ItemTier0>0.8</ItemTier0>
             <ItemTier1>1</ItemTier1>
-            <ItemTier2>1.23</ItemTier2>
-            <ItemTier3>1.5</ItemTier3>
-            <ItemTier4>2.0</ItemTier4>
+            <ItemTier2>1.2</ItemTier2>
+            <ItemTier3>1.4</ItemTier3>
+            <ItemTier4>1.8</ItemTier4>
           </TierModifier>
         </AILayer_UnitDesigner>
 
@@ -2037,23 +2010,12 @@
         </AILayer_EmpireAntiSpy>
 
         <AILayer_HeroAssignation>
-	<!-- ELCP\LeaderEnemyBoss AI often doesnt have enough heroes in lategame (governors...) -->
-	<!-- Also lowered max. fraction of spies since they are more likely to use them -->
-	<!-- added new properties for restoring injured Heroes -->
-          <MaximumHeroCount>20</MaximumHeroCount>
-          <MaximumTurnForHero>120</MaximumTurnForHero>
-          <MaximumFractionOfHeroesSpy>0.2</MaximumFractionOfHeroesSpy>
-		  <MinMoneyforRestore>2</MinMoneyforRestore> <!-- Only restore hero, if dust amount is x times higher than cost for restoring -->
-		  <TurnThresholdforRestore>6</TurnThresholdforRestore> <!-- Dont restore heroes, that need x or less turns to heal on their own -->
-	  <!-- End ELCP -->
+          <MaximumHeroCount>15</MaximumHeroCount>
+          <MaximumTurnForHero>150</MaximumTurnForHero>
+          <MaximumFractionOfHeroesSpy>0.3</MaximumFractionOfHeroesSpy>
           <MinimalTurnBeforeSpying>40</MinimalTurnBeforeSpying>
-          <LimitToExfiltrate>0.1</LimitToExfiltrate>
+          <LimitToExfiltrate>0.2</LimitToExfiltrate>
           <Utility>
-			<!-- ELCP/LeaderEnemyBoss: included hidden StealVision boost element-->
-			<StealVision>
-				<factorForInterestingArmies>0.9</factorForInterestingArmies>
-			</StealVision>
-			<!-- End ELCP -->
             <PoisonGovernor>
               <AssignationCurveName>InfiltrationActionUtilityDefaultCurve</AssignationCurveName>
               <HeroLevelMaximum>100</HeroLevelMaximum>
@@ -2064,8 +2026,8 @@
               <NumberOfTradeRouteCurve>InfiltrationActionUtilityDefaultCurve</NumberOfTradeRouteCurve>
             </Leech>
             <DamageFortification>
-              <BesiegedByMe>1</BesiegedByMe>
-              <BesiegedByAlly>0.7</BesiegedByAlly>
+              <BesiegedByMe>0.8</BesiegedByMe>
+              <BesiegedByAlly>0.5</BesiegedByAlly>
             </DamageFortification>
             <DecreasePopulation>
               <MissedPopulationFactor>-0.2</MissedPopulationFactor>
@@ -2085,18 +2047,16 @@
             <Common>
               <ActionLevelMaximum>5</ActionLevelMaximum>
               <ActionLevelFactor>0.2</ActionLevelFactor>
-	      <!-- ELCP/LeaderEnemyBoss: made AI significantly more likely to consider doing nothing (for higher spy actions)-->
-              <InfiltrationLevelReferenceTurnCount>20</InfiltrationLevelReferenceTurnCount>
-              <InfiltrationLevelFactor>1</InfiltrationLevelFactor>
+              <InfiltrationLevelReferenceTurnCount>5</InfiltrationLevelReferenceTurnCount>
+              <InfiltrationLevelFactor>0.3</InfiltrationLevelFactor>
               <EmpireActionWhenLowCityCount>-0.2</EmpireActionWhenLowCityCount>
-              <BoostThresholdByHeroHealth>3</BoostThresholdByHeroHealth>
-	      <!-- End ELCP-->
-              <!-- this will generate boost values over 1 for health below 66% hitpoints -->
+              <BoostThresholdByHeroHealth>1.5</BoostThresholdByHeroHealth>
+              <!-- this will generate boost values over 1 for health below 33% hitpoints -->
             </Common>
             <DecreaseMoral>
-              <AtWarWithMe>0.9</AtWarWithMe>
-              <AtWarWithAlly>0.8</AtWarWithAlly>
-              <AtWarWithSomeone>0.1</AtWarWithSomeone>
+              <AtWarWithMe>0.8</AtWarWithMe>
+              <AtWarWithAlly>0.5</AtWarWithAlly>
+              <AtWarWithSomeone>0.3</AtWarWithSomeone>
 
               <!-- UnitCount boost is computed as it:
                   boost = UnitCountFactor * InfiltratedEmpire.UnitCount / UnitCountMaximum
@@ -2109,10 +2069,7 @@
                   ratio = Min(TheirPower / myPower, MilitaryPowerClamp)
                   boost = MilitaryPowerFactor * ratio
                   -->
-              <!-- ELCP/LeaderEnemyBoss: Decrease Morale was overvalued outside of war -->
-			  <!-- <MilitaryPowerFactor>0.5</MilitaryPowerFactor> -->
-			  <MilitaryPowerFactor>0.2</MilitaryPowerFactor>
-			  <!-- End ELCP -->
+              <MilitaryPowerFactor>0.5</MilitaryPowerFactor>
               <MilitaryPowerClamp>2</MilitaryPowerClamp>
               <MilitaryPowerCurve>none</MilitaryPowerCurve>
             </DecreaseMoral>
@@ -2121,33 +2078,19 @@
                   ratio = Min(TheirIndustryScore / myIndustryScore, IndustryScoreRatioClamp)
                   boost = IndustryScoreFactor * ratio
                   -->
-	      <!-- ELCP/LeaderEnemyBoss: AI really liked to use this over more powerful stuff, so I lowered it but raised the ceiling-->
-              <IndustryScoreFactor>0.15</IndustryScoreFactor>
-              <IndustryScoreRatioClamp>3</IndustryScoreRatioClamp>
+              <IndustryScoreFactor>0.5</IndustryScoreFactor>
+              <IndustryScoreRatioClamp>2</IndustryScoreRatioClamp>
               <IndustryScoreCurve>none</IndustryScoreCurve>
-	      <!-- ELCP/LeaderEnemyBoss: this is the best use case for this action, so maximum boost!-->
-              <SameWonderBoost>1</SameWonderBoost>
-	      <!-- End ELCP -->
+
+              <SameWonderBoost>0.5</SameWonderBoost>
               <UnitDuringWarBoost>0.5</UnitDuringWarBoost>
             </DecreaseProduction>
             <StealTechnology>
-			  <!-- ELCP/LeaderEnemyBoss: makes the AI consider increasing infiltration level further to steal better tech -->
-			  <BoostThresholdForBetterTechsteal>0.95</BoostThresholdForBetterTechsteal>
-			  <!-- ELCP/LeaderEnemyBoss: Reducing handicap for NotMaxEra (already gets punished internally) -->
-              <NotAtMaxEraFactor>0</NotAtMaxEraFactor>
-			  <!-- End ELCP -->
+              <NotAtMaxEraFactor>-0.2</NotAtMaxEraFactor>
             </StealTechnology>
           </Utility>
         </AILayer_HeroAssignation>
-		
-		<AILayer_Victory>
-			<EarliestVictoryEvaluationTurn>200</EarliestVictoryEvaluationTurn> 
-			<VictoryFocusMilitary>1</VictoryFocusMilitary>
-			<VictoryFocusDiplomacy>1</VictoryFocusDiplomacy>
-			<VictoryFocusEconomy>1</VictoryFocusEconomy>
-			<VictoryFocusTechnology>1</VictoryFocusTechnology>
-		</AILayer_Victory>
-		
+
         <AILayer_ArmyManagement>
           <PillageOpportunityBoost>0</PillageOpportunityBoost>
           <PillageOpportunityBoostByTurn>
@@ -2193,13 +2136,11 @@
         </AIContext>
 
         <AILayer_Population>
-          <PopulationThresholdForSacrifice>5</PopulationThresholdForSacrifice>
-          <ApprovalThresholdForSacrifice>60</ApprovalThresholdForSacrifice>
+          <PopulationThresholdForSacrifice>8</PopulationThresholdForSacrifice>
+          <ApprovalThresholdForSacrifice>40</ApprovalThresholdForSacrifice>
         </AILayer_Population>
 
         <AILayer_Production>
-		  <!-- ELCP\LeaderenemyBoss If NumberofArmies > 1 + Gameturn/ArmyThresholdTurns, the AI heavily prioritizes developing the city instead building units-->
-		  <ArmyThresholdTurns>12</ArmyThresholdTurns>
           <SettlerEconomicalStress>-0.2</SettlerEconomicalStress>
           <MinimalTurnDuration>5</MinimalTurnDuration>
           <MaximalTurnDuration>30</MaximalTurnDuration>
@@ -2215,11 +2156,11 @@
           ########################################
           -->
           <ElementEvaluatorContextMultiplier>
-            <AICityApproval>1</AICityApproval>
+            <AICityApproval></AICityApproval>
             <AICityGrowth>1</AICityGrowth>
-            <AICityProduction>1.2</AICityProduction>
+            <AICityProduction>1</AICityProduction>
             <AICityResearch>1</AICityResearch>
-            <AICityMoney>1.2</AICityMoney>
+            <AICityMoney>1</AICityMoney>
             <AICityEmpirePoint>1</AICityEmpirePoint>
             <AICityMoneyUpkeep>1</AICityMoneyUpkeep>
             <AICityDefense>1</AICityDefense>

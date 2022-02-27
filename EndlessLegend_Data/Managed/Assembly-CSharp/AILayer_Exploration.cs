@@ -52,9 +52,6 @@ public class AILayer_Exploration : AILayerWithObjective
 	public override IEnumerator Initialize(AIEntity aiEntity)
 	{
 		yield return base.Initialize(aiEntity);
-		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
-		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
-		this.worldAtlasAIHelper = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
 		base.AIEntity.RegisterPass(AIEntity.Passes.RefreshObjectives.ToString(), "AILayer_Exploration_RefreshObjectives", new AIEntity.AIAction(this.RefreshObjectives), this, new StaticString[]
 		{
 			"AILayer_Colonization_RefreshObjectives"
@@ -69,10 +66,6 @@ public class AILayer_Exploration : AILayerWithObjective
 
 	public override void Release()
 	{
-		this.departmentOfForeignAffairs = null;
-		this.departmentOfTheInterior = null;
-		this.worldAtlasAIHelper = null;
-		base.Release();
 	}
 
 	protected override bool IsObjectiveValid(StaticString objectiveType, int regionIndex, bool checkLocalPriority = false)
@@ -108,27 +101,6 @@ public class AILayer_Exploration : AILayerWithObjective
 
 	private void ComputeObjectivePriority()
 	{
-		bool flag = false;
-		if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
-		{
-			flag = true;
-		}
-		else
-		{
-			foreach (City city in this.departmentOfTheInterior.Cities)
-			{
-				if (!this.worldAtlasAIHelper.IsRegionPacified(base.AIEntity.Empire, city.Region))
-				{
-					flag = true;
-					break;
-				}
-				if (AILayer_Pacification.RegionContainsHostileArmies(base.AIEntity.Empire, city.Region.Index))
-				{
-					flag = true;
-					break;
-				}
-			}
-		}
 		base.GlobalPriority.Reset();
 		base.GlobalPriority.Add(0.1f, "(constant)", new object[0]);
 		AILayer_Colonization layer = base.AIEntity.GetLayer<AILayer_Colonization>();
@@ -140,11 +112,6 @@ public class AILayer_Exploration : AILayerWithObjective
 			heuristicValue.Multiply(0.1f, "(constant)", new object[0]);
 			globalObjectiveMessage.LocalPriority = heuristicValue;
 			globalObjectiveMessage.GlobalPriority = base.GlobalPriority;
-			if (i < 1 && !flag && base.AIEntity.Empire.GetAgency<DepartmentOfDefense>().Armies.Count > 2)
-			{
-				globalObjectiveMessage.LocalPriority.Boost(0.75f, "(constant)", new object[0]);
-				globalObjectiveMessage.GlobalPriority.Boost(0.75f, "(constant)", new object[0]);
-			}
 			globalObjectiveMessage.TimeOut = 1;
 		}
 	}
@@ -160,10 +127,4 @@ public class AILayer_Exploration : AILayerWithObjective
 	public const float RatioOfExplorationToReach = 0.95f;
 
 	private List<Region> regionToExplore = new List<Region>();
-
-	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
-
-	private DepartmentOfTheInterior departmentOfTheInterior;
-
-	private IWorldAtlasAIHelper worldAtlasAIHelper;
 }

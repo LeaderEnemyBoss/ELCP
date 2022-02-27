@@ -28,53 +28,53 @@ using Amplitude.Xml.Serialization;
 using UnityEngine;
 
 [Diagnostics.TagAttribute("UnitTests")]
-[OrderProcessor(typeof(OrderDestroyArmy), "DestroyArmy")]
-[OrderProcessor(typeof(OrderDestroyMilitiaUnits), "DestroyMilitiaUnits")]
 [OrderProcessor(typeof(OrderDisbandArmy), "DisbandArmy")]
-[OrderProcessor(typeof(OrderDisbandProducedUnits), "DisbandProducedUnits")]
-[OrderProcessor(typeof(OrderDisbandUnits), "DisbandUnits")]
-[OrderProcessor(typeof(OrderCreateUnitDesign), "CreateUnitDesign")]
-[OrderProcessor(typeof(OrderDismantleDeviceSucceed), "DismantleDeviceSucceed")]
-[OrderProcessor(typeof(OrderEditHeroUnitDesign), "EditHeroUnitDesign")]
-[OrderProcessor(typeof(OrderCreateUndeadUnits), "CreateUndeadUnits")]
-[OrderProcessor(typeof(OrderCreateMilitiaUnits), "CreateMilitiaUnits")]
-[OrderProcessor(typeof(OrderAttackCity), "AttackCity")]
-[OrderProcessor(typeof(OrderEditUnitDesign), "EditUnitDesign")]
-[OrderProcessor(typeof(OrderEnablePortableForgeOnArmy), "EnablePortableForgeOnArmy")]
-[OrderProcessor(typeof(OrderExecuteArmyAction), "ExecuteArmyAction")]
-[OrderProcessor(typeof(OrderAttack), "Attack")]
-[OrderProcessor(typeof(OrderFortifyCityDefensesThroughArmy), "FortifyCityDefensesThroughArmy")]
-[OrderProcessor(typeof(OrderHealUnits), "HealUnits")]
-[OrderProcessor(typeof(OrderHealUnitsThroughArmy), "HealUnitsThroughArmy")]
-[OrderProcessor(typeof(OrderKaijuChangeMode), "KaijuChangeMode")]
-[OrderProcessor(typeof(OrderToggleAspirate), "ToggleAspirate")]
-[OrderProcessor(typeof(OrderDismantleCreepingNodeSucceed), "DismantleCreepingNodeSucceed")]
-[OrderProcessor(typeof(OrderLockTarget), "LockTarget")]
-[OrderProcessor(typeof(OrderPillageSucceed), "PillageSucceed")]
-[OrderProcessor(typeof(OrderRemoveUnitDesign), "RemoveUnitDesign")]
 [OrderProcessor(typeof(OrderRetrofitUnit), "RetrofitUnit")]
+[OrderProcessor(typeof(OrderDisbandProducedUnits), "DisbandProducedUnits")]
+[OrderProcessor(typeof(OrderHealUnitsThroughArmy), "HealUnitsThroughArmy")]
 [OrderProcessor(typeof(OrderSellUnits), "SellUnits")]
 [OrderProcessor(typeof(OrderSpawnArmies), "SpawnArmies")]
 [OrderProcessor(typeof(OrderSpawnArmy), "SpawnArmy")]
 [OrderProcessor(typeof(OrderSpawnUnit), "SpawnUnit")]
+[OrderProcessor(typeof(OrderHealUnits), "HealUnits")]
+[OrderProcessor(typeof(OrderFortifyCityDefensesThroughArmy), "FortifyCityDefensesThroughArmy")]
+[OrderProcessor(typeof(OrderToggleAspirate), "ToggleAspirate")]
+[OrderProcessor(typeof(OrderDisbandUnits), "DisbandUnits")]
+[OrderProcessor(typeof(OrderPillageSucceed), "PillageSucceed")]
+[OrderProcessor(typeof(OrderDestroyMilitiaUnits), "DestroyMilitiaUnits")]
+[OrderProcessor(typeof(OrderDestroyArmy), "DestroyArmy")]
+[OrderProcessor(typeof(OrderCreateUnitDesign), "CreateUnitDesign")]
+[OrderProcessor(typeof(OrderCreateUndeadUnits), "CreateUndeadUnits")]
+[OrderProcessor(typeof(OrderKaijuChangeMode), "KaijuChangeMode")]
 [OrderProcessor(typeof(OrderToggleAutoExplore), "ToggleAutoExplore")]
 [OrderProcessor(typeof(OrderToggleCatspaw), "ToggleCatspaw")]
 [OrderProcessor(typeof(OrderToggleDismantleCreepingNode), "ToggleDismantleCreepingNode")]
 [OrderProcessor(typeof(OrderToggleDismantleDevice), "ToggleDismantleDevice")]
+[OrderProcessor(typeof(OrderAttackCity), "AttackCity")]
+[OrderProcessor(typeof(OrderRemoveUnitDesign), "RemoveUnitDesign")]
+[OrderProcessor(typeof(OrderAttack), "Attack")]
+[OrderProcessor(typeof(OrderDismantleCreepingNodeSucceed), "DismantleCreepingNodeSucceed")]
+[OrderProcessor(typeof(OrderEnablePortableForgeOnArmy), "EnablePortableForgeOnArmy")]
+[OrderProcessor(typeof(OrderEditUnitDesign), "EditUnitDesign")]
 [OrderProcessor(typeof(OrderToggleEarthquake), "ToggleEarthquake")]
 [OrderProcessor(typeof(OrderToggleGuard), "ToggleGuard")]
-[OrderProcessor(typeof(OrderUpdateArmyObjective), "UpdateArmyObjective")]
 [OrderProcessor(typeof(OrderToggleNavalSiege), "ToggleNavalSiege")]
 [OrderProcessor(typeof(OrderTogglePillage), "TogglePillage")]
 [OrderProcessor(typeof(OrderTogglePrivateers), "TogglePrivateers")]
 [OrderProcessor(typeof(OrderToggleSiege), "ToggleSiege")]
 [OrderProcessor(typeof(OrderTransferAcademyToNewArmy), "TransferAcademyToNewArmy")]
+[OrderProcessor(typeof(OrderExecuteArmyAction), "ExecuteArmyAction")]
 [OrderProcessor(typeof(OrderTransferGarrisonToNewArmy), "TransferGarrisonToNewArmy")]
-[OrderProcessor(typeof(OrderTransferSeafaringUnitToNewArmy), "TransferSeafaringUnitToNewArmy")]
+[OrderProcessor(typeof(OrderCreateMilitiaUnits), "CreateMilitiaUnits")]
 [OrderProcessor(typeof(OrderTransferSolitaryUnitToNewArmy), "TransferSolitaryUnitToNewArmy")]
-[OrderProcessor(typeof(OrderWoundUnit), "WoundUnit")]
-[OrderProcessor(typeof(OrderUpdateMilitia), "UpdateMilitia")]
 [OrderProcessor(typeof(OrderTransferUnits), "TransferUnits")]
+[OrderProcessor(typeof(OrderUpdateArmyObjective), "UpdateArmyObjective")]
+[OrderProcessor(typeof(OrderDismantleDeviceSucceed), "DismantleDeviceSucceed")]
+[OrderProcessor(typeof(OrderLockTarget), "LockTarget")]
+[OrderProcessor(typeof(OrderEditHeroUnitDesign), "EditHeroUnitDesign")]
+[OrderProcessor(typeof(OrderUpdateMilitia), "UpdateMilitia")]
+[OrderProcessor(typeof(OrderWoundUnit), "WoundUnit")]
+[OrderProcessor(typeof(OrderTransferSeafaringUnitToNewArmy), "TransferSeafaringUnitToNewArmy")]
 public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSerializable, IUnitDesignDatabase
 {
 	public DepartmentOfDefense(global::Empire empire) : base(empire)
@@ -387,7 +387,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 		if (this.departmentOfScience == null)
 		{
-			Diagnostics.LogError("DepartmentOfScience can't be null.");
+			Diagnostics.LogWarning("DepartmentOfScience can't be null.");
 			return false;
 		}
 		string technologyName;
@@ -536,7 +536,8 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 
 	public static bool CanDismantleCreepingNode(Army army, CreepingNode node, bool checkDistance = true)
 	{
-		if (!Services.GetService<IDownloadableContentService>().IsShared(DownloadableContent20.ReadOnlyName))
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		if (!service.IsShared(DownloadableContent20.ReadOnlyName))
 		{
 			return false;
 		}
@@ -547,6 +548,14 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		if (node.Empire == army.Empire)
 		{
 			return false;
+		}
+		if (army.Empire is MajorEmpire)
+		{
+			DiplomaticRelation diplomaticRelation = army.Empire.GetAgency<DepartmentOfForeignAffairs>().DiplomaticRelations[node.Empire.Index];
+			if (diplomaticRelation == null || diplomaticRelation.State == null || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Alliance || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Truce)
+			{
+				return false;
+			}
 		}
 		if (army.Empire.GetAgency<DepartmentOfForeignAffairs>().IsFriend(node.Empire))
 		{
@@ -576,7 +585,15 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 	{
 		device.DismantlingArmyGUID = army.GUID;
 		device.LastTurnWhenDismantleBegun = ((global::Game)this.GameService.Game).Turn;
-		device.ChargesWhenDismantleStarted = device.Charges;
+		if (device.ChargesToActivate > 2000f)
+		{
+			device.ChargesWhenDismantleStarted = 0f;
+			device.Charges = 0f;
+		}
+		else
+		{
+			device.ChargesWhenDismantleStarted = device.Charges;
+		}
 		army.DismantlingDeviceTarget = device.GUID;
 		army.WorldOrientation = this.WorldPositionningService.GetOrientation(army.WorldPosition, device.WorldPosition);
 	}
@@ -1228,13 +1245,11 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		uint unitDesignModel = reader.GetAttribute<uint>("UnitDesignModel");
 		uint unitDesignRevision = reader.GetAttribute<uint>("UnitDesignRevision");
 		UnitDesign unitDesign = unitDesignDatabase.GetRegisteredUnitDesignsAsEnumerable().FirstOrDefault((UnitDesign iterator) => iterator.Model == unitDesignModel && iterator.ModelRevision == unitDesignRevision);
-		DepartmentOfDefense departmentOfDefense = unitDesignDatabase as DepartmentOfDefense;
-		Diagnostics.Assert(unitDesign != null, "{3} Can't retrieve the unit design '{0}' (model: {1}, revision: {2}).", new object[]
+		Diagnostics.Assert(unitDesign != null, "Can't retrieve the unit design '{0}' (model: {1}, revision: {2}).", new object[]
 		{
 			attribute,
 			unitDesignModel,
-			unitDesignRevision,
-			departmentOfDefense.Empire
+			unitDesignRevision
 		});
 		return unitDesign;
 	}
@@ -2054,7 +2069,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 	}
 
-	public List<UnitDesign> AvailableUnitDesigns
+	private List<UnitDesign> AvailableUnitDesigns
 	{
 		get
 		{
@@ -2428,14 +2443,18 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		if (service != null)
 		{
 			IEnumerable<BattleEncounter> enumerable = service;
-			if (enumerable != null && enumerable.Any((BattleEncounter encounter) => encounter.IsGarrisonInEncounter(order.AttackerGUID) || encounter.IsGarrisonInEncounter(order.DefenderGUID)))
+			if (enumerable != null)
 			{
-				Diagnostics.LogWarning("Order preprocessing failed because the attacker already in combat ");
-				return false;
+				bool flag = enumerable.Any((BattleEncounter encounter) => encounter.IsGarrisonInEncounter(order.AttackerGUID) || encounter.IsGarrisonInEncounter(order.DefenderGUID));
+				if (flag)
+				{
+					Diagnostics.LogWarning("Order preprocessing failed because the attacker already in combat ");
+					return false;
+				}
 			}
 		}
 		Army attacker = gameEntity as Army;
-		if (attacker == null || attacker == null)
+		if (attacker == null || !(attacker is IWorldPositionable))
 		{
 			Diagnostics.LogWarning("Order preprocessing failed because the attacker is either not an 'Army' or does not implement 'IWorldPositionable'.");
 			return false;
@@ -2501,13 +2520,13 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 		if (gameEntity is Fortress)
 		{
-			bool flag = false;
+			bool flag2 = false;
 			Fortress fortress = gameEntity as Fortress;
 			distance = this.WorldPositionningService.GetDistance(fortress.WorldPosition, attacker.WorldPosition);
 			if (distance == 1)
 			{
 				worldPositionable = fortress;
-				flag = true;
+				flag2 = true;
 			}
 			for (int i = 0; i < fortress.Facilities.Count; i++)
 			{
@@ -2515,10 +2534,10 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				if (distance == 1)
 				{
 					worldPositionable = fortress.Facilities[i];
-					flag = true;
+					flag2 = true;
 				}
 			}
-			if (!flag)
+			if (!flag2)
 			{
 				Diagnostics.LogWarning("Order preprocessing failed because the distance between the attacker and the defender is not equal to 1 tile.(attacker = {0:X8}, defender = {1:X8}).", new object[]
 				{
@@ -2528,16 +2547,16 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				return false;
 			}
 		}
-		bool flag2 = true;
+		bool flag3 = true;
 		DepartmentOfForeignAffairs agency = base.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		if (agency != null)
 		{
-			flag2 = agency.CanAttack(gameEntity);
+			flag3 = agency.CanAttack(gameEntity);
 		}
 		if (base.Empire is MajorEmpire && !attacker.IsPrivateers)
 		{
 			Diagnostics.Assert(agency != null);
-			if (!flag2)
+			if (!flag3)
 			{
 				Diagnostics.LogWarning("Order preprocessing failed because the diplomatic relation doesn't authorize the attack.(attacker = {0:X8}, defender = {1:X8}).", new object[]
 				{
@@ -2565,22 +2584,16 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				armyGoToInstruction.Cancel(false);
 			}
 		}
-		IPlayerControllerRepositoryControl playerControllerRepositoryControl = this.GameService.Game.Services.GetService<IPlayerControllerRepositoryService>() as IPlayerControllerRepositoryControl;
+		IPlayerControllerRepositoryService service2 = this.GameService.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		IPlayerControllerRepositoryControl playerControllerRepositoryControl = service2 as IPlayerControllerRepositoryControl;
 		if (playerControllerRepositoryControl != null)
 		{
 			global::PlayerController playerControllerById = playerControllerRepositoryControl.GetPlayerControllerById("server");
 			order.EncounterGUID = this.GameEntityRepositoryService.GenerateGUID();
-			if (gameEntity is District || gameEntity is City)
+			if (gameEntity is District)
 			{
-				District district;
-				if (gameEntity is City)
-				{
-					district = (gameEntity as City).Districts.First((District x) => x.WorldPosition == (gameEntity as City).WorldPosition);
-				}
-				else
-				{
-					district = (gameEntity as District);
-				}
+				DepartmentOfDefense.<AttackPreprocessor>c__AnonStorey946 <AttackPreprocessor>c__AnonStorey2 = new DepartmentOfDefense.<AttackPreprocessor>c__AnonStorey946();
+				District district = gameEntity as District;
 				IGarrison garrison = district.City;
 				if (garrison.Empire == attacker.Empire)
 				{
@@ -2592,43 +2605,28 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 					Diagnostics.LogWarning("Order preprocessing failed because the city is besieged by someone else.");
 					return false;
 				}
-				List<Army> list = new List<Army>();
-				foreach (District district2 in district.City.Districts)
+				<AttackPreprocessor>c__AnonStorey2.cityDefense = garrison.Empire.GetAgency<DepartmentOfDefense>();
+				int index;
+				for (index = 0; index < <AttackPreprocessor>c__AnonStorey2.cityDefense.Armies.Count; index++)
 				{
-					if (District.IsACityTile(district2) && !DepartmentOfDefense.worldPositionningServiceStatic.IsWaterTile(district2.WorldPosition))
+					if (!<AttackPreprocessor>c__AnonStorey2.cityDefense.armies[index].IsNaval)
 					{
-						Army armyAtPosition = DepartmentOfDefense.worldPositionningServiceStatic.GetArmyAtPosition(district2.WorldPosition);
-						if (armyAtPosition != null && armyAtPosition.Empire.Index == district.City.Empire.Index)
+						if (district.City.Districts.Any((District match) => match.Type != DistrictType.Exploitation && match.WorldPosition == <AttackPreprocessor>c__AnonStorey2.cityDefense.armies[index].WorldPosition))
 						{
-							list.Add(armyAtPosition);
+							garrison = <AttackPreprocessor>c__AnonStorey2.cityDefense.armies[index];
+							break;
 						}
 					}
-				}
-				if (list.Count > 0)
-				{
-					list.Sort(delegate(Army left, Army right)
-					{
-						if (left.IsSolitary && !right.IsSolitary)
-						{
-							return 1;
-						}
-						if (!left.IsSolitary && right.IsSolitary)
-						{
-							return -1;
-						}
-						return -1 * left.GetPropertyValue(SimulationProperties.MilitaryPower).CompareTo(right.GetPropertyValue(SimulationProperties.MilitaryPower));
-					});
-					garrison = list[0];
 				}
 				if (playerControllerById != null)
 				{
-					bool flag3 = attacker.Empire.IsControlledByAI && garrison.Empire.IsControlledByAI;
+					bool flag4 = attacker.Empire.IsControlledByAI && garrison.Empire.IsControlledByAI;
 					EncounterOptionChoice encounterMode = EncounterOptionChoice.Manual;
-					if (flag3)
+					if (flag4)
 					{
 						encounterMode = EncounterOptionChoice.Simulated;
 					}
-					OrderCreateCityAssaultEncounter order2 = new OrderCreateCityAssaultEncounter(order.EncounterGUID, attacker.GUID, garrison.GUID, district.City.GUID, district.City.Militia.GUID, false, flag2, encounterMode);
+					OrderCreateCityAssaultEncounter order2 = new OrderCreateCityAssaultEncounter(order.EncounterGUID, attacker.GUID, garrison.GUID, district.City.GUID, district.City.Militia.GUID, false, flag3, encounterMode);
 					playerControllerById.PostOrder(order2);
 				}
 			}
@@ -2637,7 +2635,8 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				IGarrison garrison2;
 				if (gameEntity is Kaiju)
 				{
-					garrison2 = (gameEntity as Kaiju).GetActiveTroops();
+					Kaiju kaiju = gameEntity as Kaiju;
+					garrison2 = kaiju.GetActiveTroops();
 				}
 				else
 				{
@@ -2655,14 +2654,14 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				}
 				if (playerControllerById != null)
 				{
-					bool flag4 = attacker.Empire.IsControlledByAI && garrison2.Empire.IsControlledByAI;
+					bool flag5 = attacker.Empire.IsControlledByAI && garrison2.Empire.IsControlledByAI;
 					bool instant = false;
 					EncounterOptionChoice encounterMode2 = EncounterOptionChoice.Manual;
-					if (flag4)
+					if (flag5)
 					{
 						encounterMode2 = EncounterOptionChoice.Simulated;
 					}
-					OrderCreateEncounter order3 = new OrderCreateEncounter(order.EncounterGUID, attacker.GUID, garrison2.GUID, instant, flag2, encounterMode2);
+					OrderCreateEncounter order3 = new OrderCreateEncounter(order.EncounterGUID, attacker.GUID, garrison2.GUID, instant, flag3, encounterMode2);
 					playerControllerById.PostOrder(order3);
 				}
 			}
@@ -2743,17 +2742,19 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 
 	private bool AttackCityPreprocessor(OrderAttackCity order)
 	{
-		if (!order.AttackerGUID.IsValid)
+		DepartmentOfDefense.<AttackCityPreprocessor>c__AnonStorey948 <AttackCityPreprocessor>c__AnonStorey = new DepartmentOfDefense.<AttackCityPreprocessor>c__AnonStorey948();
+		<AttackCityPreprocessor>c__AnonStorey.order = order;
+		if (!<AttackCityPreprocessor>c__AnonStorey.order.AttackerGUID.IsValid)
 		{
 			Diagnostics.LogError("Order preprocessing failed because the attacker guid is not valid.");
 			return false;
 		}
 		IGameEntity gameEntity = null;
-		if (!this.GameEntityRepositoryService.TryGetValue(order.AttackerGUID, out gameEntity))
+		if (!this.GameEntityRepositoryService.TryGetValue(<AttackCityPreprocessor>c__AnonStorey.order.AttackerGUID, out gameEntity))
 		{
 			Diagnostics.LogError("Order preprocessing failed because the attacker is not referenced (guid = {0:X8}).", new object[]
 			{
-				order.AttackerGUID
+				<AttackCityPreprocessor>c__AnonStorey.order.AttackerGUID
 			});
 			return false;
 		}
@@ -2761,120 +2762,103 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		if (service != null)
 		{
 			IEnumerable<BattleEncounter> enumerable = service;
-			if (enumerable != null && enumerable.Any((BattleEncounter encounter) => encounter.IsGarrisonInEncounter(order.AttackerGUID) || encounter.IsGarrisonInEncounter(order.DefenderGUID)))
+			if (enumerable != null)
 			{
-				return false;
+				bool flag = enumerable.Any((BattleEncounter encounter) => encounter.IsGarrisonInEncounter(<AttackCityPreprocessor>c__AnonStorey.order.AttackerGUID) || encounter.IsGarrisonInEncounter(<AttackCityPreprocessor>c__AnonStorey.order.DefenderGUID));
+				if (flag)
+				{
+					return false;
+				}
 			}
 		}
-		Army attacker = gameEntity as Army;
-		if (attacker == null || attacker == null)
+		<AttackCityPreprocessor>c__AnonStorey.attacker = (gameEntity as Army);
+		if (<AttackCityPreprocessor>c__AnonStorey.attacker == null || !(<AttackCityPreprocessor>c__AnonStorey.attacker is IWorldPositionable))
 		{
 			Diagnostics.LogError("Order preprocessing failed because the attacker is either not an 'Army' or does not implement 'IWorldPositionable'.");
 			return false;
 		}
-		if (!order.DefenderGUID.IsValid)
+		if (!<AttackCityPreprocessor>c__AnonStorey.order.DefenderGUID.IsValid)
 		{
 			Diagnostics.LogError("Order preprocessing failed because the defender guid is not valid.");
 			return false;
 		}
-		if (!this.GameEntityRepositoryService.TryGetValue(order.DefenderGUID, out gameEntity))
+		if (!this.GameEntityRepositoryService.TryGetValue(<AttackCityPreprocessor>c__AnonStorey.order.DefenderGUID, out gameEntity))
 		{
 			Diagnostics.LogError("Order preprocessing failed because the defender is not referenced (guid = {0:X8}).", new object[]
 			{
-				order.AttackerGUID
+				<AttackCityPreprocessor>c__AnonStorey.order.AttackerGUID
 			});
 			return false;
 		}
-		if ((!(gameEntity is District) && !(gameEntity is City)) || !(gameEntity is IWorldPositionable))
+		if (!(gameEntity is District) || !(gameEntity is IWorldPositionable))
 		{
 			Diagnostics.LogError("Order preprocessing failed because the attack target is either not a 'District' or does not implement 'IWorldPositionable'.");
 			return false;
 		}
-		District district;
-		if (gameEntity is District)
+		District district = gameEntity as District;
+		if (district.City.BesiegingEmpireIndex == <AttackCityPreprocessor>c__AnonStorey.attacker.Empire.Index)
 		{
-			district = (gameEntity as District);
-		}
-		else
-		{
-			district = (gameEntity as City).Districts[0];
-		}
-		if (district.City.BesiegingEmpireIndex == attacker.Empire.Index)
-		{
-			if (!this.PathfindingService.IsTransitionPassable(attacker.WorldPosition, district.WorldPosition, attacker, PathfindingFlags.IgnoreSieges, null))
+			if (!this.PathfindingService.IsTransitionPassable(<AttackCityPreprocessor>c__AnonStorey.attacker.WorldPosition, district.WorldPosition, <AttackCityPreprocessor>c__AnonStorey.attacker, PathfindingFlags.IgnoreSieges, null))
 			{
 				Diagnostics.LogError("Order preprocessing failed because the transition between the attacker and the defender is not passable.");
 				return false;
 			}
 		}
-		else if (!this.PathfindingService.IsTransitionPassable(attacker.WorldPosition, district.WorldPosition, attacker, (PathfindingFlags)0, null))
+		else if (!this.PathfindingService.IsTransitionPassable(<AttackCityPreprocessor>c__AnonStorey.attacker.WorldPosition, district.WorldPosition, <AttackCityPreprocessor>c__AnonStorey.attacker, (PathfindingFlags)0, null))
 		{
 			Diagnostics.LogError("Order preprocessing failed because the transition between the attacker and the defender is not passable.");
 			return false;
 		}
-		ArmyGoToInstruction armyGoToInstruction = base.Empire.GetAgency<DepartmentOfTransportation>().ArmiesWithPendingGoToInstructions.Find((ArmyGoToInstruction match) => match.ArmyGUID == attacker.GUID);
+		DepartmentOfTransportation agency = base.Empire.GetAgency<DepartmentOfTransportation>();
+		ArmyGoToInstruction armyGoToInstruction = agency.ArmiesWithPendingGoToInstructions.Find((ArmyGoToInstruction match) => match.ArmyGUID == <AttackCityPreprocessor>c__AnonStorey.attacker.GUID);
 		if (armyGoToInstruction != null && armyGoToInstruction.IsMoving)
 		{
 			armyGoToInstruction.Cancel(false);
 		}
-		bool flag = true;
-		DepartmentOfForeignAffairs agency = base.Empire.GetAgency<DepartmentOfForeignAffairs>();
-		if (agency != null)
+		bool flag2 = true;
+		DepartmentOfForeignAffairs agency2 = base.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		if (agency2 != null)
 		{
-			flag = agency.CanAttack(gameEntity);
+			flag2 = agency2.CanAttack(gameEntity);
 		}
-		if (base.Empire is MajorEmpire && !attacker.IsPrivateers && !flag)
+		if (base.Empire is MajorEmpire && !<AttackCityPreprocessor>c__AnonStorey.attacker.IsPrivateers && !flag2)
 		{
 			Diagnostics.LogWarning("Order preprocessing failed because the diplomatic relation doesn't authorize the attack.(attacker = {0:X8}, defender = {1:X8}).", new object[]
 			{
-				order.AttackerGUID,
-				order.DefenderGUID
+				<AttackCityPreprocessor>c__AnonStorey.order.AttackerGUID,
+				<AttackCityPreprocessor>c__AnonStorey.order.DefenderGUID
 			});
 			return false;
 		}
 		IGarrison garrison = district.City;
-		List<Army> list = new List<Army>();
-		foreach (District district2 in district.City.Districts)
+		<AttackCityPreprocessor>c__AnonStorey.cityDefense = garrison.Empire.GetAgency<DepartmentOfDefense>();
+		int index;
+		for (index = 0; index < <AttackCityPreprocessor>c__AnonStorey.cityDefense.Armies.Count; index++)
 		{
-			if (District.IsACityTile(district2) && !DepartmentOfDefense.worldPositionningServiceStatic.IsWaterTile(district2.WorldPosition))
+			if (!<AttackCityPreprocessor>c__AnonStorey.cityDefense.armies[index].IsNaval)
 			{
-				Army armyAtPosition = DepartmentOfDefense.worldPositionningServiceStatic.GetArmyAtPosition(district2.WorldPosition);
-				if (armyAtPosition != null && armyAtPosition.Empire.Index == district.City.Empire.Index)
+				if (district.City.Districts.Any((District match) => match.Type != DistrictType.Exploitation && match.WorldPosition == <AttackCityPreprocessor>c__AnonStorey.cityDefense.armies[index].WorldPosition))
 				{
-					list.Add(armyAtPosition);
+					garrison = <AttackCityPreprocessor>c__AnonStorey.cityDefense.armies[index];
+					break;
 				}
 			}
 		}
-		if (list.Count > 0)
-		{
-			list.Sort(delegate(Army left, Army right)
-			{
-				if (left.IsSolitary && !right.IsSolitary)
-				{
-					return 1;
-				}
-				if (!left.IsSolitary && right.IsSolitary)
-				{
-					return -1;
-				}
-				return -1 * left.GetPropertyValue(SimulationProperties.MilitaryPower).CompareTo(right.GetPropertyValue(SimulationProperties.MilitaryPower));
-			});
-			garrison = list[0];
-		}
-		order.EncounterGUID = this.GameEntityRepositoryService.GenerateGUID();
-		IPlayerControllerRepositoryControl playerControllerRepositoryControl = this.GameService.Game.Services.GetService<IPlayerControllerRepositoryService>() as IPlayerControllerRepositoryControl;
+		<AttackCityPreprocessor>c__AnonStorey.order.EncounterGUID = this.GameEntityRepositoryService.GenerateGUID();
+		IPlayerControllerRepositoryService service2 = this.GameService.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		IPlayerControllerRepositoryControl playerControllerRepositoryControl = service2 as IPlayerControllerRepositoryControl;
 		if (playerControllerRepositoryControl != null)
 		{
 			global::PlayerController playerControllerById = playerControllerRepositoryControl.GetPlayerControllerById("server");
 			if (playerControllerById != null)
 			{
-				bool flag2 = attacker.Empire.IsControlledByAI && garrison.Empire.IsControlledByAI;
+				bool flag3 = <AttackCityPreprocessor>c__AnonStorey.attacker.Empire.IsControlledByAI && garrison.Empire.IsControlledByAI;
 				EncounterOptionChoice encounterMode = EncounterOptionChoice.Manual;
-				if (flag2)
+				if (flag3)
 				{
 					encounterMode = EncounterOptionChoice.Simulated;
 				}
-				OrderCreateCityAssaultEncounter order2 = new OrderCreateCityAssaultEncounter(order.EncounterGUID, attacker.GUID, garrison.GUID, district.City.GUID, district.City.Militia.GUID, false, flag, encounterMode);
+				OrderCreateCityAssaultEncounter order2 = new OrderCreateCityAssaultEncounter(<AttackCityPreprocessor>c__AnonStorey.order.EncounterGUID, <AttackCityPreprocessor>c__AnonStorey.attacker.GUID, garrison.GUID, district.City.GUID, district.City.Militia.GUID, false, flag2, encounterMode);
 				playerControllerById.PostOrder(order2);
 			}
 		}
@@ -3543,6 +3527,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 					garrison.RemoveUnit(unit);
 					if (garrison is Army && garrison.StandardUnits.Count == 0)
 					{
+						this.EventService.Notify(new EventArmyDisbanded(garrison.Empire, garrison.GUID));
 						this.RemoveArmy(garrison as Army, true);
 						if (besiegingSeafaringArmies != null)
 						{
@@ -3714,20 +3699,20 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			return false;
 		}
 		IConstructionCost[] retrofitCosts = this.GetRetrofitCosts(unit, unitDesign);
-		IConstructionCost[] array = retrofitCosts;
-		for (int i = 0; i < array.Length; i++)
+		for (int i = 0; i < retrofitCosts.Length; i++)
 		{
-			float num = -array[i].GetValue(base.Empire);
-			if (!this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.Empire, array[i].ResourceName, ref num))
+			float num = -retrofitCosts[i].GetValue(base.Empire);
+			if (!this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.Empire, retrofitCosts[i].ResourceName, ref num))
 			{
 				return false;
 			}
 		}
-		if (this.CheckRetrofitPrerequisites(unit, array) != DepartmentOfDefense.CheckRetrofitPrerequisitesResult.Ok && !order.ForceEdit)
+		DepartmentOfDefense.CheckRetrofitPrerequisitesResult checkRetrofitPrerequisitesResult = this.CheckRetrofitPrerequisites(unit, retrofitCosts);
+		if (checkRetrofitPrerequisitesResult != DepartmentOfDefense.CheckRetrofitPrerequisitesResult.Ok)
 		{
 			return false;
 		}
-		order.RetrofitCosts = array;
+		order.RetrofitCosts = retrofitCosts;
 		return true;
 	}
 
@@ -4850,24 +4835,24 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 
 	private bool SpawnArmiesPreprocessor(OrderSpawnArmies order)
 	{
-		DepartmentOfDefense.<SpawnArmiesPreprocessor>c__AnonStorey94C <SpawnArmiesPreprocessor>c__AnonStorey94C = new DepartmentOfDefense.<SpawnArmiesPreprocessor>c__AnonStorey94C();
-		<SpawnArmiesPreprocessor>c__AnonStorey94C.order = order;
-		if (<SpawnArmiesPreprocessor>c__AnonStorey94C.order.WorldPositions == null || <SpawnArmiesPreprocessor>c__AnonStorey94C.order.WorldPositions.Length == 0)
+		DepartmentOfDefense.<SpawnArmiesPreprocessor>c__AnonStorey951 <SpawnArmiesPreprocessor>c__AnonStorey = new DepartmentOfDefense.<SpawnArmiesPreprocessor>c__AnonStorey951();
+		<SpawnArmiesPreprocessor>c__AnonStorey.order = order;
+		if (<SpawnArmiesPreprocessor>c__AnonStorey.order.WorldPositions == null || <SpawnArmiesPreprocessor>c__AnonStorey.order.WorldPositions.Length == 0)
 		{
 			Diagnostics.LogWarning("Order preprocessing failed because the array of world positions is not valid.");
 			return false;
 		}
-		if (<SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors == null || <SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors.Length == 0)
+		if (<SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors == null || <SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors.Length == 0)
 		{
 			Diagnostics.LogWarning("Order preprocessing failed because the array of unit descriptors is not valid.");
 			return false;
 		}
 		int index;
-		for (index = 0; index < <SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors.Length; index++)
+		for (index = 0; index < <SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors.Length; index++)
 		{
 			uint unitDesignModel = 0u;
 			UnitDesign unitDesign;
-			if (this.UnitDesignDatabase.TryGetValue(<SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors[index].UnitDesignName, out unitDesign, false))
+			if (this.UnitDesignDatabase.TryGetValue(<SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors[index].UnitDesignName, out unitDesign, false))
 			{
 				unitDesignModel = unitDesign.Model;
 			}
@@ -4876,30 +4861,30 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				bool flag = false;
 				for (int i = 0; i < index; i++)
 				{
-					if (<SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors[i].UnitDesignName == <SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors[index].UnitDesignName)
+					if (<SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors[i].UnitDesignName == <SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors[index].UnitDesignName)
 					{
-						unitDesignModel = <SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors[i].UnitDesignModel;
+						unitDesignModel = <SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors[i].UnitDesignModel;
 						flag = true;
 						break;
 					}
 				}
 				if (!flag)
 				{
-					UnitDesign unitDesign2 = this.UnitDesignDatabase.GetAvailableUnitDesignsAsEnumerable().FirstOrDefault((UnitDesign iterator) => iterator.ModelRevision == 0u && iterator.Name == <SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors[index].UnitDesignName);
+					UnitDesign unitDesign2 = this.UnitDesignDatabase.GetAvailableUnitDesignsAsEnumerable().FirstOrDefault((UnitDesign iterator) => iterator.ModelRevision == 0u && iterator.Name == <SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors[index].UnitDesignName);
 					if (unitDesign2 != null)
 					{
 						unitDesignModel = unitDesign2.Model;
 					}
-					else if (!this.GenerateUnitDesignModelId(<SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors[index].UnitDesignName, out unitDesignModel))
+					else if (!this.GenerateUnitDesignModelId(<SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors[index].UnitDesignName, out unitDesignModel))
 					{
 						Diagnostics.LogWarning("Order preprocessing failed because GenerateUnitDesignModelId() failed.");
 						return false;
 					}
 				}
 			}
-			<SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors[index].UnitDesignModel = unitDesignModel;
+			<SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors[index].UnitDesignModel = unitDesignModel;
 		}
-		List<WorldPosition> list = new List<WorldPosition>(<SpawnArmiesPreprocessor>c__AnonStorey94C.order.WorldPositions);
+		List<WorldPosition> list = new List<WorldPosition>(<SpawnArmiesPreprocessor>c__AnonStorey.order.WorldPositions);
 		for (int j = list.Count - 1; j >= 0; j--)
 		{
 			if (!DepartmentOfDefense.CheckWhetherTargetPositionIsValidForUseAsArmySpawnLocation(list[j], PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water))
@@ -4909,16 +4894,16 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 		if (list.Count > 0)
 		{
-			<SpawnArmiesPreprocessor>c__AnonStorey94C.order.WorldPositions = list.ToArray();
-			<SpawnArmiesPreprocessor>c__AnonStorey94C.order.ArmiesGUIDs = new GameEntityGUID[<SpawnArmiesPreprocessor>c__AnonStorey94C.order.WorldPositions.Length];
-			for (int k = 0; k < <SpawnArmiesPreprocessor>c__AnonStorey94C.order.ArmiesGUIDs.Length; k++)
+			<SpawnArmiesPreprocessor>c__AnonStorey.order.WorldPositions = list.ToArray();
+			<SpawnArmiesPreprocessor>c__AnonStorey.order.ArmiesGUIDs = new GameEntityGUID[<SpawnArmiesPreprocessor>c__AnonStorey.order.WorldPositions.Length];
+			for (int k = 0; k < <SpawnArmiesPreprocessor>c__AnonStorey.order.ArmiesGUIDs.Length; k++)
 			{
-				<SpawnArmiesPreprocessor>c__AnonStorey94C.order.ArmiesGUIDs[k] = this.GameEntityRepositoryService.GenerateGUID();
+				<SpawnArmiesPreprocessor>c__AnonStorey.order.ArmiesGUIDs[k] = this.GameEntityRepositoryService.GenerateGUID();
 			}
-			<SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitsGUIDs = new GameEntityGUID[<SpawnArmiesPreprocessor>c__AnonStorey94C.order.ArmiesGUIDs.Length * <SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitDescriptors.Length];
-			for (int l = 0; l < <SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitsGUIDs.Length; l++)
+			<SpawnArmiesPreprocessor>c__AnonStorey.order.UnitsGUIDs = new GameEntityGUID[<SpawnArmiesPreprocessor>c__AnonStorey.order.ArmiesGUIDs.Length * <SpawnArmiesPreprocessor>c__AnonStorey.order.UnitDescriptors.Length];
+			for (int l = 0; l < <SpawnArmiesPreprocessor>c__AnonStorey.order.UnitsGUIDs.Length; l++)
 			{
-				<SpawnArmiesPreprocessor>c__AnonStorey94C.order.UnitsGUIDs[l] = this.GameEntityRepositoryService.GenerateGUID();
+				<SpawnArmiesPreprocessor>c__AnonStorey.order.UnitsGUIDs[l] = this.GameEntityRepositoryService.GenerateGUID();
 			}
 			return true;
 		}
@@ -5069,34 +5054,34 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 
 	private bool SpawnArmyPreprocessor(OrderSpawnArmy orderGod)
 	{
-		DepartmentOfDefense.<SpawnArmyPreprocessor>c__AnonStorey94E <SpawnArmyPreprocessor>c__AnonStorey94E = new DepartmentOfDefense.<SpawnArmyPreprocessor>c__AnonStorey94E();
-		<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod = orderGod;
-		if (<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors == null)
+		DepartmentOfDefense.<SpawnArmyPreprocessor>c__AnonStorey953 <SpawnArmyPreprocessor>c__AnonStorey = new DepartmentOfDefense.<SpawnArmyPreprocessor>c__AnonStorey953();
+		<SpawnArmyPreprocessor>c__AnonStorey.orderGod = orderGod;
+		if (<SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors == null)
 		{
 			Diagnostics.LogWarning("Order preprocessing failed because the array of unit descriptors is null.");
 			return false;
 		}
-		if (<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors.Length == 0)
+		if (<SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors.Length == 0)
 		{
 			Diagnostics.LogWarning("Order preprocessing failed because the array of unit descriptors is empty.");
 			return false;
 		}
-		if (<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.Level < 0)
+		if (<SpawnArmyPreprocessor>c__AnonStorey.orderGod.Level < 0)
 		{
 			Diagnostics.LogWarning("Order preprocessing failed because the level is < 0.");
 			return false;
 		}
-		if (<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.XP < 0)
+		if (<SpawnArmyPreprocessor>c__AnonStorey.orderGod.XP < 0)
 		{
 			Diagnostics.LogWarning("Order preprocessing failed because the XP is < 0.");
 			return false;
 		}
 		int index;
-		for (index = 0; index < <SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors.Length; index++)
+		for (index = 0; index < <SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors.Length; index++)
 		{
 			uint unitDesignModel = 0u;
 			UnitDesign unitDesign;
-			if (this.UnitDesignDatabase.TryGetValue(<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors[index].UnitDesignName, out unitDesign, false))
+			if (this.UnitDesignDatabase.TryGetValue(<SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors[index].UnitDesignName, out unitDesign, false))
 			{
 				unitDesignModel = unitDesign.Model;
 			}
@@ -5105,48 +5090,48 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				bool flag = false;
 				for (int i = 0; i < index; i++)
 				{
-					if (<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors[i].UnitDesignName == <SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors[index].UnitDesignName)
+					if (<SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors[i].UnitDesignName == <SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors[index].UnitDesignName)
 					{
-						unitDesignModel = <SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors[i].UnitDesignModel;
+						unitDesignModel = <SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors[i].UnitDesignModel;
 						flag = true;
 						break;
 					}
 				}
 				if (!flag)
 				{
-					UnitDesign unitDesign2 = this.UnitDesignDatabase.GetAvailableUnitDesignsAsEnumerable().FirstOrDefault((UnitDesign iterator) => (!<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.OnlyDefaultUnitDesign || iterator.ModelRevision == 0u) && iterator.Name == <SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors[index].UnitDesignName);
+					UnitDesign unitDesign2 = this.UnitDesignDatabase.GetAvailableUnitDesignsAsEnumerable().FirstOrDefault((UnitDesign iterator) => (!<SpawnArmyPreprocessor>c__AnonStorey.orderGod.OnlyDefaultUnitDesign || iterator.ModelRevision == 0u) && iterator.Name == <SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors[index].UnitDesignName);
 					if (unitDesign2 != null)
 					{
 						unitDesignModel = unitDesign2.Model;
 					}
-					else if (!this.GenerateUnitDesignModelId(<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors[index].UnitDesignName, out unitDesignModel))
+					else if (!this.GenerateUnitDesignModelId(<SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors[index].UnitDesignName, out unitDesignModel))
 					{
 						Diagnostics.LogWarning("Order preprocessing failed because GenerateUnitDesignModelId failed.");
 						return false;
 					}
 				}
 			}
-			<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors[index].UnitDesignModel = unitDesignModel;
+			<SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors[index].UnitDesignModel = unitDesignModel;
 		}
-		for (int j = 0; j < <SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.WantedWorldPositions.Length; j++)
+		for (int j = 0; j < <SpawnArmyPreprocessor>c__AnonStorey.orderGod.WantedWorldPositions.Length; j++)
 		{
-			if (DepartmentOfDefense.CheckWhetherTargetPositionIsValidForUseAsArmySpawnLocation(<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.WantedWorldPositions[j], PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water))
+			if (DepartmentOfDefense.CheckWhetherTargetPositionIsValidForUseAsArmySpawnLocation(<SpawnArmyPreprocessor>c__AnonStorey.orderGod.WantedWorldPositions[j], PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water))
 			{
-				<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.ValidatedWorldPosition = <SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.WantedWorldPositions[j];
+				<SpawnArmyPreprocessor>c__AnonStorey.orderGod.ValidatedWorldPosition = <SpawnArmyPreprocessor>c__AnonStorey.orderGod.WantedWorldPositions[j];
 				break;
 			}
 		}
-		if (!<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.ValidatedWorldPosition.IsValid)
+		if (!<SpawnArmyPreprocessor>c__AnonStorey.orderGod.ValidatedWorldPosition.IsValid)
 		{
 			return false;
 		}
-		if (<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.GameEntityGUID == GameEntityGUID.Zero)
+		if (<SpawnArmyPreprocessor>c__AnonStorey.orderGod.GameEntityGUID == GameEntityGUID.Zero)
 		{
-			<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.GameEntityGUID = this.GameEntityRepositoryService.GenerateGUID();
+			<SpawnArmyPreprocessor>c__AnonStorey.orderGod.GameEntityGUID = this.GameEntityRepositoryService.GenerateGUID();
 		}
-		for (int k = 0; k < <SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors.Length; k++)
+		for (int k = 0; k < <SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors.Length; k++)
 		{
-			<SpawnArmyPreprocessor>c__AnonStorey94E.orderGod.UnitDescriptors[k].GameEntityGUID = this.GameEntityRepositoryService.GenerateGUID();
+			<SpawnArmyPreprocessor>c__AnonStorey.orderGod.UnitDescriptors[k].GameEntityGUID = this.GameEntityRepositoryService.GenerateGUID();
 		}
 		return true;
 	}
@@ -5212,6 +5197,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				}
 			}
 			this.GameEntityRepositoryService.Register(army);
+			eventService.Notify(new EventArmySpawned(army));
 			if (!orderGod.HaveActionPointOnSpawn)
 			{
 				float maximumNumberOfActionPoints = army.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
@@ -6561,7 +6547,8 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 					{
 						if (!(gameEntity3 as Unit).UnitDesign.Tags.Contains(DownloadableContent9.TagSolitary))
 						{
-							if (float.IsInfinity(this.PathfindingService.GetTransitionCost(worldPositionable2.WorldPosition, order.ArmyWorldPosition, (Unit)gameEntity3, PathfindingFlags.IgnoreFogOfWar, null)))
+							float transitionCost = this.PathfindingService.GetTransitionCost(worldPositionable2.WorldPosition, order.ArmyWorldPosition, (Unit)gameEntity3, PathfindingFlags.IgnoreFogOfWar, null);
+							if (float.IsInfinity(transitionCost))
 							{
 								flag = false;
 								break;
@@ -6583,11 +6570,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 		if (!flag)
 		{
-			Diagnostics.LogWarning("{0} {1} Order preprocessing failed because the target unit(s) has(have) not enough movement points.", new object[]
-			{
-				garrison.Empire,
-				garrison.LocalizedName
-			});
+			Diagnostics.LogWarning("Order preprocessing failed because the target unit(s) has(have) not enough movement points.");
 			return false;
 		}
 		order.ArmyGuid = this.GameEntityRepositoryService.GenerateGUID();
@@ -7336,8 +7319,10 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			destination.SetHero(hero);
 			destination.Hero.SwitchToEmbarkedUnit(this.PathfindingService.GetTileMovementCapacity(destinationPosition, (PathfindingFlags)0) == PathfindingMovementCapacity.Water);
 		}
+		GameEntityGUID destroyedSourceArmyGUID = GameEntityGUID.Zero;
 		if (source.IsEmpty)
 		{
+			destroyedSourceArmyGUID = (source as Army).GUID;
 			this.RemoveArmy(source as Army, true);
 		}
 		else if (source is SimulationObjectWrapper)
@@ -7386,6 +7371,11 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			{
 				this.UpdateDetection((Army)destination);
 			}
+		}
+		if (destroyedSourceArmyGUID != GameEntityGUID.Zero)
+		{
+			EventArmyTransferred evt = new EventArmyTransferred(destination.Empire, destroyedSourceArmyGUID, destination);
+			this.EventService.Notify(evt);
 		}
 		yield break;
 	}
@@ -7864,15 +7854,15 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 
 	public void GenerateUnitEquipmentDefault(UnitEquipmentSet defaultEquipmentSet, UnitEquipmentSet newEquipmentSet)
 	{
-		DepartmentOfDefense.<GenerateUnitEquipmentDefault>c__AnonStorey955 <GenerateUnitEquipmentDefault>c__AnonStorey = new DepartmentOfDefense.<GenerateUnitEquipmentDefault>c__AnonStorey955();
-		<GenerateUnitEquipmentDefault>c__AnonStorey.newEquipmentSet = newEquipmentSet;
+		DepartmentOfDefense.<GenerateUnitEquipmentDefault>c__AnonStorey95A <GenerateUnitEquipmentDefault>c__AnonStorey95A = new DepartmentOfDefense.<GenerateUnitEquipmentDefault>c__AnonStorey95A();
+		<GenerateUnitEquipmentDefault>c__AnonStorey95A.newEquipmentSet = newEquipmentSet;
 		int index;
-		for (index = 0; index < <GenerateUnitEquipmentDefault>c__AnonStorey.newEquipmentSet.Slots.Length; index++)
+		for (index = 0; index < <GenerateUnitEquipmentDefault>c__AnonStorey95A.newEquipmentSet.Slots.Length; index++)
 		{
-			StaticString itemName = <GenerateUnitEquipmentDefault>c__AnonStorey.newEquipmentSet.Slots[index].ItemName;
+			StaticString itemName = <GenerateUnitEquipmentDefault>c__AnonStorey95A.newEquipmentSet.Slots[index].ItemName;
 			if (StaticString.IsNullOrEmpty(itemName))
 			{
-				UnitEquipmentSet.Slot slot = defaultEquipmentSet.Slots.FirstOrDefault((UnitEquipmentSet.Slot match) => match.Name == <GenerateUnitEquipmentDefault>c__AnonStorey.newEquipmentSet.Slots[index].Name);
+				UnitEquipmentSet.Slot slot = defaultEquipmentSet.Slots.FirstOrDefault((UnitEquipmentSet.Slot match) => match.Name == <GenerateUnitEquipmentDefault>c__AnonStorey95A.newEquipmentSet.Slots[index].Name);
 				if (!StaticString.IsNullOrEmpty(slot.ItemName))
 				{
 					itemName = slot.ItemName;
@@ -7881,7 +7871,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 					{
 						if (i != index)
 						{
-							if (defaultEquipmentSet.Slots[i].ItemName == itemName && i < <GenerateUnitEquipmentDefault>c__AnonStorey.newEquipmentSet.Slots.Length && !StaticString.IsNullOrEmpty(<GenerateUnitEquipmentDefault>c__AnonStorey.newEquipmentSet.Slots[i].ItemName))
+							if (defaultEquipmentSet.Slots[i].ItemName == itemName && i < <GenerateUnitEquipmentDefault>c__AnonStorey95A.newEquipmentSet.Slots.Length && !StaticString.IsNullOrEmpty(<GenerateUnitEquipmentDefault>c__AnonStorey95A.newEquipmentSet.Slots[i].ItemName))
 							{
 								flag = false;
 								break;
@@ -7894,7 +7884,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 						{
 							if (defaultEquipmentSet.Slots[j].ItemName == itemName)
 							{
-								<GenerateUnitEquipmentDefault>c__AnonStorey.newEquipmentSet.Slots[j].ItemName = itemName;
+								<GenerateUnitEquipmentDefault>c__AnonStorey95A.newEquipmentSet.Slots[j].ItemName = itemName;
 							}
 						}
 					}
@@ -8192,8 +8182,8 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 
 	private void GetRetrofitCosts(Unit unit, UnitDesign newestUnitDesign, ref List<ConstructionCost> retrofitCosts)
 	{
-		DepartmentOfDefense.<GetRetrofitCosts>c__AnonStorey95F <GetRetrofitCosts>c__AnonStorey95F = new DepartmentOfDefense.<GetRetrofitCosts>c__AnonStorey95F();
-		<GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts = new List<ConstructionCost>();
+		DepartmentOfDefense.<GetRetrofitCosts>c__AnonStorey964 <GetRetrofitCosts>c__AnonStorey = new DepartmentOfDefense.<GetRetrofitCosts>c__AnonStorey964();
+		<GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts = new List<ConstructionCost>();
 		if (newestUnitDesign.Costs != null && newestUnitDesign.Costs.Length > 0)
 		{
 			for (int i = 0; i < newestUnitDesign.Costs.Length; i++)
@@ -8215,7 +8205,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 					resourceName2 = constructionCost.ResourceName;
 					value = num;
 				}
-				<GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts.Add(new ConstructionCost(resourceName2, value, true, false));
+				<GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts.Add(new ConstructionCost(resourceName2, value, true, false));
 			}
 		}
 		if (unit.UnitDesign.Costs != null && unit.UnitDesign.Costs.Length > 0)
@@ -8239,36 +8229,36 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 					resourceName = constructionCost2.ResourceName;
 					num2 = num3;
 				}
-				ConstructionCost constructionCost3 = <GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts.FirstOrDefault((ConstructionCost match) => match.ResourceName == resourceName);
+				ConstructionCost constructionCost3 = <GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts.FirstOrDefault((ConstructionCost match) => match.ResourceName == resourceName);
 				if (constructionCost3 != null)
 				{
 					constructionCost3.Value -= num2;
 					if (constructionCost3.Value <= 0f)
 					{
-						<GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts.Remove(constructionCost3);
+						<GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts.Remove(constructionCost3);
 					}
 				}
 			}
 		}
 		if (unit.Garrison != null && unit.Garrison.Hero != null && unit.Garrison.Hero.IsSkillUnlocked("HeroSkillLeaderMap24"))
 		{
-			ConstructionCost constructionCost4 = <GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts.FirstOrDefault((ConstructionCost match) => match.ResourceName == DepartmentOfTheTreasury.Resources.EmpireMoney);
+			ConstructionCost constructionCost4 = <GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts.FirstOrDefault((ConstructionCost match) => match.ResourceName == DepartmentOfTheTreasury.Resources.EmpireMoney);
 			if (constructionCost4 != null)
 			{
 				constructionCost4.Value *= unit.Garrison.Hero.GetPropertyValue(SimulationProperties.ArmyRetrofitCostMultiplier);
 			}
 		}
 		int index;
-		for (index = 0; index < <GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts.Count; index++)
+		for (index = 0; index < <GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts.Count; index++)
 		{
-			ConstructionCost constructionCost5 = retrofitCosts.FirstOrDefault((ConstructionCost match) => match.ResourceName == <GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts[index].ResourceName);
+			ConstructionCost constructionCost5 = retrofitCosts.FirstOrDefault((ConstructionCost match) => match.ResourceName == <GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts[index].ResourceName);
 			if (constructionCost5 != null)
 			{
-				constructionCost5.Value += <GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts[index].Value;
+				constructionCost5.Value += <GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts[index].Value;
 			}
 			else
 			{
-				retrofitCosts.Add(new ConstructionCost(<GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts[index].ResourceName, <GetRetrofitCosts>c__AnonStorey95F.unitRetrofitCosts[index].Value, true, false));
+				retrofitCosts.Add(new ConstructionCost(<GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts[index].ResourceName, <GetRetrofitCosts>c__AnonStorey.unitRetrofitCosts[index].Value, true, false));
 			}
 		}
 	}
@@ -8819,13 +8809,9 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			Unit unit = gameEntity as Unit;
 			if (unit.Garrison != garrison)
 			{
-				Diagnostics.LogError("Order preprocessing failed because the transfered unit entity guid at index {0} is owned by the garrison city. {1}/{4} {2} {3}", new object[]
+				Diagnostics.LogError("Order preprocessing failed because the transfered unit entity guid at index {0} is owned by the garrison city.", new object[]
 				{
-					i,
-					unit.UnitDesign.LocalizedName,
-					unit.Garrison.LocalizedName,
-					garrison.LocalizedName,
-					(unit.Garrison is IWorldPositionable) ? (unit.Garrison as IWorldPositionable).WorldPosition : WorldPosition.Invalid
+					i
 				});
 				return false;
 			}
@@ -8839,7 +8825,8 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			}
 			num += (int)unit.GetPropertyValue(SimulationProperties.UnitSlotCount);
 		}
-		if (base.Empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot) < (float)num)
+		float propertyValue = base.Empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot);
+		if (propertyValue < (float)num)
 		{
 			Diagnostics.LogError("Order preprocessing failed because the target army has not enough room for the transfered units.");
 			return false;
@@ -9475,7 +9462,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 	{
 		if (this.armies.Remove(army))
 		{
-			EventArmyDestroyed eventToNotify = new EventArmyDestroyed(army.GUID, army.Empire.Index);
+			EventArmyDestroyed eventArmyDestroyed = new EventArmyDestroyed(army.GUID, army.Empire.Index);
 			if (army.PillageTarget.IsValid)
 			{
 				DepartmentOfDefense.StopPillage(army);
@@ -9534,7 +9521,10 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 			IEventService service2 = Services.GetService<IEventService>();
 			if (service2 != null)
 			{
-				service2.Notify(eventToNotify);
+				global::Game game = this.GameService.Game as global::Game;
+				global::Empire empire = game.Empires[eventArmyDestroyed.ArmyEmpireIndex];
+				service2.Notify(new EventArmyDisbanded(empire, eventArmyDestroyed.ArmyGUID));
+				service2.Notify(eventArmyDestroyed);
 			}
 		}
 	}
@@ -9785,25 +9775,28 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 	{
 		if (empire.Index == base.Empire.Index)
 		{
-			while (this.armies.Count > 0)
+			for (int i = this.armies.Count - 1; i >= 0; i--)
 			{
-				Army army = this.armies[this.armies.Count - 1];
-				for (int i = army.StandardUnits.Count - 1; i >= 0; i--)
+				Army army = this.armies[i];
+				if (!(army is KaijuArmy))
 				{
-					Unit unit = army.StandardUnits[i];
-					army.RemoveUnit(unit);
-					this.GameEntityRepositoryService.Unregister(unit);
-					unit.Dispose();
-				}
-				if (army.Hero != null)
-				{
-					DepartmentOfEducation agency = base.Empire.GetAgency<DepartmentOfEducation>();
-					if (agency != null)
+					for (int j = army.StandardUnits.Count - 1; j >= 0; j--)
 					{
-						agency.UnassignHero(army.Hero);
+						Unit unit = army.StandardUnits[j];
+						army.RemoveUnit(unit);
+						this.GameEntityRepositoryService.Unregister(unit);
+						unit.Dispose();
 					}
+					if (army.Hero != null)
+					{
+						DepartmentOfEducation agency = base.Empire.GetAgency<DepartmentOfEducation>();
+						if (agency != null)
+						{
+							agency.UnassignHero(army.Hero);
+						}
+					}
+					this.RemoveArmy(army, true);
 				}
-				this.RemoveArmy(army, true);
 			}
 		}
 	}
@@ -10882,7 +10875,7 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 						for (int poiIndex = 0; poiIndex < departmentOfTheInterior.Cities[cityIndex].Region.PointOfInterests.Length; poiIndex++)
 						{
 							PointOfInterest poi = departmentOfTheInterior.Cities[cityIndex].Region.PointOfInterests[poiIndex];
-							if (poi.GetPropertyValue(SimulationProperties.DefensivePower) > 0f && poi.CreepingNodeGUID != GameEntityGUID.Zero)
+							if (poi.GetPropertyValue(SimulationProperties.DefensivePower) > 0f && poi.CreepingNodeGUID == GameEntityGUID.Zero)
 							{
 								otherEmpireDepartmentOfDefense.CheckAndSlapArmiesInRange(poi, isImmuneToDefensiveImprovements);
 							}
@@ -11171,17 +11164,14 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		for (int index = this.armies.Count - 1; index >= 0; index--)
 		{
 			Army army = this.armies[index];
-			if (this.ComputeRegenModifier(army, out regenModifier, out pacifiedVillageCount))
+			if ((!(army is KaijuArmy) || (army as KaijuArmy).Kaiju.OnArmyMode()) && this.ComputeRegenModifier(army, out regenModifier, out pacifiedVillageCount))
 			{
 				foreach (Unit unit in army.Units)
 				{
 					DepartmentOfDefense.RegenUnit(unit, regenModifier, pacifiedVillageCount);
 				}
 				army.Refresh(true);
-				if (!(army is KaijuArmy))
-				{
-					this.CleanGarrisonAfterEncounter(army);
-				}
+				this.CleanGarrisonAfterEncounter(army);
 			}
 		}
 		yield break;
@@ -11454,13 +11444,20 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				float propertyValue = unit.GetPropertyValue(SimulationProperties.Health);
 				if (propertyValue <= 0f)
 				{
-					garrison.RemoveUnit(unit);
-					if (unit.UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
+					if (unit.CheckUnitAbility(UnitAbility.ReadonlyIndestructible, -1))
 					{
-						this.EventService.Notify(new EventSettlerDied(garrison.Empire));
+						unit.SetPropertyBaseValue(SimulationProperties.Health, 1f);
 					}
-					this.GameEntityRepositoryService.Unregister(unit);
-					unit.Dispose();
+					else
+					{
+						garrison.RemoveUnit(unit);
+						if (unit.UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
+						{
+							this.EventService.Notify(new EventSettlerDied(garrison.Empire));
+						}
+						this.GameEntityRepositoryService.Unregister(unit);
+						unit.Dispose();
+					}
 				}
 			}
 		}
@@ -11816,14 +11813,14 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 	public delegate void AvailableUnitDesignChangeEventHandler(object sender, ConstructibleElementEventArgs e);
 
 	[CompilerGenerated]
-	private sealed class TryGetValue>c__AnonStorey933
+	private sealed class TryGetValue>c__AnonStorey938
 	{
-		internal bool <>m__3F6(UnitDesign constructibleElement)
+		internal bool <>m__3FA(UnitDesign constructibleElement)
 		{
 			return constructibleElement.FullName == this.unitDesignName;
 		}
 
-		internal bool <>m__3F7(UnitDesign constructibleElement)
+		internal bool <>m__3FB(UnitDesign constructibleElement)
 		{
 			return constructibleElement.FullName == this.unitDesignName;
 		}
@@ -11832,14 +11829,14 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class TryGetValue>c__AnonStorey934
+	private sealed class TryGetValue>c__AnonStorey939
 	{
-		internal bool <>m__3F8(UnitDesign constructibleElement)
+		internal bool <>m__3FC(UnitDesign constructibleElement)
 		{
 			return constructibleElement.Model == this.model && constructibleElement.ModelRevision == this.modelRevision;
 		}
 
-		internal bool <>m__3F9(UnitDesign constructibleElement)
+		internal bool <>m__3FD(UnitDesign constructibleElement)
 		{
 			return constructibleElement.Model == this.model && constructibleElement.ModelRevision == this.modelRevision;
 		}
@@ -11850,9 +11847,9 @@ public class DepartmentOfDefense : Agency, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class CheckWhetherUnitDesignIsValid>c__AnonStorey935
+	private sealed class CheckWhetherUnitDesignIsValid>c__AnonStorey93A
 	{
-		internal bool <>m__3FA(UnitDesign match)
+		internal bool <>m__3FE(UnitDesign match)
 		{
 			return match.Model == this.unitDesign.Model && match.ModelRevision >= this.unitDesign.ModelRevision;
 		}

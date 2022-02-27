@@ -461,56 +461,58 @@ public class AchievementManager : SteamAchievementManager
 
 	private void RuntimeService_RuntimeChange(object sender, RuntimeChangeEventArgs e)
 	{
-		if (e.Action == RuntimeChangeAction.Loading)
+		RuntimeChangeAction action = e.Action;
+		if (action != RuntimeChangeAction.Loading)
 		{
-			return;
-		}
-		if (base.IsDisabled)
-		{
-			Diagnostics.Log("Steam achievements restored.");
-			base.IsDisabled = false;
-		}
-		if (e.Action != RuntimeChangeAction.Loaded)
-		{
-			return;
-		}
-		this.Load();
-		if (base.IsDisabled)
-		{
-			return;
-		}
-		if (e.Action == RuntimeChangeAction.Loaded && e.Runtime != null && e.Runtime.Configuration != null)
-		{
-			RuntimeModule runtimeModule = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Standalone);
-			RuntimeModule runtimeModule2 = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Conversion);
-			RuntimeModule runtimeModule3 = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Extension);
-			RuntimeModule runtimeModule4;
-			if (runtimeModule2 != null)
+			if (base.IsDisabled)
 			{
-				runtimeModule4 = runtimeModule2;
-			}
-			else if (runtimeModule3 != null)
-			{
-				runtimeModule4 = runtimeModule3;
-			}
-			else
-			{
-				runtimeModule4 = runtimeModule;
-				IRuntimeService service = Services.GetService<IRuntimeService>();
-				if (service != null && service.VanillaModuleName == runtimeModule.Name)
-				{
-					runtimeModule4 = null;
-				}
-			}
-			if (runtimeModule4 != null)
-			{
+				Diagnostics.Log("Steam achievements restored.");
 				base.IsDisabled = false;
 			}
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && !Amplitude.Unity.Framework.Application.Preferences.ELCPDevMode)
+			switch (e.Action)
 			{
-				Diagnostics.LogWarning("The network achievement manager has been disabled because the modding tools are enabled...");
-				base.IsDisabled = true;
+			case RuntimeChangeAction.Loaded:
+				this.Load();
+				if (base.IsDisabled)
+				{
+					return;
+				}
+				action = e.Action;
+				if (action == RuntimeChangeAction.Loaded)
+				{
+					if (e.Runtime != null && e.Runtime.Configuration != null)
+					{
+						RuntimeModule runtimeModule = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Standalone);
+						RuntimeModule runtimeModule2 = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Conversion);
+						RuntimeModule runtimeModule3 = e.Runtime.RuntimeModules.FirstOrDefault((RuntimeModule module) => module.Type == RuntimeModuleType.Extension);
+						RuntimeModule runtimeModule4;
+						if (runtimeModule2 != null)
+						{
+							runtimeModule4 = runtimeModule2;
+						}
+						else if (runtimeModule3 != null)
+						{
+							runtimeModule4 = runtimeModule3;
+						}
+						else
+						{
+							runtimeModule4 = runtimeModule;
+							IRuntimeService service = Services.GetService<IRuntimeService>();
+							if (service != null && service.VanillaModuleName == runtimeModule.Name)
+							{
+								runtimeModule4 = null;
+							}
+						}
+						if (runtimeModule4 != null)
+						{
+							Diagnostics.LogWarning("Steam achievements are disabled when playing a modified game.");
+							base.IsDisabled = true;
+						}
+					}
+				}
+				return;
 			}
+			return;
 		}
 	}
 
@@ -2261,11 +2263,6 @@ public class AchievementManager : SteamAchievementManager
 		{
 			this.departmentOfTransportation.ArmyTeleportedToCity -= this.DepartmentOfTransportation_ArmyTeleportedToCity;
 		}
-	}
-
-	public void Disable(bool disable)
-	{
-		base.IsDisabled = disable;
 	}
 
 	private IGameService gameService;

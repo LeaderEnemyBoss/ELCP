@@ -1,0 +1,550 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Datatable xmlns:xsi="http://BrokenLordsw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://BrokenLordsw.w3.org/2001/XMLSchema">
+
+
+
+  <!-- ======================================
+     ========= GLOBAL QUEST COOP 1 ==========
+     ======================================== -->
+  <!--TBD-->
+
+ 
+  
+  <!-- ======================================
+     ========= GLOBAL QUEST COOP 2 ==========
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalQuestCoop#0002" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empires)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (12 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfHumanEmpires) ge ($(NumberOfAIEmpires) - 1)</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfAIEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,
+        !GameDifficultyNewbieHumanMajorEmpire,
+        !GameDifficultyEasyHumanMajorEmpire,
+        !GameDifficultyNormalHumanMajorEmpire,
+        !GameDifficultyHardHumanMajorEmpire,
+        !GameDifficultySeriousHumanMajorEmpire,
+        !GameDifficultyImpossibleHumanMajorEmpire,
+        !GameDifficultyEndlessHumanMajorEmpire,
+        !EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfHumanEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,
+          !GameDifficultyNewbieAIMajorEmpire,
+          !GameDifficultyEasyAIMajorEmpire,
+          !GameDifficultyNormalAIMajorEmpire,
+          !GameDifficultyHardAIMajorEmpire,
+          !GameDifficultySeriousAIMajorEmpire,
+          !GameDifficultyImpossibleAIMajorEmpire,
+          !GameDifficultyEndlessAIMajorEmpire,
+          !EmpireEliminated)</Expression>        
+      </InterpretedVar>
+      
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$NeutralRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsColonized Inverted="true"/>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+      
+      <Var VarName="$DestroyedVillagesRegions">
+        <Limit LimitMin="1" LimitMax="3" Clamp="false">
+          <From Source="$NeutralRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">PointOfInterestTypeVillage,!RebuiltVillage</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$UnpacifiedMinorEmpire">
+        <Any>
+          <From Source="$NeutralRegions.$MinorEmpire">
+            <Where>
+              <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+              <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$MinorEmpireVillages">
+        <From Source="$UnpacifiedMinorEmpire.$Villages"/>
+      </Var>
+
+      <Var VarName="$PlaguedVillagePointOfInterests">
+        <From Source="$MinorEmpireVillages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$VillagePOI">
+        <Any>
+          <From Source="$UnpacifiedMinorEmpire.$Villages.$PointOfInterest"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$UnpacifiedMinorEmpireRegion">
+        <From Source="$MinorEmpireVillages.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFactionName" Source="$UnpacifiedMinorEmpire"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$UnpacifiedMinorEmpireRegion"/>
+
+      <DropListVar VarName="$BestContributorRewardAmount" DropList="DroplistGlobalQuestDust"/>
+      <LocalizationVar LocalizationKey="$FinalContributorReward" Source="$BestContributorRewardAmount"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$PlaguedVillagePointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0002" />
+      <Action_AddQuestMarker TargetEntityVarName="$VillagePOI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$VillagePOIMarker"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="GlobalQuestCoop#0002-Step1" State="InProgress" />
+      <Decorator_VillagesPacified VillagesVarName="$MinorEmpireVillages" TargetOption="All" Initiator="AllEmpires" LinkedStepProgression="GlobalQuestCoop#0002-Step1" />
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$VillagePOIMarker"/>
+      <Action_UpdateStep StepName="GlobalQuestCoop#0002-Step1" State="Completed"/>
+      <Action_RemoveWorldEffect WorldEffectName="QuestWorldEffect#0002" />
+      <Action_UpdateQuest State="Completed"/>
+
+      <Action_LockInteraction TargetVarName="$PlaguedVillagePointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCoop#0002-Step1">
+        <ProgressionRange StartValue="0" EndValue="1"/>
+        <!--Best Contributor-->
+        <Reward DropVar="$BestContributorRewardAmount" MinimumRank="1"/>
+        <Reward LocalizationKey="%GlobalQuestCoopFinalContributorReward" JustForShow="true"/>
+        <!--Cancel: World Effect-->
+        <Reward LocalizationKey="%GlobalQuestCoop#0002-Step1Reward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+
+  <!-- ======================================
+     ========= GLOBAL QUEST COOP 3 ==========
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalQuestCoop#0003" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1" SingleCheckPerTurn="true">
+
+    <!--============ TAGS ============-->-
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 3</InterpreterPrerequisite>
+      
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTitanBonesActivated) ge 1</InterpreterPrerequisite>
+      
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfCommonBoostersActivated) ge (2 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (23 * $(NumberOfEmpires))</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfCommonBoostersActivated" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/CommonLuxuryBooster)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTitanBonesActivated" Target="$(Empires)" UsedInPrerequisites="true"> 
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/EmpireBoosterLuxury10)</Expression> 
+      </InterpretedVar> 
+
+      <DropListVar VarName="$DustRewardAmount" DropList="DroplistCoopQuestDust"/>
+      <DropListVar VarName="$BestContributorRewardAmount" DropList="DroplistGlobalQuestLuxuryResource"/>
+      
+      <LocalizationVar LocalizationKey="$RewardPerContribution" Source="$DustRewardAmount"/>
+      <LocalizationVar LocalizationKey="$BestContributorReward" Source="$BestContributorRewardAmount"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0009" />
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="GlobalQuestCoop#0003-Step1" State="InProgress" />
+      <Controller_Loop LoopCount="10">
+        <Controller_Parallel CompletionPolicy="Any">
+
+          <Controller_Sequence>
+            <Decorator_BoosterActivated BoosterName="BoosterLuxury6" Initiator="AllEmpires" LinkedStepProgression="GlobalQuestCoop#0003-Step1" PrerequisiteVerifiedMessage="%GlobalQuestCoopContributionValidated"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BoosterActivated BoosterName="BoosterLuxury7" Initiator="AllEmpires" LinkedStepProgression="GlobalQuestCoop#0003-Step1" PrerequisiteVerifiedMessage="%GlobalQuestCoopContributionValidated"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BoosterActivated BoosterName="BoosterLuxury8" Initiator="AllEmpires" LinkedStepProgression="GlobalQuestCoop#0003-Step1" PrerequisiteVerifiedMessage="%GlobalQuestCoopContributionValidated"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BoosterActivated BoosterName="BoosterLuxury9" Initiator="AllEmpires" LinkedStepProgression="GlobalQuestCoop#0003-Step1" PrerequisiteVerifiedMessage="%GlobalQuestCoopContributionValidated"/>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BoosterActivated BoosterName="BoosterLuxury10" Initiator="AllEmpires" LinkedStepProgression="GlobalQuestCoop#0003-Step1" PrerequisiteVerifiedMessage="%GlobalQuestCoopContributionValidated"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="GlobalQuestCoop#0003-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+
+      <Action_RemoveWorldEffect WorldEffectName="QuestWorldEffect#0009" />
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCoop#0003-Step1">
+        <ProgressionRange StartValue="0" EndValue="10"/>
+        <!--Per Contribution-->
+        <Reward Droplist="DroplistCoopQuestDust" Progressive="true"/>
+        <Reward LocalizationKey="%GlobalQuestCoopPerContributionReward" JustForShow="true"/>
+        <!--Best Contributor-->
+        <Reward DropVar="$BestContributorRewardAmount" MinimumRank="1"/>
+        <Reward LocalizationKey="%GlobalQuestCoopBestContributorReward" JustForShow="true"/>
+        <!--Cancel: World Effect-->
+        <Reward LocalizationKey="%GlobalQuestCoop#0003-Step1Reward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  
+
+  <!-- ======================================
+     ========= GLOBAL QUEST COOP 4 ==========
+     ======================================== -->
+
+  <QuestDefinition Name="GlobalQuestCoop#0004" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
+
+    <!--============ TAGS ============-->
+    <Tags>BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfStrategicExtractors) ge (3 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (23 * $(NumberOfEmpires))</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfStrategicExtractors" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/ClassCity/ExploitedPointOfInterest,PointOfInterestTypeResourceDeposit,ResourceTypeStrategic)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$NeutralRegions">
+        <Limit LimitMin="1" LimitMax="6" Clamp="false">
+          <From Source="$Regions">
+            <Where>
+              <FilterRegionIsColonized Inverted="true"/>
+              <FilterRegionIsContinent/>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+      
+      <Var VarName="$NeutralRegion1">
+        <Limit LimitMin="1" LimitMax="2">
+          <From Source="$NeutralRegions"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$NeutralRegion2">
+        <Limit LimitMin="3" LimitMax="4">
+          <From Source="$NeutralRegions"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$NeutralRegion3">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$NeutralRegions"/>
+        </Limit>
+      </Var>
+
+      <Var VarName="$NeutralRegionQuestPOI1">
+        <Any>
+          <From Source="$NeutralRegion1.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NeutralRegionQuestPOI2">
+        <Any>
+          <From Source="$NeutralRegion2.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NeutralRegionQuestPOI3">
+        <Any>
+          <From Source="$NeutralRegion3.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$StrategicResourceDepositPointOfInterest1">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeStrategic1</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeStrategic2</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeStrategic5</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeStrategic6</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$NameOfStrategicResourceToGather1">
+        <From Source="$StrategicResourceDepositPointOfInterest1.$ResourceName"/>
+      </Var>
+
+      <DropListVar VarName="$DustRewardAmount" DropList="DroplistCoopQuestDust"/>
+      <DropListVar VarName="$BestContributorRewardAmount" DropList="DroplistGlobalQuestStrategicResource"/>
+
+      <DropListVar VarName="$StrategicResourceAmount1" DropList="DroplistStrategicResourceAmountEra1"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount1" DropList="DroplistStrategicResourceTransfertAmountEra1"/>
+
+      <LocalizationVar LocalizationKey="$StrategicResource3to4" Source="$StrategicResourceDepositPointOfInterest1"/>
+      <LocalizationVar LocalizationKey="$RewardPerContribution" Source="$DustRewardAmount"/>
+      
+      <LocalizationVar LocalizationKey="$BestContributorReward" Source="$BestContributorRewardAmount"/>
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0010" />
+      <Action_LockQuestTarget TargetVarName="$NeutralRegionQuestPOI1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$NeutralRegionQuestPOI2" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$NeutralRegionQuestPOI3" LockOption="Lock"/>
+      
+      <Action_AddQuestMarker TargetEntityVarName="$NeutralRegionQuestPOI1" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$NeutralRegionQuestPOI1Marker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$NeutralRegionQuestPOI2" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$NeutralRegionQuestPOI2Marker"/>
+      <Action_AddQuestMarker TargetEntityVarName="$NeutralRegionQuestPOI3" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$NeutralRegionQuestPOI3Marker"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="GlobalQuestCoop#0004-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Loop LoopCount="5">
+          <Controller_Parallel CompletionPolicy="Any">
+            
+            <Controller_Sequence>
+              <Decorator_Inspect TargetEntityVarName="$NeutralRegionQuestPOI1" Output_InstigatorEmpireIndexVarName="$InstigatorEmpireIndex" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" PrerequisiteVerifiedMessage="%GlobalQuestCoopContributionValidated" LinkedStepProgression="GlobalQuestCoop#0004-Step1" Initiator="AllEmpires">
+                <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather1" WantedAmountVarName="$StrategicResourceAmount1"/>
+              </Decorator_Inspect>
+			  
+              <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather1" AmountVarName="$StrategicResourceTransfertAmount1" EmpireIndexVarName="$InstigatorEmpireIndex"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_Inspect TargetEntityVarName="$NeutralRegionQuestPOI2" Output_InstigatorEmpireIndexVarName="$InstigatorEmpireIndex" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" PrerequisiteVerifiedMessage="%GlobalQuestCoopContributionValidated" LinkedStepProgression="GlobalQuestCoop#0004-Step1" Initiator="AllEmpires">
+                <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather1" WantedAmountVarName="$StrategicResourceAmount1"/>
+              </Decorator_Inspect>
+			  
+              <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather1" AmountVarName="$StrategicResourceTransfertAmount1" EmpireIndexVarName="$InstigatorEmpireIndex"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_Inspect TargetEntityVarName="$NeutralRegionQuestPOI3" Output_InstigatorEmpireIndexVarName="$InstigatorEmpireIndex" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" PrerequisiteVerifiedMessage="%GlobalQuestCoopContributionValidated" LinkedStepProgression="GlobalQuestCoop#0004-Step1" Initiator="AllEmpires">
+                <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather1" WantedAmountVarName="$StrategicResourceAmount1"/>
+              </Decorator_Inspect>
+			  
+              <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather1" AmountVarName="$StrategicResourceTransfertAmount1" EmpireIndexVarName="$InstigatorEmpireIndex"/>
+            </Controller_Sequence>
+            
+          </Controller_Parallel>
+        </Controller_Loop>
+
+        <Controller_Parallel CompletionPolicy="Any">
+          
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$NeutralRegionQuestPOI1" Initiator="AllEmpires">
+              <ConditionCheck_IsStepProgressionComplete StepName="GlobalQuestCoop#0004-Step1"/>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+          
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$NeutralRegionQuestPOI2" Initiator="AllEmpires">
+              <ConditionCheck_IsStepProgressionComplete StepName="GlobalQuestCoop#0004-Step1"/>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+          
+          <Controller_Sequence>
+            <Decorator_Inspect TargetEntityVarName="$NeutralRegionQuestPOI3" Initiator="AllEmpires">
+              <ConditionCheck_IsStepProgressionComplete StepName="GlobalQuestCoop#0004-Step1"/>
+            </Decorator_Inspect>
+          </Controller_Sequence>
+          
+        </Controller_Parallel>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="GlobalQuestCoop#0004-Step1" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+      
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$NeutralRegionQuestPOI1Marker"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$NeutralRegionQuestPOI2Marker"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$NeutralRegionQuestPOI3Marker"/>
+
+      <Action_LockQuestTarget TargetVarName="$NeutralRegionQuestPOI1" LockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$NeutralRegionQuestPOI2" LockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$NeutralRegionQuestPOI3" LockOption="Unlock"/>
+      
+      <Action_RemoveWorldEffect WorldEffectName="QuestWorldEffect#0010" />
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="GlobalQuestCoop#0004-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <!--Per Contribution-->
+        <Reward Droplist="DroplistCoopQuestDust" Progressive="true"/>
+        <Reward LocalizationKey="%GlobalQuestCoopPerContributionReward" JustForShow="true"/>
+        <!--Best Contributor-->
+        <Reward DropVar="$BestContributorRewardAmount" MinimumRank="1"/>
+        <Reward LocalizationKey="%GlobalQuestCoopBestContributorReward" JustForShow="true"/>
+        <!--Cancel: World Effect-->
+        <Reward LocalizationKey="%GlobalQuestCoop#0004-Step1Reward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+
+  
+  
+  <!--Template below-->
+
+  <!-- ======================================
+     ===== GLOBAL QUEST COOP Template =======
+     ======================================== -->
+
+  <!--<QuestDefinition Name="GlobalQuestCoop#0002Template" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="1">
+
+    --><!--============ TAGS ============--><!--
+    <Tags>Inspect</Tags>
+
+    --><!--============ PREREQUISITES ============--><!--
+    <Prerequisites Target="$(Empires)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    </Prerequisites>
+
+    --><!--============ VARIABLES ============--><!--
+    <Vars>
+
+      <Var VarName="$3NeutralRegions">
+        <Limit LimitMin="1" LimitMax="4">
+          <From Source="$Regions">
+            <Where>
+              <FilterRegionIsColonized Inverted="true"/>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+    </Vars>
+
+    --><!--============ SEQUENCE ============--><!--
+
+    <Controller_Sequence>
+
+      <Action_ApplyWorldEffect WorldEffectName="QuestWorldEffect#0002" />
+
+      <Action_UpdateStep StepName="GlobalQuestCoop#0002-Step1" State="InProgress" />
+      <Action_UpdateStep StepName="GlobalQuestCoop#0002-Step1" State="Completed"/>
+
+      <Action_RemoveWorldEffect WorldEffectName="QuestWorldEffect#0002" />
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+
+    --><!--============ REWARDS ============--><!--
+    <Steps>
+      <Step Name="GlobalQuestCoop#0002-Step1">
+        <Reward LocalizationKey="%GlobalQuestCoop#0002-Step1Reward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>-->
+
+
+
+</Datatable>

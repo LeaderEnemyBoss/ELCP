@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <TechnologyEraDefinition Name="TechnologyEraDefinition1" TechnologyEraNumber="1">
+    <SimulationDescriptorReference Name="TechnologyEra1"/>
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponIronMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponTier1" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorIronMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorTier1" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier1" />
+  </TechnologyEraDefinition>
+
+  <!-- TechnologyDefinition Visibility attribute:
+        ="Visible" (default): the tech appears in the tech tree (if the other prerequisites are met) and can be researched (when the tech's era has been unlocked);
+        ="VisibleWhenUnlocked": the tech is hidden until obtained by other means (by quests);
+        ="Hidden": the tech will always remain hidden (used for some starting elements, like settlers).
+  -->
+
+  <!-- Era 1 reduction cost:
+        This next line is used for reduction costs on Era 1 (Era1CostMultiplier). If used, it should appear on all visible techs.
+        <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  -->
+
+  <!-- For Affinity-based techs, add this next line (with the corresponding faction tag) :
+    <PathPrerequisite Flags="Prerequisite,Discard">EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+  -->
+
+  <!-- For Prerequisites between techs (like in Endless Space) :
+    <InterpreterPrerequisite Flags="TechnologyDependency">$Path(EmpireTypeMajor/ClassResearch,Technology1) or $Path(EmpireTypeMajor/ClassResearch,Technology2)</InterpreterPrerequisite>
+  -->
+
+
+
+  <!-- ################################# -->
+  <!-- ##########  WONDERS  ############ -->
+  <!-- ################################# -->
+
+  <!-- Building: Wonders -->
+  <TechnologyDefinition  Name="TechnologyDefinitionWonder1"                                                        Visibility="Hidden">
+    <UnlockCategoryOverride Category="PointOfInterestImprovement" SubCategory="SubCategoryWonder"/>
+    <SimulationDescriptorReference Name="OnlyOnePerEmpire" />
+    <SimulationDescriptorReference Name="TechnologyWonder1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionWonder2"                                                        Visibility="Hidden">
+    <UnlockCategoryOverride Category="PointOfInterestImprovement" SubCategory="SubCategoryWonder"/>
+    <SimulationDescriptorReference Name="OnlyOnePerEmpire" />
+    <SimulationDescriptorReference Name="TechnologyWonder2" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionWonder3"                                                        Visibility="Hidden">
+    <UnlockCategoryOverride Category="PointOfInterestImprovement" SubCategory="SubCategoryWonder"/>
+    <SimulationDescriptorReference Name="OnlyOnePerEmpire" />
+    <SimulationDescriptorReference Name="TechnologyWonder3" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionWonder4"                                                        Visibility="Hidden">
+    <UnlockCategoryOverride Category="PointOfInterestImprovement" SubCategory="SubCategoryWonder"/>
+    <SimulationDescriptorReference Name="OnlyOnePerEmpire" />
+    <SimulationDescriptorReference Name="TechnologyWonder4" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionWonder5"                                                        Visibility="Hidden">
+    <UnlockCategoryOverride Category="PointOfInterestImprovement" SubCategory="SubCategoryWonder"/>
+    <SimulationDescriptorReference Name="OnlyOnePerEmpire" />
+    <SimulationDescriptorReference Name="TechnologyWonder5" />
+  </TechnologyDefinition>
+
+
+  <!-- ################################# -->
+  <!-- #######  Starting Techs  ######## -->
+  <!-- ################################# -->
+
+  <!-- [Hidden] Empire bonus: Settler -->
+  <TechnologyDefinition  Name="TechnologyDefinitionSettler"                                                        Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologySettler"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- [Hidden] Improvement: Conversion IND-Food -->
+  <TechnologyDefinition  Name="TechnologyDefinitionBoosterFood"                                                    Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyBoosterFood" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- [Hidden] Improvement: Conversion IND-Industry -->
+  <TechnologyDefinition  Name="TechnologyDefinitionBoosterIndustry"                                                Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyBoosterIndustry" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- [Hidden] Improvement: Conversion IND-Science -->
+  <TechnologyDefinition  Name="TechnologyDefinitionBoosterScience"                                                 Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyBoosterScience" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+  </TechnologyDefinition>
+
+
+
+  <!-- ################################# -->
+  <!-- #########  Era 1 Techs  ######### -->
+  <!-- ################################# -->
+
+  <!-- Improvement: Food0 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionFood0"                         TechnologyFlags="Unique">
+    <SimulationDescriptorReference Name="TechnologyFood0"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Industry0 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionIndustry0">
+    <SimulationDescriptorReference Name="TechnologyIndustry0"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Dust0 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionDust0">
+    <SimulationDescriptorReference Name="TechnologyDust0"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Double unlock : Improvements Dust1 & Dust7 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionDust1">
+    <SimulationDescriptorReference Name="TechnologyDust1"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Science0 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionScience0">
+    <SimulationDescriptorReference Name="TechnologyScience0"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Science8 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionScience8"                      TechnologyFlags="Unique">
+    <SimulationDescriptorReference Name="TechnologyScience8"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Improvement: Approval 1 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionApproval1">
+    <SimulationDescriptorReference Name="TechnologyApproval1" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Double unlock : Improvements Defense1 & Defense5 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionDefense1">
+    <UnlockCategoryOverride Category="CityImprovement" SubCategory="SubCategoryMilitary"/>
+    <SimulationDescriptorReference Name="TechnologyDefense1"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Region building: Luxury extraction (common) -->
+  <TechnologyDefinition  Name="TechnologyDefinitionLuxuryExtractionCommon">
+    <SimulationDescriptorReference Name="TechnologyLuxuryExtractionCommon"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Region building: Strategic resource extraction (Common) -->
+  <TechnologyDefinition  Name="TechnologyDefinitionStrategicExtractionCommon">
+    <SimulationDescriptorReference Name="TechnologyStrategicExtractionCommon"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Search Bonus -->
+  <TechnologyDefinition  Name="TechnologyDefinitionSearchBonus">
+    <UnlockCategoryOverride Category="ArmyAction" SubCategory="SubCategoryArmyActionSearch"/>
+    <SimulationDescriptorReference Name="TechnologySearchBonus"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Map action: Talk -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMapActionParley">
+    <UnlockCategoryOverride Category="ArmyAction" SubCategory="SubCategoryArmyActionParleyAndBribe"/>
+    <SimulationDescriptorReference Name="TechnologyMapActionParley" />
+    <SimulationDescriptorReference Name="TechnologyMapActionBribe" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Weapon Common Tier 1 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionWeaponCommonTier1">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryWeapon"/>
+    <SimulationDescriptorReference Name="TechnologyWeaponCommonTier1" />
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponCommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockWeaponTier1" />
+    <SimulationDescriptorReference Name="TechnologyMasteryCommonBonus1" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Armor Common Tier 1 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionArmorCommonTier1">
+    <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryArmor"/>
+    <SimulationDescriptorReference Name="TechnologyArmorCommonTier1" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorCommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorTier1" />
+    <SimulationDescriptorReference Name="TechnologyAccessoryCommonTier1" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryCommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier1" />
+    <SimulationDescriptorReference Name="TechnologyMasteryCommonBonus2" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Marketplace : Mercenaries -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMarketplaceMercenaries">
+    <UnlockCategoryOverride Category="Marketplace" SubCategory="SubCategoryUnit"/>
+    <SimulationDescriptorReference Name="TechnologyMarketplaceMercenaries" />
+    <SimulationDescriptorReference Name="TechnologyMarketplaceHeroes" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Empire bonus: Map action: Pillage -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMapActionPillage">
+    <UnlockCategoryOverride Category="ArmyAction" SubCategory="SubCategoryPillage"/>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyMapActionPillage" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Fomorians Interceptor: "Boarding Vessel" -->
+  <TechnologyDefinition  Name="TechnologyDefinitionNavalUnit1">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyNavalUnit1" />
+    <SimulationDescriptorReference Name="SeaNeeded" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+  </TechnologyDefinition>
+
+
+
+  <!-- ############################# -->
+  <!-- #### Era1 Faction techs ##### -->
+  <!-- ############################# -->
+
+  <!-- Unit#2 for each faction -->
+  <TechnologyDefinition  Name="TechnologyDefinitionBrokenLordsUnit2"              TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyBrokenLordsUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMadFairiesUnit2"               TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyMadFairiesUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityMadFairies</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionRageWizardsUnit2"              TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyRageWizardsUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityRageWizards</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionNecrophagesUnit2"              TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyNecrophagesUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityNecrophages</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionVaultersUnit2"                 TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyVaultersUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityVaulters</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionRovingClansUnit2"              TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyRovingClansUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityRovingClans</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionDrakkensUnit2"                 TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyDrakkensUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityDrakkens</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionCultistsUnit2"                 TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyCultistsUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityCultists</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMezariUnit2"                   TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyMezariUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityMezari</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionReplicantsUnit2"               TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyReplicantsUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionWinterShiftersUnit2"           TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyWinterShiftersUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityWinterShifters</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionSeaDemonsUnit2"                TechnologyFlags="Affinity">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologySeaDemonsUnit2"/>
+    <SimulationDescriptorReference Name="SeaNeeded" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinitySeaDemons</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionFlamesUnit2"                 TechnologyFlags="Affinity">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyFlamesUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityFlames</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMimicsUnit2"                 TechnologyFlags="Affinity">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyMimicsUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityMimics</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+  
+  <TechnologyDefinition  Name="TechnologyDefinitionTutorialUnit2"                 TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyTutorialUnit2"/>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityTutorial</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionTutorialUnit1"                 TechnologyFlags="Affinity"       Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyTutorialUnit1"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityTutorial</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/Garrison/TechnologyTutorialUnit1) lt 2</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionTutorialSettler"               TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyTutorialSettler"/>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityTutorial</PathPrerequisite>
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+  </TechnologyDefinition>
+
+  <!-- Rage Wizards Starting tech: Pillar 1 / Spell 1 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionRageWizards7"                  TechnologyFlags="Affinity">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryArcana"/>
+    <SimulationDescriptorReference Name="TechnologyRageWizards7" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,FactionTraitRageWizards7</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Rage Wizards Starting tech: Pillar 2 / Spell 2 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionRageWizards8"                  TechnologyFlags="Affinity">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryArcana"/>
+    <SimulationDescriptorReference Name="TechnologyRageWizards8" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,FactionTraitRageWizards8</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Drakkens Ancient Knowledge -->
+  <TechnologyDefinition  Name="TechnologyDefinitionDrakkens7"                     TechnologyFlags="Affinity"      Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyDrakkens7"/>
+  </TechnologyDefinition>
+
+  <!-- Drakkens: Assimilation limit max 1 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionAssimilationLimitMax1Drakkens" TechnologyFlags="Affinity">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryMinorFactions"/>
+    <SimulationDescriptorReference Name="TechnologyAssimilationLimitMax1" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,AffinityDrakkens</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- [Hidden] Empire limit to 2 units (TUTORIAL) -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMezari1"                       TechnologyFlags="Affinity"       Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMezari1"/>
+  </TechnologyDefinition>
+
+  <!-- [Hidden] Unlock Founder's memorial when needed (TUTORIAL)  -->
+  <TechnologyDefinition  Name="TechnologyDefinitionUnlockFounderTutorial"                                          Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyUnlockFounderTutorial"/>
+  </TechnologyDefinition>
+
+  <!-- [Hidden] Unlock Luxury extractor when needed (TUTORIAL)  -->
+  <TechnologyDefinition  Name="TechnologyDefinitionUnlockLuxuryExtractorTutorial"                                  Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyUnlockLuxuryExtractorTutorial"/>
+  </TechnologyDefinition>
+
+  <!-- [Hidden] Unlock Strategic Extractor when needed (TUTORIAL)  -->
+  <TechnologyDefinition  Name="TechnologyDefinitionUnlockStrategicExtractorTutorial"                               Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyUnlockStrategicExtractorTutorial"/>
+  </TechnologyDefinition>
+
+  <!-- Winter Shifters Quest Fake Tech Chapter 5 -->
+  <TechnologyDefinition  Name="TechnologyDefinitionOrbUnlock16WinterShifters"                                      Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyOrbUnlock16WinterShifters" />
+  </TechnologyDefinition>
+
+  <!-- Replicants Affinity: Dust Sense -->
+  <TechnologyDefinition  Name="TechnologyDefinitionReplicants7"                   TechnologyFlags="Affinity">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryPillage"/>
+    <SimulationDescriptorReference Name="TechnologyReplicants7" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,FactionTraitReplicants7</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Fortress Commander -->
+  <TechnologyDefinition  Name="TechnologyDefinitionSeaDemons8"                    TechnologyFlags="Affinity">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryEmpirePoint"/>
+    <SimulationDescriptorReference Name="TechnologySeaDemons8" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,FactionTraitSeaDemons8</PathPrerequisite>
+  </TechnologyDefinition>
+
+  <!-- Golem Workers
+  <TechnologyDefinition  Name="TechnologyDefinitionFlames2"                    TechnologyFlags="Affinity">
+    <SimulationDescriptorReference Name="TechnologyFlames2" />
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,FactionTraitFlames2</PathPrerequisite>
+  </TechnologyDefinition> -->
+
+
+  <!-- ################################# -->
+  <!-- #### Era1 Quest reward techs #### -->
+  <!-- ################################# -->
+
+  <!-- Mad Fairies Tech: Empire Bonus  -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMadFairies4"                   TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryEmpirePoint"/>
+    <SimulationDescriptorReference Name="TechnologyMadFairies4"/>
+  </TechnologyDefinition>
+
+  <!-- Broken Lords Quest Reward: Empire Bonus -->
+  <TechnologyDefinition  Name="TechnologyDefinitionBrokenLords4"                  TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryScience"/>
+    <SimulationDescriptorReference Name="TechnologyBrokenLords4"/>
+  </TechnologyDefinition>
+
+  <!-- Roving Clans Quest Reward: City Improvement -->
+  <TechnologyDefinition  Name="TechnologyDefinitionRovingClans2"                  TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <SimulationDescriptorReference Name="TechnologyRovingClans2" />
+  </TechnologyDefinition>
+
+  <!-- Drakkens Quest Reward: +3 Influence per pacified villages in Region -->
+  <TechnologyDefinition  Name="TechnologyDefinitionDrakkens1"                     TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryEmpirePoint"/>
+    <SimulationDescriptorReference Name="TechnologyDrakkens1" />
+  </TechnologyDefinition>
+
+  <!-- [292] Hidden Side Quest Technology unlocking a reward (+1 resource per common luxury extractor) -->
+  <TechnologyDefinition  Name="TechnologyDefinitionQuestReward2"                  TechnologyFlags="Quest"          Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryResources"/>
+    <SimulationDescriptorReference Name="TechnologyQuestReward2" />
+  </TechnologyDefinition>
+
+  <!-- Winter Shifters Quest Reward Chapter ?: Pilgrims of the End -->
+  <TechnologyDefinition  Name="TechnologyDefinitionWinterShifters9"               TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryEmpirePoint"/>
+    <SimulationDescriptorReference Name="TechnologyWinterShifters9" />
+  </TechnologyDefinition>
+
+
+
+  <!-- ################################# -->
+  <!-- ######  Era1 Quest Items  ####### -->
+  <!-- ################################# -->
+
+  <!-- Faction Quest Rewards: Items -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMadFairies7"                                                    Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMadFairies7"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionBrokenLords9"                                                   Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyBrokenLords9"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionBrokenLords10"                                                  Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyBrokenLords10"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionBrokenLords11"                                                  Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyBrokenLords11"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionBrokenLords12"                                                  Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyBrokenLords12"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionBrokenLords13"                                                  Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyBrokenLords13"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionVaulters8"                                                      Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyVaulters8" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionNecrophages13"                                                  Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyNecrophages13" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionRageWizards1"                                                   Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyRageWizards1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionRovingClans1"                                                   Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyRovingClans1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionDrakkens3"                                                      Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyDrakkens3" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionCultists1"                                                      Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyCultists1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionCultists2"                                                      Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyCultists2" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionWinterShifters13"                                               Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyWinterShifters13" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionVictory2"                                                       Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyVictory2" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionFlames11"                                                       Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyFlames11"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMimicsQuest1"                                                   Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMimicsQuest1"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMimicsQuest2"                                                   Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMimicsQuest2"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionKaijuHead"                                                      Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyKaijuHead"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionKaijuTorso"                                                     Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyKaijuTorso"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionKaijuLegs"                                                      Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyKaijuLegs"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionKaijuKiller"                                                    Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyKaijuKiller"/>
+  </TechnologyDefinition>
+  
+  <!--To increase Victory Quest Chapter Progression every time one of the following Tech is unlocked-->
+  <TechnologyDefinition  Name="TechnologyVictoryQuestChapterCountIncrease1"                 InvisibleReward="true" Visibility="Hidden">
+    <SimulationDescriptorReference Name="VictoryQuestChapterCountIncrease1" />
+  </TechnologyDefinition>
+  <TechnologyDefinition  Name="TechnologyVictoryQuestChapterCountIncrease2"                 InvisibleReward="true" Visibility="Hidden">
+    <SimulationDescriptorReference Name="VictoryQuestChapterCountIncrease2" />
+  </TechnologyDefinition>
+  <TechnologyDefinition  Name="TechnologyVictoryQuestChapterCountIncrease3"                 InvisibleReward="true" Visibility="Hidden">
+    <SimulationDescriptorReference Name="VictoryQuestChapterCountIncrease3" />
+  </TechnologyDefinition>
+  <TechnologyDefinition  Name="TechnologyVictoryQuestChapterCountIncrease4"                 InvisibleReward="true" Visibility="Hidden">
+    <SimulationDescriptorReference Name="VictoryQuestChapterCountIncrease4" />
+  </TechnologyDefinition>
+  <TechnologyDefinition  Name="TechnologyVictoryQuestChapterCountIncrease5"                 InvisibleReward="true" Visibility="Hidden">
+    <SimulationDescriptorReference Name="VictoryQuestChapterCountIncrease5" />
+  </TechnologyDefinition>
+  <TechnologyDefinition  Name="TechnologyVictoryQuestChapterCountIncrease6"                 InvisibleReward="true" Visibility="Hidden">
+    <SimulationDescriptorReference Name="VictoryQuestChapterCountIncrease6" />
+  </TechnologyDefinition>
+
+  <!--HALLOWEEN side quest: Item Reward-->
+  <TechnologyDefinition  Name="TechnologyDefinitionItemRingStrategic4Tier4SideQuest1"                              Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemRingStrategic4Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <!--Free Weekend Reward: Dust Insignia-->
+  <TechnologyDefinition  Name="TechnologyDefinitionItemInsigniaDustTier4"                                          Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemInsigniaDustTier4" />
+  </TechnologyDefinition>
+
+  <!--Free Weekend Reward: Dust Ring-->
+  <TechnologyDefinition  Name="TechnologyDefinitionItemRingDustTier4"                                              Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemRingDustTier4" />
+  </TechnologyDefinition>
+
+  <!--Quest Rewards: Weapons-->
+  <TechnologyDefinition  Name="TechnologyDefinitionItemSword1Strategic4Tier4SideQuest1"                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemSword1Strategic4Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemSword2Strategic2Tier4SideQuest1"                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemSword2Strategic2Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemSword2DustTier4"                                            Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemSword2DustTier4" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemBow2Strategic4Tier4SideQuest1"                              Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemBow2Strategic4Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemBow2Strategic3Tier4SideQuest1"                              Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemBow2Strategic3Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemCrossbow1Strategic1Tier4SideQuest1"                         Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemCrossbow1Strategic1Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemCrossbow1Strategic2Tier4SideQuest1"                         Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemCrossbow1Strategic2Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemShield1Strategic1Tier4SideQuest1"                           Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemShield1Strategic1Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemShield1Strategic3Tier4SideQuest1"                           Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemShield1Strategic3Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemStaff2Strategic1Tier4SideQuest1"                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemStaff2Strategic1Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemScepter2Strategic3Tier4SideQuest1"                          Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemScepter2Strategic3Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemScepter2Strategic4Tier4SideQuest1"                          Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemScepter2Strategic4Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemAxe2Strategic5Tier4SideQuest1"                              Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemAxe2Strategic5Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemSword1Strategic6Tier4SideQuest1"                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemSword1Strategic6Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemStaff2Strategic6Tier4SideQuest1"                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemStaff2Strategic6Tier4SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionReplicants8"                                                    Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyReplicants8" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemSword1Strategic5Tier4Quest1"                                Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemSword1Strategic5Tier4Quest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemShield1Strategic2Tier4Quest1"                               Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemShield1Strategic2Tier4Quest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemHammerFlamesQuestReward"                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemHammerFlamesQuestReward" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemSwordMimicsQuestReward"                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemSwordMimicQuestReward" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyLiceUnits"                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyDescriptorLiceUnits" />
+  </TechnologyDefinition>
+  
+  <!-- Quest Rewards: Armors -->
+  <TechnologyDefinition  Name="TechnologyDefinitionItemHeadStrategic1Tier2SideQuest1"                              Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemHeadStrategic1Tier2SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemHeadStrategic2Tier2SideQuest1"                              Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemHeadStrategic2Tier2SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemTorsoStrategic1Tier2SideQuest1"                             Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemTorsoStrategic1Tier2SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemTorsoStrategic2Tier2SideQuest1"                             Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemTorsoStrategic2Tier2SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemLegsStrategic1Tier2SideQuest1"                              Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemLegsStrategic1Tier2SideQuest1" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemLegsStrategic2Tier2SideQuest1"                              Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyItemLegsStrategic2Tier2SideQuest1" />
+  </TechnologyDefinition>
+
+  <!-- Quest Tutorial  -->
+  <TechnologyDefinition  Name="TechnologyDefinitionTutorialUnlockResearch"                                         Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyTutorialUnlockResearch" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionTutorialUnlockQuest"                                            Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyTutorialUnlockQuest" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionTutorialUnlockEmpire"                                           Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyTutorialUnlockEmpire" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionTutorialUnlockMilitary"                                         Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyTutorialUnlockMilitary" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionTutorialUnlockAcademy"                                          Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyTutorialUnlockAcademy" />
+  </TechnologyDefinition>
+
+  <!-- Quest Rewards: Naval equipment -->
+  <TechnologyDefinition  Name="TechnologyDefinitionItemSatchelChargesQuest"                                        Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemSatchelChargesQuest" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemEndlessFlamesQuest"                                         Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemEndlessFlamesQuest" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemTrebuchetQuest"                                             Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemTrebuchetQuest" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemPlatingQuest"                                               Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemPlatingQuest" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemHydrofoilsQuest"                                            Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemHydrofoilsQuest" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemProwQuest"                                                  Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemProwQuest" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemEngineerQuest"                                              Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemEngineerQuest" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemEngineerQuest2"                                             Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemEngineerQuest2" />
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionItemOrdinatorQuest"                                             Visibility="Hidden">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyItemOrdinatorQuest" />
+  </TechnologyDefinition>
+
+
+
+  <!-- ########################################## -->
+  <!-- ########          MEDALS          ######## -->
+  <!-- ########################################## -->
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMedalEra1MilitaryReward"       TechnologyFlags="Medal"          Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryUnit"/>
+    <SimulationDescriptorReference Name="TechnologyMedalEra1MilitaryReward"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMedalEra2DiplomacyReward"                                       Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMedalEra2DiplomacyReward"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMedalEra2MilitaryReward"                                        Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMedalEra2MilitaryReward"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMedalEra3HeroesReward"         TechnologyFlags="Medal"          Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryHeal"/>
+    <SimulationDescriptorReference Name="TechnologyMedalEra3HeroesReward"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMedalEra4EconomyReward"                                         Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMedalEra4EconomyReward"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMedalEra4MilitaryReward"                                        Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMedalEra4MilitaryReward"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMedalEra5EconomyReward"        TechnologyFlags="Medal"          Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryApproval"/>
+    <SimulationDescriptorReference Name="TechnologyMedalEra5EconomyReward"/>
+  </TechnologyDefinition>
+
+  <TechnologyDefinition  Name="TechnologyDefinitionMedalEra5HeroesReward"                                          Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMedalEra5HeroesReward"/>
+  </TechnologyDefinition>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######          DEPRECATED          ###### -->
+  <!-- ########################################## -->
+
+  <!-- To remove for the Release Master -->
+  <!-- Mad Fairies Tech: Empire Bonus  -->
+  <TechnologyDefinition  Name="TechnologyDefinitionCustomTrait2"                  TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="CityImprovement" SubCategory="SubCategoryEmpirePoint"/>
+    <SimulationDescriptorReference Name="TechnologyMadFairies4"/>
+  </TechnologyDefinition>
+
+  <!-- Faction Quest Rewards: Items -->
+  <TechnologyDefinition  Name="TechnologyDefinitionMadFairies1"                                                    Visibility="Hidden">
+    <SimulationDescriptorReference Name="TechnologyMadFairiesItem1"/>
+  </TechnologyDefinition>
+
+  <!-- Broken Lords Quest Reward: Empire Bonus -->
+  <TechnologyDefinition  Name="TechnologyDefinitionCustomTrait1"                  TechnologyFlags="Affinity Quest" Visibility="VisibleWhenUnlocked">
+    <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryScience"/>
+    <SimulationDescriptorReference Name="TechnologyCustomTrait1"/>
+  </TechnologyDefinition>
+
+</Datatable>

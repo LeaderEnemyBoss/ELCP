@@ -11,7 +11,7 @@
   <SimulationDescriptor Name="TerrainTagWater"    Type="TerrainTag">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="AIHasWaterTileInCity"       Operation="Addition" Value="1"  Path="./ClassCity" TooltipHidden="true"/>
-      <SimulationModifierDescriptor TargetProperty="DistrictFood"               Operation="Addition" Value="1"  Path="!TerrainTagVolcanic"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"               Operation="Addition" Value="1"  />
       <SimulationModifierDescriptor TargetProperty="DistrictDust"               Operation="Addition" Value="1"  />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -36,7 +36,6 @@
 
   <SimulationDescriptor Name="TerrainTagVolcanic"     Type="TerrainTag">
     <SimulationModifierDescriptors>
-	  <BinarySimulationModifierDescriptor TargetProperty="AIHasAnyVolcanicCity"        Operation="Addition"  Left="$(IsNotConvertedVillageDistrict)"  BinaryOperation="Multiplication"  Right="1"     Path="../ClassEmpire"   TooltipHidden="true"/>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry"   Operation="Addition" Value="1"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>

@@ -1,0 +1,2003 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="ItemDefinitions.xsl"?>
+
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################ -->
+  <!-- #######     WEAPON       ####### -->
+  <!-- ################################ -->
+
+  <!-- ########### Sword 1 ########### -->
+  <ItemDefinition Name="ItemSword1Base" Hidden="true" SubCategory="SubCategorySword1">
+    <!-- Item Category -->
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <!-- Item Class -->
+    <SimulationDescriptorReference Name="ItemClassSword1" />
+    <!-- Production Cost -->
+    <Cost ResourceName="Production">0</Cost>
+    <!-- Item Slots used -->
+    <Slot Name="MainHand"/>
+    <Slot Name="OffHand">
+      <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,UnitAbilityDualWield</PathPrerequisite>
+    </Slot>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotSword1</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSword1BaseTier0" Hidden="true" SubCategory="SubCategorySword1">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSword1Base"/>
+    <!-- Item Tier -->
+    <!-- Tier 0 Attributes Modifiers -->
+    <SimulationDescriptorReference Name="ItemAttributesSword1BaseTier0" />
+    <!-- Additional Production Cost for Tier 0-->
+    <Cost ResourceName="Production">0</Cost>
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemSword1BaseTier1" Hidden="true" SubCategory="SubCategorySword1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSword1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSword1BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityWarriorSlayer" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSword1BaseTier2" Hidden="true" SubCategory="SubCategorySword1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSword1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSword1BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityWarriorSlayer" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSword1BaseTier3" Hidden="true" SubCategory="SubCategorySword1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSword1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSword1BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityWarriorSlayer" Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Sword 2 ########### -->
+  <ItemDefinition Name="ItemSword2Base" Hidden="true" SubCategory="SubCategorySword2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassSword2" />
+    <Slot Name="MainHand;OffHand"/>   
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotSword2</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSword2BaseTier0" Hidden="true" SubCategory="SubCategorySword2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSword2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSword2BaseTier0" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSword2BaseTier1" Hidden="true" SubCategory="SubCategorySword2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSword2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSword2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityWarriorSlayer" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSword2BaseTier2" Hidden="true" SubCategory="SubCategorySword2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSword2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSword2BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityWarriorSlayer" Level="2"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSword2BaseTier3" Hidden="true" SubCategory="SubCategorySword2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSword2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSword2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityWarriorSlayer" Level="3"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Axe 1 ########### -->
+  <ItemDefinition Name="ItemAxe1Base" Hidden="true" SubCategory="SubCategoryAxe1">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassAxe1" />
+    <Slot Name="MainHand"/>
+    <Slot Name="OffHand">
+      <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,UnitAbilityDualWield</PathPrerequisite>
+    </Slot>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotAxe1</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemAxe1BaseTier0" Hidden="true" SubCategory="SubCategoryAxe1">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAxe1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesAxe1BaseTier0" />
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemAxe1BaseTier1" Hidden="true" SubCategory="SubCategoryAxe1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAxe1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesAxe1BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityRangeSlayer" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemAxe1BaseTier2" Hidden="true" SubCategory="SubCategoryAxe1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAxe1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesAxe1BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityRangeSlayer" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemAxe1BaseTier3" Hidden="true" SubCategory="SubCategoryAxe1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAxe1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesAxe1BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityRangeSlayer" Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Axe 2 ########### -->
+  <ItemDefinition Name="ItemAxe2Base" Hidden="true" SubCategory="SubCategoryAxe2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassAxe2" />
+    <Slot Name="MainHand;OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotAxe2</PathPrerequisite>
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemAxe2BaseTier0" Hidden="true" SubCategory="SubCategoryAxe2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAxe2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesAxe2BaseTier0" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemAxe2BaseTier1" Hidden="true" SubCategory="SubCategoryAxe2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAxe2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesAxe2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityRangeSlayer" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemAxe2BaseTier2" Hidden="true" SubCategory="SubCategoryAxe2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAxe2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesAxe2BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityRangeSlayer" Level="2"/>
+  </ItemDefinition>
+  
+  <ItemDefinition Name="ItemAxe2BaseTier3" Hidden="true" SubCategory="SubCategoryAxe2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAxe2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesAxe2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityRangeSlayer" Level="3"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Hammer 1 ########### -->
+  <ItemDefinition Name="ItemHammer1Base" Hidden="true" SubCategory="SubCategoryHammer1">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassHammer1" />
+    <Slot Name="MainHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotHammer1</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHammer1BaseTier0" Hidden="true" SubCategory="SubCategoryHammer1">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHammer1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesHammer1BaseTier0" />
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemHammer1BaseTier1" Hidden="true" SubCategory="SubCategoryHammer1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHammer1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesHammer1BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityStun" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHammer1BaseTier2" Hidden="true" SubCategory="SubCategoryHammer1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHammer1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesHammer1BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityStun" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHammer1BaseTier3" Hidden="true" SubCategory="SubCategoryHammer1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHammer1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesHammer1BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityStun" Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Hammer 2 ########### -->
+  <ItemDefinition Name="ItemHammer2Base" Hidden="true" SubCategory="SubCategoryHammer2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassHammer2" />
+    <Cost ResourceName="Production">0</Cost>
+    <Slot Name="MainHand;OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotHammer2</PathPrerequisite>
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemHammer2BaseTier0" Hidden="true" SubCategory="SubCategoryHammer2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHammer2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesHammer2BaseTier0" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHammer2BaseTier1" Hidden="true" SubCategory="SubCategoryHammer2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHammer2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesHammer2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityStun" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHammer2BaseTier2" Hidden="true" SubCategory="SubCategoryHammer2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHammer2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesHammer2BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityStun" Level="2"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHammer2BaseTier3" Hidden="true" SubCategory="SubCategoryHammer2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHammer2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesHammer2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityStun" Level="3"/>
+  </ItemDefinition>
+
+
+
+  <!-- ############ Spear 2 ############# -->
+  <ItemDefinition Name="ItemSpear2Base" Hidden="true" SubCategory="SubCategorySpear2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassSpear2" />
+    <Cost ResourceName="Production">0</Cost>
+    <Slot Name="MainHand;OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotSpear2</PathPrerequisite>
+    </ItemDefinition>
+
+  <ItemDefinition Name="ItemSpear2BaseTier0" Hidden="true" SubCategory="SubCategorySpear2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSpear2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSpear2BaseTier0" />
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemSpear2BaseTier1" Hidden="true" SubCategory="SubCategorySpear2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSpear2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSpear2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityKnightSlayer" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSpear2BaseTier2" Hidden="true" SubCategory="SubCategorySpear2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSpear2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSpear2BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityKnightSlayer" Level="2"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemSpear2BaseTier3" Hidden="true" SubCategory="SubCategorySpear2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemSpear2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesSpear2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityKnightSlayer" Level="3"/>
+  </ItemDefinition>
+
+
+
+  <!-- ############ Staff 2 ############# -->
+  <ItemDefinition Name="ItemStaff2Base" Hidden="true" SubCategory="SubCategoryStaff2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassStaff2" />
+    <Slot Name="MainHand;OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotStaff2</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStaff2BaseTier0" Hidden="true" SubCategory="SubCategoryStaff2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemStaff2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesStaff2BaseTier0" />
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemStaff2BaseTier1" Hidden="true" SubCategory="SubCategoryStaff2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemStaff2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesStaff2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilitySlowDown"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStaff2BaseTier2" Hidden="true" SubCategory="SubCategoryStaff2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemStaff2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesStaff2BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilitySlowDown"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStaff2BaseTier3" Hidden="true" SubCategory="SubCategoryStaff2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemStaff2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesStaff2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilitySlowDown"/>
+  </ItemDefinition>
+
+
+
+  <!-- ############ Scepter 2 ############# -->
+  <ItemDefinition Name="ItemScepter2Base" Hidden="true" SubCategory="SubCategoryScepter2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassScepter2" />
+    <Slot Name="MainHand;OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotScepter2</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemScepter2BaseTier0" Hidden="true" SubCategory="SubCategoryScepter2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemScepter2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesScepter2BaseTier0" />
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemScepter2BaseTier1" Hidden="true" SubCategory="SubCategoryScepter2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemScepter2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesScepter2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityExhaustion"   Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemScepter2BaseTier2" Hidden="true" SubCategory="SubCategoryScepter2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemScepter2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesScepter2BaseTier2" />
+
+    <UnitAbilityReference Name="UnitAbilityExhaustion"   Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemScepter2BaseTier3" Hidden="true" SubCategory="SubCategoryScepter2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemScepter2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesScepter2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityExhaustion"   Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Bow 2 ########### -->
+  <ItemDefinition Name="ItemBow2Base" Hidden="true" SubCategory="SubCategoryBow2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassBow2" />
+    <Slot Name="MainHand;OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotBow2</PathPrerequisite>
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemBow2BaseTier0" Hidden="true" SubCategory="SubCategoryBow2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemBow2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesBow2BaseTier0" />
+  </ItemDefinition> 
+
+  <ItemDefinition Name="ItemBow2BaseTier1" Hidden="true" SubCategory="SubCategoryBow2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemBow2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesBow2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityFlyingSlayer" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBow2BaseTier2" Hidden="true" SubCategory="SubCategoryBow2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemBow2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesBow2BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityFlyingSlayer" Level="2"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBow2BaseTier3" Hidden="true" SubCategory="SubCategoryBow2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemBow2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesBow2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityFlyingSlayer" Level="3"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Crossbow1 ########### -->
+  <ItemDefinition Name="ItemCrossbow1Base" Hidden="true" SubCategory="SubCategoryCrossbow1">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassCrossbow1" />
+    <Slot Name="MainHand"/>
+    <Slot Name="OffHand">
+      <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,UnitAbilityDualWield</PathPrerequisite>
+    </Slot>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotCrossbow1</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemCrossbow1BaseTier0" Hidden="true" SubCategory="SubCategoryCrossbow1">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemCrossbow1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesCrossbow1BaseTier0" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemCrossbow1BaseTier1" Hidden="true" SubCategory="SubCategoryCrossbow1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemCrossbow1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesCrossbow1BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityPointblankPower" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemCrossbow1BaseTier2" Hidden="true" SubCategory="SubCategoryCrossbow1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemCrossbow1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesCrossbow1BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityPointblankPower" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemCrossbow1BaseTier3" Hidden="true" SubCategory="SubCategoryCrossbow1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemCrossbow1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesCrossbow1BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityPointblankPower" Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Claw 2 ########### -->
+  <ItemDefinition Name="ItemClaw2Base" Hidden="true" SubCategory="SubCategoryClaw2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassClaw2" />
+    <Slot Name="MainHand;OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotClaw2</PathPrerequisite>
+  </ItemDefinition>  
+
+  <ItemDefinition Name="ItemClaw2BaseTier0" Hidden="true" SubCategory="SubCategoryClaw2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemClaw2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesClaw2BaseTier0" />
+  </ItemDefinition> 
+
+  <ItemDefinition Name="ItemClaw2BaseTier1" Hidden="true" SubCategory="SubCategoryClaw2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemClaw2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesClaw2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilitySweepStrikeBack" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemClaw2BaseTier2" Hidden="true" SubCategory="SubCategoryClaw2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemClaw2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesClaw2BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilitySweepStrikeBack" Level="2"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemClaw2BaseTier3" Hidden="true" SubCategory="SubCategoryClaw2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemClaw2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesClaw2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilitySweepStrikeBack" Level="3"/>
+  </ItemDefinition>
+
+
+
+  <!-- ########### Wand 2 ########### -->
+  <ItemDefinition Name="ItemWand2Base" Hidden="true" SubCategory="SubCategoryWand2">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassWand2" />
+    <Slot Name="MainHand;OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotWand2</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemWand2BaseTier0" Hidden="true" SubCategory="SubCategoryWand2">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemWand2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesWand2BaseTier0" />
+  </ItemDefinition> 
+
+  <ItemDefinition Name="ItemWand2BaseTier1" Hidden="true" SubCategory="SubCategoryWand2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemWand2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesWand2BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityUnsteady" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemWand2BaseTier2" Hidden="true" SubCategory="SubCategoryWand2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemWand2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesWand2BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityUnsteady" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemWand2BaseTier3" Hidden="true" SubCategory="SubCategoryWand2">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemWand2Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesWand2BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityUnsteady" Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- ############ Shield ############# -->
+  <ItemDefinition Name="ItemShield1Base" Hidden="true" SubCategory="SubCategoryShield1">
+    <SimulationDescriptorReference Name="ItemCategoryWeapon" />
+    <SimulationDescriptorReference Name="ItemClassShield1" />
+    <Slot Name="OffHand"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotShield1</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemShield1BaseTier0" Hidden="true" SubCategory="SubCategoryShield1">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemShield1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesShield1BaseTier0" />
+    <UnitAbilityReference Name="UnitAbilityBlock"           Level="0"/>
+    <UnitAbilityReference Name="UnitAbilitySharpSense"      Level="0"/>
+  </ItemDefinition> 
+
+  <ItemDefinition Name="ItemShield1BaseTier1" Hidden="true" SubCategory="SubCategoryShield1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier1</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemShield1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesShield1BaseTier1" />
+    <UnitAbilityReference Name="UnitAbilityBlock"           Level="0"/>
+    <UnitAbilityReference Name="UnitAbilitySharpSense"      Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemShield1BaseTier2" Hidden="true" SubCategory="SubCategoryShield1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier2</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemShield1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesShield1BaseTier2" />
+    <UnitAbilityReference Name="UnitAbilityBlock"           Level="1"/>
+    <UnitAbilityReference Name="UnitAbilitySharpSense"      Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemShield1BaseTier3" Hidden="true" SubCategory="SubCategoryShield1">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockWeaponTier3</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemShield1Base"/>
+    <SimulationDescriptorReference Name="ItemAttributesShield1BaseTier3" />
+    <UnitAbilityReference Name="UnitAbilityBlock"           Level="2"/>
+    <UnitAbilityReference Name="UnitAbilitySharpSense"      Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- ################################ -->
+  <!-- #######      ARMOR       ####### -->
+  <!-- ################################ -->
+
+  <!-- ############ Torso ############# -->
+  <ItemDefinition Name="ItemTorsoBase" Hidden="true" SubCategory="SubCategoryTorso">
+    <SimulationDescriptorReference Name="ItemCategoryArmor" />
+    <SimulationDescriptorReference Name="ItemClassTorso" />
+    <Slot Name="Torso"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotTorso</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTorsoBaseTier1" Hidden="true" SubCategory="SubCategoryTorso">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier1</PathPrerequisite>  
+    <ConstructibleElementReferenceToInheritFrom Name="ItemTorsoBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesTorsoBaseTier1" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTorsoBaseTier2" Hidden="true" SubCategory="SubCategoryTorso">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier2</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemTorsoBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesTorsoBaseTier2" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTorsoBaseTier3" Hidden="true" SubCategory="SubCategoryTorso">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier3</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemTorsoBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesTorsoBaseTier3" />
+  </ItemDefinition>
+
+
+
+  <!-- ############ Head ############# -->
+  <ItemDefinition Name="ItemHeadBase" Hidden="true" SubCategory="SubCategoryHead">
+    <SimulationDescriptorReference Name="ItemCategoryArmor" />
+    <SimulationDescriptorReference Name="ItemClassHead" />
+    <Slot Name="Head"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotHead</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHeadBaseTier1" Hidden="true" SubCategory="SubCategoryHead">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier1</PathPrerequisite>  
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHeadBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesHeadBaseTier1" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHeadBaseTier2" Hidden="true" SubCategory="SubCategoryHead">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier2</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHeadBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesHeadBaseTier2" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemHeadBaseTier3" Hidden="true" SubCategory="SubCategoryHead">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier3</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemHeadBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesHeadBaseTier3" />
+  </ItemDefinition>
+
+
+
+  <!-- ############ Legs ############# -->
+  <ItemDefinition Name="ItemLegsBase" Hidden="true" SubCategory="SubCategoryLegs">
+    <SimulationDescriptorReference Name="ItemCategoryArmor" />
+    <SimulationDescriptorReference Name="ItemClassLegs" />
+    <Slot Name="Legs"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotLegs</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemLegsBaseTier1" Hidden="true" SubCategory="SubCategoryLegs">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier1</PathPrerequisite>  
+    <ConstructibleElementReferenceToInheritFrom Name="ItemLegsBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesLegsBaseTier1" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemLegsBaseTier2" Hidden="true" SubCategory="SubCategoryLegs">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier2</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemLegsBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesLegsBaseTier2" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemLegsBaseTier3" Hidden="true" SubCategory="SubCategoryLegs">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockArmorTier3</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemLegsBase"/>
+    <SimulationDescriptorReference Name="ItemAttributesLegsBaseTier3" />
+  </ItemDefinition>
+
+
+
+  <!-- #################################### -->
+  <!-- #######        MATERIALS     ####### -->
+  <!-- #################################### -->
+
+  <!-- 1 HAND -->
+
+  <!-- Titanium -->
+  <ItemDefinition Name="ItemStrategic1Weapon1BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic1Tier1"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">2 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1Weapon1BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic1Tier2"/>
+    <Cost ResourceName="Production">40</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1Weapon1BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic1Tier3"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Glassteel -->
+  <ItemDefinition Name="ItemStrategic2Weapon1BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic2Tier1"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">2 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2Weapon1BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic2Tier2"/>
+    <Cost ResourceName="Production">40</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost> 
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2Weapon1BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic2Tier3"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Adamantian -->
+  <ItemDefinition Name="ItemStrategic3Weapon1BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic3Tier1"/>
+    <Cost ResourceName="Production">60</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3Weapon1BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic3Tier2"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3Weapon1BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic3Tier3"/>
+    <Cost ResourceName="Production">140</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">18 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Palladian -->
+  <ItemDefinition Name="ItemStrategic4Weapon1BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic4Tier1"/>
+    <Cost ResourceName="Production">60</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4Weapon1BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic4Tier2"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4Weapon1BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic4Tier3"/>
+    <Cost ResourceName="Production">140</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">18 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Hyperium -->
+  <ItemDefinition Name="ItemStrategic5Weapon1BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic5Tier1"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5Weapon1BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic5Tier2"/>
+    <Cost ResourceName="Production">160</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5Weapon1BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic5Tier3"/>
+    <Cost ResourceName="Production">220</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">15 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+  
+  <!-- Mithrite -->
+  <ItemDefinition Name="ItemStrategic6Weapon1BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic6Tier1"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6Weapon1BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic6Tier2"/>
+    <Cost ResourceName="Production">160</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6Weapon1BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1Strategic6Tier3"/>
+    <Cost ResourceName="Production">220</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">15 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Dust -->
+  <ItemDefinition Name="ItemDustWeapon1BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1DustTier1"/>
+    <Cost ResourceName="Production">48</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustWeapon1BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1DustTier2"/>
+    <Cost ResourceName="Production">60</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">24</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustWeapon1BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1DustTier3"/>
+    <Cost ResourceName="Production">72</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">36</Cost>
+  </ItemDefinition>
+
+  <!-- Iron -->
+  <ItemDefinition Name="ItemIronWeapon1BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1IronTier1" />
+    <Cost ResourceName="Production">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronWeapon1BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1IronTier2" />
+    <Cost ResourceName="Production">24</Cost>
+  </ItemDefinition> 
+
+  <ItemDefinition Name="ItemIronWeapon1BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon1IronTier3" />
+    <Cost ResourceName="Production">36</Cost>
+  </ItemDefinition>
+
+  <!-- Shield -->
+
+  <!-- Titanium -->
+  <ItemDefinition Name="ItemStrategic1ShieldBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic1Tier1"/>
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">1 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1ShieldBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic1Tier2"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1ShieldBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic1Tier3"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Glassteel -->
+  <ItemDefinition Name="ItemStrategic2ShieldBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic2Tier1"/>
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">1 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2ShieldBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic2Tier2"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2ShieldBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic2Tier3"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Adamantian -->
+  <ItemDefinition Name="ItemStrategic3ShieldBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic3Tier1"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3ShieldBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic3Tier2"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3ShieldBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic3Tier3"/>
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Palladian -->
+  <ItemDefinition Name="ItemStrategic4ShieldBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic4Tier1"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4ShieldBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic4Tier2"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4ShieldBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic4Tier3"/>
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Mithrite -->
+  <ItemDefinition Name="ItemStrategic5ShieldBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic5Tier1"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">2 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5ShieldBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic5Tier2"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">5 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5ShieldBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic5Tier3"/>
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">8 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Hyperium -->
+  <ItemDefinition Name="ItemStrategic6ShieldBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic6Tier1"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">2 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6ShieldBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic6Tier2"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">5 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6ShieldBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldStrategic6Tier3"/>
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">8 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Dust -->
+  <ItemDefinition Name="ItemDustShieldBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldDustTier1"/>
+    <Cost ResourceName="Production">24</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">6</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustShieldBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldDustTier2"/>
+    <Cost ResourceName="Production">30</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustShieldBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldDustTier3"/>
+    <Cost ResourceName="Production">36</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">18</Cost>
+  </ItemDefinition>
+
+  <!-- Iron -->
+  <ItemDefinition Name="ItemIronShieldBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldIronTier1" />
+    <Cost ResourceName="Production">6</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronShieldBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldIronTier2" />
+    <Cost ResourceName="Production">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronShieldBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesShieldIronTier3" />
+    <Cost ResourceName="Production">18</Cost>
+  </ItemDefinition>
+
+  <!-- 2 HAND -->
+
+  <!-- Titanium -->
+  <ItemDefinition Name="ItemStrategic1Weapon2BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic1Tier1"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1Weapon2BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic1Tier2"/>
+    <Cost ResourceName="Production">40</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1Weapon2BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic1Tier3"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Glassteel -->
+  <ItemDefinition Name="ItemStrategic2Weapon2BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic2Tier1"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2Weapon2BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic2Tier2"/>
+    <Cost ResourceName="Production">40</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2Weapon2BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic2Tier3"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Adamantian -->
+  <ItemDefinition Name="ItemStrategic3Weapon2BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic3Tier1"/>
+    <Cost ResourceName="Production">60</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3Weapon2BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic3Tier2"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">18 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3Weapon2BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic3Tier3"/>
+    <Cost ResourceName="Production">140</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Palladian -->
+  <ItemDefinition Name="ItemStrategic4Weapon2BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic4Tier1"/>
+    <Cost ResourceName="Production">60</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4Weapon2BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic4Tier2"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">18 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4Weapon2BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic4Tier3"/>
+    <Cost ResourceName="Production">140</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Mithrite -->
+  <ItemDefinition Name="ItemStrategic5Weapon2BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic5Tier1"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5Weapon2BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic5Tier2"/>
+    <Cost ResourceName="Production">160</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">15 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5Weapon2BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic5Tier3"/>
+    <Cost ResourceName="Production">220</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">21 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Hyperium-->
+  <ItemDefinition Name="ItemStrategic6Weapon2BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic6Tier1"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6Weapon2BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic6Tier2"/>
+    <Cost ResourceName="Production">160</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">15 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6Weapon2BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyWeaponRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2Strategic6Tier3"/>
+    <Cost ResourceName="Production">220</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">21 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Dust -->
+  <ItemDefinition Name="ItemDustWeapon2BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2DustTier1"/>
+    <Cost ResourceName="Production">60</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">24</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustWeapon2BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2DustTier2"/>
+    <Cost ResourceName="Production">72</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">36</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustWeapon2BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2DustTier3"/>
+    <Cost ResourceName="Production">84</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">48</Cost>
+  </ItemDefinition>
+
+  <!-- Iron -->
+  <ItemDefinition Name="ItemIronWeapon2BaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2IronTier1" />
+    <Cost ResourceName="Production">24</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronWeapon2BaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2IronTier2" />
+    <Cost ResourceName="Production">36</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronWeapon2BaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesWeapon2IronTier3" />
+    <Cost ResourceName="Production">48</Cost>
+  </ItemDefinition>
+
+
+
+  <!-- Torso -->
+  <!-- Titanium -->
+  <ItemDefinition Name="ItemStrategic1TorsoBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic1Tier1"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1TorsoBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic1Tier2"/>
+    <Cost ResourceName="Production">40</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1TorsoBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic1Tier3"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Glassteel -->
+  <ItemDefinition Name="ItemStrategic2TorsoBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic2Tier1"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2TorsoBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic2Tier2"/>
+    <Cost ResourceName="Production">40</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2TorsoBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic2Tier3"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Adamantian -->
+  <ItemDefinition Name="ItemStrategic3TorsoBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic3Tier1"/>
+    <Cost ResourceName="Production">60</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3TorsoBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic3Tier2"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3TorsoBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic3Tier3"/>
+    <Cost ResourceName="Production">140</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">18 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Palladian -->
+  <ItemDefinition Name="ItemStrategic4TorsoBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic4Tier1"/>
+    <Cost ResourceName="Production">60</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4TorsoBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic4Tier2"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4TorsoBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic4Tier3"/>
+    <Cost ResourceName="Production">140</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">18 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Hyperium -->
+  <ItemDefinition Name="ItemStrategic5TorsoBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic5Tier1"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5TorsoBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic5Tier2"/>
+    <Cost ResourceName="Production">160</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5TorsoBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic5Tier3"/>
+    <Cost ResourceName="Production">220</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">15 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Mithrite -->
+  <ItemDefinition Name="ItemStrategic6TorsoBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic6Tier1"/>
+    <Cost ResourceName="Production">100</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6TorsoBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic6Tier2"/>
+    <Cost ResourceName="Production">160</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6TorsoBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoStrategic6Tier3"/>
+    <Cost ResourceName="Production">220</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">15 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Dust -->
+  <ItemDefinition Name="ItemDustTorsoBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoDustTier1"/>
+    <Cost ResourceName="Production">48</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustTorsoBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoDustTier2"/>
+    <Cost ResourceName="Production">60</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">24</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustTorsoBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoDustTier3"/>
+    <Cost ResourceName="Production">72</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">36</Cost>
+  </ItemDefinition>
+
+  <!-- Iron -->
+  <ItemDefinition Name="ItemIronTorsoBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoIronTier1" />
+    <Cost ResourceName="Production">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronTorsoBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoIronTier2" />
+    <Cost ResourceName="Production">24</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronTorsoBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesTorsoIronTier3" />
+    <Cost ResourceName="Production">36</Cost>
+  </ItemDefinition>
+
+
+
+  <!-- Legs -->
+
+  <!-- Titanium -->
+  <ItemDefinition Name="ItemStrategic1LegsBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic1Tier1"/>
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">1 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1LegsBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic1Tier2"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1LegsBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic1Tier3"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Glassteel -->
+  <ItemDefinition Name="ItemStrategic2LegsBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic2Tier1"/>
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">1 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2LegsBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic2Tier2"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2LegsBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic2Tier3"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Adamantian -->
+  <ItemDefinition Name="ItemStrategic3LegsBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic3Tier1"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3LegsBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic3Tier2"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3LegsBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic3Tier3"/>
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Palladian -->
+  <ItemDefinition Name="ItemStrategic4LegsBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic4Tier1"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4LegsBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic4Tier2"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4LegsBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic4Tier3"/>
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Hyperium -->
+  <ItemDefinition Name="ItemStrategic5LegsBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic5Tier1"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">2 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5LegsBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic5Tier2"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">5 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5LegsBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic5Tier3"/>
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">8 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6LegsBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic6Tier1"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">2 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6LegsBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic6Tier2"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">5 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6LegsBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsStrategic6Tier3"/>
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">8 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Dust -->
+  <ItemDefinition Name="ItemDustLegsBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsDustTier1"/>
+    <Cost ResourceName="Production">24</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">6</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustLegsBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsDustTier2"/>
+    <Cost ResourceName="Production">30</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustLegsBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsDustTier3"/>
+    <Cost ResourceName="Production">36</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">18</Cost>
+  </ItemDefinition>
+
+  <!-- Iron -->
+  <ItemDefinition Name="ItemIronLegsBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsIronTier1" />
+    <Cost ResourceName="Production">6</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronLegsBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsIronTier2" />
+    <Cost ResourceName="Production">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronLegsBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesLegsIronTier3" />
+    <Cost ResourceName="Production">18</Cost>
+  </ItemDefinition>
+
+
+
+  <!-- Head -->
+
+  <!-- Titanium -->
+  <ItemDefinition Name="ItemStrategic1HeadBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic1Tier1"/>
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">1 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1HeadBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic1Tier2"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic1HeadBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic1Tier3"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Glassteel -->
+  <ItemDefinition Name="ItemStrategic2HeadBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic2Tier1"/>
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">1 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2HeadBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic2Tier2"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic2HeadBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorCommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic2Tier3"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Adamantian -->
+  <ItemDefinition Name="ItemStrategic3HeadBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic3Tier1"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3HeadBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic3Tier2"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic3HeadBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic3Tier3"/>
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Palladian -->
+  <ItemDefinition Name="ItemStrategic4HeadBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic4Tier1"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4HeadBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic4Tier2"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic4HeadBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorUncommonTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic4Tier3"/>
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">9 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Hyperium -->
+  <ItemDefinition Name="ItemStrategic5HeadBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic5Tier1"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">2 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5HeadBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic5Tier2"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">5 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic5HeadBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic5Tier3"/>
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">8 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6HeadBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic6Tier1"/>
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">2 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6HeadBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic6Tier2"/>
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">5 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemStrategic6HeadBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyArmorRareTier3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadStrategic6Tier3"/>
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">8 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!-- Dust -->
+  <ItemDefinition Name="ItemDustHeadBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadDustTier1"/>
+    <Cost ResourceName="Production">24</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">6</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustHeadBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadDustTier2"/>
+    <Cost ResourceName="Production">30</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemDustHeadBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadDustTier3"/>
+    <Cost ResourceName="Production">36</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">18</Cost>
+  </ItemDefinition>
+
+  <!-- Iron -->
+  <ItemDefinition Name="ItemIronHeadBaseTier1" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra1</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier1" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadIronTier1" />
+    <Cost ResourceName="Production">6</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronHeadBaseTier2" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier2" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadIronTier2" />
+    <Cost ResourceName="Production">12</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemIronHeadBaseTier3" Hidden="true">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <SimulationDescriptorReference Name="ItemTier3" />
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesHeadIronTier3" />
+    <Cost ResourceName="Production">18</Cost>
+  </ItemDefinition>
+
+
+
+  <!-- #################################### -->
+  <!-- #######   ACCESSORIES        ####### -->
+  <!-- #################################### -->
+
+  <ItemDefinition Name="ItemAccessoryBase" Hidden="true" SubCategory="SubCategoryAccessory">
+    <SimulationDescriptorReference Name="ItemCategoryAccessory" />
+    <SimulationDescriptorReference Name="ItemClassAccessory" />
+    <Slot Name="Accessory"/>
+    <PathPrerequisite Flags="Prerequisite,Discard,SlotPrerequisite" Inverted="false">../ClassUnit,ItemSlotAccessory</PathPrerequisite>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemAccessoryBaseTier1" Hidden="true" SubCategory="SubCategoryAccessory">
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemTier1" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemAccessoryBaseTier2" Hidden="true" SubCategory="SubCategoryAccessory">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockAccessoryTier2</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemTier2" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemAccessoryBaseTier3" Hidden="true" SubCategory="SubCategoryAccessory">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyUnlockAccessoryTier3</PathPrerequisite>    
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemTier3" />
+  </ItemDefinition>
+
+</Datatable>

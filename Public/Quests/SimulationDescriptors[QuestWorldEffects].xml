@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- -2 Dust on Dust tiles -->
+  <SimulationDescriptor Name="QuestWorldEffect#0001" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/TerrainTagDust"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagDust" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- +40% on all battle attributes of units from hostile Minor faction villages -->
+  <SimulationDescriptor Name="QuestWorldEffect#0002" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="QuestWorldEffect#0002TooltipEffect" Operation="Percent"  Value="0.4"   Path="../EmpireTypeMinor/Garrison,!VillageStatusConverted/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"           Value="0.4" Operation="Percent" Path="../EmpireTypeMinor/Garrison,!VillageStatusConverted/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnLand"   Value="0.4" Operation="Percent" Path="../EmpireTypeMinor/Garrison,!VillageStatusConverted/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater"  Value="0.4" Operation="Percent" Path="../EmpireTypeMajor/Garrison,!VillageStatusConverted/ClassUnit" TooltipHidden="true" Priority="101"/>
+      <SimulationModifierDescriptor TargetProperty="BattleMovement"          Value="0.4" Operation="Percent" Path="../EmpireTypeMinor/Garrison,!VillageStatusConverted/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeAttack"         Value="0.4" Operation="Percent" Path="../EmpireTypeMinor/Garrison,!VillageStatusConverted/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"        Value="0.4" Operation="Percent" Path="../EmpireTypeMinor/Garrison,!VillageStatusConverted/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"         Value="0.4" Operation="Percent" Path="../EmpireTypeMinor/Garrison,!VillageStatusConverted/ClassUnit" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"     Value="0.4" Operation="Percent" Path="../EmpireTypeMinor/Garrison,!VillageStatusConverted/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- +3 Food on Water tiles -->
+  <SimulationDescriptor Name="QuestWorldEffect#0003" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"         Operation="Addition"    Value="3"  Path="../EmpireTypeMajor/ClassCity/TerrainTagWater"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"         Operation="Addition"    Value="3"  Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagWater" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- +4 Influence on anomaly tiles -->
+  <SimulationDescriptor Name="QuestWorldEffect#0004" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"    Operation="Addition"    Value="4"  Path="../EmpireTypeMajor/ClassCity/TerrainTagAnomaly"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"    Operation="Addition"    Value="4" Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagAnomaly" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- x2 on Influence earned per turn in alliance / x4 on Influence earned per ally enemy unit killed in alliance-->
+  <SimulationDescriptor Name="QuestWorldEffect#0005" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PrestigeTrendBonusTrend"                Operation="Percent"         Value="1"   Path="../EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticAbilityPrestigeRewardOnKill"  Operation="Percent"         Value="4"   Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- x0 on regeneration on map armies -->
+  <SimulationDescriptor Name="QuestWorldEffect#0006" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="UnitRegenModifier"                      Operation="Percent"           Value="-1"  Path="../ClassEmpire/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="UnitRegenModifier"                      Operation="Percent"           Value="-1"  Path="../EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- -2 Industry on Forest Tiles -->
+  <SimulationDescriptor Name="QuestWorldEffect#0007" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/TerrainTagForest"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagForest" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- +20% on Research Costs -->
+  <SimulationDescriptor Name="QuestWorldEffect#0008" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="TechnologyCost" Operation="Percent"        Value="0.3"     Path="../EmpireTypeMajor/ClassResearch"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- +50% on Luxury Booster costs -->
+  <SimulationDescriptor Name="QuestWorldEffect#0009" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BoosterCostFactor"    Operation="Percent" Value="0.5"     Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- +50% on Strategic Resource Item costs -->
+  <SimulationDescriptor Name="QuestWorldEffect#0010" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="ItemStrategicMasteryCostFactor" Operation="Percent" Value="0.5" Path="../EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- -1 Food on tiles -->
+  <SimulationDescriptor Name="QuestWorldEffect#0011" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Subtraction"     Value="1" Path="../EmpireTypeMajor/ClassCity"  TooltipHidden="false" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+</Datatable>

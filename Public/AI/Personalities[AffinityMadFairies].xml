@@ -23,23 +23,12 @@
             <!-- MaximumNumberOfTurnToReachNextPopulation = RangeRatio *  IdealNumberOfTurnToReachNextPopulation -->
             <RangeRatio>0.75</RangeRatio>
           </PopulationReferenceTurnCountAgent>
-		  
-		  <MoneyPrintTermAgent>
-            <Multiplier>0</Multiplier>
-		  </MoneyPrintTermAgent>
 
         </AgentDefinition>
 
         <MajorEmpire>
           <AIEntity_Empire>
-			
-			<AILayer_Victory>
-				<VictoryFocusMilitary>1.4</VictoryFocusMilitary>
-				<VictoryFocusDiplomacy>1.5</VictoryFocusDiplomacy>
-				<VictoryFocusEconomy>1.3</VictoryFocusEconomy>
-				<VictoryFocusTechnology>1.2</VictoryFocusTechnology>
-			</AILayer_Victory>
-			
+
             <!-- The degree to which various attitude modifiers are taken into account -->
             <AILayer_Attitude>
               <!-- ##### -->
@@ -151,7 +140,7 @@
               -->
               <Network>
                 <MilitaryEmpireNeedAgent>
-                  <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
+                  <GlobalUnitCountMultiplier>0.75</GlobalUnitCountMultiplier>
 
                   <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
                   <CityUnitNeedStartTurn>1</CityUnitNeedStartTurn>

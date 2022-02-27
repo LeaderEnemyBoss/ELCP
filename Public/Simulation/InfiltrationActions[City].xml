@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+  <!-- ########################################## -->
+  <!-- ########   Decrease Population  ########## -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnCity_DecreasePopulation Name="DecreasePopulation_Level2" NumberOfPopulation="1" FirstName="DecreasePopulation" SubCategory="Population" Level="2" ExperienceReward="6">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="DecreasePopulationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:Population) gt 1</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+    <!--<InterpreterPrerequisite Flags="WarningBox">$Link(InfiltratedCity|Property|ClassCity:Population) gt $(NumberOfPopulation)</InterpreterPrerequisite>-->
+  </InfiltrationActionOnCity_DecreasePopulation>
+
+  <InfiltrationActionOnCity_DecreasePopulation Name="DecreasePopulation_Level3" NumberOfPopulation="2" FirstName="DecreasePopulation" SubCategory="Population" Level="3" ExperienceReward="9">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="DecreasePopulationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:Population) gt 1</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_DecreasePopulation>
+
+  <InfiltrationActionOnCity_DecreasePopulation Name="DecreasePopulation_Level4" NumberOfPopulation="3" FirstName="DecreasePopulation" SubCategory="Population" Level="4" ExperienceReward="12">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="DecreasePopulationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:Population) gt 1</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_DecreasePopulation>
+
+  <InfiltrationActionOnCity_DecreasePopulation Name="DecreasePopulation_Level5" NumberOfPopulation="4" FirstName="DecreasePopulation" SubCategory="Population" Level="5" ExperienceReward="15">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="DecreasePopulationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:Population) gt 1</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_DecreasePopulation>
+
+
+
+  <!-- ########################################## -->
+  <!-- ########   Damage Fortification ########## -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnCity_DamageFortification Name="DamageFortification_Level2" InstantDamagePercent="0.25" FirstName="DamageFortification" SubCategory="CityDefense" Level="2" ExperienceReward="6">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="DamageFortificationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:CityDefensePoint) gt 0</InterpreterPrerequisite>
+    <!--<InterpreterPrerequisite Flags="WarningBox">$Link(InfiltratedCity|Property|ClassCity:CityDefensePoint) gt ($(InstantDamagePercent) * $Link(InfiltratedCity|Property|ClassCity:MaximumCityDefensePoint))</InterpreterPrerequisite>-->
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_DamageFortification>
+
+  <InfiltrationActionOnCity_DamageFortification Name="DamageFortification_Level3" InstantDamagePercent="0.5" FirstName="DamageFortification" SubCategory="CityDefense" Level="3" ExperienceReward="9">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="DamageFortificationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:CityDefensePoint) gt 0</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_DamageFortification>
+
+  <InfiltrationActionOnCity_DamageFortification Name="DamageFortification_Level4" InstantDamagePercent="1" FirstName="DamageFortification" SubCategory="CityDefense" Level="4" ExperienceReward="12">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="DamageFortificationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:CityDefensePoint) gt 0</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_DamageFortification>
+
+  <InfiltrationActionOnCity_DamageFortification Name="DamageFortification_Level5" InstantDamagePercent="1" FirstName="DamageFortification" SubCategory="CityDefense" Level="5" ExperienceReward="15">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDamageFortification"/>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_DamageFortification>
+
+
+
+  <!-- ########################################## -->
+  <!-- ###### Decrease City Production ########## -->
+  <!-- ########################################## -->
+
+  <InfiltrationActionOnCity_Booster Name="DecreaseCityProduction_Level2" FirstName="ProductionCost" SubCategory="Industry" Level="2" Duration="2" ExperienceReward="6">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseCityProduction2" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_Booster>
+
+  <InfiltrationActionOnCity_Booster Name="DecreaseCityProduction_Level3" FirstName="ProductionCost" SubCategory="Industry" Level="3" Duration="6" ExperienceReward="9">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseCityProduction3" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_Booster>
+
+  <InfiltrationActionOnCity_Booster Name="DecreaseCityProduction_Level4" FirstName="ProductionCost" SubCategory="Industry" Level="4" Duration="6" ExperienceReward="12">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseCityProduction4" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_Booster>
+  
+  <InfiltrationActionOnCity_Booster Name="DecreaseCityProduction_Level5" FirstName="ProductionCost" SubCategory="Industry" Level="5" Duration="12" ExperienceReward="15">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDecreaseCityProduction4" />
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_Booster>
+
+
+
+  <!-- ########################################## -->
+  <!-- ############  Target Governor ############ -->
+  <!-- ########################################## -->
+
+  <!--Wound the targeted Governor-->
+  <InfiltrationActionOnCity_PoisonGovernor Name="PoisonGovernor_Level3" FirstName="PoisonGovernor" SubCategory="Governor" Level="3" ExperienceReward="9">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="PoisonGovernorPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|ClassCity/ClassUnit,UnitHero)</InterpreterPrerequisite>
+    <BoosterReference Name="BoosterDamageGovernor"/>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_PoisonGovernor>
+
+  <!--Fatally Injure the targeted Governor-->
+  <InfiltrationActionOnCity_InjureGovernor Name="PoisonGovernor_Level4" FirstName="PoisonGovernor" SubCategory="Governor" Level="4" ExperienceReward="12">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="PoisonGovernorPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|ClassCity/ClassUnit,UnitHero)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_InjureGovernor>
+
+  <!--Capture the targeted Governor-->
+  <InfiltrationActionOnCity_CaptureGovernor Name="PoisonGovernor_Level5" FirstName="PoisonGovernor" SubCategory="Governor" Level="5" ExperienceReward="15">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="PoisonGovernorPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|ClassCity/ClassUnit,UnitHero)</InterpreterPrerequisite>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((6 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_CaptureGovernor>
+
+
+
+  <!-- ########################################## -->
+  <!-- #########  Leech Trade Routes  ########### -->
+  <!-- ########################################## -->
+
+  <!--<InfiltrationActionOnCity_Leech Name="Leech_Level2" FirstName="LeechTradeRoutes" SubCategory="Leech" Level="2" ExperienceReward="6">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="LeechTradeRoutesPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|ClassCity/ClassTradeRoute,!TradeRouteStatusSiegeBlocked,!TradeRouteStatusSwapBlocked,!TradeRouteStatusRelationBlocked,!TradeRouteStatusBroken)</InterpreterPrerequisite>
+    <LeechDescription LeechDefinitionName="TradeRouteDustLeechByInfiltration"/>
+    <LeechDescription LeechDefinitionName="TradeRouteScienceLeechByInfiltration"/>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_Leech>
+
+  <InfiltrationActionOnCity_Leech Name="Leech_Level3" FirstName="LeechTradeRoutes" SubCategory="Leech" Level="3" ExperienceReward="9">
+    <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="LeechTradeRoutesPrerequisite,Prerequisites">$Link(InfiltratedCity|Path|ClassCity/ClassTradeRoute,!TradeRouteStatusSiegeBlocked,!TradeRouteStatusSwapBlocked,!TradeRouteStatusRelationBlocked,!TradeRouteStatusBroken)</InterpreterPrerequisite>
+    <LeechDescription LeechDefinitionName="TradeRouteDustLeechByInfiltration2" Duration="10"/>
+    <LeechDescription LeechDefinitionName="TradeRouteScienceLeechByInfiltration2" Duration="10"/>
+    <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
+  </InfiltrationActionOnCity_Leech>-->
+
+</Datatable>

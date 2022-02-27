@@ -7,14 +7,12 @@ public class KaijuRelocationMessage : BlackboardMessage
 	{
 		this.KaijuGUID = GameEntityGUID.Zero;
 		this.TargetPosition = WorldPosition.Invalid;
-		this.RaiseKaiju = false;
 	}
 
 	public KaijuRelocationMessage(GameEntityGUID kaijuGUID, WorldPosition targetPosition) : base(BlackboardLayerID.Empire)
 	{
 		this.KaijuGUID = kaijuGUID;
 		this.TargetPosition = targetPosition;
-		this.RaiseKaiju = false;
 	}
 
 	public GameEntityGUID KaijuGUID { get; set; }
@@ -35,6 +33,4 @@ public class KaijuRelocationMessage : BlackboardMessage
 		writer.WriteAttributeString<short>("PositionColumn", this.TargetPosition.Column);
 		base.WriteXml(writer);
 	}
-
-	public bool RaiseKaiju { get; set; }
 }

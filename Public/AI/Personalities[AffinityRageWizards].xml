@@ -12,12 +12,16 @@
           -->
           <MoneyReferenceRatioAgent>
             <MoneyStockToMaintainUpkeepTurnCount>1.5</MoneyStockToMaintainUpkeepTurnCount>
-            <MoneyIncomeGrowthPercent>1.7</MoneyIncomeGrowthPercent>
+            <MoneyIncomeGrowthPercent>1.2</MoneyIncomeGrowthPercent>
           </MoneyReferenceRatioAgent>
 
-		<MoneyPrintTermAgent>
-            <Multiplier>0</Multiplier>
-        </MoneyPrintTermAgent>
+          <!--
+          Science-focused
+          -->
+          <TechnologyReferenceTurnCountAgent>
+            <IdealTechnologyUnlockPeriod>0.75</IdealTechnologyUnlockPeriod>
+            <MaximumPeriodGap>0.75</MaximumPeriodGap>
+          </TechnologyReferenceTurnCountAgent>
 
         </AgentDefinition>
 
@@ -25,12 +29,6 @@
         <MajorEmpire>
           <AIEntity_Empire>
 
-			<AILayer_Victory>
-				<VictoryFocusMilitary>1.8</VictoryFocusMilitary>
-				<VictoryFocusDiplomacy>0.9</VictoryFocusDiplomacy>
-				<VictoryFocusEconomy>1.6</VictoryFocusEconomy>
-				<VictoryFocusTechnology>2</VictoryFocusTechnology>
-			</AILayer_Victory>
             <!-- The degree to which various attitude modifiers are taken into account -->
             <AILayer_Attitude>
               <!-- ##### -->
@@ -171,8 +169,8 @@
               <ElementEvaluatorContextMultiplier>
                 <AIEmpireGrowth>0.9</AIEmpireGrowth>
                 <AIEmpireProduction>1.4</AIEmpireProduction>
-                <AIEmpireMoney>2.5</AIEmpireMoney>
-                <AIEmpireResearch>1.5</AIEmpireResearch>
+                <AIEmpireMoney>1.8</AIEmpireMoney>
+                <AIEmpireResearch>2.2</AIEmpireResearch>
                 <AIEmpireEmpirePoint>0.9</AIEmpireEmpirePoint>
                 <AIEmpireApproval>0.6</AIEmpireApproval>
 

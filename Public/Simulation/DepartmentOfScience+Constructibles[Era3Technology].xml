@@ -141,7 +141,7 @@
     <SimulationDescriptorReference Name="TechnologyCountIncreaseEra3" />
     <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era3CostMultiplier)</CustomCost>
     <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
-    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="false">!FactionTraitCultists7,!FactionTraitMimics1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">FactionTraitCultists7,FactionTraitCultists9</PathPrerequisite>
   </TechnologyDefinition>
 
   <!-- Empire bonus: Weapon Uncommon Tier 1 -->

@@ -1,0 +1,1122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <GuiTooltipDescription TooltipClass="Descriptor">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="AntiSpy">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <NoEffectsTitle Title="%FeatureAntiSpyTitle"/>
+      <EffectsTitle Title="%FeatureAntiSpyTitle"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAntiSpyResumePrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Army">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureArmyContentPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureArmyMapBoostTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ArmyMapBoostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_WeatherPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_PointOfInterestPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_AnomalyPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillagePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="AttitudeStatus">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <!-- Uncomment once we have a lore description (like "We don't like your aggressivity toward our empire!") <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttitudeModifiersPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="BattleAction" TooltipPrefab="GUI/TooltipPanelDarkPrefab">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="20"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="BattleEffect" TooltipPrefab="GUI/TooltipPanelDarkPrefab">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="20"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Booster">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="CityGrowth">
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab" />-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCityGrowthPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="CityMoneyUpkeep">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <EffectsTitle Title="%FeatureCityMoneyUpkeepTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Constructible">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Constructible_Reward">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCategoryPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="CreepingNodeConstructible">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNodeCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="DiplomaticRelationScore">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureRelationScorePrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="DiplomaticTermInfo">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCategoryPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDiplomaticTermPriceModifiersPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDiplomaticPointGainPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="DiplomaticTermPriceModifiers">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDiplomaticTermPriceModifiersPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDiplomaticTermPriceReductionPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="District">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_PointOfInterestPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_BoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_AnomalyPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+      <Property Name="CityFood"      	 Symbol="CityFood"/>
+      <Property Name="CityIndustry"  	 Symbol="CityIndustry"/>
+      <Property Name="CityScience"   	 Symbol="CityScience"/>
+      <Property Name="CityDust"      	 Symbol="CityDust"/>
+      <Property Name="CityEmpirePoint"   Symbol="CityCityPoint"/>
+      <Property Name="ExperienceRewardAtCreation"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillagePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceChargesPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="District.Wonder">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_PointOfInterestPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_BoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_AnomalyPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+      <Property Name="CityFood"      	 Symbol="CityFood"/>
+      <Property Name="CityIndustry"  	 Symbol="CityIndustry"/>
+      <Property Name="CityScience"   	 Symbol="CityScience"/>
+      <Property Name="CityDust"      	 Symbol="CityDust"/>
+      <Property Name="CityEmpirePoint"   Symbol="CityCityPoint"/>
+      <Property Name="ExperienceRewardAtCreation"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillagePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceChargesPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="District.Camp">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureGarrisonPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_WeatherPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_PointOfInterestPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_AnomalyPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillagePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+  </GuiTooltipDescription>
+     
+  <GuiTooltipDescription TooltipClass="DistrictImprovementCursor">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExtensionPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="TerraformCursor">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_TerraformPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="MigrateKaijuCursor">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_MigrateKaijuPrefab">
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="DlcIconExtra">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDlcIconExtraPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Facility">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="FactionTrait">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCategoryPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="FIDS">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureStockValue"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <NoEffectsTitle Title="%FeatureNoProductionTitle"/>
+      <EffectsTitle Title="%FeatureProductionTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="FIDSDescription">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureStockValue"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNextValue"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <NoEffectsTitle Title="%FeatureNoProductionTitle"/>
+      <EffectsTitle Title="%FeatureProductionTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="General">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="InfiltrationActionResume">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureInfiltrationActionGroupPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="ItemDefinition">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="0"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="ItemDefinition_Reward">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="0"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCategoryPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="LuxuryResource">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <NoEffectsTitle Title="%FeatureNoProductionTitle"/>
+      <EffectsTitle Title="%FeatureProductionTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="LuxuryResource_Reward">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCategoryPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <NoEffectsTitle Title="%FeatureNoProductionTitle"/>
+      <EffectsTitle Title="%FeatureProductionTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Medal">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestPrefab">
+      <DescriptionOnly Value="true" />
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestPrefab">
+      <ProgressionOnly Value="true" />
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMedalDroppablePrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="MilitaryUpkeep">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <EffectsTitle Title="%FeatureMilitaryUpkeepTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="MultipleConstructible">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMultipleConstructiblesPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="MultipleCreepingNodeConstructible">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMultipleConstructiblesPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="MultipleUnitBody">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <!-- Technology -->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+
+    <!-- UnitBody -->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnit"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="OrbCost">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureOrbCostPrefab">
+      <EffectsTitle Title="%FeatureOrbCostTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="OrbResource">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Pillar">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMapBoostTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_MapBoostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillarRangePrefab"/>
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillarPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillarDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_PointOfInterestPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_BoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_AnomalyPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillagePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="PillarDefinition">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillarPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillarRangePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab">
+      <DisplayTurnCost Value="false"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="PlayersStatus">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="30" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePlayersStatusPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="PointOfInterest">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_WeatherPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_BoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillagePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceChargesPrefab"/>
+  </GuiTooltipDescription>
+  
+  <GuiTooltipDescription TooltipClass="PointOfInterest.Garrison">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureGarrisonPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_WeatherPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillagePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceChargesPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Population">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCityPopulationPrefab">
+      <EffectsTitle Title="%FeaturePopulationTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="SeasonEffect">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_SeasonEffectPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Simple">
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="SpecialTerrain">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMapBoostTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_MapBoostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceChargesPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Spell">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_SpellPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureSpellStatePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab">
+      <DisplayTurnCost Value="false"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="StrategicResource">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <NoEffectsTitle Title="%FeatureNoProductionTitle"/>
+      <EffectsTitle Title="%FeatureProductionTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="StrategicResource_Reward">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCategoryPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_PropertyPrefab">
+      <NoEffectsTitle Title="%FeatureNoProductionTitle"/>
+      <EffectsTitle Title="%FeatureProductionTitle"/>
+    </PanelFeatureDescription>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Technology">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="0"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Technology_Reward">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="0"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCategoryPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Lavapool">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureStockValue"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="TerraformDevice">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceRangePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceChargesPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMapBoostTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_MapBoostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_PointOfInterestPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_BoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_AnomalyPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillagePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Terrain">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureWeatherHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_WeatherPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMapBoostTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_MapBoostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceChargesPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Unit">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnit"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBattleActionPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEquipmentPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureExperiencePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureUnitUpkeepPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="UnitBattlefield">
+    <FreeOffset X="30" Y="-50"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnitBattlefield"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBattleActionPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEquipmentPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureExperiencePrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="UnitBattlefieldDeployment">
+    <FreeOffset X="30" Y="-50"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnitDeployment"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBattleActionPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEquipmentPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureExperiencePrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="UnitBody">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnit"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBattleActionPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="UnitDesign">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnit"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <!--PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBattleActionPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEquipmentPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDescriptionPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="TechnologyConstructible">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="TechnologyCreepingNodeConstructible">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMultipleConstructiblesPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="KaijuTechnologyConstructible">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureKaijuTechnologyPrerequisitesPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+  
+  <GuiTooltipDescription TooltipClass="TechnologyConstructible_Reward">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCategoryPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="TechnologyUnitBody_Colossus">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <!-- Technology -->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+
+    <!-- UnitBody -->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnit"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBattleActionPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="TechnologyUnitBody_SeafaringUnit">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <!-- Technology -->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+
+    <!-- UnitBody -->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnit"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="TechnologyUnitBody_TransportShipUnit">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <!-- Technology -->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab">
+      <TechnologyOnly Value="true"/>
+    </PanelFeatureDescription>
+
+    <!-- UnitBody -->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnit"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="TechnologyUnitBody">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResearchTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureFactionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureAttributesPrefab">
+      <Class Name="ClassUnit"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCapacitiesPrefab"/>
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureBattleActionPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureCostPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="UnitSkill">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+  </GuiTooltipDescription>
+
+  <!--<GuiTooltipDescription TooltipClass="UnitAbilityDetails">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureUnitAbilityReferencePrefab" />
+  </GuiTooltipDescription>-->
+
+  <GuiTooltipDescription TooltipClass="Ward">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillarRangePrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillarPrefab"/>-->
+    <!--<PanelFeatureDescription Prefab="GUI/PanelFeatures/FeaturePillarDurationPrefab"/>-->
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_PointOfInterestPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_BoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_AnomalyPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceDurationPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDeviceChargesPrefab"/>
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="WonderMedal">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestPrefab">
+      <DescriptionOnly Value="true" />
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestPrefab">
+      <ProgressionOnly Value="true" />
+	  <ConstructibleProgression Value="true" />
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMedalDroppablePrefab" />
+  </GuiTooltipDescription>
+
+
+  <GuiTooltipDescription TooltipClass="Kaiju">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderNoCategoryPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+  </GuiTooltipDescription>
+
+  <GuiTooltipDescription TooltipClass="Kaijus">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="0" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DescriptorProviderPrefab" />
+  </GuiTooltipDescription>
+
+
+  <GuiTooltipDescription TooltipClass="CreepingNode">
+    <FreeOffset X="10" Y="10"/>
+    <AnchorOffset X="5" Y="5"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureNarrativeDescriptionPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureQuestMarkerPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_WeatherPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_BoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_CityBoosterPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDistrictTitlePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RiverPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureResume_RoadPrefab">
+      <DisplayModifiers Value="false"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDamageableTileHeaderPrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_DamageableTilePrefab"/>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureEffects_ExploitationPrefab">
+      <Property Name="DistrictFood"      Symbol="CityFood"/>
+      <Property Name="DistrictIndustry"  Symbol="CityIndustry"/>
+      <Property Name="DistrictScience"   Symbol="CityScience"/>
+      <Property Name="DistrictDust"      Symbol="CityDust"/>
+      <Property Name="DistrictCityPoint" Symbol="CityCityPoint"/>
+      <Property Name="CityApproval"      Symbol="CityApproval"/>
+    </PanelFeatureDescription>
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureMovementCostPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureVolcanicRegenTitlePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainStatusPrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureDismantleNodePrefab" />
+    <PanelFeatureDescription Prefab="GUI/PanelFeatures/FeatureTerrainOrbPrefab" />
+  </GuiTooltipDescription>
+
+</Datatable>

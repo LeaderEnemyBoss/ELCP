@@ -157,7 +157,7 @@ public class AIBehaviorTreeNode_Decorator_SelectCreepingNodeTarget : AIBehaviorT
 		{
 			float num = layer.GetWantWarScore(target.Empire);
 			float num2 = layer.GetAllyScore(target.Empire);
-			if (num2 > 0.5f || num < 0.25f || layer.GetPeaceWish(target.Empire.Index))
+			if (num2 > 0.5f || num < 0.25f)
 			{
 				return -1f;
 			}

@@ -147,9 +147,18 @@ public class NavyCommander : BaseNavyCommander
 			if (this.NavyRegionData.NeighbouringLandRegions[i].City != null)
 			{
 				AIData_City aidata_City = null;
-				if (this.aiDataRepositoryHelper.TryGetAIData<AIData_City>(this.NavyRegionData.NeighbouringLandRegions[i].City.GUID, out aidata_City) && aidata_City.NeighbourgRegions.Contains(this.NavyRegionData.WaterRegionIndex) && aidata_City.City.Empire != base.Owner && this.navyLayer.MightAttackOwner(aidata_City.City.Region, aidata_City.City.Empire) && AILayer_War.IsWarTarget(this.navyLayer.AIEntity, aidata_City.City, 0f))
+				if (this.aiDataRepositoryHelper.TryGetAIData<AIData_City>(this.NavyRegionData.NeighbouringLandRegions[i].City.GUID, out aidata_City))
 				{
-					this.GenerateCityBlitzTask(aidata_City.City);
+					if (aidata_City.NeighbourgRegions.Contains(this.NavyRegionData.WaterRegionIndex))
+					{
+						if (aidata_City.City.Empire != base.Owner)
+						{
+							if (this.navyLayer.MightAttackOwner(aidata_City.City.Region, aidata_City.City.Empire))
+							{
+								this.GenerateCityBlitzTask(aidata_City.City);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -158,10 +167,6 @@ public class NavyCommander : BaseNavyCommander
 	private void GenerateTakeOver(Fortress fortress)
 	{
 		if (fortress.Occupant != null && !this.navyLayer.MightAttackOwner(fortress.Region, fortress.Occupant))
-		{
-			return;
-		}
-		if (fortress.Occupant != null && base.Owner is MajorEmpire && this.navyLayer.diplomacyLayer.GetPeaceWish(fortress.Occupant.Index))
 		{
 			return;
 		}

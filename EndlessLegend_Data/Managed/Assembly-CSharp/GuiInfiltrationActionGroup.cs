@@ -72,47 +72,28 @@ public class GuiInfiltrationActionGroup
 	{
 		string text = AgeLocalizer.Instance.LocalizeString(guiElement.Description);
 		IInfiltrationActionWithBooster infiltrationActionWithBooster = infiltrationAction as IInfiltrationActionWithBooster;
-		if (infiltrationActionWithBooster != null && spyEmpire.GetAgency<DepartmentOfPlanificationAndDevelopment>() != null)
+		if (infiltrationActionWithBooster != null)
 		{
-			int duration = infiltrationActionWithBooster.Duration;
-			int num = 0;
-			BoosterDefinition boosterDefinition;
-			if (duration <= 0 && infiltrationActionWithBooster.BoosterReferences != null && infiltrationActionWithBooster.BoosterReferences.Length != 0 && Databases.GetDatabase<BoosterDefinition>(false).TryGetValue(infiltrationActionWithBooster.BoosterReferences[0], out boosterDefinition))
+			DepartmentOfPlanificationAndDevelopment agency = spyEmpire.GetAgency<DepartmentOfPlanificationAndDevelopment>();
+			if (agency != null)
 			{
-				num = DepartmentOfPlanificationAndDevelopment.GetBoosterDurationWithBonus(spyEmpire, spyEmpire, boosterDefinition);
-			}
-			if (num <= 0)
-			{
-				num = DepartmentOfPlanificationAndDevelopment.GetBoosterDurationWithBonus(spyEmpire, duration);
-			}
-			text = text.Replace("$Duration", num.ToString());
-		}
-		if (infiltrationAction is InfiltrationActionOnEmpire_StealResource)
-		{
-			string newValue = string.Empty;
-			EspionageActionPanel guiPanel = Services.GetService<global::IGuiService>().GetGuiPanel<EspionageActionPanel>();
-			if (guiPanel != null && guiPanel.TargetedCity != null)
-			{
-				InfiltrationActionOnEmpire_StealResource infiltrationActionOnEmpire_StealResource = infiltrationAction as InfiltrationActionOnEmpire_StealResource;
-				DepartmentOfTheTreasury agency = guiPanel.TargetedCity.Empire.GetAgency<DepartmentOfTheTreasury>();
-				float num2 = 0f;
-				if (agency.TryGetResourceStockValue(guiPanel.TargetedCity.Empire, infiltrationActionOnEmpire_StealResource.ResourceName, out num2, false))
+				int duration = infiltrationActionWithBooster.Duration;
+				int num = 0;
+				if (duration <= 0 && infiltrationActionWithBooster.BoosterReferences != null && infiltrationActionWithBooster.BoosterReferences.Length > 0)
 				{
-					float num3 = num2 * infiltrationActionOnEmpire_StealResource.AmountParameters.TargetStockPercentage + infiltrationActionOnEmpire_StealResource.AmountParameters.BaseAmount;
-					float num4 = num3 * infiltrationActionOnEmpire_StealResource.AmountParameters.RandomThreshold;
-					float num5 = Mathf.Floor(Mathf.Min(num3 - num4, num2));
-					float num6 = Mathf.Floor(Mathf.Min(num3 + num4, num2));
-					newValue = AgeLocalizer.Instance.LocalizeString(string.Concat(new string[]
+					IDatabase<BoosterDefinition> database = Databases.GetDatabase<BoosterDefinition>(false);
+					BoosterDefinition boosterDefinition;
+					if (database.TryGetValue(infiltrationActionWithBooster.BoosterReferences[0], out boosterDefinition))
 					{
-						" (#FFD768#\\7703\\#REVERT# ",
-						num5.ToString(),
-						" - #FFD768#\\7703\\#REVERT# ",
-						num6.ToString(),
-						")"
-					}));
+						num = DepartmentOfPlanificationAndDevelopment.GetBoosterDurationWithBonus(spyEmpire, spyEmpire, boosterDefinition);
+					}
 				}
+				if (num <= 0)
+				{
+					num = DepartmentOfPlanificationAndDevelopment.GetBoosterDurationWithBonus(spyEmpire, duration);
+				}
+				text = text.Replace("$Duration", num.ToString());
 			}
-			text = text.Replace("$Amount", newValue);
 		}
 		return text;
 	}

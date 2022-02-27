@@ -291,8 +291,9 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 				return false;
 			}
 		}
+		DepartmentOfTransportation agency = army.Empire.GetAgency<DepartmentOfTransportation>();
 		WorldPosition worldPosition;
-		return army.Empire.GetAgency<DepartmentOfTransportation>().TryGetFirstCityTileAvailableForTeleport(city, out worldPosition) && worldPosition.IsValid;
+		return agency.TryGetFirstCityTileAvailableForTeleport(city, out worldPosition) && worldPosition.IsValid;
 	}
 
 	public static readonly StaticString NoBoosterForTeleport = "ArmyActionNoBoosterActivatedForTeleport";

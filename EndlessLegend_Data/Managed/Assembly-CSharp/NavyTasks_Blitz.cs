@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
 
@@ -27,31 +26,31 @@ public class NavyTasks_Blitz : NavyTask
 		NavyTaskEvaluation navyTaskEvaluation = new NavyTaskEvaluation();
 		navyTaskEvaluation.Fitness = new HeuristicValue(0f);
 		navyTaskEvaluation.Task = this;
-		if (navyGarrison.Garrison.GetPropertyValue(SimulationProperties.CityDefensePointLossPerTurn) <= 0f)
+		float propertyValue = navyGarrison.Garrison.GetPropertyValue(SimulationProperties.CityDefensePointLossPerTurn);
+		if (propertyValue <= 0f)
 		{
 			navyTaskEvaluation.Fitness.Value = -1f;
 			navyTaskEvaluation.Fitness.Log("Avoid using army without fortification damage.", new object[0]);
 		}
 		else
 		{
-			navyTaskEvaluation.Fitness.Add(1f, "(constant)", new object[0]);
-			float propertyValue = this.Target.GetPropertyValue(SimulationProperties.DefensivePower);
-			float propertyValue2 = this.Target.GetPropertyValue(SimulationProperties.CoastalDefensivePower);
-			if (propertyValue + propertyValue2 > 0f)
+			navyTaskEvaluation.Fitness.Add(0.8f, "(constant)", new object[0]);
+			float propertyValue2 = this.Target.GetPropertyValue(SimulationProperties.DefensivePower);
+			float propertyValue3 = this.Target.GetPropertyValue(SimulationProperties.CoastalDefensivePower);
+			if (propertyValue2 + propertyValue3 > 0f)
 			{
-				float num = (propertyValue + propertyValue2) / (float)navyGarrison.Garrison.UnitsCount;
-				using (IEnumerator<Unit> enumerator = navyGarrison.Garrison.Units.GetEnumerator())
+				float num = (propertyValue2 + propertyValue3) / (float)navyGarrison.Garrison.UnitsCount;
+				foreach (Unit unit in navyGarrison.Garrison.Units)
 				{
-					while (enumerator.MoveNext())
+					float propertyValue4 = unit.GetPropertyValue(SimulationProperties.Health);
+					if (propertyValue4 - num < num * 2f)
 					{
-						if (enumerator.Current.GetPropertyValue(SimulationProperties.Health) - num < num * 2f)
-						{
-							navyTaskEvaluation.Fitness.Subtract(0.2f, "(constant) Retaliation will kill units.", new object[0]);
-						}
+						navyTaskEvaluation.Fitness.Subtract(0.2f, "(constant) Retaliation will kill units.", new object[0]);
 					}
 				}
 			}
-			float numberOfTurnToReach = (float)this.worldPositionService.GetDistance(navyGarrison.Garrison.WorldPosition, this.Target.WorldPosition) / navyGarrison.GetMaximumMovement();
+			float num2 = (float)this.worldPositionService.GetDistance(navyGarrison.Garrison.WorldPosition, this.Target.WorldPosition);
+			float numberOfTurnToReach = num2 / navyGarrison.GetMaximumMovement();
 			navyTaskEvaluation.Fitness.Multiply(base.ComputeDistanceFitness(numberOfTurnToReach, navyGarrison.Role), "Distance", new object[0]);
 		}
 		return navyTaskEvaluation;

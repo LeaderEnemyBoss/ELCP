@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SpellDefinition Name="Spell1">
+    <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyRageWizards7</TechnologyPrerequisite>
+
+    <SpellBattleAction Name="Spell1Level1">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell1Level) eq 1</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell1Level1"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_MagicShield_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_MagicShield_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell1Level2">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell1Level) eq 2</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell1Level2"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_MagicShield_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_MagicShield_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell1Level3">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell1Level) eq 3</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell1Level3"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_MagicShield_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_MagicShield_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell1Level4">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell1Level) eq 4</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell1Level4"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_MagicShield_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_MagicShield_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell1Level5">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell1Level) eq 5</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell1Level5"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_MagicShield_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_MagicShield_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+
+    <CustomCost ResourceName="EmpireMoney" Instant="true">$Property(Spell1Level) * 30</CustomCost>
+  </SpellDefinition>
+
+  <SpellDefinition Name="Spell2">
+    <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyRageWizards8</TechnologyPrerequisite>
+
+    <SpellBattleAction Name="Spell2Level1">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell2Level) eq 1</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell2Level1"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Strengthening_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Strengthening_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell2Level2">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell2Level) eq 2</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell2Level2"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Strengthening_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Strengthening_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell2Level3">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell2Level) eq 3</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell2Level3"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Strengthening_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Strengthening_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell2Level4">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell2Level) eq 4</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell2Level4"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Strengthening_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Strengthening_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell2Level5">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell2Level) eq 5</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell2Level5"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Strengthening_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Strengthening_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+
+    <CustomCost ResourceName="EmpireMoney" Instant="true">$Property(Spell2Level) * 30</CustomCost>
+  </SpellDefinition>
+  
+  <SpellDefinition Name="Spell3">
+    <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyRageWizards9</TechnologyPrerequisite>
+
+    <SpellBattleAction Name="Spell3Level1">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell3Level) eq 1</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell3Level1"/>
+	  <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_StunningPressure_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_StunningPressure_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell3Level2">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell3Level) eq 2</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell3Level2"/>
+	  <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_StunningPressure_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_StunningPressure_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell3Level3">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell3Level) eq 3</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell3Level3"/>
+	  <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_StunningPressure_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_StunningPressure_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell3Level4">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell3Level) eq 4</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell3Level4"/>
+	  <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_StunningPressure_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_StunningPressure_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell3Level5">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell3Level) eq 5</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell3Level5"/>
+	  <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_StunningPressure_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_StunningPressure_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+
+    <CustomCost ResourceName="EmpireMoney" Instant="true">$Property(Spell3Level) * 60</CustomCost>
+  </SpellDefinition>
+  
+  <SpellDefinition Name="Spell4">
+    <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyRageWizards10</TechnologyPrerequisite>
+
+    <SpellBattleAction Name="Spell4Level1">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell4Level) eq 1</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell4Level1"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_BlueRain_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_BlueRain_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell4Level2">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell4Level) eq 2</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell4Level2"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_BlueRain_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_BlueRain_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell4Level3">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell4Level) eq 3</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell4Level3"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_BlueRain_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_BlueRain_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell4Level4">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell4Level) eq 4</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell4Level4"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_BlueRain_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_BlueRain_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell4Level5">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell4Level) eq 5</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell4Level5"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_BlueRain_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_BlueRain_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+
+    <CustomCost ResourceName="EmpireMoney" Instant="true">$Property(Spell4Level) * 30</CustomCost>
+  </SpellDefinition>
+
+  <SpellDefinition Name="Spell5">
+    <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyRageWizards11</TechnologyPrerequisite>
+
+    <SpellBattleAction Name="Spell5Level1">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell5Level) eq 1</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell5Level1"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Regeneration_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Regeneration_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell5Level2">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell5Level) eq 2</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell5Level2"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Regeneration_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Regeneration_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell5Level3">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell5Level) eq 3</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell5Level3"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Regeneration_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Regeneration_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell5Level4">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell5Level) eq 4</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell5Level4"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Regeneration_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Regeneration_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+    <SpellBattleAction Name="Spell5Level5">
+      <InterpreterPrerequisite  Inverted="false"  Flags="Prerequisite,Discard">$Property(Spell5Level) eq 5</InterpreterPrerequisite>
+      <BattleActionUserDefinitionReference Name="BattleActionUserSpell5Level5"/>
+      <SpellVisualEffect Duration="1.5">
+        <InvocationCenterAssetPath>FX_Spell_Regeneration_Center</InvocationCenterAssetPath>
+        <InvocationAssetPath>FX_Spell_Regeneration_Effect</InvocationAssetPath>
+      </SpellVisualEffect>
+    </SpellBattleAction>
+
+    <CustomCost ResourceName="EmpireMoney" Instant="true">$Property(Spell5Level) * 30</CustomCost>
+  </SpellDefinition>
+
+  <!--<SpellDefinition Name="Spell6">
+    <BattleActionUserDefinitionReference Name="Spell6_Effect1"/>
+    <CustomCost ResourceName="EmpireMoney" Instant="true">(1 + $Property(PillarsCount)) * (20 + $Property(Pillar6Level) * 10)</CustomCost>
+  </SpellDefinition>-->
+</Datatable>

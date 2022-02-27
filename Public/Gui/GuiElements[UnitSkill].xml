@@ -1,0 +1,1662 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--
+  Sector values : from 0 to 2 (0 = left sector, 1 = middle sector, 2 = right sector)
+  Angle values : typically from 0 to 1 (0 = leftmost of the sector, 1 = rightmost, float should be used)
+  Radius values : typically from 1 to 5 (1 = first level, 5 = last level, float can be used to fine-tune the distance from center)
+  -->
+
+  <!-- ************************************ -->
+  <!-- **********  Melee (Left)  ********** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle03"                     Sector="0" Angle="0.5" Radius="0">
+    <Title>%HeroSkillLeaderBattle03Title</Title>
+    <Description>%HeroSkillLeaderBattle03Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle3Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle3Large"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle10Infantry"             Sector="0" Angle="0.5" Radius="1">
+    <Title>%HeroSkillLeaderBattle10InfantryTitle</Title>
+    <Description>%HeroSkillLeaderBattle10InfantryDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle10MeleeSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle10MeleeLarge"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle16Infantry"             Sector="0" Angle="0.5" Radius="2">
+    <Title>%HeroSkillLeaderBattle16InfantryTitle</Title>
+    <Description>%HeroSkillLeaderBattle16InfantryDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle16MeleeSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle16MeleeLarge"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle06"                     Sector="0" Angle="0"   Radius="3">
+    <Title>%HeroSkillLeaderBattle06Title</Title>
+    <Description>%HeroSkillLeaderBattle06Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle6Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle6Large"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle15Infantry"             Sector="0" Angle="1"   Radius="3">
+    <Title>%HeroSkillLeaderBattle15InfantryTitle</Title>
+    <Description>%HeroSkillLeaderBattle15InfantryDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle15MeleeSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle15MeleeLarge" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle18"                     Sector="0" Angle="1"   Radius="4">
+    <Title>%HeroSkillLeaderBattle18Title</Title>
+    <Description>%HeroSkillLeaderBattle18Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle18Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle18Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- **********  Ranged (Left)  ********* -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap10"                        Sector="0" Angle="0.5" Radius="0">
+    <Title>%HeroSkillLeaderMap10Title</Title>
+    <Description>%HeroSkillLeaderMap10Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap10Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap10Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap08"                        Sector="0" Angle="0.5" Radius="1">
+    <Title>%HeroSkillLeaderMap08Title</Title>
+    <Description>%HeroSkillLeaderMap08Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap8Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap8Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap08Level1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%HeroSkillLeaderMap08Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle17Ranged"               Sector="0" Angle="0.5" Radius="2">
+    <Title>%HeroSkillLeaderBattle17RangedTitle</Title>
+    <Description>%HeroSkillLeaderBattle17RangedDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle17RangedSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle17RangedLarge" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle09"                     Sector="0" Angle="0"   Radius="3">
+    <Title>%HeroSkillLeaderBattle09Title</Title>
+    <Description>%HeroSkillLeaderBattle09Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle9Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle9Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle05"                     Sector="0" Angle="1"   Radius="3">
+    <Title>%HeroSkillLeaderBattle05Title</Title>
+    <Description>%HeroSkillLeaderBattle05Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle5Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle5Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle16Ranged"               Sector="0" Angle="1"   Radius="4">
+    <Title>%HeroSkillLeaderBattle16RangedTitle</Title>
+    <Description>%HeroSkillLeaderBattle16RangedDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle16RangedSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle16RangedLarge"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- *********  Support (Left)  ********* -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle07"                     Sector="0" Angle="0.5" Radius="0">
+    <Title>%HeroSkillLeaderBattle07Title</Title>
+    <Description>%HeroSkillLeaderBattle07Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle7Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle7Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle15Support"              Sector="0" Angle="0.5" Radius="1">
+    <Title>%HeroSkillLeaderBattle15SupportTitle</Title>
+    <Description>%HeroSkillLeaderBattle15SupportDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle15SupportSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle15SupportLarge" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle08"                     Sector="0" Angle="0"   Radius="2">
+    <Title>%HeroSkillLeaderBattle08Title</Title>
+    <Description>%HeroSkillLeaderBattle08Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle8Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle8Large"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle11"                     Sector="0" Angle="1"   Radius="2">
+    <Title>%HeroSkillLeaderBattle11Title</Title>
+    <Description>%HeroSkillLeaderBattle11Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle11Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle11Large"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle10Support"              Sector="0" Angle="1"   Radius="3">
+    <Title>%HeroSkillLeaderBattle10SupportTitle</Title>
+    <Description>%HeroSkillLeaderBattle10SupportDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle10SupportSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle10SupportLarge"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle17Support"              Sector="0" Angle="1"   Radius="4">
+    <Title>%HeroSkillLeaderBattle17SupportTitle</Title>
+    <Description>%HeroSkillLeaderBattle17SupportDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle17SupportSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle17SupportLarge" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- **********  Flying (Left)  ********* -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle11Flying"               Sector="0" Angle="0.5" Radius="0">
+    <Title>%HeroSkillLeaderBattle11Title</Title>
+    <Description>%HeroSkillLeaderBattle11Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle11Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle11Large"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle23"                     Sector="0" Angle="0"   Radius="2">
+    <Title>%HeroSkillLeaderBattle23Title</Title>
+    <Description>%HeroSkillLeaderBattle23Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle23Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle23Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle24"                     Sector="0" Angle="0.5" Radius="3">
+    <Title>%HeroSkillLeaderBattle24Title</Title>
+    <Description>%HeroSkillLeaderBattle24Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle24Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle24Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap15"                        Sector="0" Angle="1"   Radius="2">
+    <Title>%HeroSkillLeaderMap15Title</Title>
+    <Description>%HeroSkillLeaderMap15Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap15Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap15Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap16"                        Sector="0" Angle="0.5" Radius="1">
+    <Title>%HeroSkillLeaderMap16Title</Title>
+    <Description>%HeroSkillLeaderMap16Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap16Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap16Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle25"                     Sector="0" Angle="1"   Radius="4">
+    <Title>%HeroSkillLeaderBattle25Title</Title>
+    <Description>%HeroSkillLeaderBattle25Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle25Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle25Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- **********  Cavalry (Left)  ********* -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle31"               Sector="0" Angle="0.5" Radius="0">
+    <Title>%HeroSkillLeaderBattle31Title</Title>
+    <Description>%HeroSkillLeaderBattle31Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle31Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle31Large"/>
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap23"                     Sector="0" Angle="0.5"   Radius="1">
+    <Title>%HeroSkillLeaderMap23Title</Title>
+    <Description>%HeroSkillLeaderMap23Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap10Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap10Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle32Cavalry"                     Sector="0" Angle="0.5" Radius="2">
+    <Title>%HeroSkillLeaderBattle32CavalryTitle</Title>
+    <Description>%HeroSkillLeaderBattle32CavalryDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle32CavalrySmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle32CavalryLarge" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle33"                        Sector="0" Angle="1"   Radius="3">
+    <Title>%HeroSkillLeaderBattle33Title</Title>
+    <Description>%HeroSkillLeaderBattle33Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle33Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle33Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle11Cavalry"                        Sector="0" Angle="0" Radius="3">
+    <Title>%HeroSkillLeaderBattle11Title</Title>
+    <Description>%HeroSkillLeaderBattle11Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle11Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle11Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle35"                     Sector="0" Angle="0.5"   Radius="4">
+    <Title>%HeroSkillLeaderBattle35Title</Title>
+    <Description>%HeroSkillLeaderBattle35Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle35Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle35Large" />
+    </Icons>
+    <Color Red="135" Green="178" Blue="170" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- ************************************ -->
+  <!-- *********  Common (center)  ******** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap05"                        Sector="1" Angle="0.5" Radius="0">
+    <Title>%HeroSkillLeaderMap05Title</Title>
+    <Description>%HeroSkillLeaderMap05Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap5Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap5Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap05Level1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologySearchBonusTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap05Level2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologySearchBonusTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap03"                        Sector="1" Angle="0"   Radius="1">
+    <Title>%HeroSkillLeaderMap03Title</Title>
+    <Description>%HeroSkillLeaderMap03Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap3Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap3Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillCommon01"                           Sector="1" Angle="1"   Radius="1">
+    <Title>%HeroSkillCommon01Title</Title>
+    <Description>%HeroSkillCommon01Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillCommon1Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillCommon1Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap14"                        Sector="1" Angle="0"   Radius="2">
+    <Title>%HeroSkillLeaderMap14Title</Title>
+    <Description>%HeroSkillLeaderMap14Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap14Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap14Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap14Level1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%HeroSkillLeaderMap14Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap14Level2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%HeroSkillLeaderMap14Level2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor26"                         Sector="1" Angle="1"   Radius="2">
+    <Title>%HeroSkillGovernor26Title</Title>
+    <Description>%HeroSkillGovernor26Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor26Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor26Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap04"                        Sector="1" Angle="0"   Radius="3">
+    <Title>%HeroSkillLeaderMap04Title</Title>
+    <Description>%HeroSkillLeaderMap04Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap4Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap4Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap04ReplicantsPack"          Sector="1" Angle="0"   Radius="3">
+    <Title>%HeroSkillLeaderMap04Title</Title>
+    <Description>%HeroSkillLeaderMap04Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap4Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap4Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor29"                         Sector="1" Angle="1"   Radius="3">
+    <Title>%HeroSkillGovernor29Title</Title>
+    <Description>%HeroSkillGovernor29Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor29Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor29Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor29ReplicantsPack"           Sector="1" Angle="1"   Radius="3">
+    <Title>%HeroSkillGovernor29Title</Title>
+    <Description>%HeroSkillGovernor29Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor29Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor29Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillCommon03Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillCommon03Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillCommon04"                           Sector="1" Angle="0.5" Radius="4">
+    <Title>%HeroSkillCommon04Title</Title>
+    <Description>%HeroSkillCommon04Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillCommon4Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillCommon4Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillCommon04Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillCommon04Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillEspionage01"                        Sector="1" Angle="0.5" Radius="2">
+    <Title>%HeroSkillEspionage01Title</Title>
+    <Description>%HeroSkillEspionage01Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillEspionage1Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillEspionage1Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillEspionage01Replicants"              Sector="1" Angle="0.5" Radius="2">
+    <Title>%HeroSkillEspionage01ReplicantsTitle</Title>
+    <Description>%HeroSkillEspionage01ReplicantsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillEspionage1ReplicantsSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillEspionage1ReplicantsLarge" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor36"                         Sector="1" Angle="0.5" Radius="3">
+    <Title>%HeroSkillGovernor36Title</Title>
+    <Description>%HeroSkillGovernor36Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor36Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor36Large" />
+    </Icons>
+    <Color Red="148" Green="168" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- ******  Broken Lords (right)  ****** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor09"                         Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillGovernor09Title</Title>
+    <Description>%HeroSkillGovernor09Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor9Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor9Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle12"                     Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillLeaderBattle12Title</Title>
+    <Description>%HeroSkillLeaderBattle12Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle12Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle12Large"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor08"                         Sector="2" Angle="1"   Radius="1">
+    <Title>%HeroSkillGovernor08Title</Title>
+    <Description>%HeroSkillGovernor08Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor8Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor8Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor21"                         Sector="2" Angle="0.5" Radius="2">
+    <Title>%HeroSkillGovernor21Title</Title>
+    <Description>%HeroSkillGovernor21Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor21Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor21Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap12"                        Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillLeaderMap12Title</Title>
+    <Description>%HeroSkillLeaderMap12Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap12Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap12Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor15"                         Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillGovernor15Title</Title>
+    <Description>%HeroSkillGovernor15Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor15Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor15Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- ******  Wild Walkers (right)  ****** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillCommon02"                           Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillCommon02Title</Title>
+    <Description>%HeroSkillCommon02Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillCommon2Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillCommon2Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor07"                         Sector="2" Angle="1"   Radius="1">
+    <Title>%HeroSkillGovernor07Title</Title>
+    <Description>%HeroSkillGovernor07Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor7Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor7Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor02"                         Sector="2" Angle="0"   Radius="2">
+    <Title>%HeroSkillGovernor02Title</Title>
+    <Description>%HeroSkillGovernor02Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor2Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor2Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor20"                         Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillGovernor20Title</Title>
+    <Description>%HeroSkillGovernor20Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor20Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor20Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor18"                         Sector="2" Angle="1"   Radius="3">
+    <Title>%HeroSkillGovernor18Title</Title>
+    <Description>%HeroSkillGovernor18Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor18Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor18Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor14"                         Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillGovernor14Title</Title>
+    <Description>%HeroSkillGovernor14Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor14Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor14Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- ******  Rage Wizards (right)  ****** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor03"                         Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillGovernor03Title</Title>
+    <Description>%HeroSkillGovernor03Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor3Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor3Large"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle13"                     Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillLeaderBattle13Title</Title>
+    <Description>%HeroSkillLeaderBattle13Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle13Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle13Large"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle02"                     Sector="2" Angle="0"   Radius="2">
+    <Title>%HeroSkillLeaderBattle02Title</Title>
+    <Description>%HeroSkillLeaderBattle02Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle2Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle2Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor11"                         Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillGovernor11Title</Title>
+    <Description>%HeroSkillGovernor11Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor11Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor11Large"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor17"                         Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillGovernor17Title</Title>
+    <Description>%HeroSkillGovernor17Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor17Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor17Large"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor16"                         Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillGovernor16Title</Title>
+    <Description>%HeroSkillGovernor16Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor16Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor16Large"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- *******  Necrophages (right)  ****** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor01"                         Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillGovernor01Title</Title>
+    <Description>%HeroSkillGovernor01Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor1Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor1Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor19Necrophages"              Sector="2" Angle="1"   Radius="1">
+    <Title>%HeroSkillGovernor19NecrophagesTitle</Title>
+    <Description>%HeroSkillGovernor19NecrophagesDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor19NecrophagesSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor19NecrophagesLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap01"                        Sector="2" Angle="0"   Radius="2">
+    <Title>%HeroSkillLeaderMap01Title</Title>
+    <Description>%HeroSkillLeaderMap01Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap1Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap1Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor13"                         Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillGovernor13Title</Title>
+    <Description>%HeroSkillGovernor13Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor13Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor13Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle01"                     Sector="2" Angle="1"   Radius="3">
+    <Title>%HeroSkillLeaderBattle01Title</Title>
+    <Description>%HeroSkillLeaderBattle01Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle1Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle1Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap02"                        Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillLeaderMap02Title</Title>
+    <Description>%HeroSkillLeaderMap02Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap2Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap2Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- ********  Vaulters (right)  ******** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor12"                         Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillGovernor12Title</Title>
+    <Description>%HeroSkillGovernor12Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor12Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor12Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillCommon03"                           Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillCommon03Title</Title>
+    <Description>%HeroSkillCommon03Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillCommon3Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillCommon3Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor27"                         Sector="2" Angle="0"   Radius="2">
+    <Title>%HeroSkillGovernor27Title</Title>
+    <Description>%HeroSkillGovernor27Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor27Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor27Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle04"                     Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillLeaderBattle04Title</Title>
+    <Description>%HeroSkillLeaderBattle04Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle4Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle4Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor28"                         Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillGovernor28Title</Title>
+    <Description>%HeroSkillGovernor28Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor28Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor28Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor28Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor28Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor24"                         Sector="2" Angle="0.5" Radius="4">
+    <Title>%HeroSkillGovernor24Title</Title>
+    <Description>%HeroSkillGovernor24Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor24Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor24Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor24Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor24Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor24Level2">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor24Level2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor24Level3">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor24Level3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- ******  Roving Clans (right)  ****** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor10"                         Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillGovernor10Title</Title>
+    <Description>%HeroSkillGovernor10Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor10Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor10Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor31"                         Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillGovernor31Title</Title>
+    <Description>%HeroSkillGovernor31Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor31Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor31Large"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor22"                         Sector="2" Angle="1"   Radius="1">
+    <Title>%HeroSkillGovernor22Title</Title>
+    <Description>%HeroSkillGovernor22Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor22Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor22Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor23"                         Sector="2" Angle="0"   Radius="2">
+    <Title>%HeroSkillGovernor23Title</Title>
+    <Description>%HeroSkillGovernor23Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor23Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor23Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor23Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor23Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor23Level2">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor23Level2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor23Level3">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor23Level3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor19RovingClans"              Sector="2" Angle="1"   Radius="3">
+    <Title>%HeroSkillGovernor19RovingClansTitle</Title>
+    <Description>%HeroSkillGovernor19RovingClansDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor19RovingClansSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor19RovingClansLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor25"                         Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillGovernor25Title</Title>
+    <Description>%HeroSkillGovernor25Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor25Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor25Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor25Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor25Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- ********  Drakkens (right)  ******** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor06"                         Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillGovernor06Title</Title>
+    <Description>%HeroSkillGovernor06Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor6Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor6Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap09"                        Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillLeaderMap09Title</Title>
+    <Description>%HeroSkillLeaderMap09Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap9Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap9Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor05"                         Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillGovernor05Title</Title>
+    <Description>%HeroSkillGovernor05Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor5Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor5Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap07"                        Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillLeaderMap07Title</Title>
+    <Description>%HeroSkillLeaderMap07Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap7Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap7Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap07Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap07Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor04"                         Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillGovernor04Title</Title>
+    <Description>%HeroSkillGovernor04Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor4Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor4Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle14"                     Sector="2" Angle="1"   Radius="4">
+    <Title>%HeroSkillLeaderBattle14Title</Title>
+    <Description>%HeroSkillLeaderBattle14Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle14Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle14Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- ********  Cultists (right)  ******** -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor32"                         Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillGovernor32Title</Title>
+    <Description>%HeroSkillGovernor32Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap13Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap13Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle12Cultists"             Sector="2" Angle="0"   Radius="2">
+    <Title>%HeroSkillLeaderBattle12CultistsTitle</Title>
+    <Description>%HeroSkillLeaderBattle12CultistsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle12CultistsSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle12CultistsLarge"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle13Cultists"             Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillLeaderBattle13CultistsTitle</Title>
+    <Description>%HeroSkillLeaderBattle13CultistsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle13CultistsSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle13CultistsLarge"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor15Cultists"                 Sector="2" Angle="0.5" Radius="4">
+    <Title>%HeroSkillGovernor15CultistsTitle</Title>
+    <Description>%HeroSkillGovernor15CultistsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor15CultistsSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor15CultistsLarge"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor16Cultists"                 Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillGovernor16CultistsTitle</Title>
+    <Description>%HeroSkillGovernor16CultistsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor16CultistsSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor16CultistsLarge"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor30"                         Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillGovernor30Title</Title>
+    <Description>%HeroSkillGovernor30Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor30Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor30Large"/>
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- *********  Haunts (right)  ********* -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle21"                     Sector="2" Angle="0.5" Radius="3">
+    <Title>%HeroSkillLeaderBattle21Title</Title>
+    <Description>%HeroSkillLeaderBattle21Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle21Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle21Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderBattle21Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderBattle21Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor33"                         Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillGovernor33Title</Title>
+    <Description>%HeroSkillGovernor33Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor33Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor33Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor34"                         Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillGovernor34Title</Title>
+    <Description>%HeroSkillGovernor34Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor34Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor34Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle19"                     Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillLeaderBattle19Title</Title>
+    <Description>%HeroSkillLeaderBattle19Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle19Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle19Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle20"                     Sector="2" Angle="1"   Radius="4">
+    <Title>%HeroSkillLeaderBattle20Title</Title>
+    <Description>%HeroSkillLeaderBattle20Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle20Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle20Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderBattle20Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderBattle20Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderBattle20Level2">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderBattle20Level2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+
+
+  <!-- ************************************ -->
+  <!-- *******  Replicants (right)  ******* -->
+  <!-- ************************************ -->
+
+  <UnitSkillGuiElement Name="HeroSkillCommon02Replicants"                  Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillCommon02ReplicantsTitle</Title>
+    <Description>%HeroSkillCommon02ReplicantsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillCommon2Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillCommon2Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillEspionage02Replicants"               Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillEspionage02ReplicantsTitle</Title>
+    <Description>%HeroSkillEspionage02ReplicantsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillEspionage2ReplicantsSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillEspionage2ReplicantsLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle13Replicants"            Sector="2" Angle="0"   Radius="2">
+    <Title>%HeroSkillLeaderBattle13ReplicantsTitle</Title>
+    <Description>%HeroSkillLeaderBattle13ReplicantsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle13ReplicantsSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle13ReplicantsLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor35"                          Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillGovernor35Title</Title>
+    <Description>%HeroSkillGovernor35Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor35Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor35Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap17"                         Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillLeaderMap17Title</Title>
+    <Description>%HeroSkillLeaderMap17Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap17Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap17Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap17Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap17Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillEspionage03Replicants"               Sector="2" Angle="1"   Radius="4">
+    <Title>%HeroSkillEspionage03ReplicantsTitle</Title>
+    <Description>%HeroSkillEspionage03ReplicantsDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillEspionage3ReplicantsSmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillEspionage3ReplicantsLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillEspionage03ReplicantsLevel1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%HeroSkillEspionage03ReplicantsLevel1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillEspionage03ReplicantsLevel2">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillEspionage03ReplicantsLevel2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+
+
+  <!-- ********************************************* -->
+  <!-- *********  Sisters of Mercy (right)  ******** -->
+  <!-- ********************************************* -->
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor04SistersOfMercy"            Sector="2" Angle="0"   Radius="0">
+    <Title>%HeroSkillGovernor04SistersOfMercyTitle</Title>
+    <Description>%HeroSkillGovernor04SistersOfMercyDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor4SistersOfMercySmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor4SistersOfMercyLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor37"                          Sector="2" Angle="0.5" Radius="3">
+    <Title>%HeroSkillGovernor37Title</Title>
+    <Description>%HeroSkillGovernor37Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor37Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor37Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillGovernor38"                          Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillGovernor38Title</Title>
+    <Description>%HeroSkillGovernor38Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor38Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor38Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <ExtendedGuiElement  Name="HeroSkillGovernor38Level1TooltipEffect">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%HeroSkillGovernor38Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle26SistersOfMercy"        Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillLeaderBattle26SistersOfMercyTitle</Title>
+    <Description>%HeroSkillLeaderBattle26SistersOfMercyDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle26SistersOfMercySmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle26SistersOfMercyLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement Name="HeroSkillLeaderBattle26SistersOfMercyLevel1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderBattle26SistersOfMercyLevel1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderBattle26SistersOfMercyLevel2">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderBattle26SistersOfMercyLevel2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle23SistersOfMercy"        Sector="2" Angle="1"   Radius="4">
+    <Title>%HeroSkillLeaderBattle23SistersOfMercyTitle</Title>
+    <Description>%HeroSkillLeaderBattle23SistersOfMercyDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle23SistersOfMercySmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle23SistersOfMercyLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap01SistersOfMercy"           Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillLeaderMap01SistersOfMercyTitle</Title>
+    <Description>%HeroSkillLeaderMap01SistersOfMercyDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap1SistersOfMercySmall" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap1SistersOfMercyLarge" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+
+  <!-- *********************************************** -->
+  <!-- *********  Winter of Shifters (right)  ******** -->
+  <!-- *********************************************** -->
+
+  <!-- Pathfinder (Winter Shifters) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap18"                         Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillLeaderMap18Title</Title>
+    <Description>%HeroSkillLeaderMap18Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap18Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap18Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement Name="HeroSkillLeaderMap18Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap18Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Improved Auriga affinity (Winter Shifters) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap19"                         Sector="2" Angle="1" Radius="2">
+    <Title>%HeroSkillLeaderMap19Title</Title>
+    <Description>%HeroSkillLeaderMap19Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap19Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap19Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement Name="HeroSkillLeaderMap19Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap19Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="HeroSkillLeaderMap19Level2">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap19Level2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Bribe cost reduction (Winter Shifters) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap20"                         Sector="2" Angle="0.5" Radius="1">
+    <Title>%HeroSkillLeaderMap20Title</Title>
+    <Description>%HeroSkillLeaderMap20Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap20Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap20Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- Safe Retreat (Winter Shifters) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle27"                      Sector="2" Angle="1" Radius="3">
+    <Title>%HeroSkillLeaderBattle27Title</Title>
+    <Description>%HeroSkillLeaderBattle27Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle27Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle27Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- Killer Instinct (Winter Shifters) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle28"                      Sector="2" Angle="0" Radius="4">
+    <Title>%HeroSkillLeaderBattle28Title</Title>
+    <Description>%HeroSkillLeaderBattle28Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle28Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle28Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement Name="HeroSkillLeaderBattle28Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderBattle28Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- City Orb Cost Reduction (Winter Shifters) -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor39"                          Sector="2" Angle="0" Radius="2">
+    <Title>%HeroSkillGovernor39Title</Title>
+    <Description>%HeroSkillGovernor39Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor39Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor39Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  
+
+  <!-- *********************************************** -->
+  <!-- *********          Sea Demons (right)  ******** -->
+  <!-- *********************************************** -->
+
+  <!-- Ironclad (Sea Demons) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle29"                      Sector="2" Angle="0.5" Radius="0">
+    <Title>%HeroSkillLeaderBattle29Title</Title>
+    <Description>%HeroSkillLeaderBattle29Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle29Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle29Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- Ingenious Admiral (Sea Demons) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderBattle30"                      Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillLeaderBattle30Title</Title>
+    <Description>%HeroSkillLeaderBattle30Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderBattle30Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderBattle30Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>  
+
+  <!-- Cult of Tides (Sea Demons) -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor40"                          Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillGovernor40Title</Title>
+    <Description>%HeroSkillGovernor40Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor40Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor40Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  
+  <!-- Ship Builder (Sea Demons) -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor41"                          Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillGovernor41Title</Title>
+    <Description>%HeroSkillGovernor41Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor41Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor41Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  
+  <!-- Spy Glass (Sea Demons) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap21"                         Sector="2" Angle="0.5" Radius="3">
+    <Title>%HeroSkillLeaderMap21Title</Title>
+    <Description>%HeroSkillLeaderMap21Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap21Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap21Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap21Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap21TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Lord of the Sea (Sea Demons) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap22"                         Sector="2" Angle="0" Radius="4">
+    <Title>%HeroSkillLeaderMap22Title</Title>
+    <Description>%HeroSkillLeaderMap22Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap22Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap22Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>  
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap22Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap22TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+
+  <!-- ********************************************* -->
+  <!-- *********  Flames (right)            ******** -->
+  <!-- ********************************************* -->
+
+  <!-- Volcanology (Flames) -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor42"            Sector="2" Angle="0.5"   Radius="0">
+    <Title>%HeroSkillGovernor42Title</Title>
+    <Description>%HeroSkillGovernor42Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor42Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor42Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+  <!-- Blazing ingenuity (Flames) -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor45"        Sector="2" Angle="0"   Radius="2">
+    <Title>%HeroSkillGovernor45Title</Title>
+    <Description>%HeroSkillGovernor45Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor45Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor45Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- Heat of the Hearth (Flames) -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor44"                          Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillGovernor44Title</Title>
+    <Description>%HeroSkillGovernor44Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor44Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor44Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement Name="HeroSkillGovernor44Level1">
+    <Title>%HeroSkillGovernor44Title</Title>
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor44TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillGovernor44Level2">
+    <Title>%HeroSkillGovernor44Title</Title>
+    <TooltipElement>
+      <EffectOverride>%HeroSkillGovernor44TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <!-- Reclaimation Genius (Flames) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap24"        Sector="2" Angle="1"   Radius="2">
+    <Title>%HeroSkillLeaderMap24Title</Title>
+    <Description>%HeroSkillLeaderMap24Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap24Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap24Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement Name="HeroSkillLeaderMap24Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap24Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap24Level2">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap24Level2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <!-- Geomatic Wiles (Flames) -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor43"                          Sector="2" Angle="0.5" Radius="3">
+    <Title>%HeroSkillGovernor43Title</Title>
+    <Description>%HeroSkillGovernor43Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor43Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor43Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- Bloodboiler (Flames) -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap25"           Sector="2" Angle="0"   Radius="4">
+    <Title>%HeroSkillLeaderMap25Title</Title>
+    <Description>%HeroSkillLeaderMap25Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap25Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap25Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  
+  
+  <!-- ************************************ -->
+  <!-- **********  Mimics (right) ********* -->
+  <!-- ************************************ -->
+  <!-- Mimic Food on Food tile skill -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor46"            Sector="2" Angle="0.5"   Radius="0">
+    <Title>%HeroSkillGovernor46Title</Title>
+    <Description>%HeroSkillGovernor46Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor46Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor46Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+
+  <!-- Mimic Food population upkeep reduce skill -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor47"        Sector="2" Angle="0"   Radius="1">
+    <Title>%HeroSkillGovernor47Title</Title>
+    <Description>%HeroSkillGovernor47Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor47Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor47Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  
+  <!-- negate movement penalty -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap26"        Sector="2" Angle="1"   Radius="1">
+    <Title>%HeroSkillLeaderMap26Title</Title>
+    <Description>%HeroSkillLeaderMap26Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap26Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap26Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- retaliation -->
+  <UnitSkillGuiElement Name="HeroSkillGovernor48"                          Sector="2" Angle="0"   Radius="3">
+    <Title>%HeroSkillGovernor48Title</Title>
+    <Description>%HeroSkillGovernor48Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillGovernor48Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillGovernor48Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- Damage on units -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap27"                          Sector="2" Angle="1" Radius="3">
+    <Title>%HeroSkillLeaderMap27Title</Title>
+    <Description>%HeroSkillLeaderMap27Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap27Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap27Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+
+  <!-- Damage on hero vs Kaiju -->
+  <UnitSkillGuiElement Name="HeroSkillLeaderMap28"           Sector="2" Angle="0.5"   Radius="4">
+    <Title>%HeroSkillLeaderMap28Title</Title>
+    <Description>%HeroSkillLeaderMap28Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/AtlasedBitmaps/HeroSkills/HeroSkillLeaderMap28Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/HeroSkills/HeroSkillLeaderMap28Large" />
+    </Icons>
+    <Color Red="231" Green="103" Blue="0" Alpha="255" />
+  </UnitSkillGuiElement>
+  <ExtendedGuiElement Name="HeroSkillLeaderMap28Level1">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap28Level1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement  Name="HeroSkillLeaderMap28Level2">
+    <TooltipElement>
+      <EffectOverride>%HeroSkillLeaderMap28Level2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+</Datatable>

@@ -1,0 +1,1182 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--
+  The probability to send an AI attitude feedback is defined in the AI registry file at : AI/AIHelpers/CommunicationAIHelper/ProbabilityToSendAIAttitudeFeedbackFormula.
+  
+  <AttitudeFeedback Name="FeedbackUniqueName" Category="CategoryNameForOccurrenceCountFeature" MaximumOccurrenceCount="1" ProbabilityBonus="25">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard">DiplomaticRelationStatePeace</DiplomaticRelationStatePrerequisite>
+    <DiplomaticAbilityPrerequisite TargetRelation="ProviderToReceiver" Inverted="true" Flags="Prerequisite,Discard">MapExchange</DiplomaticAbilityPrerequisite>
+    
+    <ValueRangeTrigger ModifierName="AttitudeModifierName" MinimumValue="10" MaximumValue="15"/>                  // Trigger on the attitude modifier value.
+    <TrendRangeTrigger ModifierName="AttitudeModifierName" MinimumValue="0" MaximumValue="2"/>                    // Trigger on the attitude modifier trend.
+    <CategoryValueRangeTrigger ModifierName="AttitudeModifierName" MinimumValue="-Infinity" MaximumValue="-10"/>  // Trigger on the attitude category (trust/envy/fear/war)
+    <ContextValueRangeTrigger VariableName="PeaceTermAgent" MinimumValue="0" MaximumValue="0.2"/>                 // Trigger on the context value.
+  </AttitudeFeedback>
+  -->
+  
+  <!-- ###### NEGATIVE FEEDBACK ######-->
+  <AttitudeFeedback Name="PeacefulFeedbackNegative" Category="Peaceful" MaximumOccurrenceCount="1" ProbabilityBonus="5">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScorePeaceful" MinimumValue="10" MaximumValue="15"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.4"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePeaceful" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+    
+  <AttitudeFeedback Name="CommonEnemyFeedbackNegative" Category="CommonEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonEnemy" MinimumValue="5" MaximumValue="10"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.4"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonEnemy" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonFriendFeedbackNegative" Category="CommonFriend" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonFriend" MinimumValue="5" MaximumValue="10"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.4"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonFriend" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonAllyFeedbackNegative" Category="CommonAlly" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="5" MaximumValue="10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="0" MaximumValue="2"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.4"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonAllyNotAlliedFeedbackNegative" Category="CommonAlly" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="5" MaximumValue="10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="0" MaximumValue="2"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.4"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonFrontierFeedbackNegative" Category="CommonFrontier" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="-5" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="-2" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+  
+  <AttitudeFeedback Name="WarFatigueFeedbackNegative" Category="WarFatigue" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <ValueRangeTrigger ModifierName="AttitudeScoreWarFatigue" MinimumValue="55" MaximumValue="60"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreWarFatigue" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="LastWarForgetNegative" Category="LastWar" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreLastWar" MinimumValue="-5" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreLastWar" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="AggressionDuringColdWarFeedbackNegative" Category="AggressionDuringColdWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="OtherEmpireCitiesTakenFeedbackNegative" Category="OtherEmpireCitiesTaken" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireCitiesTakenDuringWar" MinimumValue="30" MaximumValue="35"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireCitiesTakenDuringWar" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireCitiesTakenFeedbackNegative" Category="MyEmpireCitiesTaken" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireCitiesTakenDuringWar" MinimumValue="75" MaximumValue="80"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireCitiesTakenDuringWar" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireLeadMilitaryPowerFeedbackNegative" Category="MyEmpireLeadMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadMilitaryPower" MinimumValue="-150" MaximumValue="-145"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadMilitaryPower" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="OtherEmpireLeadMilitaryPowerFeedbackNegative" Category="OtherEmpireLeadMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadMilitaryPower" MinimumValue="95" MaximumValue="100"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadMilitaryPower" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="UnitsInMyTerritoryFeedbackNegative" Category="UnitsInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="10" MaximumValue="50"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="0" MaximumValue="1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="VillageConvertedFeedbackNegative" Category="VillageConverted" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### NEUTRAL FEEDBACK ######-->
+
+  <AttitudeFeedback Name="PeacefulFeedbackNeutral" Category="Peaceful" MaximumOccurrenceCount="1" ProbabilityBonus="25">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScorePeaceful" MinimumValue="5" MaximumValue="10"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.3"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePeaceful" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonEnemyFeedbackNeutral" Category="CommonEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonEnemy" MinimumValue="5" MaximumValue="10"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.3"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonEnemy" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonFriendFeedbackNeutral" Category="CommonFriend" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonFriend" MinimumValue="5" MaximumValue="10"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.3"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonFriend" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonAllyFeedbackNeutral" Category="CommonAlly" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="5" MaximumValue="10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="0" MaximumValue="2"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.3"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonAllyNotAlliedFeedbackNeutral" Category="CommonAlly" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="5" MaximumValue="10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="0" MaximumValue="2"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.3"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonFrontierFeedbackNeutral" Category="CommonFrontier" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="-5" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="-2" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="WarFatigueFeedbackNeutral" Category="WarFatigue" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <ValueRangeTrigger ModifierName="AttitudeScoreWarFatigue" MinimumValue="55" MaximumValue="60"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreWarFatigue" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="LastWarForgetNeutral" Category="LastWar" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreLastWar" MinimumValue="-5" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreLastWar" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="AggressionDuringColdWarFeedbackNeutral" Category="AggressionDuringColdWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite> 
+    <ValueRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="OtherEmpireCitiesTakenFeedbackNeutral" Category="OtherEmpireCitiesTaken" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireCitiesTakenDuringWar" MinimumValue="30" MaximumValue="35"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireCitiesTakenDuringWar" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireCitiesTakenFeedbackNeutral" Category="MyEmpireCitiesTaken" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireCitiesTakenDuringWar" MinimumValue="75" MaximumValue="80"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireCitiesTakenDuringWar" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireLeadMilitaryPowerFeedbackNeutral" Category="MyEmpireLeadMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="20">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadMilitaryPower" MinimumValue="-150" MaximumValue="-145"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadMilitaryPower" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="OtherEmpireLeadMilitaryPowerFeedbackNeutral" Category="OtherEmpireLeadMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="20">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadMilitaryPower" MinimumValue="95" MaximumValue="100"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadMilitaryPower" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireLeadScoreFeedbackNeutral" Category="MyEmpireLeadScore" MaximumOccurrenceCount="1" ProbabilityBonus="10">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadScore" MinimumValue="70" MaximumValue="75"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadScore" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="OtherEmpireLeadScoreFeedbackNeutral" Category="OtherEmpireLeadScore" MaximumOccurrenceCount="1" ProbabilityBonus="10">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadScore" MinimumValue="-40" MaximumValue="-35"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadScore" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="UnitsInMyTerritoryFeedbackNeutral" Category="UnitsInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="10" MaximumValue="50"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="0" MaximumValue="1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="VillageConvertedFeedbackNeutral" Category="VillageConverted" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### POSITIVE FEEDBACK ######-->
+
+  <AttitudeFeedback Name="PeacefulFeedbackPositive" Category="Peaceful" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScorePeaceful" MinimumValue="10" MaximumValue="15"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.2"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePeaceful" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonEnemyFeedbackPositive" Category="CommonEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonEnemy" MinimumValue="5" MaximumValue="10"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.2"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonEnemy" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonFriendFeedbackPositive" Category="CommonFriend" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonFriend" MinimumValue="5" MaximumValue="10"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.2"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonFriend" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonAllyFeedbackPositive" Category="CommonAlly" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="5" MaximumValue="10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="0" MaximumValue="2"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.2"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonAllyNotAlliedFeedbackPositive" Category="CommonAlly" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="5" MaximumValue="10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="0" MaximumValue="2"/>
+    <ContextValueRangeTrigger VariableName="WarTermAgent" MinimumValue="0" MaximumValue="0.2"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCommonAlly" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="CommonFrontierFeedbackPositive" Category="CommonFrontier" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="-5" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="-2" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAggressiveColonization" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="WarFatigueFeedbackPositive" Category="WarFatigue" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <ValueRangeTrigger ModifierName="AttitudeScoreWarFatigue" MinimumValue="55" MaximumValue="60"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreWarFatigue" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="LastWarForgetPositive" Category="LastWar" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreLastWar" MinimumValue="-5" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreLastWar" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="AggressionDuringColdWarFeedbackPositive" Category="AggressionDuringColdWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="OtherEmpireCitiesTakenFeedbackPositive" Category="OtherEmpireCitiesTaken" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireCitiesTakenDuringWar" MinimumValue="30" MaximumValue="35"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireCitiesTakenDuringWar" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireCitiesTakenFeedbackPositive" Category="MyEmpireCitiesTaken" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireCitiesTakenDuringWar" MinimumValue="75" MaximumValue="80"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireCitiesTakenDuringWar" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="OtherEmpireLeadMilitaryPowerFeedbackPositive" Category="OtherEmpireLeadMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadMilitaryPower" MinimumValue="95" MaximumValue="100"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadMilitaryPower" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireLeadScoreFeedbackPositive" Category="MyEmpireLeadScore" MaximumOccurrenceCount="1" ProbabilityBonus="10">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadScore" MinimumValue="70" MaximumValue="75"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadScore" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="OtherEmpireLeadScoreFeedbackPositive" Category="OtherEmpireLeadScore" MaximumOccurrenceCount="1" ProbabilityBonus="10">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadScore" MinimumValue="-40" MaximumValue="-35"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadScore" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="UnitsInMyTerritoryFeedbackPositive" Category="UnitsInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="10" MaximumValue="50"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="0" MaximumValue="1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreUnitsInMyTerritory" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="VillageConvertedFeedbackPositive" Category="VillageConverted" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreVillageConverted" MinimumValue="0" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <!-- ################################################################################### -->
+  <!-- ################################### SHADOWS DLC ################################### -->
+  <!-- ################################################################################### -->
+
+
+  <!-- ##################### PILLAGE ##################### -->
+
+  <!-- ###### PILLAGED - surprised because relations had been peaceful ######-->
+
+  <AttitudeFeedback Name="PillagedFeedbackPositive" Category="Pillaged" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+
+  <!-- ###### PILLAGED - moderately angry, issuing a strong warning ######-->
+  
+  <AttitudeFeedback Name="PillagedFeedbackNeutral" Category="Pillaged" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-10" MaximumValue="10"/>  <!-- neutral trust -->
+  </AttitudeFeedback>
+
+
+  <!-- ###### PILLAGED - angry but unsurprised because relations had been violent ######-->
+
+  <AttitudeFeedback Name="PillagedFeedbackNegative" Category="Pillaged" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  
+  <!-- ##################### SPIED ON ##################### -->
+
+  <!-- ###### SPIED ON - surprised because relations had been peaceful ######-->
+
+  <AttitudeFeedback Name="SpySpottedFeedbackPositive" Category="SpySpotted" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreSpy" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreSpy" MinimumValue="-20" MaximumValue="Infinity"/> <!-- [-10; inf] trust => we had at least +10 trust before the action -->
+    <!-- started pillaged when trusting -->
+  </AttitudeFeedback>
+
+  <!-- ###### SPIED ON - moderately angry, issuing a strong warning ######-->
+
+  <AttitudeFeedback Name="SpySpottedFeedbackNeutral" Category="SpySpotted" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreSpy" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreSpy" MinimumValue="-40" MaximumValue="-20"/>  <!-- [-40; -20] trust => we had between -10 and +10 trust before the action  -->
+  </AttitudeFeedback>
+
+  <!-- ###### SPIED ON - angry but unsurprised because relations had been violent ######-->
+
+  <AttitudeFeedback Name="SpySpottedFeedbackNegative" Category="SpySpotted" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreSpy" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreSpy" MinimumValue="-Infinity" MaximumValue="-40"/>  <!-- [-inf; -40] trust => we had at most -10 trust before the action -->
+  </AttitudeFeedback>
+
+  <!-- ################################################################################### -->
+  <!-- ############################### WINTER SHIFTERS DLC ############################### -->
+  <!-- ################################################################################### -->
+
+  <!-- ##################### MANTA ASPIRATING IN MY TERRITORY ##################### -->
+
+  <!-- ###### MANTA ASPIRATING IN MY TERRITORY - pleased because of the approval bonus ######-->
+
+  <AttitudeFeedback Name="MantaAspiratingInMyTerritoryFeedbackPositive" Category="MantaAspiratingInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMantaAspiratingInMyTerritory" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMantaAspiratingInMyTerritory" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <!-- ###### MANTA ASPIRATING IN MY TERRITORY - slightly doubtful, but still happy ######-->
+
+  <AttitudeFeedback Name="MantaAspiratingInMyTerritoryFeedbackNeutral" Category="MantaAspiratingInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMantaAspiratingInMyTerritory" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMantaAspiratingInMyTerritory" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### MANTA ASPIRATING IN MY TERRITORY - unimpressed, sceptical and wary of a trap because of past experience ######-->
+
+  <AttitudeFeedback Name="MantaAspiratingInMyTerritoryFeedbackNegative" Category="MantaAspiratingInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMantaAspiratingInMyTerritory" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMantaAspiratingInMyTerritory" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+
+  <!-- ##################### ORBS STOLEN FROM UNDER MY NOSE ##################### -->
+
+  <!-- ###### ORBS STOLEN FROM UNDER MY NOSE - this misunderstanding is most unfortunate ######-->
+
+  <AttitudeFeedback Name="OrbsStolenFeedbackPositive" Category="OrbsStolen" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <!-- ###### ORBS STOLEN FROM UNDER MY NOSE - if this behaviour continues we will be forced to retaliate ######-->
+
+  <AttitudeFeedback Name="OrbsStolenFeedbackNeutral" Category="OrbsStolen" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="-Infinity" MaximumValue="-5"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### ORBS STOLEN FROM UNDER MY NOSE - just the sort of behaviour I've come to expect ######-->
+
+  <AttitudeFeedback Name="OrbsStolenFeedbackNegative" Category="OrbsStolen" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOrbsStolen" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!-- ################################################################################### -->
+  <!-- ######################### ELIMINATIONS OF THIRD PARTIES ########################### -->
+  <!-- ################################################################################### -->
+
+  <!-- ##################### ELIMINATED ENEMY ############################## -->
+
+  <AttitudeFeedback Name="EliminatedEnemyFeedbackPositive" Category="EliminatedEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="0" MaximumValue="Infinity"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="EliminatedEnemyFeedbackNeutral" Category="EliminatedEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="15" MaximumValue="Infinity"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="EliminatedEnemyFeedbackNegative" Category="EliminatedEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="30" MaximumValue="Infinity"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedEnemy" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ##################### ELIMINATED ALLY ############################### -->
+
+  <AttitudeFeedback Name="EliminatedAllyFeedbackPositive" Category="EliminatedAlly" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="-Infinity" MaximumValue="-30"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="EliminatedAllyFeedbackFeedbackNeutral" Category="EliminatedAlly" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="EliminatedAllyFeedbackFeedbackNegative" Category="EliminatedAlly" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ##################### ELIMINATED ACQUAINTANCE ####################### -->
+
+  <AttitudeFeedback Name="EliminatedAcquaintanceFeedbackPositive" Category="EliminatedAcquaintance" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="-Infinity" MaximumValue="-30"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="EliminatedAcquaintanceFeedbackNeutral" Category="EliminatedAcquaintance" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="EliminatedAcquaintanceFeedbackNegative" Category="EliminatedAcquaintance" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedAcquaintance" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ################################################################################### -->
+  <!-- ######################### CITIES TAKEN FROM THIRD PARTIES ######################### -->
+  <!-- ################################################################################### -->
+
+  <!-- ##################### CITY TAKEN FROM ENEMY ######################### -->
+
+  <AttitudeFeedback Name="CityTakenFromEnemyFeedbackPositive" Category="CityTakenFromEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="0" MaximumValue="Infinity"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="CityTakenFromEnemyFeedbackNeutral" Category="CityTakenFromEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="15" MaximumValue="Infinity"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="CityTakenFromEnemyFeedbackNegative" Category="CityTakenFromEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="30" MaximumValue="Infinity"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromEnemy" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ##################### CITY TAKEN FROM ALLY  ######################### -->
+
+  <AttitudeFeedback Name="CityTakenFromAllyFeedbackPositive" Category="CityTakenFromAlly" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="-Infinity" MaximumValue="-30"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="CityTakenFromAllyFeedbackNeutral" Category="CityTakenFromAlly" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="CityTakenFromAllyFeedbackNegative" Category="CityTakenFromAlly" MaximumOccurrenceCount="1" ProbabilityBonus="70">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromAlly" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+  
+  <!-- ##################### CITY TAKEN FROM FRIEND  ####################### -->
+  
+  <AttitudeFeedback Name="CityTakenFromFriendFeedbackPositive" Category="CityTakenFromFriend" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="-Infinity" MaximumValue="-30"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="CityTakenFromFriendFeedbackNeutral" Category="CityTakenFromFriend" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="CityTakenFromFriendFeedbackNegative" Category="CityTakenFromFriend" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCityTakenFromFriend" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ################################################################################### -->
+  <!-- ###################### ENEMY OF MY FRIEND / FRIEND OF MY ENEMY #################### -->
+  <!-- ################################################################################### -->
+
+  <!-- ##################### AT WAR WITH MY ALLY  ########################## -->
+
+  <AttitudeFeedback Name="AtWarWithMyAllyFeedbackPositive" Category="AtWarWithMyAlly" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAtWarWithMyAlly" MinimumValue="-Infinity" MaximumValue="-30"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAtWarWithMyAlly" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="AtWarWithMyAllyFeedbackNeutral" Category="AtWarWithMyAlly" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAtWarWithMyAlly" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAtWarWithMyAlly" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="AtWarWithMyAllyFeedbackNegative" Category="AtWarWithMyAlly" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAtWarWithMyAlly" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAtWarWithMyAlly" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ##################### ALLIED WITH MY ENEMY  ########################## -->
+
+  <AttitudeFeedback Name="AlliedWithMyEnemyFeedbackPositive" Category="AlliedWithMyEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAlliedWithMyEnemy" MinimumValue="-Infinity" MaximumValue="-30"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAlliedWithMyEnemy" MinimumValue="10" MaximumValue="Infinity"/>
+    <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="AlliedWithMyEnemyFeedbackNeutral" Category="AlliedWithMyEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAlliedWithMyEnemy" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAlliedWithMyEnemy" MinimumValue="-10" MaximumValue="10"/>
+    <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="AlliedWithMyEnemyFeedbackNegative" Category="AlliedWithMyEnemy" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreAlliedWithMyEnemy" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreAlliedWithMyEnemy" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <!-- negative trust -->
+  </AttitudeFeedback>
+
+
+  <!-- ################################################################################### -->
+  <!-- ########################## BETRAYAL OF THIRD PARTY ################################ -->
+  <!-- ################################################################################### -->
+
+  <!-- ##################### BETRAYED YOUR ALLY  ########################## -->
+
+  <AttitudeFeedback Name="BetrayedYourAllyFeedbackPositive" Category="BetrayedYourAlly" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="-Infinity" MaximumValue="-30"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="10" MaximumValue="Infinity"/>
+    <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="BetrayedYourAllyFeedbackNeutral" Category="BetrayedYourAlly" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="-10" MaximumValue="10"/>
+    <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="BetrayedYourAllyFeedbackNegative" Category="BetrayedYourAlly" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourAlly" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ##################### BETRAYED YOUR FRIEND  ######################## -->
+
+  <AttitudeFeedback Name="BetrayedYourFriendFeedbackPositive" Category="BetrayedYourFriend" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="-Infinity" MaximumValue="-30"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="10" MaximumValue="Infinity"/>
+    <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="BetrayedYourFriendFeedbackNeutral" Category="BetrayedYourFriend" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="-Infinity" MaximumValue="-20"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="-10" MaximumValue="10"/>
+    <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="BetrayedYourFriendFeedbackNegative" Category="BetrayedYourFriend" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreBetrayedYourFriend" MinimumValue="-Infinity" MaximumValue="-10"/>
+    <!-- negative trust -->
+  </AttitudeFeedback>
+  
+  <!-- ################################################################################### -->
+  <!-- ############################### TEMPEST DLC ####################################### -->
+  <!-- ################################################################################### -->
+
+  <!-- ##################### NAVAL MILITARY POWER ######################## -->
+
+  <AttitudeFeedback Name="OtherEmpireLeadNavalMilitaryPowerFeedbackPositive" Category="OtherEmpireLeadNavalMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadNavalMilitaryPower" MinimumValue="70" MaximumValue="Infinity"/> <!-- positive fear => afraid -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="OtherEmpireLeadNavalMilitaryPowerFeedbackNeutral" Category="OtherEmpireLeadNavalMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadNavalMilitaryPower" MinimumValue="60" MaximumValue="Infinity"/> <!-- positive fear => afraid -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="OtherEmpireLeadNavalMilitaryPowerFeedbackNegative" Category="OtherEmpireLeadNavalMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadNavalMilitaryPower" MinimumValue="50" MaximumValue="Infinity"/> <!-- positive fear => afraid -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireLeadNavalMilitaryPowerFeedbackPositive" Category="MyEmpireLeadNavalMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadNavalMilitaryPower" MinimumValue="-Infinity" MaximumValue="-70"/> <!-- negative fear => unafraid -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="MyEmpireLeadNavalMilitaryPowerFeedbackNeutral" Category="MyEmpireLeadNavalMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadNavalMilitaryPower" MinimumValue="-Infinity" MaximumValue="-60"/> <!-- negative fear => unafraid -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="MyEmpireLeadNavalMilitaryPowerFeedbackNegative" Category="MyEmpireLeadNavalMilitaryPower" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadNavalMilitaryPower" MinimumValue="-Infinity" MaximumValue="-50"/> <!-- negative fear => unafraid -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+  
+  <!-- ##################### NAVAL REGION COUNT ########################## -->
+
+  <AttitudeFeedback Name="OtherEmpireLeadNavalRegionCountFeedbackPositive" Category="OtherEmpireLeadNavalRegionCount" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadNavalRegionCount" MinimumValue="-Infinity" MaximumValue="-40"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="OtherEmpireLeadNavalRegionCountFeedbackNeutral" Category="OtherEmpireLeadNavalRegionCount" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadNavalRegionCount" MinimumValue="-Infinity" MaximumValue="-30"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="OtherEmpireLeadNavalRegionCountFeedbackNegative" Category="OtherEmpireLeadNavalRegionCount" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLeadNavalRegionCount" MinimumValue="-Infinity" MaximumValue="-20"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <AttitudeFeedback Name="MyEmpireLeadNavalRegionCountFeedbackPositive" Category="MyEmpireLeadNavalRegionCount" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadNavalRegionCount" MinimumValue="40" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="MyEmpireLeadNavalRegionCountFeedbackNeutral" Category="MyEmpireLeadNavalRegionCount" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadNavalRegionCount" MinimumValue="30" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="MyEmpireLeadNavalRegionCountFeedbackNegative" Category="MyEmpireLeadNavalRegionCount" MaximumOccurrenceCount="1" ProbabilityBonus="30">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLeadNavalRegionCount" MinimumValue="20" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ##################### UNIQUE FACILITY OWNED ####################### -->
+
+  <AttitudeFeedback Name="OtherEmpireHasUniqueFacilityFeedbackPositive" Category="OtherEmpireHasUniqueFacility" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireHasUniqueFacility" MinimumValue="-Infinity" MaximumValue="-30"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="OtherEmpireHasUniqueFacilityFeedbackNeutral" Category="OtherEmpireHasUniqueFacility" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireHasUniqueFacility" MinimumValue="-Infinity" MaximumValue="-20"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="OtherEmpireHasUniqueFacilityFeedbackNegative" Category="OtherEmpireHasUniqueFacility" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireHasUniqueFacility" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+
+  <!-- ##################### FORTRESS IN THE SAME REGION ################# -->
+
+  <AttitudeFeedback Name="FortressesOwnedInTheSameRegionFeedbackPositive" Category="FortressesOwnedInTheSameRegion" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreFortressesOwnedInTheSameRegion" MinimumValue="-Infinity" MaximumValue="-30"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="FortressesOwnedInTheSameRegionFeedbackNeutral" Category="FortressesOwnedInTheSameRegion" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreFortressesOwnedInTheSameRegion" MinimumValue="-Infinity" MaximumValue="-20"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="FortressesOwnedInTheSameRegionFeedbackNegative" Category="FortressesOwnedInTheSameRegion" MaximumOccurrenceCount="1" ProbabilityBonus="50">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreFortressesOwnedInTheSameRegion" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative envy => envious -->
+    <CategoryValueRangeTrigger ModifierName="AttitudeScorePillaging" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+  
+  <!-- ##################### FORTRESS TAKEN IN COLD WAR ################## -->
+
+  <AttitudeFeedback Name="MyEmpireFortressesTakenDuringColdWarFeedbackPositive" Category="MyEmpireFortressesTakenDuringColdWar" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="MyEmpireFortressesTakenDuringColdWarFeedbackNeutral" Category="MyEmpireFortressesTakenDuringColdWar" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="MyEmpireFortressesTakenDuringColdWarFeedbackNegative" Category="MyEmpireFortressesTakenDuringColdWar" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreFortressTakenDuringColdWar" MinimumValue="-Infinity" MaximumValue="-10"/> <!-- negative trust -->
+  </AttitudeFeedback>
+  
+  <!-- ##################### OCEAN CONTROL REMOVED IN WAR ################ -->
+
+  <AttitudeFeedback Name="MyEmpireLostNavalRegionControlDuringWarFeedbackPositive" Category="MyEmpireLostNavalRegionControlDuringWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLostNavalRegionControlDuringWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLostNavalRegionControlDuringWar" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="MyEmpireLostNavalRegionControlDuringWarFeedbackNeutral" Category="MyEmpireLostNavalRegionControlDuringWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLostNavalRegionControlDuringWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLostNavalRegionControlDuringWar" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="MyEmpireLostNavalRegionControlDuringWarFeedbackNegative" Category="MyEmpireLostNavalRegionControlDuringWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLostNavalRegionControlDuringWar" MinimumValue="-Infinity" MaximumValue="0"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreMyEmpireLostNavalRegionControlDuringWar" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!--
+  <AttitudeFeedback Name="OtherEmpireLostNavalRegionControlDuringWarFeedbackPositive" Category="OtherEmpireLostNavalRegionControlDuringWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar" MinimumValue="0" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="OtherEmpireLostNavalRegionControlDuringWarFeedbackNeutral" Category="OtherEmpireLostNavalRegionControlDuringWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar" MinimumValue="0" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+  <AttitudeFeedback Name="OtherEmpireLostNavalRegionControlDuringWarNegative" Category="OtherEmpireLostNavalRegionControlDuringWar" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="false">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar" MinimumValue="0" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreOtherEmpireLostNavalRegionControlDuringWar" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+  -->
+
+  <!-- ################################################################################### -->
+  <!-- ################################    FLAMES DLC    ################################# -->
+  <!-- ################################################################################### -->
+
+  <!-- ############################ DISMANTLE DEVICE SUFFERED ############################ -->
+
+  <!-- ###### DISMANTLE DEVICE SUFFERED - surprised because relations had been peaceful ######-->
+
+  <AttitudeFeedback Name="DismantleDeviceSufferedFeedbackPositive" Category="DismantleDeviceSuffered" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="10" MaximumValue="Infinity"/>
+    <!-- positive trust -->
+  </AttitudeFeedback>
+
+  <!-- ###### DISMANTLE DEVICE SUFFERED - moderately angry, issuing a strong warning ######-->
+
+  <AttitudeFeedback Name="DismantleDeviceSufferedFeedbackNeutral" Category="DismantleDeviceSuffered" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### DISMANTLE DEVICE SUFFERED - angry but unsurprised because relations had been violent ######-->
+
+  <AttitudeFeedback Name="DismantleDeviceSufferedFeedbackNegative" Category="DismantleDeviceSuffered" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreDismantleDeviceSuffered" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!-- ###################### TERRAIN TERRAFORMED IN MY TERRITORY ######################## -->
+
+  <!-- ###### TERRAIN TERRAFORMED IN MY TERRITORY - pleased ...feedback description here... ######-->
+
+  <AttitudeFeedback Name="TerraformedInMyTerritoryFeedbackPositive" Category="TerraformedInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreTerraformedInMyTerritoryPositive" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreTerraformedInMyTerritoryPositive" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <!-- ###### TERRAIN TERRAFORMED IN MY TERRITORY - doubtful ...feedback description here... ######-->
+
+  <AttitudeFeedback Name="TerraformedInMyTerritoryFeedbackNeutral" Category="TerraformedInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreTerraformedInMyTerritoryNegative" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreTerraformedInMyTerritoryNegative" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### TERRAIN TERRAFORMED IN MY TERRITORY - angry ...feedback description here... ######-->
+
+  <AttitudeFeedback Name="TerraformedInMyTerritoryFeedbackNegative" Category="TerraformedInMyTerritory" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreTerraformedInMyTerritoryNegative" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreTerraformedInMyTerritoryNegative" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!-- ####################### TERRAIN TERRAFORMED NEAR MY ARMIES ######################## -->
+
+  <!-- ###### TERRAIN TERRAFORMED NEAR MY ARMIES - pleased ...feedback description here... ######-->
+
+  <AttitudeFeedback Name="TerraformedNearMyArmiesFeedbackPositive" Category="TerraformedNearMyArmies" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreTerraformedNearMyArmiesPositive" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreTerraformedNearMyArmiesPositive" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <!-- ###### TERRAIN TERRAFORMED NEAR MY ARMIES - doubtful ...feedback description here... ######-->
+
+  <AttitudeFeedback Name="TerraformedNearMyArmiesFeedbackNeutral" Category="TerraformedNearMyArmies" MaximumOccurrenceCount="1" ProbabilityBonus="40">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreTerraformedNearMyArmiesNegative" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreTerraformedNearMyArmiesNegative" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### TERRAIN TERRAFORMED NEAR MY ARMIES - angry ...feedback description here... ######-->
+
+  <AttitudeFeedback Name="TerraformedNearMyArmiesFeedbackNegative" Category="TerraformedNearMyArmies" MaximumOccurrenceCount="1" ProbabilityBonus="60">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreTerraformedNearMyArmiesNegative" MinimumValue="1" MaximumValue="Infinity"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreTerraformedNearMyArmiesNegative" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!-- ################################################################################### -->
+  <!-- ################################    MIMICS DLC    ################################# -->
+  <!-- ################################################################################### -->
+
+  <!-- ######################## DISMANTLE CREEPING NODE SUFFERED ######################### -->
+
+  <!-- ###### DISMANTLE CREEPING NODE SUFFERED - surprised because relations have been peaceful ######-->
+
+  <AttitudeFeedback Name="DismantleCreepingNodeSufferedFeedbackPositive" Category="DismantleCreepingNodeSuffered" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <!-- ###### DISMANTLE CREEPING NODE SUFFERED - moderately angry, issuing a strong warning ######-->
+
+  <AttitudeFeedback Name="DismantleCreepingNodeSufferedFeedbackNeutral" Category="DismantleCreepingNodeSuffered" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### DISMANTLE CREEPING NODE SUFFERED - angry but unsurprised because relations have been violent ######-->
+
+  <AttitudeFeedback Name="DismantleCreepingNodeSufferedFeedbackNegative" Category="DismantleCreepingNodeSuffered" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreDismantleCreepingNodeSuffered" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!-- ########################### CREEPING NODE PLACED NEAR MY CITY ############################ -->
+
+  <!-- ###### CREEPING NODE PLACED NEAR MY CITY - surprised because relations have been peaceful ######-->
+
+  <AttitudeFeedback Name="CreepingNodePlacedFeedbackPositive" Category="CreepingNodeUpgradeComplete" MaximumOccurrenceCount="1" ProbabilityBonus="200">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="0" MaximumValue="1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <!-- ###### CREEPING NODE PLACED NEAR MY CITY - moderately angry, issuing a strong warning ######-->
+
+  <AttitudeFeedback Name="CreepingNodePlacedFeedbackNeutral" Category="CreepingNodeUpgradeComplete" MaximumOccurrenceCount="1" ProbabilityBonus="200">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="0" MaximumValue="1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ###### CREEPING NODE PLACED NEAR MY CITY - angry but unsurprised because relations have been violent ######-->
+
+  <AttitudeFeedback Name="CreepingNodePlacedFeedbackNegative" Category="CreepingNodeUpgradeComplete" MaximumOccurrenceCount="1" ProbabilityBonus="200">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="0" MaximumValue="1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreCreepingNodeUpgradeComplete" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!-- ######################## KAIJU ATTACKED AND LOST ######################### -->
+
+  <!-- ######  KAIJU ATTACKED AND LOST - surprised because relations have been peaceful ######-->
+
+  <AttitudeFeedback Name="KaijuAttackedFeedbackPositive" Category="KaijuAttacked" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+
+  <!-- ######  KAIJU ATTACKED AND LOST - moderately angry, issuing a strong warning ######-->
+
+  <AttitudeFeedback Name="KaijuAttackedFeedbackNeutral" Category="KaijuAttacked" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+
+  <!-- ######  KAIJU ATTACKED AND LOST - angry but unsurprised because relations have been violent ######-->
+
+  <AttitudeFeedback Name="KaijuAttackedFeedbackNegative" Category="KaijuAttacked" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreKaijuAttacked" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+
+  <!-- ######################## KAIJU PLACED NEAR MY CITY ######################### -->
+
+  <!-- ###### KAIJU PLACED NEAR MY CITY - pleased ######-->
+
+  <AttitudeFeedback Name="KaijuPlacedNearMyCityFeedbackPositive" Category="KaijuPlacedNearMyCity" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityPositive" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityPositive" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityPositive" MinimumValue="10" MaximumValue="Infinity"/>
+  </AttitudeFeedback>
+  
+  <!-- ###### KAIJU PLACED NEAR MY CITY - doubtful ######-->
+
+  <AttitudeFeedback Name="KaijuPlacedNearMyCityFeedbackNeutral" Category="KaijuPlacedNearMyCity" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityNegative" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityNegative" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityNegative" MinimumValue="-10" MaximumValue="10"/>
+  </AttitudeFeedback>
+  
+  <!-- ###### KAIJU PLACED NEAR MY CITY - angry ######-->
+
+  <AttitudeFeedback Name="KaijuPlacedNearMyCityFeedbackNegative" Category="KaijuPlacedNearMyCity" MaximumOccurrenceCount="1" ProbabilityBonus="100">
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
+    <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
+    <ValueRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityNegative" MinimumValue="-Infinity" MaximumValue="0"/>
+    <TrendRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityNegative" MinimumValue="0" MaximumValue="0.1"/>
+    <CategoryValueRangeTrigger ModifierName="AttitudeScoreKaijuPlacedNearMyCityNegative" MinimumValue="-Infinity" MaximumValue="-10"/>
+  </AttitudeFeedback>
+  
+</Datatable>

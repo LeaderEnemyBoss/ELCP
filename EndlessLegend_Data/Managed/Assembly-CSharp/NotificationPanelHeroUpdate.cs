@@ -11,44 +11,36 @@ public class NotificationPanelHeroUpdate : NotificationPanelBase
 		if (this.guiNotification is GuiNotificationHeroAvailable)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationHeroAvailable;
-			return;
 		}
-		if (this.guiNotification is GuiNotificationHeroExfiltrated)
+		else if (this.guiNotification is GuiNotificationHeroExfiltrated)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationHeroExfiltrated;
-			return;
 		}
-		if (this.guiNotification is GuiNotificationHeroInfiltrated)
+		else if (this.guiNotification is GuiNotificationHeroInfiltrated)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationHeroInfiltrated;
-			return;
 		}
-		if (this.guiNotification is GuiNotificationHeroInjured)
+		else if (this.guiNotification is GuiNotificationHeroInjured)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationHeroInjured;
-			return;
 		}
-		if (this.guiNotification is GuiNotificationPrisonerCaptured)
+		else if (this.guiNotification is GuiNotificationPrisonerCaptured)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationPrisonerCaptured;
-			return;
 		}
-		if (this.guiNotification is GuiNotificationPrisonerReleased)
+		else if (this.guiNotification is GuiNotificationPrisonerReleased)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationPrisonerReleased;
-			return;
 		}
-		if (this.guiNotification is GuiNotificationHeroLevelUp)
+		else if (this.guiNotification is GuiNotificationHeroLevelUp)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationHeroLevelUp;
-			return;
 		}
-		if (this.guiNotification is GuiNotificationHeroRecovered)
+		else if (this.guiNotification is GuiNotificationHeroRecovered)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationHeroRecovered;
-			return;
 		}
-		if (this.guiNotification is GuiNotificationHeroUnassigned)
+		else if (this.guiNotification is GuiNotificationHeroUnassigned)
 		{
 			this.autoPopupToggle.State = this.guiNotificationSettingsService.AutoPopupNotificationHeroUnassigned;
 		}
@@ -111,23 +103,23 @@ public class NotificationPanelHeroUpdate : NotificationPanelBase
 					this.Description.Text = guiNotificationHeroBase.FormatDescription(guiElement.Description, base.GuiService);
 					this.DescriptionSW.ResetUp();
 				}
-				Unit unit = this.FetchHero();
-				if (unit != null)
+				Unit hero = this.FetchHero();
+				if (hero != null)
 				{
-					GuiHero guiHero = new GuiHero(unit, null);
-					if (base.GuiService.GuiPanelHelper.TryGetGuiElement(unit.UnitDesign.Name, out guiElement))
+					GuiHero guiHero = new GuiHero(hero, null);
+					if (base.GuiService.GuiPanelHelper.TryGetGuiElement(hero.UnitDesign.Name, out guiElement))
 					{
-						Texture2D image;
+						Texture2D texture;
 						if (guiHero != null && guiHero.IsShifted)
 						{
-							if (base.GuiService.GuiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.ShiftedLarge, out image))
+							if (base.GuiService.GuiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.ShiftedLarge, out texture))
 							{
-								this.ImmersiveImage.Image = image;
+								this.ImmersiveImage.Image = texture;
 							}
 						}
-						else if (base.GuiService.GuiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.Large, out image))
+						else if (base.GuiService.GuiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.Large, out texture))
 						{
-							this.ImmersiveImage.Image = image;
+							this.ImmersiveImage.Image = texture;
 						}
 					}
 					AgeTooltip ageTooltip = this.ImmersiveImage.AgeTransform.AgeTooltip;
@@ -138,10 +130,6 @@ public class NotificationPanelHeroUpdate : NotificationPanelBase
 						ageTooltip.Content = guiHero.Title;
 					}
 				}
-			}
-			if (this.guiNotification is GuiNotificationHeroLevelUp)
-			{
-				this.RefreshContent();
 			}
 		}
 		yield break;
@@ -155,12 +143,14 @@ public class NotificationPanelHeroUpdate : NotificationPanelBase
 			object[] array = new object[2];
 			array[0] = this.FetchHero();
 			guiPanel.Show(array);
-			return;
 		}
-		base.GuiService.GetGuiPanel<HeroInspectionModalPanel>().Show(new object[]
+		else
 		{
-			this.FetchHero()
-		});
+			base.GuiService.GetGuiPanel<HeroInspectionModalPanel>().Show(new object[]
+			{
+				this.FetchHero()
+			});
+		}
 	}
 
 	private void OnAcademyCB(GameObject obj)
@@ -186,20 +176,6 @@ public class NotificationPanelHeroUpdate : NotificationPanelBase
 			}
 		}
 		return result;
-	}
-
-	public override void RefreshContent()
-	{
-		base.RefreshContent();
-		if (this.guiNotification != null && this.notificationItem != null)
-		{
-			Unit unit = this.FetchHero();
-			if (unit.GetPropertyValue(SimulationProperties.MaximumSkillPoints) - unit.GetPropertyValue(SimulationProperties.SkillPointsSpent) == 0f)
-			{
-				base.GuiService.GetGuiPanel<NotificationListPanel>().DismissNotification(this.guiNotification);
-				this.Hide(false);
-			}
-		}
 	}
 
 	public AgeControlScrollView DescriptionSW;

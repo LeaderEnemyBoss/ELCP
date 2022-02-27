@@ -295,11 +295,6 @@ public class AILayer_Population : AILayer
 		}
 		OrderSacrificePopulation order = new OrderSacrificePopulation(this.Empire.Index, this.aiEntityCity.City.GUID);
 		this.Empire.PlayerControllers.AI.PostOrder(order);
-		Diagnostics.Log("ELCP {0}/{1} sacrificing pops", new object[]
-		{
-			base.AIEntity.Empire,
-			this.aiEntityCity.City.LocalizedName
-		});
 		return SynchronousJobState.Success;
 	}
 

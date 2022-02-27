@@ -17,18 +17,18 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderIntegrateFaction), "IntegrateFaction")]
-[OrderProcessor(typeof(OrderSelloutTradableResource), "SelloutTradableResource")]
-[OrderProcessor(typeof(OrderSelloutTradableHero), "SelloutTradableHero")]
 [OrderProcessor(typeof(OrderChangeEmpirePlan), "ChangeEmpirePlan")]
+[OrderProcessor(typeof(OrderSelloutTradableResource), "SelloutTradableResource")]
+[OrderProcessor(typeof(OrderSwitchCheatMode), "SwitchCheatMode")]
 [OrderProcessor(typeof(OrderBuyoutTradableUnit), "BuyoutTradable")]
 [OrderProcessor(typeof(OrderBuyoutTradable), "BuyoutTradable")]
-[OrderProcessor(typeof(OrderSelloutTradableBooster), "SelloutTradableBooster")]
 [OrderProcessor(typeof(OrderBuyoutAndActivateBoosterThroughArmy), "BuyoutAndActivateBoosterThroughArmy")]
 [OrderProcessor(typeof(OrderBuyoutAndActivateBoosterByInfiltration), "BuyoutAndActivateBoosterByInfiltration")]
-[OrderProcessor(typeof(OrderSelloutTradableUnits), "SelloutTradableUnits")]
-[OrderProcessor(typeof(OrderSwitchCheatMode), "SwitchCheatMode")]
+[OrderProcessor(typeof(OrderSelloutTradableHero), "SelloutTradableHero")]
 [OrderProcessor(typeof(OrderBuyoutAndActivateBooster), "BuyoutAndActivateBooster")]
+[OrderProcessor(typeof(OrderIntegrateFaction), "IntegrateFaction")]
+[OrderProcessor(typeof(OrderSelloutTradableUnits), "SelloutTradableUnits")]
+[OrderProcessor(typeof(OrderSelloutTradableBooster), "SelloutTradableBooster")]
 public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable, IEmpirePlanProvider
 {
 	public DepartmentOfPlanificationAndDevelopment(global::Empire empire) : base(empire)
@@ -60,12 +60,9 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			throw new ArgumentNullException("boosterDefinition");
 		}
 		float duration = boosterDefinition.GetDuration(context);
-		float num = empire.GetPropertyValue(SimulationProperties.BoosterDurationMultiplier);
-		if (boosterDefinition.ToString().Contains("Luxury"))
-		{
-			num *= empire.GetPropertyValue(SimulationProperties.AllayiBoosterDurationMultiplier);
-		}
-		return Mathf.Max(Mathf.RoundToInt(duration * num), 1);
+		float propertyValue = empire.GetPropertyValue(SimulationProperties.BoosterDurationMultiplier);
+		int a = Mathf.RoundToInt(duration * propertyValue);
+		return Mathf.Max(a, 1);
 	}
 
 	public void ActivateBooster(BoosterDefinition boosterDefinition, GameEntityGUID boosterGuid, int boosterDuration, SimulationObjectWrapper context, GameEntityGUID targetGuid, int instigatorEmpireIndex)
@@ -99,6 +96,14 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		{
 			float propertyBaseValue = base.Empire.SimulationObject.GetPropertyBaseValue(boosterActivationsPropertyName);
 			base.Empire.SimulationObject.SetPropertyBaseValue(boosterActivationsPropertyName, propertyBaseValue + 1f);
+		}
+		else
+		{
+			Diagnostics.LogWarning("Booster {0} does not have an activations counter property named '{1}'.", new object[]
+			{
+				boosterDefinition.Name,
+				boosterActivationsPropertyName
+			});
 		}
 	}
 
@@ -745,7 +750,8 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					}
 				}
 				ConstructionResourceStock[] array = null;
-				if (order.IsFree || order.IgnoreCost || this.departmentOfTheTreasury.GetInstantConstructionResourceCostForBuyout(base.Empire, boosterDefinition, out array))
+				bool flag = order.IsFree || this.departmentOfTheTreasury.GetInstantConstructionResourceCostForBuyout(base.Empire, boosterDefinition, out array);
+				if (flag)
 				{
 					if (order.BoosterGameEntityGUID == GameEntityGUID.Zero)
 					{
@@ -2033,6 +2039,9 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		yield break;
 	}
 
+	[Service]
+	private IEventService EventService { get; set; }
+
 	private bool SelloutTradableUnitsPreprocessor(OrderSelloutTradableUnits order)
 	{
 		if (order == null)
@@ -2173,6 +2182,11 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 						{
 							if (garrison.IsEmpty)
 							{
+								IEventService eventService = Services.GetService<IEventService>();
+								if (eventService != null)
+								{
+									eventService.Notify(new EventArmyDisbanded(garrison.Empire, garrison.GUID));
+								}
 								departmentOfDefense.RemoveArmy(garrison as Army, true);
 								if (besiegingSeafaringArmies != null)
 								{
@@ -2438,17 +2452,13 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		this.departmentOfTheInterior = base.Empire.GetAgency<DepartmentOfTheInterior>();
 		Diagnostics.Assert(this.departmentOfTheInterior != null);
 		this.eventService = Services.GetService<IEventService>();
-		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
 		Diagnostics.Assert(this.eventService != null);
 		Diagnostics.Assert(base.Empire != null);
 		base.Empire.RegisterPass("GameClientState_Turn_Begin", "NotifyEmpirePlanChoiceTurn", new Agency.Action(this.GameClientState_Turn_Begin_NotifyEmpirePlanChoiceTurn), new string[0]);
-		base.Empire.RegisterPass("GameClientState_Turn_Begin", "RefreshRoads", new Agency.Action(this.GameClientState_Turn_Begin_RefreshRoads), new string[]
-		{
-			"ClearAllTradeRoutes"
-		});
 		base.Empire.RegisterPass("GameClientState_Turn_Begin", "CreateNewTradeRoutes", new Agency.Action(this.GameClientState_Turn_Begin_CreateNewTradeRoutes), new string[]
 		{
-			"RefreshRoads"
+			"ClearAllTradeRoutes"
 		});
 		base.Empire.RegisterPass("GameClientState_Turn_Begin", "ApplyTradeRoutesSimulation", new Agency.Action(this.GameClientState_Turn_Begin_ApplyTradeRoutesSimulation), new string[]
 		{
@@ -2460,7 +2470,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		{
 			base.Empire.RegisterPass("GameClientState_Turn_Begin", "PillarsNotification", new Agency.Action(this.GameClientState_Turn_Begin_PillarsNotification), new string[0]);
 		}
-		if (service != null && service.IsShared(DownloadableContent13.ReadOnlyName))
+		if (downloadableContentService != null && downloadableContentService.IsShared(DownloadableContent13.ReadOnlyName))
 		{
 			base.Empire.RegisterPass("GameClientState_Turn_End", "UpdateLocalWinterImmunity", new Agency.Action(this.GameClientState_Turn_End_UpdateLocalWinterImmunity), new string[0]);
 		}
@@ -2505,26 +2515,26 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		Diagnostics.Assert(this.empirePlanDefinitionsByClass != null);
 		Diagnostics.Assert(this.empirePlanDatabase != null);
 		this.empirePlanDefinitionsByClass.Clear();
-		DepartmentOfPlanificationAndDevelopment.ConstructibleElement[] array = (from predicate in this.empirePlanDatabase
+		DepartmentOfPlanificationAndDevelopment.ConstructibleElement[] empirePlans = (from predicate in this.empirePlanDatabase
 		where predicate is EmpirePlanDefinition
 		select predicate).ToArray<DepartmentOfPlanificationAndDevelopment.ConstructibleElement>();
-		for (int i = 0; i < array.Length; i++)
+		for (int index = 0; index < empirePlans.Length; index++)
 		{
-			EmpirePlanDefinition empirePlan = array[i] as EmpirePlanDefinition;
+			EmpirePlanDefinition empirePlan = empirePlans[index] as EmpirePlanDefinition;
 			if (empirePlan != null && !(empirePlan.EmpirePlanClass == null) && !this.empirePlanDefinitionsByClass.ContainsKey(empirePlan.EmpirePlanClass))
 			{
-				DepartmentOfPlanificationAndDevelopment.ConstructibleElement[] array2 = (from empirePlanDefinition in array
+				DepartmentOfPlanificationAndDevelopment.ConstructibleElement[] constructibleElements = (from empirePlanDefinition in empirePlans
 				where (empirePlanDefinition as EmpirePlanDefinition).EmpirePlanClass == empirePlan.EmpirePlanClass
 				select empirePlanDefinition).ToArray<DepartmentOfPlanificationAndDevelopment.ConstructibleElement>();
-				List<EmpirePlanDefinition> list = Array.ConvertAll<DepartmentOfPlanificationAndDevelopment.ConstructibleElement, EmpirePlanDefinition>(array2, (DepartmentOfPlanificationAndDevelopment.ConstructibleElement input) => input as EmpirePlanDefinition).ToList<EmpirePlanDefinition>();
-				for (int j = 0; j < array2.Length; j++)
+				List<EmpirePlanDefinition> empirePlanDefinitions = Array.ConvertAll<DepartmentOfPlanificationAndDevelopment.ConstructibleElement, EmpirePlanDefinition>(constructibleElements, (DepartmentOfPlanificationAndDevelopment.ConstructibleElement input) => input as EmpirePlanDefinition).ToList<EmpirePlanDefinition>();
+				for (int i = 0; i < constructibleElements.Length; i++)
 				{
-					if (!this.CheckEmpireplanPrerequisite(array2[j] as EmpirePlanDefinition))
+					if (!this.CheckEmpireplanPrerequisite(constructibleElements[i] as EmpirePlanDefinition))
 					{
-						list.Remove(array2[j] as EmpirePlanDefinition);
+						empirePlanDefinitions.Remove(constructibleElements[i] as EmpirePlanDefinition);
 					}
 				}
-				this.empirePlanDefinitionsByClass.Add(empirePlan.EmpirePlanClass, list.ToArray());
+				this.empirePlanDefinitionsByClass.Add(empirePlan.EmpirePlanClass, empirePlanDefinitions.ToArray());
 			}
 		}
 		Diagnostics.Assert(this.currentEmpirePlanDefinitionByClass != null);
@@ -2532,23 +2542,23 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		StaticString[] empirePlanClasses = this.GetEmpirePlanClasses();
 		if (empirePlanClasses != null)
 		{
-			foreach (StaticString staticString in empirePlanClasses)
+			foreach (StaticString empirePlanClass in empirePlanClasses)
 			{
-				Diagnostics.Assert(staticString != null);
-				EmpirePlanDefinition empirePlanDefinition2 = this.GetEmpirePlanDefinition(staticString, 0);
+				Diagnostics.Assert(empirePlanClass != null);
+				EmpirePlanDefinition currentPlan = this.GetEmpirePlanDefinition(empirePlanClass, 0);
 				Diagnostics.Assert(this.currentEmpirePlanDefinitionByClass != null);
-				Diagnostics.Assert(empirePlanDefinition2 != null, "There is no level 0 for empire plan {0}.", new object[]
+				Diagnostics.Assert(currentPlan != null, "There is no level 0 for empire plan {0}.", new object[]
 				{
-					staticString
+					empirePlanClass
 				});
-				this.UnlockEmpirePlan(empirePlanDefinition2);
+				this.UnlockEmpirePlan(currentPlan);
 			}
 		}
 		this.departmentOfTheTreasury.ResourcePropertyChange += this.DepartmentOfTheTreasury_ResourcePropertyChange;
-		IEventService service2 = Services.GetService<IEventService>();
-		if (service2 != null)
+		IEventService eventService = Services.GetService<IEventService>();
+		if (eventService != null)
 		{
-			service2.EventRaise += this.EventService_EventRaise;
+			eventService.EventRaise += this.EventService_EventRaise;
 		}
 		yield break;
 	}
@@ -3105,20 +3115,6 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			if (e.NewSeason != null && e.NewSeason.SeasonDefinition.SeasonType == Season.ReadOnlyWinter)
 			{
 				base.Empire.SetPropertyBaseValue("NumberOfWinters", base.Empire.GetPropertyValue("NumberOfWinters") + 1f);
-			}
-		}
-		if (e.OldSeason == null || e.OldSeason.SeasonDefinition.SeasonType == Season.ReadOnlyWinter || e.NewSeason.SeasonDefinition.SeasonType == Season.ReadOnlyWinter)
-		{
-			global::Empire empire = (Services.GetService<IGameService>().Game as global::Game).Empires.FirstOrDefault((global::Empire em) => em != null && em is MajorEmpire && !(em as MajorEmpire).IsEliminated);
-			if (empire != null && empire.Index == base.Empire.Index)
-			{
-				Diagnostics.Log("ELCP {2} Season change registered from {0} -> {1}", new object[]
-				{
-					(e.OldSeason == null) ? "NULL" : e.OldSeason.SeasonDefinition.SeasonType,
-					e.NewSeason.SeasonDefinition.SeasonType,
-					base.Empire
-				});
-				this.RoadsNeedsRefreshing = false;
 			}
 		}
 	}
@@ -4331,228 +4327,6 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		return result;
 	}
 
-	private IEnumerator GameClientState_Turn_Begin_RefreshRoads(string context, string name)
-	{
-		global::Empire empire = (Services.GetService<IGameService>().Game as global::Game).Empires.FirstOrDefault((global::Empire em) => em != null && em is MajorEmpire && !(em as MajorEmpire).IsEliminated);
-		if (empire == null || empire.Index != base.Empire.Index)
-		{
-			yield break;
-		}
-		StaticString type = new StaticString("DistrictImprovement");
-		StaticString y = new StaticString("DistrictImprovementDocks");
-		IGameService service = Services.GetService<IGameService>();
-		ICadasterService service2 = service.Game.Services.GetService<ICadasterService>();
-		List<City> citylist = new List<City>();
-		List<global::Empire> empirelist = new List<global::Empire>();
-		Func<District, bool> <>9__2;
-		for (int j = 0; j < (service.Game as global::Game).Empires.Length; j++)
-		{
-			global::Empire empire2 = (service.Game as global::Game).Empires[j];
-			if (empire2 != null && empire2 is MajorEmpire && !(empire2 as MajorEmpire).IsEliminated)
-			{
-				DepartmentOfTheInterior agency = empire2.GetAgency<DepartmentOfTheInterior>();
-				for (int k = 0; k < agency.Cities.Count; k++)
-				{
-					City city7 = agency.Cities[k];
-					if (city7 != null && city7.GUID.IsValid && city7.Empire != null && city7.Empire.Index == agency.Empire.Index)
-					{
-						bool flag = city7.CityImprovements.Any((CityImprovement I) => I.CityImprovementDefinition.Name == "CityImprovementRoads");
-						IEnumerable<District> districts = city7.Districts;
-						Func<District, bool> predicate;
-						if ((predicate = <>9__2) == null)
-						{
-							predicate = (<>9__2 = ((District D) => D.Type == DistrictType.Improvement && D.GetDescriptorNameFromType(type) == y));
-						}
-						bool flag2 = districts.Any(predicate);
-						if (this.RoadsNeedsRefreshing && (flag || flag2))
-						{
-							service2.Disconnect(city7, PathfindingMovementCapacity.All, true);
-							service2.RefreshCadasterMap();
-							citylist.Add(city7);
-							empirelist.AddOnce(city7.Empire);
-						}
-						else if (flag2)
-						{
-							service2.Disconnect(city7, PathfindingMovementCapacity.Water, true);
-							service2.RefreshCadasterMap();
-							citylist.Add(city7);
-							empirelist.AddOnce(city7.Empire);
-						}
-					}
-				}
-			}
-		}
-		yield return null;
-		Func<District, bool> <>9__4;
-		int num;
-		for (int i = 0; i < citylist.Count; i = num + 1)
-		{
-			City city6 = citylist[i];
-			if (city6 != null && city6.GUID.IsValid && city6.Empire != null)
-			{
-				bool flag3 = city6.CityImprovements.Any((CityImprovement I) => I.CityImprovementDefinition.Name == "CityImprovementRoads");
-				IEnumerable<District> districts2 = city6.Districts;
-				IEnumerable<District> source = districts2;
-				Func<District, bool> predicate2;
-				if ((predicate2 = <>9__4) == null)
-				{
-					predicate2 = (<>9__4 = ((District D) => D.Type == DistrictType.Improvement && D.GetDescriptorNameFromType(type) == y));
-				}
-				District district = source.FirstOrDefault(predicate2);
-				if (flag3 && this.RoadsNeedsRefreshing)
-				{
-					OrderUpdateCadastralMapClient order = new OrderUpdateCadastralMapClient(city6.Empire.Index, city6, PathfindingMovementCapacity.Ground, CadastralMapOperation.Connect)
-					{
-						WorldPosition = city6.WorldPosition
-					};
-					if (this.UpdateCadastralMapClientPreprocessor(ref order))
-					{
-						yield return null;
-						yield return this.UpdateCadastralMapClientProcessor(order);
-					}
-					order = null;
-				}
-				if (district != null)
-				{
-					OrderUpdateCadastralMapClient order = new OrderUpdateCadastralMapClient(city6.Empire.Index, city6, PathfindingMovementCapacity.Water, CadastralMapOperation.Connect)
-					{
-						WorldPosition = district.WorldPosition
-					};
-					if (this.UpdateCadastralMapClientPreprocessor(ref order))
-					{
-						yield return null;
-						yield return this.UpdateCadastralMapClientProcessor(order);
-					}
-					order = null;
-				}
-				city6.Refresh(false);
-				district = null;
-			}
-			num = i;
-			city6 = null;
-		}
-		int num2;
-		for (int i = 0; i < empirelist.Count; i = num2 + 1)
-		{
-			DepartmentOfPlanificationAndDevelopment agency2 = empirelist[i].GetAgency<DepartmentOfPlanificationAndDevelopment>();
-			agency2.TurnWhenTradeRoutesWereLastCreated = 0;
-			yield return agency2.ClearTradeRoutes();
-			empirelist[i].Refresh(false);
-			yield return null;
-			num2 = i;
-		}
-		this.RoadsNeedsRefreshing = false;
-		yield break;
-	}
-
-	public IEnumerator ClearTradeRoutes()
-	{
-		DepartmentOfTheInterior agency = base.Empire.GetAgency<DepartmentOfTheInterior>();
-		Diagnostics.Assert(agency != null);
-		foreach (City city in agency.Cities)
-		{
-			float propertyValue = city.GetPropertyValue(SimulationProperties.OverrallTradeRoutesCityDustIncome);
-			city.SetPropertyBaseValue(SimulationProperties.LastOverrallTradeRoutesCityDustIncome, propertyValue);
-			float propertyValue2 = city.GetPropertyValue(SimulationProperties.OverrallTradeRoutesCityScienceIncome);
-			city.SetPropertyBaseValue(SimulationProperties.LastOverrallTradeRoutesCityScienceIncome, propertyValue2);
-			Diagnostics.Assert(city.TradeRoutes != null);
-			city.TradeRoutes.Clear();
-			city.SetPropertyBaseValue(SimulationProperties.IntermediateTradeRoutesCount, 0f);
-			city.SetPropertyBaseValue(SimulationProperties.IntermediateTradeRoutesDistance, 0f);
-			city.SetPropertyBaseValue(SimulationProperties.IntermediateTradeRoutesGain, 0f);
-		}
-		this.OnTradeRouteChanged(null);
-		yield break;
-	}
-
-	private bool UpdateCadastralMapClientPreprocessor(ref OrderUpdateCadastralMapClient order)
-	{
-		if (order.PathfindingMovementCapacity == PathfindingMovementCapacity.None)
-		{
-			return false;
-		}
-		IGameEntity gameEntity = null;
-		if (!this.gameEntityRepositoryService.TryGetValue(order.CityGameEntityGUID, out gameEntity))
-		{
-			Diagnostics.LogError("Order preprocessing failed because the target game entity is not valid.");
-			return false;
-		}
-		City city = gameEntity as City;
-		if (city == null)
-		{
-			Diagnostics.LogError("Order preprocessing failed because the target game entity does not convert to a city.");
-			return false;
-		}
-		IGameService service = Services.GetService<IGameService>();
-		ICadasterService service2 = service.Game.Services.GetService<ICadasterService>();
-		if (service != null)
-		{
-			switch (order.Operation)
-			{
-			case CadastralMapOperation.Connect:
-			case CadastralMapOperation.Proxy:
-			{
-				bool proxied = order.Operation == CadastralMapOperation.Proxy;
-				ushort[] array = service2.Connect(city, order.PathfindingMovementCapacity, proxied);
-				if (array != null && array.Length != 0)
-				{
-					order.Indices = array;
-					order.Roads = new Road[array.Length];
-					ushort num = 0;
-					while ((int)num < array.Length)
-					{
-						order.Roads[(int)num] = service2[array[(int)num]];
-						num += 1;
-					}
-					return true;
-				}
-				break;
-			}
-			case CadastralMapOperation.Disconnect:
-				service2.Disconnect(city, order.PathfindingMovementCapacity, true);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private IEnumerator UpdateCadastralMapClientProcessor(OrderUpdateCadastralMapClient order)
-	{
-		IGameService service = Services.GetService<IGameService>();
-		ICadasterService service2 = service.Game.Services.GetService<ICadasterService>();
-		service.Game.Services.GetService<IWorldPositionningService>();
-		IGameEntity gameEntity = null;
-		if (!this.gameEntityRepositoryService.TryGetValue(order.CityGameEntityGUID, out gameEntity))
-		{
-			Diagnostics.LogError("Order preprocessing failed because the target game entity is not valid.");
-			yield break;
-		}
-		City city = gameEntity as City;
-		if (city == null)
-		{
-			Diagnostics.LogError("Order preprocessing failed because the target game entity does not convert to a city.");
-			yield break;
-		}
-		CadastralMapOperation operation = order.Operation;
-		if (operation == CadastralMapOperation.Connect || operation == CadastralMapOperation.Proxy)
-		{
-			Diagnostics.Assert(order.Indices.Length == order.Roads.Length);
-			for (int i = 0; i < order.Indices.Length; i++)
-			{
-				service2.Register(order.Indices[i], order.Roads[i]);
-			}
-			int index = city.Region.Index;
-			if (city.CadastralMap.Roads == null)
-			{
-				city.CadastralMap.Roads = new List<ushort>();
-			}
-			city.CadastralMap.Roads.AddRange(order.Indices);
-			city.NotifyCityCadastralChange();
-		}
-		service2.RefreshCadasterMap();
-		yield break;
-	}
-
 	public static readonly StaticString HeroSkillGovernor25 = new StaticString("HeroSkillGovernor25");
 
 	public static readonly StaticString HeroSkillGovernor28 = new StaticString("HeroSkillGovernor28");
@@ -4612,8 +4386,6 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 	private int maximalTurnWithoutPillar = 10;
 
 	private int localWinterImmunityWinnerIndex = -1;
-
-	private bool RoadsNeedsRefreshing;
 
 	public abstract class ConstructibleElement : global::ConstructibleElement
 	{

@@ -10,7 +10,6 @@ using Amplitude.Unity.Runtime;
 using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.Advanced;
-using Amplitude.Unity.Simulation.SimulationModifierDescriptors;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
@@ -124,7 +123,6 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 					num6 += (int)this.simulationPathNumberOfMainCities[l].CountValidatedObjects(majorEmpire2);
 				}
 				this.InterpreterContext.Register("NumberOfMainCities", num6);
-				this.InterpreterContext.Register("VictoryWonderProgress", this.GetWonderProgress(majorEmpire2));
 				majorEmpire2.SimulationObject.AddChild(this.InterpreterContext.SimulationObject);
 				foreach (VictoryCondition victoryCondition in this.VictoryConditionsFilteredThisGame)
 				{
@@ -145,15 +143,19 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 							for (int m = 0; m < victoryCondition.Alerts.Length; m++)
 							{
 								VictoryCondition.Alert alert = victoryCondition.Alerts[m];
-								if (alert != null && (victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] == 0 || (victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] < 0 && alert.Repeat)))
+								if (alert != null)
 								{
-									if (alert.Evaluate(this.InterpreterContext))
+									if (victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] == 0 || (victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] < 0 && alert.Repeat))
 									{
-										victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] = base.Game.Turn;
-									}
-									else if (victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] > 0)
-									{
-										victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] = -victoryConditionStatus.LastTurnWhenAlertWasTriggered[m];
+										bool flag = alert.Evaluate(this.InterpreterContext);
+										if (flag)
+										{
+											victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] = base.Game.Turn;
+										}
+										else if (victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] > 0)
+										{
+											victoryConditionStatus.LastTurnWhenAlertWasTriggered[m] = -victoryConditionStatus.LastTurnWhenAlertWasTriggered[m];
+										}
 									}
 								}
 							}
@@ -189,15 +191,24 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 			}
 			foreach (VictoryCondition victoryCondition2 in this.VictoryConditionsFilteredThisGame)
 			{
-				MajorEmpire.VictoryConditionStatus victoryConditionStatus2;
-				if (victoryCondition2.Alerts != null && majorEmpire3.VictoryConditionStatuses != null && majorEmpire3.VictoryConditionStatuses.TryGetValue(victoryCondition2.Name, out victoryConditionStatus2))
+				if (victoryCondition2.Alerts != null)
 				{
-					for (int num8 = 0; num8 < victoryCondition2.Alerts.Length; num8++)
+					if (majorEmpire3.VictoryConditionStatuses != null)
 					{
-						if (victoryConditionStatus2.LastTurnWhenAlertWasTriggered != null && num8 < victoryConditionStatus2.LastTurnWhenAlertWasTriggered.Length && victoryConditionStatus2.LastTurnWhenAlertWasTriggered[num8] >= base.Game.Turn && victoryCondition2.Alerts[num8] != null)
+						MajorEmpire.VictoryConditionStatus victoryConditionStatus2;
+						if (majorEmpire3.VictoryConditionStatuses.TryGetValue(victoryCondition2.Name, out victoryConditionStatus2))
 						{
-							EventVictoryConditionAlert eventToNotify = new EventVictoryConditionAlert(majorEmpire3, victoryCondition2, victoryConditionStatus2, num8);
-							this.EventService.Notify(eventToNotify);
+							for (int num8 = 0; num8 < victoryCondition2.Alerts.Length; num8++)
+							{
+								if (victoryConditionStatus2.LastTurnWhenAlertWasTriggered != null && num8 < victoryConditionStatus2.LastTurnWhenAlertWasTriggered.Length && victoryConditionStatus2.LastTurnWhenAlertWasTriggered[num8] >= base.Game.Turn)
+								{
+									if (victoryCondition2.Alerts[num8] != null)
+									{
+										EventVictoryConditionAlert eventToNotify = new EventVictoryConditionAlert(majorEmpire3, victoryCondition2, victoryConditionStatus2, num8);
+										this.EventService.Notify(eventToNotify);
+									}
+								}
+							}
 						}
 					}
 				}
@@ -311,10 +322,11 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 				VictoryCondition victoryCondition = null;
 				foreach (VictoryCondition victoryCondition2 in this.VictoryConditionsFilteredThisGame)
 				{
-					if (victoryCondition2.Evaluate(new object[]
+					bool flag2 = victoryCondition2.Evaluate(new object[]
 					{
 						this.InterpreterContext
-					}))
+					});
+					if (flag2)
 					{
 						if (victoryCondition2.Name == "Shared")
 						{
@@ -397,7 +409,8 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 		writer.WriteAttributeString("AssemblyQualifiedName", base.GetType().AssemblyQualifiedName);
 		writer.WriteAttributeString<int>("TurnWhenVictoryConditionsWereLastChecked", this.TurnWhenVictoryConditionsWereLastChecked);
 		writer.WriteAttributeString<int>("TurnWhenLastBegun", this.TurnWhenLastBegun);
-		if (writer.WriteVersionAttribute(2) >= 2)
+		int num = writer.WriteVersionAttribute(2);
+		if (num >= 2)
 		{
 			writer.WriteStartElement("VictoryConditionsDiscardedThisGame");
 			writer.WriteAttributeString<int>("Count", this.VictoryConditionsDiscardedThisGame.Count);
@@ -424,8 +437,6 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 					yield return victoryCondition;
 				}
 			}
-			IEnumerator<VictoryCondition> enumerator = null;
-			yield break;
 			yield break;
 		}
 	}
@@ -441,8 +452,6 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 					yield return victoryCondition;
 				}
 			}
-			IEnumerator<VictoryCondition> enumerator = null;
-			yield break;
 			yield break;
 		}
 	}
@@ -493,39 +502,33 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 	public override IEnumerator LoadGame(Game game)
 	{
 		yield return base.LoadGame(game);
-		ISessionService service = Services.GetService<ISessionService>();
+		ISessionService sessionService = Services.GetService<ISessionService>();
 		this.InterpreterContext = new InterpreterContext(null);
 		this.InterpreterContext.SimulationObject = new SimulationObject("VictoryController");
 		this.InterpreterContext.SimulationObject.ModifierForward = ModifierForwardType.ParentOnly;
-		float num = 1f;
-		IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
-		if (database != null)
+		IDatabase<SimulationDescriptor> simulationDescriptors = Databases.GetDatabase<SimulationDescriptor>(false);
+		if (simulationDescriptors != null)
 		{
-			SimulationDescriptor simulationDescriptor;
-			if (database.TryGetValue("ClassVictoryController", out simulationDescriptor))
+			SimulationDescriptor descriptor;
+			if (simulationDescriptors.TryGetValue("ClassVictoryController", out descriptor))
 			{
-				this.InterpreterContext.SimulationObject.AddDescriptor(simulationDescriptor);
+				this.InterpreterContext.SimulationObject.AddDescriptor(descriptor);
 			}
-			string value = Amplitude.Unity.Runtime.Runtime.Registry.GetValue(VictoryManager.Registers.LobbyDataFilter);
-			if (!string.IsNullOrEmpty(value))
+			string lobbyDataFilter = Amplitude.Unity.Runtime.Runtime.Registry.GetValue(VictoryManager.Registers.LobbyDataFilter);
+			if (!string.IsNullOrEmpty(lobbyDataFilter))
 			{
-				string[] array = value.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
-				if (array.Length != 0 && service != null && service.Session != null)
+				string[] lobbyDataKeys = lobbyDataFilter.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
+				if (lobbyDataKeys.Length > 0 && sessionService != null && sessionService.Session != null)
 				{
-					foreach (string text in array)
+					foreach (string lobbyDataKey in lobbyDataKeys)
 					{
-						string lobbyData = service.Session.GetLobbyData<string>(text, null);
-						if (!string.IsNullOrEmpty(lobbyData))
+						string lobbyDataValue = sessionService.Session.GetLobbyData<string>(lobbyDataKey, null);
+						if (!string.IsNullOrEmpty(lobbyDataValue))
 						{
-							string x = string.Format("VictoryModifier{0}{1}", text, lobbyData);
-							if (database.TryGetValue(x, out simulationDescriptor))
+							string descriptorName = string.Format("VictoryModifier{0}{1}", lobbyDataKey, lobbyDataValue);
+							if (simulationDescriptors.TryGetValue(descriptorName, out descriptor))
 							{
-								this.InterpreterContext.SimulationObject.AddDescriptor(simulationDescriptor);
-								SimulationModifierDescriptor simulationModifierDescriptor = Array.Find<SimulationModifierDescriptor>(simulationDescriptor.SimulationModifierDescriptors, (SimulationModifierDescriptor y) => y is SingleSimulationModifierDescriptor && y.TargetPropertyName == "PeacePointThreshold");
-								if (simulationModifierDescriptor != null)
-								{
-									num *= float.Parse((simulationModifierDescriptor as SingleSimulationModifierDescriptor).Value);
-								}
+								this.InterpreterContext.SimulationObject.AddDescriptor(descriptor);
 							}
 						}
 					}
@@ -533,66 +536,54 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 			}
 			this.InterpreterContext.SimulationObject.Refresh();
 		}
-		foreach (Empire empire in base.Game.Empires)
-		{
-			if (empire is MajorEmpire)
-			{
-				(empire as MajorEmpire).SetPropertyBaseValue("TreatyPeacePointPerTurnMult", num);
-			}
-		}
-		int num2 = 0;
+		int numberOfLandRegions = 0;
 		if (base.Game.World.Regions != null)
 		{
-			for (int j = 0; j < base.Game.World.Regions.Length; j++)
+			for (int regionIndex = 0; regionIndex < base.Game.World.Regions.Length; regionIndex++)
 			{
-				if (!base.Game.World.Regions[j].IsOcean && !base.Game.World.Regions[j].IsWasteland)
+				if (!base.Game.World.Regions[regionIndex].IsOcean && !base.Game.World.Regions[regionIndex].IsWasteland)
 				{
-					num2++;
+					numberOfLandRegions++;
 				}
 			}
 		}
-		if (num2 <= 0)
+		if (numberOfLandRegions <= 0)
 		{
 			Diagnostics.LogError("Invalid number of regions (value: {0}), rounding up to '1'.", new object[]
 			{
-				num2
+				numberOfLandRegions
 			});
-			num2 = 1;
+			numberOfLandRegions = 1;
 		}
 		Diagnostics.Log("Registering new data (name: {0}, value: {1})", new object[]
 		{
 			"NumberOfLandRegions",
-			num2
+			numberOfLandRegions
 		});
-		this.InterpreterContext.Register("NumberOfLandRegions", num2);
-		if (game.Turn == 0 && service != null && service.Session != null)
+		this.InterpreterContext.Register("NumberOfLandRegions", numberOfLandRegions);
+		if (game.Turn == 0 && sessionService != null && sessionService.Session != null)
 		{
-			using (IEnumerator<VictoryCondition> enumerator = this.VictoryConditions.GetEnumerator())
+			foreach (VictoryCondition victoryCondition in this.VictoryConditions)
 			{
-				while (enumerator.MoveNext())
+				if (sessionService.Session.GetLobbyData(victoryCondition.Name) != null && !sessionService.Session.GetLobbyData<bool>(victoryCondition.Name, false))
 				{
-					VictoryCondition victoryCondition = enumerator.Current;
-					if (service.Session.GetLobbyData(victoryCondition.Name) != null && !service.Session.GetLobbyData<bool>(victoryCondition.Name, false))
+					if (!this.VictoryConditionsDiscabledThisGame.Contains(victoryCondition.Name))
 					{
-						if (!this.VictoryConditionsDiscabledThisGame.Contains(victoryCondition.Name))
+						this.VictoryConditionsDiscabledThisGame.Add(victoryCondition.Name);
+						Diagnostics.Log("Disabling victory condition '{0}'.", new object[]
 						{
-							this.VictoryConditionsDiscabledThisGame.Add(victoryCondition.Name);
-							Diagnostics.Log("Disabling victory condition '{0}'.", new object[]
-							{
-								victoryCondition.Name
-							});
-						}
-						if (!this.VictoryConditionsDiscardedThisGame.Contains(victoryCondition.Name))
+							victoryCondition.Name
+						});
+					}
+					if (!this.VictoryConditionsDiscardedThisGame.Contains(victoryCondition.Name))
+					{
+						this.VictoryConditionsDiscardedThisGame.Add(victoryCondition.Name);
+						Diagnostics.Log("Discarding victory condition '{0}'.", new object[]
 						{
-							this.VictoryConditionsDiscardedThisGame.Add(victoryCondition.Name);
-							Diagnostics.Log("Discarding victory condition '{0}'.", new object[]
-							{
-								victoryCondition.Name
-							});
-						}
+							victoryCondition.Name
+						});
 					}
 				}
-				yield break;
 			}
 		}
 		yield break;
@@ -618,10 +609,13 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 			service.State.Tags.AddTag(VictoryManager.TagVictoryManagerOnBeginTurn);
 			service.State.Tags.AddTag(QuestDefinition.TagExclusive);
 			service.State.WorldPosition = WorldPosition.Invalid;
-			int num = 0;
-			while (num < base.Game.Empires.Length && base.Game.Empires[num] is MajorEmpire)
+			for (int i = 0; i < base.Game.Empires.Length; i++)
 			{
-				Empire empire = base.Game.Empires[num];
+				if (!(base.Game.Empires[i] is MajorEmpire))
+				{
+					break;
+				}
+				Empire empire = base.Game.Empires[i];
 				service.State.Empire = empire;
 				service.State.Targets.Clear();
 				service.State.AddTargets("$(Empire)", empire);
@@ -637,26 +631,26 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 				{
 					service.Trigger(empire, questDefinition, questVariables, pendingInstructions, questRewards, regionQuestLocalizationVariableDefinitionLocalizationKey, null, true);
 				}
-				num++;
 			}
 		}
 	}
 
 	protected void EventService_EventRaise(object sender, EventRaiseEventArgs e)
 	{
-		bool isHosting = Services.GetService<ISessionService>().Session.IsHosting;
+		ISessionService service = Services.GetService<ISessionService>();
+		bool isHosting = service.Session.IsHosting;
 		if (e.RaisedEvent is EventSwapCity)
 		{
 			EventSwapCity eventSwapCity = e.RaisedEvent as EventSwapCity;
 			if (isHosting)
 			{
 				this.CheckVictoryQuestForEmpire(base.Game.Empires[eventSwapCity.OldOwnerEmpireIndex]);
-				return;
 			}
 		}
 		else if (e.RaisedEvent is EventSettlerDied)
 		{
-			Empire empire = (e.RaisedEvent as EventSettlerDied).Empire as Empire;
+			EventSettlerDied eventSettlerDied = e.RaisedEvent as EventSettlerDied;
+			Empire empire = eventSettlerDied.Empire as Empire;
 			if (empire != null && empire is MajorEmpire && isHosting)
 			{
 				this.CheckVictoryQuestForEmpire(empire);
@@ -722,36 +716,6 @@ public class VictoryManager : GameAncillary, IXmlSerializable, IService, IVictor
 			this.EventService = null;
 		}
 		base.Releasing();
-	}
-
-	private float GetWonderProgress(MajorEmpire empire)
-	{
-		DepartmentOfTheInterior agency = empire.GetAgency<DepartmentOfTheInterior>();
-		DepartmentOfIndustry agency2 = empire.GetAgency<DepartmentOfIndustry>();
-		float num = 0f;
-		for (int i = 0; i < agency.Cities.Count; i++)
-		{
-			Construction construction = agency2.GetConstructionQueue(agency.Cities[i]).Get((Construction x) => x.ConstructibleElement.SubCategory == "SubCategoryVictory");
-			if (construction != null)
-			{
-				for (int j = 0; j < construction.CurrentConstructionStock.Length; j++)
-				{
-					if (construction.CurrentConstructionStock[j].PropertyName == "Production")
-					{
-						float stock = construction.CurrentConstructionStock[j].Stock;
-						if (stock > 0f)
-						{
-							float num2 = stock / DepartmentOfTheTreasury.GetProductionCostWithBonus(agency.Cities[i], construction.ConstructibleElement, "Production");
-							if (num2 > num)
-							{
-								num = num2;
-							}
-						}
-					}
-				}
-			}
-		}
-		return num;
 	}
 
 	public static readonly StaticString TagVictoryManager = new StaticString("VictoryManager");

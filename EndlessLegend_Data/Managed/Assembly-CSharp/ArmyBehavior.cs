@@ -83,20 +83,7 @@ public abstract class ArmyBehavior : BehaviorTree<ArmyWithTask>
 
 	protected bool CanReachTargetThisTurn(ArmyWithTask army)
 	{
-		bool flag = false;
-		if (army.MainAttackableTarget == null || !(army.Garrison is Army))
-		{
-			flag = true;
-		}
-		else
-		{
-			Army army2 = army.Garrison as Army;
-			if ((float)this.worldPositionService.GetDistance(army.Garrison.WorldPosition, army.MainAttackableTarget.WorldPosition) <= army2.GetPropertyValue(SimulationProperties.Movement) + 1f)
-			{
-				flag = true;
-			}
-		}
-		return army.PathToMainTarget != null && (army.PathToMainTarget.ControlPoints == null || army.PathToMainTarget.ControlPoints.Length == 0) && flag;
+		return army.PathToMainTarget != null && (army.PathToMainTarget.ControlPoints == null || army.PathToMainTarget.ControlPoints.Length == 0);
 	}
 
 	protected bool HasMovementLeft(ArmyWithTask army)

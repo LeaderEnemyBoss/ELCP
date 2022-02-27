@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################################################################################################################################## -->
+  <!-- #########################################   PREMADE UNIT DESIGN WHICH CAN BE CALL BY OTHER XMLS  ################################################# -->
+  <!-- ########    - Those units can be useful for the Quest, and  Minor Faction. It still can be used to generate units from a city improvement ######## -->
+  <!-- ################################################################################################################################################## -->
+
+  <!-- ######################################################### -->
+  <!-- #################### JOTUS ETTIN UNITS ################## -->
+  <!-- ######################################################### -->
+
+  <!-- Default Unit Design proposed to Player when unlocking the Body -->
+  <UnitDesign Name="UnitDesignJotusEttin#1"                        Model="1100100">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMajor/EmpireTypeMinor,AffinityJotus</PathPrerequisite>
+  </UnitDesign>
+
+  <!--Used by the Minor Faction tribes to create village armies and roaming armies-->
+  <UnitDesign Name="UnitDesignJotusEttin#MinorEmpireEra1"          Model="1100111">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus</PathPrerequisite>
+    <Tags>Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#1"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MinorEmpireEra2"          Model="1100112">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus</PathPrerequisite>
+    <Tags>Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier2#1"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MinorEmpireEra3"          Model="1100113">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus</PathPrerequisite>
+    <Tags>Era3</Tags>
+   <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier3#1"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MinorEmpireEra4"          Model="1100114">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus</PathPrerequisite>
+    <Tags>Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier1#1"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MinorEmpireEra5"          Model="1100115">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus</PathPrerequisite>
+    <Tags>Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier2#1"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MinorEmpireEra6"          Model="1100116">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus</PathPrerequisite>
+    <Tags>Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier3#1"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!--Used by the Minor Faction neutral tribes to inject units through the Market Place -->
+  <UnitDesign Name="UnitDesignJotusEttin#MercenaryEra1"            Model="1100121">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus,Mercenary</PathPrerequisite>
+    <Tags>Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MercenaryEra2"            Model="1100122">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus,Mercenary</PathPrerequisite>
+    <Tags>Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier2#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MercenaryEra3"            Model="1100123">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus,Mercenary</PathPrerequisite>
+    <Tags>Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier3#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MercenaryEra4"            Model="1100124">
+   <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+   <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus,Mercenary</PathPrerequisite>
+   <Tags>Era4</Tags>
+   <UnitEquipmentSet>
+     <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier1#1" />
+     <Slot Name="OffHand"                         ItemName="ItemShield1DustTier1#1"   />
+     <Slot Name="Head"                            ItemName="ItemHeadDustTier1"        />
+     <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"       />
+     <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"        />
+     <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MercenaryEra5"            Model="1100125">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus,Mercenary</PathPrerequisite>
+    <Tags>Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier2#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#MercenaryEra6"            Model="1100126">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus,Mercenary</PathPrerequisite>
+    <Tags>Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier3#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!--Used by the Minor Faction converted tribes -->
+  <UnitDesign Name="UnitDesignJotusEttin#ConvertedEra1"            Model="1100131" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <Tags>ConvertedVillageUnit,Era1,Jotus,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#ConvertedEra2"            Model="1100132" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <Tags>ConvertedVillageUnit,Era2,Jotus,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier2#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#ConvertedEra3"            Model="1100133" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <Tags>ConvertedVillageUnit,Era3,Jotus,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier3#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#ConvertedEra4"            Model="1100134" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <Tags>ConvertedVillageUnit,Era4,Jotus,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier1#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#ConvertedEra5"            Model="1100135" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <Tags>ConvertedVillageUnit,Era5,Jotus,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier2#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#ConvertedEra6"            Model="1100136" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <Tags>ConvertedVillageUnit,Era6,Jotus,Mercenary</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1DustTier3#1"   />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"        />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"       />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"        />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!--Used by Lore Quests -->
+  <UnitDesign Name="UnitDesignJotusEttin#SideQuestLore0012"        Model="1100141" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMajor</PathPrerequisite>
+    <Tags>Mercenary</Tags>
+   <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier3#1"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="" />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- Deprecated -->
+  <UnitDesign Name="UnitDesignJotusEttin#MinorEmpire"              Model="1100101">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Minor,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus</PathPrerequisite>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1IronTier1#1"   />
+      <Slot Name="Head"                            ItemName="" />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"       />
+      <Slot Name="Legs"                            ItemName="" />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignJotusEttin#Mercenary"                Model="1100102">
+    <UnitBodyDefinitionReference Name="UnitBodyJotusEttin" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../ClassEmpire,EmpireTypeMinor,AffinityJotus,Mercenary</PathPrerequisite>
+  </UnitDesign>
+
+</Datatable>

@@ -13,7 +13,7 @@ namespace Amplitude.Unity.Audio
 {
 	[Diagnostics.TagAttribute("Audio")]
 	[Diagnostics.TagAttribute("Audio")]
-	public class AudioManager : Manager, IAudioEventService, IService, IAudioLayeredMusicService, IAudioMusicService, IAudioService, IAudioSettingsService
+	public class AudioManager : Manager, IAudioEventService, IAudioLayeredMusicService, IAudioMusicService, IAudioService, IAudioSettingsService, IService
 	{
 		public bool IsEventAuthorized(StaticString eventName)
 		{
@@ -1266,7 +1266,15 @@ namespace Amplitude.Unity.Audio
 			base.SetLastError((int)result);
 			if (result != RESULT.OK && result != RESULT.ERR_EVENT_FAILED)
 			{
-				if (result != RESULT.ERR_EVENT_NOTFOUND)
+				if (result == RESULT.ERR_EVENT_NOTFOUND)
+				{
+					Diagnostics.LogWarning("Fmod error reported: {0} - {1}", new object[]
+					{
+						result,
+						Error.String(result)
+					});
+				}
+				else
 				{
 					Diagnostics.LogError("Fmod error reported: {0} - {1}", new object[]
 					{

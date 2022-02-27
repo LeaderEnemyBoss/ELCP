@@ -396,8 +396,8 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		this.PlayerRepositoryService = base.Game.Services.GetService<IPlayerRepositoryService>();
 		this.DownloadableContentService = Services.GetService<IDownloadableContentService>();
 		this.worldPositionningService = base.Game.Services.GetService<IWorldPositionningService>();
-		ISessionService service = Services.GetService<ISessionService>();
-		this.Session = (service.Session as global::Session);
+		ISessionService sessionService = Services.GetService<ISessionService>();
+		this.Session = (sessionService.Session as global::Session);
 		global::Game game = base.GameService.Game as global::Game;
 		this.mainEmpires.Clear();
 		for (int i = 0; i < game.Empires.Length; i++)
@@ -420,7 +420,6 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 			this.OrbCounterGroup.Visible = true;
 			this.OrbCounterButton.AgeTransform.Visible = true;
 		}
-		this.AutoMoveActive = false;
 		yield break;
 	}
 
@@ -532,19 +531,35 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		string name = e.GameClientStateType.Name;
 		if (name != null)
 		{
-			if (name == "GameClientState_Turn_End")
+			if (EndTurnPanel.<>f__switch$map1D == null)
 			{
-				this.EndTurnTimerContainer.Visible = false;
-			}
-			else if (name == "GameClientState_Turn_Main")
-			{
-				this.FocusCircle.Visible = true;
-				this.FocusCircle.StartAllModifiers(true, false);
-				base.StartCoroutine(this.FadeCircle());
-				if (this.AutoMoveActive)
+				EndTurnPanel.<>f__switch$map1D = new Dictionary<string, int>(2)
 				{
-					this.OnApplyPlannedMovementsCB(new GameObject());
-					this.AutoMoveActive = false;
+					{
+						"GameClientState_Turn_Main",
+						0
+					},
+					{
+						"GameClientState_Turn_End",
+						1
+					}
+				};
+			}
+			int num;
+			if (EndTurnPanel.<>f__switch$map1D.TryGetValue(name, out num))
+			{
+				if (num != 0)
+				{
+					if (num == 1)
+					{
+						this.EndTurnTimerContainer.Visible = false;
+					}
+				}
+				else
+				{
+					this.FocusCircle.Visible = true;
+					this.FocusCircle.StartAllModifiers(true, false);
+					base.StartCoroutine(this.FadeCircle());
 				}
 			}
 		}
@@ -600,10 +615,6 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 	private void OnApplyPlannedMovementsCB(GameObject obj)
 	{
 		IEnumerable<Army> armiesWithPlannedMovements = this.GetArmiesWithPlannedMovements();
-		if (!(base.PlayerController.GameInterface.CurrentState is GameClientState_Turn_Main))
-		{
-			this.AutoMoveActive = true;
-		}
 		foreach (Army army in armiesWithPlannedMovements)
 		{
 			OrderContinueGoToInstruction order = new OrderContinueGoToInstruction(army.Empire.Index, army.GUID);
@@ -1114,32 +1125,6 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		yield break;
 	}
 
-	private void OnRightClick(GameObject obj)
-	{
-		if (!base.IsVisible)
-		{
-			return;
-		}
-		MajorEmpire majorEmpire = obj.GetComponent<EmpirePlayersStatusItem>().MajorEmpire;
-		if (majorEmpire == null)
-		{
-			return;
-		}
-		GameNegotiationScreen guiPanel = base.GuiService.GetGuiPanel<GameNegotiationScreen>();
-		if (guiPanel != null)
-		{
-			if (guiPanel.IsVisible)
-			{
-				guiPanel.ReShow(majorEmpire);
-				return;
-			}
-			guiPanel.Show(new object[]
-			{
-				majorEmpire
-			});
-		}
-	}
-
 	public const float DisableAlpha = 0.7f;
 
 	public const float EmpireStartAngle = 180f;
@@ -1251,6 +1236,4 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 	private List<float> orbAmountsCollectedQueue;
 
 	private IKeyMappingService keyMapperService;
-
-	private bool AutoMoveActive;
 }

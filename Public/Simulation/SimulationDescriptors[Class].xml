@@ -188,6 +188,7 @@
 
       <!-- Resource: Population related. -->
       <SimulationPropertyDescriptor Name="Population" BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="PopulationNotOvergrown" BaseValue="1"/>
       <SimulationPropertyDescriptor Name="PopulationBonus" Composition="Sum"/>
       <SimulationPropertyDescriptor Name="FoodPopulation" BaseValue="1"/>
       <SimulationPropertyDescriptor Name="IndustryPopulation"/>
@@ -338,6 +339,7 @@
 
       <!-- NetCityApproval * population, used by the empire to compute the approval median. -->
       <SimulationPropertyDescriptor Name="Approval"/>
+      <SimulationPropertyDescriptor Name="ApprovalNotOvergrown"/>
 
       <!-- Expansion disapproval from current city (given as approval malus on all cities) -->
       <SimulationPropertyDescriptor Name="CityExpansionDisapproval"       BaseValue="10"/>
@@ -648,12 +650,14 @@
       <SimulationModifierDescriptor TargetProperty="NetCityGrowth"                       Operation="Force"          Value="$(AlmostNetCityGrowth)"    Priority="-1"/>
 
       <!-- MISC -->
+      <SimulationModifierDescriptor TargetProperty="PopulationNotOvergrown"                       Operation="Force"          Value="$(Population)"    Priority="-1"/>
       <SimulationModifierDescriptor TargetProperty="MaximumCityProductionStock"          Operation="Addition"       Value="$(NetCityProduction)"/>
       <SimulationModifierDescriptor TargetProperty="MaximumCityProductionStock"          Operation="Multiplication" Value="1"/>
 
       <BinarySimulationModifierDescriptor TargetProperty="CityApproval"                  Operation="Addition"       Left="$(CityApprovalPerPopulation)"  BinaryOperation="Multiplication"  Right="$(Workers)" Priority="0"/>
 
       <BinarySimulationModifierDescriptor TargetProperty="Approval" Operation="Addition" Left="$(NetCityApproval)"  BinaryOperation="Multiplication"  Right="$(Population)" Priority="1"/>
+      <BinarySimulationModifierDescriptor TargetProperty="ApprovalNotOvergrown" Operation="Addition" Left="$(NetCityApproval)"  BinaryOperation="Multiplication"  Right="$(PopulationNotOvergrown)" Priority="1"/>
 
       <!-- Apply the disapproval on each other city.
            The disapproval should be forced to 0 in the MainCity descriptor.-->
@@ -1132,8 +1136,7 @@
       <SimulationPropertyDescriptor Name="NumberOfTamedKaijus"                BaseValue="0"/>
 
       <!--MinValue is considered only when the property is used. That's why here the base value is set at -1 even if the min value is 0-->
-	  <!--ELCP/LeaderEnemyBoss changed BaseValue to 0 to match the ingame description (only activated after 2 boosters before) -->
-      <SimulationPropertyDescriptor Name="ActivatedLuxuryBoosterCountMinusOne"      BaseValue="0" MinValue="0"/>
+      <SimulationPropertyDescriptor Name="ActivatedLuxuryBoosterCountMinusOne"      BaseValue="-1" MinValue="0"/>
 
     </SimulationPropertyDescriptors>
 
@@ -1435,8 +1438,8 @@
       <SimulationPropertyDescriptor Name="AgainstMageEfficiency"                        BaseValue="0" IsSealed="true"/>
       <SimulationPropertyDescriptor Name="InitialAgainstFlyingEfficiency"               BaseValue="0"/>
       <SimulationPropertyDescriptor Name="AgainstFlyingEfficiency"                      BaseValue="0" IsSealed="true"/>
-      <SimulationPropertyDescriptor Name="InitialAgainstKaijuEfficiency"                BaseValue="0"/>
-      <SimulationPropertyDescriptor Name="AgainstKaijuEfficiency"                       BaseValue="0" IsSealed="true"/>
+      <SimulationPropertyDescriptor Name="InitialAgainstKaijuEfficiency"                BaseValue="0" MinValue="Negative"/>
+      <SimulationPropertyDescriptor Name="AgainstKaijuEfficiency"                       BaseValue="0" MinValue="Negative" IsSealed="true"/>
       <SimulationPropertyDescriptor Name="InitialAgainstCavalryEfficiency"              BaseValue="0"/>
       <SimulationPropertyDescriptor Name="AgainstCavalryEfficiency"                     BaseValue="0" IsSealed="true"/>
       <SimulationPropertyDescriptor Name="StunEfficiency"                               BaseValue="0"/>

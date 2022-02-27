@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
-using UnityEngine;
 
 public class NavyFortress : BaseNavyArmy
 {
@@ -15,7 +12,6 @@ public class NavyFortress : BaseNavyArmy
 		IGameService service = Services.GetService<IGameService>();
 		this.worldPositionService = service.Game.Services.GetService<IWorldPositionningService>();
 		this.WantToKeepArmyFitness = new HeuristicValue(0f);
-		this.lastcheckTime = 0.0;
 	}
 
 	public HeuristicValue WantToKeepArmyFitness { get; set; }
@@ -26,14 +22,14 @@ public class NavyFortress : BaseNavyArmy
 	{
 		base.Role = BaseNavyArmy.ArmyRole.Forteress;
 		this.WantToKeepArmyFitness.Reset();
-		NavyRegionData navyRegionData = base.Commander.RegionData as NavyRegionData;
 		this.WantToKeepArmyFitness.Add(0.3f, "constant", new object[0]);
+		NavyRegionData navyRegionData = base.Commander.RegionData as NavyRegionData;
 		if (navyRegionData.NumberOfWaterEnemy > 0)
 		{
 			HeuristicValue heuristicValue = new HeuristicValue(0f);
 			heuristicValue.Add((float)navyRegionData.NumberOfWaterEnemy, "Number of enemy water region around.", new object[0]);
 			heuristicValue.Multiply(0.1f, "boost constant", new object[0]);
-			heuristicValue.Min(0.5f, "Avoid too big factor!", new object[0]);
+			heuristicValue.Min(0.3f, "Avoid too big factor!", new object[0]);
 			this.WantToKeepArmyFitness.Boost(heuristicValue, "Water region owned by enemy around.", new object[0]);
 		}
 		if (navyRegionData.NumberOfEnemyCityOnTheBorder > 0)
@@ -42,12 +38,7 @@ public class NavyFortress : BaseNavyArmy
 		}
 		if (navyRegionData.EnemyNavalPower > 0f)
 		{
-			this.WantToKeepArmyFitness.Boost(0.9f, "Enemy roaming in the region.", new object[0]);
-		}
-		MajorEmpire occupant = this.Fortress.Occupant;
-		if (occupant != null && !AILayer_Military.AreaIsSave(this.Fortress.WorldPosition, 10, occupant.GetAgency<DepartmentOfForeignAffairs>(), true))
-		{
-			this.WantToKeepArmyFitness.Boost(0.9f, "Enemy roaming in the region.", new object[0]);
+			this.WantToKeepArmyFitness.Boost(0.2f, "Enemy roaming in the region.", new object[0]);
 		}
 	}
 
@@ -97,39 +88,22 @@ public class NavyFortress : BaseNavyArmy
 
 	protected override void ExecuteMainTask()
 	{
+		if (base.CurrentMainTask == null)
+		{
+			this.State = TickableState.Optional;
+			return;
+		}
 		if (this.Fortress.StandardUnits.Count == 0)
 		{
 			base.BehaviorState = ArmyWithTask.ArmyBehaviorState.Sleep;
-			base.State = TickableState.NoTick;
-			return;
-		}
-		float num = float.MaxValue;
-		GameEntityGUID[] array = new GameEntityGUID[base.Garrison.StandardUnits.Count];
-		for (int i = 0; i < base.Garrison.StandardUnits.Count; i++)
-		{
-			array[i] = base.Garrison.StandardUnits[i].GUID;
-			float propertyValue = base.Garrison.StandardUnits[i].GetPropertyValue(SimulationProperties.Movement);
-			if (num > propertyValue)
-			{
-				num = propertyValue;
-			}
-		}
-		if (num < 2f)
-		{
-			base.BehaviorState = ArmyWithTask.ArmyBehaviorState.Sleep;
-			base.State = TickableState.NoTick;
-			return;
-		}
-		if (base.CurrentMainTask == null)
-		{
-			base.State = TickableState.Optional;
+			this.State = TickableState.NoTick;
 			return;
 		}
 		WorldPosition armyPosition = WorldPosition.Invalid;
 		Fortress fortress = base.Garrison as Fortress;
-		for (int j = 0; j < 6; j++)
+		for (int i = 0; i < 6; i++)
 		{
-			WorldPosition neighbourTile = this.worldPositionService.GetNeighbourTile(fortress.WorldPosition, (WorldOrientation)j, 1);
+			WorldPosition neighbourTile = this.worldPositionService.GetNeighbourTile(fortress.WorldPosition, (WorldOrientation)i, 1);
 			if (DepartmentOfDefense.CheckWhetherTargetPositionIsValidForUseAsArmySpawnLocation(neighbourTile, PathfindingMovementCapacity.Water))
 			{
 				armyPosition = neighbourTile;
@@ -138,11 +112,11 @@ public class NavyFortress : BaseNavyArmy
 		}
 		if (!armyPosition.IsValid)
 		{
-			for (int k = 0; k < fortress.Facilities.Count; k++)
+			for (int j = 0; j < fortress.Facilities.Count; j++)
 			{
-				for (int l = 0; l < 6; l++)
+				for (int k = 0; k < 6; k++)
 				{
-					WorldPosition neighbourTile2 = this.worldPositionService.GetNeighbourTile(fortress.Facilities[k].WorldPosition, (WorldOrientation)l, 1);
+					WorldPosition neighbourTile2 = this.worldPositionService.GetNeighbourTile(fortress.Facilities[j].WorldPosition, (WorldOrientation)k, 1);
 					if (DepartmentOfDefense.CheckWhetherTargetPositionIsValidForUseAsArmySpawnLocation(neighbourTile2, PathfindingMovementCapacity.Water))
 					{
 						armyPosition = neighbourTile2;
@@ -151,11 +125,27 @@ public class NavyFortress : BaseNavyArmy
 				}
 			}
 		}
+		float num = float.MaxValue;
+		GameEntityGUID[] array = new GameEntityGUID[base.Garrison.StandardUnits.Count];
+		for (int l = 0; l < base.Garrison.StandardUnits.Count; l++)
+		{
+			array[l] = base.Garrison.StandardUnits[l].GUID;
+			float propertyValue = base.Garrison.StandardUnits[l].GetPropertyValue(SimulationProperties.Movement);
+			if (num > propertyValue)
+			{
+				num = propertyValue;
+			}
+		}
+		if (num == 0f)
+		{
+			base.BehaviorState = ArmyWithTask.ArmyBehaviorState.Sleep;
+			this.State = TickableState.NoTick;
+			return;
+		}
 		OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(base.Garrison.Empire.Index, base.Garrison.GUID, array, armyPosition, null, false, true, true);
 		base.Garrison.Empire.PlayerControllers.AI.PostOrder(order);
 		this.Unassign();
-		this.WantToKeepArmyFitness.Reset();
-		base.State = TickableState.NoTick;
+		this.State = TickableState.NoTick;
 		base.BehaviorState = ArmyWithTask.ArmyBehaviorState.Succeed;
 	}
 
@@ -177,58 +167,13 @@ public class NavyFortress : BaseNavyArmy
 				}
 			}
 		}
-		List<IGarrison> source = new List<IGarrison>();
-		if (global::Game.Time > this.lastcheckTime + 10.0)
+		for (int j = 0; j < base.TaskEvaluations.Count; j++)
 		{
-			source = this.GetNearbyTargets();
-			this.lastcheckTime = global::Game.Time;
+			base.TaskEvaluations[j].Fitness.Subtract(this.WantToKeepArmyFitness, "Reduce the task by the fortress need for army.", new object[0]);
 		}
-		int j;
-		int k;
-		for (j = 0; j < base.TaskEvaluations.Count; j = k + 1)
-		{
-			if (!(base.TaskEvaluations[j].Task is NavyTask_Takeover) || !source.Any((IGarrison x) => x.GUID == this.TaskEvaluations[j].Task.TargetGuid))
-			{
-				NavyTask_Interception interc = base.TaskEvaluations[j].Task as NavyTask_Interception;
-				if (interc == null || !source.Any((IGarrison x) => x.GUID == interc.Target.Army.GUID))
-				{
-					base.TaskEvaluations[j].Fitness.Subtract(this.WantToKeepArmyFitness, "Reduce the task by the fortress need for army.", new object[0]);
-				}
-			}
-			k = j;
-		}
-	}
-
-	private List<IGarrison> GetNearbyTargets()
-	{
-		List<IGarrison> result = new List<IGarrison>();
-		if (this.Fortress.Occupant == null)
-		{
-			return result;
-		}
-		float propertyValue = this.Fortress.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
-		float propertyValue2 = this.Fortress.GetPropertyValue(SimulationProperties.ActionPointsSpent);
-		if (propertyValue <= propertyValue2)
-		{
-			return result;
-		}
-		DepartmentOfForeignAffairs agency = this.Fortress.Occupant.GetAgency<DepartmentOfForeignAffairs>();
-		float num = float.MaxValue;
-		foreach (Unit unit in this.Fortress.StandardUnits)
-		{
-			num = Mathf.Min(unit.GetPropertyValue(SimulationProperties.Movement), num);
-		}
-		if (num == 3.40282347E+38f || num < 3f)
-		{
-			return result;
-		}
-		AILayer_Military.HasSaveAttackableTargetsNearby(this.Fortress, Mathf.CeilToInt(num + 1f), agency, out result, true);
-		return result;
 	}
 
 	private IWorldPositionningService worldPositionService;
 
 	private AILayer_Navy navyLayer;
-
-	private double lastcheckTime;
 }

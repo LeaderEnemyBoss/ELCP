@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Broken Lords -->
+  <SimulationDescriptor Name="BrokenLordsIntegrationDescriptor1"                Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagDust"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Birdhive)"       Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Bos)"            Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Ceratan)"        Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Delvers)"        Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Dorgeshi)"       Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_DawnShua)"       Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Erycis)"         Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_EyelessOnes)"    Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Gauran)"         Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Geldrius)"       Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Haunts)"         Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Hurnas)"         Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Jotus)"          Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Kazanji)"        Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Silics)"         Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_SistersOfMercy)" Path="EmpireTypeMajor"/>
+      <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Urces)"          Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mad Fairies -->
+  <SimulationDescriptor Name="MadFairiesIntegrationDescriptor1"                 Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+     <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus" Operation="Addition" Value="0.2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+     <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus" Operation="Addition" Value="0.2" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+     <SimulationModifierDescriptor TargetProperty="DistrictIndustry"   Operation="Addition" Value="1"   Path="EmpireTypeMajor/ClassCity/ClassDistrict,#Summer,TerrainTagForest"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Necrophages -->
+  <SimulationDescriptor Name="NecrophagesIntegrationDescriptor1"                Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+     <SimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement"  Operation="Addition" Value="0.05" Path="EmpireTypeMajor"/>
+     <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"              Operation="Percent"  Value="-0.25" Path="EmpireTypeMajor/Garrison"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Rage Wizards -->
+  <SimulationDescriptor Name="RageWizardsIntegrationDescriptor1"                Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation" Operation="Addition"  Value="1"     Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityCityPoint"              Operation="Addition"  Value="5"     Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"               Operation="Addition"  Value="15"    Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Vaulters/Mezari -->
+  <SimulationDescriptor Name="VaultersIntegrationDescriptor1"                   Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+     <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagScience"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Roving Clans -->
+  <SimulationDescriptor Name="RovingClansIntegrationDescriptor1"                Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CommercialAgreementCostMultiplier"  Operation="Percent" Value="-0.5" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="ResearchAgreementCostMultiplier"    Operation="Percent" Value="-0.5" Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"        Operation="Percent" Value="0.1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome"           Operation="Percent" Value="0.1" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Drakkens -->
+  <SimulationDescriptor Name="DrakkensIntegrationDescriptor1"                   Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MinorFactionAssimilationCostModifier"  Operation="Percent"  Value="-1" Path="ClassEmpire,EmpireTypeMajor" />
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Birdhive)"       Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Bos)"            Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Ceratan)"        Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Delvers)"        Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Dorgeshi)"       Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_DawnShua)"       Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Erycis)"         Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_EyelessOnes)"    Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Gauran)"         Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Geldrius)"       Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Haunts)"         Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Hurnas)"         Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Jotus)"          Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Kazanji)"        Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Silics)"         Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_SistersOfMercy)" Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Urces)"          Path="EmpireTypeMajor/ClassCity,MainCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Cultists -->
+  <SimulationDescriptor Name="CultistsIntegrationDescriptor1"                   Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"      Operation="Addition"       Value="75"  Path="EmpireTypeMajor/ClassCity,MainCity"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"   Operation="Addition"       Value="50"  Path="EmpireTypeMajor/ClassCity/ClassUnit"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Replicants -->
+  <SimulationDescriptor Name="ReplicantsIntegrationDescriptor1"                 Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityAntiSpy"                 Operation="Addition"        Value="10"         Path="ClassEmpire/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="2"          Path="EmpireTypeMajor/SpiedGarrison"/>
+      <SimulationModifierDescriptor TargetProperty="PillageBoost"                Operation="Percent"         Value="0.5"        Path="EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Winter Shifters -->
+  <SimulationDescriptor Name="WinterShiftersIntegrationDescriptor1"             Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="MaximumSeasonPredictabilityError"      Operation="Percent"         Value="-1"      Path="EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticDeclarationFactor"           Operation="Percent"         Value="-0.25"   Path="#Winter,EmpireTypeMajor"/>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticNegotiationFactor"           Operation="Percent"         Value="-0.25"   Path="#Summer,EmpireTypeMajor"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Sea Demons -->
+  <SimulationDescriptor Name="SeaDemonsIntegrationDescriptor1"                  Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"           Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagWater"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"           Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagRiver"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"            Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagWater"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictScience"            Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagRiver"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Flames -->
+  <SimulationDescriptor Name="FlamesIntegrationDescriptor1"                     Type="FactionIntegration">
+    <SimulationModifierDescriptors>      
+      <SimulationModifierDescriptor TargetProperty="VolcanicDamageBonus" Operation="Addition" Value="0.1" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="VolcanicDamageBonus" Operation="Addition" Value="0.1" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Mimics -->
+  <SimulationDescriptor Name="MimicsIntegrationDescriptor1"                     Type="FactionIntegration">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OrganicIndustryPercent"          Operation="Addition" Value="0.1" Path="EmpireTypeMajor/ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

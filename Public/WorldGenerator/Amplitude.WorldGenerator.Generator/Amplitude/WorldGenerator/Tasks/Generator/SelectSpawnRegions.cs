@@ -118,28 +118,16 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			{
 				this.RegionIntrinsicValues.Add(region, 0);
 				Dictionary<Region, int> regionIntrinsicValues = this.RegionIntrinsicValues;
-				Region region2 = region;
-				Dictionary<Region, int> dictionary = regionIntrinsicValues;
-				Region region3 = region2;
-				Dictionary<Region, int> dictionary2 = dictionary;
-				Region key = region3;
-				dictionary2[key] += region.HexCount() + 3 * region.DeepHexes.Count + 10 * region.Resources.Count;
+				Region key = region;
+				regionIntrinsicValues[key] += region.HexCount() + 3 * region.DeepHexes.Count + 10 * region.Resources.Count;
 				if (region.Neighbours.Any((Region n) => n.LandMassType == Region.LandMassTypes.Ocean))
 				{
-					Dictionary<Region, int> regionIntrinsicValues2 = this.RegionIntrinsicValues;
-					Region region4 = region;
-					dictionary = regionIntrinsicValues2;
-					Region region5 = region4;
-					dictionary2 = dictionary;
-					key = region5;
-					dictionary2[key] *= 11;
-					Dictionary<Region, int> regionIntrinsicValues3 = this.RegionIntrinsicValues;
-					Region region6 = region;
-					dictionary = regionIntrinsicValues3;
-					Region region7 = region6;
-					dictionary2 = dictionary;
-					key = region7;
-					dictionary2[key] /= 10;
+					regionIntrinsicValues = this.RegionIntrinsicValues;
+					key = region;
+					regionIntrinsicValues[key] *= 11;
+					regionIntrinsicValues = this.RegionIntrinsicValues;
+					key = region;
+					regionIntrinsicValues[key] /= 10;
 				}
 			}
 			this.OrderedByIntrinsic = new List<Region>(from r in this.RegionIntrinsicValues.Keys
@@ -157,15 +145,15 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 						this.RegionSpawnPoints.Add(faction.Name, new Dictionary<Region, HexPos>());
 						this.OrderedBySpawnValue.Add(faction.Name, new List<Region>());
 					}
-					foreach (Region region8 in list2)
+					foreach (Region region2 in list2)
 					{
-						GridBasedGraph gridBasedGraph = new GridBasedGraph(base.Context.Grid, from d in region8.Districts
+						GridBasedGraph gridBasedGraph = new GridBasedGraph(base.Context.Grid, from d in region2.Districts
 						where d.Content == District.Contents.Land || d.Content == District.Contents.Coastal || d.Content == District.Contents.Lake
 						from h in d
 						select h);
 						if (gridBasedGraph.Hexes.All((HexPos h) => base.Context.POIValidityMap[h.Row, h.Column] != WorldGeneratorContext.POIValidity.Free))
 						{
-							base.Trace(string.Format("Unusable region {0} for faction {1}", region8.Id, faction.Name));
+							base.Trace(string.Format("Unusable region {0} for faction {1}", region2.Id, faction.Name));
 						}
 						foreach (HexPos hexPos in gridBasedGraph.Hexes)
 						{
@@ -174,10 +162,6 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 								DiskPicker<HexPos> diskPicker = new DiskPicker<HexPos>(gridBasedGraph);
 								diskPicker.Center = hexPos;
 								diskPicker.Radius = 2;
-								if (faction.Name == "AffinityCultists" || faction.Name == "AffinityMimics")
-								{
-									diskPicker.Radius = 3;
-								}
 								diskPicker.Execute();
 								int num = 0;
 								using (HashSet<HexPos>.Enumerator enumerator4 = diskPicker.DiskNodes.GetEnumerator())
@@ -205,15 +189,15 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 									}
 								}
 								this.Evaluations[faction.Name][hexPos.Row, hexPos.Column] = num;
-								if (!this.RegionSpawnPointEvaluations[faction.Name].ContainsKey(region8))
+								if (!this.RegionSpawnPointEvaluations[faction.Name].ContainsKey(region2))
 								{
-									this.RegionSpawnPointEvaluations[faction.Name].Add(region8, num);
-									this.RegionSpawnPoints[faction.Name].Add(region8, hexPos);
+									this.RegionSpawnPointEvaluations[faction.Name].Add(region2, num);
+									this.RegionSpawnPoints[faction.Name].Add(region2, hexPos);
 								}
-								else if (this.RegionSpawnPointEvaluations[faction.Name][region8] < num)
+								else if (this.RegionSpawnPointEvaluations[faction.Name][region2] < num)
 								{
-									this.RegionSpawnPointEvaluations[faction.Name][region8] = num;
-									this.RegionSpawnPoints[faction.Name][region8] = hexPos;
+									this.RegionSpawnPointEvaluations[faction.Name][region2] = num;
+									this.RegionSpawnPoints[faction.Name][region2] = hexPos;
 								}
 							}
 						}
@@ -248,24 +232,24 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			base.Context.SpawnEmpirePreferences = new List<HexPos>[base.Context.EmpiresCount];
 			while (queue2.Count > 0)
 			{
-				int empireIndex = queue2.Dequeue();
-				this.PickSpawnRegion(list2, mustAcceptIslands, empireIndex, alreadySpawned);
+				int i = queue2.Dequeue();
+				this.PickSpawnRegion(list2, mustAcceptIslands, i, alreadySpawned);
 			}
 			while (queue.Count > 0)
 			{
-				int empireIndex2 = queue.Dequeue();
-				this.PickSpawnRegion(list2, mustAcceptIslands, empireIndex2, alreadySpawned);
+				int i = queue.Dequeue();
+				this.PickSpawnRegion(list2, mustAcceptIslands, i, alreadySpawned);
 			}
 			base.Silent = false;
-			for (int j = 0; j < base.Context.EmpiresCount; j++)
+			for (int i = 0; i < base.Context.EmpiresCount; i++)
 			{
 				base.Trace(string.Format("{0} {3} : r{1} at {2} - continent {4}", new object[]
 				{
-					j,
-					base.Context.SpawnRegions[j],
-					base.Context.SpawnPointsDefault[j].ToString(),
-					base.Context.Configuration.Empires[j].Name,
-					base.Context.Regions[base.Context.SpawnRegions[j]].LandMassIndex
+					i,
+					base.Context.SpawnRegions[i],
+					base.Context.SpawnPointsDefault[i].ToString(),
+					base.Context.Configuration.Empires[i].Name,
+					base.Context.Regions[base.Context.SpawnRegions[i]].LandMassIndex
 				}));
 			}
 			base.Silent = true;
@@ -307,89 +291,6 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 					{
 						region5 = list.First((Region region) => region.Biome.IsVolcanic);
 					}
-					if (!region5.Biome.IsVolcanic && base.Context.Settings.Volcanize)
-					{
-						List<Biome> list2 = new List<Biome>();
-						foreach (Biome biome in base.Context.Settings.Biomes)
-						{
-							if (!(biome.DLCPrerequisite != string.Empty) || base.Context.Configuration.IsDLCAvailable(biome.DLCPrerequisite))
-							{
-								list2.Add(biome);
-							}
-						}
-						if (region5.Climate.HasVolcanicBiome(list2))
-						{
-							region5.Biome = region5.Climate.GetVolcanicBiome(base.Context.Randomizer, list2);
-							TerrainTransformation transform = base.Context.Settings.Transformations.Find((TerrainTransformation t) => t.Name == "RidgePresence");
-							TerrainTransformation transform2 = base.Context.Settings.Transformations.Find((TerrainTransformation t) => t.Name == "HighMountain");
-							TerrainTransformation transform3 = base.Context.Settings.Transformations.Find((TerrainTransformation t) => t.Name == "MediumMountain");
-							using (List<District>.Enumerator enumerator2 = region5.Districts.GetEnumerator())
-							{
-								while (enumerator2.MoveNext())
-								{
-									District district = enumerator2.Current;
-									if (district.Content == District.Contents.Coastal)
-									{
-										district.Terrain = base.Context.CoastSelectors[(int)region5.Biome.Id].RandomSelected;
-									}
-									else if (district.Content == District.Contents.Lake)
-									{
-										district.Terrain = base.Context.LakeSelectors[(int)region5.Biome.Id].RandomSelected;
-									}
-									else if (district.Content == District.Contents.Land)
-									{
-										district.Terrain = base.Context.LandSelectors[(int)region5.Biome.Id].RandomSelected;
-									}
-									else if (district.Content == District.Contents.Ocean)
-									{
-										district.Terrain = base.Context.OceanSelectors[(int)region5.Biome.Id].RandomSelected;
-									}
-									else if (district.Content == District.Contents.Ridge)
-									{
-										district.Terrain = base.Context.LandSelectors[(int)region5.Biome.Id].RandomSelected;
-										base.Context.ApplyTransformation(transform, district);
-									}
-									if (district.Elevation >= base.Context.Settings.HighMountainElevation)
-									{
-										base.Context.ApplyTransformation(transform2, district);
-									}
-									else if (district.Elevation >= base.Context.Settings.MediumMountainElevation)
-									{
-										base.Context.ApplyTransformation(transform3, district);
-									}
-								}
-								using (List<District>.Enumerator enumerator3 = region5.Districts.GetEnumerator())
-								{
-									while (enumerator3.MoveNext())
-									{
-										District district2 = enumerator3.Current;
-										foreach (HexPos hexPos in district2)
-										{
-											base.Context.TerrainData[hexPos.Row, hexPos.Column] = district2.Terrain.Id;
-										}
-									}
-									goto IL_68A;
-								}
-							}
-						}
-						TerrainTransformation transform4 = base.Context.Settings.Transformations.Find((TerrainTransformation t) => t.Name == "ELCPAshlandsTrans");
-						foreach (District district3 in region5.Districts)
-						{
-							base.Context.ApplyTransformation(transform4, district3);
-							foreach (HexPos hex in district3)
-							{
-								base.Context.ApplyTransformation(transform4, hex);
-							}
-						}
-					}
-				}
-				IL_68A:
-				if (base.Context.Configuration.Empires[empireIndex].Name == "AffinityBrokenLords")
-				{
-					if (list.Any((Region region) => region.Biome.IsVolcanic || region.Biome.Name.Contains("Desert")))
-					{
-						region5 = list.First((Region region) => region.Biome.IsVolcanic || region.Biome.Name.Contains("Desert"));
-					}
 				}
 				if (base.Context.Configuration.Empires[empireIndex].Name != "AffinityFlames" && base.Context.Configuration.Empires[empireIndex].Name != "AffinityBrokenLords")
 				{
@@ -398,99 +299,80 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 						region5 = list.First((Region region) => !region.Biome.IsVolcanic);
 					}
 				}
-				if (base.Context.Configuration.Empires[empireIndex].Name == "AffinityCultists" || base.Context.Configuration.Empires[empireIndex].Name == "AffinitySeaDemons" || base.Context.Configuration.Empires[empireIndex].Name == "AffinityMimics")
-				{
-					foreach (Region region2 in list)
-					{
-						if (!region2.Biome.IsVolcanic)
-						{
-							foreach (District district4 in region2.Districts)
-							{
-								if (district4.Content == District.Contents.Ocean || district4.Content == District.Contents.Coastal)
-								{
-									region5 = region2;
-									goto IL_87D;
-								}
-							}
-						}
-					}
-				}
-				IL_87D:
 				alreadySpawned.Add(region5);
 				base.Context.SpawnRegions[empireIndex] = region5.Id;
 				base.Context.SpawnPointsDefault[empireIndex] = this.RegionSpawnPoints[faction.Name][region5];
-				HexPos hexPos2 = base.Context.SpawnPointsDefault[empireIndex];
-				base.Context.POIValidityMap[hexPos2.Row, hexPos2.Column] = WorldGeneratorContext.POIValidity.Impossible;
+				HexPos hexPos = base.Context.SpawnPointsDefault[empireIndex];
+				base.Context.POIValidityMap[hexPos.Row, hexPos.Column] = WorldGeneratorContext.POIValidity.Impossible;
 				ProximityComputer<Region> proximityComputer = new ProximityComputer<Region>(new AdHocGraph<Region>(landRegions))
 				{
 					StartingNodes = new List<Region>(alreadySpawned)
 				};
 				proximityComputer.Execute();
-				Func<Region, bool> <>9__23;
-				Func<Region, bool> <>9__24;
-				foreach (Region region3 in landRegions)
+				Func<Region, bool> <>9__16;
+				Func<Region, bool> <>9__17;
+				foreach (Region region2 in landRegions)
 				{
-					if (!this.RegionTacticalValues.ContainsKey(region3))
+					if (!this.RegionTacticalValues.ContainsKey(region2))
 					{
-						this.RegionTacticalValues.Add(region3, 0);
+						this.RegionTacticalValues.Add(region2, 0);
 					}
-					this.RegionTacticalValues[region3] = 0;
+					this.RegionTacticalValues[region2] = 0;
 					if (proximityComputer.StartingNodes.Count > 0)
 					{
-						int num = proximityComputer.ProximityGraph[proximityComputer.Graph.DataIndex(region3)];
+						int num = proximityComputer.ProximityGraph[proximityComputer.Graph.DataIndex(region2)];
 						if (num > 0)
 						{
 							Dictionary<Region, int> regionTacticalValues = this.RegionTacticalValues;
-							Region key = region3;
-							regionTacticalValues[key] += 5 * num;
+							Region region3 = region2;
+							regionTacticalValues[region3] += 5 * num;
 						}
 						else
 						{
 							Dictionary<Region, int> regionTacticalValues = this.RegionTacticalValues;
-							Region key = region3;
-							regionTacticalValues[key] += 1000;
+							Region region3 = region2;
+							regionTacticalValues[region3] += 1000;
 						}
 					}
-					foreach (Region region4 in new List<Region>(from r in region3.Neighbours
+					foreach (Region region4 in new List<Region>(from r in region2.Neighbours
 					where r.LandMassType == Region.LandMassTypes.Continent
 					select r))
 					{
 						if (alreadySpawned.Contains(region4))
 						{
 							Dictionary<Region, int> regionTacticalValues = this.RegionTacticalValues;
-							Region key = region3;
-							regionTacticalValues[key] -= 30;
+							Region region3 = region2;
+							regionTacticalValues[region3] -= 30;
 						}
 						else
 						{
 							IEnumerable<Region> neighbours = region4.Neighbours;
 							Func<Region, bool> predicate;
-							if ((predicate = <>9__23) == null)
+							if ((predicate = <>9__16) == null)
 							{
-								predicate = (<>9__23 = ((Region nn) => !alreadySpawned.Contains(nn)));
+								predicate = (<>9__16 = ((Region nn) => !alreadySpawned.Contains(nn)));
 							}
 							if (neighbours.All(predicate))
 							{
 								Dictionary<Region, int> regionTacticalValues = this.RegionTacticalValues;
-								Region key = region3;
-								regionTacticalValues[key] += 10;
+								Region region3 = region2;
+								regionTacticalValues[region3] += 10;
 							}
 							else
 							{
-								int num2 = this.RegionTacticalValues[region3];
+								Dictionary<Region, int> regionTacticalValues = this.RegionTacticalValues;
+								Region region3 = region2;
+								Dictionary<Region, int> dictionary = regionTacticalValues;
+								Region key = region3;
+								int num2 = regionTacticalValues[region3];
 								int num3 = 5;
 								IEnumerable<Region> neighbours2 = region4.Neighbours;
-								Dictionary<Region, int> regionTacticalValues2 = this.RegionTacticalValues;
-								Region key2 = region3;
-								int num4 = num2;
-								int num5 = num3;
-								IEnumerable<Region> source = neighbours2;
 								Func<Region, bool> predicate2;
-								if ((predicate2 = <>9__24) == null)
+								if ((predicate2 = <>9__17) == null)
 								{
-									predicate2 = (<>9__24 = ((Region nn) => alreadySpawned.Contains(nn)));
+									predicate2 = (<>9__17 = ((Region nn) => alreadySpawned.Contains(nn)));
 								}
-								regionTacticalValues2[key2] = num4 + num5 / source.Count(predicate2);
+								dictionary[key] = num2 + num3 / neighbours2.Count(predicate2);
 							}
 						}
 					}

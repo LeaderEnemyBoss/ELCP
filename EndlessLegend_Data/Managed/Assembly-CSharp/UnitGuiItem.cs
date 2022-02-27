@@ -74,8 +74,6 @@ public class UnitGuiItem : MonoBehaviour
 		if (client != null)
 		{
 			this.UnitToggle.OnSwitchMethod = "OnUnitToggle";
-			this.UnitToggle.OnMiddleClickMethod = "OnUnitToggle";
-			this.UnitToggle.OnRightClickMethod = "OnUnitToggle";
 			this.UnitToggle.OnSwitchObject = client;
 			this.UnitToggle.AgeTransform.Enable = true;
 		}

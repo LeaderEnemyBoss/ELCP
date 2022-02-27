@@ -23,96 +23,97 @@ using Amplitude.Unity.Xml;
 using ICSharpCode.SharpZipLib.BZip2;
 using UnityEngine;
 
+[OrderProcessor(typeof(OrderGenerateNewWeather), "GenerateNewWeather")]
+[OrderProcessor(typeof(OrderCreateCityAssaultEncounter), "CreateCityAssaultEncounter")]
+[OrderProcessor(typeof(OrderDebugInfo), "DebugInfo")]
+[OrderProcessor(typeof(OrderAllocateEncounterDroppableTo), "AllocateEncounterDroppableTo")]
+[OrderProcessor(typeof(OrderCreateEncounter), "CreateEncounter")]
+[OrderProcessor(typeof(OrderCreateDiplomaticContract), "CreateDiplomaticContract")]
+[OrderProcessor(typeof(OrderReportEncounter), "ReportEncounter")]
+[OrderProcessor(typeof(OrderUpdateWinterImmunityBids), "UpdateWinterImmunityBids")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnits), "ReplicateMarketplaceUnits")]
+[OrderProcessor(typeof(OrderNotifyEmpireDiscovery), "NotifyEmpireDiscovery")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnitProfile), "ReplicateMarketplaceUnitProfile")]
+[OrderProcessor(typeof(OrderSetOrbSpawn), "SetOrbSpawn")]
+[OrderProcessor(typeof(OrderRefreshMarketplace), "RefreshMarketplace")]
+[OrderProcessor(typeof(OrderReadyForNextRound), "ReadyForNextRound")]
+[OrderProcessor(typeof(OrderChangeUnitStrategy), "ChangeUnitStrategy")]
+[OrderProcessor(typeof(OrderUpdateQuest), "UpdateQuest")]
+[OrderProcessor(typeof(OrderRemoveAffinityStrategicResource), "RemoveAffinityStrategicResource")]
+[OrderProcessor(typeof(OrderCompleteQuest), "CompleteQuest")]
+[OrderProcessor(typeof(OrderAnnounceFirstKaiju), "AnnounceKaiju")]
+[OrderProcessor(typeof(OrderEncounterDeploymentStart), "EncounterDeploymentStart")]
+[OrderProcessor(typeof(OrderJoinEncounter), "JoinEncounter")]
+[OrderProcessor(typeof(OrderEncounterRoundUpdate), "EncounterRoundUpdate")]
+[OrderProcessor(typeof(OrderReadyForNextPhase), "ReadyForNextPhase")]
+[OrderProcessor(typeof(OrderReadyForDeployment), "ReadyForDeployment")]
+[OrderProcessor(typeof(OrderInteractWith), "InteractWith")]
+[OrderProcessor(typeof(OrderIncludeContenderInEncounter), "IncludeContenderInEncounter")]
+[OrderProcessor(typeof(OrderChangeSeason), "ChangeSeason")]
+[OrderProcessor(typeof(OrderReadyForBattle), "ReadyForBattle")]
+[OrderProcessor(typeof(OrderChangeUnitsTargetingAndStrategy), "OrderChangeUnitsStrategies")]
+[OrderProcessor(typeof(OrderLockInteraction), "LockInteraction")]
+[OrderProcessor(typeof(OrderRemoveMapBoosts), "RemoveMapBoosts")]
+[OrderProcessor(typeof(OrderDestroyEncounter), "DestroyEncounter")]
+[OrderProcessor(typeof(OrderEncounterRoundEnd), "EncounterRoundEnd")]
+[OrderProcessor(typeof(OrderToggleRuinDustDeposits), "ToggleRuinDustDeposits")]
+[OrderProcessor(typeof(OrderEliminateEmpire), "EliminateEmpire")]
+[OrderProcessor(typeof(OrderBeginQuest), "BeginQuest")]
+[OrderProcessor(typeof(OrderBuyOutKaijuTechnology), "BuyOutKaijuTechnology")]
+[OrderProcessor(typeof(OrderBuyoutAndActivatePillar), "BuyoutAndActivatePillar")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnitDesign), "ReplicateMarketplaceUnitDesign")]
+[OrderProcessor(typeof(OrderRazePointOfInterest), "RazePointOfInterest")]
+[OrderProcessor(typeof(OrderBuyoutAndActivatePillarThroughArmy), "BuyoutAndActivatePillarThroughArmy")]
+[OrderProcessor(typeof(OrderBuyoutAndPlaceTerraformationDevice), "BuyoutAndPlaceTerraformationDevice")]
+[OrderProcessor(typeof(OrderBuyoutSpellAndPlayBattleAction), "BuyoutSpellAndPlayBattleAction")]
+[OrderProcessor(typeof(OrderQueueKaijuResearch), "QueueKaijuResearch")]
+[OrderProcessor(typeof(OrderCancelKaijuResearch), "CancelKaijuResearch")]
+[OrderProcessor(typeof(OrderToggleEndlessDay), "ToggleEndlessDay")]
+[OrderProcessor(typeof(OrderResetPointOfInterestInteractionBits), "ResetPointOfInterestInteractionBits")]
+[OrderProcessor(typeof(OrderSwitchContendersReinforcementRanking), "SwitchContendersReinforcementRanking")]
+[OrderProcessor(typeof(OrderSwapUnitDeployment), "SwapUnitDeployment")]
+[OrderProcessor(typeof(OrderGetAIDiplomaticTermEvaluation), "GetAIDiplomaticTermEvaluation")]
+[OrderProcessor(typeof(OrderNotifyEncounter), "NotifyEncounter")]
+[OrderProcessor(typeof(OrderOrbsChange), "OrbsChange")]
+[OrderProcessor(typeof(OrderBeginEncounter), "BeginEncounter")]
+[OrderProcessor(typeof(OrderSpawnMapBoosts), "SpawnMapBoosts")]
+[OrderProcessor(typeof(OrderRunTerraformationForDevice), "RunTerraformationForDevice")]
+[OrderProcessor(typeof(OrderSelectAffinityStrategicResource), "SelectAffinityStrategicResource")]
 [OrderProcessor(typeof(OrderSendAIAttitudeFeedback), "SendAIAttitudeFeedback")]
 [OrderProcessor(typeof(OrderSetDeploymentFinished), "SetDeploymentFinished")]
+[OrderProcessor(typeof(OrderGetAIDiplomaticContractEvaluation), "GetAIDiplomaticContractEvaluation")]
+[OrderProcessor(typeof(OrderEncounterDeploymentUpdate), "EncounterDeploymentUpdate")]
+[OrderProcessor(typeof(OrderGetAIAttitude), "GetAIAttitude")]
+[OrderProcessor(typeof(OrderSpawnKaiju), "SpawnKaiju")]
+[OrderProcessor(typeof(OrderEncounterTargetingPhaseUpdate), "EncounterTargetingPhaseUpdate")]
+[OrderProcessor(typeof(OrderChangeUnitTargeting), "ChangeUnitTargeting")]
+[OrderProcessor(typeof(OrderChangeDiplomaticContractState), "ChangeDiplomaticContractState")]
 [OrderProcessor(typeof(OrderRelocateKaiju), "RelocateKaiju")]
 [OrderProcessor(typeof(OrderRegisterRegionalEffects), "RegisterRegionalEffects")]
-[OrderProcessor(typeof(OrderBuyOutKaijuTechnology), "BuyOutKaijuTechnology")]
-[OrderProcessor(typeof(OrderChangeUnitStrategy), "ChangeUnitStrategy")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnits), "ReplicateMarketplaceUnits")]
-[OrderProcessor(typeof(OrderSetEncounterDeployementEndTime), "SetEncounterDeployementEndTime")]
-[OrderProcessor(typeof(OrderInteractWith), "InteractWith")]
-[OrderProcessor(typeof(OrderChangeReinforcementPriority), "ChangeReinforcementPriority")]
-[OrderProcessor(typeof(OrderJoinEncounter), "JoinEncounter")]
-[OrderProcessor(typeof(OrderPacifyMinorFaction), "PacifyMinorFaction")]
-[OrderProcessor(typeof(OrderPlayBattleAction), "PlayBattleAction")]
-[OrderProcessor(typeof(OrderBuyoutAndPlaceTerraformationDevice), "BuyoutAndPlaceTerraformationDevice")]
-[OrderProcessor(typeof(OrderSelectAffinityStrategicResource), "SelectAffinityStrategicResource")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnitProfile), "ReplicateMarketplaceUnitProfile")]
-[OrderProcessor(typeof(OrderQueueKaijuResearch), "QueueKaijuResearch")]
-[OrderProcessor(typeof(OrderEncounterDeploymentStart), "EncounterDeploymentStart")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnitDesign), "ReplicateMarketplaceUnitDesign")]
-[OrderProcessor(typeof(OrderPrepareForBattle), "PrepareForBattle")]
-[OrderProcessor(typeof(OrderRunTerraformationForDevice), "RunTerraformationForDevice")]
-[OrderProcessor(typeof(OrderEncounterRoundUpdate), "EncounterRoundUpdate")]
-[OrderProcessor(typeof(OrderLockInteraction), "LockInteraction")]
-[OrderProcessor(typeof(OrderChangeAdministrationSpeciality), "ChangeAdministrationSpeciality")]
-[OrderProcessor(typeof(OrderSetMapBoostSpawn), "SetMapBoostSpawn")]
-[OrderProcessor(typeof(OrderSetOrbSpawn), "SetOrbSpawn")]
-[OrderProcessor(typeof(OrderSetWindPreferences), "SetWindPreferences")]
-[OrderProcessor(typeof(OrderOrbsChange), "OrbsChange")]
-[OrderProcessor(typeof(OrderEndEncounter), "EndEncounter")]
-[OrderProcessor(typeof(OrderRemoveAffinityStrategicResource), "RemoveAffinityStrategicResource")]
-[OrderProcessor(typeof(OrderResetPointOfInterestInteractionBits), "ResetPointOfInterestInteractionBits")]
-[OrderProcessor(typeof(OrderActivateWeatherControl), "ActivateWeatherControl")]
-[OrderProcessor(typeof(OrderBuyoutAndActivatePillarThroughArmy), "BuyoutAndActivatePillarThroughArmy")]
-[OrderProcessor(typeof(OrderGenerateNewWeather), "GenerateNewWeather")]
-[OrderProcessor(typeof(OrderBuyoutSpellAndPlayBattleAction), "BuyoutSpellAndPlayBattleAction")]
-[OrderProcessor(typeof(OrderChangeUnitDeployment), "ChangeUnitDeployment")]
-[OrderProcessor(typeof(OrderEncounterDeploymentUpdate), "EncounterDeploymentUpdate")]
-[OrderProcessor(typeof(OrderEncounterRoundEnd), "EncounterRoundEnd")]
-[OrderProcessor(typeof(OrderBuyoutAndActivatePillar), "BuyoutAndActivatePillar")]
-[OrderProcessor(typeof(OrderRazePointOfInterest), "RazePointOfInterest")]
-[OrderProcessor(typeof(OrderReadyForBattle), "ReadyForBattle")]
-[OrderProcessor(typeof(OrderEncounterTargetingPhaseUpdate), "EncounterTargetingPhaseUpdate")]
-[OrderProcessor(typeof(OrderChangeStrategy), "ChangeStrategy")]
-[OrderProcessor(typeof(OrderGetAIAttitude), "GetAIAttitude")]
-[OrderProcessor(typeof(OrderEliminateEmpire), "EliminateEmpire")]
-[OrderProcessor(typeof(OrderChangeDiplomaticContractTermsCollection), "ChangeDiplomaticContractTermsCollection")]
-[OrderProcessor(typeof(OrderDestroyEncounter), "DestroyEncounter")]
-[OrderProcessor(typeof(OrderBeginEncounter), "BeginEncounter")]
-[OrderProcessor(typeof(OrderChangeDiplomaticContractState), "ChangeDiplomaticContractState")]
 [OrderProcessor(typeof(OrderChangeDeployment), "ChangeDeployment")]
-[OrderProcessor(typeof(OrderChangeContenderState), "ChangeContenderState")]
-[OrderProcessor(typeof(OrderAnnounceFirstKaiju), "AnnounceKaiju")]
-[OrderProcessor(typeof(OrderAllocateEncounterDroppableTo), "AllocateEncounterDroppableTo")]
-[OrderProcessor(typeof(OrderDebugInfo), "DebugInfo")]
-[OrderProcessor(typeof(OrderCreateCityAssaultEncounter), "CreateCityAssaultEncounter")]
-[OrderProcessor(typeof(OrderChangeUnitTargeting), "ChangeUnitTargeting")]
-[OrderProcessor(typeof(OrderCreateEncounter), "CreateEncounter")]
-[OrderProcessor(typeof(OrderGetAIDiplomaticContractEvaluation), "GetAIDiplomaticContractEvaluation")]
-[OrderProcessor(typeof(OrderNotifyEncounter), "NotifyEncounter")]
-[OrderProcessor(typeof(OrderGetAIDiplomaticTermEvaluation), "GetAIDiplomaticTermEvaluation")]
-[OrderProcessor(typeof(OrderNotifyEmpireDiscovery), "NotifyEmpireDiscovery")]
-[OrderProcessor(typeof(OrderReadyForDeployment), "ReadyForDeployment")]
-[OrderProcessor(typeof(OrderQuestWorldEffect), "QuestWorldEffect")]
-[OrderProcessor(typeof(OrderLockEncounterExternalArmies), "LockEncounterExternalArmies")]
-[OrderProcessor(typeof(OrderReportEncounter), "ReportEncounter")]
-[OrderProcessor(typeof(OrderChangeDiplomaticRelationState), "ChangeDiplomaticRelationState")]
-[OrderProcessor(typeof(OrderWinterImmunityBid), "WinterImmunityBid")]
-[OrderProcessor(typeof(OrderCreateDiplomaticContract), "CreateDiplomaticContract")]
-[OrderProcessor(typeof(OrderBeginQuest), "BeginQuest")]
-[OrderProcessor(typeof(OrderCancelKaijuResearch), "CancelKaijuResearch")]
-[OrderProcessor(typeof(OrderVoteForSeasonEffect), "VoteForSeasonEffect")]
+[OrderProcessor(typeof(OrderEndEncounter), "EndEncounter")]
 [OrderProcessor(typeof(OrderChangeContenderReinforcementRanking), "ChangeContenderReinforcementRanking")]
-[OrderProcessor(typeof(OrderCompleteQuest), "CompleteQuest")]
-[OrderProcessor(typeof(OrderSpawnKaiju), "SpawnKaiju")]
+[OrderProcessor(typeof(OrderWinterImmunityBid), "WinterImmunityBid")]
+[OrderProcessor(typeof(OrderVoteForSeasonEffect), "VoteForSeasonEffect")]
+[OrderProcessor(typeof(OrderPacifyMinorFaction), "PacifyMinorFaction")]
+[OrderProcessor(typeof(OrderSetEncounterDeployementEndTime), "SetEncounterDeployementEndTime")]
+[OrderProcessor(typeof(OrderChangeAdministrationSpeciality), "ChangeAdministrationSpeciality")]
 [OrderProcessor(typeof(OrderChangeContenderEncounterOption), "ChangeContenderEncounterOption")]
-[OrderProcessor(typeof(OrderRemoveMapBoosts), "RemoveMapBoosts")]
-[OrderProcessor(typeof(OrderReadyForNextPhase), "ReadyForNextPhase")]
-[OrderProcessor(typeof(OrderReadyForNextRound), "ReadyForNextRound")]
-[OrderProcessor(typeof(OrderChangeUnitsTargetingAndStrategy), "OrderChangeUnitsStrategies")]
-[OrderProcessor(typeof(OrderUpdateWinterImmunityBids), "UpdateWinterImmunityBids")]
-[OrderProcessor(typeof(OrderChangeSeason), "ChangeSeason")]
-[OrderProcessor(typeof(OrderRefreshMarketplace), "RefreshMarketplace")]
-[OrderProcessor(typeof(OrderIncludeContenderInEncounter), "IncludeContenderInEncounter")]
-[OrderProcessor(typeof(OrderSpawnMapBoosts), "SpawnMapBoosts")]
-[OrderProcessor(typeof(OrderUpdateQuest), "UpdateQuest")]
-[OrderProcessor(typeof(OrderToggleRuinDustDeposits), "ToggleRuinDustDeposits")]
-[OrderProcessor(typeof(OrderToggleEndlessDay), "ToggleEndlessDay")]
-[OrderProcessor(typeof(OrderSwitchContendersReinforcementRanking), "SwitchContendersReinforcementRanking")]
+[OrderProcessor(typeof(OrderPlaceTerraformDevice), "PlaceTerraformDevice")]
+[OrderProcessor(typeof(OrderPlayBattleAction), "PlayBattleAction")]
+[OrderProcessor(typeof(OrderPrepareForBattle), "PrepareForBattle")]
+[OrderProcessor(typeof(OrderChangeContenderState), "ChangeContenderState")]
+[OrderProcessor(typeof(OrderChangeStrategy), "ChangeStrategy")]
+[OrderProcessor(typeof(OrderChangeUnitDeployment), "ChangeUnitDeployment")]
+[OrderProcessor(typeof(OrderLockEncounterExternalArmies), "LockEncounterExternalArmies")]
+[OrderProcessor(typeof(OrderQuestWorldEffect), "QuestWorldEffect")]
+[OrderProcessor(typeof(OrderSetMapBoostSpawn), "SetMapBoostSpawn")]
+[OrderProcessor(typeof(OrderSetWindPreferences), "SetWindPreferences")]
+[OrderProcessor(typeof(OrderChangeDiplomaticContractTermsCollection), "ChangeDiplomaticContractTermsCollection")]
+[OrderProcessor(typeof(OrderChangeDiplomaticRelationState), "ChangeDiplomaticRelationState")]
+[OrderProcessor(typeof(OrderActivateWeatherControl), "ActivateWeatherControl")]
+[OrderProcessor(typeof(OrderChangeReinforcementPriority), "ChangeReinforcementPriority")]
 [OrderProcessor(typeof(OrderClaimDiplomacyPoints), "ClaimDiplomacyPoints")]
-[OrderProcessor(typeof(OrderSwapUnitDeployment), "SwapUnitDeployment")]
 public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface, IGameClient
 {
 	public GameClient(global::Session session) : base(session)
@@ -874,10 +875,10 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			Diagnostics.LogError("Contract GUID is not valid.");
 			yield break;
 		}
-		IDiplomaticContractRepositoryService service = base.Game.Services.GetService<IDiplomaticContractRepositoryService>();
-		Diagnostics.Assert(service != null);
+		IDiplomaticContractRepositoryService diplomaticContractRepositoryService = this.Game.Services.GetService<IDiplomaticContractRepositoryService>();
+		Diagnostics.Assert(diplomaticContractRepositoryService != null);
 		DiplomaticContract diplomaticContract;
-		if (!service.TryGetValue(order.ContractGUID, out diplomaticContract))
+		if (!diplomaticContractRepositoryService.TryGetValue(order.ContractGUID, out diplomaticContract))
 		{
 			Diagnostics.LogError("Can't retrieve the contract {0}.", new object[]
 			{
@@ -886,57 +887,39 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			yield break;
 		}
 		Diagnostics.Assert(diplomaticContract != null && diplomaticContract.EmpireWhichProposes != null && diplomaticContract.EmpireWhichReceives != null);
-		DepartmentOfTheTreasury agency = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfTheTreasury>();
-		Diagnostics.Assert(agency != null);
-		if (!agency.TryTransferResources(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, -order.EmpireWhichProposesEmpirePointCost))
+		DepartmentOfTheTreasury departmentOfTheTreasury = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfTheTreasury>();
+		Diagnostics.Assert(departmentOfTheTreasury != null);
+		if (!departmentOfTheTreasury.TryTransferResources(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, -order.EmpireWhichProposesEmpirePointCost))
 		{
 			Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
 			{
 				diplomaticContract.EmpireWhichProposes
 			});
 		}
-		if (!ELCPUtilities.UseELCPPeacePointRulseset)
+		float amount = order.EmpireWhichProposesPeacePoint * diplomaticContract.EmpireWhichProposes.GetPropertyValue(SimulationProperties.PeacePointGainMultiplier);
+		if (!departmentOfTheTreasury.TryTransferResources(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.PeacePoint, amount))
 		{
-			float amount = order.EmpireWhichProposesPeacePoint * diplomaticContract.EmpireWhichProposes.GetPropertyValue(SimulationProperties.PeacePointGainMultiplier);
-			if (!agency.TryTransferResources(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.PeacePoint, amount))
+			Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
 			{
-				Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
-				{
-					diplomaticContract.EmpireWhichProposes
-				});
-			}
+				diplomaticContract.EmpireWhichProposes
+			});
 		}
-		else
-		{
-			float empireWhichProposesPeacePoint = order.EmpireWhichProposesPeacePoint;
-			float propertyValue = diplomaticContract.EmpireWhichProposes.GetPropertyValue("PeacePointBucketStock");
-			diplomaticContract.EmpireWhichProposes.SetPropertyBaseValue("PeacePointBucketStock", propertyValue + empireWhichProposesPeacePoint);
-		}
-		DepartmentOfTheTreasury agency2 = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
-		Diagnostics.Assert(agency2 != null);
-		if (!agency2.TryTransferResources(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, -order.EmpireWhichReceivesEmpirePointCost))
+		departmentOfTheTreasury = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
+		Diagnostics.Assert(departmentOfTheTreasury != null);
+		if (!departmentOfTheTreasury.TryTransferResources(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, -order.EmpireWhichReceivesEmpirePointCost))
 		{
 			Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
 			{
 				diplomaticContract.EmpireWhichReceives
 			});
 		}
-		if (!ELCPUtilities.UseELCPPeacePointRulseset)
+		amount = order.EmpireWhichReceivesPeacePoint * diplomaticContract.EmpireWhichReceives.GetPropertyValue(SimulationProperties.PeacePointGainMultiplier);
+		if (!departmentOfTheTreasury.TryTransferResources(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.PeacePoint, amount))
 		{
-			float amount2 = order.EmpireWhichReceivesPeacePoint * diplomaticContract.EmpireWhichReceives.GetPropertyValue(SimulationProperties.PeacePointGainMultiplier);
-			if (!agency2.TryTransferResources(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.PeacePoint, amount2))
+			Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
 			{
-				Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
-				{
-					diplomaticContract.EmpireWhichReceives
-				});
-			}
-		}
-		else
-		{
-			float empireWhichReceivesPeacePoint = order.EmpireWhichReceivesPeacePoint;
-			float propertyValue2 = diplomaticContract.EmpireWhichReceives.GetPropertyValue("PeacePointBucketStock");
-			diplomaticContract.EmpireWhichReceives.SetPropertyBaseValue("PeacePointBucketStock", propertyValue2 + empireWhichReceivesPeacePoint);
+				diplomaticContract.EmpireWhichReceives
+			});
 		}
 		if (order.EmpireWhichProposesPeacePoint != 0f)
 		{
@@ -946,29 +929,29 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 		{
 			diplomaticContract.EmpireWhichReceives.SetPropertyBaseValue(SimulationProperties.EmpirePointSpentInSignificantDiplomacy, order.EmpireWhichReceivesEmpirePointCost + diplomaticContract.EmpireWhichReceives.GetPropertyBaseValue(SimulationProperties.EmpirePointSpentInSignificantDiplomacy));
 		}
-		IDiplomacyControl diplomacyControl = base.Game.Services.GetService<IDiplomacyService>() as IDiplomacyControl;
+		IDiplomacyControl diplomacyControl = this.Game.Services.GetService<IDiplomacyService>() as IDiplomacyControl;
 		Diagnostics.Assert(diplomacyControl != null);
 		diplomacyControl.SetDiplomaticContractState(diplomaticContract, order.DiplomaticContractNewState);
 		if (diplomaticContract.State == DiplomaticContractState.Signed)
 		{
 			this.NotifyIfMarketBan(diplomaticContract);
 		}
-		DepartmentOfForeignAffairs agency3 = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfForeignAffairs>();
+		DepartmentOfForeignAffairs departmentOfForeignAffairs = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfForeignAffairs>();
 		DiplomaticRelation diplomaticRelation;
-		if (agency3 != null)
+		if (departmentOfForeignAffairs != null)
 		{
-			diplomaticRelation = agency3.GetDiplomaticRelation(diplomaticContract.EmpireWhichReceives);
+			diplomaticRelation = departmentOfForeignAffairs.GetDiplomaticRelation(diplomaticContract.EmpireWhichReceives);
 			if (diplomaticRelation != null)
 			{
 				diplomaticRelation.RefreshDiplomaticAbilities();
 			}
 		}
-		agency3 = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfForeignAffairs>();
-		if (agency3 == null)
+		departmentOfForeignAffairs = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfForeignAffairs>();
+		if (departmentOfForeignAffairs == null)
 		{
 			yield break;
 		}
-		diplomaticRelation = agency3.GetDiplomaticRelation(diplomaticContract.EmpireWhichProposes);
+		diplomaticRelation = departmentOfForeignAffairs.GetDiplomaticRelation(diplomaticContract.EmpireWhichProposes);
 		if (diplomaticRelation != null)
 		{
 			diplomaticRelation.RefreshDiplomaticAbilities();
@@ -1940,17 +1923,13 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 	private void ApplyFortificationLoss(Encounter encounter, out float siegePoints)
 	{
 		siegePoints = 0f;
-		if (encounter.Retreat)
+		for (int i = 0; i < encounter.Contenders.Count; i++)
 		{
-			return;
-		}
-		if (!ELCPUtilities.UseELCPFortificationPointRuleset)
-		{
-			for (int i = 0; i < encounter.Contenders.Count; i++)
+			Contender contender = encounter.Contenders[i];
+			Diagnostics.Assert(contender != null && contender.Garrison != null && contender.Garrison.Empire != null);
+			if (contender != null && contender.Garrison != null && contender.Garrison.Empire != null)
 			{
-				Contender contender = encounter.Contenders[i];
-				Diagnostics.Assert(contender != null && contender.Garrison != null && contender.Garrison.Empire != null);
-				if (contender != null && contender.Garrison != null && contender.Garrison.Empire != null && contender.Garrison is EncounterCityGarrison && contender.Garrison.UnitsCount >= 1 && !contender.IsAttacking && contender.IsMainContender)
+				if (contender.Garrison is EncounterCityGarrison && contender.Garrison.UnitsCount >= 1 && !contender.IsAttacking && contender.IsMainContender)
 				{
 					float num = 0f;
 					if (contender.Garrison is EncounterCityGarrison)
@@ -1974,7 +1953,8 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 						float num4 = num / (float)contender.Garrison.UnitsCount;
 						if (propertyValue > 0f)
 						{
-							if (propertyValue - num4 > 0f)
+							float num5 = propertyValue - num4;
+							if (num5 > 0f)
 							{
 								siegePoints = Mathf.Round(num4 * 100f / num2);
 							}
@@ -1984,107 +1964,10 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 							}
 						}
 					}
-					float value = (contender.Garrison as EncounterCityGarrison).City.GetPropertyBaseValue(SimulationProperties.CityDefensePoint) - num / (float)contender.Garrison.UnitsCount;
+					float propertyBaseValue = (contender.Garrison as EncounterCityGarrison).City.GetPropertyBaseValue(SimulationProperties.CityDefensePoint);
+					float value = propertyBaseValue - num / (float)contender.Garrison.UnitsCount;
 					(contender.Garrison as EncounterCityGarrison).City.SetPropertyBaseValue(SimulationProperties.CityDefensePoint, value);
 				}
-			}
-			return;
-		}
-		List<Contender> list = encounter.Contenders.FindAll((Contender X) => X.IsMainContender);
-		bool flag = false;
-		City city2 = null;
-		if (list.Count == 2)
-		{
-			flag = ELCPUtilities.IsELCPCityBattle(new List<IGarrison>
-			{
-				list[0].Garrison,
-				list[1].Garrison
-			}, out city2);
-		}
-		if (flag)
-		{
-			float propertyValue3 = city2.GetPropertyValue(SimulationProperties.CityDefensePoint);
-			float num5 = 1f;
-			if (DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve != null)
-			{
-				num5 = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(city2.Ownership[city2.Empire.Index]);
-			}
-			float num6 = propertyValue3 * num5;
-			int num7 = 0;
-			float num8 = 0f;
-			if (num6 > 0f)
-			{
-				float num9 = city2.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
-				if (num9 <= 0f)
-				{
-					num9 = propertyValue3;
-				}
-				for (int j = 0; j < encounter.Contenders.Count; j++)
-				{
-					Contender contender2 = encounter.Contenders[j];
-					Diagnostics.Assert(contender2 != null && contender2.Garrison != null && contender2.Garrison.Empire != null);
-					if (ELCPUtilities.GetsFortificationBonus(contender2.Garrison, city2))
-					{
-						if (!contender2.IsTakingPartInBattle)
-						{
-							num8 += (float)contender2.EncounterUnits.Count * num6;
-							num7 += contender2.EncounterUnits.Count;
-						}
-						else
-						{
-							foreach (EncounterUnit encounterUnit2 in contender2.EncounterUnits)
-							{
-								if (encounterUnit2 != null && encounterUnit2.UnitDuplicatedSimulationObject != null)
-								{
-									if (encounterUnit2.IsOnBattlefield)
-									{
-										num8 += encounterUnit2.UnitDuplicatedSimulationObject.GetPropertyValue(SimulationProperties.Armor);
-									}
-									else
-									{
-										num8 += num6;
-									}
-									num7++;
-									if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-									{
-										Diagnostics.Log("ELCP ApplyFortificationLoss, total armorafter battle {0}, totalunits {1} {2} {3} {4} {5} {6} {7}", new object[]
-										{
-											num8,
-											num7,
-											encounterUnit2.LastActiveBattleActions.Count,
-											encounterUnit2.ActiveBattleActions.Count,
-											encounterUnit2.LineOfSightActive,
-											encounterUnit2.CanPlayBattleRound,
-											encounterUnit2.IsOnBattlefield,
-											encounterUnit2.Unit.GUID
-										});
-									}
-								}
-							}
-						}
-					}
-				}
-				if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-				{
-					Diagnostics.Log("ELCP ApplyFortificationLoss, total armor {0} with toal units {1}", new object[]
-					{
-						num8,
-						num7
-					});
-				}
-				float num10 = num6;
-				if (num7 > 0)
-				{
-					num10 = num8 / (float)num7;
-				}
-				float num11 = num6 - num10;
-				float num12 = 1f;
-				if (num11 > 0f)
-				{
-					siegePoints = Mathf.Round(num11 * 100f / num9);
-					num12 = 1f - num11 / num6;
-				}
-				city2.SetPropertyBaseValue(SimulationProperties.CityDefensePoint, propertyValue3 * num12);
 			}
 		}
 	}
@@ -2666,6 +2549,49 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			{
 				empire
 			}, order.IgnoreIfConverted);
+			MinorEmpire minorEmpire = targetEmpire as MinorEmpire;
+			if (minorEmpire.Region.City != null)
+			{
+				minorEmpire.Region.City.Refresh(false);
+			}
+		}
+		yield break;
+	}
+
+	private IEnumerator PlaceTerraformDeviceProcessor(OrderPlaceTerraformDevice order)
+	{
+		if (order == null)
+		{
+			throw new ArgumentNullException("order");
+		}
+		if (this.Game.Services.GetService<IGameEntityRepositoryService>() == null)
+		{
+			Diagnostics.LogError("Cannot retreive the gameEntityRepositoryService.");
+			yield break;
+		}
+		IEventService eventService = Services.GetService<IEventService>();
+		Diagnostics.Assert(eventService != null);
+		global::Empire empire = null;
+		try
+		{
+			empire = this.Game.Empires[order.EmpireIndex];
+		}
+		catch
+		{
+			Diagnostics.LogError("Order processor failed because empire index is invalid.");
+			yield break;
+		}
+		IDatabase<TerraformDeviceDefinition> terraformDeviceDatabase = Databases.GetDatabase<TerraformDeviceDefinition>(false);
+		TerraformDeviceDefinition terraformDeviceDefinition;
+		if (terraformDeviceDatabase.TryGetValue(order.TerraformDeviceDefinitionName, out terraformDeviceDefinition))
+		{
+			ITerraformDeviceService terraformDeviceService = this.Game.Services.GetService<ITerraformDeviceService>();
+			if (terraformDeviceService.GetDeviceAtPosition(order.Position) == null)
+			{
+				TerraformDevice terraformDevice = terraformDeviceService.AddDevice(order.TerraformDeviceGameEntityGUID, terraformDeviceDefinition, order.Position, empire, false);
+				yield return new WaitForSeconds(2f);
+				eventService.Notify(new EventTerraformDeviceEntityCreated(terraformDevice));
+			}
 		}
 		yield break;
 	}
@@ -3239,6 +3165,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			terraformingEmpire.Refresh(false);
 			IEventService eventService = Services.GetService<IEventService>();
 			eventService.Notify(new EventEmpireWorldTerraformed(terraformDevice.Empire, terraformedTiles));
+			eventService.Notify(new EventTerraformationDeviceActivated(terraformingEmpire, terraformDevice.WorldPosition));
 		}
 		terraformDeviceManager.DestroyDevice(terraformDevice);
 		yield break;

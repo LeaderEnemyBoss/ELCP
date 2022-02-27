@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Xml;
 using Amplitude;
-using Amplitude.Unity.Framework;
-using Amplitude.Unity.Game;
 using Amplitude.Unity.Gui;
-using Amplitude.Unity.Gui.SimulationEffect;
 using UnityEngine;
 
 public class PanelFeatureDescription : GuiPanelFeature
@@ -62,60 +58,18 @@ public class PanelFeatureDescription : GuiPanelFeature
 		else
 		{
 			IGuiEntity guiEntity = this.context as IGuiEntity;
-			GuiElement guiElement2;
+			GuiElement guiElement;
 			if (this.context != null && guiEntity != null && guiEntity.Gui != null)
 			{
 				this.Description.Text = guiEntity.Gui.Description;
 			}
-			else if (base.GuiService.GuiPanelHelper.TryGetGuiElement(this.content, out guiElement2))
+			else if (base.GuiService.GuiPanelHelper.TryGetGuiElement(this.content, out guiElement))
 			{
-				this.Description.Text = guiElement2.Description;
+				this.Description.Text = guiElement.Description;
 			}
 			else
 			{
 				this.Description.Text = this.content;
-			}
-		}
-		if (this.context is CreepingNode || this.context is PointOfInterest || this.context is Village)
-		{
-			WorldPosition worldPosition;
-			if (this.context is PointOfInterest)
-			{
-				worldPosition = (this.context as PointOfInterest).WorldPosition;
-			}
-			else if (this.context is CreepingNode)
-			{
-				worldPosition = (this.context as CreepingNode).WorldPosition;
-			}
-			else
-			{
-				worldPosition = (this.context as Village).WorldPosition;
-			}
-			Region region = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>().GetRegion(worldPosition);
-			if (region.IsLand && !region.IsWasteland && region.MinorEmpire != null)
-			{
-				BarbarianCouncil agency = region.MinorEmpire.GetAgency<BarbarianCouncil>();
-				if (agency != null && agency.GetVillageAt(worldPosition) != null)
-				{
-					global::IGuiService service = Services.GetService<global::IGuiService>();
-					List<EffectDescription> list = new List<EffectDescription>();
-					MinorFaction minorFaction = region.MinorEmpire.MinorFaction;
-					if (minorFaction != null)
-					{
-						service.GuiSimulationParser.ParseSimulationDescriptor(minorFaction, list, null, false, false);
-						this.Description.Text = AgeLocalizer.Instance.LocalizeString(this.Description.Text);
-						foreach (EffectDescription effectDescription in list)
-						{
-							if (effectDescription == list[0])
-							{
-								AgePrimitiveLabel description = this.Description;
-								description.Text = description.Text + "\n \n#FFB43F#" + AgeLocalizer.Instance.LocalizeString("%EffectsOnEmpireTitle") + "#REVERT#";
-							}
-							AgePrimitiveLabel description2 = this.Description;
-							description2.Text = description2.Text + "\n" + effectDescription.ToString();
-						}
-					}
-				}
 			}
 		}
 		if (!string.IsNullOrEmpty(this.Description.Text))

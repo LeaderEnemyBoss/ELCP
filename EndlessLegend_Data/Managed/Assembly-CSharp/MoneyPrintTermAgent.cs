@@ -37,9 +37,7 @@ public class MoneyPrintTermAgent : DiplomaticTermAgent
 		{
 			return 0f;
 		}
-		return 75f * this.multiplier / 100f;
+		float num = 75f;
+		return num / 100f;
 	}
-
-	[InfluencedByPersonality]
-	private float multiplier;
 }

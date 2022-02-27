@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
-using Amplitude.Unity.Session;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
@@ -22,7 +21,8 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 		{
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			World world = (service.Game as global::Game).World;
+			global::Game game = service.Game as global::Game;
+			World world = game.World;
 			this.RegionTarget = world.Regions[attribute];
 			Diagnostics.Assert(this.RegionTarget != null);
 		}
@@ -58,9 +58,10 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 
 	public override void Promote()
 	{
-		AIScheduler.Services.GetService<ITickableRepositoryAIHelper>().Register(this);
+		ITickableRepositoryAIHelper service = AIScheduler.Services.GetService<ITickableRepositoryAIHelper>();
+		service.Register(this);
 		base.IsActive = true;
-		base.State = TickableState.NeedTick;
+		this.State = TickableState.NeedTick;
 	}
 
 	public override void Release()
@@ -90,7 +91,7 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 
 	protected override bool IsMissionCompleted()
 	{
-		return !(base.Commander is AICommander_Victory) && !AILayer_Patrol.IsPatrolValid(base.Commander.Empire, this.RegionTarget);
+		return !AILayer_Patrol.IsPatrolValid(base.Commander.Empire, this.RegionTarget);
 	}
 
 	protected override void Running()
@@ -131,24 +132,6 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 		List<object> list = new List<object>();
 		list.Add(this.RegionTarget.Index);
 		list.Add(this.IsWarBased);
-		if (base.Commander.Empire != null && base.Commander.Empire is MajorEmpire)
-		{
-			GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
-			AILayer_War ailayer_War = null;
-			AIPlayer_MajorEmpire aiplayer_MajorEmpire;
-			if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(base.Commander.Empire as MajorEmpire, out aiplayer_MajorEmpire))
-			{
-				AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
-				if (entity != null)
-				{
-					ailayer_War = entity.GetLayer<AILayer_War>();
-				}
-			}
-			if (ailayer_War != null)
-			{
-				ailayer_War.AssignDefensiveArmyToCity(aidata.Army);
-			}
-		}
 		if (this.IsWarBased)
 		{
 			if (base.TryCreateArmyMission("MajorFactionWarRoaming", list))

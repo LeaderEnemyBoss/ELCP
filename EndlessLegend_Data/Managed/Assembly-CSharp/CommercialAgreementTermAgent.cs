@@ -43,10 +43,6 @@ public class CommercialAgreementTermAgent : DiplomaticTermAgent
 			return 0f;
 		}
 		float num = base.GetValueFromAttitude();
-		if (this.VictoryLayer.CurrentFocus == ELCPUtilities.AIVictoryFocus.Economy)
-		{
-			num += 40f;
-		}
 		num *= this.multiplier;
 		return num / 100f;
 	}

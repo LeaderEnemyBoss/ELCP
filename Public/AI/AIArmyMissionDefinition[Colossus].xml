@@ -1,427 +1,286 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-	<AIArmyMissionDefinition Name="RoamingArmySupport">
-		<Parameters>
-			<Parameter ParameterIndex="0" VarName="$ArmyToSupport"/>
-		</Parameters>
-
-		<Controller_Sequence>
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$ArmyToSupport"/>
-			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-			
-			<!-- Get the target position to compute the path or check whenever we are at destination.-->
-			<Decorator_GetTargetPosition TargetVarName="$ArmyToSupport" Output_DestinationVarName="$ArmyToSupportPosition"/>
-			<Controller_Selector>			
-				<Controller_Sequence>
-					<Decorator_AbilityCheck AbilityName="UnitAbilityFortify"/>
-					<Action_FortifyCity />
-				</Controller_Sequence>						
-				<Controller_Sequence>
-					<Decorator_AbilityCheck AbilityName="UnitAbilityColossusHeal"/>
-					<Decorator_SelectHealingTarget Healing_TargetVarName="$HealingTarget"/>
-					<Action_HealArmy TargetVarName="$HealingTarget"/>
-				</Controller_Sequence>
-								
-				<Include SubTreeName="MapBoostOpportunity">
-				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$ArmyToSupportPosition"/>
-				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
-				</Include>
-				
-				<!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
-			        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
-        
-			        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
-			        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
-
-			        <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
-			        <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
-				
-				<Controller_Sequence Debug="DefendIfStillAtHome">
-					<Decorator_IsInOwnRegion Inverted="false"/>
-					<Include SubTreeName="DefendBesiegedCities"/>
-				</Controller_Sequence>
-				<Controller_Sequence Debug="DefendIfStillAtHome2">
-					<Decorator_IsInOwnRegion Inverted="false"/>
-					<Include SubTreeName="DefendEndangeredCities"/>
-				</Controller_Sequence>
-				
-				<Include SubTreeName="SupportLeader"/> 
-				
-				<!--IF RuinDetected THEN explore Ruin-->
-				<Include SubTreeName="ExploreNearbyRuin"/>
-			
-				<!-- Check if we are near the target. -->
-				<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="InRange" Range="3"/>
-				
-				<!--IF we could collect orbs THEN Change path -->
-				<Include SubTreeName="OrbsOpportunity">
-					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$ArmyToSupportPosition"/>
-					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-				</Include>
-
-				<!--IF City need vision for spy THEN explore Ruin-->
-				<Controller_Sequence Debug="Opportunity_CityToSpy">
-					<Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
-					<Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
-					<Decorator_EvaluateOpportunity OpportunityPosition="$CityToLookAtWorldPositionDestination" OpportunityType="CityToSpy" MainTargetPosition="$ArmyToSupportPosition" MainTargetType="ArmySupport" MinimumTurnToObjectif="0" MaximumDetourTurn="1"/>
-
-					<Controller_Selector>
-						<Controller_Sequence Debug="Opportunity_CityToSpy_AlreadyAtDestination">
-							<Decorator_DestinationReached DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfCheck="Attack"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
-							<Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
-							<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
-							<Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
-							<Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
-						</Controller_Sequence>
-					</Controller_Selector>
-				</Controller_Sequence>
-
-				<!-- Try to move toward the target. -->
-				<Controller_Sequence Debug="Regroup_MoveToRegroup">
-					<Action_GeneratePath DestinationVarName="$ArmyToSupportPosition" TypeOfPath="Regular" Output_PathVarName="$PathToTarget" AllowFastTravel="true"/>
-					<Action_Move PathVarName="$PathToTarget" TypeOfMove="Regular"/>
-				</Controller_Sequence>
-
-			</Controller_Selector>
-		</Controller_Sequence>
-	</AIArmyMissionDefinition>
-	
-
-
-	<AIArmyMissionDefinition Name="ColossusHarass">
-		<Parameters>
-			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-		</Parameters>
-
-		<Controller_Sequence>
-
-			<!--IF Army in under control THEN Mission failed-->
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-
-			<Controller_Selector>
-				<Include SubTreeName="MapBoostOpportunity">
-				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
-				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
-				</Include>
-				
-				<!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
-			        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
-        
-			        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
-			        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
-
-			        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
-			        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
-				
-				<Controller_Sequence Debug="DefendIfStillAtHome">
-					<Decorator_IsInOwnRegion Inverted="false"/>
-					<Include SubTreeName="DefendBesiegedCities"/>
-				</Controller_Sequence>
-				<Controller_Sequence Debug="DefendIfStillAtHome2">
-					<Decorator_IsInOwnRegion Inverted="false"/>
-					<Include SubTreeName="DefendEndangeredCities"/>
-				</Controller_Sequence>
-				
-				<Include SubTreeName="SupportLeader"/> 
-			
-				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
-
-				<!--IF Resource Extractor or WatchTower THEN try to destroy them-->
-				<Controller_Sequence Debug="Harass_DestroyPOI">
-					<Decorator_SelectPointOfInterestToDestroy TargetListVarName="$TargetList" Output_TargetVarName="$POITarget"/>
-					<Decorator_GetTargetPosition TargetVarName="$POITarget" Output_DestinationVarName="$POIWorldPositionDestination"/>
-
-					<Controller_Selector>
-						<Controller_Sequence Debug="Harass_DestroyPOI_AlreadyAtDestination">
-							<Decorator_DestinationReached DestinationVarName="$POIWorldPositionDestination" TypeOfCheck="Attack"/>
-							<Action_DestroyPointOfInterest TargetVarName="$POITarget"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="Harass_DestroyPOI_MoveToPOI">
-							<Action_GeneratePath DestinationVarName="$POIWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$POIPath"/>
-							<Action_Move PathVarName="$POIPath" TypeOfMove="Regular"/>
-						</Controller_Sequence>
-					</Controller_Selector>
-				</Controller_Sequence>
-
-				<!--IF we could collect orbs THEN Change path -->
-				<Include SubTreeName="OrbsOpportunity">
-					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
-					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-				</Include>
-
-				<Include SubTreeName="ExploreNearbyRuin"/>
-
-				<!--IF City need vision for spy THEN explore Ruin-->
-				<Controller_Sequence Debug="Opportunity_CityToSpy">
-					<Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
-					<Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
-
-					<Controller_Selector>
-						<Controller_Sequence Debug="Opportunity_CityToSpy_AlreadyAtDestination">
-							<Decorator_DestinationReached DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfCheck="Attack"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
-							<Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
-							<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
-							<Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
-							<Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
-						</Controller_Sequence>
-					</Controller_Selector>
-				</Controller_Sequence>
-
-				<!--IF NO EnnemyDetected THEN Move to Destination-->
-				<Controller_Sequence Debug="Exploration_TryToFollowTheBorder">
-					<!-- Ask for a destination. -->
-					<Controller_Selector>
-						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_ChangeTarget">
-							<Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
-							<Decorator_DestinationReached DestinationVarName="$BorderDestination" TypeOfCheck="Regular"/>
-							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
-							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_GoToPreviousTarget">
-							<Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
-							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_FirstTime">
-							<Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
-							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-					</Controller_Selector>
-
-					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-				</Controller_Sequence>
-
-			</Controller_Selector>
-
-		</Controller_Sequence>
-
-	</AIArmyMissionDefinition>
-
-
-	<!-- 100% opportunist -->
-	<AIArmyMissionDefinition Name="ColossusDefensiveRoaming">
-		<Parameters>
-			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-		</Parameters>
-
-		<Controller_Sequence Debug="ColossusDefensiveRoaming_Root">
-
-			<!--IF Army locked (in battle) control THEN Mission failed -->
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-
-			<Controller_Selector>
-				<Include SubTreeName="ExploreNearbyRuin"/>
-				<!-- IF can buff the city defense, do it. -->
-				<Controller_Sequence Debug="ColossusDefensiveRoaming_TryToFortifyCityInRange">
-					<Decorator_SelectCityToFortify TargetListVarName="$TargetList" Output_TargetVarName="$CityToFortify" MaximumTurnDistance="2"/>
-					<Decorator_GetTargetPosition TargetVarName="$CityToFortify" Output_DestinationVarName="$CityToFortifyWorldPosition"/>
-
-					<Controller_Selector Debug="ColossusDefensiveRoaming_TryToFortifyCityInRange_CityInRange">
-						<Controller_Sequence Debug="ColossusDefensiveRoaming_TryToFortifyCityInRange_CityCloseBy">
-							<Decorator_DestinationReached DestinationVarName="$CityToFortifyWorldPosition" />
-							<Action_FortifyCity TargetVarName="$CityToFortify"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="ColossusDefensiveRoaming_TryToFortifyCityInRange_GoTo">
-							<Action_GeneratePath DestinationVarName="$CityToFortifyWorldPosition" TypeOfPath="Regular" Output_PathVarName="$CityToFortifyPath"/>
-							<Action_Move PathVarName="$CityToFortifyPath" TypeOfMove="Regular"/>
-							<Decorator_DestinationReached DestinationVarName="$CityToFortifyWorldPosition" />
-							<Action_FortifyCity TargetVarName="$CityToFortify"/>
-						</Controller_Sequence>
-					</Controller_Selector>
-
-				</Controller_Sequence>
-
-				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
-
-				<!--IF we could collect orbs THEN Change path -->
-				<Include SubTreeName="OrbsOpportunity">
-					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-				</Include>
-
-				<!--IF we could collect a map boost then change path -->
-			        <Include SubTreeName="MapBoostOpportunity">
-			          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-			          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-			        </Include>
-				
-				<!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
-			        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
-
-			        <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
-			        <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
-        
-			        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
-			        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
-
-			        <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
-			        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
-
-				<!-- Actual Raoming behavior -->
-				<Controller_Sequence Debug="ColossusDefensiveRoaming_GoToDestination">
-
-					<Controller_Selector>
-						<Controller_Sequence Debug="ColossusDefensiveRoaming_ChangeTarget">
-							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-							<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="ColossusDefensiveRoaming_GoToPreviousTarget">
-							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="ColossusDefensiveRoaming_FirstTime">
-							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-					</Controller_Selector>
-
-					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-					<Decorator_MoveEnded PathVarName="$Path"/>
-					<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-				</Controller_Sequence>
-
-			</Controller_Selector>
-		</Controller_Sequence>
-	</AIArmyMissionDefinition>
-	
-	<AIArmyMissionDefinition Name="KaijuSupport">
-		<Parameters>
-			<Parameter ParameterIndex="0" VarName="$ArmyToSupport"/>
-		</Parameters>
-
-		<Controller_Sequence>
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$ArmyToSupport"/>
-			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-			
-			<!-- Get the target position to compute the path or check whenever we are at destination.-->
-			<Decorator_GetTargetPosition TargetVarName="$ArmyToSupport" Output_DestinationVarName="$ArmyToSupportPosition"/>
-			<Controller_Selector>				
-				<Include SubTreeName="MapBoostOpportunity">
-				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$ArmyToSupportPosition"/>
-				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
-				</Include>
-				
-				<!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
-			    <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
-        
-				<!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
-				<Include SubTreeName="TryAttackNearbyWildKaiju"/>
-
-				<!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
-				<Include SubTreeName="TryAttackNearbyTamedKaiju"/>
-				
-				<Controller_Sequence Debug="DefendIfStillAtHome">
-					<Decorator_IsInOwnRegion Inverted="false"/>
-					<Include SubTreeName="DefendBesiegedCities"/>
-				</Controller_Sequence>
-				
-				<Include SubTreeName="TryToAttackEnemyInRangeOrIgnore"/>
-				
-				<Include SubTreeName="SupportLeader"/> 
-				
-				<!--IF RuinDetected THEN explore Ruin-->
-				<Include SubTreeName="ExploreNearbyRuin"/>
-			
-				<!-- Check if we are near the target. -->
-				<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="InRange" Range="3"/>
-				
-				<!--IF we could collect orbs THEN Change path -->
-				<Include SubTreeName="OrbsOpportunity">
-					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$ArmyToSupportPosition"/>
-					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-				</Include>
-
-				<!-- Try to move toward the target. -->
-				<Controller_Sequence Debug="Regroup_MoveToRegroup">
-					<Action_GeneratePath DestinationVarName="$ArmyToSupportPosition" TypeOfPath="Regular" Output_PathVarName="$PathToTarget"/>
-					<Action_Move PathVarName="$PathToTarget" TypeOfMove="Regular"/>
-				</Controller_Sequence>
-
-			</Controller_Selector>
-		</Controller_Sequence>
-	</AIArmyMissionDefinition>
-
-	<!-- 100% opportunist -->
-	<AIArmyMissionDefinition Name="KaijuGotoRegion">
-		<Parameters>
-			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-		</Parameters>
-
-		<Controller_Sequence Debug="KaijuGotoRegion_Root">
-
-			<!--IF Army locked (in battle) control THEN Mission failed -->
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-
-			<!-- First, select a target. -->
-			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-
-			<Controller_Selector>
-				<!--Settle if possible -->
-				<Action_SettleKaiju />
-				
-				<!--Opportunities -->
-				<Controller_Sequence>
-					<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-					<Include SubTreeName="MapBoostOpportunity">
-					  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-					  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
-					</Include>
-					<Include SubTreeName="OpportunitySearchRuin">
-						<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-						<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>                
-					</Include>
-				</Controller_Sequence>
-					
-				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
-
-				<!-- Actual Raoming behavior -->
-				<Controller_Sequence Debug="KaijuGotoRegion_GoToDestination">
-					<Controller_Selector>
-						<Controller_Sequence Debug="MajorFactionRoaming_ChangeTarget">
-							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-							<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="MajorFactionRoaming_GoToPreviousTarget">
-							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-						<Controller_Sequence Debug="MajorFactionRoaming_FirstTime">
-							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-
-					</Controller_Selector>
-
-					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-					<Decorator_MoveEnded PathVarName="$Path"/>
-					<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-				</Controller_Sequence>
-
-			</Controller_Selector>
-		</Controller_Sequence>
-	</AIArmyMissionDefinition>
+  <AIArmyMissionDefinition Name="RoamingArmySupport">
+    <Parameters>
+      <Parameter ParameterIndex="0" VarName="$ArmyToSupport"/>
+    </Parameters>
+
+    <Controller_Sequence>
+      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+
+      <!-- Get the target position to compute the path or check whenever we are at destination.-->
+      <Decorator_GetTargetPosition TargetVarName="$ArmyToSupport" Output_DestinationVarName="$ArmyToSupportPosition"/>
+      <Controller_Selector>
+        <!-- Check if we are near the target. -->
+        <Controller_Sequence Debug="Regroup_DestinationReached">
+          <Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="InRange" Range="3"/>
+        </Controller_Sequence>
+
+        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
+        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
+
+        <!--IF RuinDetected THEN explore Ruin-->
+        <Include SubTreeName="ExploreNearbyRuin"/>
+
+        <!--IF we could collect orbs THEN Change path -->
+        <Include SubTreeName="OrbsOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$ArmyToSupportPosition"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+        </Include>
+
+        <!--IF we could collect a map boost then change path -->
+        <Include SubTreeName="MapBoostOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$ArmyToSupportPosition"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+        </Include>
+
+        <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
+        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
+
+        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
+
+        <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
+
+
+
+        <!--IF City need vision for spy THEN explore Ruin-->
+        <Controller_Sequence Debug="Opportunity_CityToSpy">
+          <Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
+          <Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
+          <Decorator_EvaluateOpportunity OpportunityPosition="$CityToLookAtWorldPositionDestination" OpportunityType="CityToSpy" MainTargetPosition="$ArmyToSupportPosition" MainTargetType="ArmySupport" MinimumTurnToObjectif="0" MaximumDetourTurn="1"/>
+
+          <Controller_Selector>
+            <Controller_Sequence Debug="Opportunity_CityToSpy_AlreadyAtDestination">
+              <Decorator_DestinationReached DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfCheck="Attack"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
+              <Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
+              <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
+              <Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
+              <Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
+            </Controller_Sequence>
+          </Controller_Selector>
+        </Controller_Sequence>
+
+        <!-- Try to move toward the target. -->
+        <Controller_Sequence Debug="Regroup_MoveToRegroup">
+          <Action_GeneratePath DestinationVarName="$ArmyToSupportPosition" TypeOfPath="Regular" Output_PathVarName="$PathToTarget"/>
+          <Action_Move PathVarName="$PathToTarget" TypeOfMove="Regular"/>
+        </Controller_Sequence>
+
+      </Controller_Selector>
+    </Controller_Sequence>
+  </AIArmyMissionDefinition>
+
+  <AIArmyMissionDefinition Name="ColossusHarass">
+    <Parameters>
+      <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+    </Parameters>
+
+    <Controller_Sequence>
+
+      <!--IF Army in under control THEN Mission failed-->
+      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+      <Controller_Selector>
+        <Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+
+        <!--IF Resource Extractor or WatchTower THEN try to destroy them-->
+        <Controller_Sequence Debug="Harass_DestroyPOI">
+          <Decorator_SelectPointOfInterestToDestroy TargetListVarName="$TargetList" Output_TargetVarName="$POITarget"/>
+          <Decorator_GetTargetPosition TargetVarName="$POITarget" Output_DestinationVarName="$POIWorldPositionDestination"/>
+
+          <Controller_Selector>
+            <Controller_Sequence Debug="Harass_DestroyPOI_AlreadyAtDestination">
+              <Decorator_DestinationReached DestinationVarName="$POIWorldPositionDestination" TypeOfCheck="Attack"/>
+              <Action_DestroyPointOfInterest TargetVarName="$POITarget"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence Debug="Harass_DestroyPOI_MoveToPOI">
+              <Action_GeneratePath DestinationVarName="$POIWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$POIPath"/>
+              <Action_Move PathVarName="$POIPath" TypeOfMove="Regular"/>
+            </Controller_Sequence>
+          </Controller_Selector>
+        </Controller_Sequence>
+
+        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
+        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
+
+        <!--IF we could collect orbs THEN Change path -->
+        <Include SubTreeName="OrbsOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+        </Include>
+
+        <!--IF we could collect a map boost then change path -->
+        <Include SubTreeName="MapBoostOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+        </Include>
+
+        <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
+        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
+
+        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
+
+        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
+        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
+
+        <Include SubTreeName="ExploreNearbyRuin"/>
+
+        <!--IF City need vision for spy THEN explore Ruin-->
+        <Controller_Sequence Debug="Opportunity_CityToSpy">
+          <Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
+          <Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
+
+          <Controller_Selector>
+            <Controller_Sequence Debug="Opportunity_CityToSpy_AlreadyAtDestination">
+              <Decorator_DestinationReached DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfCheck="Attack"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
+              <Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
+              <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
+              <Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
+              <Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
+            </Controller_Sequence>
+          </Controller_Selector>
+        </Controller_Sequence>
+
+        <!--IF NO EnnemyDetected THEN Move to Destination-->
+        <Controller_Sequence Debug="Exploration_TryToFollowTheBorder">
+          <!-- Ask for a destination. -->
+          <Controller_Selector>
+            <Controller_Sequence Debug="Exploration_TryToFollowTheBorder_ChangeTarget">
+              <Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
+              <Decorator_DestinationReached DestinationVarName="$BorderDestination" TypeOfCheck="Regular"/>
+              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
+              <Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence Debug="Exploration_TryToFollowTheBorder_GoToPreviousTarget">
+              <Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
+              <Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence Debug="Exploration_TryToFollowTheBorder_FirstTime">
+              <Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
+              <Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
+
+          </Controller_Selector>
+
+          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+        </Controller_Sequence>
+
+      </Controller_Selector>
+
+    </Controller_Sequence>
+
+  </AIArmyMissionDefinition>
+
+  <!-- 100% opportunist -->
+  <AIArmyMissionDefinition Name="ColossusDefensiveRoaming">
+    <Parameters>
+      <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+    </Parameters>
+
+    <Controller_Sequence Debug="ColossusDefensiveRoaming_Root">
+
+      <!--IF Army locked (in battle) control THEN Mission failed -->
+      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+      <Controller_Selector>
+
+        <!-- IF can buff the city defense, do it. -->
+        <Controller_Sequence Debug="ColossusDefensiveRoaming_TryToFortifyCityInRange">
+          <Decorator_SelectCityToFortify TargetListVarName="$TargetList" Output_TargetVarName="$CityToFortify" MaximumTurnDistance="2"/>
+          <Decorator_GetTargetPosition TargetVarName="$CityToFortify" Output_DestinationVarName="$CityToFortifyWorldPosition"/>
+
+          <Controller_Selector Debug="ColossusDefensiveRoaming_TryToFortifyCityInRange_CityInRange">
+            <Controller_Sequence Debug="ColossusDefensiveRoaming_TryToFortifyCityInRange_CityCloseBy">
+              <Decorator_DestinationReached DestinationVarName="$CityToFortifyWorldPosition" />
+              <Action_FortifyCity TargetVarName="$CityToFortify"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence Debug="ColossusDefensiveRoaming_TryToFortifyCityInRange_GoTo">
+              <Action_GeneratePath DestinationVarName="$CityToFortifyWorldPosition" TypeOfPath="Regular" Output_PathVarName="$CityToFortifyPath"/>
+              <Action_Move PathVarName="$CityToFortifyPath" TypeOfMove="Regular"/>
+              <Decorator_DestinationReached DestinationVarName="$CityToFortifyWorldPosition" />
+              <Action_FortifyCity TargetVarName="$CityToFortify"/>
+            </Controller_Sequence>
+          </Controller_Selector>
+
+        </Controller_Sequence>
+
+        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
+        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
+
+        <Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+
+        <!--IF we could collect orbs THEN Change path -->
+        <Include SubTreeName="OrbsOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+        </Include>
+
+        <!--IF we could collect a map boost then change path -->
+        <Include SubTreeName="MapBoostOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+        </Include>
+
+        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
+
+        <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
+
+        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
+        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
+
+        <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
+        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
+
+        <Include SubTreeName="ExploreNearbyRuin"/>
+
+        <!-- Actual Raoming behavior -->
+        <Controller_Sequence Debug="ColossusDefensiveRoaming_GoToDestination">
+
+          <Controller_Selector>
+            <Controller_Sequence Debug="ColossusDefensiveRoaming_ChangeTarget">
+              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+              <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence Debug="ColossusDefensiveRoaming_GoToPreviousTarget">
+              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence Debug="ColossusDefensiveRoaming_FirstTime">
+              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
+
+          </Controller_Selector>
+
+          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+          <Decorator_MoveEnded PathVarName="$Path"/>
+          <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+        </Controller_Sequence>
+
+      </Controller_Selector>
+    </Controller_Sequence>
+  </AIArmyMissionDefinition>
+
 </Datatable>

@@ -26,7 +26,7 @@
   <!--<InterpreterModifier>(($Property(../ClassEmpire:Population) * 5) + ($Property(ClassCity:Population) * 25)) * $Property(../ClassEmpire:PopulationBuyoutGrowthToEmpireMoneyConversionFactor)</InterpreterModifier>-->
   <ResourceConverterDefinition ResourceName="CityGrowth">
     <ToConverter To="PopulationBuyout">
-      <InterpreterModifier>(((($Property(ClassCity:Population) ^ 1.1) * 50) + ($Property(../ClassEmpire:Population) ^ 1.1) * 2) * $Property(../ClassEmpire:PopulationBuyoutGrowthToEmpireMoneyConversionFactor)) * $Property(../ClassEmpire:GameSpeedMultiplier) * 0.9</InterpreterModifier>
+      <InterpreterModifier>(((($Property(ClassCity:Population) ^ 1.1) * 50) + ($Property(../ClassEmpire:Population) ^ 1.1) * 2) * $Property(../ClassEmpire:PopulationBuyoutGrowthToEmpireMoneyConversionFactor)) * $Property(../ClassEmpire:GameSpeedMultiplier)</InterpreterModifier>
     </ToConverter>
     <ToConverter To="Retrofit">
       <InterpreterModifier>(((($Property(ClassCity:Population) ^ 1.1) * 50) + ($Property(../ClassEmpire:Population) ^ 1.1) * 2) * $Property(../ClassEmpire:PopulationBuyoutGrowthToEmpireMoneyConversionFactor)) * $Property(../ClassEmpire:GameSpeedMultiplier)</InterpreterModifier>

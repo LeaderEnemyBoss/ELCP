@@ -1,143 +1,136 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-	<!-- 100% opportunist -->
-	<AIArmyMissionDefinition Name="ExploreAt">
-		<Parameters>
-			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-		</Parameters>
+  <!-- 100% opportunist -->
+  <AIArmyMissionDefinition Name="ExploreAt">
+    <Parameters>
+      <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+    </Parameters>
 
-		<Controller_Sequence>
+    <Controller_Sequence>
 
-			<!--IF Army in under control THEN Mission failed-->
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+      <!--IF Army in under control THEN Mission failed-->
+      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
-			<Controller_Selector>
-				<!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
-				<Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
-				<!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
-				<Include SubTreeName="TryAttackNearbyWildKaiju"/>
-				<!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
-				<Include SubTreeName="TryAttackNearbyTamedKaiju"/>
-			
-				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
-				<Include SubTreeName="ParleyWithVillage"/>
-				<Include SubTreeName="ExploreNearbyRuin"/>
-				<Include SubTreeName="OpportunityConvertVillage"/>
-				
-				
-				<!--IF we could collect orbs THEN Change path -->
-				<Include SubTreeName="OrbsOpportunity">
-					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
-					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
-				</Include>
+      <Controller_Selector>
 
-				<!--IF we could collect a map boost then change path -->
-				<Include SubTreeName="MapBoostOpportunity">
-				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
-				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
-				</Include>
+        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
+        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
         
-			
+        <Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
 
-				<!--IF City need vision for spy THEN move to get a look at the city -->
-				<Controller_Sequence Debug="Opportunity_CityToSpy">
-					<Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
-					<Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
+        <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
+        <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
 
-					<Controller_Selector>
-						<Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
-							<Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
-							<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
-							<Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
-							<Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
-						</Controller_Sequence>
-					</Controller_Selector>
-				</Controller_Sequence>
+        <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyWildKaiju"/>
 
-				<!--IF we could Pillage something THEN try to pillage it -->
-				<Include SubTreeName="OpportunityPillageOrFlee">
-					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
-					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
-				</Include>
+        <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
+        <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
 
-				<!--If there is a creeping node, destroy it -->
-				<Include SubTreeName="OpportunityDestroyCreepingNode">
-				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
-				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
-				</Include>
+        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
+        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
 
-				<!--IF nothing else to do THEN Move to Destination-->
-				<Controller_Sequence Debug="Exploration_TryToFollowTheBorder">
-					<!-- Ask for a destination. -->
-					<Controller_Selector>
-						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_ChangeTarget">
-							<Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
-							<Decorator_DestinationReached DestinationVarName="$BorderDestination" TypeOfCheck="Regular"/>
-							<Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
-							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
+        <!--IF we could collect orbs THEN Change path -->
+        <Include SubTreeName="OrbsOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+        </Include>
 
-						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_GoToPreviousTarget">
-							<Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
-							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
+        <!--IF we could collect a map boost then change path -->
+        <Include SubTreeName="MapBoostOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+        </Include>
 
-						<Controller_Sequence Debug="Exploration_TryToFollowTheBorder_FirstTime">
-							<Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
-							<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-						</Controller_Sequence>
-						
-						<!--ELCP: LastResortRoaming if no valid path has been found-->		
-						<Controller_Sequence Debug="LastResortRoaming">
-							<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
-							<Controller_Selector>
-								<Controller_Sequence>
-									<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination"/>
-									<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-								</Controller_Sequence>
-								<Controller_Sequence>
-									<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
-									<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-								</Controller_Sequence>
-							</Controller_Selector>
-						</Controller_Sequence>
-					</Controller_Selector>
+        <Include SubTreeName="ExploreNearbyRuin"/>
 
-					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-					<Decorator_MoveEnded PathVarName="$Path"/>
-					<Decorator_DestinationReached DestinationVarName="$BorderDestination" TypeOfCheck="Regular"/>
-				</Controller_Sequence>
+        <!--IF City need vision for spy THEN move to get a look at the city -->
+        <Controller_Sequence Debug="Opportunity_CityToSpy">
+          <Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
+          <Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
 
-			</Controller_Selector>
+          <Controller_Selector>
+            <Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
+              <Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
+              <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
+              <Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
+              <Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
+            </Controller_Sequence>
+          </Controller_Selector>
+        </Controller_Sequence>
 
-		</Controller_Sequence>
+        <!--IF we could Pillage something THEN try to pillage it -->
+        <Include SubTreeName="OpportunityPillageOrFlee">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+        </Include>
 
-	</AIArmyMissionDefinition>
+        <!--If there is a creeping node, destroy it -->
+        <Include SubTreeName="OpportunityDestroyCreepingNode">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$BorderDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+        </Include>
 
-	<!-- 100% opportunist-->
-	<AIArmyMissionDefinition Name="ScoutRegion">
-		<Parameters>
-			<Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
-		</Parameters>
+        <!--IF nothing else to do THEN Move to Destination-->
+        <Controller_Sequence Debug="Exploration_TryToFollowTheBorder">
+          <!-- Ask for a destination. -->
+          <Controller_Selector>
+            <Controller_Sequence Debug="Exploration_TryToFollowTheBorder_ChangeTarget">
+              <Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
+              <Decorator_DestinationReached DestinationVarName="$BorderDestination" TypeOfCheck="Regular"/>
+              <Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
+              <Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
 
-		<Controller_Sequence>
+            <Controller_Sequence Debug="Exploration_TryToFollowTheBorder_GoToPreviousTarget">
+              <Decorator_VariableCheck VarName="$BorderDestination" CheckOperation="Exists"/>
+              <Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
 
-			<!--IF Army in under control THEN Mission failed-->
-			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+            <Controller_Sequence Debug="Exploration_TryToFollowTheBorder_FirstTime">
+              <Decorator_GetNextRegionBorderPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$BorderDestination"/>
+              <Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+            </Controller_Sequence>
 
-			<Controller_Selector>
-				<Include SubTreeName="OpportunityConvertVillage"/>
-				<Include SubTreeName="ParleyWithVillage"/>
-				<Include SubTreeName="ExploreNearbyRuin"/>
+          </Controller_Selector>
 
-				<!--IF we could collect orbs THEN Change path -->
-				<Include SubTreeName="OrbsOpportunity">
-					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
-					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-				</Include>
+          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+          <Decorator_MoveEnded PathVarName="$Path"/>
+          <Decorator_DestinationReached DestinationVarName="$BorderDestination" TypeOfCheck="Regular"/>
+        </Controller_Sequence>
+
+      </Controller_Selector>
+
+    </Controller_Sequence>
+
+  </AIArmyMissionDefinition>
+
+  <!-- 100% opportunist-->
+  <AIArmyMissionDefinition Name="ScoutRegion">
+    <Parameters>
+      <Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
+    </Parameters>
+
+    <Controller_Sequence>
+
+      <!--IF Army in under control THEN Mission failed-->
+      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+      <Controller_Selector>
+
+        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
+        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
+        
+        <Include SubTreeName="ExploreNearbyRuin"/>
+
+        <!--IF we could collect orbs THEN Change path -->
+        <Include SubTreeName="OrbsOpportunity">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+        </Include>
 
         <!--IF we could collect a map boost then change path -->
         <Include SubTreeName="MapBoostOpportunity">
@@ -145,11 +138,11 @@
           <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
         </Include>
 
-				<!--IF we could Pillage something THEN try to pillage it -->
-				<Include SubTreeName="OpportunityPillage">
-					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
-					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
-				</Include>
+        <!--IF we could Pillage something THEN try to pillage it -->
+        <Include SubTreeName="OpportunityPillage">
+          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+        </Include>
 
         <!--If there is a creeping node, destroy it -->
         <Include SubTreeName="OpportunityDestroyCreepingNode">
@@ -161,30 +154,32 @@
 
         <!--IF WILD Kaiju Detected, and can cost luxury tame, THEN tray to tame it-->
         <Include SubTreeName="TryLuxuryTameNearbyKaiju"/>
-        
+
         <!--IF Wild and Unstunned Kaiju Detected AND can defeat it THEN tray to attack it-->
         <Include SubTreeName="TryAttackNearbyWildKaiju"/>
 
         <!--IF Tamed Kaiju Detected AND can defeat it THEN tray to attack it-->
         <Include SubTreeName="TryAttackNearbyTamedKaiju"/>
 
-     
-        
+        <!--IF Stunned Kaiju Detected, and can cost tame, THEN tray to tame it-->
+        <Include SubTreeName="TryTameNearbyStunnedKaiju"/>
+
         <Controller_Sequence Debug="ScoutRegion_AlreadyAtDestination">
-					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
-				</Controller_Sequence>          
+          <Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+        </Controller_Sequence>
 
-				<!--Move to Destination-->
-				<Controller_Sequence Debug="ScoutRegion_Move">
-					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$Path"/>
-					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-					<Decorator_MoveEnded PathVarName="$Path"/>
-					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
-				</Controller_Sequence>
+        <!--Move to Destination-->
+        <Controller_Sequence Debug="ScoutRegion_Move">
+          <Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$Path"/>
+          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+          <Decorator_MoveEnded PathVarName="$Path"/>
+          <Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+        </Controller_Sequence>
 
-			</Controller_Selector>
+      </Controller_Selector>
 
-		</Controller_Sequence>
+    </Controller_Sequence>
 
-	</AIArmyMissionDefinition>
+  </AIArmyMissionDefinition>
+
 </Datatable>

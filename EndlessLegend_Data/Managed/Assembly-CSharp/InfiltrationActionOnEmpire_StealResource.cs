@@ -73,11 +73,10 @@ public class InfiltrationActionOnEmpire_StealResource : InfiltrationActionOnEmpi
 		float num = 0f;
 		if (agency.TryGetResourceStockValue(targetEmpire.SimulationObject, this.ResourceName, out num, false))
 		{
-			float num2 = num * this.AmountParameters.TargetStockPercentage;
-			num2 += this.AmountParameters.BaseAmount;
-			float num3 = num2 * this.AmountParameters.RandomThreshold;
-			num2 = UnityEngine.Random.Range(num2 - num3, num2 + num3);
-			return Mathf.Floor(Mathf.Min(num2, num));
+			float num2 = this.AmountParameters.BaseAmount * this.AmountParameters.RandomThreshold;
+			float num3 = num * this.AmountParameters.TargetStockPercentage;
+			num3 += UnityEngine.Random.Range(this.AmountParameters.BaseAmount - num2, this.AmountParameters.BaseAmount + num2);
+			return (float)Math.Floor((double)Math.Min(num3, num));
 		}
 		return 0f;
 	}

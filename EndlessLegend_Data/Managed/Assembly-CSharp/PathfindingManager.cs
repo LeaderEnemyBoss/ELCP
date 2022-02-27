@@ -13,8 +13,8 @@ using Amplitude.Unity.Simulation;
 using Amplitude.Utilities.Maps;
 using UnityEngine;
 
-[Diagnostics.TagAttribute("Pathfinding")]
 [Diagnostics.TagAttribute("UnitTests")]
+[Diagnostics.TagAttribute("Pathfinding")]
 public class PathfindingManager : GameAncillary, IService, IPathfindingService
 {
 	public event EventHandler<EventArgs> PathfindingServiceReady;
@@ -79,7 +79,21 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 			if (army != null)
 			{
 				global::Empire empire2 = army.Empire;
-				if (empire2.Index != empire.Index && (departmentOfForeignAffairs == null || !(empire2 is MajorEmpire) || !departmentOfForeignAffairs.GetDiplomaticRelation(empire2).HasActiveAbility(DiplomaticAbilityDefinition.PassThroughArmies)))
+				bool flag2;
+				if (empire2.Index == empire.Index)
+				{
+					flag2 = true;
+				}
+				else if (departmentOfForeignAffairs != null && empire2 is MajorEmpire)
+				{
+					DiplomaticRelation diplomaticRelation = departmentOfForeignAffairs.GetDiplomaticRelation(empire2);
+					flag2 = diplomaticRelation.HasActiveAbility(DiplomaticAbilityDefinition.PassThroughArmies);
+				}
+				else
+				{
+					flag2 = false;
+				}
+				if (!flag2)
 				{
 					return float.PositiveInfinity;
 				}
@@ -110,78 +124,87 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 		}
 		if ((flags & PathfindingFlags.IgnoreDiplomacy) == (PathfindingFlags)0 && empire != null && departmentOfForeignAffairs != null)
 		{
-			bool flag2 = departmentOfForeignAffairs.CanMoveOn(start, pathfindingContext.IsPrivateers, pathfindingContext.IsCamouflaged);
-			if (!flag2)
+			bool flag3 = departmentOfForeignAffairs.CanMoveOn(start, pathfindingContext.IsPrivateers, pathfindingContext.IsCamouflaged);
+			if (!flag3)
 			{
-				flag2 = ((flags & PathfindingFlags.IgnoreFogOfWar) == (PathfindingFlags)0 && !this.visibilityService.IsWorldPositionExploredFor(start, empire));
+				flag3 = ((flags & PathfindingFlags.IgnoreFogOfWar) == (PathfindingFlags)0 && !this.visibilityService.IsWorldPositionExploredFor(start, empire));
 			}
-			if (flag2 && !departmentOfForeignAffairs.CanMoveOn(goal, pathfindingContext.IsPrivateers, pathfindingContext.IsCamouflaged))
+			if (flag3)
 			{
-				return float.PositiveInfinity;
+				if (!departmentOfForeignAffairs.CanMoveOn(goal, pathfindingContext.IsPrivateers, pathfindingContext.IsCamouflaged))
+				{
+					return float.PositiveInfinity;
+				}
 			}
 		}
 		if ((flags & PathfindingFlags.IgnoreSieges) == (PathfindingFlags)0 && empire != null)
 		{
 			District value4 = this.districtsMap.GetValue(goal);
 			District value5 = this.districtsMap.GetValue(start);
-			bool flag3 = value4 != null && value4.City.BesiegingEmpireIndex != -1 && value4.Type != DistrictType.Exploitation && value4.Type != DistrictType.Camp;
-			if ((value5 != null && value5.City.BesiegingEmpireIndex != -1 && value5.Type != DistrictType.Exploitation && value5.Type != DistrictType.Camp) != flag3)
+			bool flag4 = value4 != null && value4.City.BesiegingEmpireIndex != -1 && value4.Type != DistrictType.Exploitation;
+			bool flag5 = value5 != null && value5.City.BesiegingEmpireIndex != -1 && value5.Type != DistrictType.Exploitation;
+			if (flag5 != flag4)
 			{
 				return float.PositiveInfinity;
 			}
 		}
 		float num = 0f;
-		if ((flags & PathfindingFlags.IgnoreZoneOfControl) == (PathfindingFlags)0 && this.IsInZoneOfControl(goal, empire, flags, worldContext))
+		if ((flags & PathfindingFlags.IgnoreZoneOfControl) == (PathfindingFlags)0)
 		{
-			num += this.zoneOfControlMovementPointMalus;
+			bool flag6 = this.IsInZoneOfControl(goal, empire, flags, worldContext);
+			if (flag6)
+			{
+				num += this.zoneOfControlMovementPointMalus;
+			}
 		}
-		int value6 = (int)this.heightMap.GetValue(goal);
+		int currentTileHeigh = (int)this.heightMap.GetValue(goal);
 		float num2 = 0f;
 		if ((flags & PathfindingFlags.IgnoreDistrict) == (PathfindingFlags)0)
 		{
-			bool flag4 = false;
-			bool flag5 = false;
+			bool flag7 = false;
+			bool flag8 = false;
 			if (empire != null)
 			{
-				District value7 = this.districtsMap.GetValue(start);
-				if (value7 != null && value7.Empire != null && value7.Type != DistrictType.Exploitation)
+				District value6 = this.districtsMap.GetValue(start);
+				if (value6 != null && value6.Empire != null && value6.Type != DistrictType.Exploitation)
 				{
-					if (value7.Empire.Index == empire.Index)
+					if (value6.Empire.Index == empire.Index)
 					{
-						flag4 = true;
+						flag7 = true;
 					}
 					else if (departmentOfForeignAffairs != null)
 					{
-						DiplomaticRelation diplomaticRelation = departmentOfForeignAffairs.GetDiplomaticRelation(value7.Empire);
-						Diagnostics.Assert(diplomaticRelation != null);
-						flag4 = diplomaticRelation.HasActiveAbility(DiplomaticAbilityDefinition.PassThroughCities);
+						DiplomaticRelation diplomaticRelation2 = departmentOfForeignAffairs.GetDiplomaticRelation(value6.Empire);
+						Diagnostics.Assert(diplomaticRelation2 != null);
+						flag7 = diplomaticRelation2.HasActiveAbility(DiplomaticAbilityDefinition.PassThroughCities);
 					}
 				}
-				if (flag4)
+				if (flag7)
 				{
-					District value8 = this.districtsMap.GetValue(goal);
-					if (value8 != null && value8.Empire != null && value8.Type != DistrictType.Exploitation)
+					District value7 = this.districtsMap.GetValue(goal);
+					if (value7 != null && value7.Empire != null && value7.Type != DistrictType.Exploitation)
 					{
-						if (value8.Empire.Index == empire.Index)
+						if (value7.Empire.Index == empire.Index)
 						{
-							flag5 = true;
+							flag8 = true;
 						}
 						else if (departmentOfForeignAffairs != null)
 						{
-							DiplomaticRelation diplomaticRelation2 = departmentOfForeignAffairs.GetDiplomaticRelation(value8.Empire);
-							Diagnostics.Assert(diplomaticRelation2 != null);
-							flag5 = diplomaticRelation2.HasActiveAbility(DiplomaticAbilityDefinition.PassThroughCities);
+							DiplomaticRelation diplomaticRelation3 = departmentOfForeignAffairs.GetDiplomaticRelation(value7.Empire);
+							Diagnostics.Assert(diplomaticRelation3 != null);
+							flag8 = diplomaticRelation3.HasActiveAbility(DiplomaticAbilityDefinition.PassThroughCities);
 						}
 					}
 				}
 			}
-			if (flag4 && flag5)
+			bool flag9 = flag7 && flag8;
+			if (flag9)
 			{
 				if (this.districtTileSpecification.IsTerrainCostOverrided(pathfindingContext.MovementCapacities))
 				{
-					return Mathf.Max(num + this.districtTileSpecification.GetCost(pathfindingContext.MovementCapacities, value6), this.minimumTransitionCost);
+					return Mathf.Max(num + this.districtTileSpecification.GetCost(pathfindingContext.MovementCapacities, currentTileHeigh), this.minimumTransitionCost);
 				}
-				num2 += this.districtTileSpecification.GetCost(pathfindingContext.MovementCapacities, value6);
+				num2 += this.districtTileSpecification.GetCost(pathfindingContext.MovementCapacities, currentTileHeigh);
 			}
 		}
 		num2 += this.GetTransitionCost(start, goal, pathfindingContext.MovementCapacities, flags);
@@ -190,7 +213,7 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 			PathfindingRule additionalRule = worldContext.GetTileContext(goal).AdditionalRule;
 			if (additionalRule != null)
 			{
-				num2 += additionalRule.GetCost(pathfindingContext.MovementCapacities, value6);
+				num2 += additionalRule.GetCost(pathfindingContext.MovementCapacities, currentTileHeigh);
 			}
 		}
 		if (float.IsPositiveInfinity(num2))
@@ -199,40 +222,42 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 		}
 		if ((flags & PathfindingFlags.IgnoreRoad) == (PathfindingFlags)0 && empire != null && empire is MajorEmpire && departmentOfForeignAffairs != null)
 		{
-			bool flag6 = false;
+			bool flag10 = false;
 			int count2 = departmentOfForeignAffairs.DiplomaticRelations.Count;
 			int num3 = 0;
-			while (num3 < count2 && !flag6)
+			while (num3 < count2 && !flag10)
 			{
 				if (empire.Index == num3)
 				{
-					flag6 = (((int)this.cadasterMap.GetValue(goal) & empire.Bits) != 0);
+					flag10 = (((int)this.cadasterMap.GetValue(goal) & empire.Bits) != 0);
 				}
 				else
 				{
-					DiplomaticRelation diplomaticRelation3 = departmentOfForeignAffairs.DiplomaticRelations[num3];
+					DiplomaticRelation diplomaticRelation4 = departmentOfForeignAffairs.DiplomaticRelations[num3];
 					int num4 = 1 << num3;
-					flag6 = (((int)this.cadasterMap.GetValue(goal) & num4) != 0 && diplomaticRelation3.HasActiveAbility(DiplomaticAbilityDefinition.ShareRoads));
+					flag10 = (((int)this.cadasterMap.GetValue(goal) & num4) != 0 && diplomaticRelation4.HasActiveAbility(DiplomaticAbilityDefinition.ShareRoads));
 				}
 				num3++;
 			}
-			if (flag6)
+			if (flag10)
 			{
-				if (empire.GetAgency<DepartmentOfScience>().HasResearchTag(PathfindingManager.HighwayTagName))
+				DepartmentOfScience agency = empire.GetAgency<DepartmentOfScience>();
+				bool flag11 = agency.HasResearchTag(PathfindingManager.HighwayTagName);
+				if (flag11)
 				{
 					if (this.highwayTileSpecification.IsTerrainCostOverrided(pathfindingContext.MovementCapacities))
 					{
-						return Mathf.Max(num + this.highwayTileSpecification.GetCost(pathfindingContext.MovementCapacities, value6), this.minimumTransitionCost);
+						return Mathf.Max(num + this.highwayTileSpecification.GetCost(pathfindingContext.MovementCapacities, currentTileHeigh), this.minimumTransitionCost);
 					}
-					num2 += this.highwayTileSpecification.GetCost(pathfindingContext.MovementCapacities, value6);
+					num2 += this.highwayTileSpecification.GetCost(pathfindingContext.MovementCapacities, currentTileHeigh);
 				}
 				else
 				{
 					if (this.roadTileSpecification.IsTerrainCostOverrided(pathfindingContext.MovementCapacities))
 					{
-						return Mathf.Max(num + this.roadTileSpecification.GetCost(pathfindingContext.MovementCapacities, value6), this.minimumTransitionCost);
+						return Mathf.Max(num + this.roadTileSpecification.GetCost(pathfindingContext.MovementCapacities, currentTileHeigh), this.minimumTransitionCost);
 					}
-					num2 += this.roadTileSpecification.GetCost(pathfindingContext.MovementCapacities, value6);
+					num2 += this.roadTileSpecification.GetCost(pathfindingContext.MovementCapacities, currentTileHeigh);
 				}
 			}
 		}
@@ -296,15 +321,16 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 		}
 		float num = 0f;
 		Diagnostics.Assert(this.heightMap != null);
-		int value = (int)this.heightMap.GetValue(goal);
-		if (Math.Abs((int)this.heightMap.GetValue(start) - value) > 1 && (movementCapacity & PathfindingMovementCapacity.Air) == PathfindingMovementCapacity.None)
+		int num2 = (int)this.heightMap.GetValue(goal);
+		int value = (int)this.heightMap.GetValue(start) - num2;
+		if (Math.Abs(value) > 1 && (movementCapacity & PathfindingMovementCapacity.Air) == PathfindingMovementCapacity.None)
 		{
 			return float.PositiveInfinity;
 		}
 		Diagnostics.Assert(this.ridgeMap != null && this.ridgeSpecification != null);
 		if (this.ridgeMap.GetValue(goal))
 		{
-			float cost = this.ridgeSpecification.GetCost(movementCapacity, value);
+			float cost = this.ridgeSpecification.GetCost(movementCapacity, num2);
 			if (float.IsPositiveInfinity(cost))
 			{
 				return float.PositiveInfinity;
@@ -313,14 +339,14 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 		}
 		Diagnostics.Assert(this.terrainSpecifications != null);
 		byte value2 = this.terrainTypeMap.GetValue(goal);
-		num += this.terrainSpecifications[(short)value2].GetCost(movementCapacity, value);
+		num += this.terrainSpecifications[(short)value2].GetCost(movementCapacity, num2);
 		if (SimulationGlobal.GlobalTagsContains(DownloadableContent13.FrozenTile) && this.worldPositionningService.IsFrozenWaterTile(goal))
 		{
-			if ((movementCapacity & PathfindingMovementCapacity.FrozenWater) == PathfindingMovementCapacity.None)
+			if ((movementCapacity & PathfindingMovementCapacity.Ground) == PathfindingMovementCapacity.None)
 			{
 				return float.PositiveInfinity;
 			}
-			num = this.frozenWaterTileSpecification.GetCost(movementCapacity, value);
+			num = this.frozenWaterTileSpecification.GetCost(movementCapacity, num2);
 		}
 		if (region.IsOcean && !this.worldPositionningService.IsFrozenWaterTile(goal))
 		{
@@ -334,9 +360,9 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 		{
 			if (this.forestSpecification.IsTerrainCostOverrided(movementCapacity))
 			{
-				return this.forestSpecification.GetCost(movementCapacity, value);
+				return this.forestSpecification.GetCost(movementCapacity, num2);
 			}
-			num += this.forestSpecification.GetCost(movementCapacity, value);
+			num += this.forestSpecification.GetCost(movementCapacity, num2);
 		}
 		if ((flags & PathfindingFlags.IgnorePOI) == (PathfindingFlags)0)
 		{
@@ -349,85 +375,86 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 					Diagnostics.Assert(this.poiTypeVillageSpecification != null);
 					if (this.poiTypeVillageSpecification.IsTerrainCostOverrided(movementCapacity))
 					{
-						return this.poiTypeVillageSpecification.GetCost(movementCapacity, value);
+						return this.poiTypeVillageSpecification.GetCost(movementCapacity, num2);
 					}
-					num += this.poiTypeVillageSpecification.GetCost(movementCapacity, value);
+					num += this.poiTypeVillageSpecification.GetCost(movementCapacity, num2);
 				}
 				else if (value3.Type == PathfindingManager.POITypeCitadel)
 				{
 					Diagnostics.Assert(this.poiTypeCitadelSpecification != null);
 					if (this.poiTypeCitadelSpecification.IsTerrainCostOverrided(movementCapacity))
 					{
-						return this.poiTypeCitadelSpecification.GetCost(movementCapacity, value);
+						return this.poiTypeCitadelSpecification.GetCost(movementCapacity, num2);
 					}
-					num += this.poiTypeCitadelSpecification.GetCost(movementCapacity, value);
+					num += this.poiTypeCitadelSpecification.GetCost(movementCapacity, num2);
 				}
 				else if (value3.Type == PathfindingManager.POITypeFacility)
 				{
 					Diagnostics.Assert(this.poiTypeFacilitySpecification != null);
 					if (this.poiTypeFacilitySpecification.IsTerrainCostOverrided(movementCapacity))
 					{
-						return this.poiTypeFacilitySpecification.GetCost(movementCapacity, value);
+						return this.poiTypeFacilitySpecification.GetCost(movementCapacity, num2);
 					}
-					num += this.poiTypeFacilitySpecification.GetCost(movementCapacity, value);
+					num += this.poiTypeFacilitySpecification.GetCost(movementCapacity, num2);
 				}
 				else if (value3.Type == PathfindingManager.POITypeQuestLocation)
 				{
 					Diagnostics.Assert(this.poiTypeQuestLocationSpecification != null);
 					if (this.poiTypeQuestLocationSpecification.IsTerrainCostOverrided(movementCapacity))
 					{
-						return this.poiTypeQuestLocationSpecification.GetCost(movementCapacity, value);
+						return this.poiTypeQuestLocationSpecification.GetCost(movementCapacity, num2);
 					}
-					num += this.poiTypeQuestLocationSpecification.GetCost(movementCapacity, value);
+					num += this.poiTypeQuestLocationSpecification.GetCost(movementCapacity, num2);
 				}
 				else if (value3.Type == PathfindingManager.POITypeResourceDeposit)
 				{
 					Diagnostics.Assert(this.poiTypeResourceDepositSpecification != null);
 					if (this.poiTypeResourceDepositSpecification.IsTerrainCostOverrided(movementCapacity))
 					{
-						return this.poiTypeResourceDepositSpecification.GetCost(movementCapacity, value);
+						return this.poiTypeResourceDepositSpecification.GetCost(movementCapacity, num2);
 					}
-					num += this.poiTypeResourceDepositSpecification.GetCost(movementCapacity, value);
+					num += this.poiTypeResourceDepositSpecification.GetCost(movementCapacity, num2);
 				}
 				else if (value3.Type == PathfindingManager.POITypeWatchTower)
 				{
 					Diagnostics.Assert(this.poiTypeWatchTowerSpecification != null);
 					if (this.poiTypeWatchTowerSpecification.IsTerrainCostOverrided(movementCapacity))
 					{
-						return this.poiTypeWatchTowerSpecification.GetCost(movementCapacity, value);
+						return this.poiTypeWatchTowerSpecification.GetCost(movementCapacity, num2);
 					}
-					num += this.poiTypeWatchTowerSpecification.GetCost(movementCapacity, value);
+					num += this.poiTypeWatchTowerSpecification.GetCost(movementCapacity, num2);
 				}
 				else if (value3.Type == PathfindingManager.POITypeNavalQuestLocation)
 				{
 					Diagnostics.Assert(this.poiTypeNavalQuestLocationSpecification != null);
 					if (this.poiTypeNavalQuestLocationSpecification.IsTerrainCostOverrided(movementCapacity))
 					{
-						return this.poiTypeNavalQuestLocationSpecification.GetCost(movementCapacity, value);
+						return this.poiTypeNavalQuestLocationSpecification.GetCost(movementCapacity, num2);
 					}
-					num += this.poiTypeNavalQuestLocationSpecification.GetCost(movementCapacity, value);
+					num += this.poiTypeNavalQuestLocationSpecification.GetCost(movementCapacity, num2);
 				}
 			}
 		}
 		Diagnostics.Assert(this.riverIndexMap != null && this.riverSpecification != null);
-		if (this.riverIndexMap.GetValue(goal) >= 0 && this.worldPositionningService != null && this.worldPositionningService.World != null)
+		short value4 = this.riverIndexMap.GetValue(goal);
+		if (value4 >= 0 && this.worldPositionningService != null && this.worldPositionningService.World != null)
 		{
 			WorldRiver river = this.worldPositionningService.GetRiver(this.riverIndexMap.GetValue(goal));
 			if (this.riverSpecification != null && river.RiverTypeName == WorldRiver.NormalRiverTypeName)
 			{
 				if (this.riverSpecification.IsTerrainCostOverrided(movementCapacity))
 				{
-					return this.riverSpecification.GetCost(movementCapacity, value);
+					return this.riverSpecification.GetCost(movementCapacity, num2);
 				}
-				num += this.riverSpecification.GetCost(movementCapacity, value);
+				num += this.riverSpecification.GetCost(movementCapacity, num2);
 			}
 			else if (this.lavaRiverSpecification != null && river.RiverTypeName == WorldRiver.LavaRiverTypeName)
 			{
 				if (this.lavaRiverSpecification.IsTerrainCostOverrided(movementCapacity))
 				{
-					return this.lavaRiverSpecification.GetCost(movementCapacity, value);
+					return this.lavaRiverSpecification.GetCost(movementCapacity, num2);
 				}
-				num += this.lavaRiverSpecification.GetCost(movementCapacity, value);
+				num += this.lavaRiverSpecification.GetCost(movementCapacity, num2);
 			}
 		}
 		Diagnostics.Assert(!float.IsNaN(num));
@@ -436,7 +463,7 @@ public class PathfindingManager : GameAncillary, IService, IPathfindingService
 
 	public static bool CanFreeEmbark(global::Empire empire)
 	{
-		return empire != null && (empire.SimulationObject.Tags.Contains("FactionTraitSeaDemons1") || empire.SimulationObject.Tags.Contains("SeaDemonsIntegrationDescriptor1"));
+		return empire != null && (empire.SimulationObject.Tags.Contains("AffinitySeaDemons") || empire.SimulationObject.Tags.Contains("SeaDemonsIntegrationDescriptor1"));
 	}
 
 	public bool IsTilePassable(WorldPosition tilePosition, IPathfindingContextProvider pathfindingContextProvider, PathfindingFlags flags = (PathfindingFlags)0, PathfindingWorldContext worldContext = null)

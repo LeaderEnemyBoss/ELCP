@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ####################################################################################################### -->
+  <!-- ####################################     "SEA DEMONS" EXPANSION    #################################### -->
+  <!-- ####################################################################################################### -->
+
+
+
+  <!-- ########################################### -->
+  <!-- ######          WEATHER              ###### -->
+  <!-- ########################################### -->
+
+  <!-- Units with this battle action will deal reduced damage to targets in the Fog -->
+  <BattleActionUnit Name="BattleActionUnitCheckFogBonus" Defensible="false" TerrainConsideration="Range" CanBeAppliedByDeadUnit="true" Type="PrepareAttack PrepareDefense">
+    <InterpreterPrerequisite Inverted="false">$(DistanceInitiatorToTarget) gt 1</InterpreterPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Path|ClassUnit,UnitActionFogTileBonus)</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Target">
+      <BattleEffect_UnitSimulation Name="UnitActionFogTileBonusActivation" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionFogTileBonusActivated" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+
+  <!-- ################################################################## -->
+  <!-- #####             PROJECTILES - TRANSPORT SHIP UNIT         ###### -->
+  <!-- ################################################################## -->
+
+  <BattleActionUnit Name="BattleActionTransportShipAttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_Vaulters_Arrow_01" Speed="3"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Hips" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Fx_TransportShip_HitDamage_01</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_Vaulters_Arrow_01" Speed="3"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Hips" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Fx_TransportShip_HitDamage_01</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_Vaulters_Arrow_01" Speed="3"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Hips" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Fx_TransportShip_HitDamage_01</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################## -->
+  <!-- #####             PROJECTILES - TREBUCHET         ###### -->
+  <!-- ######################################################## -->
+
+  <BattleActionUnit Name="BattleActionTrebuchetIronAttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Iron_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionTrebuchetStrategic12AttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+       <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionTrebuchetStrategic34AttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+       <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Uncommon_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionTrebuchetStrategic56AttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+       <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Rare_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionTrebuchetQuestAttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+       <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Trebuchet_Advanced_01" Speed="5"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="45" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################## -->
+  <!-- #####             PROJECTILES - BROADSIDE         ###### -->
+  <!-- ######################################################## -->
+
+  <BattleActionUnit Name="BattleActionBroadsideIronAttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Iron_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionBroadsideStrategic12AttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Advanced_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionBroadsideStrategic34AttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Uncommon_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionBroadsideStrategic56AttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Left_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_03" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_04" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_Broadside_Rare_01" Speed="6"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0.5" Angle="5" OriginBoneName="Aux_Wpn_Right_05" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_Artillery_01_Hit</ImpactFx>
+    </Projectile>
+    </BattleActionData>
+  </BattleActionUnit>
+
+
+
+  <!-- ################################################################### -->
+  <!-- #####             COMBAT ATTACK FX - SATCHEL CHARGES         ###### -->
+  <!-- ################################################################### -->
+
+  <BattleActionUnit Name="BattleActionSatchelChargesIronAttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_SatchelChargesIronAttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionSatchelChargesStrategic12AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_SatchelChargesStrategic12AttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionSatchelChargesStrategic34AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_SatchelChargesStrategic34AttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionSatchelChargesStrategic56AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_SatchelChargesStrategic56AttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionSatchelChargesQuestAttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_SatchelChargesQuestAttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ################################################################### -->
+  <!-- #####             COMBAT ATTACK FX - BOARDING SPIKES         ###### -->
+  <!-- ################################################################### -->
+
+  <BattleActionUnit Name="BattleActionBoardingSpikesIronAttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_BoardingSpikesIronAttackDefense" />
+    </BattleEffects>
+	<BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Iron_01" Speed="1.5"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="60" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Iron_01" Speed="2"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	<Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Iron_01" Speed="1.5"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="60" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	<Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Iron_01" Speed="2"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	</BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionBoardingSpikesStrategic12AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_BoardingSpikesStrategic12AttackDefense" />
+    </BattleEffects>
+		<BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Advanced_01" Speed="1.5"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="60" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Advanced_01" Speed="2"  Trajectory="parabolic" AccelerationDistance="0.5" SpeedReductionFactorMax="0" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	<Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Advanced_01" Speed="1.5"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="60" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	<Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Advanced_01" Speed="2"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	</BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionBoardingSpikesStrategic34AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_BoardingSpikesStrategic34AttackDefense" />
+    </BattleEffects>
+	<BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Uncommon_01" Speed="1.5"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="60" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Uncommon_01" Speed="2"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	<Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Uncommon_01" Speed="1.5"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="60" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	<Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Uncommon_01" Speed="2"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	</BattleActionData>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionBoardingSpikesStrategic56AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_BoardingSpikesStrategic56AttackDefense" />
+    </BattleEffects>
+	<BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Rare_01" Speed="1.5"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="60" OriginBoneName="Aux_Wpn_Left_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Rare_01" Speed="2"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="45" OriginBoneName="Aux_Wpn_Left_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	<Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Rare_01" Speed="1.5"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="60" OriginBoneName="Aux_Wpn_Right_01" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	<Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_NavalWeapons_BoardingSpikes_Rare_01" Speed="2"  Trajectory="parabolic" AccelerationDistance="0" SpeedReductionFactorMax="0" Angle="45" OriginBoneName="Aux_Wpn_Right_02" TargetBoneName="Dummy_Root"  ProgressionRatioBeforeFadeOut="0.85">
+      <ImpactFx>Pr_Boat_Fomorians_FireShip_01_Hit</ImpactFx>
+    </Projectile>
+	</BattleActionData>
+  </BattleActionUnit>
+
+  <!-- ################################################################### -->
+  <!-- #####             COMBAT ATTACK FX - ENDLESS FLAMES         ###### -->
+  <!-- ################################################################### -->
+
+  <BattleActionUnit Name="BattleActionEndlessFlamesIronAttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesIronAttackDefense_Bathysphere" />
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,!UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesIronAttackDefense_FireShip" />
+      </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionEndlessFlamesStrategic12AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesStrategic12AttackDefense_Bathysphere" />
+      </BattleEffects>
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,!UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesStrategic12AttackDefense_FireShip" />
+      </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionEndlessFlamesStrategic34AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesStrategic34AttackDefense_Bathysphere" />
+      </BattleEffects>
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,!UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesStrategic34AttackDefense_FireShip" />
+      </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionEndlessFlamesStrategic56AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesStrategic56AttackDefense_Bathysphere" />
+      </BattleEffects>
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,!UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesStrategic56AttackDefense_FireShip" />
+      </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionEndlessFlamesQuestAttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesQuestAttackDefense_Bathysphere" />
+      </BattleEffects>
+
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,!UnitTypeFomoriansBathysphere)</InterpreterPrerequisite>
+        <BattleEffect_Void Name="BattleEffect_EndlessFlamesQuestAttackDefense_FireShip" />
+      </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################################## -->
+  <!-- #####             COMBAT ATTACK FX - DUST FOCAL         ###### -->
+  <!-- ############################################################## -->
+
+  <BattleActionUnit Name="BattleActionDustFocalIronAttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_DustFocalIronAttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionDustFocalStrategic12AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_DustFocalStrategic12AttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionDustFocalStrategic34AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_DustFocalStrategic34AttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionDustFocalStrategic56AttackDefense" Defensible="false" TerrainConsideration="PassableTransition" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffect_DustFocalStrategic56AttackDefense" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ######################################################## -->
+  <!-- #####             SUBMERSIBLE SLAYER              ###### -->
+  <!-- ######################################################## -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySubmersibleSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,UnitActionAbilitySubmerged) ge 1</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="UnitActionSubmersibleSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionSubmersibleSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################### -->
+  <!-- ######          BOARDING PARTY       ###### -->
+  <!-- ########################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityBoardingParty" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_BoardingParty" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionBoardingParty" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################### -->
+  <!-- ######          ENDLESS FLAMES       ###### -->
+  <!-- ########################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityEndlessFlames" Defensible="true" Range="1" TerrainConsideration="PassableTransition" Type="Attack Defense">
+
+    <!-- INITIAL TARGET -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <!-- Damage -->
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_EndlessFlames" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <!-- Ignite -->
+      <PathPrerequisite Inverted="false">ClassUnit,!UnitAbilitySubmersibleDescriptor</PathPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffectAddBurningAction" IsCumulable="false" Duration="3" RealizationApplicationMethod="OnHit" IsPermanentEffect="true">
+        <SimulationDescriptorReference Name="UnitActionOnFire" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+
+    <!-- AOE -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <!-- Damage -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_EndlessFlames" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:EndlessFlamesEfficiency)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- Ignite -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <PathPrerequisite Inverted="false">ClassUnit,!UnitAbilitySubmersibleDescriptor</PathPrerequisite>
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <BattleEffect_UnitSimulation Name="BattleEffectAddBurningAction" IsCumulable="false" Duration="3" RealizationApplicationMethod="OnHit" IsPermanentEffect="true">
+          <SimulationDescriptorReference Name="UnitActionOnFire" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityBurningPassive" Defensible="false" TerrainConsideration="None" Type="Activation" Priority="0">
+    <PathPrerequisite Inverted="false">ClassUnit,UnitActionOnFire</PathPrerequisite>
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_BurningDamage" PropertyName="Health" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * 0.1))" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################### -->
+  <!-- ########          ACID SPRAY       ######## -->
+  <!-- ########################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityAcidSpray" Defensible="true" Range="1" TerrainConsideration="PassableTransition" Type="Attack Defense">
+
+    <!-- INITIAL TARGET -->
+    <!-- Damage -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_AcidSpray" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+    </BattleEffects>
+    <!-- Corrode -->
+    <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_CancelEffect Name="BattleEffectAddCorrosionActionCancel" EffectToCancel="BattleEffectAddCorrosionAction" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="BattleEffectAddCorrosionAction" IsCumulable="false" Duration="3" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionCorrosion" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+
+    <!-- AOE -->
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <!-- Damage -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_AcidSpray" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:AcidSprayAOEEfficiency)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!--  Corrode -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+        <BattleEffect_CancelEffect Name="BattleEffectAddCorrosionActionCancel" EffectToCancel="BattleEffectAddCorrosionAction" RealizationApplicationMethod="OnHit" />
+        <BattleEffect_ChangeSealedPropertyValue Name="AcidSprayCorrosionAffectation" PropertyName="AcidSprayCorrosion" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AcidSprayDebuffEfficiency)" />
+        <BattleEffect_UnitSimulation Name="BattleEffectAddCorrosionAction" IsCumulable="false" Duration="3" RealizationApplicationMethod="OnHit">
+          <SimulationDescriptorReference Name="UnitActionCorrosion" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+    <!-- FX -->
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffect_AcidPuddleFX" RealizationApplicationMethod="OnHit"/>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################### -->
+  <!-- ######          DUST FOCAL           ###### -->
+  <!-- ########################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityDustFocal" Defensible="true" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Line" Parameter1="4" AvoidCastingUnit="true" RealizationApplicationMethod="OnHit">
+      <!-- AOE Damage -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_DustFocal" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * $Link(Initiator|Property|ClassUnit:DustFocalAOEDamageEfficiency)" RealizationApplicationMethod="OnHit" />
+      </BattleEffects>
+      <!-- AOE Debuff -->
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="DustFocalBlindnessAffectation" PropertyName="DustFocalBlindness" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:DustFocalDebuffEfficiency)" />
+        <BattleEffect_UnitSimulation Name="BattleEffectAddBlindAction" Duration="3" IsCumulable="false" RealizationApplicationMethod="OnHit">
+          <SimulationDescriptorReference Name="UnitActionAbilityBlind" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################ -->
+  <!-- ######          SUBMERSIBLE           ###### -->
+  <!-- ############################################ -->
+
+  <!-- Diving is taken care of my ground battle actions -->
+
+  <!-- Surface before attacking (if submerged) -->
+  <BattleActionUnit Name="BattleActionUnitAbilitySubmersible_SurfaceOnAttack" Type="PrepareAttack">
+    <PathPrerequisite Inverted="false">ClassUnit,UnitActionAbilitySubmerged</PathPrerequisite>
+    <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttackPerRoundDone) eq 0</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_CancelEffect Name="BattleEffect_Surface" EffectToCancel="BattleEffect_Submerge" RealizationApplicationMethod="OnHit" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################# -->
+  <!-- #######          ARTILLERY           ######## -->
+  <!-- ############################################# -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityArtillery" Defensible="false" CanBeAppliedByDeadUnit="true" Type="PrepareAttack PrepareDefense" >
+
+    <InterpreterPrerequisite Inverted="false">$(DistanceInitiatorToTarget) le 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffect_Artillery" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionArtillery" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ###################################### -->
+  <!-- #####       GALVANIZATION       ###### -->
+  <!-- ###################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityGalvanization" Defensible="false" TerrainConsideration="Range" Type="Support">
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1" AvoidCastingUnit="false" RealizationVisualEffectName="BattleEffect_AOE_Galvanization" RealizationApplicationMethod="Instant">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffect_Galvanization" IsCumulable="false" Duration="3" RealizationApplicationMethod="Instant">
+          <SimulationDescriptorReference Name="UnitActionGalvanization" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ############################################### -->
+  <!-- #####       TRANSPORT SHIP SLAYER        ###### -->
+  <!-- ############################################### -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityTransportShipSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,TransportShipUnit) ge 1</InterpreterPrerequisite>
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstTransportShipEfficiencyAffectation" PropertyName="AgainstTransportShipEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstTransportShipEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionTransportShipSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionTransportShipSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ################################################ -->
+  <!-- #####          FOMORIANS SLAYER           ###### -->
+  <!-- ################################################ -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityFomorianSlayer" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack PrepareDefense" Priority="-1">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Count|ClassUnit,AffinityFomorians) ge 1</InterpreterPrerequisite>
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="AgainstFomorianEfficiencyAffectation" PropertyName="AgainstFomorianEfficiency" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:InitialAgainstFomorianEfficiency)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="UnitActionFomorianSlayer" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionFomorianSlayer" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ################################################ -->
+  <!-- #####             FORCEFIELD              ###### -->
+  <!-- ################################################ -->
+
+  <BattleActionUnit Name="BattleActionUnitAbilityForcefieldRecharge" Defensible="false" TerrainConsideration="None"  Type="Activation">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ForcefieldRecharge" PropertyName="ForcefieldCharges" Operation="Addition" InterpreterFormula="1" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+  <BattleActionUnit Name="BattleActionUnitAbilityForcefield" Defensible="false" TerrainConsideration="None"  Type="Hit">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ForcefieldConsume" PropertyName="ForcefieldCharges" Operation="Subtraction" InterpreterFormula="1" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+
+
+  <!-- ########################################### -->
+  <!-- #####             TRUST              ###### -->
+  <!-- ########################################### -->
+
+  <!-- Increases the morale of nearby embarked units -->
+  <BattleActionUnit Name="BattleActionUnitAbilityTrust" Defensible="false" TerrainConsideration="None" Type="Deactivation" >
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <PathPrerequisite Inverted="false">TransportShipUnit</PathPrerequisite>
+        <BattleEffect_UnitSimulation Name="BattleEffect_Trust" IsCumulable="false" Duration="2">
+          <SimulationDescriptorReference Name="UnitActionTrust" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+
+
+
+  <!-- ################################################ -->
+  <!-- ######             AUTO HEAL              ###### -->
+  <!-- ################################################ -->
+
+  <!-- If the target has auto-heal it should regenerate life each time it is attacked -->
+  <BattleActionUnit Name="BattleActionUnitCheckAutoHeal" Defensible="false" CanBeAppliedByDeadUnit="true" TerrainConsideration="None" Type="Attack Defense" Priority="100">
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityAutoHealDescriptor)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:Health) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_AutoHeal" Discriminated="true" PropertyName="Health" Operation="Addition" RealizationApplicationMethod="OnHit" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier) * 0.25" />
+    </BattleEffects>
+  </BattleActionUnit>
+
+</Datatable>

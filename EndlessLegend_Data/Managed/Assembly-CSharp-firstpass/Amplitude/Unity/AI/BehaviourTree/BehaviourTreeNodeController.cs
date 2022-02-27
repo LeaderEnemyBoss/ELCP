@@ -13,8 +13,8 @@ namespace Amplitude.Unity.AI.BehaviourTree
 
 		[XmlElement(Type = typeof(BehaviourTreeNode_Selector), ElementName = "Controller_Selector")]
 		[XmlElement(Type = typeof(BehaviourTreeNode_Sequence), ElementName = "Controller_Sequence")]
-		[XmlElement(Type = typeof(BehaviourTreeNode_Parallel), ElementName = "Controller_Parallel")]
 		[XmlElement(Type = typeof(BehaviourTreeNode_Loop), ElementName = "Controller_Loop")]
+		[XmlElement(Type = typeof(BehaviourTreeNode_Parallel), ElementName = "Controller_Parallel")]
 		public BehaviourTreeNode[] Children { get; set; }
 
 		[XmlAttribute("CompletionPolicy")]
@@ -71,9 +71,6 @@ namespace Amplitude.Unity.AI.BehaviourTree
 		{
 			return (executionResult == State.Failure && this.ResetPolicy == BehaviourTreeNodeController.ResetPolicies.onFail) || (executionResult == State.Success && this.ResetPolicy == BehaviourTreeNodeController.ResetPolicies.onCompletion);
 		}
-
-		[XmlAttribute]
-		public string Debug { get; set; }
 
 		public enum ResetPolicies
 		{

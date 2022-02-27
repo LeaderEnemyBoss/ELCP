@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ##################################################### -->
+  <!-- ################ FLAT APPROVAL BONUS ################ -->
+  <!-- ##################################################### -->
+  
+  <AIParameterConverter Name="CityApproval">
+    <!-- bonus to food -->
+    <ToAIParameter AIParameter="AICityGrowth">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityFood) * $Property(CityFoodToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityGrowth">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityIndustry) * $Property(CityIndustryToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityFood) * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityIndustry) * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor)</ToAIParameter>
+    <!-- bonus to industry -->
+    <ToAIParameter AIParameter="AICityProduction">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityFood) * $Property(CityFoodToCityProductionConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityIndustry) * $Property(CityIndustryToCityProductionConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityFood) * $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityIndustry) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor)</ToAIParameter>
+    <!-- bonus to science -->
+    <ToAIParameter AIParameter="AICityResearch">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityScience)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityScience)</ToAIParameter>
+    <!-- bonus to dust -->
+    <ToAIParameter AIParameter="AICityMoney">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityGrowth">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney) * $Count(./ClassEmpire,AffinityBrokenLords)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney) * $Count(ClassEmpire,AffinityBrokenLords)</ToAIParameter>
+    <!-- bonus to security -->
+    <ToAIParameter AIParameter="AICityAntiSpy">(((100 - $Property(NetCityApproval)) min $(Input)) / 100) * 40</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireAntiSpy">(((100 - $Property(NetEmpireApproval)) min $(Input)) / 100) * 40 * $Count(.../ClassEmpire/ClassCity)</ToAIParameter>
+
+  </AIParameterConverter>
+
+  <!-- == Approval during Winter == -->
+  <AIParameterConverter Name="CityApprovalWinter">
+    <!-- bonus to food -->
+    <ToAIParameter AIParameter="AICityGrowth">(1 min $Count(#Winter)) * ((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityFood) * $Property(CityFoodToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityGrowth">(1 min $Count(#Winter)) * ((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityIndustry) * $Property(CityIndustryToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">(1 min $Count(#Winter)) * ((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityFood) * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">(1 min $Count(#Winter)) * ((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityIndustry) * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor)</ToAIParameter>
+    <!-- bonus to industry -->
+    <ToAIParameter AIParameter="AICityProduction">(1 min $Count(#Winter)) * ((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityFood) * $Property(CityFoodToCityProductionConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">(1 min $Count(#Winter)) * ((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityIndustry) * $Property(CityIndustryToCityProductionConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">(1 min $Count(#Winter)) * ((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityFood) * $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">(1 min $Count(#Winter)) * ((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityIndustry) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor)</ToAIParameter>
+    <!-- bonus to science -->
+    <ToAIParameter AIParameter="AICityResearch">(1 min $Count(#Winter)) * ((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityScience)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">(1 min $Count(#Winter)) * ((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityScience)</ToAIParameter>
+    <!-- bonus to dust -->
+    <ToAIParameter AIParameter="AICityMoney">(1 min $Count(#Winter)) * ((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityGrowth">(1 min $Count(#Winter)) * ((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney) * $Count(./ClassEmpire,AffinityBrokenLords)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">(1 min $Count(#Winter)) * ((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">(1 min $Count(#Winter)) * ((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney) * $Count(ClassEmpire,AffinityBrokenLords)</ToAIParameter>
+    <!-- bonus to security -->
+    <ToAIParameter AIParameter="AICityAntiSpy">(1 min $Count(#Winter)) * (((100 - $Property(NetCityApproval)) min $(Input)) / 100) * 40</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireAntiSpy">(1 min $Count(#Winter)) * (((100 - $Property(NetEmpireApproval)) min $(Input)) / 100) * 40 * $Count(.../ClassEmpire/ClassCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ############################################################## -->
+  <!-- ################ APPROVAL BONUS FROM LUXURIES ################ -->
+  <!-- ############################################################## -->
+
+  <AIParameterConverter Name="CityApprovalFromLuxury">
+    <!-- bonus to food -->
+    <ToAIParameter AIParameter="AICityGrowth">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityFood) * $Property(CityFoodToCityGrowthConversionFactor) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityGrowth">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityIndustry) * $Property(CityIndustryToCityGrowthConversionFactor)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityFood) * $Property(ClassEmpire/ClassCity:CityFoodToCityGrowthConversionFactor) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityIndustry) * $Property(ClassEmpire/ClassCity:CityIndustryToCityGrowthConversionFactor) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <!-- bonus to industry -->
+    <ToAIParameter AIParameter="AICityProduction">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityFood) * $Property(CityFoodToCityProductionConversionFactor) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityProduction">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityIndustry) * $Property(CityIndustryToCityProductionConversionFactor) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityFood) * $Property(ClassEmpire/ClassCity:CityFoodToCityProductionConversionFactor) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireProduction">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityIndustry) * $Property(ClassEmpire/ClassCity:CityIndustryToCityProductionConversionFactor) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <!-- bonus to science -->
+    <ToAIParameter AIParameter="AICityResearch">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $Property(CityScience) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireResearch">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityScience) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <!-- bonus to dust -->
+    <ToAIParameter AIParameter="AICityMoney">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityGrowth">((100 - $Property(NetCityApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney) * $Count(./ClassEmpire,AffinityBrokenLords) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireMoney">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireGrowth">((100 - $Property(NetEmpireApproval)) min $(Input)) * 0.0075 * $SumProperty(ClassEmpire/ClassCity:CityMoney) * $Count(ClassEmpire,AffinityBrokenLords) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <!-- bonus to security -->
+    <ToAIParameter AIParameter="AICityAntiSpy">(((100 - $Property(NetCityApproval)) min $(Input)) / 100) * 40 / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireAntiSpy">(((100 - $Property(NetEmpireApproval)) min $(Input)) / 100) * 40 * $Count(.../ClassEmpire/ClassCity) / (5 + ($Property(../EmpireTypeMajor:EmpireScaleFactor) * 5))</ToAIParameter>
+  </AIParameterConverter>
+</Datatable>

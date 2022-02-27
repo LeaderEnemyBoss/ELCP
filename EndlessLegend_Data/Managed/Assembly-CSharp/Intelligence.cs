@@ -15,26 +15,27 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 {
 	public Intelligence()
 	{
-		this.attackerReinforcement = new List<IGarrison>();
-		this.defenderReinforcement = new List<IGarrison>();
-		this.availableGameEntities = new List<AIData_GameEntity>();
-		this.bestRecruitementCombination = new Intelligence.BestRecruitementCombination();
-		this.maximalNumberOfTurn = 10f;
-		this.guidsInBattle = new List<GameEntityGUID>();
-		this.tempUnitsMilitaryPower = new List<float>();
 		this.availableUnitDesignList = new List<UnitDesign>();
 		this.availableUnitList = new List<AIData_Unit>();
+		base..ctor();
 	}
 
 	public void FillAvailableUnitDesignList(global::Empire empire)
 	{
 		this.availableUnitDesignList.Clear();
-		ReadOnlyCollection<UnitDesign> userDefinedUnitDesigns = empire.GetAgency<DepartmentOfDefense>().UnitDesignDatabase.UserDefinedUnitDesigns;
+		DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
+		ReadOnlyCollection<UnitDesign> userDefinedUnitDesigns = agency.UnitDesignDatabase.UserDefinedUnitDesigns;
 		for (int i = 0; i < userDefinedUnitDesigns.Count; i++)
 		{
-			if (!userDefinedUnitDesigns[i].CheckAgainstTag(TradableUnit.ReadOnlyMercenary) && !userDefinedUnitDesigns[i].CheckAgainstTag(DownloadableContent9.TagColossus) && !userDefinedUnitDesigns[i].CheckAgainstTag(DownloadableContent9.TagSolitary))
+			if (!userDefinedUnitDesigns[i].CheckAgainstTag(TradableUnit.ReadOnlyMercenary))
 			{
-				this.availableUnitDesignList.Add(userDefinedUnitDesigns[i]);
+				if (!userDefinedUnitDesigns[i].CheckAgainstTag(DownloadableContent9.TagColossus))
+				{
+					if (!userDefinedUnitDesigns[i].CheckAgainstTag(DownloadableContent9.TagSolitary))
+					{
+						this.availableUnitDesignList.Add(userDefinedUnitDesigns[i]);
+					}
+				}
 			}
 		}
 	}
@@ -253,9 +254,12 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 			{
 				num9 = 1f - (float)num7 / (float)this.numberOfBattleRound;
 			}
-			int num10 = 0;
-			while (num10 < num && availableTile > 0)
+			for (int i = 0; i < num; i++)
 			{
+				if (availableTile <= 0)
+				{
+					break;
+				}
 				if (num6 >= reinforcements[num5].StandardUnits.Count)
 				{
 					num5++;
@@ -280,7 +284,6 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 				num6++;
 				num2++;
 				availableTile--;
-				num10++;
 			}
 			if (num2 <= 0)
 			{
@@ -306,47 +309,6 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		{
 			return;
 		}
-		City city = defender as City;
-		if (city == null)
-		{
-			IWorldPositionable worldPositionable3 = defender as IWorldPositionable;
-			District district = this.worldPositionningService.GetDistrict(worldPositionable3.WorldPosition);
-			if (district != null && district.City.Empire.Index == defender.Empire.Index)
-			{
-				city = district.City;
-			}
-		}
-		if (city != null)
-		{
-			List<Army> list = new List<Army>();
-			foreach (District district2 in city.Districts)
-			{
-				if (District.IsACityTile(district2) && !this.worldPositionningService.IsWaterTile(district2.WorldPosition))
-				{
-					Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(district2.WorldPosition);
-					if (armyAtPosition != null && armyAtPosition.Empire.Index == city.Empire.Index)
-					{
-						list.Add(armyAtPosition);
-					}
-				}
-			}
-			if (list.Count > 0)
-			{
-				list.Sort(delegate(Army left, Army right)
-				{
-					if (left.IsSolitary && !right.IsSolitary)
-					{
-						return 1;
-					}
-					if (!left.IsSolitary && right.IsSolitary)
-					{
-						return -1;
-					}
-					return -1 * left.GetPropertyValue(SimulationProperties.MilitaryPower).CompareTo(right.GetPropertyValue(SimulationProperties.MilitaryPower));
-				});
-				defender = list[0];
-			}
-		}
 		this.attackerReinforcement.Clear();
 		this.defenderReinforcement.Clear();
 		this.guidsInBattle.Clear();
@@ -354,192 +316,108 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		{
 			attackerPosition = worldPositionable.WorldPosition;
 		}
-		if (city != null)
-		{
-			int num = int.MaxValue;
-			foreach (District district3 in city.Districts)
-			{
-				if (District.IsACityTile(district3) && !this.worldPositionningService.IsWaterTile(district3.WorldPosition))
-				{
-					int distance = this.worldPositionningService.GetDistance(attackerPosition, district3.WorldPosition);
-					if (distance < num)
-					{
-						num = distance;
-						worldPositionable2 = district3;
-						if (distance == 1)
-						{
-							break;
-						}
-					}
-				}
-			}
-		}
-		WorldOrientation orientation;
 		if (this.worldPositionningService.GetDistance(attackerPosition, worldPositionable2.WorldPosition) > 1)
 		{
-			orientation = this.worldPositionningService.GetOrientation(worldPositionable2.WorldPosition, attackerPosition);
+			WorldOrientation orientation = this.worldPositionningService.GetOrientation(worldPositionable2.WorldPosition, attackerPosition);
 			attackerPosition = this.worldPositionningService.GetNeighbourTile(worldPositionable2.WorldPosition, orientation, 1);
 		}
-		orientation = this.worldPositionningService.GetOrientation(attackerPosition, worldPositionable2.WorldPosition);
-		DeploymentArea deploymentArea = new DeploymentArea(attackerPosition, orientation, this.world.WorldParameters);
-		deploymentArea.Initialize(3, 2);
-		this.AttackerArea = new WorldArea(deploymentArea.GetWorldPositions(this.world.WorldParameters));
-		WorldArea area = this.AttackerArea.Grow(this.world.WorldParameters);
-		WorldOrientation forward = orientation.Rotate(3);
-		DeploymentArea deploymentArea2 = new DeploymentArea(worldPositionable2.WorldPosition, forward, this.world.WorldParameters);
-		deploymentArea2.Initialize(3, 2);
-		this.DefenderArea = new WorldArea(deploymentArea2.GetWorldPositions(this.world.WorldParameters));
-		WorldArea area2 = new WorldArea(this.DefenderArea.Grow(this.world.WorldParameters));
+		WorldRect area = new WorldRect(attackerPosition, this.worldPositionningService.GetOrientation(attackerPosition, worldPositionable2.WorldPosition), 2, 2, 0, 3, this.worldPositionningService.World.WorldParameters);
+		WorldRect worldRect = new WorldRect(worldPositionable2.WorldPosition, this.worldPositionningService.GetOrientation(attackerPosition, worldPositionable2.WorldPosition), 2, 2, 3, 0, this.worldPositionningService.World.WorldParameters);
 		this.guidsInBattle.Add(attacker.GUID);
 		this.guidsInBattle.Add(defender.GUID);
 		int availableTile = 0;
 		int availableTile2 = 0;
-		if (city != null)
-		{
-			this.GatherReinforcementInCity(attacker.Empire, city, this.DefenderArea, ref availableTile2, this.defenderReinforcement);
-			if (!this.guidsInBattle.Contains(city.GUID))
-			{
-				this.guidsInBattle.Add(city.GUID);
-				if (city.UnitsCount > 0)
-				{
-					this.defenderReinforcement.Add(city);
-				}
-				if (city.Militia.UnitsCount > 0)
-				{
-					this.defenderReinforcement.Add(city.Militia);
-				}
-			}
-		}
-		City city2 = null;
-		bool flag = ELCPUtilities.UseELCPFortificationPointRuleset && ELCPUtilities.IsELCPCityBattle(new List<IGarrison>
-		{
-			attacker,
-			defender
-		}, out city2);
-		if (flag && city2.BesiegingEmpire != null && city2 != city)
-		{
-			this.GatherReinforcementInCity(attacker.Empire, city2, this.DefenderArea, ref availableTile2, this.defenderReinforcement);
-			if (!this.guidsInBattle.Contains(city2.GUID))
-			{
-				this.guidsInBattle.Add(city2.GUID);
-				if (city2.UnitsCount > 0)
-				{
-					this.defenderReinforcement.Add(city2);
-				}
-				if (city2.Militia.UnitsCount > 0)
-				{
-					this.defenderReinforcement.Add(city2.Militia);
-				}
-			}
-		}
 		this.GatherReinforcement(attacker, defender, area, ref availableTile, true);
-		this.GatherReinforcement(attacker, defender, area2, ref availableTile2, false);
-		if (attacker is Army && (attacker as Army).IsPrivateers)
+		if (defender is City)
 		{
-			DepartmentOfForeignAffairs agency = attacker.Empire.GetAgency<DepartmentOfForeignAffairs>();
-			if (agency != null && !agency.CanAttack(defender))
-			{
-				this.attackerReinforcement.RemoveAll((IGarrison match) => !(match is Army) || !(match as Army).IsPrivateers);
-			}
+			this.GatherReinforcementInCity(attacker.Empire, defender as City, worldRect, ref availableTile2, this.defenderReinforcement);
 		}
-		this.defenderReinforcement.Sort(delegate(IGarrison left, IGarrison right)
-		{
-			if (left.UnitsCount == 0 && right.UnitsCount > 0)
-			{
-				return 1;
-			}
-			if (left.UnitsCount > 0 && right.UnitsCount == 0)
-			{
-				return -1;
-			}
-			if (left.UnitsCount == 0 && right.UnitsCount == 0)
-			{
-				return 0;
-			}
-			float num4 = left.GetPropertyValue(SimulationProperties.MilitaryPower);
-			num4 /= (float)left.UnitsCount;
-			float num5 = right.GetPropertyValue(SimulationProperties.MilitaryPower);
-			num5 /= (float)right.UnitsCount;
-			return -1 * num4.CompareTo(num5);
-		});
+		this.GatherReinforcement(attacker, defender, worldRect, ref availableTile2, false);
+		float num = 0f;
 		float num2 = 0f;
-		float num3 = 0f;
-		if (ELCPUtilities.UseELCPFortificationPointRuleset)
-		{
-			if (flag)
-			{
-				this.ComputeMPBasedOnBattleAreaELCP(attacker, this.attackerReinforcement, availableTile, ref num2, city2.Empire == attacker.Empire, city2);
-				this.ComputeMPBasedOnBattleAreaELCP(defender, this.defenderReinforcement, availableTile2, ref num3, city2.Empire == defender.Empire, city2);
-			}
-			else
-			{
-				this.ComputeMPBasedOnBattleArea(attacker, this.attackerReinforcement, availableTile, ref num2, false);
-				this.ComputeMPBasedOnBattleArea(defender, this.defenderReinforcement, availableTile2, ref num3, false);
-			}
-		}
-		else
-		{
-			this.ComputeMPBasedOnBattleArea(attacker, this.attackerReinforcement, availableTile, ref num2, false);
-			this.ComputeMPBasedOnBattleArea(defender, this.defenderReinforcement, availableTile2, ref num3, true);
-		}
-		attackerMP = num2;
-		defenderMP = num3;
+		this.ComputeMPBasedOnBattleArea(attacker, this.attackerReinforcement, availableTile, ref num);
+		this.ComputeMPBasedOnBattleArea(defender, this.defenderReinforcement, availableTile2, ref num2);
+		attackerMP = num;
+		defenderMP = num2;
 	}
 
 	private void GatherReinforcement(Garrison attacker, Garrison defender, WorldRect area, ref int availableTile, bool attackerArea)
 	{
 		foreach (WorldPosition worldPosition in area.GoThroughWorldPositions(this.worldPositionningService.World.WorldParameters))
 		{
-			Diagnostics.Log("GatherReinforcement checking tile {0}", new object[]
+			if (!this.worldPositionningService.IsWaterTile(worldPosition))
 			{
-				worldPosition
-			});
-			if (!this.worldPositionningService.IsWaterTile(worldPosition) && !this.worldPositionningService.HasRidge(worldPosition))
-			{
-				availableTile++;
-				District district = this.worldPositionningService.GetDistrict(worldPosition);
-				if (district != null && !this.guidsInBattle.Contains(district.City.GUID))
+				if (!this.worldPositionningService.HasRidge(worldPosition))
 				{
-					this.guidsInBattle.Add(district.City.GUID);
-					if (district.City.Empire == attacker.Empire)
+					availableTile++;
+					District district = this.worldPositionningService.GetDistrict(worldPosition);
+					if (district != null && !this.guidsInBattle.Contains(district.City.GUID))
 					{
-						if (district.City.UnitsCount > 0)
+						this.guidsInBattle.Add(district.City.GUID);
+						if (district.City.BesiegingEmpire == null)
 						{
-							this.attackerReinforcement.Add(district.City);
-						}
-						if (district.City.Militia.UnitsCount > 0)
-						{
-							this.attackerReinforcement.Add(district.City.Militia);
+							if (district.City.Empire == attacker.Empire)
+							{
+								if (district.City.UnitsCount > 0)
+								{
+									this.attackerReinforcement.Add(district.City);
+								}
+								if (district.City.Militia.UnitsCount > 0)
+								{
+									this.attackerReinforcement.Add(district.City.Militia);
+								}
+								if (attackerArea)
+								{
+									this.GatherReinforcementInCity(attacker.Empire, district.City, area, ref availableTile, this.attackerReinforcement);
+								}
+								else
+								{
+									this.GatherReinforcementInCity(attacker.Empire, district.City, null, ref availableTile, this.attackerReinforcement);
+								}
+							}
+							else if (district.City.Empire == defender.Empire)
+							{
+								if (district.City.UnitsCount > 0)
+								{
+									this.defenderReinforcement.Add(district.City);
+								}
+								if (district.City.Militia.UnitsCount > 0)
+								{
+									this.defenderReinforcement.Add(district.City.Militia);
+								}
+								if (attackerArea)
+								{
+									this.GatherReinforcementInCity(attacker.Empire, district.City, null, ref availableTile, this.defenderReinforcement);
+								}
+								else
+								{
+									this.GatherReinforcementInCity(attacker.Empire, district.City, area, ref availableTile, this.defenderReinforcement);
+								}
+							}
 						}
 					}
-					else if (district.City.Empire == defender.Empire)
+					Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(worldPosition);
+					if (armyAtPosition != null)
 					{
-						if (district.City.UnitsCount > 0)
+						if (this.guidsInBattle.Contains(armyAtPosition.GUID))
 						{
-							this.defenderReinforcement.Add(district.City);
+							break;
 						}
-						if (district.City.Militia.UnitsCount > 0)
+						this.guidsInBattle.Add(armyAtPosition.GUID);
+						if (armyAtPosition.Empire == attacker.Empire)
 						{
-							this.defenderReinforcement.Add(district.City.Militia);
+							float propertyValue = armyAtPosition.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
+							float propertyValue2 = armyAtPosition.GetPropertyValue(SimulationProperties.ActionPointsSpent);
+							float num = 1f;
+							if (num <= propertyValue - propertyValue2)
+							{
+								this.attackerReinforcement.Add(armyAtPosition);
+							}
 						}
-					}
-				}
-				Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(worldPosition);
-				if (armyAtPosition != null && !this.guidsInBattle.Contains(armyAtPosition.GUID))
-				{
-					this.guidsInBattle.Add(armyAtPosition.GUID);
-					if (armyAtPosition.Empire == attacker.Empire)
-					{
-						float propertyValue = armyAtPosition.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
-						float propertyValue2 = armyAtPosition.GetPropertyValue(SimulationProperties.ActionPointsSpent);
-						if (1f <= propertyValue - propertyValue2)
+						else if (armyAtPosition.Empire == defender.Empire && (!armyAtPosition.IsCamouflaged || this.visibilityService.IsWorldPositionDetectedFor(armyAtPosition.WorldPosition, attacker.Empire)))
 						{
-							this.attackerReinforcement.Add(armyAtPosition);
+							this.defenderReinforcement.Add(armyAtPosition);
 						}
-					}
-					else if (armyAtPosition.Empire == defender.Empire && !armyAtPosition.IsCamouflaged)
-					{
-						this.defenderReinforcement.Add(armyAtPosition);
 					}
 				}
 			}
@@ -555,9 +433,9 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 				Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(city.Districts[i].WorldPosition);
 				if (armyAtPosition != null && armyAtPosition.Empire == city.Empire && !this.guidsInBattle.Contains(armyAtPosition.GUID))
 				{
-					if (armyAtPosition.Empire != attacker && armyAtPosition.IsCamouflaged)
+					if (armyAtPosition.Empire != attacker && armyAtPosition.IsCamouflaged && !this.visibilityService.IsWorldPositionDetectedFor(armyAtPosition.WorldPosition, attacker))
 					{
-						goto IL_C2;
+						goto IL_F8;
 					}
 					reinforcements.Add(armyAtPosition);
 					this.guidsInBattle.Add(armyAtPosition.GUID);
@@ -567,7 +445,7 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 					availableTile++;
 				}
 			}
-			IL_C2:;
+			IL_F8:;
 		}
 	}
 
@@ -578,9 +456,12 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		lock (obj)
 		{
 			this.Recruitement_ArmiesUnits(empireIndex, requestUnitListMessage, militaryLayer);
-			if (this.bestRecruitementCombination.CombinationOfArmiesUnits.Count != 0 && this.bestRecruitementCombination.GetMilitaryPower() >= 0f && this.Recruitement_HeroAndFinalize(empireIndex, requestUnitListMessage))
+			if (this.bestRecruitementCombination.CombinationOfArmiesUnits.Count != 0 && this.bestRecruitementCombination.GetMilitaryPower() >= 0f)
 			{
-				return this.bestRecruitementCombination;
+				if (this.Recruitement_HeroAndFinalize(empireIndex, requestUnitListMessage))
+				{
+					return this.bestRecruitementCombination;
+				}
 			}
 			result = null;
 		}
@@ -602,7 +483,8 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		}
 		Diagnostics.Assert(AIScheduler.Services != null);
 		global::Empire empire = base.Game.Empires[empireIndex];
-		Diagnostics.Assert(empire.GetAgency<DepartmentOfDefense>() != null);
+		DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
+		Diagnostics.Assert(agency != null);
 		int maximumUnitPerArmy = (int)empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot);
 		this.FillAvailableGameEntitiesList(empireIndex, requestUnitListMessage, militaryLayer);
 		if (this.availableGameEntities.Count == 0)
@@ -635,7 +517,7 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		}
 		this.availableGameEntities.Sort((AIData_GameEntity left, AIData_GameEntity right) => -1 * left.TempRecruitementUnitData.FinalScore.CompareTo(right.TempRecruitementUnitData.FinalScore));
 		int unitCount = 0;
-		this.availableGameEntities.RemoveAll(delegate(AIData_GameEntity match)
+		int num3 = this.availableGameEntities.RemoveAll(delegate(AIData_GameEntity match)
 		{
 			if (match.TempRecruitementUnitData.DistanceRatio < 0.3f * bestDistanceScore)
 			{
@@ -643,7 +525,6 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 			}
 			if (match is AIData_Unit)
 			{
-				int unitCount = unitCount;
 				unitCount++;
 				return unitCount > maximumUnitPerArmy;
 			}
@@ -658,7 +539,8 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 
 	public bool Recruitement_HeroAndFinalize(int empireIndex, RequestUnitListMessage requestUnitListMessage)
 	{
-		int num = (int)base.Game.Empires[empireIndex].GetPropertyValue(SimulationProperties.ArmyUnitSlot);
+		global::Empire empire = base.Game.Empires[empireIndex];
+		int num = (int)empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot);
 		requestUnitListMessage.MissingMilitaryPower = requestUnitListMessage.ArmyPattern.Power - this.bestRecruitementCombination.GetMilitaryPower();
 		requestUnitListMessage.CurrentFulfillement = this.bestRecruitementCombination.GetMilitaryPower() / requestUnitListMessage.ArmyPattern.Power;
 		if (this.bestRecruitementCombination.GetMilitaryPower() >= requestUnitListMessage.ArmyPattern.Power)
@@ -770,93 +652,84 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		for (int i = 0; i < agency.Armies.Count; i++)
 		{
 			Army army = agency.Armies[i];
-			if (!army.IsLocked && !army.IsInEncounter && !army.HasOnlySeafaringUnits(false) && !army.HasCatspaw && !(army is KaijuArmy))
+			if (!army.IsLocked && !army.IsInEncounter)
 			{
-				if (requestUnitListMessage.ForceSourceRegion != -1)
+				if (!army.HasOnlySeafaringUnits(false) && !army.HasCatspaw)
 				{
-					int regionIndex = (int)this.worldPositionningService.GetRegionIndex(army.WorldPosition);
-					if (requestUnitListMessage.ForceSourceRegion != regionIndex)
+					if (requestUnitListMessage.ForceSourceRegion != -1)
 					{
-						goto IL_39E;
-					}
-					if (!this.IsArmyBlockedInCityUnderSiege(army))
-					{
-						goto IL_39E;
-					}
-				}
-				else if (this.IsArmyBlockedInCityUnderSiege(army))
-				{
-					goto IL_39E;
-				}
-				AIData_Army aidata_Army;
-				this.aiDataRepository.TryGetAIData<AIData_Army>(army.GUID, out aidata_Army);
-				if (aidata_Army.GetArmyLockState() == AIData_Army.AIDataArmyLockState.Free)
-				{
-					if (requestUnitListMessage.ArmyPattern.PerUnitTest && AILayer_ArmyRecruitment.GetValidArmySpawningPosition(army, this.worldPositionningService, this.pathfindingService).IsValid)
-					{
-						for (int j = 0; j < army.StandardUnits.Count; j++)
+						int regionIndex = (int)this.worldPositionningService.GetRegionIndex(army.WorldPosition);
+						if (requestUnitListMessage.ForceSourceRegion != regionIndex || !this.IsArmyBlockedInCityUnderSiege(army))
 						{
-							AIData_Unit aidata_Unit;
-							if (this.aiDataRepository.TryGetAIData<AIData_Unit>(army.StandardUnits[j].GUID, out aidata_Unit) && this.PrepareRecruitementData(aidata_Unit, requestUnitListMessage, maximumUnitPerArmy, agency))
-							{
-								this.availableGameEntities.Add(aidata_Unit);
-							}
+							goto IL_32F;
 						}
 					}
-					else if (this.PrepareRecruitementData(aidata_Army, requestUnitListMessage, maximumUnitPerArmy, agency))
+					else if (this.IsArmyBlockedInCityUnderSiege(army))
 					{
-						if (requestUnitListMessage.OnlyMercenaries)
-						{
-							foreach (Unit unit in army.StandardUnits)
-							{
-								Diagnostics.Assert(unit.UnitDesign != null);
-								if (!unit.UnitDesign.Tags.Contains(TradableUnit.ReadOnlyMercenary))
-								{
-									goto IL_39E;
-								}
-							}
-						}
-						this.availableGameEntities.Add(aidata_Army);
+						goto IL_32F;
 					}
-				}
-				else if (aidata_Army.GetArmyLockState() == AIData_Army.AIDataArmyLockState.Locked)
-				{
-					AIData_Unit aidata_Unit2;
-					if (army.StandardUnits.Count >= 1 && this.aiDataRepository.TryGetAIData<AIData_Unit>(army.StandardUnits[0].GUID, out aidata_Unit2) && aidata_Unit2.ReservationExtraTag != AIData_Unit.AIDataReservationExtraTag.ArmyRecruitment && (!aidata_Unit2.IsUnitLocked() || (!this.NearlyEqual(aidata_Unit2.ReservationPriority, requestUnitListMessage.Priority) && aidata_Unit2.ReservationPriority <= requestUnitListMessage.Priority)))
+					AIData_Army aidata_Army;
+					this.aiDataRepository.TryGetAIData<AIData_Army>(army.GUID, out aidata_Army);
+					if (aidata_Army.GetArmyLockState() == AIData_Army.AIDataArmyLockState.Free)
 					{
-						if (requestUnitListMessage.ArmyPattern.PerUnitTest && AILayer_ArmyRecruitment.GetValidArmySpawningPosition(army, this.worldPositionningService, this.pathfindingService).IsValid)
+						if (requestUnitListMessage.ArmyPattern.PerUnitTest)
 						{
-							for (int k = 0; k < army.StandardUnits.Count; k++)
+							if (AILayer_ArmyRecruitment.GetValidArmySpawningPosition(army, this.worldPositionningService, this.pathfindingService).IsValid)
 							{
-								if (this.aiDataRepository.TryGetAIData<AIData_Unit>(army.StandardUnits[k].GUID, out aidata_Unit2) && this.PrepareRecruitementData(aidata_Unit2, requestUnitListMessage, maximumUnitPerArmy, agency))
+								for (int j = 0; j < army.StandardUnits.Count; j++)
 								{
-									this.availableGameEntities.Add(aidata_Unit2);
+									AIData_Unit aidata_Unit;
+									if (this.aiDataRepository.TryGetAIData<AIData_Unit>(army.StandardUnits[j].GUID, out aidata_Unit) && this.PrepareRecruitementData(aidata_Unit, requestUnitListMessage, maximumUnitPerArmy, agency))
+									{
+										this.availableGameEntities.Add(aidata_Unit);
+									}
 								}
 							}
 						}
 						else if (this.PrepareRecruitementData(aidata_Army, requestUnitListMessage, maximumUnitPerArmy, agency))
 						{
-							if (requestUnitListMessage.OnlyMercenaries)
-							{
-								foreach (Unit unit2 in army.StandardUnits)
-								{
-									Diagnostics.Assert(unit2.UnitDesign != null);
-									if (!unit2.UnitDesign.Tags.Contains(TradableUnit.ReadOnlyMercenary))
-									{
-										goto IL_39E;
-									}
-								}
-							}
 							this.availableGameEntities.Add(aidata_Army);
 						}
 					}
-				}
-				else
-				{
-					aidata_Army.GetArmyLockState();
+					else if (aidata_Army.GetArmyLockState() == AIData_Army.AIDataArmyLockState.Locked)
+					{
+						if (army.StandardUnits.Count >= 1)
+						{
+							AIData_Unit aidata_Unit;
+							if (this.aiDataRepository.TryGetAIData<AIData_Unit>(army.StandardUnits[0].GUID, out aidata_Unit))
+							{
+								if (aidata_Unit.ReservationExtraTag != AIData_Unit.AIDataReservationExtraTag.ArmyRecruitment)
+								{
+									if (!aidata_Unit.IsUnitLocked() || (!this.NearlyEqual(aidata_Unit.ReservationPriority, requestUnitListMessage.Priority) && aidata_Unit.ReservationPriority <= requestUnitListMessage.Priority))
+									{
+										if (requestUnitListMessage.ArmyPattern.PerUnitTest)
+										{
+											if (AILayer_ArmyRecruitment.GetValidArmySpawningPosition(army, this.worldPositionningService, this.pathfindingService).IsValid)
+											{
+												for (int k = 0; k < army.StandardUnits.Count; k++)
+												{
+													if (this.aiDataRepository.TryGetAIData<AIData_Unit>(army.StandardUnits[k].GUID, out aidata_Unit) && this.PrepareRecruitementData(aidata_Unit, requestUnitListMessage, maximumUnitPerArmy, agency))
+													{
+														this.availableGameEntities.Add(aidata_Unit);
+													}
+												}
+											}
+										}
+										else if (this.PrepareRecruitementData(aidata_Army, requestUnitListMessage, maximumUnitPerArmy, agency))
+										{
+											this.availableGameEntities.Add(aidata_Army);
+										}
+									}
+								}
+							}
+						}
+					}
+					else if (aidata_Army.GetArmyLockState() == AIData_Army.AIDataArmyLockState.Hybrid)
+					{
+					}
 				}
 			}
-			IL_39E:;
+			IL_32F:;
 		}
 		if (empire is MajorEmpire)
 		{
@@ -872,12 +745,12 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 						{
 							if (city.Region.Index != requestUnitListMessage.ForceSourceRegion)
 							{
-								goto IL_59F;
+								goto IL_54D;
 							}
 						}
 						else if (city.BesiegingEmpire != null)
 						{
-							goto IL_59F;
+							goto IL_54D;
 						}
 						AICommanderMission_Garrison aicommanderMission_Garrison = null;
 						AIData_City aidata_City;
@@ -893,35 +766,38 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 						}
 						for (int m = 0; m < city.StandardUnits.Count; m++)
 						{
-							AIData_Unit aidata_Unit3;
-							if (this.aiDataRepository.TryGetAIData<AIData_Unit>(city.StandardUnits[m].GUID, out aidata_Unit3) && aidata_Unit3.ReservationExtraTag != AIData_Unit.AIDataReservationExtraTag.ArmyRecruitment)
+							AIData_Unit aidata_Unit;
+							if (this.aiDataRepository.TryGetAIData<AIData_Unit>(city.StandardUnits[m].GUID, out aidata_Unit))
 							{
-								bool flag = aidata_Unit3.Unit.UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1);
-								if (!flag && aicommanderMission_Garrison != null)
+								if (aidata_Unit.ReservationExtraTag != AIData_Unit.AIDataReservationExtraTag.ArmyRecruitment)
 								{
-									float unitPriorityInCity = aicommanderMission_Garrison.GetUnitPriorityInCity(m);
-									if (this.NearlyEqual(unitPriorityInCity, requestUnitListMessage.Priority) || unitPriorityInCity > requestUnitListMessage.Priority)
+									bool flag = aidata_Unit.Unit.UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1);
+									if (!flag && aicommanderMission_Garrison != null)
 									{
-										goto IL_586;
+										float unitPriorityInCity = aicommanderMission_Garrison.GetUnitPriorityInCity(m);
+										if (this.NearlyEqual(unitPriorityInCity, requestUnitListMessage.Priority) || unitPriorityInCity > requestUnitListMessage.Priority)
+										{
+											goto IL_534;
+										}
 									}
-								}
-								if (!flag && aicommanderMission_GarrisonCamp != null && aicommanderMission_GarrisonCamp.Camp != null)
-								{
-									float unitPriorityInCamp = aicommanderMission_GarrisonCamp.GetUnitPriorityInCamp(m);
-									if (this.NearlyEqual(unitPriorityInCamp, requestUnitListMessage.Priority) || unitPriorityInCamp > requestUnitListMessage.Priority)
+									if (!flag && aicommanderMission_GarrisonCamp != null && aicommanderMission_GarrisonCamp.Camp != null)
 									{
-										goto IL_586;
+										float unitPriorityInCamp = aicommanderMission_GarrisonCamp.GetUnitPriorityInCamp(m);
+										if (this.NearlyEqual(unitPriorityInCamp, requestUnitListMessage.Priority) || unitPriorityInCamp > requestUnitListMessage.Priority)
+										{
+											goto IL_534;
+										}
 									}
-								}
-								if ((!requestUnitListMessage.OnlyMercenaries || city.StandardUnits[m].UnitDesign.Tags.Contains(TradableUnit.ReadOnlyMercenary)) && this.PrepareRecruitementData(aidata_Unit3, requestUnitListMessage, maximumUnitPerArmy, agency))
-								{
-									this.availableGameEntities.Add(aidata_Unit3);
+									if (this.PrepareRecruitementData(aidata_Unit, requestUnitListMessage, maximumUnitPerArmy, agency))
+									{
+										this.availableGameEntities.Add(aidata_Unit);
+									}
 								}
 							}
-							IL_586:;
+							IL_534:;
 						}
 					}
-					IL_59F:;
+					IL_54D:;
 				}
 			}
 			if (requestUnitListMessage.ForceSourceRegion == -1)
@@ -934,13 +810,19 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 					{
 						for (int num = 0; num < village.StandardUnits.Count; num++)
 						{
-							AIData_Unit aidata_Unit4;
-							if (this.aiDataRepository.TryGetAIData<AIData_Unit>(village.StandardUnits[num].GUID, out aidata_Unit4) && aidata_Unit4.ReservationExtraTag != AIData_Unit.AIDataReservationExtraTag.ArmyRecruitment)
+							AIData_Unit aidata_Unit;
+							if (this.aiDataRepository.TryGetAIData<AIData_Unit>(village.StandardUnits[num].GUID, out aidata_Unit))
 							{
-								float villageUnitPriority = militaryLayer.GetVillageUnitPriority(village, num);
-								if (!this.NearlyEqual(villageUnitPriority, requestUnitListMessage.Priority) && villageUnitPriority <= requestUnitListMessage.Priority && (!requestUnitListMessage.OnlyMercenaries || village.StandardUnits[num].UnitDesign.Tags.Contains(TradableUnit.ReadOnlyMercenary)) && this.PrepareRecruitementData(aidata_Unit4, requestUnitListMessage, maximumUnitPerArmy, agency))
+								if (aidata_Unit.ReservationExtraTag != AIData_Unit.AIDataReservationExtraTag.ArmyRecruitment)
 								{
-									this.availableGameEntities.Add(aidata_Unit4);
+									float villageUnitPriority = militaryLayer.GetVillageUnitPriority(village, num);
+									if (!this.NearlyEqual(villageUnitPriority, requestUnitListMessage.Priority) && villageUnitPriority <= requestUnitListMessage.Priority)
+									{
+										if (this.PrepareRecruitementData(aidata_Unit, requestUnitListMessage, maximumUnitPerArmy, agency))
+										{
+											this.availableGameEntities.Add(aidata_Unit);
+										}
+									}
 								}
 							}
 						}
@@ -1126,31 +1008,29 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 
 	public static IEnumerable<Army> GetArmiesInRegion(int regionIndex)
 	{
-		IGameService service = Services.GetService<IGameService>();
-		Diagnostics.Assert(service != null);
-		IWorldPositionningService worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
+		IGameService gameService = Services.GetService<IGameService>();
+		Diagnostics.Assert(gameService != null);
+		IWorldPositionningService worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
 		Region region = worldPositionningService.GetRegion(regionIndex);
-		int num;
-		for (int indexTile = 0; indexTile < region.WorldPositions.Length; indexTile = num + 1)
+		for (int indexTile = 0; indexTile < region.WorldPositions.Length; indexTile++)
 		{
 			if (!worldPositionningService.IsWaterTile(region.WorldPositions[indexTile]))
 			{
-				Army armyAtPosition = worldPositionningService.GetArmyAtPosition(region.WorldPositions[indexTile]);
-				if (armyAtPosition != null)
+				Army army = worldPositionningService.GetArmyAtPosition(region.WorldPositions[indexTile]);
+				if (army != null)
 				{
-					yield return armyAtPosition;
+					yield return army;
 				}
 			}
-			num = indexTile;
 		}
 		yield break;
 	}
 
 	public static IEnumerable<Army> GetVisibleArmiesInRegion(int regionIndex, global::Empire referenceEmpire)
 	{
-		IGameService service = Services.GetService<IGameService>();
-		Diagnostics.Assert(service != null);
-		IVisibilityService visibilityService = service.Game.Services.GetService<IVisibilityService>();
+		IGameService gameService = Services.GetService<IGameService>();
+		Diagnostics.Assert(gameService != null);
+		IVisibilityService visibilityService = gameService.Game.Services.GetService<IVisibilityService>();
 		foreach (Army army in Intelligence.GetArmiesInRegion(regionIndex))
 		{
 			if (!army.IsCamouflaged || visibilityService.IsWorldPositionDetectedFor(army.WorldPosition, referenceEmpire) || army.IsPillaging)
@@ -1158,8 +1038,6 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 				yield return army;
 			}
 		}
-		IEnumerator<Army> enumerator = null;
-		yield break;
 		yield break;
 	}
 
@@ -1231,12 +1109,15 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		for (int i = 0; i < region.City.Districts.Count; i++)
 		{
 			District district = region.City.Districts[i];
-			if (!this.worldPositionningService.IsWaterTile(district.WorldPosition) && district.Type == DistrictType.Exploitation)
+			if (!this.worldPositionningService.IsWaterTile(district.WorldPosition))
 			{
-				Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(district.WorldPosition);
-				if (armyAtPosition != null && armyAtPosition.Empire.Index == region.City.BesiegingEmpireIndex)
+				if (district.Type == DistrictType.Exploitation)
 				{
-					num += this.EvaluateMilitaryPowerOfGarrison(empire, armyAtPosition, 0);
+					Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(district.WorldPosition);
+					if (armyAtPosition != null && armyAtPosition.Empire.Index == region.City.BesiegingEmpireIndex)
+					{
+						num += this.EvaluateMilitaryPowerOfGarrison(empire, armyAtPosition, 0);
+					}
 				}
 			}
 		}
@@ -1353,13 +1234,17 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		{
 			return num;
 		}
-		foreach (Unit unit in kaiju.GetActiveTroops().Units)
+		Garrison activeTroops = kaiju.GetActiveTroops();
+		if (kaiju.OnGarrisonMode())
 		{
-			num += this.EvaluateMilitaryPowerOfOpponentUnit(empire, unit, 0f);
-		}
-		if (kaiju.OnGarrisonMode() && kaiju.IsTamed())
-		{
-			num += this.EvaluateMajorFactionMaxMilitaryPowerOnRegion(kaiju.Empire, kaiju.Region.Index);
+			foreach (Unit unit in activeTroops.Units)
+			{
+				num += this.EvaluateMilitaryPowerOfOpponentUnit(empire, unit, 0f);
+			}
+			if (kaiju.IsTamed())
+			{
+				num += this.EvaluateMajorFactionMaxMilitaryPowerOnRegion(kaiju.Empire, kaiju.Region.Index);
+			}
 		}
 		return num;
 	}
@@ -1531,13 +1416,13 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 			Diagnostics.LogError("Failed to retrieve the end turn service.");
 		}
 		this.defaultUnitPatternCategory = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<string>(EntityInfoAIHelper.RegistryPath + "DefaultUnitPatternCategory", this.defaultUnitPatternCategory);
-		IGameService service3 = Services.GetService<IGameService>();
-		Diagnostics.Assert(service3 != null);
-		this.worldPositionningService = service3.Game.Services.GetService<IWorldPositionningService>();
+		IGameService gameService = Services.GetService<IGameService>();
+		Diagnostics.Assert(gameService != null);
+		this.worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositionningService != null);
-		this.pathfindingService = service3.Game.Services.GetService<IPathfindingService>();
+		this.pathfindingService = gameService.Game.Services.GetService<IPathfindingService>();
 		Diagnostics.Assert(this.pathfindingService != null);
-		this.visibilityService = service3.Game.Services.GetService<IVisibilityService>();
+		this.visibilityService = gameService.Game.Services.GetService<IVisibilityService>();
 		this.animationCurveDatabase = Databases.GetDatabase<Amplitude.Unity.Framework.AnimationCurve>(false);
 		yield return base.BindService<IAIDataRepositoryAIHelper>(serviceContainer, delegate(IAIDataRepositoryAIHelper service)
 		{
@@ -1548,27 +1433,27 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 			this.unitPatternHelper = service;
 		});
 		this.InitializeBelief(game);
-		IDatabase<BattleSequence> database = Databases.GetDatabase<BattleSequence>(false);
-		Diagnostics.Assert(database != null);
-		ISessionService service2 = Services.GetService<ISessionService>();
-		Diagnostics.Assert(service2 != null);
-		string lobbyData = service2.Session.GetLobbyData<string>("EncounterSequence", BattleEncounter.DefaultBattleSequenceName);
+		IDatabase<BattleSequence> battleSequenceDatabase = Databases.GetDatabase<BattleSequence>(false);
+		Diagnostics.Assert(battleSequenceDatabase != null);
+		ISessionService sessionService = Services.GetService<ISessionService>();
+		Diagnostics.Assert(sessionService != null);
+		string sequenceName = sessionService.Session.GetLobbyData<string>("EncounterSequence", BattleEncounter.DefaultBattleSequenceName);
 		BattleSequence battleSequence;
-		if (database.TryGetValue(lobbyData, out battleSequence))
+		if (battleSequenceDatabase.TryGetValue(sequenceName, out battleSequence))
 		{
-			for (int i = 0; i < battleSequence.BattlePhases.Length; i++)
+			for (int phaseIndex = 0; phaseIndex < battleSequence.BattlePhases.Length; phaseIndex++)
 			{
-				BattlePhase battlePhase = battleSequence.BattlePhases[i];
-				if (battlePhase.Simulation != null)
+				BattlePhase currentBattlePhase = battleSequence.BattlePhases[phaseIndex];
+				if (currentBattlePhase.Simulation != null)
 				{
-					this.numberOfBattleRound += battlePhase.NumberOfRounds;
+					this.numberOfBattleRound += currentBattlePhase.NumberOfRounds;
 				}
 			}
 		}
-		string value = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<string>(string.Format("{0}/{1}", "AI/AIHelpers/Intelligence", "ReinforcementModifierByRound"), string.Empty);
-		if (!string.IsNullOrEmpty(value))
+		string reinforcementModifierByRoundName = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<string>(string.Format("{0}/{1}", "AI/AIHelpers/Intelligence", "ReinforcementModifierByRound"), string.Empty);
+		if (!string.IsNullOrEmpty(reinforcementModifierByRoundName))
 		{
-			this.reinforcementModifierByRound = this.animationCurveDatabase.GetValue(value);
+			this.reinforcementModifierByRound = this.animationCurveDatabase.GetValue(reinforcementModifierByRoundName);
 		}
 		yield break;
 	}
@@ -1580,7 +1465,8 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		{
 			return false;
 		}
-		if (empire.GetAgency<DepartmentOfScience>().HaveResearchedShipTechnology())
+		DepartmentOfScience agency = empire.GetAgency<DepartmentOfScience>();
+		if (agency.HaveResearchedShipTechnology())
 		{
 			return true;
 		}
@@ -1588,8 +1474,13 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 		{
 			return false;
 		}
-		DepartmentOfTheInterior agency = empire.GetAgency<DepartmentOfTheInterior>();
-		return agency.Cities.Count >= 1 && agency.Cities[0].Region.ContinentID == this.world.Regions[regionIndex].ContinentID;
+		DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
+		if (agency2.Cities.Count >= 1)
+		{
+			int continentID = agency2.Cities[0].Region.ContinentID;
+			return continentID == this.world.Regions[regionIndex].ContinentID;
+		}
+		return false;
 	}
 
 	public override IEnumerator Load(global::Game game)
@@ -1673,7 +1564,8 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 				else
 				{
 					float propertyValue2 = city.GetPropertyValue(SimulationProperties.CityDefensePointRecoveryPerTurn);
-					num3 = Math.Min(city.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint), num3 + propertyValue2 * (float)turnCount);
+					float propertyValue3 = city.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
+					num3 = Math.Min(propertyValue3, num3 + propertyValue2 * (float)turnCount);
 				}
 			}
 			foreach (Unit unit in city.Militia.StandardUnits)
@@ -1699,7 +1591,7 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 						{
 							if (usedGuids.Contains(armyAtPosition.GUID))
 							{
-								goto IL_1C0;
+								goto IL_20B;
 							}
 							usedGuids.Add(armyAtPosition.GUID);
 						}
@@ -1720,7 +1612,7 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 						}
 					}
 				}
-				IL_1C0:;
+				IL_20B:;
 			}
 		}
 		if (garrison is Camp)
@@ -1747,7 +1639,7 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 					{
 						if (usedGuids.Contains(armyAtPosition2.GUID))
 						{
-							goto IL_312;
+							goto IL_396;
 						}
 						usedGuids.Add(armyAtPosition2.GUID);
 					}
@@ -1767,7 +1659,7 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 						}
 					}
 				}
-				IL_312:;
+				IL_396:;
 			}
 		}
 		if (garrison.Empire == empire || !(empire is MajorEmpire))
@@ -1777,383 +1669,26 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 				num2++;
 				num += this.EvaluateMilitaryPowerOfAllyUnit(garrison.Hero, num3);
 			}
-			using (IEnumerator<Unit> enumerator2 = garrison.StandardUnits.GetEnumerator())
+			foreach (Unit unit5 in garrison.StandardUnits)
 			{
-				while (enumerator2.MoveNext())
-				{
-					Unit unit5 = enumerator2.Current;
-					num2++;
-					num += this.EvaluateMilitaryPowerOfAllyUnit(unit5, num3);
-				}
-				goto IL_3F4;
+				num2++;
+				num += this.EvaluateMilitaryPowerOfAllyUnit(unit5, num3);
 			}
 		}
-		if (garrison.Hero != null)
+		else
 		{
-			num2++;
-			num += this.EvaluateMilitaryPowerOfOpponentUnit(empire, garrison.Hero, num3);
+			if (garrison.Hero != null)
+			{
+				num2++;
+				num += this.EvaluateMilitaryPowerOfOpponentUnit(empire, garrison.Hero, num3);
+			}
+			foreach (Unit unit6 in garrison.StandardUnits)
+			{
+				num2++;
+				num += this.EvaluateMilitaryPowerOfOpponentUnit(empire, unit6, num3);
+			}
 		}
-		foreach (Unit unit6 in garrison.StandardUnits)
-		{
-			num2++;
-			num += this.EvaluateMilitaryPowerOfOpponentUnit(empire, unit6, num3);
-		}
-		IL_3F4:
 		return (float)num2 * num;
-	}
-
-	public void ComputeMPBasedOnBattleArea(IGarrison firstGarrison, List<IGarrison> reinforcements, int availableTile, ref float militaryPower, bool Defender = false)
-	{
-		int num = (int)firstGarrison.GetPropertyValue(SimulationProperties.ReinforcementPointCount);
-		float additionalHealthPoint = 0f;
-		City city = firstGarrison as City;
-		if (city == null)
-		{
-			IWorldPositionable worldPositionable = firstGarrison as IWorldPositionable;
-			District district = this.worldPositionningService.GetDistrict(worldPositionable.WorldPosition);
-			if (district != null && district.City.Empire == firstGarrison.Empire)
-			{
-				city = district.City;
-			}
-		}
-		if (city != null && Defender)
-		{
-			additionalHealthPoint = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
-		}
-		int num2 = 0;
-		if (firstGarrison.Hero != null)
-		{
-			militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.Hero, additionalHealthPoint);
-			availableTile--;
-			num2++;
-		}
-		int num3 = 0;
-		while (availableTile > 0 && num3 < firstGarrison.StandardUnits.Count)
-		{
-			militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.StandardUnits[num3], additionalHealthPoint);
-			availableTile--;
-			num2++;
-			num3++;
-		}
-		city = (firstGarrison as City);
-		if (city != null)
-		{
-			int num4 = 0;
-			while (availableTile > 0 && num4 < city.Militia.StandardUnits.Count)
-			{
-				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(city.Militia.StandardUnits[num4], additionalHealthPoint);
-				availableTile--;
-				num2++;
-				num4++;
-			}
-		}
-		militaryPower *= (float)num2;
-		if (availableTile <= 0)
-		{
-			return;
-		}
-		int num5 = 0;
-		int i = 0;
-		int num6 = 0;
-		while (num6 < this.numberOfBattleRound && reinforcements.Count > num5)
-		{
-			availableTile++;
-			num2 = 0;
-			float num7 = 0f;
-			float num8;
-			if (this.reinforcementModifierByRound != null)
-			{
-				num8 = this.reinforcementModifierByRound.Evaluate((float)num6);
-			}
-			else
-			{
-				num8 = 1f - (float)num6 / (float)this.numberOfBattleRound;
-			}
-			int num9 = 0;
-			while (num9 < num && availableTile > 0)
-			{
-				while (i >= reinforcements[num5].StandardUnits.Count)
-				{
-					num5++;
-					if (num5 >= reinforcements.Count)
-					{
-						goto IL_23E;
-					}
-					i = 0;
-					if (reinforcements[num5].Hero != null)
-					{
-						i = -1;
-					}
-					if (i < reinforcements[num5].StandardUnits.Count)
-					{
-						break;
-					}
-				}
-				if (i == -1)
-				{
-					num7 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].Hero, additionalHealthPoint);
-				}
-				else
-				{
-					num7 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].StandardUnits[i], additionalHealthPoint);
-				}
-				i++;
-				num2++;
-				availableTile--;
-				num9++;
-			}
-			IL_23E:
-			if (num2 <= 0)
-			{
-				break;
-			}
-			num7 *= num8;
-			num7 *= (float)num2;
-			militaryPower += num7;
-			num6++;
-		}
-	}
-
-	public void ComputeMPBasedOnBattleAreaELCP(IGarrison firstGarrison, List<IGarrison> reinforcements, int availableTile, ref float militaryPower, bool IsCityOwner, City city)
-	{
-		int num = (int)firstGarrison.GetPropertyValue(SimulationProperties.ReinforcementPointCount);
-		float additionalHealthPoint = 0f;
-		if (city != null && IsCityOwner)
-		{
-			additionalHealthPoint = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
-		}
-		int num2 = 0;
-		bool flag = ELCPUtilities.GetsFortificationBonus(firstGarrison, city);
-		if (firstGarrison.Hero != null)
-		{
-			if (flag)
-			{
-				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.Hero, additionalHealthPoint);
-			}
-			else
-			{
-				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.Hero, 0f);
-			}
-			availableTile--;
-			num2++;
-		}
-		int num3 = 0;
-		while (availableTile > 0 && num3 < firstGarrison.StandardUnits.Count)
-		{
-			if (flag)
-			{
-				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.StandardUnits[num3], additionalHealthPoint);
-			}
-			else
-			{
-				militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(firstGarrison.StandardUnits[num3], 0f);
-			}
-			availableTile--;
-			num2++;
-			num3++;
-		}
-		City city2 = firstGarrison as City;
-		if (city2 != null)
-		{
-			int num4 = 0;
-			while (availableTile > 0 && num4 < city2.Militia.StandardUnits.Count)
-			{
-				if (flag)
-				{
-					militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(city2.Militia.StandardUnits[num4], additionalHealthPoint);
-				}
-				else
-				{
-					militaryPower += this.EvaluateMilitaryPowerOfAllyUnit(city2.Militia.StandardUnits[num4], 0f);
-				}
-				availableTile--;
-				num2++;
-				num4++;
-			}
-		}
-		militaryPower *= (float)num2;
-		if (availableTile <= 0)
-		{
-			return;
-		}
-		int num5 = 0;
-		int i = 0;
-		int num6 = 0;
-		while (num6 < this.numberOfBattleRound && reinforcements.Count > num5)
-		{
-			availableTile++;
-			num2 = 0;
-			float num7 = 0f;
-			float num8;
-			if (this.reinforcementModifierByRound != null)
-			{
-				num8 = this.reinforcementModifierByRound.Evaluate((float)num6);
-			}
-			else
-			{
-				num8 = 1f - (float)num6 / (float)this.numberOfBattleRound;
-			}
-			int num9 = 0;
-			while (num9 < num && availableTile > 0)
-			{
-				while (i >= reinforcements[num5].StandardUnits.Count)
-				{
-					num5++;
-					if (num5 >= reinforcements.Count)
-					{
-						goto IL_2D0;
-					}
-					i = 0;
-					if (reinforcements[num5].Hero != null)
-					{
-						i = -1;
-					}
-					if (i < reinforcements[num5].StandardUnits.Count)
-					{
-						break;
-					}
-				}
-				flag = ELCPUtilities.GetsFortificationBonus(reinforcements[num5], city);
-				if (i == -1)
-				{
-					if (flag)
-					{
-						num7 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].Hero, additionalHealthPoint);
-					}
-					else
-					{
-						num7 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].Hero, 0f);
-					}
-				}
-				else if (flag)
-				{
-					num7 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].StandardUnits[i], additionalHealthPoint);
-				}
-				else
-				{
-					num7 += this.EvaluateMilitaryPowerOfAllyUnit(reinforcements[num5].StandardUnits[i], 0f);
-				}
-				i++;
-				num2++;
-				availableTile--;
-				num9++;
-			}
-			IL_2D0:
-			if (num2 <= 0)
-			{
-				break;
-			}
-			num7 *= num8;
-			num7 *= (float)num2;
-			militaryPower += num7;
-			num6++;
-		}
-	}
-
-	private void GatherReinforcement(Garrison attacker, Garrison defender, WorldArea area, ref int availableTile, bool attackerArea)
-	{
-		foreach (WorldPosition worldPosition in area.GetWorldPositions(this.worldPositionningService.World.WorldParameters))
-		{
-			WorldArea battleArea = null;
-			if (!this.worldPositionningService.IsWaterTile(worldPosition) && !this.worldPositionningService.HasRidge(worldPosition))
-			{
-				if (attackerArea)
-				{
-					if (this.AttackerArea.Contains(worldPosition))
-					{
-						availableTile++;
-					}
-				}
-				else if (this.DefenderArea.Contains(worldPosition))
-				{
-					availableTile++;
-				}
-				District district = this.worldPositionningService.GetDistrict(worldPosition);
-				if (district != null && District.IsACityTile(district) && !this.guidsInBattle.Contains(district.City.GUID))
-				{
-					this.guidsInBattle.Add(district.City.GUID);
-					if (district.City.BesiegingEmpire == null)
-					{
-						if (district.City.Empire == attacker.Empire)
-						{
-							if (district.City.UnitsCount > 0)
-							{
-								this.attackerReinforcement.Add(district.City);
-							}
-							if (district.City.Militia.UnitsCount > 0)
-							{
-								this.attackerReinforcement.Add(district.City.Militia);
-							}
-							if (attackerArea)
-							{
-								this.GatherReinforcementInCity(attacker.Empire, district.City, this.AttackerArea, ref availableTile, this.attackerReinforcement);
-							}
-							else
-							{
-								this.GatherReinforcementInCity(attacker.Empire, district.City, battleArea, ref availableTile, this.attackerReinforcement);
-							}
-						}
-						else if (district.City.Empire == defender.Empire)
-						{
-							if (district.City.UnitsCount > 0)
-							{
-								this.defenderReinforcement.Add(district.City);
-							}
-							if (district.City.Militia.UnitsCount > 0)
-							{
-								this.defenderReinforcement.Add(district.City.Militia);
-							}
-							if (attackerArea)
-							{
-								this.GatherReinforcementInCity(attacker.Empire, district.City, battleArea, ref availableTile, this.defenderReinforcement);
-							}
-							else
-							{
-								this.GatherReinforcementInCity(attacker.Empire, district.City, this.DefenderArea, ref availableTile, this.defenderReinforcement);
-							}
-						}
-					}
-				}
-				Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(worldPosition);
-				if (armyAtPosition != null && !this.guidsInBattle.Contains(armyAtPosition.GUID))
-				{
-					this.guidsInBattle.Add(armyAtPosition.GUID);
-					if (armyAtPosition.Empire == attacker.Empire)
-					{
-						float propertyValue = armyAtPosition.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
-						float propertyValue2 = armyAtPosition.GetPropertyValue(SimulationProperties.ActionPointsSpent);
-						if (1f <= propertyValue - propertyValue2)
-						{
-							this.attackerReinforcement.Add(armyAtPosition);
-						}
-					}
-					else if (armyAtPosition.Empire == defender.Empire && !armyAtPosition.IsCamouflaged)
-					{
-						this.defenderReinforcement.Add(armyAtPosition);
-					}
-				}
-			}
-		}
-	}
-
-	private void GatherReinforcementInCity(global::Empire attacker, City city, WorldArea battleArea, ref int availableTile, List<IGarrison> reinforcements)
-	{
-		for (int i = 0; i < city.Districts.Count; i++)
-		{
-			if (District.IsACityTile(city.Districts[i]) && !this.worldPositionningService.IsWaterTile(city.Districts[i].WorldPosition))
-			{
-				Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(city.Districts[i].WorldPosition);
-				if (armyAtPosition != null && armyAtPosition.Empire == city.Empire && !this.guidsInBattle.Contains(armyAtPosition.GUID) && (armyAtPosition.Empire == attacker || !armyAtPosition.IsCamouflaged))
-				{
-					reinforcements.Add(armyAtPosition);
-					this.guidsInBattle.Add(armyAtPosition.GUID);
-				}
-				if (battleArea != null && !battleArea.Contains(city.Districts[i].WorldPosition, this.world.WorldParameters))
-				{
-					availableTile++;
-				}
-			}
-		}
 	}
 
 	private List<UnitDesign> availableUnitDesignList;
@@ -2166,17 +1701,17 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 
 	private AIBelief_UnitBodyStrength[] strengthBeliefPerEmpire;
 
-	private List<IGarrison> attackerReinforcement;
+	private List<IGarrison> attackerReinforcement = new List<IGarrison>();
 
-	private List<IGarrison> defenderReinforcement;
+	private List<IGarrison> defenderReinforcement = new List<IGarrison>();
 
 	private Amplitude.Unity.Framework.AnimationCurve reinforcementModifierByRound;
 
-	private List<AIData_GameEntity> availableGameEntities;
+	private List<AIData_GameEntity> availableGameEntities = new List<AIData_GameEntity>();
 
-	private Intelligence.BestRecruitementCombination bestRecruitementCombination;
+	private Intelligence.BestRecruitementCombination bestRecruitementCombination = new Intelligence.BestRecruitementCombination();
 
-	private float maximalNumberOfTurn;
+	private float maximalNumberOfTurn = 10f;
 
 	private float maxRecruitementDistance;
 
@@ -2184,11 +1719,11 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 
 	private IEndTurnService endTurnService;
 
-	private List<GameEntityGUID> guidsInBattle;
+	private List<GameEntityGUID> guidsInBattle = new List<GameEntityGUID>();
 
 	private IPathfindingService pathfindingService;
 
-	private List<float> tempUnitsMilitaryPower;
+	private List<float> tempUnitsMilitaryPower = new List<float>();
 
 	private IUnitPatternAIHelper unitPatternHelper;
 
@@ -2201,10 +1736,6 @@ public class Intelligence : AIHelper, IIntelligenceAIHelper, IService
 	private IVisibilityService visibilityService;
 
 	private int numberOfBattleRound;
-
-	private WorldArea AttackerArea;
-
-	private WorldArea DefenderArea;
 
 	public class BestRecruitementCombination
 	{

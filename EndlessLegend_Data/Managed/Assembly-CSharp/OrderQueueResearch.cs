@@ -13,7 +13,6 @@ public class OrderQueueResearch : global::Order
 		}
 		this.ConstructionGameEntityGUID = GameEntityGUID.Zero;
 		this.ConstructibleElementName = constructibleElement.Name;
-		this.InsertAtFirstPlace = false;
 	}
 
 	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
@@ -51,15 +50,17 @@ public class OrderQueueResearch : global::Order
 		if (this.ResourceStocks == null)
 		{
 			writer.Write(0);
-			return;
 		}
-		writer.Write(this.ResourceStocks.Length);
-		for (int i = 0; i < this.ResourceStocks.Length; i++)
+		else
 		{
-			Diagnostics.Assert(this.ResourceStocks[i] != null);
-			Diagnostics.Assert(!StaticString.IsNullOrEmpty(this.ResourceStocks[i].PropertyName));
-			writer.Write(this.ResourceStocks[i].PropertyName);
-			writer.Write(this.ResourceStocks[i].Stock);
+			writer.Write(this.ResourceStocks.Length);
+			for (int i = 0; i < this.ResourceStocks.Length; i++)
+			{
+				Diagnostics.Assert(this.ResourceStocks[i] != null);
+				Diagnostics.Assert(!StaticString.IsNullOrEmpty(this.ResourceStocks[i].PropertyName));
+				writer.Write(this.ResourceStocks[i].PropertyName);
+				writer.Write(this.ResourceStocks[i].Stock);
+			}
 		}
 	}
 
@@ -82,20 +83,6 @@ public class OrderQueueResearch : global::Order
 			};
 		}
 	}
-
-	public OrderQueueResearch(int empireIndex, DepartmentOfScience.ConstructibleElement constructibleElement, bool Insert = false) : base(empireIndex)
-	{
-		if (constructibleElement == null)
-		{
-			throw new ArgumentNullException("constructibleElement");
-		}
-		this.ConstructionGameEntityGUID = GameEntityGUID.Zero;
-		this.ConstructibleElementName = constructibleElement.Name;
-		this.InsertAtFirstPlace = Insert;
-	}
-
-	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
-	public bool InsertAtFirstPlace { get; set; }
 
 	public static readonly StaticString AuthenticationPath = "DepartmentOfScience/OrderQueueResearch";
 }

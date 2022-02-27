@@ -42,17 +42,20 @@ public abstract class BaseNavyTask : ArmyTask
 	protected HeuristicValue ComputeDistanceFitness(float numberOfTurnToReach, BaseNavyArmy.ArmyRole armyRole)
 	{
 		HeuristicValue heuristicValue = new HeuristicValue(0f);
-		float num = 5f;
 		heuristicValue.Add(numberOfTurnToReach, "Turn to reach", new object[0]);
 		float operand = 4f;
+		if (armyRole == BaseNavyArmy.ArmyRole.Forteress)
+		{
+			operand = 1.5f;
+		}
 		heuristicValue.Divide(operand, "constant", new object[0]);
-		heuristicValue.Clamp(0f, num);
+		heuristicValue.Clamp(0f, 2f);
 		HeuristicValue heuristicValue2 = new HeuristicValue(0f);
-		heuristicValue2.Add(num, "constant", new object[0]);
+		heuristicValue2.Add(2f, "constant", new object[0]);
 		heuristicValue2.Subtract(heuristicValue, "Turn ratio", new object[0]);
 		HeuristicValue heuristicValue3 = new HeuristicValue(0f);
 		heuristicValue3.Add(heuristicValue2, "inverted turn ratio", new object[0]);
-		heuristicValue3.Divide(num, "constant for normalization", new object[0]);
+		heuristicValue3.Divide(2f, "constant for normalization", new object[0]);
 		return heuristicValue3;
 	}
 }

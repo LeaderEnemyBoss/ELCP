@@ -46,15 +46,9 @@ public class AIBehaviorTreeNode_Action_GotoAndAttack : AIBehaviorTreeNode_Action
 		else
 		{
 			Army army;
-			if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
+			AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
+			if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
 			{
-				return State.Failure;
-			}
-			float propertyValue = army.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
-			float propertyValue2 = army.GetPropertyValue(SimulationProperties.ActionPointsSpent);
-			if (propertyValue <= propertyValue2)
-			{
-				aiBehaviorTree.ErrorCode = 33;
 				return State.Failure;
 			}
 			if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
@@ -72,17 +66,22 @@ public class AIBehaviorTreeNode_Action_GotoAndAttack : AIBehaviorTreeNode_Action
 			}
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			if (!service.Game.Services.GetService<IGameEntityRepositoryService>().Contains(gameEntity.GUID))
+			IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
+			if (!service2.Contains(gameEntity.GUID))
 			{
 				return State.Success;
 			}
-			IEncounterRepositoryService service2 = service.Game.Services.GetService<IEncounterRepositoryService>();
-			if (service2 != null)
+			IEncounterRepositoryService service3 = service.Game.Services.GetService<IEncounterRepositoryService>();
+			if (service3 != null)
 			{
-				IEnumerable<Encounter> enumerable = service2;
-				if (enumerable != null && enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false)))
+				IEnumerable<Encounter> enumerable = service3;
+				if (enumerable != null)
 				{
-					return State.Running;
+					bool flag = enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false));
+					if (flag)
+					{
+						return State.Running;
+					}
 				}
 			}
 			IGarrison garrison;

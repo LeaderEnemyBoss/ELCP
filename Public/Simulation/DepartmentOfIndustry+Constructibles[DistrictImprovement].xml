@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ###################################### -->
+  <!-- ## Vanilla Endless Legend districts ## -->
+  <!-- ###################################### -->
+
+  <!-- Borough streets -->
+  <DistrictImprovementDefinition        Name="DistrictImprovement1"                         SubCategory="SubCategoryDistrict" ResourceOnMigration="FreeBorough" >
+    <CostReductionReference Name="DistrictImprovementWithAIBonus"/>
+    <CustomCost ResourceName="Production">($Property(ClassCity:NumberOfBoroughsInCity) + 1) * 150 * $Property(../ClassEmpire:BoroughCostFactor)</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementExtension" />
+    <SimulationDescriptorReference Name="DistrictImprovementExtractingCapacity" />
+    <SimulationDescriptorReference Name="DistrictImprovement1Availability" />
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeBoroughStock) eq 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">.../ClassEmpire,!FactionTraitNecrophages12</PathPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">!TechnologyOrbUnlock18WinterShifters</TechnologyPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Disable,AIEconomicRatio">$Property(Population) ge (($Property(NumberOfBoroughsInCity) + 1) * 2)</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictImprovement1"                     SubCategory="SubCategoryDistrict" ResourceOnMigration="FreeBorough">
+    <CustomCost ResourceName="FreeBorough" InstantOnCompletion="true">1</CustomCost>
+    <CustomCost ResourceName="QueuedFreeBorough" Instant="true">1</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementExtension" />
+    <SimulationDescriptorReference Name="DistrictImprovementExtractingCapacity" />
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">.../ClassEmpire,AffinityRovingClans</PathPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Discard,AIEconomicRatio">$Property(QueuedFreeBoroughStock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Necrophage Borough streets (cheaper) -->
+  <DistrictImprovementDefinition        Name="DistrictImprovement1Necrophage"               SubCategory="SubCategoryDistrict" ResourceOnMigration="FreeBorough">
+    <CostReductionReference Name="DistrictImprovementWithAIBonus"/>
+    <CustomCost ResourceName="Production">($Property(ClassCity:NumberOfBoroughsInCity) + 1) * 100 * $Property(../ClassEmpire:BoroughCostFactor)</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementExtension" />
+    <SimulationDescriptorReference Name="DistrictImprovementExtractingCapacity" />
+    <SimulationDescriptorReference Name="DistrictImprovement1NecrophageAvailability" />
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">.../ClassEmpire,FactionTraitNecrophages12</PathPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Disable,AIEconomicRatio">$Property(Population) ge ($Property(NumberOfBoroughsInCity) + 1)</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </DistrictImprovementDefinition>
+
+  <!-- Cargo docks -->
+  <CoastalDistrictImprovementDefinition Name="DistrictImprovementDocks"                     SubCategory="SubCategoryDistrict" DistrictDescriptorSuffix="Docks" ResourceOnMigration="FreeDocks">
+  <!-- !!! uncomment this when FreeCoastalDistrictImprovementDefinition has been implemented -->
+  <!--
+    <CoastalDistrictImprovementDefinition Name="DistrictImprovementDocks"                     SubCategory="SubCategoryDistrict" DistrictDescriptorSuffix="Docks" ResourceOnMigration="FreeDocks">
+  -->
+    <CostReductionReference Name="DistrictImprovementWithAIBonus"/>
+    <CustomCost ResourceName="Production">600</CustomCost>
+    <SimulationDescriptorReference    Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference    Name="DocksLocation" />
+    <SimulationDescriptorReference    Name="OceanRoadCreation" />
+    <SimulationDescriptorReference    Name="DistrictImprovementDocksDescriptor" />
+    <SimulationDescriptorReference    Name="DistrictImprovementDocks" />
+    <SimulationDescriptorReference    Name="EmbarkDisembarkBonus" />
+    <InterpreterPrerequisite  Inverted="false" Flags="Prerequisite,Discard">$Property(FreeDocksStock) le 0</InterpreterPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyDocks</TechnologyPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Discard">ClassCity/DistrictImprovementDocks</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/TerrainTagSeafaringUnitCreation,!DistrictProxyCampExploitation</PathPrerequisite>
+    <!-- Match="Any" ... improvement is accepted if anyone of the tags does math -->
+    <!-- Match="All" ... improvement is accepted if all the tags do math -->
+    <WorldPlacementTags Match="Any">TerrainTypeCoastalWaters;TerrainTypeInlandWater;TerrainTypeOcean</WorldPlacementTags>
+  </CoastalDistrictImprovementDefinition>
+  <!--
+  !!! This should be replaced with FreeCoastalDistrictImprovementDefinition when it has been implemented
+  -->
+  <FreeCoastalDistrictImprovementDefinition    Name="FreeDistrictDocks"                            SubCategory="SubCategoryDistrict" DistrictDescriptorSuffix="Docks" ResourceOnMigration="FreeDocks">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeDocks" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference    Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference    Name="DocksLocation" />
+    <SimulationDescriptorReference    Name="OceanRoadCreation" />
+    <SimulationDescriptorReference    Name="DistrictImprovementDocksDescriptor" />
+    <SimulationDescriptorReference    Name="DistrictImprovementDocks" />
+    <SimulationDescriptorReference    Name="EmbarkDisembarkBonus" />
+    <InterpreterPrerequisite Inverted="false" Flags="Discard,AIEconomicRatio">$Property(FreeDocksStock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/TerrainTagSeafaringUnitCreation,!DistrictProxyCampExploitation</PathPrerequisite>
+    <!-- Match="Any" ... improvement is accepted if anyone of the tags does math -->
+    <!-- Match="All" ... improvement is accepted if all the tags do math -->
+    <WorldPlacementTags Match="Any">TerrainTypeCoastalWaters;TerrainTypeInlandWater;TerrainTypeOcean</WorldPlacementTags>
+  </FreeCoastalDistrictImprovementDefinition>
+
+
+
+  <!-- #################################### -->
+  <!-- ## Winter Shifters Pack Districts ## -->
+  <!-- #################################### -->
+
+  <!-- Anomaly Intensifier -->
+  <DistrictImprovementDefinition        Name="DistrictImprovementOrbUnlock6"                SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock6" ResourceOnMigration="FreeOrbUnlock6">
+    <CostReductionReference Name="DistrictImprovementWithAIBonus"/>
+    <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Production">400</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock" />
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock6" />
+    <SimulationDescriptorReference Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference Name="AnomalyRequirements" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock6Stock) le 0</InterpreterPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyOrbUnlock6</TechnologyPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Discard">ClassCity/DistrictImprovementOrbUnlock6</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/DistrictTypeExploitation,TerrainTagAnomaly</PathPrerequisite>
+    <WorldPlacementTags Match="All">TerrainTagAnomaly</WorldPlacementTags>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictOrbUnlock6"                       SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock6" ResourceOnMigration="FreeOrbUnlock6">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeOrbUnlock6" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock" />
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock6" />
+    <SimulationDescriptorReference Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference Name="AnomalyRequirements" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock6Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/DistrictTypeExploitation,TerrainTagAnomaly</PathPrerequisite>
+    <WorldPlacementTags Match="All">TerrainTagAnomaly</WorldPlacementTags>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Strategic Intensifier -->
+  <DistrictImprovementDefinition        Name="DistrictImprovementOrbUnlock7"                SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock7" ResourceOnMigration="FreeOrbUnlock7">
+    <CostReductionReference Name="DistrictImprovementWithAIBonus"/>
+    <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Production">400</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock" />
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock7" />
+    <SimulationDescriptorReference Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference Name="StrategicResourceDepositRequirements" />
+    <PointOfInterestSimulationDescriptorReference Name="ExtractorIntensifier" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock7Stock) le 0</InterpreterPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyOrbUnlock7</TechnologyPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Discard">ClassCity/DistrictImprovementOrbUnlock7</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/DistrictTypeExploitation,PointOfInterestBonusStrategic,DistrictExploitableResource,!DistrictProxyCampExploitation</PathPrerequisite>
+    <WorldPlacementTags Match="All">PointOfInterestBonusStrategic</WorldPlacementTags>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictOrbUnlock7"                       SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock7" ResourceOnMigration="FreeOrbUnlock7">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeOrbUnlock7" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock" />
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock7" />
+    <SimulationDescriptorReference Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference Name="StrategicResourceDepositRequirements" />
+    <PointOfInterestSimulationDescriptorReference Name="ExtractorIntensifier" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock7Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/DistrictTypeExploitation,PointOfInterestBonusStrategic,DistrictExploitableResource,!DistrictProxyCampExploitation</PathPrerequisite>
+    <WorldPlacementTags Match="All">PointOfInterestBonusStrategic</WorldPlacementTags>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Luxury Intensifier -->
+  <DistrictImprovementDefinition        Name="DistrictImprovementOrbUnlock8"                SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock8" ResourceOnMigration="FreeOrbUnlock8">
+    <CostReductionReference Name="DistrictImprovementWithAIBonus"/>
+    <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Production">400</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock" />
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock8" />
+    <SimulationDescriptorReference Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference Name="LuxuryResourceDepositRequirements" />
+    <PointOfInterestSimulationDescriptorReference Name="ExtractorIntensifier" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock8Stock) le 0</InterpreterPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyOrbUnlock8</TechnologyPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Discard">ClassCity/DistrictImprovementOrbUnlock8</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/DistrictTypeExploitation,PointOfInterestBonusLuxury,DistrictExploitableResource,!DistrictProxyCampExploitation</PathPrerequisite>
+    <WorldPlacementTags Match="All">PointOfInterestBonusLuxury</WorldPlacementTags>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictOrbUnlock8"                       SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock8" ResourceOnMigration="FreeOrbUnlock8">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeOrbUnlock8" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock" />
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock8" />
+    <SimulationDescriptorReference Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference Name="LuxuryResourceDepositRequirements" />
+    <PointOfInterestSimulationDescriptorReference Name="ExtractorIntensifier" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock8Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/DistrictTypeExploitation,PointOfInterestBonusLuxury,DistrictExploitableResource,!DistrictProxyCampExploitation</PathPrerequisite>
+    <WorldPlacementTags Match="All">PointOfInterestBonusLuxury</WorldPlacementTags>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Winter Borough -->
+  <DistrictImprovementDefinition        Name="DistrictImprovementOrbUnlock9"                SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock9" ResourceOnMigration="FreeOrbUnlock9">
+    <CostReductionReference Name="DistrictImprovementWithAIBonus"/>
+    <CustomCost ResourceName="Orb" Instant="true">20 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Production">600</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock" />
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock9" />
+    <SimulationDescriptorReference Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference Name="InWinterRequirements" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock9Stock) le 0</InterpreterPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyOrbUnlock9</TechnologyPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite,Siege,AIEconomicRatio">#Winter</PathPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Discard">ClassCity/DistrictImprovementOrbUnlock9</PathPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictOrbUnlock9"                       SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock9" ResourceOnMigration="FreeOrbUnlock9">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeOrbUnlock9" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock" />
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock9" />
+    <SimulationDescriptorReference Name="OnlyOnePerCity" />
+    <SimulationDescriptorReference Name="InWinterRequirements" />
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock9Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Garth of the Allayi -->
+  <DistrictImprovementDefinition        Name="DistrictImprovementOrbUnlock18WinterShifters" SubCategory="SubCategoryDistrict" DistrictDescriptorSuffix="OrbUnlock18" ResourceOnMigration="FreeOrbUnlock18">
+    <CostReductionReference Name="DistrictImprovementWithAIBonus"/>
+    <CustomCost ResourceName="Orb" Instant="true">(10 + ($Property(ClassCity:NumberOfBoroughsInCity) * 3)) * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Production">($Property(ClassCity:NumberOfBoroughsInCity) + 1) * 150 * $Property(../ClassEmpire:BoroughCostFactor)</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock18WinterShifters" />
+    <SimulationDescriptorReference Name="DistrictImprovementExtractingCapacity" />
+    <SimulationDescriptorReference Name="DistrictImprovement1NecrophageAvailability" />
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock18Stock) le 0</InterpreterPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyOrbUnlock18WinterShifters</TechnologyPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Disable,AIEconomicRatio">$Property(Population) ge ($Property(NumberOfBoroughsInCity) + 1)</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictOrbUnlock18"                      SubCategory="SubCategoryDistrict" DistrictDescriptorSuffix="OrbUnlock18" ResourceOnMigration="FreeOrbUnlock18">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeOrbUnlock18" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementOrbUnlock18WinterShifters" />
+    <SimulationDescriptorReference Name="DistrictImprovementExtractingCapacity" />
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeOrbUnlock18Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Altar of Auriga -->
+  <DistrictImprovementDefinition        Name="DistrictAltarOfAuriga"                        SubCategory="SubCategoryAltarOfAuriga"   DistrictDescriptorSuffix="AltarOfAuriga" ResourceOnMigration="FreeAltarOfAuriga" OnePerEmpire="true">
+    <Cost ResourceName="Production">150</Cost>
+    <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <SimulationDescriptorReference Name="DistrictImprovementAltarOfAuriga"/>
+    <SimulationDescriptorReference Name="OnlyOnePerEmpire" />
+    <SimulationDescriptorReference Name="AltarOfAurigaUnlocking" />
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite  Inverted="false" Flags="Prerequisite,Discard">$Property(FreeAltarOfAurigaStock) le 0</InterpreterPrerequisite>
+    <PathPrerequisite         Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictAltarOfAuriga"                    SubCategory="SubCategoryAltarOfAuriga"   DistrictDescriptorSuffix="AltarOfAuriga" ResourceOnMigration="FreeAltarOfAuriga">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeAltarOfAuriga" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementAltarOfAuriga"/>
+    <SimulationDescriptorReference Name="OnlyOnePerEmpire" />
+    <SimulationDescriptorReference Name="AltarOfAurigaUnlocking" />
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire/ClassCity/DistrictImprovementAltarOfAuriga</PathPrerequisite>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Discard">$Property(FreeAltarOfAurigaStock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+
+
+  <!-- #################################### -->
+  <!-- ##    Guardians Pack Districts    ## -->
+  <!-- #################################### -->
+
+  <!-- Museum of Auriga -->
+  <DistrictImprovementDefinition        Name="DistrictWonder1"                              SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder1" ResourceOnMigration="FreeWonder1" IsUnique="true" OnePerWorld="true" >
+    <Cost ResourceName="Production">500</Cost>
+    <Cost ResourceName="Strategic1" Instant="true">5</Cost>
+    <Cost ResourceName="Strategic2" Instant="true">5</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder1"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite  Inverted="false" Flags="Prerequisite,Discard">$Property(FreeWonder1Stock) le 0</InterpreterPrerequisite>
+    <PathPrerequisite         Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+    <TechnologyPrerequisite   Inverted="true"  Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyWonder1</TechnologyPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictWonder1"                          SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder1" ResourceOnMigration="FreeWonder1" IsUnique="true" OnePerWorld="false">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeWonder1" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder1"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Discard">$Property(FreeWonder1Stock) gt 0</InterpreterPrerequisite>
+      <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Industrial Megapole -->
+  <DistrictImprovementDefinition        Name="DistrictWonder2"                              SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder2" ResourceOnMigration="FreeWonder2" IsUnique="true" OnePerWorld="true">
+    <Cost ResourceName="Production">1000</Cost>
+    <Cost ResourceName="Strategic1" Instant="true">15</Cost>
+    <Cost ResourceName="Strategic2" Instant="true">15</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder2"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyWonder2</TechnologyPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeWonder2Stock) eq 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictWonder2"                          SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder2" ResourceOnMigration="FreeWonder2" IsUnique="true" OnePerWorld="false">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeWonder2" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder2"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Discard">$Property(FreeWonder2Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Alchemic Institute -->
+  <DistrictImprovementDefinition        Name="DistrictWonder3"                              SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder3" ResourceOnMigration="FreeWonder3" IsUnique="true" OnePerWorld="true">
+    <Cost ResourceName="Production">1500</Cost>
+    <Cost ResourceName="Strategic3" Instant="true">25</Cost>
+    <Cost ResourceName="Strategic4" Instant="true">25</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder3"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyWonder3</TechnologyPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeWonder3Stock) eq 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictWonder3"                          SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder3" ResourceOnMigration="FreeWonder3" IsUnique="true" OnePerWorld="false">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeWonder3" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder3"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Discard">$Property(FreeWonder3Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Throne of Emperors -->
+  <DistrictImprovementDefinition        Name="DistrictWonder4"                              SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder4" ResourceOnMigration="FreeWonder4" IsUnique="true" OnePerWorld="true">
+    <Cost ResourceName="Production">3000</Cost>
+    <Cost ResourceName="Strategic5" Instant="true">35</Cost>
+    <Cost ResourceName="Strategic6" Instant="true">35</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder4"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyWonder4</TechnologyPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeWonder4Stock) eq 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictWonder4"                          SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder4" ResourceOnMigration="FreeWonder4" IsUnique="true" OnePerWorld="false">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeWonder4" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder4"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Discard">$Property(FreeWonder4Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+  <!-- Reliquary of Auriga -->
+  <DistrictImprovementDefinition        Name="DistrictWonder5"                              SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder5" ResourceOnMigration="FreeWonder5" IsUnique="true" OnePerWorld="true">
+    <Cost ResourceName="Production">5000</Cost>
+    <Cost ResourceName="Strategic5" Instant="true">45</Cost>
+    <Cost ResourceName="Strategic6" Instant="true">45</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder5"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyWonder5</TechnologyPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(FreeWonder5Stock) eq 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </DistrictImprovementDefinition>
+  <FreeDistrictImprovementDefinition    Name="FreeDistrictWonder5"                          SubCategory="SubCategoryWonder"   DistrictDescriptorSuffix="Wonder5" ResourceOnMigration="FreeWonder5" IsUnique="true" OnePerWorld="false">
+    <Tags>NoBuyout</Tags>
+    <CustomCost ResourceName="FreeWonder5" InstantOnCompletion="true">1</CustomCost>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder"/>
+    <SimulationDescriptorReference Name="DistrictImprovementWonder5"/>
+    <SimulationDescriptorReference Name="OnlyOneConstructionPerWorld" />
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WondersAndColossiPack</DownloadableContentPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Discard">$Property(FreeWonder5Stock) gt 0</InterpreterPrerequisite>
+    <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
+  </FreeDistrictImprovementDefinition>
+
+</Datatable>

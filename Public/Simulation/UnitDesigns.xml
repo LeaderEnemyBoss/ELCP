@@ -1,0 +1,2548 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################################################################################################################################## -->
+  <!-- #########################################   PREMADE UNIT DESIGN WHICH CAN BE CALL BY OTHER XMLS  ################################################# -->
+  <!-- ########    - Those units can be useful for the Quest, and  Minor Faction. It still can be used to generate units from a city improvement ######## -->
+  <!-- ################################################################################################################################################## -->
+
+<!-- ### SUMMARY ###
+  Format: wxxyyzz where w: major/minor/lesser/kaijus, x: faction, y: body, z: model
+  BrokenLords
+        BlackBishop    0010100
+        Cavalry        0010200
+        Infantry       0010300
+        Settler        0010400
+        Militia        0010500
+  MadFairies
+        ForestSpirit   0020100
+        Shaman         0020200
+        Archer         0020300
+        Settler        0020400
+        Militia        0020500
+  RageWizards
+        BattleMage     0030100
+        Phoenix        0030200
+        Witch          0030300
+        Settler        0030400
+        Militia        0030500
+  Necrophages
+        Necrohunter    0040100
+        Zombat         0040200
+        Lichbug        0040300
+        Settler        0040400
+        Militia        0040500
+  RovingClans
+        Dervish        0050100
+        Kassai         0050200
+        Berzerk        0050300
+        Settler        0050400
+        Militia        0050500
+        Scarab         0050600
+  Drakkens
+        Drakkenling    0060100
+        Wyvern         0060200
+        AncientDragon  0060300
+        Settler        0060400
+        Militia        0060500
+  Cultists
+        ?              0070100
+        ?              0070200
+        ?              0070300
+        Settler        0070400
+        Militia        0070500
+  Vaulters
+        Marines        0080100
+        DawnOfficer    0080200
+        Titan          0080300
+        Settler        0080400
+        Militia        0080500
+  Replicants
+        Predatore      0090100
+        Assassin       0090200
+        Myst aaaaa     0090300
+        Settler        0090400
+        Militia        0090500
+  Winter Shifters
+        Feline         0120100
+        Manta          0120200
+        Dark angel     0120300
+        Settler        0120400
+        Militia        0120500
+  Sea Demons
+        Turtle Ship    0130100
+        Mastermind     0130200
+        Leviathan      0130300
+        Settler        0130400
+        Militia        0130500
+  Flames
+        Golem          0140100
+        Flame harrier  0140200
+        Golem rider    0140300
+        Settler        0140400
+        Militia        0140500
+  Mimics
+        unit1          0150100
+        unit2          0150200
+        unit3          0150300
+        Settler        0150400
+        Militia        0150500
+  Tutorial
+        Marines        0100100
+        DawnOfficer    0100200
+        Titan          0100300
+        Settler        0100400
+        Militia        0100500
+  Mezari
+        Marines        0110100
+        DawnOfficer    0110200
+        Titan          0110300
+        Settler        0110400
+        Militia        0110500
+  Colossus
+        Earth          0990100
+        Fire           0990200
+        Water          0990300
+        Air            0990400
+        Dust           0990500
+
+  Urces
+        GiantOgre      1010100
+  Erycis
+        Hydra          1020100
+  Ceratan
+        Drider         1030100
+  Kazanji
+        Devil          1040100
+  Bos
+        Centaur        1050100
+  Silics
+        Golem          1060100
+  Delvers
+        Dwarf          1070100
+  Haunts
+        Specter        1080100
+  SistersOfMercy
+        Justicere      1090100
+  Jotus
+        Ettin          1100100
+  Hurnas
+        Orc            1110100
+  Minor
+        Minotaur       1120100
+  Birdhive
+        Harpy          1130100
+  Geldirus
+        Ice Warg       1140100
+  EyelessOnes
+        Caecator       1150100
+  Dorgeshi
+        Burdeki        1160100
+  Taskol
+        Golem          1170100
+  Dawn Shua
+        Zhujajun       1180100
+
+  Fomorians
+        FireShip       1210200
+        BoardingVessel 1210300
+        ArtilleryShip  1210400
+        Bathysphere    1210500
+
+  Fomorians - Naval Empire (alternative body with no constraint on technologies)
+        FireShip       1210600
+        BoardingVessel 1210100
+        ArtilleryShip  1210700
+        Bathysphere    1210800
+
+  Sea Monster
+        Maw            1220100
+        Appendage1     1220200
+        Appendage2     1220300
+        Appendage3     1220400
+        Appendage4     1220500
+        
+  Mirage
+        HeatWaveManta  2980100
+        
+  Kaijus
+        KaijusLice     3990100
+        Kaijus         3990200
+               
+-->
+
+
+
+  <!-- ################################################### -->
+  <!-- ############### BROKEN LORDS UNITS ################ -->
+  <!-- ################################################### -->
+
+  <!-- BROKEN LORDS BLACK BISHOP -->
+  <UnitDesign Name="UnitDesignBrokenLordsBlackBishop#1"            Model="0010100">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsBlackBishop" />
+  </UnitDesign>
+
+  <!-- BROKEN LORDS BLACK BISHOP [QUEST] [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsBlackBishop#Quest#Hidden"    Model="0010101" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsBlackBishop" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemScepter2Strategic1Tier2#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemScepter2Strategic1Tier2#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic1Tier1"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- BROKEN LORDS CAVALRY -->
+  <UnitDesign Name="UnitDesignBrokenLordsCavalry#1"                Model="0010200">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsCavalry" />
+  </UnitDesign>
+
+  <!-- BROKEN LORDS CAVALRY [QUEST] [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsCavalry#Quest#Hidden"    Model="0010201" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsCavalry" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2Strategic1Tier2#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemSpear2Strategic1Tier2#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic1Tier1"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- BROKEN LORDS INFANTRY -->
+  <UnitDesign Name="UnitDesignBrokenLordsInfantry#1"               Model="0010300">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsInfantry" />
+  </UnitDesign>
+
+  <!-- BROKEN LORDS SETTLER -->
+  <UnitDesign Name="UnitDesignBrokenLordsSettler#1"                Model="0010400">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsSettler" />
+  </UnitDesign>
+
+  <!-- BROKEN LORDS SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsSettler#Hidden"           Model="0010401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- BROKEN LORDS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsMilitiaEra1"              Model="0010501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- BROKEN LORDS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsMilitiaEra2"              Model="0010502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- BROKEN LORDS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsMilitiaEra3"              Model="0010503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+   <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+     <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- BROKEN LORDS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsMilitiaEra4"              Model="0010504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- BROKEN LORDS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsMilitiaEra5"              Model="0010505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- BROKEN LORDS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignBrokenLordsMilitiaEra6"              Model="0010506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyBrokenLordsMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+   <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+     <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ############### MAD FAIRIES UNITS ################# -->
+  <!-- ################################################### -->
+
+  <!-- MAD FAIRIES FOREST SPIRIT -->
+  <UnitDesign Name="UnitDesignMadFairiesForestSpirit#1"            Model="0020100">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesForestSpirit" />
+  </UnitDesign>
+
+  <!-- MAD FAIRIES SHAMAN -->
+  <UnitDesign Name="UnitDesignMadFairiesShaman#1"                  Model="0020200">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesShaman" />
+  </UnitDesign>
+
+  <!-- MAD FAIRIES ARCHER -->
+  <UnitDesign Name="UnitDesignMadFairiesArcher#1"                  Model="0020300">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesArcher" />
+  </UnitDesign>
+
+  <!-- MAD FAIRIES SETTLER -->
+  <UnitDesign Name="UnitDesignMadFairiesSettler#1"                 Model="0020400">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesSettler" />
+  </UnitDesign>
+
+  <!-- MAD FAIRIES SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMadFairiesSettler#Hidden"            Model="0020401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- MAD FAIRIES MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMadFairiesMilitiaEra1"               Model="0020501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MAD FAIRIES MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMadFairiesMilitiaEra2"               Model="0020502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MAD FAIRIES MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMadFairiesMilitiaEra3"               Model="0020503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MAD FAIRIES MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMadFairiesMilitiaEra4"               Model="0020504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MAD FAIRIES MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMadFairiesMilitiaEra5"               Model="0020505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MAD FAIRIES MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMadFairiesMilitiaEra6"               Model="0020506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMadFairiesMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ############### RAGE WIZARDS UNITS ################ -->
+  <!-- ################################################### -->
+
+  <!-- RAGE WIZARDS BATTLEMAGE -->
+  <UnitDesign Name="UnitDesignRageWizardsBattleMage#1"             Model="0030100">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsBattleMage" />
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS PHOENIX -->
+  <UnitDesign Name="UnitDesignRageWizardsPhoenix#1"                Model="0030200">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsPhoenix" />
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS WITCH -->
+  <UnitDesign Name="UnitDesignRageWizardsWitch#1"                  Model="0030300">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsWitch" />
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS SETTLER -->
+  <UnitDesign Name="UnitDesignRageWizardsSettler#1"                Model="0030400">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsSettler" />
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRageWizardsSettler#Hidden"           Model="0030401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRageWizardsMilitiaEra1"              Model="0030501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRageWizardsMilitiaEra2"              Model="0030502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRageWizardsMilitiaEra3"              Model="0030503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRageWizardsMilitiaEra4"              Model="0030504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRageWizardsMilitiaEra5"              Model="0030505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- RAGE WIZARDS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRageWizardsMilitiaEra6"              Model="0030506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ############### NECROPHAGES UNITS ################# -->
+  <!-- ################################################### -->
+
+  <!-- NECROPHAGES NECROHUNTER -->
+  <UnitDesign Name="UnitDesignNecrophagesNecrohunter#1"            Model="0040100">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesNecrohunter" />
+  </UnitDesign>
+
+  <!-- NECROPHAGES ZOMBAT -->
+  <UnitDesign Name="UnitDesignNecrophagesZombat#1"                 Model="0040200">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesZombat" />
+  </UnitDesign>
+
+  <!-- NECROPHAGES LICHBUG -->
+  <UnitDesign Name="UnitDesignNecrophagesLichbug#1"                Model="0040300">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesLichbug" />
+  </UnitDesign>
+
+  <!-- NECROPHAGES SETTLER -->
+  <UnitDesign Name="UnitDesignNecrophagesSettler#1"                Model="0040400">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesSettler" />
+  </UnitDesign>
+
+  <!-- NECROPHAGES SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesSettler#Hidden"           Model="0040401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- NECROPHAGES MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesMilitiaEra1"              Model="0040501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesMilitiaEra2"              Model="0040502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesMilitiaEra3"              Model="0040503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesMilitiaEra4"              Model="0040504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesMilitiaEra5"              Model="0040505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesMilitiaEra6"              Model="0040506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES UNDEAD ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesUndeadEra1"               Model="0040507" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesUndead" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Undead,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES UNDEAD ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesUndeadEra2"               Model="0040508" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesUndead" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Undead,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES UNDEAD ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesUndeadEra3"               Model="0040509" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesUndead" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Undead,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES UNDEAD ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesUndeadEra4"               Model="0040510" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesUndead" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Undead,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES UNDEAD ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesUndeadEra5"               Model="0040511" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesUndead" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Undead,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- NECROPHAGES UNDEAD ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignNecrophagesUndeadEra6"               Model="0040512" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyNecrophagesUndead" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Undead,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+  <!-- ################################################### -->
+  <!-- ################# VAULTERS UNITS ################## -->
+  <!-- ################################################### -->
+
+  <!-- VAULTERS MARINE -->
+  <UnitDesign Name="UnitDesignVaultersMarine#1"                    Model="0080100">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersMarine" />
+  </UnitDesign>
+
+  <!-- VAULTERS MARINE [QUEST] [HIDDEN]  -->
+  <UnitDesign Name="UnitDesignVaultersMarine#Quest#Hidden"         Model="0080101" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersMarine" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1Strategic2Tier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1Strategic2Tier2#2"   />
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic2Tier2"/>
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemTalismanIronTier3"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- VAULTERS DAWN OFFICER -->
+  <UnitDesign Name="UnitDesignVaultersDawnOfficer#1"               Model="0080200">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersDawnOfficer" />
+  </UnitDesign>
+
+  <!-- VAULTERS DAWN OFFICER [QUEST] [HIDDEN] -->
+  <UnitDesign Name="UnitDesignVaultersDawnOfficer#Quest#Hidden"    Model="0080201" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersDawnOfficer" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemAxe1Strategic2Tier2#1"    />
+      <Slot Name="OffHand"                         ItemName="ItemShield1Strategic2Tier2#2" />
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic2Tier2"/>
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemTalismanIronTier3"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- VAULTERS TITAN -->
+  <UnitDesign Name="UnitDesignVaultersTitan#1"                     Model="0080300">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersTitan" />
+  </UnitDesign>
+
+  <!-- VAULTERS SETTLERS  -->
+  <UnitDesign Name="UnitDesignVaultersSettler#1"                   Model="0080400">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersSettler" />
+  </UnitDesign>
+
+  <!-- VAULTERS SETTLERS [HIDDEN] -->
+  <UnitDesign Name="UnitDesignVaultersSettler#Hidden"              Model="0080401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- VAULTERS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignVaultersMilitiaEra1"                 Model="0080501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- VAULTERS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignVaultersMilitiaEra2"                 Model="0080502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- VAULTERS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignVaultersMilitiaEra3"                 Model="0080503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- VAULTERS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignVaultersMilitiaEra4"                 Model="0080504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- VAULTERS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignVaultersMilitiaEra5"                 Model="0080505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- VAULTERS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignVaultersMilitiaEra6"                 Model="0080506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyVaultersMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ############### ROVING CLANS UNITS ################ -->
+  <!-- ################################################### -->
+
+  <!-- ROVING CLANS DERVISH -->
+  <UnitDesign Name="UnitDesignRovingClansDervish#1"                Model="0050100">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansDervish" />
+  </UnitDesign>
+
+  <!-- ROVING CLANS KASSAI -->
+  <UnitDesign Name="UnitDesignRovingClansKassai#1"                 Model="0050200">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansKassai" />
+  </UnitDesign>
+
+  <!-- ROVING CLANS KASSAI [QUEST] [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansKassai#Quest#Hidden"    Model="0050201" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansKassai" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemBow2Strategic2Tier1#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemBow2Strategic2Tier1#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic2Tier1"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ROVING CLANS BERZERK -->
+  <UnitDesign Name="UnitDesignRovingClansBerzerk#1"                Model="0050300">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansBerzerk" />
+  </UnitDesign>
+
+  <!-- ROVING CLANS BERZERK [QUEST] [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansBerzerk#Quest#Hidden"    Model="0050301" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansBerzerk" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2Strategic2Tier2#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemClaw2Strategic2Tier2#1"/>
+      <Slot Name="Head"                            ItemName="ItemHeadStrategic2Tier1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic2Tier1"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ROVING CLANS SETTLER -->
+  <UnitDesign Name="UnitDesignRovingClansSettler#1"                Model="0050400">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansSettler" />
+  </UnitDesign>
+
+  <!-- ROVING CLANS SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansSettler#Hidden"           Model="0050401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- ROVING CLANS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansMilitiaEra1"              Model="0050501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ROVING CLANS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansMilitiaEra2"              Model="0050502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ROVING CLANS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansMilitiaEra3"              Model="0050503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+   <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+     <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ROVING CLANS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansMilitiaEra4"              Model="0050504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ROVING CLANS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansMilitiaEra5"              Model="0050505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ROVING CLANS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansMilitiaEra6"              Model="0050506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+   <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+     <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+     <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ROVING CLANS SCARAB [HIDDEN] -->
+  <UnitDesign Name="UnitDesignRovingClansScarab#Hidden"            Model="0050601" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansScarab" />
+    <Tags>Scarab, MigrationUnit</Tags>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ################# DRAKKENS UNITS ################## -->
+  <!-- ################################################### -->
+
+  <!-- DRAKKENS DRAKKENLING -->
+  <UnitDesign Name="UnitDesignDrakkensDrakkenling#1"               Model="0060100">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensDrakkenling" />
+  </UnitDesign>
+
+  <!-- DRAKKENS DRAKKENLING [QUEST] [HIDDEN]-->
+  <UnitDesign Name="UnitDesignDrakkensDrakkenling#Quest#Hidden"    Model="0060101" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensDrakkenling" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSword1Strategic4Tier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemShield1Strategic4Tier2#1" />
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic4Tier2"/>
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemRingIronTier3"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- DRAKKENS WYVERN -->
+  <UnitDesign Name="UnitDesignDrakkensWyvern#1"                    Model="0060200">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensWyvern" />
+  </UnitDesign>
+
+  <!-- DRAKKENS WYVERN [QUEST] [HIDDEN]-->
+  <UnitDesign Name="UnitDesignDrakkensWyvern#Quest#Hidden"         Model="0060201" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensWyvern" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2Strategic4Tier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2Strategic4Tier2#1" />
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic4Tier2"/>
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemRingIronTier3"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- DRAKKENS ANCIENT DRAGON -->
+  <UnitDesign Name="UnitDesignDrakkensAncientDragon#1"             Model="0060300">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensAncientDragon" />
+  </UnitDesign>
+
+  <!-- DRAKKENS SETTLER -->
+  <UnitDesign Name="UnitDesignDrakkensSettler#1"                   Model="0060400">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensSettler" />
+  </UnitDesign>
+
+  <!-- DRAKKENS SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignDrakkensSettler#Hidden"              Model="0060401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- DRAKKENS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignDrakkensMilitiaEra1"                 Model="0060501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- DRAKKENS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignDrakkensMilitiaEra2"                 Model="0060502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- DRAKKENS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignDrakkensMilitiaEra3"                 Model="0060503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- DRAKKENS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignDrakkensMilitiaEra4"                 Model="0060504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- DRAKKENS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignDrakkensMilitiaEra5"                 Model="0060505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- DRAKKENS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignDrakkensMilitiaEra6"                 Model="0060506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyDrakkensMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ################# CULTISTS UNITS ################## -->
+  <!-- ################################################### -->
+
+  <!-- CULTISTS PREACHER -->
+  <UnitDesign Name="UnitDesignCultistsPreacher#1"                  Model="0070100">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsPreacher" />
+  </UnitDesign>
+
+  <!-- CULTISTS FANATIC -->
+  <UnitDesign Name="UnitDesignCultistsFanatic#1"                   Model="0070200">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsFanatic" />
+  </UnitDesign>
+
+  <!-- CULTISTS NAMELESS GUARD -->
+  <UnitDesign Name="UnitDesignCultistsNamelessGuard#1"             Model="0070300">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsNamelessGuard" />
+  </UnitDesign>
+
+  <!-- CULTISTS SETTLER -->
+  <UnitDesign Name="UnitDesignCultistsSettler#1"                   Model="0070400" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsSettler" />
+  </UnitDesign>
+
+  <!-- CULTISTS SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignCultistsSettler#Hidden"              Model="0070401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- CULTISTS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignCultistsMilitiaEra1"                 Model="0070501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- CULTISTS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignCultistsMilitiaEra2"                 Model="0070502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- CULTISTS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignCultistsMilitiaEra3"                 Model="0070503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- CULTISTS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignCultistsMilitiaEra4"                 Model="0070504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- CULTISTS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignCultistsMilitiaEra5"                 Model="0070505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- CULTISTS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignCultistsMilitiaEra6"                 Model="0070506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ############# FACTION MEZARI UNITS ############## -->
+  <!-- ################################################### -->
+
+  <!-- MEZARI MARINE -->
+  <UnitDesign Name="UnitDesignMezariMarine#1"                      Model="0110100">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariMarine" />
+  </UnitDesign>
+
+  <!-- MEZARI DAWN OFFICER -->
+  <UnitDesign Name="UnitDesignMezariDawnOfficer#1"                 Model="0110200">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariDawnOfficer" />
+  </UnitDesign>
+
+  <!-- MEZARI TITAN -->
+  <UnitDesign Name="UnitDesignMezariTitan#1"                       Model="0110300">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariTitan" />
+  </UnitDesign>
+
+  <!-- MEZARI SETTLERS  -->
+  <UnitDesign Name="UnitDesignMezariSettler#1"                     Model="0110400">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariSettler" />
+  </UnitDesign>
+
+  <!-- MEZARI SETTLERS [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMezariSettler#Hidden"                Model="0110401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- MEZARI MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMezariMilitiaEra1"                   Model="0110501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MEZARI MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMezariMilitiaEra2"                   Model="0110502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MEZARI MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMezariMilitiaEra3"                   Model="0110503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MEZARI MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMezariMilitiaEra4"                   Model="0110504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MEZARI MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMezariMilitiaEra5"                   Model="0110505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MEZARI MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMezariMilitiaEra6"                   Model="0110506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMezariMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ####"########### REPLICANTS UNITS ################# -->
+  <!-- ################################################### -->
+
+  <!-- REPLICANTS PREDATORE -->
+  <UnitDesign Name="UnitDesignReplicantsPredatore#1"               Model="0090100">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsPredatore" />
+  </UnitDesign>
+
+  <!-- REPLICANTS PREDATORE [QUEST] [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsPredatore#Quest#Hidden1"   Model="0090101" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsPredatore" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1IronTier2#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemCrossbow1IronTier2#2"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"/>
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemRingIronTier1"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- REPLICANTS PREDATORE [QUEST] [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsPredatore#Quest#Hidden2"   Model="0090102" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsPredatore" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemCrossbow1Strategic6Tier1#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemCrossbow1Strategic6Tier1#2"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic6Tier1"/>
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemRingStrategic6Tier1"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- REPLICANTS ASSASSIN -->
+  <UnitDesign Name="UnitDesignReplicantsAssassin#1"                Model="0090200">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsAssassin" />
+  </UnitDesign>
+
+  <!-- REPLICANTS MYST -->
+  <UnitDesign Name="UnitDesignReplicantsMyst#1"                    Model="0090300">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsMyst" />
+  </UnitDesign>
+
+  <!-- REPLICANTS MYST [QUEST] [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsMyst#Quest#Hidden"         Model="0090301" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsMyst" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2Strategic6Tier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2Strategic6Tier1#1" />
+      <Slot Name="Torso"                           ItemName="ItemTorsoStrategic6Tier1"/>
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemRingStrategic6Tier1"/>
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- REPLICANTS SETTLERS  -->
+  <UnitDesign Name="UnitDesignReplicantsSettler#1"                 Model="0090400">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsSettler" />
+  </UnitDesign>
+
+  <!-- REPLICANTS SETTLERS [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsSettler#Hidden"            Model="0090401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- REPLICANTS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsMilitiaEra1"               Model="0090501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- REPLICANTS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsMilitiaEra2"               Model="0090502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- REPLICANTS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsMilitiaEra3"               Model="0090503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- REPLICANTS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsMilitiaEra4"               Model="0090504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- REPLICANTS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsMilitiaEra5"               Model="0090505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- REPLICANTS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignReplicantsMilitiaEra6"               Model="0090506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyReplicantsMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ############## WINTER SHIFTERS UNITS ############## -->
+  <!-- ################################################### -->
+
+  <!-- WINTER SHIFTERS FELINE -->
+  <UnitDesign Name="UnitDesignWinterShiftersFeline#1"              Model="0120100">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersFeline" />
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS MANTA -->
+  <UnitDesign Name="UnitDesignWinterShiftersManta#1"               Model="0120200">
+    <Tags>Solitary</Tags>
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersManta" />
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS DARK ANGEL -->
+  <UnitDesign Name="UnitDesignWinterShiftersDarkAngel#1"           Model="0120300">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersDarkAngel" />
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS SETTLERS  -->
+  <UnitDesign Name="UnitDesignWinterShiftersSettler#1"             Model="0120400">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersSettler" />
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS SETTLERS [HIDDEN] -->
+  <UnitDesign Name="UnitDesignWinterShiftersSettler#Hidden"        Model="0120401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignWinterShiftersMilitiaEra1"           Model="0120501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignWinterShiftersMilitiaEra2"           Model="0120502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignWinterShiftersMilitiaEra3"           Model="0120503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignWinterShiftersMilitiaEra4"           Model="0120504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignWinterShiftersMilitiaEra5"           Model="0120505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- WINTER SHIFTERS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignWinterShiftersMilitiaEra6"           Model="0120506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyWinterShiftersMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+
+  <!-- ################################################### -->
+  <!-- ################ SEA DEMONS UNITS ################# -->
+  <!-- ################################################### -->
+
+  <!-- SEA DEMONS MASTERMIND -->
+  <UnitDesign Name="UnitDesignSeaDemonsMastermind#1"               Model="0130200">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsMastermind" />
+  </UnitDesign>
+
+  <!-- SEA DEMONS TURTLE SHIP -->
+  <UnitDesign Name="UnitDesignSeaDemonsTurtleShip#1"               Model="0130100">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsTurtleShip" />
+    <Tags>Seafaring</Tags>
+  </UnitDesign>
+
+  <!-- SEA DEMONS LEVIATHAN -->
+  <UnitDesign Name="UnitDesignSeaDemonsLeviathan#1"                Model="0130300">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsLeviathan" />
+    <Tags>Seafaring</Tags>
+  </UnitDesign>
+
+  <!-- SEA DEMONS SETTLERS  -->
+  <UnitDesign Name="UnitDesignSeaDemonsSettler#1"                  Model="0130400">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsSettler" />
+  </UnitDesign>
+
+  <!-- SEA DEMONS SETTLERS [HIDDEN] -->
+  <UnitDesign Name="UnitDesignSeaDemonsSettler#Hidden"             Model="0130401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- SEA DEMONS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignSeaDemonsMilitiaEra1"                Model="0130501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- SEA DEMONS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignSeaDemonsMilitiaEra2"                Model="0130502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- SEA DEMONS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignSeaDemonsMilitiaEra3"                Model="0130503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- SEA DEMONS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignSeaDemonsMilitiaEra4"                Model="0130504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- SEA DEMONS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignSeaDemonsMilitiaEra5"                Model="0130505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- SEA DEMONS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignSeaDemonsMilitiaEra6"                Model="0130506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodySeaDemonsMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+
+<!-- ################################################### -->
+  <!-- ############### FLAMES UNITS ################# -->
+  <!-- ################################################### -->
+
+  <!-- FLAMES GOLEM -->
+  <UnitDesign Name="UnitDesignFlamesGolem#1"                       Model="0140100">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesGolem" />
+  </UnitDesign>
+
+  <!-- FLAMES FLAME HARRIER -->
+  <UnitDesign Name="UnitDesignFlamesGeomancer#1"                Model="0140200">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesGeomancer" />
+  </UnitDesign>
+
+  <!-- FLAMES GOLEM RIDER -->
+  <UnitDesign Name="UnitDesignFlamesGorilla#1"                  Model="0140300">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesGorilla" />
+  </UnitDesign>
+
+  <!-- FLAMES SETTLER -->
+  <UnitDesign Name="UnitDesignFlamesSettler#1"                     Model="0140400">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesSettler" />
+  </UnitDesign>
+
+  <!-- FLAMES SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignFlamesSettler#Hidden"                Model="0140401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- FLAMES MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignFlamesMilitiaEra1"                   Model="0140501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- FLAMES MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignFlamesMilitiaEra2"                  Model="0140502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- FLAMES MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignFlamesMilitiaEra3"                 Model="0140503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- FLAMES MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignFlamesMilitiaEra4"                Model="0140504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- FLAMES MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignFlamesMilitiaEra5"               Model="0140505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- FLAMES MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignFlamesMilitiaEra6"               Model="0140506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- FLAMES GOLEM RIDER QUEST -->
+  <UnitDesign Name="UnitDesignFlamesGorillaQuest#1"                  Model="0140301" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesGorilla" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemClaw2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- FLAMES GOLEM QUEST -->
+  <UnitDesign Name="UnitDesignFlamesGolemQuest#1"                    Model="0140101" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyFlamesGolem" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSword2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSword2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  
+  <!-- ################################################### -->
+  <!-- ############### MIMICS UNITS ################# -->
+  <!-- ################################################### -->
+
+  <!-- MIMICS SETTLER -->
+  <UnitDesign Name="UnitDesignMimicsSettler#1"                     Model="0150400" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsSettler" />
+  </UnitDesign>
+
+  <!-- MIMICS SETTLER [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMimicsSettler#Hidden"                Model="0150401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- MIMICS UNIT 1 -->
+  <UnitDesign Name="UnitDesignMimicsUnit1#1"                       Model="0150100">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsUnit1" />
+  </UnitDesign>
+
+  <!-- MIMICS UNIT 3 -->
+  <UnitDesign Name="UnitDesignMimicsUnit2#1"                       Model="0150200">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsUnit2" />
+  </UnitDesign>
+
+  <!-- MIMICS UNIT 3 -->
+  <UnitDesign Name="UnitDesignMimicsUnit3#1"                       Model="0150300">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsUnit3" />
+  </UnitDesign>
+  
+  <!-- MIMICS MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMimicsMilitiaEra1"                   Model="0150501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MIMICS MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMimicsMilitiaEra2"                  Model="0150502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MIMICS MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMimicsMilitiaEra3"                 Model="0150503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MIMICS MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMimicsMilitiaEra4"                Model="0150504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MIMICS MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMimicsMilitiaEra5"               Model="0150505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- MIMICS MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignMimicsMilitiaEra6"               Model="0150506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyMimicsMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- AM ENEMY QUEST -->
+  <UnitDesign Name="UnitDesignArdentMageEnemyQuest#1"                    Model="0150601" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsBattleMage" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- LICE ENEMY QUEST -->
+  <UnitDesign Name="UnitDesignLiceEnemyQuest#1"                    Model="0150602" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyKaijusMilitia" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- ################################################### -->
+  <!-- ############# FACTION TUTORIAL UNITS ############## -->
+  <!-- ################################################### -->
+
+  <!-- TUTORIAL MARINE -->
+  <UnitDesign Name="UnitDesignTutorialUnit1#1"                     Model="0100100">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialUnit1" />
+  </UnitDesign>
+
+  <!-- TUTORIAL DAWN OFFICER -->
+  <UnitDesign Name="UnitDesignTutorialUnit2#1"                     Model="0100200">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialUnit2" />
+  </UnitDesign>
+
+  <!-- TUTORIAL TITAN -->
+  <UnitDesign Name="UnitDesignTutorialUnit3#1"                     Model="0100300">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialUnit3" />
+  </UnitDesign>
+
+  <!-- TUTORIAL SETTLERS  -->
+  <UnitDesign Name="UnitDesignTutorialSettler#1"                   Model="0100400">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialSettler" />
+  </UnitDesign>
+
+  <!-- TUTORIAL SETTLERS [HIDDEN] -->
+  <UnitDesign Name="UnitDesignTutorialSettler#Hidden"              Model="0100401" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialSettler" />
+    <Tags>Settler</Tags>
+  </UnitDesign>
+
+  <!-- TUTORIAL MILITIA ERA1 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignTutorialMilitiaEra1"                 Model="0100501" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialMilitia" />
+    <SimulationDescriptorReference Name="Era1MilitiaBonus" />
+    <Tags>Militia,Era1</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- TUTORIAL MILITIA ERA2 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignTutorialMilitiaEra2"                 Model="0100502" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialMilitia" />
+    <SimulationDescriptorReference Name="Era2MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <Tags>Militia,Era2</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- TUTORIAL MILITIA ERA3 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignTutorialMilitiaEra3"                 Model="0100503" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialMilitia" />
+    <SimulationDescriptorReference Name="Era3MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <Tags>Militia,Era3</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2IronTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadIronTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoIronTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsIronTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- TUTORIAL MILITIA ERA4 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignTutorialMilitiaEra4"                 Model="0100504" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialMilitia" />
+    <SimulationDescriptorReference Name="Era4MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <Tags>Militia,Era4</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier1#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier1"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier1"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- TUTORIAL MILITIA ERA5 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignTutorialMilitiaEra5"                 Model="0100505" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialMilitia" />
+    <SimulationDescriptorReference Name="Era5MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <Tags>Militia,Era5</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier2#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier2"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier2"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+  <!-- TUTORIAL MILITIA ERA6 [HIDDEN] -->
+  <UnitDesign Name="UnitDesignTutorialMilitiaEra6"                 Model="0100506" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyTutorialMilitia" />
+    <SimulationDescriptorReference Name="Era6MilitiaBonus" />
+    <PathPrerequisite Flags="Prerequisite,Discard,Validity">.../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <Tags>Militia,Era6</Tags>
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="OffHand"                         ItemName="ItemSpear2DustTier3#1" />
+      <Slot Name="Head"                            ItemName="ItemHeadDustTier3"     />
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"    />
+      <Slot Name="Legs"                            ItemName="ItemLegsDustTier3"     />
+      <Slot Name="Accessory0" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+
+</Datatable>

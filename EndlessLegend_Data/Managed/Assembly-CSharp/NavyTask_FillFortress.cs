@@ -41,7 +41,6 @@ public class NavyTask_FillFortress : NavyTask
 	private HeuristicValue GetTaskFitness(BaseNavyArmy navyGarrison)
 	{
 		HeuristicValue heuristicValue = new HeuristicValue(0f);
-		base.Owner.GetAgency<DepartmentOfForeignAffairs>();
 		if (navyGarrison.Garrison.GUID == base.TargetGuid)
 		{
 			heuristicValue.Value = -1f;
@@ -65,7 +64,7 @@ public class NavyTask_FillFortress : NavyTask
 			heuristicValue.Add(this.NavyFortress.WantToKeepArmyFitness, "Fortress army need", new object[0]);
 			if (navyGarrison.Role == BaseNavyArmy.ArmyRole.TaskForce)
 			{
-				heuristicValue.Boost(-0.1f, "constant avoid reinforce while task force.", new object[0]);
+				heuristicValue.Boost(-0.4f, "constant avoid reinforce while task force.", new object[0]);
 				float num = (float)navyGarrison.Garrison.CurrentUnitSlot;
 				float operand = Math.Abs((float)this.ReinforcementSlots - num);
 				HeuristicValue heuristicValue2 = new HeuristicValue(0f);
@@ -83,7 +82,8 @@ public class NavyTask_FillFortress : NavyTask
 				{
 					heuristicValue.Boost(0.1f, "(constant)Under high", new object[0]);
 				}
-				float numberOfTurnToReach = (float)this.worldPositionService.GetDistance(navyGarrison.Garrison.WorldPosition, this.NavyFortress.Garrison.WorldPosition) / navyGarrison.GetMaximumMovement();
+				float num2 = (float)this.worldPositionService.GetDistance(navyGarrison.Garrison.WorldPosition, this.NavyFortress.Garrison.WorldPosition);
+				float numberOfTurnToReach = num2 / navyGarrison.GetMaximumMovement();
 				heuristicValue.Multiply(base.ComputeDistanceFitness(numberOfTurnToReach, navyGarrison.Role), "Distance", new object[0]);
 			}
 		}

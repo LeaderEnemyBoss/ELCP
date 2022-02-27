@@ -29,6 +29,8 @@
 
   <CostReduction Name="CityImprovement">
     <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
     <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
     <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
   </CostReduction>
@@ -164,6 +166,12 @@
     <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
   </CostReduction>
 
+  <CostReduction Name="MinorFactionDawnShua">
+    <Reduction PropertyName="DawnShuaUnitProductionCostReduction"        Type="Production" Priority="3"/>
+    <Reduction PropertyName="DawnShuaUnitBuyoutReduction"                Type="Buyout"/>
+    <Reduction PropertyName="MinorTypeUnitProductionCostReduction"       Type="Production" Priority="3"/>
+  </CostReduction>
+
   <CostReduction Name="Bribe">
     <Reduction PropertyName="BribeCostReduction"                         Type="Buyout"/>
   </CostReduction>
@@ -182,5 +190,13 @@
 
   <CostReduction Name="UnitSeafaring">
     <Reduction PropertyName="SeafaringUnitProductionCostReduction"        Type="Production" Priority="3"/>
+  </CostReduction>
+
+  <CostReduction Name="ConstructibleDistrict">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
+    <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
+    <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
   </CostReduction>
 </Datatable>

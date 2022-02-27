@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ############################################################################################################################################ -->
+  <!-- ############################################################################################################################################ -->
+  <!-- #################################    BATTLE ACTIONS WITH THE VISUAL DATA AND SPECIFIC GAMEPLAY   ########################################### -->
+  <!-- ############################################################################################################################################ -->
+  <!-- ############################################################################################################################################ -->
+
+  <!-- ===================================== REPLICANTS SETTLER ===================================== -->
+  
+  <!-- ===================================== REPLICANTS ASSASSIN ==================================== -->
+
+  <!-- ===================================== REPLICANTS PREDATOR ==================================== -->
+  
+  <BattleActionUnit Name="BattleActionUnitReplicantsPredatorAttackDefense" Defensible="false" TerrainConsideration="Range" Type="Attack Defense">
+    <BattleEffects TargetsFilter="Target Alive">
+      <BattleEffect_Void Name="BattleEffectTriggerData" />
+    </BattleEffects>
+    <BattleActionData>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_MadFairies_Arrow_01" RangeRestriction="LongRange" Speed="5" Trajectory="parabolic" Angle="45" OriginBoneName="AuxDummy_Root" TargetBoneName="Hips"  ProgressionRatioBeforeFadeOut="0.90"/>
+      <Projectile AssetPath="Prefabs/Effects/Projectiles/Pr_MadFairies_Arrow_01" RangeRestriction="CloseRange" Speed="5" Trajectory="linear" OriginBoneName="AuxDummy_Root" TargetBoneName="Hips"  ProgressionRatioBeforeFadeOut="0.90"/>
+    </BattleActionData>
+  </BattleActionUnit>
+
+  <!-- Improves damage depending on the mark's level -->
+  <BattleActionUnit Name="BattleActionUnitAbilityMarkOfThePredatorDamageBonus" Defensible="false" TerrainConsideration="Range" Type="PrepareAttack" Priority="0">
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <InterpreterPrerequisite Inverted="false">$Link(InitiatorTarget|Property|ClassUnit:MarkOfThePredatorCounter) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="MarkOfThePredatorFactorAffectation" PropertyName="MarkOfThePredatorFactor" Operation="Affectation" InterpreterFormula="$Link(InitiatorTarget|Property|ClassUnit:MarkOfThePredatorCounter)" RealizationApplicationMethod="OnHit" />
+      <BattleEffect_UnitSimulation Name="BattleEffect_UnitAbilityDescriptorMarkOfThePredatorDamageBonus" Duration="1">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorMarkOfThePredatorDamageBonus" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+    
+  </BattleActionUnit>
+  
+  <!-- Puts a mark on the target -->
+  <BattleActionUnit Name="BattleActionUnitAbilityMarkOfThePredatorAdding" Defensible="false" TerrainConsideration="Range" Type="Attack" Priority="0">
+    
+    <!-- Mark level 2 -->
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="true">($Property(ClassUnit:CantBeDebuffed) gt 1)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">($Path(ClassUnit,UnitAbilityDescriptorMarkOfThePredatorLevel1)) or ($Path(ClassUnit,UnitAbilityDescriptorMarkOfThePredatorLevel2))</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddMarkOfThePredatorLevel2" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorMarkOfThePredatorLevel2" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+    
+    <!-- Mark level 1 -->
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="true">($Property(ClassUnit:CantBeDebuffed) gt 1)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="false">($Path(ClassUnit,UnitAbilityDescriptorMarkOfThePredatorLevel0)) and !($Path(ClassUnit,UnitAbilityDescriptorMarkOfThePredatorLevel1)) and !($Path(ClassUnit,UnitAbilityDescriptorMarkOfThePredatorLevel2))</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddMarkOfThePredatorLevel1" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorMarkOfThePredatorLevel1" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+    
+    <!-- Mark level 0 -->
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="true">(($Property(ClassUnit:CantBeDebuffed) gt 1) or $Path(ClassUnit,UnitAbilityDescriptorMarkOfThePredatorLevel1) or $Path(ClassUnit,UnitAbilityDescriptorMarkOfThePredatorLevel2))</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_AddMarkOfThePredatorLevel0" IsCumulable="false" Duration="2" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitAbilityDescriptorMarkOfThePredatorLevel0" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+
+  </BattleActionUnit>
+
+  <!-- ===================================== REPLICANTS MYST ======================================== -->
+
+  <!-- faster than shadows -->
+  <BattleActionUnit Name="BattleActionUnitAbilityFasterThanShadows" Defensible="true" Range="1" TerrainConsideration="Range" Type="Attack">
+    <InterpreterPrerequisite Inverted="false">$Link(Target|Property|ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
+
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Chain" AvoidCastingUnit="true" Parameter1="2" RealizationVisualEffectName="BattleEffect_AOE_FasterThanShadowsSmall" RealizationApplicationMethod="OnHit">
+      <BattleEffects TargetsFilter="Target Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_FasterThanShadows" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
+      </BattleEffects>
+    </BattleEffectsArea>
+  </BattleActionUnit>
+  
+  <!-- ===================================== REPLICANTS HERO ======================================== -->
+  <!-- Default Hit  -->
+
+</Datatable>

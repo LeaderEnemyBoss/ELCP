@@ -100,6 +100,7 @@
       <SimulationModifierDescriptor TargetProperty="NetCityGrowth" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityProduction" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityEmpirePoint" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
+      <SimulationModifierDescriptor TargetProperty="PopulationNotOvergrown" Operation="Force" Value="0" BindOnSource="false" Path="ClassCity"  Priority="1"/>
 
       <SimulationModifierDescriptor TargetProperty="NetCityApproval" Operation="Force" Value="60" BindOnSource="false" Path="ClassCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="PopulationBonus" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" Path="ClassCity/PointOfInterestTypeVillage"  Priority="10"/>
@@ -110,22 +111,19 @@
       
       <!-- Faster ownership recovery rate. -->
       <SimulationModifierDescriptor TargetProperty="OwnershipRecoveryRate" Operation="Percent" Value="1.0"/>
-	  
-	  <SimulationModifierDescriptor TargetProperty="EmpireScaleFactor"  Operation="Addition"  Value="-0.5"  Path="../EmpireTypeMajor"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="CityStatusIntegrated" Type="CityStatus">
     
-    <SimulationModifierDescriptors>      
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PopulationNotOvergrown" Operation="Force" Value="0" BindOnSource="false" Path="ClassCity"  Priority="1"/>
       <SimulationModifierDescriptor TargetProperty="NetCityGrowth"  Operation="Addition"  Value="$(DistrictFood)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityProduction"  Operation="Addition"  Value="$(DistrictIndustry)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityMoney"  Operation="Addition"  Value="$(DistrictDust)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityResearch"  Operation="Addition"  Value="$(DistrictScience)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityEmpirePoint"  Operation="Addition"  Value="$(DistrictCityPoint)"   Path="../ClassEmpire/ClassCity,MainCity"  Priority="10"/>
-	  
-	  <SimulationModifierDescriptor TargetProperty="NetCityApproval" Operation="Force" Value="80" BindOnSource="false" Path="ClassCity"  Priority="11"/>
-	  <SimulationModifierDescriptor TargetProperty="CityExpansionDisapproval"   Operation="Multiplication" Value="0"  Path="ClassCity" Priority="20"/>
+      
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   

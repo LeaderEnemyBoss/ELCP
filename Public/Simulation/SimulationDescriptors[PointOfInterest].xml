@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-  <SimulationDescriptor Name="PointOfInterestTypeQuestLocation"   Type="PointOfInterestType">
+  <SimulationDescriptor Name="PointOfInterestTypeQuestLocation"      Type="PointOfInterestType">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest"  BaseValue="20"/>
       <SimulationPropertyDescriptor Name="Interact_OddsLooting"           BaseValue="60"/>
@@ -9,7 +9,7 @@
     </SimulationPropertyDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="PointOfInterestTypeNavalQuestLocation"   Type="PointOfInterestType">
+  <SimulationDescriptor Name="PointOfInterestTypeNavalQuestLocation" Type="PointOfInterestType">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest"  BaseValue="20"/>
       <SimulationPropertyDescriptor Name="Interact_OddsLooting"           BaseValue="60"/>
@@ -17,14 +17,14 @@
     </SimulationPropertyDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="PointOfInterestTypeResourceDeposit" Type="PointOfInterestType">
+  <SimulationDescriptor Name="PointOfInterestTypeResourceDeposit"    Type="PointOfInterestType">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="ResourceBonus"/>
       <SimulationPropertyDescriptor Name="ResourceGain"/>
     </SimulationPropertyDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="PointOfInterestTypeVillage"         Type="PointOfInterestType">
+  <SimulationDescriptor Name="PointOfInterestTypeVillage"            Type="PointOfInterestType">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest" BaseValue="100"/>
       <SimulationPropertyDescriptor Name="PopulationBonus"/>
@@ -35,13 +35,13 @@
     </SimulationPropertyDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="PointOfInterestTypeCitadel"         Type="PointOfInterestType"> 
+  <SimulationDescriptor Name="PointOfInterestTypeCitadel"            Type="PointOfInterestType"> 
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest" BaseValue="100"/>
      </SimulationPropertyDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="PointOfInterestTypeFacility"        Type="PointOfInterestType">
+  <SimulationDescriptor Name="PointOfInterestTypeFacility"           Type="PointOfInterestType">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="Interact_OddsTriggeringAQuest" BaseValue="100"/>
     </SimulationPropertyDescriptors>
@@ -52,7 +52,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="PointOfInterestTypeWatchTower"      Type="PointOfInterestType">
+  <SimulationDescriptor Name="PointOfInterestTypeWatchTower"         Type="PointOfInterestType">
     <SimulationPropertyDescriptors>
       <!-- Bonus to unit health Regen near the city-->
       <SimulationPropertyDescriptor Name="UnitRegenLimitDistance"       BaseValue="1"/>
@@ -62,21 +62,21 @@
     </SimulationPropertyDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="PointOfInterestTypeDefensiveTower"  Type="PointOfInterestType">
+  <SimulationDescriptor Name="PointOfInterestTypeDefensiveTower"     Type="PointOfInterestType">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="DefensivePower" BaseValue="0"/>
     </SimulationPropertyDescriptors>
   </SimulationDescriptor>
 
   <!-- With these modifiers, Ruins odds are : Quest=20%, Loot=50% -->
-  <SimulationDescriptor Name="QuestLocationTypeRuin"              Type="QuestLocationType">
+  <SimulationDescriptor Name="QuestLocationTypeRuin"                 Type="QuestLocationType">
     <!--<SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"  Operation="Addition" Value="-10"/>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"           Operation="Addition" Value="10"/>
     </SimulationModifierDescriptors>-->
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="NavalQuestLocationTypeSunkenRuin"        Type="QuestLocationType">
+  <SimulationDescriptor Name="NavalQuestLocationTypeSunkenRuin"      Type="QuestLocationType">
     <!--<SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsTriggeringAQuest"  Operation="Addition" Value="-10"/>
       <SimulationModifierDescriptor TargetProperty="Interact_OddsLooting"           Operation="Addition" Value="10"/>
@@ -88,7 +88,7 @@
       <SimulationModifierDescriptor TargetProperty="IsInteractionBlocked"     Operation="Force" Value="0" Path="!#Winter"/>
   -->
   <!-- With these modifiers, Ruins odds are : Quest=40%, Loot=30% -->
-  <SimulationDescriptor Name="QuestLocationTypeTemple"            Type="QuestLocationType">
+  <SimulationDescriptor Name="QuestLocationTypeTemple"               Type="QuestLocationType">
     <!--<SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="IsInteractionBlocked" BaseValue="0"/>
     </SimulationPropertyDescriptors>
@@ -98,13 +98,13 @@
     </SimulationModifierDescriptors>-->
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="PointOfInterestVictoryQuest"        Type="QuestLocationType">
+  <SimulationDescriptor Name="PointOfInterestVictoryQuest"           Type="QuestLocationType">
     <SimulationModifierDescriptors>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Cultist leach is drived by these descriptors. -->
-  <SimulationDescriptor Name="LeachByConversionStrategic1"        Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionStrategic1"           Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionStrategic1" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetStrategic1"/>
@@ -121,7 +121,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionStrategic2"        Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionStrategic2"           Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionStrategic2" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetStrategic2"/>
@@ -139,7 +139,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionStrategic3"        Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionStrategic3"           Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionStrategic3" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetStrategic3"/>
@@ -156,7 +156,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionStrategic4"        Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionStrategic4"           Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionStrategic4" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetStrategic4"/>
@@ -173,7 +173,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionStrategic5"        Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionStrategic5"           Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionStrategic5" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetStrategic5"/>
@@ -190,7 +190,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionStrategic6"        Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionStrategic6"           Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionStrategic6" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetStrategic6"/>
@@ -207,7 +207,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury1"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury1"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury1" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury1"/>
@@ -221,7 +221,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury2"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury2"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury2" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury2"/>
@@ -235,7 +235,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury3"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury3"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury3" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury3"/>
@@ -249,7 +249,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury4"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury4"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury4" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury4"/>
@@ -263,7 +263,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury5"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury5"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury5" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury5"/>
@@ -277,7 +277,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury6"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury6"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury6" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury6"/>
@@ -291,7 +291,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury7"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury7"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury7" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury7"/>
@@ -305,7 +305,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury8"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury8"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury8" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury8"/>
@@ -319,7 +319,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury9"           Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury9"              Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury9" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury9"/>
@@ -333,7 +333,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury10"          Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury10"             Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury10" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury10"/>
@@ -347,7 +347,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury11"          Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury11"             Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury11" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury11"/>
@@ -361,7 +361,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury12"          Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury12"             Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury12" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury12"/>
@@ -375,7 +375,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury13"          Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury13"             Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury13" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury13"/>
@@ -389,7 +389,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury14"          Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury14"             Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury14" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury14"/>
@@ -403,7 +403,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeachByConversionLuxury15"          Type="LeachByConversion">
+  <SimulationDescriptor Name="LeachByConversionLuxury15"             Type="LeachByConversion">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeachByConversionLuxury15" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="NetLuxury15"/>
@@ -417,7 +417,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="MantaApprovalBonus"                 Type="PointOfInterestTypeResourceDeposit">
+  <SimulationDescriptor Name="MantaApprovalBonus"                    Type="PointOfInterestTypeResourceDeposit">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition" Value="10" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
@@ -431,7 +431,7 @@
   
   <!-- Kaijus leech is driven by these descriptors. -->
 
-  <SimulationDescriptor Name="LeechByKaijusStrategic1"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusStrategic1"               Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusStrategic1"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetStrategic1"/>
@@ -440,8 +440,6 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Addition"  Value="$(LeechByKaijusStrategic1)"  Path="ClassKaiju"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic1"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
-	  
-	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic1)" Path="../ClassEmpire,AffinityStrategic1"/>
 
       <!-- We do not need to modify the Empire's property since it is a SUM of its children properties and the kaiju is a direct child. -->
       <!-- We could modify the Main City property tho. -->
@@ -449,7 +447,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusStrategic2"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusStrategic2"               Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusStrategic2"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetStrategic2"/>
@@ -459,12 +457,11 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
 
-	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic2)" Path="../ClassEmpire,AffinityStrategic2"/>
       <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic2"  Operation="Addition"  Value="$(NetStrategic2)"  Path="../ClassEmpire"/> -->
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusStrategic3"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusStrategic3"               Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusStrategic3"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetStrategic3"/>
@@ -473,14 +470,12 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Addition"  Value="$(LeechByKaijusStrategic3)"  Path="ClassKaiju"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
-	  
-	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic3)" Path="../ClassEmpire,AffinityStrategic3"/>
 
       <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic3"  Operation="Addition"  Value="$(NetStrategic3)"  Path="../ClassEmpire"/> -->
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusStrategic4"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusStrategic4"               Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusStrategic4"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetStrategic4"/>
@@ -489,14 +484,12 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Addition"  Value="$(LeechByKaijusStrategic4)"  Path="ClassKaiju"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
-	  
-	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic4)" Path="../ClassEmpire,AffinityStrategic4"/>
 
       <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic4"  Operation="Addition"  Value="$(NetStrategic4)"  Path="../ClassEmpire"/> -->
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusStrategic5"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusStrategic5"               Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusStrategic5"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetStrategic5"/>
@@ -505,14 +498,12 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Addition"  Value="$(LeechByKaijusStrategic5)"  Path="ClassKaiju"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
-	  
-	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic5)" Path="../ClassEmpire,AffinityStrategic5"/>
 
       <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic5"  Operation="Addition"  Value="$(NetStrategic5)"  Path="../ClassEmpire"/> -->
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusStrategic6"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusStrategic6"               Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusStrategic6"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetStrategic6"/>
@@ -521,14 +512,12 @@
       <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Addition"  Value="$(LeechByKaijusStrategic6)"  Path="ClassKaiju"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Multiplication"  Value="$(KaijusDepositCountToResourceNet)"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Multiplication"  Value="$(KaijusGlobalLeechModifier)"/>
-	  
-	  <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic"  Operation="Addition" Value="$(NetStrategic6)" Path="../ClassEmpire,AffinityStrategic6"/>
 
       <!-- <SimulationModifierDescriptor TargetProperty="NetStrategic6"  Operation="Addition"  Value="$(NetStrategic6)"  Path="../ClassEmpire"/> -->
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury1"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury1"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury1"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury1"/>
@@ -542,7 +531,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury2"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury2"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury2"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury2"/>
@@ -556,7 +545,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury3"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury3"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury3"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury3"/>
@@ -570,7 +559,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury4"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury4"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury4"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury4"/>
@@ -584,7 +573,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury5"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury5"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury5"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury5"/>
@@ -598,7 +587,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury6"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury6"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury6"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury6"/>
@@ -612,7 +601,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury7"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury7"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury7"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury7"/>
@@ -626,7 +615,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury8"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury8"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury8"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury8"/>
@@ -640,7 +629,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury9"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury9"                  Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury9"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury9"/>
@@ -654,7 +643,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury10"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury10"                 Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury10"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury10"/>
@@ -668,7 +657,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury11"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury11"                 Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury11"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury11"/>
@@ -682,7 +671,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury12"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury12"                 Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury12"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury12"/>
@@ -696,7 +685,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury13"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury13"                 Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury13"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury13"/>
@@ -710,7 +699,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury14"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury14"                 Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury14"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury14"/>
@@ -724,7 +713,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="LeechByKaijusLuxury15"  Type="LeechByKaijus">
+  <SimulationDescriptor Name="LeechByKaijusLuxury15"                 Type="LeechByKaijus">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LeechByKaijusLuxury15"  BaseValue="0"  IsSealed="true"/>
       <SimulationPropertyDescriptor Name="NetLuxury15"/>

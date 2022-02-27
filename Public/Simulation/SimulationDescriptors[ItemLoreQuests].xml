@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="ItemDefinitions.xsl"?>
+
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ########## 1H_Sword ########### -->
+
+  <!--Lore Quest Item: Blade of Mercy - Strategic2-->
+  <SimulationDescriptor Name="ItemAttributesSword1Strategic4LoreQuest6"     Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EquipmentAttack"        Value="68"     Operation="Addition"  />
+      <SimulationModifierDescriptor TargetProperty="EquipmentInitiative"    Value="5"      Operation="Addition"  />
+      <SimulationModifierDescriptor TargetProperty="EquipmentDamage"        Value="40"     Operation="Addition"  />
+
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"      Value="0.20"   Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"   Value="0.15"   Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########## 2H_Spear ########### -->
+
+  <!--Lore Quest Item: Strategic2-->
+  <SimulationDescriptor Name="ItemAttributesSpear2Strategic2LoreQuest10"    Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EquipmentAttack"        Value="34"     Operation="Addition"  />
+      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"       Value="6"      Operation="Addition"  />
+      <SimulationModifierDescriptor TargetProperty="EquipmentInitiative"    Value="3"      Operation="Addition"  />
+      <SimulationModifierDescriptor TargetProperty="EquipmentDamage"        Value="18"     Operation="Addition"  />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########## Head ########### -->
+  <!--Side Quest Droplist Reward: Delver's Mask - Strategic 3-->
+  <SimulationDescriptor Name="ItemAttributesHeadStrategic3LoreQuest1"       Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth" Value="30"     Operation="Addition" Path="../ClassUnit" />
+
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"    Value="0.2"    Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########## Torso ########### -->
+  <!--Lore Quest Droplist Reward: Tetike's Skin - Dust-->
+  <SimulationDescriptor Name="ItemAttributesTorsoDustLoreQuest12"           Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"       Value="14"     Operation="Addition" Path="../ClassUnit" />
+      <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth" Value="72"     Operation="Addition" Path="../ClassUnit" />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########## Shield ########### -->
+  <!--Side Quest Droplist Reward: Disharmony Shield - Strategic 1-->
+  <SimulationDescriptor Name="ItemAttributesShield1Strategic1LoreQuest9"    Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"       Value="6"      Operation="Addition" Path="../ClassUnit" />
+
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"   Value="0.1"    Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"    Value="0.2"    Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--Side Quest Droplist Reward: Mother's Protection - Strategic 2-->
+  <SimulationDescriptor Name="ItemAttributesShield1Strategic2LoreQuest14"   Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"       Value="6"      Operation="Addition" Path="../ClassUnit" />
+
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"      Value="0.2"    Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"   Value="0.2"    Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########## Talisman ########### -->
+  <!--Lore Quest: Hurna's Head - Dust-->
+  <SimulationDescriptor Name="ItemAttributesTalismanDustLoreQuest12"        Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="EquipmentInitiative"    Value="15"     Operation="Addition"  />
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########## Ring ########### -->
+  <!--Delver's Stein: Dust-->
+  <SimulationDescriptor Name="ItemAttributesRingDustLoreQuest2"             Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityApproval"           Value="15"     Operation="Addition" Path="../ClassCity" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########## Pet ########### -->
+  <!--URCES'SHEEP: Dust-->
+  <SimulationDescriptor Name="ItemAttributesPetDustLoreQuest4"              Type="ItemAttributes">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityFood"               Value="-0.5"  Operation="Percent"   Path="../ClassCity" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

@@ -1,7 +1,5 @@
 ﻿using System;
 using Amplitude;
-using Amplitude.Unity.Framework;
-using Amplitude.Unity.Session;
 using UnityEngine;
 
 [PersonalityRegistryPath("AI/AgentDefinition/WarTermAgent/", new object[]
@@ -12,11 +10,11 @@ public class WarTermAgent : DiplomaticTermAgent
 {
 	public override void Reset()
 	{
-		this.departmentOfForeignAffairs = base.Empire.GetAgency<DepartmentOfForeignAffairs>();
-		ISessionService service = Services.GetService<ISessionService>();
-		this.SharedVictory = service.Session.GetLobbyData<bool>("Shared", true);
 		base.Reset();
-		bool enable = base.Enable;
+		if (!base.Enable)
+		{
+			return;
+		}
 	}
 
 	protected override void ComputeInitValue()
@@ -53,32 +51,8 @@ public class WarTermAgent : DiplomaticTermAgent
 		{
 			num -= this.blockedTradePenalty;
 		}
-		if (this.VictoryLayer.CurrentFocus == ELCPUtilities.AIVictoryFocus.Military && !this.departmentOfForeignAffairs.IsInWarWithSomeone() && base.Empire.GetPropertyValue(SimulationProperties.LandMilitaryPower) > base.EmpireWhichReceives.GetPropertyValue(SimulationProperties.LandMilitaryPower) && (!this.SharedVictory || base.DiplomaticRelation.State.Name != DiplomaticRelationState.Names.Alliance))
-		{
-			num = Mathf.Max(70f, num + 70f);
-		}
 		num *= this.multiplier;
-		if (this.DiplomacyLayer.AnyVictoryreactionNeeded && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index] && this.VictoryLayer.CurrentFocus != ELCPUtilities.AIVictoryFocus.Military)
-		{
-			num /= 1.5f;
-			num = Math.Min(num, 70f);
-		}
-		if (this.VictoryLayer.CurrentFocus == ELCPUtilities.AIVictoryFocus.Diplomacy && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index])
-		{
-			num = Mathf.Min(60f, num);
-		}
-		float propertyValue = base.Empire.GetPropertyValue(SimulationProperties.WarCount);
-		if (this.DiplomacyLayer.MilitaryPowerDif < 0f && ((base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.War && propertyValue > 1f) || (base.DiplomaticRelation.State.Name != DiplomaticRelationState.Names.War && propertyValue > 0f)) && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index])
-		{
-			num = Mathf.Min(50f, num / 2f);
-		}
 		return num / 100f;
-	}
-
-	public override void Release()
-	{
-		this.departmentOfForeignAffairs = null;
-		base.Release();
 	}
 
 	[InfluencedByPersonality]
@@ -89,8 +63,4 @@ public class WarTermAgent : DiplomaticTermAgent
 
 	[InfluencedByPersonality]
 	private float multiplier = 1f;
-
-	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
-
-	private bool SharedVictory;
 }

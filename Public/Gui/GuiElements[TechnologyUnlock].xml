@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <GuiElement Name="TechnologyDiplomacyPeace">
+    <Title>%TechnologyDiplomacyPeaceTitle</Title>
+    <Description>%TechnologyDiplomacyPeaceDescription</Description>
+    <Icons>
+      <Icon Size="Small" Path="#DebugSmall" />
+      <Icon Size="Large" Path="Gui/DynamicBitmaps/#DebugLarge" />
+    </Icons>
+  </GuiElement>
+
+  <!-- Unlocks Booster Bonus -->
+  <ExtendedGuiElement Name="TechnologyBoosterFoodBonus1Value">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyBoosterFoodBonus1ValueTooltipEffect</EffectOverride>
+      </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyBoosterIndustryBonus1Value">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyBoosterIndustryBonus1ValueTooltipEffect</EffectOverride>
+      </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyBoosterScienceBonus1Value">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyBoosterScienceBonus1ValueTooltipEffect</EffectOverride>
+      </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyBoosterFoodBonus2Value">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyBoosterFoodBonus2ValueTooltipEffect</EffectOverride>
+      </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyBoosterIndustryBonus2Value">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyBoosterIndustryBonus2ValueTooltipEffect</EffectOverride>
+      </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyBoosterScienceBonus2Value">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyBoosterScienceBonus2ValueTooltipEffect</EffectOverride>
+      </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Unlocks Weapons -->
+  <ExtendedGuiElement Name="TechnologyWeaponCommonTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponCommonTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyWeaponCommonTier2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponCommonTier2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyWeaponCommonTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponCommonTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyWeaponUncommonTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponUncommonTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyWeaponUncommonTier2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponUncommonTier2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyWeaponUncommonTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponUncommonTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyWeaponRareTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponRareTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyWeaponRareTier2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponRareTier2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyWeaponRareTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockWeaponRareTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Unlocks Armors -->
+  <ExtendedGuiElement Name="TechnologyArmorCommonTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorCommonTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyArmorCommonTier2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorCommonTier2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyArmorCommonTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorCommonTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyArmorUncommonTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorUncommonTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyArmorUncommonTier2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorUncommonTier2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyArmorUncommonTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorUncommonTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyArmorRareTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorRareTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyArmorRareTier2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorRareTier2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyArmorRareTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockArmorRareTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Unlocks Accessories -->
+  <ExtendedGuiElement Name="TechnologyAccessoryCommonTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockAccessoryCommonTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyAccessoryCommonTier2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockAccessoryCommonTier2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyAccessoryCommonTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockAccessoryCommonTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyAccessoryUncommonTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockAccessoryUncommonTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyAccessoryUncommonTier2">
+      <TooltipElement Ignore="true">
+        <EffectOverride>%TechnologyUnlockAccessoryUncommonTier2TooltipEffect</EffectOverride>
+      </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyAccessoryUncommonTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockAccessoryUncommonTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyAccessoryRareTier1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockAccessoryRareTier1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyAccessoryRareTier2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockAccessoryRareTier2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyAccessoryRareTier3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyUnlockAccessoryRareTier3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!--Unlock all Rare Tier 2 
+  <GuiElement Name="TechnologyEquipmentRareTier2">
+    <Title>%TechnologyUnlockEquipmentRareTier2TooltipEffect</Title>
+  </GuiElement>-->
+
+  <GuiElement Name="TechnologyMapActionParley">
+    <Title>%TechnologyMapActionParleyTooltipEffect</Title>
+  </GuiElement>
+
+  <GuiElement Name="TechnologyMapActionBribe">
+    <Title>%TechnologyMapActionBribeTooltipEffect</Title>
+  </GuiElement>
+
+  <ExtendedGuiElement Name="TechnologyMapActionPillage">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyMapActionPillageTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologySearchBonus">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologySearchBonusTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyMapActionArchaeology">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyMapActionArchaeologyTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  
+  <!-- Material Mastery -->
+  <ExtendedGuiElement Name="TechnologyMasteryCommonBonus1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyCommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryCommonBonus2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyCommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryCommonBonus3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyCommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryCommonBonus4">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyCommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryCommonBonus5">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyCommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryCommonBonus6">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyCommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyMasteryUncommonBonus1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyUncommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryUncommonBonus2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyUncommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryUncommonBonus3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyUncommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryUncommonBonus4">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyUncommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryUncommonBonus5">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyUncommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryUncommonBonus6">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyUncommonMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+ 
+  <ExtendedGuiElement Name="TechnologyMasteryRareBonus1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyRareMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryRareBonus2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyRareMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryRareBonus3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyRareMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryRareBonus4">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyRareMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryRareBonus5">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyRareMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+  <ExtendedGuiElement Name="TechnologyMasteryRareBonus6">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyStrategyRareMasteryTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+    
+  <!-- Unlocks Marketplace Features -->
+  <ExtendedGuiElement Name="TechnologyMarketplaceHeroes">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyMarketplaceHeroesTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyMarketplaceMercenaries">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyMarketplaceMercenariesTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyMarketplaceResources">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyMarketplaceResourcesTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Misc. -->
+  <ExtendedGuiElement Name="ScientificVictoryCount">
+    <TooltipElement>
+      <EffectOverride>%ScientificVictoryCountTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyQuestReward2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyQuestReward2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyRoadSpeedBonus1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyRoadSpeedBonus1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <GuiElement Name="TechnologyRoad">
+    <Title>%TechnologyRoadTooltipEffect</Title>
+  </GuiElement>
+  <GuiElement Name="TechnologyShip">
+    <Title>%TechnologyShipTooltipEffect</Title>
+  </GuiElement>
+  <GuiElement Name="TechnologyDocks">
+    <Title>%OceanRoadCreationTooltipEffect</Title>
+  </GuiElement>
+  <!--<GuiElement Name="TechnologyOceanTravelSpeedBonus1">
+    <Title>%TechnologyOceanTravelSpeedBonus1TooltipEffect</Title>
+  </GuiElement>-->
+  <!--<GuiElement Name="TechnologyOceanTravelSpeedBonus2">
+    <Title>%TechnologyOceanTravelSpeedBonus2TooltipEffect</Title>
+  </GuiElement>-->
+  <ExtendedGuiElement Name="TechnologyPrivateers">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyPrivateersTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <GuiElement Name="TechnologyBrokenLords6">
+    <Title>%TechnologyBrokenLords6TooltipEffect</Title>
+  </GuiElement>
+  <GuiElement Name="TechnologyBrokenLords8">
+    <Title>%TechnologyBrokenLords8TooltipEffect</Title>
+  </GuiElement>
+  <ExtendedGuiElement Name="TechnologyMadFairies2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyMadFairies2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <GuiElement Name="TechnologyNecrophages8">
+    <Title>%TechnologyNecrophages8TooltipEffect</Title>
+  </GuiElement>
+  <GuiElement Name="TechnologyNecrophages11">
+    <Title>%TechnologyNecrophages11TooltipEffect</Title>
+  </GuiElement>
+  <ExtendedGuiElement Name="TechnologyRageWizards3">
+    <TooltipElement>
+      <EffectOverride>%TechnologyRageWizards3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyAccessorySlotBonus1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyAccessorySlotBonus1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <GuiElement Name="TechnologyRovingClans3">
+    <Title>%TechnologyRovingClans3TooltipEffect</Title>
+  </GuiElement>
+  <GuiElement Name="TechnologyDrakkens5">
+    <Title>%TechnologyDrakkens5TooltipEffect</Title>
+  </GuiElement>
+  <GuiElement Name="TechnologyCultists12">
+    <Title>%TechnologyCultists12TooltipEffect</Title>
+  </GuiElement>
+  <ExtendedGuiElement Name="TechnologyCultists13">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyCultists13TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyReplicants11">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyReplicants11TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyWinterShifters7">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyWinterShifters7TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyWinterShifters10">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyWinterShifters10TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyOrbUnlock2">
+    <!--<Title>%TechnologyOrbUnlock2TooltipEffect</Title>-->
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyOrbUnlock2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyOrbUnlock3">
+    <!--<Title>%CityImprovementOrbUnlock3TooltipEffect</Title>-->
+    <TooltipElement Ignore="true">
+      <EffectOverride>%CityImprovementOrbUnlock3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyOrbUnlock14">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyOrbUnlock14TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyOrbUnlock15">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyOrbUnlock15TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyOrbUnlock17WinterShifters">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyOrbUnlock17WinterShiftersTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyArmySize1MilitaryUpkeep">
+    <Title>%TechnologyArmySize1MilitaryUpkeepTitle</Title>
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyArmySizeMilitaryUpkeepTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyArmySize2MilitaryUpkeep">
+    <Title>%TechnologyArmySize2MilitaryUpkeepTitle</Title>
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyArmySizeMilitaryUpkeepTooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologySeaDemons9">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologySeaDemons9TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologySeaDemons11">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologySeaDemons11TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Inferno -->
+  <ExtendedGuiElement Name="TechnologyFlames9">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%FactionTraitFlames9TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyFlames6">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%FactionTraitFlames6TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyVolcanicItems1">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyVolcanicItems1TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyVolcanicItems3">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyVolcanicItems3TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <ExtendedGuiElement Name="TechnologyVolcanicItems2">
+    <TooltipElement Ignore="true">
+      <EffectOverride>%TechnologyVolcanicItems2TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Symbiosis -->
+
+  <!-- Kaiju Garrison  -->
+  <ExtendedGuiElement Name="TechnologyMimics1">
+    <Title>%FactionTraitMimics4Title</Title>
+    <Description>%FactionTraitMimics4Description</Description>
+    <TooltipElement Ignore="true">
+      <EffectOverride>%FactionTraitMimics4TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+
+  <!-- Kaiju Diplomacy -->
+  <ExtendedGuiElement Name="TechnologyMimics2">
+    <Title>%FactionTraitMimics5Title</Title>
+    <Description>%FactionTraitMimics5Description</Description>
+    <TooltipElement Ignore="true">
+      <EffectOverride>%FactionTraitMimics5TooltipEffect</EffectOverride>
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
+</Datatable>

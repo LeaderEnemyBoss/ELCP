@@ -5,22 +5,11 @@
     <Multipliers>
       <!-- AI Registry -->
       <AI>
-		<AgentDefinition>
-		  
-			<MoneyPrintTermAgent>
-                <Multiplier>0</Multiplier>
-            </MoneyPrintTermAgent>
 
-        </AgentDefinition>
 
         <MajorEmpire>
-		<AIEntity_Empire>
-			<AILayer_Victory>
-				<VictoryFocusMilitary>1.6</VictoryFocusMilitary>
-				<VictoryFocusDiplomacy>1.5</VictoryFocusDiplomacy>
-				<VictoryFocusEconomy>1.3</VictoryFocusEconomy>
-				<VictoryFocusTechnology>0.9</VictoryFocusTechnology>
-			</AILayer_Victory>
+
+          <AIEntity_Empire>
           <!-- The degree to which various attitude modifiers are taken into account -->
           <AILayer_Attitude>
             <!-- ##### -->
@@ -120,11 +109,9 @@
             <AttitudeScoreOtherEmpireLeadNavalRegionCount>1.5</AttitudeScoreOtherEmpireLeadNavalRegionCount>
           </AILayer_Attitude>
 
-          
-
             <AILayer_Navy>
               <GameProgressMinTurn>0</GameProgressMinTurn>
-              <GameProgressCurveName>NavalPriorityDefaultCurve</GameProgressCurveName>
+              <GameProgressCurveName>NavalPrioritySeaDemonsCurve</GameProgressCurveName>
             </AILayer_Navy>
 
             <AILayer_Strategy>
@@ -211,7 +198,7 @@
                 <AIEmpireUnlockShip>2.0</AIEmpireUnlockShip>
                 <AIEmpireUnlockUnit>0.9</AIEmpireUnlockUnit>
                 <AIEmpireUnlockSeafaringUnit>2.0</AIEmpireUnlockSeafaringUnit>
-                <AIEmpireUnlockAssimilation>3</AIEmpireUnlockAssimilation>
+                <AIEmpireUnlockAssimilation>0.8</AIEmpireUnlockAssimilation>
                 <AIEmpireUnlockBribe>0.8</AIEmpireUnlockBribe>
                 <AIEmpireUnlockPillage>0.7</AIEmpireUnlockPillage>
                 <AIEmpireUnlockPrivateers>0.25</AIEmpireUnlockPrivateers>
@@ -222,10 +209,6 @@
                 <AIEmpireUnlockDiplomacyPositive>1.4</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>
-			
-			<AILayer_Colonization>
-			  <AcceptedNumberOfUnPacifiedRegion>2</AcceptedNumberOfUnPacifiedRegion>
-			</AILayer_Colonization>
           </AIEntity_Empire>
 
           <AIEntity_City>

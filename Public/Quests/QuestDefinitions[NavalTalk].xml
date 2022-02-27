@@ -1,0 +1,4136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--=====================================
+   ========================================
+   ============= NAVAL QUESTS =============
+   ========================================
+   ========================================-->
+
+  <!--============ The Right Tool ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0001" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="7"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Take the initial fortress position-->
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Get the nearby oceanic region-->
+      <Var VarName="$FortressToCaptureRegion">
+        <Any>
+          <From Source="$InitialFortressRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsOcean/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Get the fortress to capture-->
+      <Var VarName="$FortressToCapture">
+        <First>
+          <From Source="$FortressToCaptureRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeCitadel,!OccupiedCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <!--To display through the GUI the initial fortress and the target fortress-->
+      <LocalizationVar LocalizationKey="$FortressToCaptureName" Source="$FortressToCapture"/>
+      <LocalizationVar LocalizationKey="$FortressToCaptureRegionName" Source="$FortressToCaptureRegion"/>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$FortressToCapture" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!-- Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0001-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$FortressToCapture" Tags="Fortress" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerFortressToCapture"/>
+          <Decorator_OccupyFortress TargetFortressVarName="$FortressToCapture" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerFortressToCapture"/>
+          <Action_LockQuestTarget TargetVarName="$FortressToCapture" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0001-Step1" State="Completed"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0001-Step2" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0001-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition 1: initial fortress captured by another empire-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerFortressToCapture"/>
+          <Action_LockQuestTarget TargetVarName="$FortressToCapture" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2: target fortress is captured by another empire-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$FortressToCapture" Initiator="OtherEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerFortressToCapture"/>
+          <Action_LockQuestTarget TargetVarName="$FortressToCapture" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0001-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0001-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Inhuman Resources ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0002" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="7"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Set Dust as resource to gather-->
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestNecrophagesChapter2Step2ResourceName"/>
+      <Var VarName="$DustResourceAmount" Value="100"/>
+      <Var VarName="$DustTransferAmount" Value="-100"/>
+
+      <!--Set -Strategic Resource to gather-->
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistStrategicResourceTransfertAmount"/>
+
+      <LocalizationVar LocalizationKey="$StrategicResource" Source="$NameOfStrategicResourceToGather"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter" Source="$StrategicResourceAmount"/>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0002-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_NavalTalk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0002-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0002-Step1">
+        <Reward Droplist="DroplistNavalRewardEra" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Family Affair ===========-->
+  <QuestDefinition Name="SideQuestNavalTalk#0003" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="7"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (10 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0015" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0015" QuestState="Unstarted"/>
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Get the nearby oceanic region-->
+      <Var VarName="$SunkenRuinToInspectRegion">
+        <Any>
+          <From Source="$InitialFortressRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsOcean/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Get the sunken ruin for army spawn-->
+      <Var VarName="$SunkenRuinToInspect">
+        <First>
+          <From Source="$SunkenRuinToInspectRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+              <FilterWorldPositionByDistance PositionToCompareVarName="$SunkenRuinToSpawnArmy" DistanceMin="1" DistanceMax="1"/>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <!--Now that we get the ruin we need to put a distance min max for army spawn-->
+       <Var VarName="$SunkenRuinToSpawnArmy">
+        <From Source="$SunkenRuinToInspect.$Position"/>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$SunkenRuinName" Source="$SunkenRuinToInspect"/>.
+      <LocalizationVar LocalizationKey="$SunkenRuinRegionName" Source="$SunkenRuinToInspectRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0003-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarker$SunkenRuinToInspect"/>
+          <Decorator_Dive TargetEntityVarName="$SunkenRuinToInspect" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarker$SunkenRuinToInspect" />
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Unlock"/>
+          <Action_SpawnArmy SpawnLocationVarName="$SunkenRuinToSpawnArmy" ArmyDroplist="DroplistNavalArmyEra" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="PacifistRoaming"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0003-Step1" State="Completed" />
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0003-Step2" State="InProgress" />
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0003-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarker$SunkenRuinToInspect"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0003-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0003-Step2">
+        <Reward Droplist="DroplistNavalInteract0003ItemReward" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Seeking Calm Seas ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0004" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassEmpirePlan,EmpirePlanEconomy0</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (10 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0007" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0007" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0004-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassEmpirePlan,EmpirePlanEconomy1,!EmpirePlanMilitary1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0004-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0004-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ The White Tide ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0006" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+
+      <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:NumberOfPastWinters) ge 3</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:NumberOfTurnsSinceSeasonStart) le 3</InterpreterPrerequisite>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0015" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0015" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Set Player's empire-->
+      <Var VarName="$PlayerEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Check prerequisites one player's city-->
+      <Var VarName="$CityName">
+        <From Source="$Empire.$Cities">
+          <Any>
+            <Where>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:Population) le 5</InterpreterPrerequisite>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:Population) ge 2</InterpreterPrerequisite>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:DistrictFood) le 10</InterpreterPrerequisite>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:DistrictFood) ge 3</InterpreterPrerequisite>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityGrowth) le 20</InterpreterPrerequisite>
+            </Where>
+          </Any>
+        </From>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$CityName" Source="$CityName"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0006-Step1" State="InProgress"/>
+          <Controller_Loop LoopCount="3">
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0006-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$CityName">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityGrowth) ge 20</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Loop>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0006-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0006-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ The Holy Vessel ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0007" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="7"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Era 3 reached-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistStrategicResourceTransfertAmount"/>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$StrategicResource3or4" Source="$NameOfStrategicResourceToGather"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter" Source="$StrategicResourceAmount"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0007-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_NavalTalk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0007-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0007-Step1">
+        <Reward Droplist="DroplistNavalRewardEra" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Dubious Deals ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0008" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="7"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Era 4 reached-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmountEra4"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistStrategicResourceTransfertAmountEra4"/>
+
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$StrategicResource5or6" Source="$NameOfStrategicResourceToGather"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter" Source="$StrategicResourceAmount"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0008-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_NavalTalk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0008-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0008-Step1">
+        <Reward Droplist="DroplistNavalRewardEra" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Loot and Lucre! ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0009" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="7"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+        <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <Var VarName="$StrategicResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury6</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury7</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury8</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury9</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury11</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury12</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury13</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury14</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury15</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NameOfStrategicResourceToGather">
+        <Any>
+          <From Source="$StrategicResourceDepositPointOfInterest.$ResourceName"/>
+        </Any>
+      </Var>
+
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistStrategicResourceTransfertAmount"/>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$LuxuryResource1to5" Source="$StrategicResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter" Source="$StrategicResourceAmount"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0009-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_NavalTalk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0009-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0009-Step1">
+        <Reward LocalizationKey="%CaptureFortress"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Hidden Agendas ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0010" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0011" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0011" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0021" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0021" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0025" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0025" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Target Fortress region-->
+      <Var VarName="$RegionsNeighbours">
+        <From Source="$InitialFortressRegion.$NeighbourRegions">
+          <Where>
+            <FilterRegionIsOcean/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Target Fortress POI-->
+      <Var VarName="$FortressToInspect">
+        <First>
+          <From Source="$RegionsNeighbours.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeCitadel,!OccupiedCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$FortressToInspectRegion">
+        <From Source="$FortressToInspect.$Position.$Region"/>
+      </Var>
+
+      <!--Set Dust to give to 1st fortress-->
+      <DropListVar VarName="$DustAmount" DropList="DroplistStrategicDustAmount"/>
+      <DropListVar VarName="$DustTransfertAmount" DropList="DroplistStrategicDustTransfertAmount"/>
+
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestBrokenLordsChapter1ResourceName"/>
+
+      <LocalizationVar LocalizationKey="$Dust" Source="$DustAmount"/>
+
+
+      <!--Set Strategic Resource to give to 2nd fortress-->
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistLuxuryAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistLuxuryTransferAmount"/>
+
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+
+      <LocalizationVar LocalizationKey="$ResourceAmount" Source="$StrategicResourceAmount"/>
+      <LocalizationVar LocalizationKey="$ResourceName" Source="$NameOfStrategicResourceToGather"/>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$SecondFortressName" Source="$FortressToInspect"/>
+      <LocalizationVar LocalizationKey="$SecondFortressRegionName" Source="$FortressToInspectRegion"/>-->
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$FortressToInspect" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0010-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$DustResource" WantedAmountVarName="$DustAmount"/>
+          </Decorator_NavalTalk>
+          <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="$DustTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0010-Step1" State="Completed"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0010-Step2" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$FortressToInspect" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerFortressToInspect"/>
+          <Decorator_NavalTalk TargetEntityVarName="$FortressToInspect" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_NavalTalk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerFortressToInspect"/>
+          <Action_LockQuestTarget TargetVarName="$FortressToInspect" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0010-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition -->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerFortressToInspect"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$FortressToInspect" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0010-Step1">
+        <Reward Droplist="DroplistLowPrestige" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0010-Step2">
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Hidden Agendas ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0011" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0010" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0010" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0021" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0021" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0025" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0025" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Nearest fortress in same region as initial fortress-->
+      <Var VarName="$SecondFortressPointOfInterest">
+        <From Source="$InitialFortressRegion.$PointsOfInterest">
+          <Where>
+            <PathPrerequisite>PointOfInterestTypeCitadel</PathPrerequisite>
+          </Where>
+          <OrderBy>
+            <FilterFortressByDistance PositionToCompareVarName="$InitialFortressLocation" DistanceMin="1"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <!--Set Dust to give to 1st fortress-->
+      <DropListVar VarName="$DustAmount" DropList="DroplistStrategicDustAmount"/>
+      <DropListVar VarName="$DustTransfertAmount" DropList="DroplistStrategicDustTransfertAmount"/>
+
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestBrokenLordsChapter1ResourceName"/>
+
+      <LocalizationVar LocalizationKey="$Dust" Source="$DustAmount"/>
+
+      <!--Set Strategic Resource to give to 2nd fortress-->
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistLuxuryAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistLuxuryTransferAmount"/>
+
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+
+      <LocalizationVar LocalizationKey="$ResourceAmount" Source="$StrategicResourceAmount"/>
+      <LocalizationVar LocalizationKey="$ResourceName" Source="$NameOfStrategicResourceToGather"/>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$TargetFortressName" Source="$SecondFortressPointOfInterest"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$SecondFortressPointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0011-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$DustResource" WantedAmountVarName="$DustAmount"/>
+          </Decorator_NavalTalk>
+          <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="$DustTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0011-Step1" State="Completed"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0011-Step2" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$SecondFortressPointOfInterest" Tags="Fortress" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerSecondFortressPointOfInterest"/>
+          <Decorator_NavalTalk TargetEntityVarName="$SecondFortressPointOfInterest" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/UnitRankHero</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSecondFortressPointOfInterest"/>
+          <Action_LockQuestTarget TargetVarName="$SecondFortressPointOfInterest" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0011-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition -->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSecondFortressPointOfInterest"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$SecondFortressPointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0011-Step1">
+        <Reward Droplist="DroplistLowPrestige" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0011-Step2">
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Water Everywhere ===========-->
+  <QuestDefinition Name="SideQuestNavalTalk#0013" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 9</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyItemEngineerQuest</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Get the nearby oceanic region-->
+      <Var VarName="$OverSeaNearbyRegion">
+        <Any>
+          <From Source="$InitialFortressRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsOcean/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the Quest POI to inspect-->
+      <Var VarName="$SunkenRuinToInspect">
+        <Any>
+          <From Source="$OverSeaNearbyRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$SunkenRuinName" Source="$SunkenRuinToInspect"/>
+      <LocalizationVar LocalizationKey="$SunkenRuinRegionName" Source="$OverSeaNearbyRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0013-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinToInspect" Tags="Ruins" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+          <Decorator_Dive TargetEntityVarName="$SunkenRuinToInspect" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0013-Step1" State="Completed" />
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0013-Step2" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit/ItemAttributesEngineerQuest</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0013-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0013-Step1">
+        <Reward Droplist="DroplistNavalInteract0013Step1Reward" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0013-Step2">
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Fellow Sailors ===========-->
+  <QuestDefinition Name="SideQuestNavalTalk#0014" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 4</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassArmy:MinorFactionUnitsCount) ge 3</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0023" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0023" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0014-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/UnitFactionTypeMinorFaction) ge 3</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0014-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0014-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Family Affair (2) ===========-->
+  <QuestDefinition Name="SideQuestNavalTalk#0015" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="7"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (30 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:UnlockedTechnologyCount) ge 14</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0003" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0003" QuestState="Unstarted"/>
+      <QuestStatePrerequisite QuestDefinitionName="SideQuestNavalTalk#0003" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Get the nearby oceanic region-->
+      <Var VarName="$SunkenRuinRegionToInspect">
+        <Any>
+          <From Source="$InitialFortressRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsOcean/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Get the sunken ruin for army spawn-->
+      <Var VarName="$SunkenRuinToInspect">
+        <First>
+          <From Source="$SunkenRuinRegionToInspect.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+              <FilterWorldPositionByDistance PositionToCompareVarName="$SunkenRuinToSpawnArmy" DistanceMin="1" DistanceMax="1"/>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+        <!--Now that we get the ruin we need to put a distance min max for army spawn-->
+      <Var VarName="$SunkenRuinToSpawnArmy">
+        <From Source="$SunkenRuinToInspect.$Position"/>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$SunkenRuinName" Source="$SunkenRuinToInspect"/>
+      <LocalizationVar LocalizationKey="$SunkenRuinRegionName" Source="$SunkenRuinRegionToInspect"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0015-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarker$SunkenRuinToInspect"/>
+          <Decorator_Dive TargetEntityVarName="$SunkenRuinToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) ge 2</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Dive>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarker$SunkenRuinToInspect" />
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Unlock"/>
+          <Action_SpawnArmy SpawnLocationVarName="$SunkenRuinToSpawnArmy" ArmyDroplist="DroplistNavalArmyEra" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="PacifistRoaming"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0015-Step1" State="Completed" />
+          <!--<Action_LockInteraction TargetVarName="$SunkenRuinToInspect" InteractionName="ArmyActionSearch" InteractionLockOption="Lock"/>-->
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0015-Step2" State="InProgress" />
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0015-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+
+
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$TargetFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0015-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0015-Step2">
+        <Reward Droplist="DroplistNavalInteract0015ArtilleryShipTechnology" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ The Escapee ===========-->
+  <QuestDefinition Name="SideQuestNavalTalk#0016" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) le (95 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0027" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0027" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <Var VarName="$SunkenRuinToInspect">
+        <Any>
+          <From Source="$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <FilterRegionIsOcean/>
+              <PathPrerequisite>NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$SunkenRuinToInspectLocation">
+        <From Source="$SunkenRuinToInspect.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$SunkenRuinName" Source="$SunkenRuinToInspect"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0016-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$SunkenRuinToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+          <Decorator_Dive TargetEntityVarName="$SunkenRuinToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Dive>
+          <Action_SpawnArmy SpawnLocationVarName="$SunkenRuinToInspectLocation" ArmyDroplist="DroplistNavalArmyNavalTalk0016" EmpireArmyOwnerVarName="$InstigatorEmpire"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0016-Step1" State="Completed" />
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0016-Step2" State="InProgress" />
+          <Decorator_Dive TargetEntityVarName="$SunkenRuinToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(ClassArmy/ClassUnit,SeafaringUnit:LevelDisplayed;ge;2) ge 2</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Dive>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0016-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerSunkenRuinToInspect" />
+          <Action_LockQuestTarget TargetVarName="$SunkenRuinToInspect" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0016-Step1">
+        <Reward LocalizationKey="%SideQuestNavalTalk#0016-Step1Reward"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0016-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Mighty Boosters ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0017" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0"  SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0017-Step1" State="InProgress" />
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <!--Step 1-->
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="2">
+            <Decorator_BoosterActivated BoosterName="BoosterLuxury5" Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0017-Step1"/> <!--BoosterLuxury3=gold, BoosterLuxury5=wine-->
+          </Controller_Loop>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0017-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition 1 - Fortress is stolen-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0017-Step1">
+        <Reward Droplist="DroplistNavalRewardItemProwQuest" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+        <ProgressionRange StartValue="0" EndValue="2"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>x
+
+
+  <!-- =========== Diplomat of the Deeps ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0018" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestLore#0005" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestLore#0005" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0018-Step1" State="InProgress" />
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Step 1 - Win: Talk with 5 Diff Fortresses-->
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="5">
+            <Decorator_NavalTalk Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0018-Step1"/>
+          </Controller_Loop>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0018-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is occupied -->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0018-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== A Warm Reception ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0019" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0019Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0019Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <Var VarName="$SpawnArmyPosition">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0019-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject"  Output_InstigatorGUIDVarName="$ArmyWhichInspectGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+          <Action_SpawnArmy ArmyDroplist="DroplistNavalTalk0019ArmySpawnEra" SpawnLocationVarName="$SpawnArmyPosition" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0019-Step1" State="Completed"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0019-Step2" State="InProgress" />
+          <Decorator_KillArmy TargetOption="All" Initiator="Empire">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0019-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1: initial fortress occupied by another empire-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0019-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0019-Step2">
+        <Reward Droplist="DroplistNavalInteract0019RewardFireShipTechnology" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+
+  </QuestDefinition>
+
+  <!-- =========== A Warm Reception ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0019Alt" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+   <Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0019" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0019" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set Dust to give to 1st fortress-->
+      <DropListVar VarName="$DustAmount" DropList="DroplistStrategicDustAmount"/>
+      <DropListVar VarName="$DustTransfertAmount" DropList="DroplistStrategicDustTransfertAmount"/>
+
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestBrokenLordsChapter1ResourceName"/>
+
+      <LocalizationVar LocalizationKey="$Dust" Source="$DustAmount"/>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0019Alt-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject"  Output_InstigatorGUIDVarName="$ArmyWhichInspectGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0019Alt-Step1" State="Completed"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0019Alt-Step2" State="InProgress" />
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$DustResource" WantedAmountVarName="$DustAmount"/>
+          </Decorator_NavalTalk>
+          <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="$DustTransfertAmount"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0019Alt-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1: initial fortress occupied by another empire-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0019Alt-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0019Alt-Step2">
+        <Reward Droplist="DroplistScience" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ Seavilization ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0020" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--7 techs min researched in Era 2, and Era 3 is not already reached-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 7</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Parallel CompletionPolicy="Any">
+
+      <Controller_Sequence>
+
+        <!--Step 1-->
+        <Action_UpdateStep StepName="SideQuestNavalTalk#0020-Step1" State="InProgress"/>
+        <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+        <Action_UpdateStep StepName="SideQuestNavalTalk#0020-Step1" State="Completed"/>
+        <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+
+      <!--Fail Condition 1-->
+      <Controller_Sequence>
+        <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+      <!--Fail Condition 2-->
+      <Controller_Sequence>
+        <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" TargetOption="All" Initiator="AllEmpires"/>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+    </Controller_Parallel>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0020-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Vessels and Vassals ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0021" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyNavalUnit1</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (2 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt1" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt1" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt2" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt3" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt3" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0021-Step1" State="InProgress" />
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <!--Step 1 - Give 2 Units-->
+      <Controller_Parallel CompletionPolicy="Any">
+        <Controller_Sequence>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitTypeFomoriansBoardingVessel) eq 2</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) eq 2</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+
+          <Action_DestroyArmy ArmyGUIDVarName="$InspectionInstigatorGUID" />
+
+          <!--Step 2 - Just Wait...-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021-Step1" State="Completed" />
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021-Step2" State="InProgress" />
+          <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+          <Controller_Parallel CompletionPolicy="Any">
+            <Controller_Sequence>
+              <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 9999</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_NavalTalk>
+            </Controller_Sequence>
+            <Controller_Sequence>
+              <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="7" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+              <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="7" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+            </Controller_Sequence>
+          </Controller_Parallel>
+          <Action_SpawnArmy SpawnLocationVarName="$InitialFortressLocation" ArmyDroplist="DroplistNavalTalk0021ArmyReward" EmpireArmyOwnerVarName="$InstigatorEmpire" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed" />
+        </Controller_Sequence>
+
+        <!--Fail Condition 1 - Fortress is occupied-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0021-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0021-Step2">
+        <Reward LocalizationKey="%CaptureFortress"/>
+        <Reward LocalizationKey="%SideQuestNavalTalk#0021-Step2Reward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  <!-- =========== Vessels and Vassals Alt1 ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0021Alt1" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyNavalUnit2</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (2 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt2" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt3" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt3" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt1-Step1" State="InProgress" />
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <!--Step 1 - Give 2 Units-->
+      <Controller_Parallel CompletionPolicy="Any">
+        <Controller_Sequence>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitTypeFomoriansFireShip) eq 2</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) eq 2</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+
+          <Action_DestroyArmy ArmyGUIDVarName="$InspectionInstigatorGUID" />
+
+          <!--Step 2 - Just Wait...-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt1-Step1" State="Completed" />
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt1-Step2" State="InProgress" />
+          <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+          <Controller_Parallel CompletionPolicy="Any">
+            <Controller_Sequence>
+              <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 9999</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_NavalTalk>
+            </Controller_Sequence>
+            <Controller_Sequence>
+              <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="7" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+              <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="7" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+            </Controller_Sequence>
+          </Controller_Parallel>
+          <Action_SpawnArmy SpawnLocationVarName="$InitialFortressLocation" ArmyDroplist="DroplistNavalTalk0021ArmyRewardAlt1" EmpireArmyOwnerVarName="$InstigatorEmpire" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt1-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed" />
+        </Controller_Sequence>
+
+        <!--Fail Condition 1 - Fotress is uccupied-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0021Alt1-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0021Alt1-Step2">
+        <Reward LocalizationKey="%CaptureFortress"/>
+        <Reward LocalizationKey="%SideQuestNavalTalk#0021Alt1-Step2Reward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  <!-- =========== Vessels and Vassals Alt2 ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0021Alt2" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyNavalUnit3</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (2 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt1" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt1" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt3" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt3" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt2-Step1" State="InProgress" />
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <!--Step 1 - Give 2 Units-->
+      <Controller_Parallel CompletionPolicy="Any">
+        <Controller_Sequence>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitTypeFomoriansArtilleryShip) eq 1</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) eq 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+
+          <Action_DestroyArmy ArmyGUIDVarName="$InspectionInstigatorGUID" />
+
+          <!--Step 2 - Just Wait...-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt2-Step1" State="Completed" />
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt2-Step2" State="InProgress" />
+          <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+          <Controller_Parallel CompletionPolicy="Any">
+            <Controller_Sequence>
+              <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 9999</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_NavalTalk>
+            </Controller_Sequence>
+            <Controller_Sequence>
+              <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="7" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+              <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="7" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+            </Controller_Sequence>
+          </Controller_Parallel>
+          <Action_SpawnArmy SpawnLocationVarName="$InitialFortressLocation" ArmyDroplist="DroplistNavalTalk0021ArmyRewardAlt2" EmpireArmyOwnerVarName="$InstigatorEmpire" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt2-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed" />
+        </Controller_Sequence>
+
+        <!--Fail Condition 1 - Fortress is occupied-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0021Alt2-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0021Alt2-Step2">
+        <Reward LocalizationKey="%CaptureFortress"/>
+        <Reward LocalizationKey="%SideQuestNavalTalk#0021Alt2-Step2Reward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  <!-- =========== Vessels and Vassals Alt3 ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0021Alt3" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologyNavalUnit1</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (2 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt1" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt1" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0021Alt2" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+       <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for localization-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt3-Step1" State="InProgress" />
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <!--Step 1 - Give 2 Units-->
+      <Controller_Parallel CompletionPolicy="Any">
+        <Controller_Sequence>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitTypeFomoriansBathysphere) eq 1</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) eq 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+
+          <Action_DestroyArmy ArmyGUIDVarName="$InspectionInstigatorGUID" />
+
+          <!--Step 2 - Just Wait...-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt3-Step1" State="Completed" />
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt3-Step2" State="InProgress" />
+          <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+          <Controller_Parallel CompletionPolicy="Any">
+            <Controller_Sequence>
+              <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$Empire">
+                    <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 9999</InterpreterPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_NavalTalk>
+            </Controller_Sequence>
+            <Controller_Sequence>
+              <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="7" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+              <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="7" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+            </Controller_Sequence>
+          </Controller_Parallel>
+          <Action_SpawnArmy SpawnLocationVarName="$InitialFortressLocation" ArmyDroplist="DroplistNavalTalk0021ArmyRewardAlt3" EmpireArmyOwnerVarName="$InstigatorEmpire" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0021Alt3-Step2" State="Completed" />
+          <Action_UpdateQuest State="Completed" />
+        </Controller_Sequence>
+
+        <!--Fail Condition 1 - Village is destroyed-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress" />
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0021Alt3-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0021Alt3-Step2">
+        <Reward LocalizationKey="%CaptureFortress"/>
+        <Reward LocalizationKey="%SideQuestNavalTalk#0021Alt3-Step2Reward"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Being Prepared ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0022" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0010" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0010" QuestState="Unstarted"/>
+      <PathPrerequisite>EmpireTypeMajor/ClassFortress</PathPrerequisite>
+    </Prerequisites>
+
+      <!--============ VARIABLES ============-->
+      <Vars>
+
+        <Var VarName="$MyEmpire">
+          <From Source="$Empire"/>
+        </Var>
+
+        <!--Take the initial fortress into account for talk purpose-->
+        <Var VarName="$InitialFortress">
+          <From Source="$TargetPointsOfInterest"/>
+        </Var>
+
+        <Var VarName="$InitialFortressRegion">
+          <From Source="$InitialFortress.$Position.$Region"/>
+        </Var>
+
+        <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+        <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+      </Vars>
+
+      <!--============ SEQUENCE ============-->
+      <Controller_Sequence>
+        <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+        <!--Step 1-->
+        <Action_UpdateStep StepName="SideQuestNavalTalk#0022-Step1" State="InProgress"/>
+        <Controller_Parallel CompletionPolicy="Any">
+
+          <!--Success Condition -->
+          <Controller_Sequence>
+            <Controller_Loop LoopCount="3">
+              <Controller_Parallel CompletionPolicy="Any">
+                <Controller_Sequence>
+                  <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0022-Step1">
+                    <ConditionCheck_Prerequisite>
+                      <Prerequisites Target="$Empire">
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansBoardingVessel,!UnitHero</PathPrerequisite>
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansFireShip,!UnitHero</PathPrerequisite>
+                      </Prerequisites>
+                    </ConditionCheck_Prerequisite>
+                  </Decorator_BeginTurn>
+                </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0022-Step1">
+                    <ConditionCheck_Prerequisite>
+                      <Prerequisites Target="$Empire">
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansBoardingVessel,!UnitHero</PathPrerequisite>
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansArtilleryShip,!UnitHero</PathPrerequisite>
+                      </Prerequisites>
+                    </ConditionCheck_Prerequisite>
+                  </Decorator_BeginTurn>
+                </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0022-Step1">
+                    <ConditionCheck_Prerequisite>
+                      <Prerequisites Target="$Empire">
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansBoardingVessel,!UnitHero</PathPrerequisite>
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansBathysphere,!UnitHero</PathPrerequisite>
+                      </Prerequisites>
+                    </ConditionCheck_Prerequisite>
+                  </Decorator_BeginTurn>
+                 </Controller_Sequence>
+                <Controller_Sequence>
+                   <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0022-Step1">
+                    <ConditionCheck_Prerequisite>
+                      <Prerequisites Target="$Empire">
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansFireShip,!UnitHero</PathPrerequisite>
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansArtilleryShip,!UnitHero</PathPrerequisite>
+                      </Prerequisites>
+                    </ConditionCheck_Prerequisite>
+                   </Decorator_BeginTurn>
+                 </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0022-Step1">
+                    <ConditionCheck_Prerequisite>
+                      <Prerequisites Target="$Empire">
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansFireShip,!UnitHero</PathPrerequisite>
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansBathysphere,!UnitHero</PathPrerequisite>
+                      </Prerequisites>
+                    </ConditionCheck_Prerequisite>
+                  </Decorator_BeginTurn>
+                 </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0022-Step1">
+                    <ConditionCheck_Prerequisite>
+                      <Prerequisites Target="$Empire">
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansArtilleryShip,!UnitHero</PathPrerequisite>
+                        <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassFortress/UnitTypeFomoriansBathysphere,!UnitHero</PathPrerequisite>
+                      </Prerequisites>
+                    </ConditionCheck_Prerequisite>
+                  </Decorator_BeginTurn>
+                </Controller_Sequence>
+              </Controller_Parallel>
+            </Controller_Loop>
+            <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+            <Action_UpdateStep StepName="SideQuestNavalTalk#0022-Step1" State="Completed"/>
+            <Action_UpdateQuest State="Completed"/>
+          </Controller_Sequence>
+
+          <!--Fail Condition 1-->
+          <Controller_Sequence>
+            <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+            <Action_UpdateQuest State="Failed"/>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+        <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+
+      </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0022-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Fortress Exodus ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0023" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0011" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0011" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+      <Var VarName="$InitialFortressPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortressPosition.$Region"/>
+      </Var>
+
+      <Var VarName="$PlayerEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$PlayerRegionNearFortress">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire EmpireVarName="$PlayerEmpire"/>
+          </Where>
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialFortressPosition"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$RegionCity">
+        <From Source="$PlayerRegionNearFortress.$City">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityApproval) ge 60</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityApproval) le 85</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$RegionCity" Source="$RegionCity"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0023-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition -->
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="5">
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0023-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$RegionCity">
+                  <PathPrerequisite Flags="Prerequisite">ClassCity,ApprovalStatusTagCityEcstatic</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Loop>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0023-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_RegionIsOwnedByEmpire Inverted="true" RegionVarName="$PlayerRegionNearFortress" EmpireVarName="$PlayerEmpire" />
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0023-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Blood in the Water ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0024" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) eq 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 9</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityNecrophages</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0012Title" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0012Title" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check no necrophages only as competitors-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$AllRegionsButMine">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$OneCityAtLeastOtherThanNecrophages">
+        <Any>
+          <From Source="$AllRegionsButMine.$MajorEmpire">
+            <Where>
+              <PathPrerequisite>!AffinityNecrophages</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0024-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
+          <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) ge 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0024-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) eq 0</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_TimerEnded>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0024-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Dust and Trust ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0025" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <InterpretedVar VarName="DurationObjective" Target="$(Empire)">
+        <Expression>6 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for the ruin search-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Set Dust to give to 1st fortress-->
+      <DropListVar VarName="$DustAmount" DropList="DroplistStrategicDustAmount"/>
+      <DropListVar VarName="$DustTransfertAmount" DropList="DroplistStrategicDustTransfertAmount"/>
+
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestBrokenLordsChapter1ResourceName"/>
+
+      <LocalizationVar LocalizationKey="$Dust" Source="$DustAmount"/>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+      <LocalizationVar LocalizationKey="$TurnDuration" Source="DurationObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <Controller_Sequence>
+
+          <Controller_Parallel CompletionPolicy ="All">
+
+            <Controller_Sequence>
+
+              <!--Step 1-->
+              <Action_UpdateStep StepName="SideQuestNavalTalk#0025-Step1" State="InProgress"/>
+              <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+              <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+                <ConditionCheck_HasResourceAmount ResourceNameVarName="$DustResource" WantedAmountVarName="$DustAmount"/>
+              </Decorator_NavalTalk>
+              <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="$DustTransfertAmount"/>
+              <Action_UpdateStep StepName="SideQuestNavalTalk#0025-Step1" State="Completed"/>
+
+              <!--Step 2-->
+              <Action_UpdateStep StepName="SideQuestNavalTalk#0025-Step2" State="InProgress"/>
+
+              <Controller_Parallel CompletionPolicy="Any">
+                <Controller_Loop LoopCount="12">
+                  <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0025-Step2"/>
+                </Controller_Loop>
+                <Controller_Sequence>
+                  <Decorator_BeginTurn Initiator="Empire">
+                    <ConditionCheck_IsStepProgressionComplete StepName="SideQuestNavalTalk#0025-Step2"/>
+                  </Decorator_BeginTurn>
+                </Controller_Sequence>
+              </Controller_Parallel>
+
+              <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+              <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+              <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+              <Action_UpdateStep StepName="SideQuestNavalTalk#0025-Step2" State="Completed"/>
+              <Action_UpdateQuest State="Completed"/>
+
+            </Controller_Sequence>
+
+          </Controller_Parallel>
+
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0025-Step1">
+        <Reward Droplist="DroplistLowPrestige" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0025-Step2">
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+        <Reward Droplist="DroplistNavalInteract0025BoardingVesselTechnology" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Restless and Rusting ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0026" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <!--<Tags>NavalTalk</Tags>-->
+
+    <!--Prerequisite-->
+     <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassCity/UnitProfileSeaDemonsHero6</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassCity/UnitProfileSeaDemonsHero6QuestReward</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassArmy/UnitProfileSeaDemonsHero6</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassArmy/UnitProfileSeaDemonsHero6QuestReward</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/UnitProfileSeaDemonsHero6</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/UnitProfileSeaDemonsHero6QuestReward</PathPrerequisite>
+
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for the ruin search-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Get the fortress for army spawn-->
+      <Var VarName="$InitialFortressArmySpawn">
+          <From Source="$InitialFortress">
+            <Where>
+              <FilterWorldPositionByDistance PositionToCompareVarName="$InitialFortressPosition" DistanceMin="1" DistanceMax="1"/>
+            </Where>
+          </From>
+      </Var>
+
+      <!--Set the Hero to remove-->
+      <Var VarName="$Hero">
+        <Any>
+          <From Source="$Empire.$Heroes">
+            <Where>
+              <PathPrerequisite>UnitProfileSeaDemonsHero6QuestReward</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Get the location of army spawn-->
+      <Var VarName="$InitialFortressLocation">
+        <From Source="$InitialFortressArmySpawn.$Position"/>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_AddQuestMarker TargetEntityVarName="$InitialFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialFortress"/>
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <Controller_Sequence>
+
+        <!--Step 1-->
+        <Controller_Sequence>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0026-Step1" State="InProgress" />
+          <Decorator_NavalTalk TargetEntityVarName="$InitialFortress" Initiator="Empire"/>
+          <Action_SpawnArmy SpawnLocationVarName="$InitialFortressLocation" ArmyDroplist="DroplistNavalTalk0026HeroReward" EmpireArmyOwnerVarName="$InstigatorEmpire" Output_EnemyArmyGUIDVarName="$ArmyID"/> <!--give SDMF hero-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0026-Step1" State="Completed" />
+        </Controller_Sequence>
+
+        <Action_StartTimer Output_TimerVarName="$TimeBeforeFailure"/>
+        <Action_UpdateTimerLocalization TimerLocalizationKey="$Timer" TurnCountBeforeTimeOut="10" TimerVarName="$TimeBeforeFailure"/>
+
+        <!--Step 2-->
+        <Controller_Sequence>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0026-Step2" State="InProgress" />
+          <Controller_Loop LoopCount="3">
+            <Decorator_KillArmy CountAllDeadEnemyArmiesForStepProgression="true" Output_WinnerVarName="$EmpireArmy" LinkedStepProgression="SideQuestNavalTalk#0026-Step2" TargetOption="Any" Initiator="Empire">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$EmpireArmy">
+                  <PathPrerequisite Flags="Prerequisite">ClassArmy/UnitProfileSeaDemonsHero6QuestReward</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_KillArmy>
+          </Controller_Loop>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialFortress"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0026-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_RemoveHero TargetUnitVarName="$Hero"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$InitialFortress"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Step 2 - Fail Condition - Timer is out and objective is not completed yet-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeFailure" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Action_RemoveHero TargetUnitVarName="$Hero"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$InitialFortress"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0026-Step1">
+        <Reward Droplist="DroplistNavalTalk0026HeroReward"/> <!--SDMF hero-->
+      </Step>
+      <Step Name="SideQuestNavalTalk#0026-Step2">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Weather Report ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0027" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="30" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">#Summer</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for the ruin search-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0027-Step1" State="InProgress" />
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <Controller_Sequence>
+
+          <Controller_Parallel CompletionPolicy ="Any">
+
+            <Controller_Parallel CompletionPolicy ="All">
+
+              <!--Step 1: Check that one empire army end its turn on each of the sea weather effects. These turn ends do not have to be simultaneous -->
+              <Controller_Sequence>
+                <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0027-Step1">
+                  <ConditionCheck_IsArmyOnWeatherTile WeatherName="WeatherFog"/>
+                </Decorator_EndTurn>
+              </Controller_Sequence>
+
+              <Controller_Sequence>
+                <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0027-Step1">
+                  <ConditionCheck_IsArmyOnWeatherTile WeatherName="WeatherLightning"/>
+                </Decorator_EndTurn>
+              </Controller_Sequence>
+
+              <Controller_Sequence>
+                <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0027-Step1">
+                  <ConditionCheck_IsArmyOnWeatherTile WeatherName="WeatherFlotsam"/>
+                </Decorator_EndTurn>
+              </Controller_Sequence>
+
+              <Controller_Sequence>
+                <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0027-Step1">
+                  <ConditionCheck_IsArmyOnWeatherTile WeatherName="WeatherTurbulence"/>
+                </Decorator_EndTurn>
+              </Controller_Sequence>
+
+              <Controller_Sequence>
+                <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0027-Step1">
+                  <ConditionCheck_IsArmyOnWeatherTile WeatherName="WeatherRain"/>
+                </Decorator_EndTurn>
+              </Controller_Sequence>
+
+              </Controller_Parallel>
+
+              <Controller_Sequence>
+                <Decorator_BeginTurn Initiator="Empire">
+                  <ConditionCheck_IsStepProgressionComplete StepName="SideQuestNavalTalk#0027-Step1"/>
+                </Decorator_BeginTurn>
+              </Controller_Sequence>
+
+          </Controller_Parallel>
+
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0027-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0027-Step1">
+        <ProgressionRange StartValue="0" EndValue="4"/>
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+   <!-- =========== Watery Proof ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0028" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalTalk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+     <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite QuestDefinitionName="GlobalQuestCompet#0006" QuestState="InProgress"/>
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+     </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Get the initial region-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <Controller_Sequence>
+
+        <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0028-Step1" State="InProgress" />
+          <Decorator_KillUnits Initiator="Empire" NumberOfUnits="1">
+            <UnitDesignName>UnitDesignSeaMonsterAppendage*</UnitDesignName>
+          </Decorator_KillUnits>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0028-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition 1: initial fortress captured by another empire-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2: Sea Monster is destroyed by another empire-->
+        <Controller_Sequence>
+          <Decorator_KillArmy Output_LooserVarName="$LooserArmy" TargetOption="Any" Initiator="OtherEmpires" CountAllDeadEnemyArmiesForStepProgression="true">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$LooserArmy">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/UnitTypeSeaMonsterMaw</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_KillArmy>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0028-Step1">
+        <Reward Droplist="DroplistNavalTalk0028ItemReward" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Yellow bathysphere, yellow bathysphere... ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0029" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <InterpretedVar VarName="DurationObjective" Target="$(Empire)">
+        <Expression>2 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for the ruin search-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Get the fortress for army spawn-->
+      <Var VarName="$InitialFortressArmySpawn">
+        <From Source="$InitialFortress">
+          <Where>
+            <FilterWorldPositionByDistance PositionToCompareVarName="$InitialFortressPosition" DistanceMin="1" DistanceMax="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the fortress for army spawn-->
+      <Var VarName="$InitialFortressArmySpawnPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Target Fortress region-->
+      <Var VarName="$TargetFortressRegion">
+        <From Source="$InitialFortressRegion.$NeighbourRegions">
+          <Where>
+            <FilterRegionIsOcean/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Target Fortress POI-->
+      <Var VarName="$TargetFortress">
+        <First>
+          <From Source="$TargetFortressRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeCitadel,!OccupiedCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <!--Target Fortress position-->
+      <Var VarName="$TargetFortressPosition">
+        <From Source="$TargetFortress.$Position"/>
+      </Var>
+
+      <!--Get the target fortress for army spawn-->
+      <Var VarName="$TargetFortressArmySpawn">
+        <From Source="$TargetFortress">
+          <Where>
+            <FilterWorldPositionByDistance PositionToCompareVarName="$TargetFortressPosition" DistanceMin="1" DistanceMax="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the fortress for army spawn-->
+      <Var VarName="$TargetFortressArmySpawnPosition">
+        <From Source="$TargetFortress.$Position"/>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$TargetFortressName" Source="$TargetFortress"/>
+      <LocalizationVar LocalizationKey="$TargetFortressRegionName" Source="$TargetFortressRegion"/>
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+      <LocalizationVar LocalizationKey="$TurnDuration" Source="DurationObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$TargetFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <!-- Step 1 -->
+        <Controller_Sequence>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0029-Step1" State="InProgress"/>
+          <Action_SpawnArmy SpawnLocationVarName="$InitialFortressArmySpawnPosition" ArmyDroplist="DroplistNavalTalk0029BrokenBathysphereReward" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" EmpireArmyOwnerVarName="$InstigatorEmpire" Output_EnemyArmyGUIDVarName="$Global_ArmyID"/>
+          <Action_AddQuestMarker TargetEntityVarName="$TargetFortress" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerTargetFortress"/>
+          <Decorator_NavalTalk TargetEntityVarName="$TargetFortress" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitDesignFomoriansBathysphereQuestDescriptor</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_NavalTalk>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0029-Step1" State="Completed"/>
+
+          <!-- Step 2 -->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0029-Step2" State="InProgress"/>
+          <Action_DestroyArmy ArmyGUIDVarName="$Global_ArmyID" />
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <Controller_Loop LoopCount="4">
+              <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0029-Step2"/>
+            </Controller_Loop>
+
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_IsStepProgressionComplete StepName="SideQuestNavalTalk#0029-Step2" />
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+
+          </Controller_Parallel>
+          <Action_SpawnArmy SpawnLocationVarName="$TargetFortressArmySpawnPosition" ArmyDroplist="DroplistNavalTalk0029RepairedBathysphereReward" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" EmpireArmyOwnerVarName="$InstigatorEmpire"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$TargetFortress" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0029-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!-- Fail Condition 1 - Initial Fortress is taken under control before completion -->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$TargetFortress" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortress"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!-- Fail Condition 2 - Target Fortress is taken under control before completion -->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$TargetFortress" Initiator="AllEmpires"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$TargetFortress" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortress"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!-- Fail Condition 3 - Unit is killed before completion -->
+        <Controller_Sequence>
+          <Decorator_KillArmy Output_LooserVarName="$LooserArmy" TargetOption="All" Initiator="AllEmpires">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$LooserArmy">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitDesignFomoriansBathysphereQuestDescriptor</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_KillArmy>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$TargetFortress" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortress"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!-- Fail Condition 4 - Unit is disbanded before completion -->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite" Inverted="true">ClassEmpire/Garrison/ClassUnit,UnitDesignFomoriansBathysphereQuestDescriptor</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+            <ConditionCheck_IsStepOnState StepName="SideQuestNavalTalk#0029-Step1" State="InProgress"/>
+          </Decorator_BeginTurn>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$TargetFortress" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortress"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0029-Step1">
+        <Reward Droplist="DroplistLowPrestige" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0029-Step2">
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+        <Reward LocalizationKey="%SideQuestNavalTalk#0029-Step2Rewards"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+  
+  
+  <!-- =========== A Touch Of Luxury ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0030" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <!--Current number of strategic facilities-->
+      <InterpretedVar VarName="CurrentNumberOfLuxuryFacilities" Target="$(Empire)">
+        <Expression>$Count(ClassEmpire/ClassFortress/PointOfInterestTypeFacility,ResourceExtractor_Luxury,RevealedFacility)</Expression>
+      </InterpretedVar>
+
+      <!--Wanted number of strategic facilities-->
+      <InterpretedVar VarName="ObjectiveNumberOfLuxuryFacilities" Target="$(Empire)">
+        <Expression>$(CurrentNumberOfLuxuryFacilities) + 3</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for the ruin search-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Get all Fortresses that don't belong to the player-->
+      <Var VarName="$ForeignFortresses">
+        <From Source="$Regions.$Fortresses">
+          <Where>
+            <FilterFortressByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$NumberOfLuxuryFacilities">
+        <Count>
+          <From Source="$ForeignFortresses.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Inverted="false" Flags="Prerequisite">FacilityResourceDeposit_Luxury,RevealedFacility</PathPrerequisite>
+            </Where>
+          </From>
+        </Count>
+      </Var>
+
+      <Var VarName="$ThreeLuxuryFacilities">
+        <From Source="$NumberOfLuxuryFacilities">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$($NumberOfLuxuryFacilities) ge 3</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+      <LocalizationVar LocalizationKey="$LuxuryFacilitiesObjective" Source="ObjectiveNumberOfLuxuryFacilities"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0030-Step1" State="InProgress" />
+          <Decorator_OccupyFortress TargetOption="All" Initiator="Empire">
+            <InterpretedVarsToUpdate>
+              <Var>CurrentNumberOfLuxuryFacilities</Var>
+            </InterpretedVarsToUpdate>
+            <ConditionCheck_IsStepProgressionComplete InterpretedValue="$(CurrentNumberOfLuxuryFacilities)" StepName="SideQuestNavalTalk#0030-Step1" />
+          </Decorator_OccupyFortress>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0030-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0030-Step1">
+        <ProgressionRange StartValue="0" EndValueVarName="ObjectiveNumberOfLuxuryFacilities"/>
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Strategic Thinking ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0031" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>NavalTalk</Tags>
+
+    <!--Prerequisite-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <!--Current number of luxury facilities-->
+      <InterpretedVar VarName="CurrentNumberOfStrategicFacilities" Target="$(Empire)">
+        <Expression>$Count(ClassEmpire/ClassFortress/PointOfInterestTypeFacility,ResourceExtractor_Strategic,RevealedFacility)</Expression>
+      </InterpretedVar>
+
+      <!--Wanted number of luxury facilities-->
+      <InterpretedVar VarName="ObjectiveNumberOfStrategicFacilities" Target="$(Empire)">
+        <Expression>$(CurrentNumberOfStrategicFacilities) + 3</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Take the initial fortress into account for talk purpose-->
+      <Var VarName="$InitialFortress">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPosition">
+        <From Source="$InitialFortress.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point for the ruin search-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortress.$Position.$Region"/>
+      </Var>
+
+      <!--Get all Fortresses that don't belong to the player-->
+      <Var VarName="$ForeignFortresses">
+        <From Source="$Regions.$Fortresses">
+          <Where>
+            <FilterFortressByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$NumberOfStrategicFacilities">
+        <Count>
+          <From Source="$ForeignFortresses.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Inverted="false" Flags="Prerequisite">FacilityResourceDeposit_Strategic,RevealedFacility</PathPrerequisite>
+            </Where>
+          </From>
+        </Count>
+      </Var>
+
+      <Var VarName="$ThreeStrategicFacilities">
+        <From Source="$NumberOfStrategicFacilities">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$($NumberOfStrategicFacilities) ge 3</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortress"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+      <LocalizationVar LocalizationKey="$StrategicFacilitiesObjective" Source="ObjectiveNumberOfStrategicFacilities"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortress" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0031-Step1" State="InProgress" />
+
+          <Decorator_OccupyFortress TargetOption="All" Initiator="Empire">
+            <InterpretedVarsToUpdate>
+              <Var>CurrentNumberOfStrategicFacilities</Var>
+            </InterpretedVarsToUpdate>
+            <ConditionCheck_IsStepProgressionComplete InterpretedValue="$(CurrentNumberOfStrategicFacilities)" StepName="SideQuestNavalTalk#0031-Step1" />
+          </Decorator_OccupyFortress>
+          <Action_LockQuestTarget TargetVarName="$InitialFortress" LockOption="Unlock"/>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortress"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0031-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0031-Step1">
+        <ProgressionRange StartValue="0" EndValueVarName="ObjectiveNumberOfStrategicFacilities"/>
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Teeth and Nails ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0032" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PRERREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <InterpretedVar VarName="DurationObjective" Target="$(Empire)">
+        <Expression>8 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPOI">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPOILocation">
+        <From Source="$InitialFortressPOI.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortressPOI.$Position.$Region"/>
+      </Var>
+
+      <!--Verify that the initial region has min 2 fortresses-->
+      <Var VarName="$Min2FortressesInitialRegion">
+        <From Source="$InitialFortressRegion">
+          <Where>
+            <FilterRegionIsOceanWithFortresses MinimumNumber="2"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Select region fortresses belonging to Fomorians while excluding the intial fortress (which means that the tag "OccupiedCitadel" is absent)-->
+      <Var VarName="$InitialRegionFomoriansFortresses">
+        <From Source="$Min2FortressesInitialRegion.$Fortresses">
+          <Where>
+            <PathPrerequisite>ClassFortress/!OccupiedCitadel</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Sort Fortresses or their POI ?-->
+      <Var VarName="$InitialRegionNearestFomoriansFortresses">
+        <From Source="$InitialRegionFomoriansFortresses">
+          <Where>
+            <FilterFortressByDistance PositionToCompareVarName="$InitialFortressPOILocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$TargetFortress">
+        <First>
+          <From Source="$InitialRegionNearestFomoriansFortresses"/>
+        </First>
+      </Var>
+
+      <Var VarName="$TargetFortressCitadelPOI">
+        <From Source="$TargetFortress.$PointsOfInterest">
+          <Where>
+            <PathPrerequisite>PointOfInterestTypeCitadel,!OccupiedCitadel</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$TargetFortressName" Source="$TargetFortressCitadelPOI"/>
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortressPOI"/>
+      <LocalizationVar LocalizationKey="$InitialFortressRegionName" Source="$InitialFortressRegion"/>
+
+      <LocalizationVar LocalizationKey="$TurnDuration" Source="DurationObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortressPOI" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$TargetFortressCitadelPOI" LockOption="Lock"/>
+      <Action_AddQuestMarker TargetEntityVarName="$TargetFortressCitadelPOI" Tags="Fortress" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$TargetFortressCitadelPOIQuestMarker"/>
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <!--Step 1-->
+        <Controller_Sequence>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0032-Step1" State="InProgress" />
+          <Decorator_OccupyFortress TargetFortressVarName="$TargetFortressCitadelPOI" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0032-Step1" State="Completed" />
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0032-Step2" State="InProgress"/>
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <Controller_Loop LoopCount="16">
+              <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0032-Step2"/>
+            </Controller_Loop>
+
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_IsStepProgressionComplete StepName="SideQuestNavalTalk#0032-Step2"/>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+
+          </Controller_Parallel>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortressPOI"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0032-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortressPOI" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Step 2 - Fail Condition - Target fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$TargetFortressCitadelPOI" Initiator="OtherEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortressPOI" LockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$TargetFortressCitadelPOI" LockOption="Unlock"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$TargetFortressCitadelPOIQuestMarker" />
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0032-Step1">
+        <Reward Droplist="DroplistLowPrestige" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestNavalTalk#0032-Step2">
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+        <Reward Droplist="DroplistResources" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!-- =========== Seeking Safety ============-->
+  <QuestDefinition Name="SideQuestNavalTalk#0033" Category="NavalQuest" SubCategory="Fomorians"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+<Tags>NavalTalk</Tags>
+
+    <!--============ PRERREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <DownloadableContentPrerequisite Flags="Prerequisite">NavalPack</DownloadableContentPrerequisite>
+      <DownloadableContentPrerequisite Flags="Prerequisite">ReplicantsPack</DownloadableContentPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <InterpretedVar VarName="DurationObjective" Target="$(Empire)">
+        <Expression>4 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$PlayerEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPOI">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialFortressPOILocation">
+        <From Source="$InitialFortressPOI.$Position"/>
+      </Var>
+
+      <!--Take the initial region into account to get an entry point-->
+      <Var VarName="$InitialFortressRegion">
+        <From Source="$InitialFortressPOI.$Position.$Region"/>
+      </Var>
+
+      <!--Check if initial fortress has a continental neighbour region-->
+      <Var VarName="$TargetCityRegion">
+        <Any>
+          <From Source="$InitialFortressRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsContinental/>
+              <FilterRegionByEmpire EmpireVarName="$PlayerEmpire"/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the target city-->
+      <Var VarName="$TargetCity">
+        <From Source="$TargetCityRegion.$City">
+            <Where>
+              <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:Workers) ge 8</InterpreterPrerequisite> <!--workers-->
+            </Where>
+        </From>
+      </Var>
+
+      <!--Set a localization text to better explain the step elements-->
+      <LocalizationVar LocalizationKey="$TargetPlayerCity" Source="$TargetCity"/>
+      <LocalizationVar LocalizationKey="$TargetCityRegionName" Source="$TargetCityRegion"/>
+      <LocalizationVar LocalizationKey="$InitialFortressName" Source="$InitialFortressPOI"/>
+      <LocalizationVar LocalizationKey="$InitialRegionName" Source="$InitialFortressRegion"/>
+
+      <LocalizationVar LocalizationKey="$TurnDuration" Source="DurationObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortressPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestNavalTalk#0033-Step1" State="InProgress" />
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <Controller_Sequence>
+
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <Controller_Loop LoopCount="8">
+              <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="SideQuestNavalTalk#0033-Step1">
+                <ConditionCheck_Prerequisite>
+                  <Prerequisites Target="$TargetCity">
+                    <PathPrerequisite Flags="Prerequisite">ClassCity,CityStatusRoundUp</PathPrerequisite>
+                  </Prerequisites>
+                </ConditionCheck_Prerequisite>
+              </Decorator_EndTurn>
+            </Controller_Loop>
+
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_IsStepProgressionComplete StepName="SideQuestNavalTalk#0033-Step1"/>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+
+          </Controller_Parallel>
+          <Action_SwapFortressOccupant TargetEntityVarName="$InitialFortressPOI"/>
+          <Action_UpdateStep StepName="SideQuestNavalTalk#0033-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition - Fortress is taken under control before completion-->
+        <Controller_Sequence>
+          <Decorator_OccupyFortress TargetFortressVarName="$InitialFortressPOI" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockQuestTarget TargetVarName="$InitialFortressPOI" LockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestNavalTalk#0033-Step1">
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%CaptureFortress"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+</Datatable>

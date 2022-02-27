@@ -71,14 +71,14 @@ public class MenuAdvancedSetupScreen : GuiMenuScreen
 		this.readOnly = false;
 		if (parameters != null)
 		{
-			if (parameters.Length != 0)
+			if (parameters.Length > 0)
 			{
 				this.category = (parameters[0] as string);
 			}
 			if (parameters.Length > 1)
 			{
-				string text = parameters[1] as string;
-				if (text != null && text == "readonly")
+				string readOnlyString = parameters[1] as string;
+				if (readOnlyString != null && readOnlyString == "readonly")
 				{
 					this.readOnly = true;
 				}
@@ -88,9 +88,9 @@ public class MenuAdvancedSetupScreen : GuiMenuScreen
 		{
 			yield break;
 		}
-		ISessionService service = Services.GetService<ISessionService>();
-		Diagnostics.Assert(service != null);
-		this.Session = (service.Session as global::Session);
+		ISessionService sessionService = Services.GetService<ISessionService>();
+		Diagnostics.Assert(sessionService != null);
+		this.Session = (sessionService.Session as global::Session);
 		if (this.Session == null)
 		{
 			yield break;
@@ -98,29 +98,27 @@ public class MenuAdvancedSetupScreen : GuiMenuScreen
 		this.OptionDefinitions = new Dictionary<StaticString, OptionDefinition>();
 		if (this.category == "Game")
 		{
-			using (IEnumerator<OptionDefinition> enumerator = Databases.GetDatabase<OptionDefinition>(true).GetEnumerator())
+			IDatabase<OptionDefinition> optionDefinitionDatabase = Databases.GetDatabase<OptionDefinition>(true);
+			foreach (OptionDefinition optionDefinition4 in optionDefinitionDatabase)
 			{
-				while (enumerator.MoveNext())
+				if (optionDefinition4.Category == this.category && !this.OptionDefinitions.ContainsKey(optionDefinition4.Name))
 				{
-					OptionDefinition optionDefinition4 = enumerator.Current;
-					if (optionDefinition4.Category == this.category && !this.OptionDefinitions.ContainsKey(optionDefinition4.Name))
-					{
-						this.OptionDefinitions.Add(optionDefinition4.Name, optionDefinition4);
-					}
+					this.OptionDefinitions.Add(optionDefinition4.Name, optionDefinition4);
 				}
-				goto IL_249;
 			}
 		}
-		if (this.category == "World")
+		else if (this.category == "World")
 		{
-			foreach (OptionDefinition optionDefinition2 in Databases.GetDatabase<WorldGeneratorOptionDefinition>(true))
+			IDatabase<WorldGeneratorOptionDefinition> worldGeneratorOptionDefinitionDatabase = Databases.GetDatabase<WorldGeneratorOptionDefinition>(true);
+			foreach (OptionDefinition optionDefinition2 in worldGeneratorOptionDefinitionDatabase)
 			{
 				if (optionDefinition2.Category == this.category && !this.OptionDefinitions.ContainsKey(optionDefinition2.Name))
 				{
 					this.OptionDefinitions.Add(optionDefinition2.Name, optionDefinition2);
 				}
 			}
-			foreach (OptionDefinition optionDefinition3 in Databases.GetDatabase<OptionDefinition>(true))
+			IDatabase<OptionDefinition> optionDefinitionDatabase2 = Databases.GetDatabase<OptionDefinition>(true);
+			foreach (OptionDefinition optionDefinition3 in optionDefinitionDatabase2)
 			{
 				if (optionDefinition3.Category == "Game" && !this.OptionDefinitions.ContainsKey(optionDefinition3.Name))
 				{
@@ -128,7 +126,6 @@ public class MenuAdvancedSetupScreen : GuiMenuScreen
 				}
 			}
 		}
-		IL_249:
 		if (this.OptionDefinitions != null)
 		{
 			this.filteredOptionDefinitions = from optionDefinition in this.OptionDefinitions.Values
@@ -137,79 +134,30 @@ public class MenuAdvancedSetupScreen : GuiMenuScreen
 			this.BuildOptionValuesByNames();
 			this.BuildSettingsBySubCategory();
 			this.SettingsGroupsContainer.DestroyAllChildren();
-			int num = 0;
-			if (AgeUtils.HighDefinition && this.category == "Game")
+			int groupIndex = 0;
+			float offsetX = this.SettingsGroupsContainer.HorizontalMargin;
+			foreach (KeyValuePair<string, List<OptionDefinition>> kvp in this.settingsBySubCategory)
 			{
-				int num2 = 1986;
-				this.SettingsGroupsContainer.HorizontalSpacing = 9f;
-				if (Screen.width < num2)
+				string settingsGroupName = "SettingsGroup" + kvp.Key;
+				AgeTransform settingsGroupTransform = this.SettingsGroupsContainer.InstanciateChild(this.SettingsGroupPrefab, settingsGroupName);
+				Diagnostics.Assert(settingsGroupTransform != null, "Failed to instanciate the {0} with prefab {1}", new object[]
 				{
-					this.SettingsGroupsContainer.HorizontalSpacing = -3f;
-					num2 -= 48;
-				}
-				float num3 = ((float)Screen.width - (float)num2) / 2f;
-				this.SettingsGroupsContainer.HorizontalMargin = -this.SettingsGroupsContainer.X + num3;
-			}
-			else if (AgeUtils.HighDefinition)
-			{
-				this.SettingsGroupsContainer.HorizontalMargin = 0f;
-				this.SettingsGroupsContainer.HorizontalSpacing = 9f;
-			}
-			else if (!AgeUtils.HighDefinition && this.category == "Game")
-			{
-				int num4 = 1324;
-				this.SettingsGroupsContainer.HorizontalSpacing = 6f;
-				if (Screen.width < num4)
-				{
-					this.SettingsGroupsContainer.HorizontalSpacing = -2f;
-					num4 -= 32;
-				}
-				float num5 = ((float)Screen.width - (float)num4) / 2f;
-				this.SettingsGroupsContainer.HorizontalMargin = -this.SettingsGroupsContainer.X + num5;
-			}
-			else
-			{
-				this.SettingsGroupsContainer.HorizontalMargin = 0f;
-				this.SettingsGroupsContainer.HorizontalSpacing = 6f;
-			}
-			float num6 = this.SettingsGroupsContainer.HorizontalMargin;
-			using (Dictionary<string, List<OptionDefinition>>.Enumerator enumerator4 = this.settingsBySubCategory.GetEnumerator())
-			{
-				while (enumerator4.MoveNext())
-				{
-					KeyValuePair<string, List<OptionDefinition>> reference = enumerator4.Current;
-					string text2 = "SettingsGroup" + reference.Key;
-					AgeTransform ageTransform = this.SettingsGroupsContainer.InstanciateChild(this.SettingsGroupPrefab, text2);
-					Diagnostics.Assert(ageTransform != null, "Failed to instanciate the {0} with prefab {1}", new object[]
-					{
-						text2,
-						this.SettingsGroupPrefab.name
-					});
-					ageTransform.X = num6;
-					num6 += ageTransform.Width + this.SettingsGroupsContainer.HorizontalSpacing;
-					this.setupAdvancedOptionsDelegate(ageTransform, reference, num);
-					num++;
-					if (num == 5)
-					{
-						AgeControlDropList[] componentsInChildren = ageTransform.GetComponentsInChildren<AgeControlDropList>(true);
-						for (int i = 0; i < componentsInChildren.Length; i++)
-						{
-							AgeTooltip[] componentsInChildren2 = componentsInChildren[i].GetComponentsInChildren<AgeTooltip>(true);
-							for (int j = 0; j < componentsInChildren2.Length; j++)
-							{
-								componentsInChildren2[j].AnchorMode = AgeTooltipAnchorMode.LEFT_CENTER;
-							}
-						}
-					}
-				}
-				goto IL_515;
+					settingsGroupName,
+					this.SettingsGroupPrefab.name
+				});
+				settingsGroupTransform.X = offsetX;
+				offsetX += settingsGroupTransform.Width + this.SettingsGroupsContainer.HorizontalSpacing;
+				this.setupAdvancedOptionsDelegate(settingsGroupTransform, kvp, groupIndex);
+				groupIndex++;
 			}
 		}
-		this.filteredOptionDefinitions = null;
-		this.BuildOptionValuesByNames();
-		this.BuildSettingsBySubCategory();
-		this.SettingsGroupsContainer.DestroyAllChildren();
-		IL_515:
+		else
+		{
+			this.filteredOptionDefinitions = null;
+			this.BuildOptionValuesByNames();
+			this.BuildSettingsBySubCategory();
+			this.SettingsGroupsContainer.DestroyAllChildren();
+		}
 		this.AdvancedDataChanged = false;
 		base.NeedRefresh = true;
 		this.RefreshButtons();
@@ -360,12 +308,15 @@ public class MenuAdvancedSetupScreen : GuiMenuScreen
 				where element.Type == OptionDefinitionConstraintType.Control
 				select element)
 				{
-					string x;
-					if (optionDefinitionConstraint.Keys != null && optionDefinitionConstraint.Keys.Length != 0 && this.optionValuesByName.TryGetValue(optionDefinitionConstraint.OptionName, out x))
+					if (optionDefinitionConstraint.Keys != null && optionDefinitionConstraint.Keys.Length != 0)
 					{
-						if (!optionDefinitionConstraint.Keys.Select((OptionDefinitionConstraint.Key key) => key.Name).Contains(x))
+						string value;
+						if (this.optionValuesByName.TryGetValue(optionDefinitionConstraint.OptionName, out value))
 						{
-							this.optionValuesByName[optionDefinitionConstraint.OptionName] = optionDefinitionConstraint.Keys[0].Name;
+							if (!optionDefinitionConstraint.Keys.Select((OptionDefinitionConstraint.Key key) => key.Name).Contains(value))
+							{
+								this.optionValuesByName[optionDefinitionConstraint.OptionName] = optionDefinitionConstraint.Keys[0].Name;
+							}
 						}
 					}
 				}
@@ -388,7 +339,8 @@ public class MenuAdvancedSetupScreen : GuiMenuScreen
 	{
 		if (this.OptionDefinitions != null)
 		{
-			foreach (string text in this.optionValuesByName.Keys.ToList<string>())
+			List<string> list = this.optionValuesByName.Keys.ToList<string>();
+			foreach (string text in list)
 			{
 				OptionDefinition optionDefinition;
 				if (this.OptionDefinitions.TryGetValue(text, out optionDefinition))
@@ -419,7 +371,8 @@ public class MenuAdvancedSetupScreen : GuiMenuScreen
 
 	private void SetupAdvancedOptions(AgeTransform tableItem, KeyValuePair<string, List<OptionDefinition>> kvp, int tableIndex)
 	{
-		tableItem.GetComponent<MenuSettingsGroup>().SetContent(kvp.Key, kvp.Value, base.gameObject, this.OptionDefinitions);
+		MenuSettingsGroup component = tableItem.GetComponent<MenuSettingsGroup>();
+		component.SetContent(kvp.Key, kvp.Value, base.gameObject, this.OptionDefinitions);
 	}
 
 	private IEnumerator HandleCancelRequestWhenShowingFinished()

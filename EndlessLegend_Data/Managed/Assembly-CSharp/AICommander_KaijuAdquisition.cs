@@ -104,40 +104,42 @@ public class AICommander_KaijuAdquisition : AICommanderWithObjective, IXmlSerial
 			this.CancelMission(base.Missions[i]);
 		}
 		float armyMaxPower = this.GetArmyMaxPower();
-		int num = Mathf.CeilToInt(this.intelligenceAIHelper.EvaluateMilitaryPowerOfKaiju(base.Empire, this.kaiju, 0) * this.kaijuMilitaryPowerFactor / armyMaxPower);
-		if (num < 2)
+		float num = this.intelligenceAIHelper.EvaluateMilitaryPowerOfKaiju(base.Empire, this.kaiju, 0);
+		num *= this.kaijuMilitaryPowerFactor;
+		int num2 = Mathf.CeilToInt(num / armyMaxPower);
+		if (num2 == 0)
 		{
-			num = 2;
+			num2 = 1;
 		}
-		else if (num > this.maxArmiesHuntingSameKaiju)
+		else if (num2 > this.maxArmiesHuntingSameKaiju)
 		{
-			num = this.maxArmiesHuntingSameKaiju;
+			num2 = this.maxArmiesHuntingSameKaiju;
 		}
-		int num2 = 0;
 		int num3 = 0;
+		int num4 = 0;
 		for (int j = 0; j < base.Missions.Count; j++)
 		{
 			AICommanderMission_AttackAndTameKaijuDefault aicommanderMission_AttackAndTameKaijuDefault = base.Missions[j] as AICommanderMission_AttackAndTameKaijuDefault;
 			if (aicommanderMission_AttackAndTameKaijuDefault != null)
 			{
-				if (num2 < num)
+				if (num3 < num2)
 				{
 					if (!aicommanderMission_AttackAndTameKaijuDefault.AIDataArmyGUID.IsValid)
 					{
-						num3++;
+						num4++;
 					}
 				}
-				else if (num2 >= num + 1)
+				else if (num3 >= num2 + 1)
 				{
 					this.CancelMission(aicommanderMission_AttackAndTameKaijuDefault);
-					goto IL_15D;
+					goto IL_190;
 				}
-				num2++;
+				num3++;
 			}
-			IL_15D:;
+			IL_190:;
 		}
 		GlobalObjectiveMessage globalObjectiveMessage3;
-		if (num2 - num3 >= num)
+		if (num3 - num4 >= num2)
 		{
 			GlobalObjectiveMessage globalObjectiveMessage2;
 			if (base.AIPlayer.Blackboard.TryGetMessage<GlobalObjectiveMessage>(base.GlobalObjectiveID, out globalObjectiveMessage2))
@@ -149,7 +151,7 @@ public class AICommander_KaijuAdquisition : AICommanderWithObjective, IXmlSerial
 		{
 			globalObjectiveMessage3.ObjectiveState = "Preparing";
 		}
-		for (int k = num2; k < num; k++)
+		for (int k = num3; k < num2; k++)
 		{
 			this.SendAttackKaijuAction();
 			base.PopulationFirstMissionFromCategory(tags, new object[]

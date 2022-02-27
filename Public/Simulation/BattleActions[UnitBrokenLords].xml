@@ -12,7 +12,7 @@
     <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:ImmolationState) gt 0</InterpreterPrerequisite>
 
     <BattleEffects TargetsFilter="Initiator Alive">
-      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ImmolationDamages" PropertyName="Health" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * 0.05))" />
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_ImmolationDamages" PropertyName="Health" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * 0.1))" />
     </BattleEffects>
   </BattleActionUnit>
   

@@ -12,7 +12,6 @@ using Amplitude.Unity.AI.Evaluation;
 using Amplitude.Unity.AI.Evaluation.Diagnostics;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
-using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.Advanced;
 using Amplitude.Xml;
@@ -25,6 +24,7 @@ using UnityEngine;
 })]
 public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElement, InterpreterContext>, IXmlSerializable, IAIEvaluationHelper<WorldPositionScore, InterpreterContext>, ISimulationAIEvaluationHelper<ConstructibleElement>, ISimulationAIEvaluationHelper<WorldPositionScore>
 {
+	// Note: this type is marked as 'beforefieldinit'.
 	static AILayer_Production()
 	{
 		AILayer_Production.EmpireNetStrategicResources = "EmpireNetStrategicResources";
@@ -127,19 +127,6 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 				});
 			}
 		}
-		GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
-		AIPlayer_MajorEmpire aiplayer_MajorEmpire;
-		if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(base.AIEntity.Empire as MajorEmpire, out aiplayer_MajorEmpire))
-		{
-			AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
-			if (entity != null)
-			{
-				this.VictoryLayer = entity.GetLayer<AILayer_Victory>();
-				this.ColonizationLayer = entity.GetLayer<AILayer_Colonization>();
-			}
-		}
-		this.departmentOfDefense = this.Empire.GetAgency<DepartmentOfDefense>();
-		this.worldAtlasHelper = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
 	}
 
 	private void GenerateBuildingMessageForExtension(ref List<EvaluableMessage_BuildingProduction> buildingMessages, ref EvaluationData<ConstructibleElement, InterpreterContext> evaluationData)
@@ -327,7 +314,7 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 	private WorldPositionScore GetExtensionBestPosition(StaticString name)
 	{
 		AILayer_Production.ExtensionEvaluation extensionEvaluation = this.extensionEvaluations.Find((AILayer_Production.ExtensionEvaluation match) => match.DistrictImprovementDefinition.Name == name);
-		if (extensionEvaluation != null && extensionEvaluation.LastScore > 0f)
+		if (extensionEvaluation.LastScore > 0f)
 		{
 			return extensionEvaluation.LastWorldPosition;
 		}
@@ -1046,10 +1033,6 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 		this.constructionQueue = null;
 		this.constructibleElements = null;
 		this.pointOfInterestConstructibleElement = null;
-		this.LastResortDesigns = null;
-		this.VictoryLayer = null;
-		this.ColonizationLayer = null;
-		this.worldAtlasHelper = null;
 	}
 
 	protected override void CreateLocalNeeds(StaticString context, StaticString pass)
@@ -1102,19 +1085,16 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 			if (this.constructionQueue != null)
 			{
 				ConstructibleElement constructibleElement = this.constructionQueue.Peek().ConstructibleElement;
-				if (constructibleElement.SubCategory != "SubCategoryWonder" && constructibleElement.SubCategory != "SubCategoryDistrict" && constructibleElement.SubCategory != "SubCategoryDust" && constructibleElement.SubCategory != "SubCategoryVictory" && constructibleElement.SubCategory != "SubCategoryIndustry")
+				if (!DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement, new string[]
 				{
-					if (!DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement, new string[]
-					{
-						ConstructionFlags.Prerequisite
-					}))
-					{
-						this.peekConstructibleCanBeDelay = true;
-					}
-					if (!this.departmentOfTheTreasury.CheckConstructibleInstantCosts(this.aiEntityCity.City, constructibleElement))
-					{
-						this.peekConstructibleCanBeDelay = true;
-					}
+					ConstructionFlags.Prerequisite
+				}))
+				{
+					this.peekConstructibleCanBeDelay = true;
+				}
+				if (!this.departmentOfTheTreasury.CheckConstructibleInstantCosts(this.aiEntityCity.City, constructibleElement))
+				{
+					this.peekConstructibleCanBeDelay = true;
 				}
 			}
 			this.currentAvailableProduction = (float)((!this.peekConstructibleCanBeDelay) ? 0 : 1);
@@ -1135,13 +1115,8 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 	protected override void EvaluateNeeds(StaticString context, StaticString pass)
 	{
 		base.EvaluateNeeds(context, pass);
-		this.CancelInvalidConstructions();
-		this.NoMoreSettlers = false;
-		if (!this.VictoryLayer.NeedSettlers && this.MaxSettlersNeeded(true) < 1)
-		{
-			this.NoMoreSettlers = true;
-		}
 		this.candidateConstructibleElements.Clear();
+		DepartmentOfDefense agency = this.Empire.GetAgency<DepartmentOfDefense>();
 		bool flag = this.aiEntityCity.City.BesiegingEmpire != null;
 		float developmentRatioOfCity = this.entityAIHelper.GetDevelopmentRatioOfCity(this.aiEntityCity.City);
 		float num = this.aiEntityCity.City.GetPropertyValue(SimulationProperties.NetCityProduction);
@@ -1149,83 +1124,48 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 		{
 			num = 1f;
 		}
-		bool flag2 = this.Empire.GetAgency<DepartmentOfForeignAffairs>().IsInWarWithSomeone();
-		int num2 = 0;
+		DepartmentOfForeignAffairs agency2 = this.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		bool flag2 = agency2.IsInWarWithSomeone();
 		UnitDesign unitDesign = null;
+		float num2 = 0f;
 		float num3 = 0f;
-		float num4 = 0f;
 		List<EvaluableMessage_BuildingProduction> list = new List<EvaluableMessage_BuildingProduction>();
 		list.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessage_BuildingProduction>(BlackboardLayerID.City, (EvaluableMessage_BuildingProduction match) => match.CityGuid == this.aiEntityCity.City.GUID));
-		float num5 = 0f;
+		float num4 = 0f;
 		for (int i = 0; i < list.Count; i++)
 		{
-			if (num5 < list[i].Interest)
+			if (num4 < list[i].Interest)
 			{
-				num5 = list[i].Interest;
+				num4 = list[i].Interest;
 			}
 		}
 		foreach (EvaluableMessage_BuildingProduction evaluableMessage_BuildingProduction in list)
 		{
-			DepartmentOfIndustry.ConstructibleElement constructibleElement;
-			if ((evaluableMessage_BuildingProduction.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessage_BuildingProduction.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining) && this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_BuildingProduction.ConstructibleElementName, out constructibleElement))
+			if (evaluableMessage_BuildingProduction.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessage_BuildingProduction.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining)
 			{
-				float num6;
-				float buyoutCost;
-				this.GetProductionCost(evaluableMessage_BuildingProduction, constructibleElement, out num6, out buyoutCost);
-				float num7 = evaluableMessage_BuildingProduction.Interest / num5 * 0.5f;
-				if (num7 > 0f)
+				DepartmentOfIndustry.ConstructibleElement constructibleElement;
+				if (this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_BuildingProduction.ConstructibleElementName, out constructibleElement))
 				{
-					num7 = AILayer.Boost(num7, this.ComputeCostBoost(num6 / num));
-					num7 = AILayer.Boost(num7, this.ComputeSiegeBoostForEco());
-					if (evaluableMessage_BuildingProduction.ConstructibleElementName == "DistrictAltarOfAuriga")
+					float num5;
+					float buyoutCost;
+					this.GetProductionCost(evaluableMessage_BuildingProduction, constructibleElement, out num5, out buyoutCost);
+					float num6 = evaluableMessage_BuildingProduction.Interest / num4 * 0.5f;
+					if (num6 > 0f)
 					{
-						num7 = AILayer.Boost(num7, 0.4f);
-					}
-					if ((this.Empire.SimulationObject.Tags.Contains("FactionTraitCultists7") || base.AIEntity.Empire.SimulationObject.Tags.Contains("FactionTraitMimics1")) && !flag2 && evaluableMessage_BuildingProduction.ConstructibleElementName.ToString().Contains("Defense"))
-					{
-						num7 = AILayer.Boost(num7, -0.9f);
-					}
-					if (!flag2 && this.aiEntityCity.AIDataCity.CityTileCount > 1)
-					{
-						foreach (string value in new List<string>
+						num6 = AILayer.Boost(num6, this.ComputeCostBoost(num5 / num));
+						num6 = AILayer.Boost(num6, this.ComputeSiegeBoostForEco());
+						if (evaluableMessage_BuildingProduction.ConstructibleElementName == "DistrictAltarOfAuriga")
 						{
-							"Food",
-							"Industry",
-							"Dust",
-							"Science",
-							"Influence",
-							"District",
-							"ResourceExtractor",
-							"Approval",
-							"OrbUnlock"
-						})
-						{
-							if (evaluableMessage_BuildingProduction.ConstructibleElementName.ToString().Contains(value))
-							{
-								num7 = AILayer.Boost(num7, 0.75f);
-								num2++;
-							}
-						}
-						if (evaluableMessage_BuildingProduction.ConstructibleElementName.ToString().Contains("District"))
-						{
-							num7 = AILayer.Boost(num7, 0.05f);
-						}
-						if (evaluableMessage_BuildingProduction.ConstructibleElementName.ToString().Contains("Industry"))
-						{
-							num7 = AILayer.Boost(num7, 0.2f);
-						}
-						if (evaluableMessage_BuildingProduction.ConstructibleElementName.ToString().Contains("FIDS"))
-						{
-							num7 = AILayer.Boost(num7, 0.3f);
+							num6 = AILayer.Boost(num6, 0.4f);
 						}
 					}
-				}
-				float economicalStress = 0f;
-				this.ApplyProductionEvaluation(evaluableMessage_BuildingProduction, constructibleElement, num7, num, num6, buyoutCost, economicalStress);
-				if (num7 > num4)
-				{
-					num4 = num7;
-					num3 = num6;
+					float economicalStress = 0f;
+					this.ApplyProductionEvaluation(evaluableMessage_BuildingProduction, constructibleElement, num6, num, num5, buyoutCost, economicalStress);
+					if (num6 > num3)
+					{
+						num3 = num6;
+						num2 = num5;
+					}
 				}
 			}
 		}
@@ -1233,286 +1173,242 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 		productionNeedsMessage.State = BlackboardMessage.StateValue.Message_InProgress;
 		productionNeedsMessage.TimeOut = 0;
 		productionNeedsMessage.CityGuid = this.aiEntityCity.City.GUID;
-		productionNeedsMessage.BestProductionCost = num3;
-		productionNeedsMessage.BestProductionTurn = Mathf.CeilToInt(num3 / num);
+		productionNeedsMessage.BestProductionCost = num2;
+		productionNeedsMessage.BestProductionTurn = Mathf.CeilToInt(num2 / num);
 		this.aiEntityCity.Blackboard.AddMessage(productionNeedsMessage);
-		if (!this.BoostersInQueue(true))
+		List<EvaluableMessage_CityBooster> list2 = new List<EvaluableMessage_CityBooster>();
+		list2.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessage_CityBooster>(BlackboardLayerID.Empire, (EvaluableMessage_CityBooster match) => match.CityGuid != this.aiEntityCity.City.GUID));
+		foreach (EvaluableMessage_CityBooster evaluableMessage_CityBooster in list2)
 		{
-			List<EvaluableMessage_CityBooster> list2 = new List<EvaluableMessage_CityBooster>();
-			list2.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessage_CityBooster>(BlackboardLayerID.Empire, (EvaluableMessage_CityBooster match) => match.CityGuid != this.aiEntityCity.City.GUID));
-			foreach (EvaluableMessage_CityBooster evaluableMessage_CityBooster in list2)
+			if (evaluableMessage_CityBooster.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessage_CityBooster.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining)
 			{
-				DepartmentOfIndustry.ConstructibleElement constructibleElement2;
-				if ((evaluableMessage_CityBooster.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessage_CityBooster.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining) && this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_CityBooster.BoosterDefinitionGeneratorName, out constructibleElement2))
+				DepartmentOfIndustry.ConstructibleElement constructibleElement;
+				if (this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_CityBooster.BoosterDefinitionGeneratorName, out constructibleElement))
 				{
 					float priority = this.aiLayerBooster.GetPriority(evaluableMessage_CityBooster.BoosterDefinitionName);
 					if (evaluableMessage_CityBooster.Interest > priority * 1.2f)
 					{
-						float num8;
-						float buyoutCost2;
-						this.GetProductionCost(evaluableMessage_CityBooster, constructibleElement2, out num8, out buyoutCost2);
-						float num9 = evaluableMessage_CityBooster.Interest;
-						num9 = AILayer.Boost(num9, this.ComputeCostBoost(num8 / num));
-						num9 = AILayer.Boost(num9, this.ComputeSiegeBoostForEco());
-						num9 = AILayer.Boost(num9, this.ComputeBoosterBoost(evaluableMessage_CityBooster));
-						float num10 = 0.2f;
-						num10 = AILayer.Boost(num10, num4 * 0.5f);
-						if (num2 > 0)
-						{
-							num10 = AILayer.Boost(num10, 1f);
-							num9 = AILayer.Boost(num9, -1f);
-						}
-						this.ApplyProductionEvaluation(evaluableMessage_CityBooster, constructibleElement2, num9, num, num8, buyoutCost2, num10);
+						float num5;
+						float buyoutCost;
+						this.GetProductionCost(evaluableMessage_CityBooster, constructibleElement, out num5, out buyoutCost);
+						float num7 = evaluableMessage_CityBooster.Interest;
+						num7 = AILayer.Boost(num7, this.ComputeCostBoost(num5 / num));
+						num7 = AILayer.Boost(num7, this.ComputeSiegeBoostForEco());
+						num7 = AILayer.Boost(num7, this.ComputeBoosterBoost(evaluableMessage_CityBooster));
+						float num8 = 0.2f;
+						num8 = AILayer.Boost(num8, num3 * 0.5f);
+						this.ApplyProductionEvaluation(evaluableMessage_CityBooster, constructibleElement, num7, num, num5, buyoutCost, num8);
 					}
 				}
 			}
 		}
-		List<string> list3 = new List<string>();
-		this.GetForbiddenResources(ref list3);
-		List<EvaluableMessageWithUnitDesign> list4 = new List<EvaluableMessageWithUnitDesign>();
-		list4.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessageWithUnitDesign>(BlackboardLayerID.Empire));
-		foreach (EvaluableMessageWithUnitDesign evaluableMessageWithUnitDesign in list4)
+		List<EvaluableMessageWithUnitDesign> list3 = new List<EvaluableMessageWithUnitDesign>();
+		list3.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessageWithUnitDesign>(BlackboardLayerID.Empire));
+		foreach (EvaluableMessageWithUnitDesign evaluableMessageWithUnitDesign in list3)
 		{
-			if ((evaluableMessageWithUnitDesign.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessageWithUnitDesign.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining) && evaluableMessageWithUnitDesign.UnitDesign != null)
+			if (evaluableMessageWithUnitDesign.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessageWithUnitDesign.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining)
 			{
-				if (!this.departmentOfDefense.UnitDesignDatabase.TryGetValue(evaluableMessageWithUnitDesign.UnitDesign.Model, out unitDesign, false))
+				if (evaluableMessageWithUnitDesign.UnitDesign != null)
 				{
-					AILayer.LogWarning("Cannot found the unit design with model {0}. The unit request will failed.", new object[]
+					if (!agency.UnitDesignDatabase.TryGetValue(evaluableMessageWithUnitDesign.UnitDesign.Model, out unitDesign, false))
 					{
-						evaluableMessageWithUnitDesign.UnitDesign.Model
-					});
-					evaluableMessageWithUnitDesign.SetFailedToObtain();
-				}
-				else
-				{
-					bool flag3 = true;
-					EvaluableMessage_UnitRequest evaluableMessage_UnitRequest = evaluableMessageWithUnitDesign as EvaluableMessage_UnitRequest;
-					if (evaluableMessage_UnitRequest != null && evaluableMessage_UnitRequest.RequestUnitListMessageID != 0UL)
-					{
-						RequestUnitListMessage requestUnitListMessage = base.AIEntity.AIPlayer.Blackboard.GetMessage(evaluableMessage_UnitRequest.RequestUnitListMessageID) as RequestUnitListMessage;
-						if (requestUnitListMessage != null && (flag || requestUnitListMessage.ForceSourceRegion != -1) && requestUnitListMessage.ForceSourceRegion != this.aiEntityCity.City.Region.Index)
+						AILayer.LogWarning("Cannot found the unit design with model {0}. The unit request will failed.", new object[]
 						{
-							flag3 = false;
-						}
-					}
-					if (flag3 && !this.departmentOfIndustry.CheckConstructiblePrerequisites(this.aiEntityCity.City, unitDesign))
-					{
-						flag3 = false;
-					}
-					if (!flag3)
-					{
-						for (int j = 0; j < evaluableMessageWithUnitDesign.ProductionEvaluations.Count; j++)
-						{
-							if (evaluableMessageWithUnitDesign.ProductionEvaluations[j].CityGuid == this.aiEntityCity.City.GUID)
-							{
-								evaluableMessageWithUnitDesign.ProductionEvaluations.RemoveAt(j);
-								j--;
-							}
-						}
+							evaluableMessageWithUnitDesign.UnitDesign.Model
+						});
+						evaluableMessageWithUnitDesign.SetFailedToObtain();
 					}
 					else
 					{
-						float num11;
-						float buyoutCost3;
-						this.GetProductionCost(evaluableMessageWithUnitDesign, unitDesign, out num11, out buyoutCost3);
-						float num12 = evaluableMessageWithUnitDesign.Interest;
-						num12 = AILayer.Boost(num12, this.ComputeCostBoost(num11 / num));
-						num12 = AILayer.Boost(num12, this.ComputeDistanceToObjectiveBoost(evaluableMessageWithUnitDesign, unitDesign));
-						num12 = AILayer.Boost(num12, this.ComputeEconomicBoostForUnit(evaluableMessageWithUnitDesign, developmentRatioOfCity));
-						if (unitDesign.Tags.Contains(DownloadableContent9.TagColossus))
+						bool flag3 = true;
+						EvaluableMessage_UnitRequest evaluableMessage_UnitRequest = evaluableMessageWithUnitDesign as EvaluableMessage_UnitRequest;
+						if (evaluableMessage_UnitRequest != null && evaluableMessage_UnitRequest.RequestUnitListMessageID != 0UL)
 						{
-							num12 = AILayer.Boost(num12, this.colossusProductionBoost);
-						}
-						float num13 = 0f;
-						if (!flag)
-						{
-							num13 = 0.5f;
-							num13 = AILayer.Boost(num13, (this.minimalDevelopmentRatioForUnit - developmentRatioOfCity) / this.minimalDevelopmentRatioForUnit * this.maximalDevelopmentRatioBoost);
-						}
-						else if (developmentRatioOfCity < this.minimalDevelopmentRatioForUnit)
-						{
-							num13 = (1f - (developmentRatioOfCity - this.minimalDevelopmentRatioForUnit) / this.minimalDevelopmentRatioForUnit) * this.maximalDevelopmentRatioBoost;
-						}
-						if (unitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
-						{
-							num13 = AILayer.Boost(num13, this.settlerEconomicalStress);
-						}
-						if (developmentRatioOfCity >= 0.9f)
-						{
-							num13 = AILayer.Boost(num13, -0.5f + (developmentRatioOfCity - 0.9f) / 0.1f * -0.4f);
-						}
-						if (flag2)
-						{
-							num13 = AILayer.Boost(num13, -0.3f);
-						}
-						if (this.aiEntityCity.AICityState != null)
-						{
-							num13 = AILayer.Boost(num13, -this.aiEntityCity.AICityState.UnitBoost);
-						}
-						num13 = AILayer.Boost(num13, -this.ComputeCostBoost(num11 / num));
-						num13 = AILayer.Boost(num13, num4 * 0.2f);
-						if (this.ArmyThresholdTurns == 0)
-						{
-							this.ArmyThresholdTurns = 15;
-						}
-						int num14 = (Services.GetService<IGameService>().Game as global::Game).Turn / this.ArmyThresholdTurns + 1;
-						if (!unitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) && !flag2 && this.aiEntityCity.AIDataCity.CityTileCount > 1 && this.departmentOfDefense.Armies.Count > num14 && num2 > 0)
-						{
-							num13 = AILayer.Boost(num13, 0.6f);
-						}
-						foreach (string x in list3)
-						{
-							if (DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, unitDesign, x) > 0f)
+							RequestUnitListMessage requestUnitListMessage = base.AIEntity.AIPlayer.Blackboard.GetMessage(evaluableMessage_UnitRequest.RequestUnitListMessageID) as RequestUnitListMessage;
+							if (requestUnitListMessage != null && (flag || requestUnitListMessage.ForceSourceRegion != -1) && requestUnitListMessage.ForceSourceRegion != this.aiEntityCity.City.Region.Index)
 							{
-								num12 = 0f;
-								num13 = 1f;
-								break;
+								flag3 = false;
 							}
 						}
-						if (unitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
+						if (flag3 && !this.departmentOfIndustry.CheckConstructiblePrerequisites(this.aiEntityCity.City, unitDesign))
 						{
-							if (this.NoMoreSettlers)
+							flag3 = false;
+						}
+						if (!flag3)
+						{
+							for (int j = 0; j < evaluableMessageWithUnitDesign.ProductionEvaluations.Count; j++)
 							{
-								num13 = 1f;
-								num12 = 0f;
-							}
-							else if (this.VictoryLayer.NeedSettlers && this.ColonizationLayer.CurrentSettlerCount < 10)
-							{
-								num13 = 0f;
-								num12 = 1f;
+								if (evaluableMessageWithUnitDesign.ProductionEvaluations[j].CityGuid == this.aiEntityCity.City.GUID)
+								{
+									evaluableMessageWithUnitDesign.ProductionEvaluations.RemoveAt(j);
+									j--;
+								}
 							}
 						}
-						else if (unitDesign.Tags.Contains(UnitDesign.TagSeafaring) && !this.worldAtlasHelper.IsRegionPacified(base.AIEntity.Empire.Index, this.aiEntityCity.City.Region.Index))
+						else
 						{
-							num13 = 1f;
-							num12 = 0f;
+							float num5;
+							float buyoutCost;
+							this.GetProductionCost(evaluableMessageWithUnitDesign, unitDesign, out num5, out buyoutCost);
+							float num9 = evaluableMessageWithUnitDesign.Interest;
+							num9 = AILayer.Boost(num9, this.ComputeCostBoost(num5 / num));
+							num9 = AILayer.Boost(num9, this.ComputeDistanceToObjectiveBoost(evaluableMessageWithUnitDesign, unitDesign));
+							num9 = AILayer.Boost(num9, this.ComputeEconomicBoostForUnit(evaluableMessageWithUnitDesign, developmentRatioOfCity));
+							if (unitDesign.Tags.Contains(DownloadableContent9.TagColossus))
+							{
+								num9 = AILayer.Boost(num9, this.colossusProductionBoost);
+							}
+							float num10 = 0f;
+							if (!flag)
+							{
+								num10 = 0.5f;
+								num10 = AILayer.Boost(num10, (this.minimalDevelopmentRatioForUnit - developmentRatioOfCity) / this.minimalDevelopmentRatioForUnit * this.maximalDevelopmentRatioBoost);
+							}
+							else if (developmentRatioOfCity < this.minimalDevelopmentRatioForUnit)
+							{
+								num10 = (1f - (developmentRatioOfCity - this.minimalDevelopmentRatioForUnit) / this.minimalDevelopmentRatioForUnit) * this.maximalDevelopmentRatioBoost;
+							}
+							if (unitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
+							{
+								num10 = AILayer.Boost(num10, this.settlerEconomicalStress);
+							}
+							if (developmentRatioOfCity >= 0.9f)
+							{
+								num10 = AILayer.Boost(num10, -0.5f + (developmentRatioOfCity - 0.9f) / 0.1f * -0.4f);
+							}
+							if (flag2)
+							{
+								num10 = AILayer.Boost(num10, -0.3f);
+							}
+							if (this.aiEntityCity.AICityState != null)
+							{
+								num10 = AILayer.Boost(num10, -this.aiEntityCity.AICityState.UnitBoost);
+							}
+							num10 = AILayer.Boost(num10, -this.ComputeCostBoost(num5 / num));
+							num10 = AILayer.Boost(num10, num3 * 0.2f);
+							this.ApplyProductionEvaluation(evaluableMessageWithUnitDesign, unitDesign, num9, num, num5, buyoutCost, num10);
 						}
-						this.ApplyProductionEvaluation(evaluableMessageWithUnitDesign, unitDesign, num12, num, num11, buyoutCost3, num13);
 					}
 				}
 			}
 		}
-		List<EvaluableMessage_Wonder> list5 = new List<EvaluableMessage_Wonder>();
-		list5.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessage_Wonder>(BlackboardLayerID.Empire));
+		List<EvaluableMessage_Wonder> list4 = new List<EvaluableMessage_Wonder>();
+		list4.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessage_Wonder>(BlackboardLayerID.Empire));
 		EvaluationData<ConstructibleElement, InterpreterContext> evaluationData = null;
 		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 		{
 			evaluationData = this.GetOrCreateEvaluationData(evaluationData);
 		}
-		foreach (EvaluableMessage_Wonder evaluableMessage_Wonder in list5)
+		foreach (EvaluableMessage_Wonder evaluableMessage_Wonder in list4)
 		{
-			if ((evaluableMessage_Wonder.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessage_Wonder.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining) && !StaticString.IsNullOrEmpty(evaluableMessage_Wonder.ConstructibleElementName))
+			if (evaluableMessage_Wonder.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessage_Wonder.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining)
 			{
-				DepartmentOfIndustry.ConstructibleElement constructibleElement3;
-				if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_Wonder.ConstructibleElementName, out constructibleElement3))
+				if (!StaticString.IsNullOrEmpty(evaluableMessage_Wonder.ConstructibleElementName))
 				{
-					AILayer.LogWarning("Cannot found the wonder {0}. The wonder request will failed.", new object[]
+					DepartmentOfIndustry.ConstructibleElement constructibleElement2;
+					if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_Wonder.ConstructibleElementName, out constructibleElement2))
 					{
-						evaluableMessage_Wonder.ConstructibleElementName
-					});
-					evaluableMessage_Wonder.SetFailedToObtain();
-				}
-				else
-				{
-					bool flag4 = this.aiEntityCity.City.BesiegingEmpire == null;
-					if (flag4 && !this.departmentOfIndustry.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement3))
-					{
-						flag4 = false;
-					}
-					float num15 = 0f;
-					WorldPositionScore extensionBestPosition = this.GetExtensionBestPosition(constructibleElement3.Name);
-					if (flag4 && extensionBestPosition == null)
-					{
-						flag4 = false;
-					}
-					if (!flag4)
-					{
-						for (int k = 0; k < evaluableMessage_Wonder.ProductionEvaluations.Count; k++)
+						AILayer.LogWarning("Cannot found the wonder {0}. The wonder request will failed.", new object[]
 						{
-							if (evaluableMessage_Wonder.ProductionEvaluations[k].CityGuid == this.aiEntityCity.City.GUID)
-							{
-								evaluableMessage_Wonder.ProductionEvaluations.RemoveAt(k);
-								k--;
-							}
-						}
+							evaluableMessage_Wonder.ConstructibleElementName
+						});
+						evaluableMessage_Wonder.SetFailedToObtain();
 					}
 					else
 					{
-						num15 = Mathf.Clamp01(num15 / 2f);
-						float num16;
-						float buyoutCost4;
-						this.GetProductionCost(evaluableMessage_Wonder, constructibleElement3, out num16, out buyoutCost4);
-						num15 = AILayer.Boost(num15, this.ComputeCostBoost(num16 / num) * 0.7f);
-						num15 = AILayer.Boost(num15, 0.2f);
-						num15 = AILayer.Boost(num15, evaluableMessage_Wonder.Interest - 0.5f);
-						float num17 = 0.5f;
-						num17 = AILayer.Boost(num17, -num15 * 0.5f);
-						if (!flag2 && this.aiEntityCity.AIDataCity.CityTileCount > 2)
+						bool flag4 = this.aiEntityCity.City.BesiegingEmpire == null;
+						if (flag4 && !this.departmentOfIndustry.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement2))
 						{
-							num15 = AILayer.Boost(num15, 0.4f);
-							num17 = AILayer.Boost(num17, -0.3f);
-							if ((this.Empire.SimulationObject.Tags.Contains("FactionTraitCultists9") || base.AIEntity.Empire.SimulationObject.Tags.Contains("FactionTraitMimics1")) && evaluableMessage_Wonder.ConstructibleElementName.ToString().Contains("DistrictWonder2"))
+							flag4 = false;
+						}
+						float num11 = 0f;
+						WorldPositionScore extensionBestPosition = this.GetExtensionBestPosition(constructibleElement2.Name);
+						if (flag4 && extensionBestPosition == null)
+						{
+							flag4 = false;
+						}
+						if (!flag4)
+						{
+							for (int k = 0; k < evaluableMessage_Wonder.ProductionEvaluations.Count; k++)
 							{
-								num15 = AILayer.Boost(num15, 0.99f);
-								num17 = 0f;
+								if (evaluableMessage_Wonder.ProductionEvaluations[k].CityGuid == this.aiEntityCity.City.GUID)
+								{
+									evaluableMessage_Wonder.ProductionEvaluations.RemoveAt(k);
+									k--;
+								}
 							}
 						}
-						this.ApplyProductionEvaluation(evaluableMessage_Wonder, constructibleElement3, num15, num, num16, buyoutCost4, num17);
+						else
+						{
+							num11 = Mathf.Clamp01(num11 / 2f);
+							float num5;
+							float buyoutCost;
+							this.GetProductionCost(evaluableMessage_Wonder, constructibleElement2, out num5, out buyoutCost);
+							num11 = AILayer.Boost(num11, this.ComputeCostBoost(num5 / num) * 0.7f);
+							num11 = AILayer.Boost(num11, 0.2f);
+							num11 = AILayer.Boost(num11, evaluableMessage_Wonder.Interest - 0.5f);
+							float num12 = 0.5f;
+							num12 = AILayer.Boost(num12, -num11 * 0.5f);
+							this.ApplyProductionEvaluation(evaluableMessage_Wonder, constructibleElement2, num11, num, num5, buyoutCost, num12);
+						}
 					}
 				}
 			}
 		}
-		List<EvaluableMessage_GolemCamp> list6 = new List<EvaluableMessage_GolemCamp>();
-		list6.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessage_GolemCamp>(BlackboardLayerID.Empire));
-		foreach (EvaluableMessage_GolemCamp evaluableMessage_GolemCamp in list6)
+		List<EvaluableMessage_GolemCamp> list5 = new List<EvaluableMessage_GolemCamp>();
+		list5.AddRange(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessage_GolemCamp>(BlackboardLayerID.Empire));
+		foreach (EvaluableMessage_GolemCamp evaluableMessage_GolemCamp in list5)
 		{
-			if ((evaluableMessage_GolemCamp.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessage_GolemCamp.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining) && !StaticString.IsNullOrEmpty(evaluableMessage_GolemCamp.ConstructibleElementName))
+			if (evaluableMessage_GolemCamp.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || evaluableMessage_GolemCamp.EvaluationState == EvaluableMessage.EvaluableMessageState.Obtaining)
 			{
-				DepartmentOfIndustry.ConstructibleElement constructibleElement4;
-				if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_GolemCamp.ConstructibleElementName, out constructibleElement4))
+				if (!StaticString.IsNullOrEmpty(evaluableMessage_GolemCamp.ConstructibleElementName))
 				{
-					AILayer.LogWarning("Cannot found the camp {0}. The camp request will fail.", new object[]
+					DepartmentOfIndustry.ConstructibleElement constructibleElement3;
+					if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_GolemCamp.ConstructibleElementName, out constructibleElement3))
 					{
-						evaluableMessage_GolemCamp.ConstructibleElementName
-					});
-					evaluableMessage_GolemCamp.SetFailedToObtain();
-				}
-				else
-				{
-					bool flag5 = this.aiEntityCity.City.BesiegingEmpire == null;
-					if (flag5 && !this.departmentOfIndustry.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement4))
-					{
-						flag5 = false;
-					}
-					float num18 = 0f;
-					WorldPosition availableCampPosition = this.GetAvailableCampPosition();
-					if (flag5 && availableCampPosition == WorldPosition.Invalid)
-					{
-						flag5 = false;
-					}
-					if (!flag5)
-					{
-						for (int l = 0; l < evaluableMessage_GolemCamp.ProductionEvaluations.Count; l++)
+						AILayer.LogWarning("Cannot found the camp {0}. The camp request will fail.", new object[]
 						{
-							if (evaluableMessage_GolemCamp.ProductionEvaluations[l].CityGuid == this.aiEntityCity.City.GUID)
-							{
-								evaluableMessage_GolemCamp.ProductionEvaluations.RemoveAt(l);
-								l--;
-							}
-						}
+							evaluableMessage_GolemCamp.ConstructibleElementName
+						});
+						evaluableMessage_GolemCamp.SetFailedToObtain();
 					}
 					else
 					{
-						num18 = Mathf.Clamp01(num18 / 2f);
-						float num19;
-						float buyoutCost5;
-						this.GetProductionCost(evaluableMessage_GolemCamp, constructibleElement4, out num19, out buyoutCost5);
-						num18 = AILayer.Boost(num18, this.ComputeCostBoost(num19 / num) * 0.7f);
-						num18 = AILayer.Boost(num18, 0.2f);
-						num18 = AILayer.Boost(num18, evaluableMessage_GolemCamp.Interest - 0.5f);
-						float num20 = 0.5f;
-						num20 = AILayer.Boost(num20, -num18 * 0.5f);
-						this.ApplyProductionEvaluation(evaluableMessage_GolemCamp, constructibleElement4, num18, num, num19, buyoutCost5, num20);
+						bool flag5 = this.aiEntityCity.City.BesiegingEmpire == null;
+						if (flag5 && !this.departmentOfIndustry.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement3))
+						{
+							flag5 = false;
+						}
+						float num13 = 0f;
+						WorldPosition availableCampPosition = this.GetAvailableCampPosition();
+						if (flag5 && availableCampPosition == WorldPosition.Invalid)
+						{
+							flag5 = false;
+						}
+						if (!flag5)
+						{
+							for (int l = 0; l < evaluableMessage_GolemCamp.ProductionEvaluations.Count; l++)
+							{
+								if (evaluableMessage_GolemCamp.ProductionEvaluations[l].CityGuid == this.aiEntityCity.City.GUID)
+								{
+									evaluableMessage_GolemCamp.ProductionEvaluations.RemoveAt(l);
+									l--;
+								}
+							}
+						}
+						else
+						{
+							num13 = Mathf.Clamp01(num13 / 2f);
+							float num5;
+							float buyoutCost;
+							this.GetProductionCost(evaluableMessage_GolemCamp, constructibleElement3, out num5, out buyoutCost);
+							num13 = AILayer.Boost(num13, this.ComputeCostBoost(num5 / num) * 0.7f);
+							num13 = AILayer.Boost(num13, 0.2f);
+							num13 = AILayer.Boost(num13, evaluableMessage_GolemCamp.Interest - 0.5f);
+							float num14 = 0.5f;
+							num14 = AILayer.Boost(num14, -num13 * 0.5f);
+							this.ApplyProductionEvaluation(evaluableMessage_GolemCamp, constructibleElement3, num13, num, num5, buyoutCost, num14);
+						}
 					}
 				}
 			}
@@ -1524,10 +1420,7 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 		base.ExecuteNeeds(context, pass);
 		Diagnostics.Assert(this.aiEntityCity != null && this.aiEntityCity.Blackboard != null);
 		ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-		this.DelayedTicks = 0;
-		this.boosterOnCity = false;
 		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_ExecuteNeeds));
-		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_ExecuteNeeds_Delayed));
 	}
 
 	private EvaluationData<ConstructibleElement, InterpreterContext> GetOrCreateEvaluationData(EvaluationData<ConstructibleElement, InterpreterContext> evaluationData)
@@ -1839,9 +1732,9 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 
 	private float ParseEvaluableMessages(List<EvaluableMessage> evaluableMessages, bool insert = false)
 	{
+		DepartmentOfDefense agency = this.Empire.GetAgency<DepartmentOfDefense>();
 		UnitDesign element2 = null;
 		DepartmentOfIndustry.ConstructibleElement element = null;
-		Func<EvaluableMessage_BuildingProduction, bool> <>9__1;
 		for (int i = 0; i < evaluableMessages.Count; i++)
 		{
 			EvaluableMessage evaluableMessage = evaluableMessages[i];
@@ -1855,17 +1748,12 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 					EvaluableMessageWithUnitDesign evaluableMessageWithUnitDesign = evaluableMessage as EvaluableMessageWithUnitDesign;
 					if (evaluableMessageWithUnitDesign.UnitDesign == null)
 					{
-						goto IL_751;
+						goto IL_741;
 					}
-					if (!this.departmentOfDefense.UnitDesignDatabase.TryGetValue(evaluableMessageWithUnitDesign.UnitDesign.Model, out element2, false))
+					if (!agency.UnitDesignDatabase.TryGetValue(evaluableMessageWithUnitDesign.UnitDesign.Model, out element2, false))
 					{
 						evaluableMessage.SetFailedToObtain();
-						goto IL_751;
-					}
-					if (evaluableMessageWithUnitDesign.UnitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) && this.NoMoreSettlers)
-					{
-						evaluableMessage.SetFailedToObtain();
-						goto IL_751;
+						goto IL_741;
 					}
 					element = element2;
 					if (element.Tags.Contains(DownloadableContent9.TagColossus) || element.Tags.Contains(DownloadableContent9.TagSolitary))
@@ -1874,13 +1762,13 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 						if (worldPositionScore == null)
 						{
 							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
+							goto IL_741;
 						}
 						worldPosition = worldPositionScore.WorldPosition;
 						if (this.alreadyUsedPosition.Contains(worldPosition))
 						{
 							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
+							goto IL_741;
 						}
 						this.ReserveExtensionPosition(worldPosition);
 					}
@@ -1889,98 +1777,80 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 						worldPosition = this.aiEntityCity.City.DryDockPosition;
 					}
 				}
-				else
+				else if (evaluableMessage is EvaluableMessage_BuildingProduction)
 				{
-					if (evaluableMessage is EvaluableMessage_BuildingProduction)
+					if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue((evaluableMessage as EvaluableMessage_BuildingProduction).ConstructibleElementName, out element))
 					{
-						if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue((evaluableMessage as EvaluableMessage_BuildingProduction).ConstructibleElementName, out element))
-						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
-						}
-						worldPosition = (evaluableMessage as EvaluableMessage_BuildingProduction).BuildingPosition;
-						if (this.alreadyUsedPosition.Contains(worldPosition))
-						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
-						}
-						this.ReserveExtensionPosition(worldPosition);
-						if (!element.Descriptors.Any((SimulationDescriptor match) => match.Name == AILayer_Production.OnlyOneConstructionPerEmpire || match.Name == AILayer_Production.OnlyOnePerEmpire))
-						{
-							goto IL_4DB;
-						}
-						Blackboard<BlackboardLayerID, BlackboardMessage> blackboard = base.AIEntity.AIPlayer.Blackboard;
-						BlackboardLayerID blackboardLayerID = BlackboardLayerID.City;
-						BlackboardLayerID layerID = blackboardLayerID;
-						Func<EvaluableMessage_BuildingProduction, bool> filter;
-						if ((filter = <>9__1) == null)
-						{
-							filter = (<>9__1 = ((EvaluableMessage_BuildingProduction match) => match.ConstructibleElementName == element.Name && match.CityGuid != this.aiEntityCity.City.GUID));
-						}
-						using (IEnumerator<EvaluableMessage_BuildingProduction> enumerator = blackboard.GetMessages<EvaluableMessage_BuildingProduction>(layerID, filter).GetEnumerator())
-						{
-							while (enumerator.MoveNext())
-							{
-								EvaluableMessage_BuildingProduction evaluableMessage_BuildingProduction = enumerator.Current;
-								evaluableMessage_BuildingProduction.Cancel();
-							}
-							goto IL_4DB;
-						}
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
 					}
-					if (evaluableMessage is EvaluableMessage_CityBooster)
+					worldPosition = (evaluableMessage as EvaluableMessage_BuildingProduction).BuildingPosition;
+					if (this.alreadyUsedPosition.Contains(worldPosition))
 					{
-						if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue((evaluableMessage as EvaluableMessage_CityBooster).BoosterDefinitionGeneratorName, out element))
-						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
-						}
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
 					}
-					else if (evaluableMessage is EvaluableMessage_Wonder)
+					this.ReserveExtensionPosition(worldPosition);
+					if (element.Descriptors.Any((SimulationDescriptor match) => match.Name == AILayer_Production.OnlyOneConstructionPerEmpire || match.Name == AILayer_Production.OnlyOnePerEmpire))
 					{
-						EvaluableMessage_Wonder evaluableMessage_Wonder = evaluableMessage as EvaluableMessage_Wonder;
-						if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_Wonder.ConstructibleElementName, out element))
+						foreach (EvaluableMessage_BuildingProduction evaluableMessage_BuildingProduction in base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_BuildingProduction>(BlackboardLayerID.City, (EvaluableMessage_BuildingProduction match) => match.ConstructibleElementName == element.Name && match.CityGuid != this.aiEntityCity.City.GUID))
 						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
+							evaluableMessage_BuildingProduction.Cancel();
 						}
-						WorldPositionScore extensionBestPosition = this.GetExtensionBestPosition(evaluableMessage_Wonder.ConstructibleElementName);
-						if (extensionBestPosition == null)
-						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
-						}
-						worldPosition = extensionBestPosition.WorldPosition;
-						if (this.alreadyUsedPosition.Contains(worldPosition))
-						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
-						}
-						this.ReserveExtensionPosition(worldPosition);
-					}
-					else if (evaluableMessage is EvaluableMessage_GolemCamp)
-					{
-						EvaluableMessage_GolemCamp evaluableMessage_GolemCamp = evaluableMessage as EvaluableMessage_GolemCamp;
-						if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_GolemCamp.ConstructibleElementName, out element))
-						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
-						}
-						WorldPosition availableCampPosition = this.GetAvailableCampPosition();
-						if (availableCampPosition == WorldPosition.Invalid)
-						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
-						}
-						worldPosition = availableCampPosition;
-						if (this.alreadyUsedPosition.Contains(worldPosition))
-						{
-							evaluableMessage.SetFailedToObtain();
-							goto IL_751;
-						}
-						this.ReserveExtensionPosition(worldPosition);
 					}
 				}
-				IL_4DB:
+				else if (evaluableMessage is EvaluableMessage_CityBooster)
+				{
+					if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue((evaluableMessage as EvaluableMessage_CityBooster).BoosterDefinitionGeneratorName, out element))
+					{
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
+					}
+				}
+				else if (evaluableMessage is EvaluableMessage_Wonder)
+				{
+					EvaluableMessage_Wonder evaluableMessage_Wonder = evaluableMessage as EvaluableMessage_Wonder;
+					if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_Wonder.ConstructibleElementName, out element))
+					{
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
+					}
+					WorldPositionScore extensionBestPosition = this.GetExtensionBestPosition(evaluableMessage_Wonder.ConstructibleElementName);
+					if (extensionBestPosition == null)
+					{
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
+					}
+					worldPosition = extensionBestPosition.WorldPosition;
+					if (this.alreadyUsedPosition.Contains(worldPosition))
+					{
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
+					}
+					this.ReserveExtensionPosition(worldPosition);
+				}
+				else if (evaluableMessage is EvaluableMessage_GolemCamp)
+				{
+					EvaluableMessage_GolemCamp evaluableMessage_GolemCamp = evaluableMessage as EvaluableMessage_GolemCamp;
+					if (!this.departmentOfIndustry.ConstructibleElementDatabase.TryGetValue(evaluableMessage_GolemCamp.ConstructibleElementName, out element))
+					{
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
+					}
+					WorldPosition availableCampPosition = this.GetAvailableCampPosition();
+					if (availableCampPosition == WorldPosition.Invalid)
+					{
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
+					}
+					worldPosition = availableCampPosition;
+					if (this.alreadyUsedPosition.Contains(worldPosition))
+					{
+						evaluableMessage.SetFailedToObtain();
+						goto IL_741;
+					}
+					this.ReserveExtensionPosition(worldPosition);
+				}
 				if (flag)
 				{
 					if (evaluableMessage.EvaluationState != EvaluableMessage.EvaluableMessageState.Obtaining)
@@ -1996,31 +1866,21 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 						if (construction != null && !construction.IsBuyout && !construction.ConstructibleElement.Tags.Contains(ConstructibleElement.TagNoBuyout))
 						{
 							OrderBuyoutConstruction order = new OrderBuyoutConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, evaluableMessage.ElementGuid);
-							Ticket ticket2;
-							this.Empire.PlayerControllers.AI.PostOrder(order, out ticket2, new EventHandler<TicketRaisedEventArgs>(this.OrderBuyout_TicketRaised));
+							Ticket ticket;
+							this.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderBuyout_TicketRaised));
 						}
 					}
 				}
-				else if (flag2 && evaluableMessage.EvaluationState != EvaluableMessage.EvaluableMessageState.Obtaining && this.currentAvailableProduction > 0f && DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, element, new string[]
+				else if (flag2 && evaluableMessage.EvaluationState != EvaluableMessage.EvaluableMessageState.Obtaining && this.currentAvailableProduction > 0f)
 				{
-					ConstructionFlags.Prerequisite
-				}))
-				{
-					if (element.Name.ToString().Contains("BoosterGenerator") && (this.BoostersInQueue(false) || this.boosterOnCity))
-					{
-						evaluableMessage.SetFailedToObtain();
-					}
-					else
-					{
-						OrderQueueConstruction orderQueueConstruction2 = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, element, worldPosition, evaluableMessage.ID.ToString());
-						orderQueueConstruction2.InsertAtFirstPlace = insert;
-						Ticket ticket3;
-						this.Empire.PlayerControllers.AI.PostOrder(orderQueueConstruction2, out ticket3, new EventHandler<TicketRaisedEventArgs>(this.OrderQueue_TicketRaised));
-						this.currentAvailableProduction -= DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, element, DepartmentOfTheTreasury.Resources.Production);
-					}
+					OrderQueueConstruction orderQueueConstruction2 = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, element, worldPosition, evaluableMessage.ID.ToString());
+					orderQueueConstruction2.InsertAtFirstPlace = insert;
+					Ticket ticket;
+					this.Empire.PlayerControllers.AI.PostOrder(orderQueueConstruction2, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderQueue_TicketRaised));
+					this.currentAvailableProduction -= DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, element, DepartmentOfTheTreasury.Resources.Production);
 				}
 			}
-			IL_751:;
+			IL_741:;
 		}
 		return this.currentAvailableProduction;
 	}
@@ -2086,7 +1946,7 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 					if (flag)
 					{
 						this.currentAvailableProduction = 1f;
-						this.ParseEvaluableMessages(list, this.peekConstructibleCanBeDelay);
+						this.ParseEvaluableMessages(list, true);
 					}
 				}
 			}
@@ -2149,54 +2009,10 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 		}
 		List<WorldPosition> list = new List<WorldPosition>();
 		this.FilterCampPositions(this.aiEntityCity.City.Region, out list);
-		if (list.Count > 0)
+		if (list.Count > 1)
 		{
-			IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
-			int num = 0;
-			List<WorldPositionScore> list2 = new List<WorldPositionScore>();
-			foreach (WorldPosition worldPosition in list)
-			{
-				if (!this.alreadyUsedPosition.Contains(worldPosition))
-				{
-					int distance = service.GetDistance(this.aiEntityCity.City.WorldPosition, worldPosition);
-					if (distance > num)
-					{
-						num = distance;
-					}
-					list2.Add(AIScheduler.Services.GetService<IWorldPositionEvaluationAIHelper>().GetWorldPositionExpansionScore(base.AIEntity.Empire, this.aiEntityCity.City, worldPosition));
-				}
-			}
-			if (num > 6)
-			{
-				num = 6;
-			}
-			float num2 = 0f;
-			for (int i = 0; i < list2.Count; i++)
-			{
-				float num3 = 0f;
-				foreach (AIParameterDefinition aiparameterDefinition in list2[i].Scores)
-				{
-					if (aiparameterDefinition.Name == "CityApproval")
-					{
-						num3 += aiparameterDefinition.Value * 0.2f;
-					}
-					else
-					{
-						num3 += aiparameterDefinition.Value;
-					}
-				}
-				float num4 = (float)service.GetDistance(this.aiEntityCity.City.WorldPosition, list2[i].WorldPosition) / (float)num;
-				if (num4 > 1f)
-				{
-					num4 = 1f;
-				}
-				num3 = num3 * 0.6f + num4 * 0.4f;
-				if (num3 > num2)
-				{
-					num2 = num3;
-					result = list2[i].WorldPosition;
-				}
-			}
+			int index = this.random.Next(0, list.Count - 1);
+			result = list[index];
 		}
 		return result;
 	}
@@ -2208,721 +2024,21 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 		for (int i = 0; i < worldPositions.Length; i++)
 		{
 			int bits = 1 << region.City.Empire.Index;
-			if (this.worldPositionningService.IsConstructible(worldPositions[i], WorldPositionning.PreventsDistrictTypeExtensionConstruction, bits) && this.worldPositionningService.GetPointOfInterest(worldPositions[i]) == null)
+			if (this.worldPositionningService.IsConstructible(worldPositions[i], WorldPositionning.PreventsDistrictTypeExtensionConstruction, bits))
 			{
-				for (int j = 0; j < region.City.Districts.Count; j++)
+				PointOfInterest pointOfInterest = this.worldPositionningService.GetPointOfInterest(worldPositions[i]);
+				if (pointOfInterest == null || !(pointOfInterest.Type != "ResourceDeposit") || !(pointOfInterest.Type != "WatchTower"))
 				{
-					if (!(region.City.Districts[j].WorldPosition == worldPositions[i]) || region.City.Districts[j].Type != DistrictType.Exploitation)
+					for (int j = 0; j < region.City.Districts.Count; j++)
 					{
-						positions.Add(worldPositions[i]);
-					}
-				}
-			}
-		}
-	}
-
-	private SynchronousJobState SynchronousJob_ExecuteNeeds_Delayed()
-	{
-		if (this.aiEntityCity == null || this.aiEntityCity.City == null)
-		{
-			return SynchronousJobState.Failure;
-		}
-		this.DelayedTicks++;
-		List<EvaluableMessage> list = new List<EvaluableMessage>();
-		ConstructionQueue constructionQueue = base.AIEntity.Empire.GetAgency<DepartmentOfIndustry>().GetConstructionQueue(this.aiEntityCity.City);
-		if (constructionQueue == null)
-		{
-			return SynchronousJobState.Failure;
-		}
-		float num = 0f;
-		if (!this.departmentOfTheTreasury.TryGetResourceStockValue(this.aiEntityCity.City, DepartmentOfTheTreasury.Resources.Production, out num, false))
-		{
-			num = 0f;
-		}
-		num += this.aiEntityCity.City.GetPropertyValue(SimulationProperties.NetCityProduction);
-		num = Math.Max(1f, num);
-		float num2 = num;
-		for (int i = 0; i < constructionQueue.Length; i++)
-		{
-			Construction construction = constructionQueue.PeekAt(i);
-			float num3 = 0f;
-			for (int j = 0; j < construction.CurrentConstructionStock.Length; j++)
-			{
-				if (construction.CurrentConstructionStock[j].PropertyName == "Production")
-				{
-					num3 += construction.CurrentConstructionStock[j].Stock;
-					if (construction.IsBuyout)
-					{
-						num3 = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, construction.ConstructibleElement, "Production");
-					}
-				}
-			}
-			float num4 = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, construction.ConstructibleElement, "Production") - num3;
-			num -= num4;
-			if (num < 0f)
-			{
-				break;
-			}
-		}
-		this.currentAvailableProduction = num;
-		List<CityBoosterNeeds> list2 = new List<CityBoosterNeeds>();
-		list2.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<CityBoosterNeeds>(BlackboardLayerID.Empire, (CityBoosterNeeds match) => match.CityGuid == this.aiEntityCity.City.GUID));
-		bool flag = false;
-		foreach (CityBoosterNeeds cityBoosterNeeds in list2)
-		{
-			if (cityBoosterNeeds.BoosterDefinitionName == "BoosterIndustry" && cityBoosterNeeds.AvailabilityState == CityBoosterNeeds.CityBoosterState.Success)
-			{
-				flag = true;
-				this.boosterOnCity = true;
-				break;
-			}
-		}
-		this.constructionQueue = base.AIEntity.Empire.GetAgency<DepartmentOfIndustry>().GetConstructionQueue(this.aiEntityCity.City);
-		if (this.constructionQueue.Length == 0)
-		{
-			flag = true;
-		}
-		if ((this.currentAvailableProduction <= 0f || !flag) && (this.currentAvailableProduction > 0f || !flag || this.DelayedTicks != 1))
-		{
-			return SynchronousJobState.Success;
-		}
-		if (this.currentAvailableProduction > 0f && (flag || num2 == this.currentAvailableProduction))
-		{
-			list.Clear();
-			this.aiEntityCity.Blackboard.FillMessages<EvaluableMessage>(BlackboardLayerID.City, (EvaluableMessage match) => match is EvaluableMessage_BuildingProduction && match.ChosenBuyEvaluation == null && (match as EvaluableMessage_BuildingProduction).CityGuid == this.aiEntityCity.City.GUID && match.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending, ref list);
-			this.aiEntityCity.Blackboard.FillMessages<EvaluableMessage>(BlackboardLayerID.City, (EvaluableMessage match) => match is EvaluableMessage_BuildingProduction && match.ChosenBuyEvaluation == null && (match as EvaluableMessage_BuildingProduction).CityGuid == this.aiEntityCity.City.GUID && match.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending, ref list);
-			this.aiEntityCity.Blackboard.FillMessages<EvaluableMessage>(BlackboardLayerID.City, (EvaluableMessage match) => match.EvaluationState == EvaluableMessage.EvaluableMessageState.Validate && match.ChosenBuyEvaluation == null, ref list);
-			this.aiEntityCity.Blackboard.FillMessages<EvaluableMessage>(BlackboardLayerID.Empire, (EvaluableMessage match) => match.EvaluationState == EvaluableMessage.EvaluableMessageState.Validate && match.ChosenBuyEvaluation == null, ref list);
-			this.aiEntityCity.Blackboard.FillMessages<EvaluableMessage>(BlackboardLayerID.City, (EvaluableMessage match) => match.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending && match.ChosenBuyEvaluation == null, ref list);
-			if (list.Count > 0)
-			{
-				for (int k = 0; k < list.Count; k++)
-				{
-					EvaluableMessage evaluableMessage = list[k];
-					if (evaluableMessage.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending && evaluableMessage.ProductionEvaluations.Count == 1)
-					{
-						evaluableMessage.ValidateProductionEvaluation(evaluableMessage.ProductionEvaluations[0]);
-					}
-				}
-				for (int l = list.Count - 1; l >= 0; l--)
-				{
-					if (list[l].EvaluationState == EvaluableMessage.EvaluableMessageState.Pending || list[l].ChosenProductionEvaluation == null || list[l].ChosenProductionEvaluation.CityGuid != this.aiEntityCity.City.GUID)
-					{
-						list.RemoveAt(l);
-					}
-				}
-				list.Sort((EvaluableMessage left, EvaluableMessage right) => -1 * left.ChosenProductionEvaluation.ProductionFinalScore.CompareTo(right.ChosenProductionEvaluation.ProductionFinalScore));
-				this.ParseEvaluableMessages(list, false);
-			}
-			if (flag)
-			{
-				if (this.aiEntityCity.City.BesiegingEmpire == null)
-				{
-					this.OrderLastResortCityBuilding();
-				}
-				float num5 = 0f;
-				if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num5, false))
-				{
-					num5 = 0f;
-				}
-				if (this.DelayedTicks > 1 && this.currentAvailableProduction > 0f && (base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireMoney) > 20f || num5 > 300f))
-				{
-					this.OrderLastResortUnit();
-				}
-			}
-		}
-		if (this.DelayedTicks > 1)
-		{
-			return SynchronousJobState.Success;
-		}
-		return SynchronousJobState.Running;
-	}
-
-	private void OrderLastResortCityBuilding()
-	{
-		List<DepartmentOfIndustry.ConstructibleElement> list = new List<DepartmentOfIndustry.ConstructibleElement>();
-		foreach (DepartmentOfIndustry.ConstructibleElement constructibleElement in this.departmentOfIndustry.ConstructibleElementDatabase.GetAvailableConstructibleElements(new StaticString[]
-		{
-			CityImprovementDefinition.ReadOnlyCategory,
-			ConstructibleDistrictDefinition.ReadOnlyCategory,
-			PointOfInterestImprovementDefinition.ReadOnlyCategory,
-			DistrictImprovementDefinition.ReadOnlyCategory,
-			CoastalDistrictImprovementDefinition.ReadOnlyCategory
-		}))
-		{
-			if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement, new string[]
-			{
-				ConstructionFlags.Prerequisite
-			}))
-			{
-				foreach (string value in new List<string>
-				{
-					"DistrictImprovementFlames14",
-					"Village_",
-					"CityImprovementIndustry",
-					"CityImprovementDust",
-					"CityImprovementRoads",
-					"CityImprovementTradeRoutes",
-					"CityImprovementFood",
-					"CityImprovementScience",
-					"CityImprovementEmpirePoint",
-					"CityImprovementApproval",
-					"DistrictImprovement1",
-					"DistrictImprovementOrbUnlock",
-					"ResourceExtractor",
-					"DistrictImprovementDocks",
-					"CityImprovement"
-				})
-				{
-					if (constructibleElement.ToString().Contains(value))
-					{
-						if (!constructibleElement.Descriptors.Any((SimulationDescriptor match) => match.Name == AILayer_Production.OnlyOneConstructionPerEmpire || match.Name == AILayer_Production.OnlyOnePerEmpire))
+						if (!(region.City.Districts[j].WorldPosition == worldPositions[i]) || region.City.Districts[j].Type != DistrictType.Exploitation)
 						{
-							list.Add(constructibleElement);
 						}
 					}
+					positions.Add(worldPositions[i]);
 				}
 			}
 		}
-		List<DepartmentOfIndustry.ConstructibleElement> list2 = new List<DepartmentOfIndustry.ConstructibleElement>();
-		foreach (string value2 in new List<string>
-		{
-			"CityImprovementIndustry",
-			"DistrictImprovementFlames14",
-			"Village_",
-			"CityImprovementDust",
-			"CityImprovementRoads",
-			"CityImprovementTradeRoutes",
-			"CityImprovementFood",
-			"CityImprovementScience",
-			"CityImprovementEmpirePoint",
-			"CityImprovementApproval",
-			"DistrictImprovement1",
-			"DistrictImprovementOrbUnlock",
-			"ResourceExtractor",
-			"CityImprovement",
-			"DistrictImprovementDocks"
-		})
-		{
-			using (List<DepartmentOfIndustry.ConstructibleElement>.Enumerator enumerator2 = list.GetEnumerator())
-			{
-				while (enumerator2.MoveNext())
-				{
-					DepartmentOfIndustry.ConstructibleElement constructibleElement2 = enumerator2.Current;
-					if (constructibleElement2.ToString().Contains(value2) && !list2.Any((DepartmentOfIndustry.ConstructibleElement match) => match.Name == constructibleElement2.Name))
-					{
-						list2.Add(constructibleElement2);
-					}
-				}
-			}
-		}
-		foreach (DepartmentOfIndustry.ConstructibleElement constructibleElement3 in list2)
-		{
-			if (constructibleElement3 != null && this.currentAvailableProduction > 0f && !this.constructionQueue.Contains(constructibleElement3) && this.departmentOfIndustry.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement3))
-			{
-				List<MissingResource> constructibleMissingRessources = this.departmentOfTheTreasury.GetConstructibleMissingRessources(this.aiEntityCity.City, constructibleElement3);
-				if (constructibleMissingRessources == null || constructibleMissingRessources.Count <= 0)
-				{
-					OrderQueueConstruction orderQueueConstruction = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, constructibleElement3, string.Empty);
-					if (constructibleElement3.Name == "DistrictImprovementFlames14")
-					{
-						orderQueueConstruction = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, constructibleElement3, this.GetAvailableCampPosition(), string.Empty);
-						if (orderQueueConstruction.WorldPosition == WorldPosition.Invalid)
-						{
-							continue;
-						}
-						this.alreadyUsedPosition.Add(orderQueueConstruction.WorldPosition);
-					}
-					if (constructibleElement3 is DistrictImprovementDefinition || constructibleElement3 is CoastalDistrictImprovementDefinition)
-					{
-						WorldPositionScore extensionBestPosition = this.GetExtensionBestPosition(constructibleElement3.Name);
-						if (extensionBestPosition == null || !extensionBestPosition.WorldPosition.IsValid)
-						{
-							continue;
-						}
-						orderQueueConstruction = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, constructibleElement3, extensionBestPosition.WorldPosition, string.Empty);
-						this.alreadyUsedPosition.Add(extensionBestPosition.WorldPosition);
-					}
-					if (constructibleElement3 is PointOfInterestImprovementDefinition)
-					{
-						orderQueueConstruction = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, constructibleElement3, this.GetAvailablePOIPosition(constructibleElement3), string.Empty);
-						if (orderQueueConstruction.WorldPosition == WorldPosition.Invalid)
-						{
-							continue;
-						}
-						this.alreadyUsedPosition.Add(orderQueueConstruction.WorldPosition);
-					}
-					Ticket ticket;
-					this.Empire.PlayerControllers.AI.PostOrder(orderQueueConstruction, out ticket, null);
-					this.currentAvailableProduction -= DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, constructibleElement3, "Production");
-					if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-					{
-						Diagnostics.Log("ELCP Empire {0} City {1} ordering lastresort building {2}, currentAvailableProduction {3}", new object[]
-						{
-							base.AIEntity.Empire.ToString(),
-							this.aiEntityCity.City.LocalizedName,
-							constructibleElement3.Name,
-							this.currentAvailableProduction
-						});
-					}
-				}
-			}
-		}
-	}
-
-	private void OrderLastResortUnit()
-	{
-		if (!this.PreventFurtherUnits())
-		{
-			List<string> list = new List<string>();
-			this.GetForbiddenResources(ref list);
-			List<UnitDesign> list2 = new List<UnitDesign>();
-			foreach (DepartmentOfIndustry.ConstructibleElement constructibleElement in this.departmentOfIndustry.ConstructibleElementDatabase.GetAvailableConstructibleElements(new StaticString[]
-			{
-				UnitDesign.ReadOnlyCategory
-			}))
-			{
-				if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement, new string[]
-				{
-					ConstructionFlags.Prerequisite
-				}))
-				{
-					UnitDesign unitDesign = constructibleElement as UnitDesign;
-					if (unitDesign != null && (!unitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) || (this.VictoryLayer.NeedSettlers && this.ColonizationLayer.CurrentSettlerCount < 10)) && !unitDesign.CheckUnitAbility(UnitAbility.ReadonlyResettle, -1) && !unitDesign.CheckUnitAbility("UnitAbilityLowDamage", -1) && !unitDesign.Tags.Contains(DownloadableContent9.TagColossus) && unitDesign.Context != null && unitDesign.Context.GetPropertyValue(SimulationProperties.MilitaryPower) > 0f && (unitDesign.UnitBodyDefinition.SubCategory != "SubCategorySupport" || this.VictoryLayer.NeedPreachers))
-					{
-						bool flag = false;
-						foreach (string x in list)
-						{
-							if (DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, unitDesign, x) > 0f)
-							{
-								flag = true;
-								break;
-							}
-						}
-						if (!flag)
-						{
-							list2.Add(unitDesign);
-						}
-					}
-				}
-			}
-			if (list2.Count < 1)
-			{
-				return;
-			}
-			list2.Sort((UnitDesign left, UnitDesign right) => -1 * left.Context.GetPropertyValue(SimulationProperties.MilitaryPower).CompareTo(right.Context.GetPropertyValue(SimulationProperties.MilitaryPower)));
-			this.LastResortDesigns = new List<DepartmentOfIndustry.ConstructibleElement>();
-			this.LastResortDesignIndex = 0;
-			foreach (string x2 in new List<string>
-			{
-				"UnitAbilityHighRanged",
-				"UnitAbilityRanged",
-				"UnitAbilityShortRanged"
-			})
-			{
-				foreach (UnitDesign unitDesign2 in list2)
-				{
-					if (unitDesign2.CheckUnitAbility(x2, -1) && !unitDesign2.Tags.Contains(UnitDesign.TagSeafaring))
-					{
-						this.LastResortDesigns.Add(unitDesign2);
-					}
-				}
-			}
-			foreach (UnitDesign unitDesign3 in list2)
-			{
-				if (!this.LastResortDesigns.Contains(unitDesign3) && !unitDesign3.Tags.Contains(UnitDesign.TagSeafaring))
-				{
-					this.LastResortDesigns.Add(unitDesign3);
-				}
-			}
-			foreach (UnitDesign item in list2)
-			{
-				if (!this.LastResortDesigns.Contains(item))
-				{
-					this.LastResortDesigns.Add(item);
-				}
-			}
-			for (int j = 0; j < this.LastResortDesigns.Count; j++)
-			{
-				DepartmentOfIndustry.ConstructibleElement constructibleElement2 = this.LastResortDesigns[j];
-				if (constructibleElement2 != null && this.currentAvailableProduction > 0f && this.departmentOfIndustry.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement2))
-				{
-					OrderQueueConstruction order = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, constructibleElement2, string.Empty);
-					this.firsttry = true;
-					Ticket ticket;
-					this.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderLastResortUnit_TicketRaised));
-					return;
-				}
-				this.LastResortDesignIndex++;
-			}
-			return;
-		}
-		else
-		{
-			this.LastResortDesigns = new List<DepartmentOfIndustry.ConstructibleElement>();
-			List<string> list3 = new List<string>
-			{
-				"BoosterGeneratorScienceBonus1",
-				"BoosterGeneratorScienceBonus2"
-			};
-			if (base.AIEntity.Empire.GetAgency<DepartmentOfScience>().CurrentTechnologyEraNumber < 6)
-			{
-				list3.Add("BoosterGeneratorFoodBonus1");
-				list3.Add("BoosterGeneratorFoodBonus2");
-			}
-			foreach (DepartmentOfIndustry.ConstructibleElement constructibleElement3 in this.departmentOfIndustry.ConstructibleElementDatabase.GetAvailableConstructibleElements(new StaticString[]
-			{
-				BoosterGeneratorDefinition.ReadOnlyCategory
-			}))
-			{
-				if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement3, new string[]
-				{
-					ConstructionFlags.Prerequisite
-				}))
-				{
-					foreach (string value in list3)
-					{
-						if (constructibleElement3.ToString().Contains(value))
-						{
-							this.LastResortDesigns.Add(constructibleElement3);
-							break;
-						}
-					}
-				}
-			}
-			if (this.LastResortDesigns.Count < 1)
-			{
-				return;
-			}
-			this.LastResortDesignIndex = this.random.Next(this.LastResortDesigns.Count);
-			OrderQueueConstruction order2 = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, this.LastResortDesigns[this.LastResortDesignIndex], string.Empty);
-			Ticket ticket2;
-			this.Empire.PlayerControllers.AI.PostOrder(order2, out ticket2, new EventHandler<TicketRaisedEventArgs>(this.OrderLastResortUnit_TicketRaised));
-			return;
-		}
-	}
-
-	private void OrderLastResortUnit_TicketRaised(object sender, TicketRaisedEventArgs e)
-	{
-		OrderQueueConstruction orderQueueConstruction = e.Order as OrderQueueConstruction;
-		if (e.Result != PostOrderResponse.Processed)
-		{
-			if (e.Result == PostOrderResponse.PreprocessHasFailed)
-			{
-				if (this.firsttry)
-				{
-					this.firsttry = false;
-				}
-				if (this.LastResortDesigns.Count > this.LastResortDesignIndex)
-				{
-					this.LastResortDesigns.RemoveAt(this.LastResortDesignIndex);
-				}
-				if (this.LastResortDesigns.Count < 1)
-				{
-					List<string> list = new List<string>
-					{
-						"BoosterGeneratorScienceBonus1",
-						"BoosterGeneratorScienceBonus2"
-					};
-					if (base.AIEntity.Empire.GetAgency<DepartmentOfScience>().CurrentTechnologyEraNumber < 6)
-					{
-						list.Add("BoosterGeneratorFoodBonus1");
-						list.Add("BoosterGeneratorFoodBonus2");
-					}
-					foreach (DepartmentOfIndustry.ConstructibleElement constructibleElement in this.departmentOfIndustry.ConstructibleElementDatabase.GetAvailableConstructibleElements(new StaticString[]
-					{
-						BoosterGeneratorDefinition.ReadOnlyCategory
-					}))
-					{
-						if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, constructibleElement, new string[]
-						{
-							ConstructionFlags.Prerequisite
-						}))
-						{
-							foreach (string value in list)
-							{
-								if (constructibleElement.ToString().Contains(value))
-								{
-									this.LastResortDesigns.Add(constructibleElement);
-									break;
-								}
-							}
-						}
-					}
-					if (this.LastResortDesigns.Count < 1)
-					{
-						return;
-					}
-				}
-				this.LastResortDesignIndex = this.random.Next(this.LastResortDesigns.Count);
-				OrderQueueConstruction order = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, this.LastResortDesigns[this.LastResortDesignIndex], string.Empty);
-				Ticket ticket;
-				this.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderLastResortUnit_TicketRaised));
-			}
-			return;
-		}
-		this.currentAvailableProduction -= DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, this.LastResortDesigns[this.LastResortDesignIndex], "Production");
-		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-		{
-			AILayer.Log("ELCP Empire {0} City {1} ordering lastresort Unit {2}, currentAvailableProduction {3} ", new object[]
-			{
-				base.AIEntity.Empire.ToString(),
-				this.aiEntityCity.City.LocalizedName,
-				orderQueueConstruction.ConstructibleElementName,
-				this.currentAvailableProduction
-			});
-		}
-		if (this.currentAvailableProduction < 0f)
-		{
-			ConstructionQueue constructionQueue = base.AIEntity.Empire.GetAgency<DepartmentOfIndustry>().GetConstructionQueue(this.aiEntityCity.City);
-			if (constructionQueue == null)
-			{
-				return;
-			}
-			float num = 0f;
-			if (!this.departmentOfTheTreasury.TryGetResourceStockValue(this.aiEntityCity.City, DepartmentOfTheTreasury.Resources.Production, out num, false))
-			{
-				num = 0f;
-			}
-			num += this.aiEntityCity.City.GetPropertyValue(SimulationProperties.NetCityProduction);
-			num = Math.Max(1f, num);
-			for (int j = 0; j < constructionQueue.Length; j++)
-			{
-				Construction construction = constructionQueue.PeekAt(j);
-				float num2 = 0f;
-				for (int k = 0; k < construction.CurrentConstructionStock.Length; k++)
-				{
-					if (construction.CurrentConstructionStock[k].PropertyName == "Production")
-					{
-						num2 += construction.CurrentConstructionStock[k].Stock;
-						if (construction.IsBuyout)
-						{
-							num2 = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, construction.ConstructibleElement, "Production");
-						}
-					}
-				}
-				float num3 = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, construction.ConstructibleElement, "Production") - num2;
-				num -= num3;
-				if (num <= 0f)
-				{
-					return;
-				}
-			}
-			this.currentAvailableProduction = num;
-		}
-		if (this.firsttry)
-		{
-			this.firsttry = false;
-		}
-		else
-		{
-			this.LastResortDesignIndex = this.random.Next(this.LastResortDesigns.Count);
-		}
-		OrderQueueConstruction order2 = new OrderQueueConstruction(this.Empire.Index, this.aiEntityCity.City.GUID, this.LastResortDesigns[this.LastResortDesignIndex], string.Empty);
-		Ticket ticket2;
-		this.Empire.PlayerControllers.AI.PostOrder(order2, out ticket2, new EventHandler<TicketRaisedEventArgs>(this.OrderLastResortUnit_TicketRaised));
-	}
-
-	private void OrderCancelBooster_TicketRaised(object sender, TicketRaisedEventArgs e)
-	{
-		if (e.Result == PostOrderResponse.Processed)
-		{
-			this.constructionQueue = base.AIEntity.Empire.GetAgency<DepartmentOfIndustry>().GetConstructionQueue(this.aiEntityCity.City);
-		}
-	}
-
-	private bool BoostersInQueue(bool CancelSuperfluous = false)
-	{
-		ConstructionQueue constructionQueue = base.AIEntity.Empire.GetAgency<DepartmentOfIndustry>().GetConstructionQueue(this.aiEntityCity.City);
-		if (constructionQueue.Length <= 0)
-		{
-			return false;
-		}
-		bool result = false;
-		int num = 0;
-		for (int i = constructionQueue.Length - 1; i >= 0; i--)
-		{
-			Construction construction = constructionQueue.PeekAt(i);
-			if (construction.ConstructibleElementName.ToString().Contains("BoosterGenerator"))
-			{
-				result = true;
-				num++;
-				if (CancelSuperfluous && num > 1 && construction.GetSpecificConstructionStock(DepartmentOfTheTreasury.Resources.Production) <= 0f && construction.GetSpecificConstructionStock(DepartmentOfTheTreasury.Resources.Orb) <= 0f)
-				{
-					OrderCancelConstruction order = new OrderCancelConstruction(base.AIEntity.Empire.Index, this.aiEntityCity.City.GUID, construction.GUID);
-					Ticket ticket;
-					this.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderCancelBooster_TicketRaised));
-					break;
-				}
-				if (!CancelSuperfluous)
-				{
-					break;
-				}
-			}
-		}
-		return result;
-	}
-
-	private int MaxSettlersNeeded(bool CancelSuperfluous = false)
-	{
-		int num = 0;
-		Continent[] continents = this.worldPositionningService.World.Continents;
-		for (int i = 0; i < continents.Length; i++)
-		{
-			foreach (int regionIndex in continents[i].RegionList)
-			{
-				Region region = this.worldPositionningService.GetRegion(regionIndex);
-				if (region.IsLand && region.City == null)
-				{
-					num++;
-				}
-			}
-		}
-		int num2 = 0;
-		if (num > 0)
-		{
-			int currentSettlerCount = this.ColonizationLayer.CurrentSettlerCount;
-			num2 = num - currentSettlerCount;
-		}
-		ConstructionQueue constructionQueue = base.AIEntity.Empire.GetAgency<DepartmentOfIndustry>().GetConstructionQueue(this.aiEntityCity.City);
-		for (int k = constructionQueue.Length - 1; k >= 0; k--)
-		{
-			Construction construction = constructionQueue.PeekAt(k);
-			if (construction.ConstructibleElementName.ToString().Contains("Settler"))
-			{
-				if (CancelSuperfluous && num2 <= 0)
-				{
-					OrderCancelConstruction order = new OrderCancelConstruction(base.AIEntity.Empire.Index, this.aiEntityCity.City.GUID, construction.GUID);
-					Ticket ticket;
-					this.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderCancelBooster_TicketRaised));
-				}
-				else
-				{
-					num2--;
-				}
-			}
-		}
-		return num2;
-	}
-
-	private WorldPosition GetAvailablePOIPosition(DepartmentOfIndustry.ConstructibleElement POIconstructible)
-	{
-		if (this.aiEntityCity.City == null)
-		{
-			return WorldPosition.Invalid;
-		}
-		PointOfInterest[] pointOfInterests = this.aiEntityCity.City.Region.PointOfInterests;
-		for (int i = 0; i < pointOfInterests.Length; i++)
-		{
-			PointOfInterest chosenPointOfInterest = pointOfInterests[i];
-			if (chosenPointOfInterest.PointOfInterestDefinition.PointOfInterestTemplate.Name == (POIconstructible as PointOfInterestImprovementDefinition).PointOfInterestTemplateName && chosenPointOfInterest.PointOfInterestImprovement == null && this.visibilityService.IsWorldPositionExploredFor(chosenPointOfInterest.WorldPosition, this.Empire))
-			{
-				ConstructionQueue constructionQueue = base.AIEntity.Empire.GetAgency<DepartmentOfIndustry>().GetConstructionQueue(this.aiEntityCity.City);
-				if ((constructionQueue == null || !constructionQueue.PendingConstructions.Any((Construction construction) => construction.WorldPosition == chosenPointOfInterest.WorldPosition)) && !this.alreadyUsedPosition.Exists((WorldPosition x) => x == chosenPointOfInterest.WorldPosition))
-				{
-					return chosenPointOfInterest.WorldPosition;
-				}
-			}
-		}
-		return WorldPosition.Invalid;
-	}
-
-	private void CancelInvalidConstructions()
-	{
-		int i = this.constructionQueue.Length - 1;
-		while (i >= 0)
-		{
-			Construction construction = this.constructionQueue.PeekAt(i);
-			if (construction.ConstructibleElement is PointOfInterestImprovementDefinition && !DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, construction.ConstructibleElement, new string[]
-			{
-				ConstructionFlags.Discard
-			}))
-			{
-				goto IL_107;
-			}
-			if ((construction.ConstructibleElement.SimulationDescriptorReferences.Any((SimulationDescriptorReference X) => X.Name == "OnlyOneConstructionPerEmpire") && !DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, construction.ConstructibleElement, new string[]
-			{
-				ConstructionFlags.Discard
-			})) || (construction.ConstructibleElement is UnitDesign && !DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, construction.ConstructibleElement, new string[]
-			{
-				ConstructionFlags.Affinity
-			})))
-			{
-				goto IL_107;
-			}
-			IL_FE:
-			i--;
-			continue;
-			IL_107:
-			OrderCancelConstruction order = new OrderCancelConstruction(base.AIEntity.Empire.Index, this.aiEntityCity.City.GUID, construction.GUID);
-			Ticket ticket;
-			this.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderCancelBooster_TicketRaised));
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-			{
-				Diagnostics.Log("ELCP: {0}/{1} canceling {2}", new object[]
-				{
-					base.AIEntity.Empire,
-					this.aiEntityCity.City.LocalizedName,
-					construction.Name
-				});
-				goto IL_FE;
-			}
-			goto IL_FE;
-		}
-	}
-
-	private void GetForbiddenResources(ref List<string> ForbiddenResources)
-	{
-		if (this.VictoryLayer != null)
-		{
-			if (this.VictoryLayer.Chapter4Resource1 != string.Empty && this.VictoryLayer.Chapter4Resource2 != string.Empty)
-			{
-				float num;
-				if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, this.VictoryLayer.Chapter4Resource1, out num, false))
-				{
-					num = 0f;
-				}
-				float num2;
-				if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, this.VictoryLayer.Chapter4Resource2, out num2, false))
-				{
-					num2 = 0f;
-				}
-				if (num < 2f * (float)this.VictoryLayer.Chapter4Resource1Amount)
-				{
-					ForbiddenResources.Add(this.VictoryLayer.Chapter4Resource1);
-				}
-				if (num2 < 2f * (float)this.VictoryLayer.Chapter4Resource2Amount)
-				{
-					ForbiddenResources.Add(this.VictoryLayer.Chapter4Resource2);
-				}
-			}
-			if (this.VictoryLayer.TryingToBuildVictoryWonder)
-			{
-				float num3;
-				if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, "Strategic5", out num3, false))
-				{
-					num3 = 0f;
-				}
-				float num4;
-				if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, "Strategic6", out num4, false))
-				{
-					num4 = 0f;
-				}
-				if (num3 < 80f)
-				{
-					ForbiddenResources.Add("Strategic5");
-				}
-				if (num4 < 80f)
-				{
-					ForbiddenResources.Add("Strategic6");
-				}
-			}
-		}
-	}
-
-	private bool PreventFurtherUnits()
-	{
-		return ELCPUtilities.ELCPShackleAI && ((this.Empire.GetPropertyValue(SimulationProperties.WarCount) == 0f && (float)this.departmentOfDefense.Armies.Count > 1f * this.Empire.GetPropertyValue(SimulationProperties.EmpireScaleFactor) && this.departmentOfDefense.Armies.Count > 10) || (this.Empire.GetPropertyValue(SimulationProperties.WarCount) >= 1f && (float)this.departmentOfDefense.Armies.Count > 2f * this.Empire.GetPropertyValue(SimulationProperties.EmpireScaleFactor) && this.departmentOfDefense.Armies.Count > 20));
 	}
 
 	private static readonly StaticString EmpireNetStrategicResources;
@@ -3037,29 +2153,6 @@ public class AILayer_Production : AILayer, IAIEvaluationHelper<ConstructibleElem
 
 	[InfluencedByPersonality]
 	private float minimalDevelopmentRatioForUnit = 0.5f;
-
-	[InfluencedByPersonality]
-	private int ArmyThresholdTurns;
-
-	private int DelayedTicks;
-
-	private List<DepartmentOfIndustry.ConstructibleElement> LastResortDesigns;
-
-	private int LastResortDesignIndex;
-
-	private bool boosterOnCity;
-
-	private bool NoMoreSettlers;
-
-	private bool firsttry;
-
-	private AILayer_Victory VictoryLayer;
-
-	private AILayer_Colonization ColonizationLayer;
-
-	private DepartmentOfDefense departmentOfDefense;
-
-	private IWorldAtlasAIHelper worldAtlasHelper;
 
 	public class ExtensionEvaluation
 	{

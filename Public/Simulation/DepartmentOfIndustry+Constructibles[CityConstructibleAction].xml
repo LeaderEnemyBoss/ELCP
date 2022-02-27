@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionRaze" SubCategory="SubCategoryRazing" IsUnique="true">
+    <SimulationDescriptorReference Name="CityConstructibleActionRazeTooltipEffect" />
+    <Tags>NoBuyout,NoNotification</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(ClassCity:Ownership) eq 1</InterpreterPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../EmpireTypeMajor,AffinityTutorial</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../EmpireTypeMajor,FactionTraitCultists9</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <Action Name="Raze"/>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionInfectedRaze" SubCategory="SubCategoryAssimilation" IsUnique="true">
+    <SimulationDescriptorReference Name="CityConstructibleActionRazeTooltipEffect" />
+    <Tags>NoBuyout,NoNotification</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusIntegrated</PathPrerequisite>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <Action Name="Raze"/>
+  </CityConstructibleActionDefinition>
+  
+  <CityConstructibleActionDefinition Name="CityConstructibleActionMigrate" SubCategory="SubCategoryRazing" IsUnique="true">
+    <SimulationDescriptorReference Name="CityConstructibleActionMigrateTooltipEffect" />
+    <Tags>NoBuyout,NoNotification</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(ClassCity:Ownership) eq 1</InterpreterPrerequisite>
+    <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">../EmpireTypeMajor,AffinityRovingClans</PathPrerequisite>
+    <Cost ResourceName="CityActionPoint">1</Cost>
+    <Action Name="Migrate"/>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionPurgeTheLand" Category="CityImprovement"  SubCategory="SubCategoryRazing" IsUnique="true">
+    <SimulationDescriptorReference Name="CityConstructibleActionPurgeTheLandTooltipEffect" />
+    <Tags>NoBuyout,NoNotification</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(ClassCity:Ownership) eq 1</InterpreterPrerequisite>
+    <CustomCost ResourceName="Production">150 * $Count(ClassCity/ClassPointOfInterest,InfectedPointOfInterest)</CustomCost>
+    <Action Name="PurgeTheLand"/>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateBrokenLords" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="BrokenLordsIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,BrokenLordsIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityBrokenLords</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateMadFairies" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="MadFairiesIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,MadFairiesIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityMadFairies</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateNecrophages" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="NecrophagesIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,NecrophagesIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityNecrophages</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateRageWizards" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="RageWizardsIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,RageWizardsIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityRageWizards</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateVaulters" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="VaultersIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,VaultersIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityVaulters</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateRovingClans" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="RovingClansIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,RovingClansIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityRovingClans</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateDrakkens" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="DrakkensIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,DrakkensIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityDrakkens</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateCultists" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="CultistsIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,CultistsIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityCultists</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateMezari" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="VaultersIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,VaultersIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityMezari</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateReplicants" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="ReplicantsIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,ReplicantsIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityReplicants</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateWinterShifters" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="WinterShiftersIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,WinterShiftersIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityWinterShifters</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateSeaDemons" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="SeaDemonsIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,SeaDemonsIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinitySeaDemons</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateFlames" Category="CityImprovement" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="FlamesIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,FlamesIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityFlames</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+  <CityConstructibleActionDefinition Name="CityConstructibleActionIntegrateMimics" SubCategory="SubCategoryAssimilation" IsUnique="true" OnePerEmpire="true" IsUniqueToDisableNotDiscard="false">
+    <SimulationDescriptorReference Name="CityConstructibleActionIntegrateFactionTooltipEffect" />
+    <SimulationDescriptorReference Name="MimicsIntegrationDescriptor1" />
+    <Tags>NoBuyout</Tags>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">../ClassEmpire,MimicsIntegrationDescriptor1</PathPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege">ClassCity,CityStatusSiege</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard">ClassCity,CityStatusInfected</PathPrerequisite>
+    <CustomCost ResourceName="CityActionPoint">6 * $Property(../ClassEmpire:GameSpeedMultiplier)</CustomCost>
+    <Action Name="IntegrateFaction"/>
+    <InfectedAffinityConstraint>AffinityMimics</InfectedAffinityConstraint>
+  </CityConstructibleActionDefinition>
+
+</Datatable>

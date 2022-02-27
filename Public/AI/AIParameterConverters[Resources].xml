@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ######################################################################### -->
+  <!-- ################ CITY-BASED BONUSES TO RESOURCE PRODUCTION ############## -->
+  <!-- ######################################################################### -->
+
+  <AIParameterConverter Name="CityStrategicResource">
+    <ToAIParameter AIParameter="AICityStrategicResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) * $Count(../ClassEmpire/ClassCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityLuxuryResource">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * $Count(../ClassEmpire/ClassCity)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="StrategyBonusPerStrategy">
+    <ToAIParameter AIParameter="AICityStrategicResource">
+      $(Input) *
+      (
+        $Property(ClassCity:NetStrategic1) +
+        $Property(ClassCity:NetStrategic2) +
+        $Property(ClassCity:NetStrategic3) +
+        $Property(ClassCity:NetStrategic4) +
+        $Property(ClassCity:NetStrategic5) +
+        $Property(ClassCity:NetStrategic6)
+      )
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">
+      $(Input) *
+      (
+        $Property(../ClassEmpire:NetStrategic1) +
+        $Property(../ClassEmpire:NetStrategic2) +
+        $Property(../ClassEmpire:NetStrategic3) +
+        $Property(../ClassEmpire:NetStrategic4) +
+        $Property(../ClassEmpire:NetStrategic5) +
+        $Property(../ClassEmpire:NetStrategic6)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="LuxuryBonusPerLuxury">
+    <ToAIParameter AIParameter="AICityLuxuryResource">
+      $(Input) * 
+      (
+        $Property(ClassCity:NetLuxury1) +
+        $Property(ClassCity:NetLuxury2) +
+        $Property(ClassCity:NetLuxury3) +
+        $Property(ClassCity:NetLuxury4) +
+        $Property(ClassCity:NetLuxury5) +
+        $Property(ClassCity:NetLuxury6) +
+        $Property(ClassCity:NetLuxury7) +
+        $Property(ClassCity:NetLuxury8) +
+        $Property(ClassCity:NetLuxury9) +
+        $Property(ClassCity:NetLuxury10) +
+        $Property(ClassCity:NetLuxury11) +
+        $Property(ClassCity:NetLuxury12) +
+        $Property(ClassCity:NetLuxury13) +
+        $Property(ClassCity:NetLuxury14) +
+        $Property(ClassCity:NetLuxury15)
+      )
+    </ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">
+      $(Input) *
+      (
+        $Property(../ClassEmpire:NetLuxury1) +
+        $Property(../ClassEmpire:NetLuxury2) +
+        $Property(../ClassEmpire:NetLuxury3) +
+        $Property(../ClassEmpire:NetLuxury4) +
+        $Property(../ClassEmpire:NetLuxury5) +
+        $Property(../ClassEmpire:NetLuxury6) +
+        $Property(../ClassEmpire:NetLuxury7) +
+        $Property(../ClassEmpire:NetLuxury8) +
+        $Property(../ClassEmpire:NetLuxury9) +
+        $Property(../ClassEmpire:NetLuxury10) +
+        $Property(../ClassEmpire:NetLuxury11) +
+        $Property(../ClassEmpire:NetLuxury12) +
+        $Property(../ClassEmpire:NetLuxury13) +
+        $Property(../ClassEmpire:NetLuxury14) +
+        $Property(../ClassEmpire:NetLuxury15)
+      )
+    </ToAIParameter>
+  </AIParameterConverter>
+  
+  <!-- ############################################################### -->
+  <!-- ################ STRATEGIC RESOURCE EXTRACTION ################ -->
+  <!-- ############################################################### -->
+
+  <!-- == Common == -->
+  
+  <AIParameterConverter Name="CityResourceExtraction_Strategic1">
+    <ToAIParameter AIParameter="AICityStrategicResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterStrategic1">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Strategic2">
+    <ToAIParameter AIParameter="AICityStrategicResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterStrategic2">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Uncommon == -->
+
+  <AIParameterConverter Name="CityResourceExtraction_Strategic3">
+    <ToAIParameter AIParameter="AICityStrategicResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterStrategic3">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Strategic4">
+    <ToAIParameter AIParameter="AICityStrategicResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterStrategic4">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Rare == -->
+
+  <AIParameterConverter Name="CityResourceExtraction_Strategic5">
+    <ToAIParameter AIParameter="AICityStrategicResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterStrategic5">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Strategic6">
+    <ToAIParameter AIParameter="AICityStrategicResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterStrategic6">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+  
+  <!-- ############################################################### -->
+  <!-- ################ LUXURY RESOURCE EXTRACTION ################### -->
+  <!-- ############################################################### -->
+
+  <!-- == Common == -->
+  
+  <AIParameterConverter Name="CityResourceExtraction_Luxury1">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury1">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury2">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury2">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury3">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury3">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury4">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury4">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury5">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury5">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Uncommon == -->
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury6">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury6">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury7">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury7">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury8">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury8">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury9">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury9">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury10">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury10">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- == Rare == -->
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury11">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury11">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury12">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury12">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury13">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury13">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury14">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury14">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="CityResourceExtraction_Luxury15">
+    <ToAIParameter AIParameter="AICityLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury15">$(Input) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ###################################################################################### -->
+  <!-- ################## UNLOCK STRATEGIC-RESOURCE EXTRACTION FROM DEPOSITS  ############### -->
+  <!-- ###################################################################################### -->
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Strategic1">
+    <ToAIParameter AIParameter="BoosterStrategic1">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic1) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic1)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Strategic2">
+    <ToAIParameter AIParameter="BoosterStrategic2">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic2) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic2)</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Strategic3">
+    <ToAIParameter AIParameter="BoosterStrategic3">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic3) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic3) * 1.5</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Strategic4">
+    <ToAIParameter AIParameter="BoosterStrategic4">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic4) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic4) * 1.5</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Strategic5">
+    <ToAIParameter AIParameter="BoosterStrategic5">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic5) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic5) * 2</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Strategic6">
+    <ToAIParameter AIParameter="BoosterStrategic6">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic6) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpireStrategicResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeStrategic6) * 2</ToAIParameter>
+  </AIParameterConverter>
+
+  <!-- ##################################################################################### -->
+  <!-- ################## UNLOCK LUXURY-RESOURCE EXTRACTION FROM DEPOSITS  ################# -->
+  <!-- ##################################################################################### -->
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury1">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury1)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury1">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury1) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury2">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury2)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury2">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury2) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury3">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury3)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury3">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury3) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury4">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury4)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury4">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury4) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury5">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury5)</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury5">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury5) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury6">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury6) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury6">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury6) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury7">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury7) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury7">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury7) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury8">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury8) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury8">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury8) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury9">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury9) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury9">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury9) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury10">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury10) * 1.5</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury10">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury10) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury11">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury11) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury11">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury11) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury12">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury12) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury12">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury12) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury13">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury13) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury13">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury13) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury14">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury14) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury14">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury14) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+
+  <AIParameterConverter Name="EmpireUnlockResourceExtractor_Luxury15">
+    <ToAIParameter AIParameter="AIEmpireLuxuryResource">$(Input) *  $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury15) * 2.0</ToAIParameter>
+    <ToAIParameter AIParameter="BoosterLuxury15">$(Input) * $Count(ClassEmpire/ClassCity/ResourceDepositTypeLuxury15) / (5 + ($Count(.../ClassEmpire/ClassCity) * 5))</ToAIParameter>
+  </AIParameterConverter>
+  
+</Datatable>

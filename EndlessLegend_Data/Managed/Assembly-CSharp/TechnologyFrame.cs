@@ -362,26 +362,14 @@ public class TechnologyFrame : MonoBehaviour
 		if (technologyState == DepartmentOfScience.ConstructibleElement.State.Available)
 		{
 			this.AgeTransform.Enable = false;
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && Input.GetKey(KeyCode.G))
-			{
-				this.ForceUnlockTechnology();
-			}
-			else
-			{
-				this.QueueResearch();
-			}
+			this.QueueResearch();
 			this.selectionClient.SendMessage("OnSelectTechnology", this.AgeTransform, SendMessageOptions.RequireReceiver);
-			return;
 		}
-		if (technologyState == DepartmentOfScience.ConstructibleElement.State.InProgress || technologyState == DepartmentOfScience.ConstructibleElement.State.Queued)
+		else if (technologyState == DepartmentOfScience.ConstructibleElement.State.InProgress || technologyState == DepartmentOfScience.ConstructibleElement.State.Queued)
 		{
 			this.AgeTransform.Enable = false;
 			Construction construction = constructionQueueForTech.Get(this.TechnologyDefinition);
 			this.CancelResearch(construction);
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && Input.GetKey(KeyCode.G))
-			{
-				this.ForceUnlockTechnology();
-			}
 			this.selectionClient.SendMessage("OnSelectTechnology", this.AgeTransform, SendMessageOptions.RequireReceiver);
 		}
 	}
@@ -510,20 +498,6 @@ public class TechnologyFrame : MonoBehaviour
 			technologyState = service2.GetTechnologyState(this.TechnologyDefinition, this.empire);
 		}
 		this.Refresh(this.empire, technologyState);
-	}
-
-	private void ForceUnlockTechnology()
-	{
-		IGameService service = Services.GetService<IGameService>();
-		if (service != null && service.Game != null)
-		{
-			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-			if (service2 != null && service2.ActivePlayerController != null)
-			{
-				OrderForceUnlockTechnology order = new OrderForceUnlockTechnology(service2.ActivePlayerController.Empire.Index, this.TechnologyDefinition.Name);
-				service2.ActivePlayerController.PostOrder(order);
-			}
-		}
 	}
 
 	public AgeTransform AgeTransform;

@@ -222,7 +222,6 @@ public class GameCityListScreen : GuiPlayerControllerScreen
 		this.kaijuGarrisonPanel.PositionModifier = this.KaijuGarrisonFrame.GetComponent<AgeModifierPosition>();
 		this.kaijuGarrisonPanel.Load();
 		this.CityWorkersPanel.Load();
-		this.CityWorkersPanel.ParentIsCityListScreen = true;
 		yield break;
 	}
 

@@ -67,8 +67,8 @@
     -->
 
     <AIParameterDatatableElement Name="TechnologyDeal">
-        <AIParameter Name="DiplomacyTechnologyReceiver" Value="(((0 - 3) * $(DoesNotWantTech)) + 1) * (3 * ((0.2*$(TechnologyEra)) + (1 min (0.8*$(TechnologyEvaluationScore)))) * (1 max ($(TechnologyRemainingTurn) / 8)))*(1 max (($(TechnologyEra) - 5) * 2))"/>
-        <AIParameter Name="DiplomacyTechnologyProvider" Value="(3 * (0 - 1) * ((0.8*$(TechnologyEra)) + (1 min (0.2*$(TechnologyEvaluationScore)))))*(1 max (($(TechnologyEra) - 5) * 10))"/>
+        <AIParameter Name="DiplomacyTechnologyReceiver" Value="3 * ((0.2*$(TechnologyEra)) + (1 min (0.8*$(TechnologyEvaluationScore)))) * (1 max ($(TechnologyRemainingTurn) / 4))"/>
+        <AIParameter Name="DiplomacyTechnologyProvider" Value="3 * (0 - 1) * ((0.8*$(TechnologyEra)) + (1 min (0.2*$(TechnologyEvaluationScore))))"/>
     </AIParameterDatatableElement>
 
 </Datatable>

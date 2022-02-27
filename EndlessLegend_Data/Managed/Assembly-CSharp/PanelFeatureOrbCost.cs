@@ -10,41 +10,41 @@ public class PanelFeatureOrbCost : PanelFeatureEffects
 {
 	protected override IEnumerator OnShow(params object[] parameters)
 	{
-		IPropertyEffectFeatureProvider propertyEffectFeatureProvider = this.context as IPropertyEffectFeatureProvider;
+		IPropertyEffectFeatureProvider provider = this.context as IPropertyEffectFeatureProvider;
 		if (this.context is OrbCostTooltipData)
 		{
-			propertyEffectFeatureProvider = (this.context as OrbCostTooltipData).Context;
+			provider = (this.context as OrbCostTooltipData).Context;
 			this.Value.Text = string.Empty;
 		}
-		if (propertyEffectFeatureProvider != null)
+		if (provider != null)
 		{
-			SimulationObject simulationObject = propertyEffectFeatureProvider.GetSimulationObject();
-			float propertyValue = simulationObject.GetPropertyValue("NumberOfPastWinters");
-			float num = simulationObject.GetPropertyValue("PrayerCostByTurnsSinceSeasonStart") * simulationObject.GetPropertyValue("NumberOfTurnsSinceSummerStart");
-			List<EffectDescription> list = new List<EffectDescription>();
-			if (propertyValue > 0f)
+			SimulationObject simulationObject = provider.GetSimulationObject();
+			float orbCostFromPastWinters = simulationObject.GetPropertyValue("PrayerCostByPastWinter") * simulationObject.GetPropertyValue("NumberOfPastWinters");
+			float orbCostFromTurns = simulationObject.GetPropertyValue("PrayerCostByTurnsSinceSeasonStart") * simulationObject.GetPropertyValue("NumberOfTurnsSinceSummerStart");
+			List<EffectDescription> effectDescriptions = new List<EffectDescription>();
+			if (orbCostFromPastWinters > 0f)
 			{
-				string toStringOverride = AgeLocalizer.Instance.LocalizeString("%FeatureOrbCostFromPastWinters").Replace("$Value", propertyValue.ToString());
-				list.Add(new EffectDescription(toStringOverride));
+				string orbCostFromPastWintersDescription = AgeLocalizer.Instance.LocalizeString("%FeatureOrbCostFromPastWinters").Replace("$Value", orbCostFromPastWinters.ToString());
+				effectDescriptions.Add(new EffectDescription(orbCostFromPastWintersDescription));
 			}
-			if (num > 0f)
+			if (orbCostFromTurns > 0f)
 			{
-				string toStringOverride2 = AgeLocalizer.Instance.LocalizeString("%FeatureOrbCostFromTurns").Replace("$Value", num.ToString());
-				list.Add(new EffectDescription(toStringOverride2));
+				string orbCostFromTurnsDescription = AgeLocalizer.Instance.LocalizeString("%FeatureOrbCostFromTurns").Replace("$Value", orbCostFromTurns.ToString());
+				effectDescriptions.Add(new EffectDescription(orbCostFromTurnsDescription));
 			}
-			this.EffectMapper.LoadEffects(list, true);
-			float num2 = 0f;
-			IGameService service = Services.GetService<IGameService>();
-			if (service != null)
+			this.EffectMapper.LoadEffects(effectDescriptions, true);
+			float totalOrbCost = 0f;
+			IGameService gameService = Services.GetService<IGameService>();
+			if (gameService != null)
 			{
-				IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-				ISeasonService service3 = service.Game.Services.GetService<ISeasonService>();
-				if (service3 != null && service2 != null)
+				IPlayerControllerRepositoryService playerControllerRepository = gameService.Game.Services.GetService<IPlayerControllerRepositoryService>();
+				ISeasonService seasonService = gameService.Game.Services.GetService<ISeasonService>();
+				if (seasonService != null && playerControllerRepository != null)
 				{
-					num2 = service3.ComputePrayerOrbCost(service2.ActivePlayerController.Empire as global::Empire);
+					totalOrbCost = seasonService.ComputePrayerOrbCost(playerControllerRepository.ActivePlayerController.Empire as global::Empire);
 				}
 			}
-			this.Value.Text = num2.ToString() + base.GuiService.FormatSymbol(DepartmentOfTheTreasury.Resources.Orb);
+			this.Value.Text = totalOrbCost.ToString() + base.GuiService.FormatSymbol(DepartmentOfTheTreasury.Resources.Orb);
 		}
 		yield return base.OnShow(parameters);
 		yield break;

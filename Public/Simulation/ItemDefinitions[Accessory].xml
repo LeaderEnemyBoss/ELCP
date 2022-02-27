@@ -1,0 +1,1941 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="ItemDefinitions.xsl"?>
+
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ################################ -->
+  <!-- #######  ACCESSORIES     ####### -->
+  <!-- ################################ -->
+
+  <!-- #######     RING    ####### -->
+
+  <!--Strategic1-->
+  <ItemDefinition Name="ItemRingStrategic1Tier1"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic1Tier1" />
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedDamage" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic1Tier2"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic1Tier2" />
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedDamage" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic1Tier3"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic1Tier3" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedDamage" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic2-->
+  <ItemDefinition Name="ItemRingStrategic2Tier1"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic2Tier1" />
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedInitiative" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic2Tier2"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic2Tier2" />
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedInitiative" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic2Tier3"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic2Tier3" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedInitiative" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic3-->
+  <ItemDefinition Name="ItemRingStrategic3Tier1"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic3Tier1" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedDefense" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic3Tier2"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic3Tier2" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedDefense" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic3Tier3"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic3Tier3" />
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedDefense" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic4-->
+  <ItemDefinition Name="ItemRingStrategic4Tier1"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic4Tier1" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedAttack" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic4Tier2"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic4Tier2" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedAttack" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic4Tier3"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic4Tier3" />
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImprovedAttack" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic5-->
+  <ItemDefinition Name="ItemRingStrategic5Tier1"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic5Tier1" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityCityGuard" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic5Tier2"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic5Tier2" />
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityCityGuard" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic5Tier3"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <Tags>NeverObsolete</Tags>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic5Tier3" />
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityCityGuard" Level="2" />
+  </ItemDefinition>
+
+  <!--Strategic6-->
+  <ItemDefinition Name="ItemRingStrategic6Tier1"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic6Tier1" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityDiseaseImmunity" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic6Tier2"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic6Tier2" />
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityImmuneDebuff" />
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingStrategic6Tier3"                   SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <Tags>NeverObsolete</Tags>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesRingStrategic6Tier3" />
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityUnstoppable" />
+  </ItemDefinition>
+
+  <!--Dust-->
+  <ItemDefinition Name="ItemRingDustTier1"                         SubCategory="SubCategoryRing">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard" Inverted="true">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesRingDustTier1" />
+    <Cost ResourceName="Production">36</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">24</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedLife" Level="0"/>
+  </ItemDefinition>
+
+  <!-- Reskin Ring Dust Tier1: Ring of Magesong -->
+  <ItemDefinition Name="ItemRingDustTier1Soundtrack2"              SubCategory="SubCategoryRing">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesRingDustTier1" />
+    <Cost ResourceName="Production">36</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">24</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedLife" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingDustTier2"                         SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesRingDustTier2" />
+    <Cost ResourceName="Production">48</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">48</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedLife" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingDustTier3"                         SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesRingDustTier3" />
+    <Cost ResourceName="Production">60</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">96</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedLife" Level="2"/>
+  </ItemDefinition>
+
+  <!--Dust-->
+  <!--Camouflage-->
+  <ItemDefinition Name="ItemRingDustTier1ReplicantsPack"           SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyMapActionPillage</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingDustTier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit,UnitAbilityStealth</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesRingDustTier1ReplicantsPack" />
+    <Cost ResourceName="Production">36</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">24</Cost>
+    <UnitAbilityReference Name="UnitAbilityCamouflage" />
+  </ItemDefinition>
+
+  <!--Iron-->
+  <ItemDefinition Name="ItemRingIronTier1"                         SubCategory="SubCategoryRing">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard" Inverted="true">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesRingIronTier1" />
+    <Cost ResourceName="Production">12</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedVision" Level="0"/>
+    <UnitAbilityReference Name="UnitAbilitySharpSense"     Level="0"/>
+  </ItemDefinition>
+
+  <!-- Reskin Ring Iron Tier1: Warning Bell -->
+  <ItemDefinition Name="ItemRingIronTier1Soundtrack2"              SubCategory="SubCategoryRing">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesRingIronTier1" />
+    <Cost ResourceName="Production">12</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedVision" Level="0"/>
+    <UnitAbilityReference Name="UnitAbilitySharpSense"     Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingIronTier2"                         SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesRingIronTier2" />
+    <Cost ResourceName="Production">24</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedVision" Level="0"/>
+    <UnitAbilityReference Name="UnitAbilitySharpSense"     Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemRingIronTier3"                         SubCategory="SubCategoryRing">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingIronTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesRingIronTier3" />
+    <Cost ResourceName="Production">48</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedVision" Level="1"/>
+    <UnitAbilityReference Name="UnitAbilitySharpSense"     Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- #######     TALISMAN    ####### -->
+
+  <!--Strategic1-->
+  <ItemDefinition Name="ItemTalismanStrategic1Tier1"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic1Tier1" />
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityDeathOrGlory" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic1Tier2"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic1Tier2" />
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityDeathOrGlory" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic1Tier3"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic1Tier3" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityDeathOrGlory" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic2-->
+  <ItemDefinition Name="ItemTalismanStrategic2Tier1"               SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard" Inverted="true">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic2Tier1" />
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityHighGround" Level="0"/>
+  </ItemDefinition>
+
+  <!-- Reskin Talisman Strategic2 Tier1: Harp of Noby Fly -->
+  <ItemDefinition Name="ItemTalismanStrategic2Tier1Soundtrack2"    SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic2Tier1" />
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityHighGround" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic2Tier2"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic2Tier2" />
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityHighGround" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic2Tier3"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic2Tier3" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityHighGround" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic3-->
+  <ItemDefinition Name="ItemTalismanStrategic3Tier1"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic3Tier1" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityCityBreaker" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic3Tier2"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic3Tier2" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityCityBreaker" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic3Tier3"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic3Tier3" />
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityCityBreaker" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic4-->
+  <ItemDefinition Name="ItemTalismanStrategic4Tier1"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic4Tier1" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityRetaliation" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic4Tier2"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic4Tier2" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityRetaliation" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic4Tier3"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic4Tier3" />
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityRetaliation" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic5-->
+  <ItemDefinition Name="ItemTalismanStrategic5Tier1"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic5Tier1" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityShock" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic5Tier2"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic5Tier2" />
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityShock" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic5Tier3"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic5Tier3" />
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityShock" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic6-->
+  <ItemDefinition Name="ItemTalismanStrategic6Tier1"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic6Tier1" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityForestResonance" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic6Tier2"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic6Tier2" />
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityForestResonance" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanStrategic6Tier3"               SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanStrategic6Tier3" />
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityForestResonance" Level="2"/>
+  </ItemDefinition>
+
+  <!--Dust-->
+  <ItemDefinition Name="ItemTalismanDustTier1"                     SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard" Inverted="true">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanDustTier1" />
+    <Cost ResourceName="Production">36</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">24</Cost>
+    <UnitAbilityReference Name="UnitAbilityRegeneration" Level="0"/>
+  </ItemDefinition>
+
+  <!-- Reskin Talisman Dust Tier1: Epic Lute -->
+  <ItemDefinition Name="ItemTalismanDustTier1Soundtrack2"          SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanDustTier1" />
+    <Cost ResourceName="Production">36</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">24</Cost>
+    <UnitAbilityReference Name="UnitAbilityRegeneration" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanDustTier2"                     SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanDustTier2" />
+    <Cost ResourceName="Production">48</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">48</Cost>
+    <UnitAbilityReference Name="UnitAbilityRegeneration" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanDustTier3"                     SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanDustTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanDustTier3" />
+    <Cost ResourceName="Production">60</Cost>
+    <Cost ResourceName="EmpireMoney" Instant="true">96</Cost>
+    <UnitAbilityReference Name="UnitAbilityRegeneration" Level="2"/>
+  </ItemDefinition>
+
+  <!--Iron-->
+  <ItemDefinition Name="ItemTalismanIronTier1"                     SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard" Inverted="true">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanIronTier1" />
+    <Cost ResourceName="Production">24</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedMovement" Level="0"/>
+  </ItemDefinition>
+
+  <!-- Reskin Talisman Iron Tier1: Flute of the Clockwork Phoenix -->
+  <ItemDefinition Name="ItemTalismanIronTier1Soundtrack2"          SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanIronTier1" />
+    <Cost ResourceName="Production">24</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedMovement" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanIronTier2"                     SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanIronTier2" />
+    <Cost ResourceName="Production">48</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedMovement" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTalismanIronTier3"                     SubCategory="SubCategoryTalisman">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanIronTier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialIron" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanIronTier3" />
+    <Cost ResourceName="Production">96</Cost>
+    <UnitAbilityReference Name="UnitAbilityImprovedMovement" Level="2"/>
+  </ItemDefinition>
+
+
+
+  <!-- #######     TOME    ####### -->
+
+  <!--Strategic1-->
+  <ItemDefinition Name="ItemTomeStrategic1Tier1"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic1Tier1" />
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic1Tier2"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic1Tier2" />
+    <CustomCost ResourceName="Strategic1" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic1Tier3"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic1Tier3" />
+    <CustomCost ResourceName="Strategic1" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic1-->
+  <!--Pillage Defense-->
+  <ItemDefinition Name="ItemTomeStrategic1Tier1ReplicantsPack"     SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic1Tier1ReplicantsPack" />
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic1Tier2ReplicantsPack"     SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic1Tier2ReplicantsPack" />
+    <CustomCost ResourceName="Strategic1" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic1Tier3ReplicantsPack"     SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic1Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic1Tier3ReplicantsPack" />
+    <CustomCost ResourceName="Strategic1" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic2-->
+  <ItemDefinition Name="ItemTomeStrategic2Tier1"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic2Tier1" />
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic2Tier2"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic2Tier2" />
+    <CustomCost ResourceName="Strategic2" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic2Tier3"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic2Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic2Tier3" />
+    <CustomCost ResourceName="Strategic2" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic3-->
+  <ItemDefinition Name="ItemTomeStrategic3Tier1"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic3Tier1" />
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic3Tier2"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic3Tier2" />
+    <CustomCost ResourceName="Strategic3" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic3Tier3"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic3Tier3" />
+    <CustomCost ResourceName="Strategic3" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic4-->
+  <ItemDefinition Name="ItemTomeStrategic4Tier1"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic4Tier1" />
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic4Tier2"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic4Tier2" />
+    <CustomCost ResourceName="Strategic4" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic4Tier3"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic4Tier3" />
+    <CustomCost ResourceName="Strategic4" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic4-->
+  <!--AntiSpy-->
+  <ItemDefinition Name="ItemTomeStrategic4Tier1ReplicantsPack"     SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic4Tier1ReplicantsPack" />
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic4Tier2ReplicantsPack"     SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic4Tier2ReplicantsPack" />
+    <CustomCost ResourceName="Strategic4" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic4Tier3ReplicantsPack"     SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic4Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic4Tier3ReplicantsPack" />
+    <CustomCost ResourceName="Strategic4" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic5-->
+  <ItemDefinition Name="ItemTomeStrategic5Tier1"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic5Tier1" />
+    <SimulationDescriptorReference Name="NotAppliedToMilitia" />
+    <CustomCost ResourceName="Strategic5" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic5Tier2"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic5Tier2" />
+    <CustomCost ResourceName="Strategic5" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic5Tier3"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic5Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic5Tier3" />
+    <CustomCost ResourceName="Strategic5" Instant="true">96 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic6-->
+  <ItemDefinition Name="ItemTomeStrategic6Tier1"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic6Tier1" />
+    <CustomCost ResourceName="Strategic6" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic6Tier2"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic6Tier2" />
+    <CustomCost ResourceName="Strategic6" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeStrategic6Tier3"                   SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeStrategic6Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeStrategic6Tier3" />
+    <CustomCost ResourceName="Strategic6" Instant="true">96 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <!--Dust-->
+  <ItemDefinition Name="ItemTomeDustTier1"                         SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard" Inverted="true">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeDustTier1" />
+    <Cost ResourceName="EmpireMoney" Instant="true">48</Cost>
+  </ItemDefinition>
+
+  <!-- Reskin Tome Dust Tier1: Partition of the Forerunner -->
+  <ItemDefinition Name="ItemTomeDustTier1Soundtrack2"              SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeDustTier1" />
+    <Cost ResourceName="EmpireMoney" Instant="true">48</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeDustTier2"                         SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeDustTier2" />
+    <Cost ResourceName="EmpireMoney" Instant="true">96</Cost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemTomeDustTier3"                         SubCategory="SubCategoryTome">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeDustTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <Tags>NeverObsolete</Tags>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeDustTier3" />
+    <Cost ResourceName="EmpireMoney" Instant="true">192</Cost>
+  </ItemDefinition>
+
+
+
+  <!-- #######     INSIGNIA    ####### -->
+
+  <!--Strategic1-->
+  <ItemDefinition Name="ItemInsigniaStrategic1Tier1"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic1Tier1" />
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralDamage" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic1Tier2"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic1Tier2" />
+    <CustomCost ResourceName="Strategic1" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralDamage" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic1Tier3"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic1Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic1Tier3" />
+    <CustomCost ResourceName="Strategic1" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralDamage" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic2-->
+  <ItemDefinition Name="ItemInsigniaStrategic2Tier1"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic2Tier1" />
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralInitiative" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic2Tier2"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic2Tier2" />
+    <CustomCost ResourceName="Strategic2" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralInitiative" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic2Tier3"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic2Tier3" />
+    <CustomCost ResourceName="Strategic2" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralInitiative" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic2-->
+  <!--Faster Pillage-->
+  <ItemDefinition Name="ItemInsigniaStrategic2Tier1ReplicantsPack" SubCategory="SubCategoryInsignia">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic2Tier1ReplicantsPack" />
+    <UnitAbilityReference Name="UnitAbilityFasterPillage" Level="0"/>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic2Tier2ReplicantsPack" SubCategory="SubCategoryInsignia">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic2Tier2ReplicantsPack" />
+    <UnitAbilityReference Name="UnitAbilityFasterPillage" Level="1"/>
+    <CustomCost ResourceName="Strategic2" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic2Tier3ReplicantsPack" SubCategory="SubCategoryInsignia">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier1ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier2ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic2Tier3ReplicantsPack</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic2Tier3ReplicantsPack" />
+    <UnitAbilityReference Name="UnitAbilityFasterPillage" Level="2"/>
+    <CustomCost ResourceName="Strategic2" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic3-->
+  <ItemDefinition Name="ItemInsigniaStrategic3Tier1"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic3Tier1" />
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralDefense" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic3Tier2"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic3Tier2" />
+    <CustomCost ResourceName="Strategic3" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralDefense" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic3Tier3"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic3Tier3" />
+    <CustomCost ResourceName="Strategic3" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralDefense" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic4-->
+  <ItemDefinition Name="ItemInsigniaStrategic4Tier1"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic4Tier1" />
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralAttack" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic4Tier2"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic4Tier2" />
+    <CustomCost ResourceName="Strategic4" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralAttack" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic4Tier3"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic4Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic4Tier3" />
+    <CustomCost ResourceName="Strategic4" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralAttack" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic5-->
+  <ItemDefinition Name="ItemInsigniaStrategic5Tier1"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic5Tier1" />
+    <CustomCost ResourceName="Strategic5" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralResistance" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic5Tier2"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic5Tier2" />
+    <CustomCost ResourceName="Strategic5" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralResistance" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic5Tier3"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic5Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic5Tier3" />
+    <CustomCost ResourceName="Strategic5" Instant="true">96 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralResistance" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic6-->
+  <ItemDefinition Name="ItemInsigniaStrategic6Tier1"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic6Tier1" />
+    <CustomCost ResourceName="Strategic6" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralPiercing" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic6Tier2"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic6Tier2" />
+    <CustomCost ResourceName="Strategic6" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralPiercing" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaStrategic6Tier3"               SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaStrategic6Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaStrategic6Tier3" />
+    <CustomCost ResourceName="Strategic6" Instant="true">96 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityGeneralPiercing" Level="2"/>
+  </ItemDefinition>
+
+  <!--Dust-->
+  <ItemDefinition Name="ItemInsigniaDustTier1"                     SubCategory="SubCategoryInsignia">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard" Inverted="true">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaDustTier1" />
+    <Cost ResourceName="EmpireMoney" Instant="true">48</Cost>
+    <UnitAbilityReference Name="UnitAbilityGeneralHealth" Level="0"/>
+  </ItemDefinition>
+
+  <!-- Reskin Insignia Dust Tier 1: Drum of Gios -->
+  <ItemDefinition Name="ItemInsigniaDustTier1Soundtrack2"          SubCategory="SubCategoryInsignia">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">Soundtrack2Pack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaDustTier1" />
+    <Cost ResourceName="EmpireMoney" Instant="true">48</Cost>
+    <UnitAbilityReference Name="UnitAbilityGeneralHealth" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaDustTier2"                     SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra5</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaDustTier2" />
+    <Cost ResourceName="EmpireMoney" Instant="true">96</Cost>
+    <UnitAbilityReference Name="UnitAbilityGeneralHealth" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemInsigniaDustTier3"                     SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyEra6</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <Tags>NeverObsolete</Tags>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaDustTier3" />
+    <Cost ResourceName="EmpireMoney" Instant="true">192</Cost>
+    <UnitAbilityReference Name="UnitAbilityGeneralHealth" Level="2"/>
+  </ItemDefinition>
+
+  <!--Dust-->
+  <!--Detection-->
+  <ItemDefinition Name="ItemInsigniaDustTier1ReplicantsPack"       SubCategory="SubCategoryInsignia">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyMapActionPillage</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaDustTier1ReplicantsPack</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialDust" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaDustTier1ReplicantsPack" />
+    <Cost ResourceName="EmpireMoney" Instant="true">48</Cost>
+    <UnitAbilityReference Name="UnitAbilityDetection"/>
+  </ItemDefinition>
+
+
+
+  <!-- #######     BRACELET    ####### -->
+
+  <!--Strategic1-->
+  <ItemDefinition Name="ItemBraceletStrategic1Tier1"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic1Tier1" />
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon) </CustomCost>
+    <UnitAbilityReference Name="UnitAbilityMinorFactionSlayer" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic1Tier2"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic1Tier2" />
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityMinorFactionSlayer" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic1Tier3"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic1Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic1Tier3" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityMinorFactionSlayer" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic2-->
+  <ItemDefinition Name="ItemBraceletStrategic2Tier1"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic2Tier1" />
+    <UnitAbilityReference Name="UnitAbilityLastResort" Level="0"/>
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic2Tier2"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic2Tier2" />
+    <UnitAbilityReference Name="UnitAbilityLastResort" Level="1"/>
+    <Cost ResourceName="Production">20</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic2Tier3"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryCommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic2Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic2Tier3" />
+    <UnitAbilityReference Name="UnitAbilityLastResort" Level="2"/>
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+  </ItemDefinition>
+
+  <!--Strategic3-->
+  <ItemDefinition Name="ItemBraceletStrategic3Tier1"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic3Tier1" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityFastLearner" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic3Tier2"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic3Tier2" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityFastLearner" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic3Tier3"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic3Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic3Tier3" />
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityFastLearner" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic4-->
+  <ItemDefinition Name="ItemBraceletStrategic4Tier1"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic4Tier1" />
+    <Cost ResourceName="Production">30</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">6 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityMoraleBonus" Level="0"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic4Tier2"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic4Tier2" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityMoraleBonus" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic4Tier3"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic4Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic4Tier3" />
+    <Cost ResourceName="Production">70</Cost>
+    <CustomCost ResourceName="Strategic4" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityMoraleBonus" Level="2"/>
+  </ItemDefinition>
+
+  <!--Strategic5-->
+  <ItemDefinition Name="ItemBraceletStrategic5Tier1"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic5Tier1" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityDisease" Level="0"/>
+    <UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic5Tier2"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic5Tier2" />
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityDisease" Level="1"/>
+    <UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic5Tier3"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic5Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic5Tier3" />
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic5" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityDisease" Level="2" />
+    <UnitAbilityReference Name="UnitAbilityDiseaseImmunity"/>
+  </ItemDefinition>
+
+  <!--Strategic6-->
+  <ItemDefinition Name="ItemBraceletStrategic6Tier1"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic6Tier1" />
+    <Cost ResourceName="Production">50</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityLifeDrain" Level="1"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic6Tier2"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic6Tier2" />
+    <Cost ResourceName="Production">80</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityLifeDrain" Level="2"/>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemBraceletStrategic6Tier3"               SubCategory="SubCategoryBracelet">
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryRareTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesBraceletStrategic6Tier3</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesBraceletStrategic6Tier3" />
+    <Cost ResourceName="Production">110</Cost>
+    <CustomCost ResourceName="Strategic6" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityLifeDrain" Level="3"/>
+  </ItemDefinition>
+
+
+
+  <!-- ################################################ -->
+  <!-- ######          SHADOWS EXPANSION         ###### -->
+  <!-- ################################################ -->
+
+  <!-- Scope -->
+  <ItemDefinition Name="ItemScopeStrategic3Tier1"                  SubCategory="SubCategoryScope">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier1"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesScopeStrategic3Tier1" />
+    <CustomCost ResourceName="Strategic3" Instant="true">12 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemScopeStrategic3Tier2"                  SubCategory="SubCategoryScope">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier2"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesScopeStrategic3Tier2" />
+    <CustomCost ResourceName="Strategic3" Instant="true">24 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemScopeStrategic3Tier3"                  SubCategory="SubCategoryScope">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyAccessoryUncommonTier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier1</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier2</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesScopeStrategic3Tier3</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBaseTier3"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemAttributesScopeStrategic3Tier3" />
+    <CustomCost ResourceName="Strategic3" Instant="true">48 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+
+
+  <!-- ################################################ -->
+  <!-- ######         SHIFTERS EXPANSION         ###### -->
+  <!-- ################################################ -->
+
+  <!-- Tome (Governor Hero) -->
+  <ItemDefinition Name="ItemTomeOrb"                               SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyOrbUnlock14</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeOrb</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialOrb" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeOrb" />
+    <CustomCost ResourceName="Orb" Instant="true">8 * (1 - $Property(ClassCity:UnitOrbCostReduction))</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityCityDamageBoost"/>
+  </ItemDefinition>
+
+  <!-- Insignia (General Hero) -->
+  <ItemDefinition Name="ItemInsigniaOrb"                           SubCategory="SubCategoryInsignia">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyOrbUnlock14</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesInsigniaOrb</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialOrb" />
+    <SimulationDescriptorReference Name="ItemAttributesInsigniaOrb" />
+    <CustomCost ResourceName="Orb" Instant="true">5 * (1 - $Property(ClassCity:UnitOrbCostReduction))</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityAurigaAffinity" Level="2"/>
+  </ItemDefinition>
+
+  <!-- Ring -->
+  <ItemDefinition Name="ItemRingOrb"                               SubCategory="SubCategoryRing">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyOrbUnlock14</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesRingOrb</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialOrb" />
+    <SimulationDescriptorReference Name="ItemAttributesRingOrb" />
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Orb" Instant="true">3 * (1 - $Property(ClassCity:UnitOrbCostReduction))</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityIceWalker"/>
+  </ItemDefinition>
+
+  <!-- Talisman -->
+  <ItemDefinition Name="ItemTalismanOrb"                           SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologyOrbUnlock14</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanOrb</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialOrb" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanOrb" />
+    <Cost ResourceName="Production">10</Cost>
+    <CustomCost ResourceName="Orb" Instant="true">4 * (1 - $Property(ClassCity:UnitOrbCostReduction))</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityAttritionDamageDeflector"/>
+  </ItemDefinition>
+
+
+
+  <!-- ################################################ -->
+  <!-- ######           NAVAL EXPANSION          ###### -->
+  <!-- ################################################ -->
+
+  <!-- Mark of the Damned -->
+  <ItemDefinition Name="ItemMarkOfTheDamnedStrategic14"            SubCategory="SubCategoryMarkOfTheDamned">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologySeaDemons9</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesMarkOfTheDamnedStrategic13</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitFactionTypeMinorFaction</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic14" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic1" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesMarkOfTheDamnedStrategic13" />
+    <UnitAbilityReference Name="UnitAbilityMarkOfTheDamned"/>
+    <UnitAbilityReference Name="UnitAbilityUnsalable"/>
+    <UnitAbilityReference Name="UnitAbilityImprovedMovement" Level="0"/>
+    <CostReductionReference Name="MarkOfTheDamned"/>
+    <Cost ResourceName="EmpireMoney">30</Cost>
+    <CustomCost ResourceName="Strategic1" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <CustomCost ResourceName="Strategic4" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemMarkOfTheDamnedStrategic25"            SubCategory="SubCategoryMarkOfTheDamned">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologySeaDemons9</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesMarkOfTheDamnedStrategic25</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitFactionTypeMinorFaction</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic25" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic2" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic5" />
+    <SimulationDescriptorReference Name="ItemAttributesMarkOfTheDamnedStrategic25" />
+    <UnitAbilityReference Name="UnitAbilityMarkOfTheDamned"/>
+    <UnitAbilityReference Name="UnitAbilityUnsalable"/>
+    <UnitAbilityReference Name="UnitAbilityImprovedVision" Level="0"/>
+    <CostReductionReference Name="MarkOfTheDamned"/>
+    <Cost ResourceName="EmpireMoney">30</Cost>
+    <CustomCost ResourceName="Strategic2" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryCommon)</CustomCost>
+    <CustomCost ResourceName="Strategic5" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+  <ItemDefinition Name="ItemMarkOfTheDamnedStrategic36"            SubCategory="SubCategoryMarkOfTheDamned">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard,Technology">../ClassEmpire/ClassResearch,TechnologySeaDemons9</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesMarkOfTheDamnedStrategic36</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitFactionTypeMinorFaction</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic36" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic3" />
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesMarkOfTheDamnedStrategic36" />
+    <UnitAbilityReference Name="UnitAbilityMarkOfTheDamned"/>
+    <UnitAbilityReference Name="UnitAbilityUnsalable"/>
+    <UnitAbilityReference Name="UnitAbilityImprovedMovement" Level="0"/>
+    <UnitAbilityReference Name="UnitAbilityImprovedVision" Level="0"/>
+    <CostReductionReference Name="MarkOfTheDamned"/>
+    <Cost ResourceName="EmpireMoney">60</Cost>
+    <CustomCost ResourceName="Strategic3" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <CustomCost ResourceName="Strategic6" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryRare)</CustomCost>
+  </ItemDefinition>
+
+
+  <!-- ################################################ -->
+  <!-- ######         FLAMES EXPANSION           ###### -->
+  <!-- ################################################ -->
+
+  <!-- Tome of food(Governor Hero) -->
+  <ItemDefinition Name="ItemTomeVolcanicFood"                               SubCategory="SubCategoryTome">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology">TechnologyVolcanicItems3</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTomeVolcanic</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic4" />
+    <SimulationDescriptorReference Name="ItemAttributesTomeVolcanic" />
+    <CustomCost ResourceName="Strategic4" Instant="true">10 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+  </ItemDefinition>
+
+  <!-- pendant of regen -->
+  <ItemDefinition Name="ItemTalismanVolcanicRegen"                               SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology">TechnologyVolcanicItems2</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesTalismanVolcanic</PathPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="false">../ClassUnit,UnitHero</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemAttributesTalismanVolcanic" />
+    <CustomCost ResourceName="Strategic6" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Name="UnitAbilityArmyVolcanicRegen" Level="0"/>
+  </ItemDefinition>
+
+
+  <!-- ################################################ -->
+  <!-- ######         MIMICS EXPANSION           ###### -->
+  <!-- ################################################ -->
+
+  <!-- Kaiju Killer lvl 1 -->
+  <ItemDefinition Name="ItemTalismanKaijuKiller"                               SubCategory="SubCategoryTalisman">
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology">TechnologyKaijuKiller</TechnologyPrerequisite>
+    <PathPrerequisite Flags="Prerequisite,Discard" Inverted="true">../ClassUnit/ItemAttributesKaijuKiller</PathPrerequisite>
+    <Tags>NeverObsolete</Tags>
+    <ConstructibleElementReferenceToInheritFrom Name="ItemAccessoryBase"/>
+    <SimulationDescriptorReference Name="ItemMaterialStrategic6" />
+    <SimulationDescriptorReference Name="ItemTier4" />
+    <SimulationDescriptorReference Name="ItemAttributesKaijuKiller" />
+    <CustomCost ResourceName="Strategic6" Instant="true">3 * $Property(../EmpireTypeMajor:ItemStrategicMasteryCostFactor) * $Property(../EmpireTypeMajor:ReductionCostFromMasteryUncommon)</CustomCost>
+    <UnitAbilityReference Level="1" Name="UnitAbilityKaijuSlayer"/>
+  </ItemDefinition>
+
+</Datatable>

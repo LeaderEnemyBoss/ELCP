@@ -25,7 +25,7 @@
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="8"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="28"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="21"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="6"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="30"/>
       <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="132"/>
     </SimulationModifierDescriptors>
@@ -722,6 +722,7 @@
   </SimulationDescriptor>
 
 
+
   <SimulationDescriptor Name="UnitTypeFlamesGolem"             Type="UnitType">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="5"/>
@@ -777,6 +778,8 @@
       <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="60"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+
+
 
   <!-- ########################################## -->
   <!-- ######            MIMICS            ###### -->
@@ -837,6 +840,8 @@
       <SimulationModifierDescriptor TargetProperty="AccessoriesSlotCount" Operation="Addition" Value="1" Path="UnitHero"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+
+
 
   <!-- ########################################## -->
   <!-- ######           TUTORIAL           ###### -->
@@ -929,12 +934,11 @@
 
   <SimulationDescriptor Name="UnitTypeColossusWater"           Type="UnitType">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="80"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="100"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="20"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="48"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="30"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="700"/>
-	  <!--<SimulationModifierDescriptor       TargetProperty="MaximumMovementOnLand"      Operation="Subtraction" Value="1"/>-->
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="100"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="900"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1076,7 +1080,7 @@
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="8"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="20"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="2"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="18"/>
       <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="108"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -1221,7 +1225,7 @@
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="16"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="30"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="42"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="10"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="24"/>
       <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="92"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -1236,32 +1240,45 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
+  <SimulationDescriptor Name="UnitTypeDawnShuaZujajun"         Type="UnitType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="76"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
   <!-- ########################################## -->
   <!-- ######            KAIJUS            ###### -->
   <!-- ########################################## -->
 
-  <SimulationDescriptor Name="UnitTypeKaijusMilitia"        Type="UnitType">
+  <SimulationDescriptor Name="UnitTypeKaijusMilitia"           Type="UnitType">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="40"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="25"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="35"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="35"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="120"/>
-    </SimulationModifierDescriptors>
-  </SimulationDescriptor>
-
-  <SimulationDescriptor Name="UnitTypeKaijusUnit"        Type="UnitType">
-    <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="40"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="24"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="40"/>
-      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="30"/>
       <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="100"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-  <SimulationDescriptor Name="UnitTypeKaijus"        Type="UnitType"/>
 
-  <SimulationDescriptor Name="UnitTypeKaijuA"        Type="UnitType">
+  <SimulationDescriptor Name="UnitTypeKaijusUnit"              Type="UnitType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="100"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitTypeKaijus"                  Type="UnitType"/>
+
+  <SimulationDescriptor Name="UnitTypeKaijuA"                  Type="UnitType">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="80"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="60"/>
@@ -1272,7 +1289,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="UnitTypeKaijuB"        Type="UnitType">
+  <SimulationDescriptor Name="UnitTypeKaijuB"                  Type="UnitType">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="90"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="80"/>
@@ -1283,7 +1300,7 @@
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-  <SimulationDescriptor Name="UnitTypeKaijuC"        Type="UnitType">
+  <SimulationDescriptor Name="UnitTypeKaijuC"                  Type="UnitType">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="100"/>
       <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="60"/>
@@ -1293,5 +1310,5 @@
       <SimulationModifierDescriptor       TargetProperty="MilitaryUpkeep" Operation="Multiplication" Value="10" Priority="2"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-  
+
 </Datatable>

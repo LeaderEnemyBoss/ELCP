@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- This descriptor is manually added by code to districts that belong to a creeping node for fidsi extraction -->
+  <SimulationDescriptor Name="CreepingNodeDistrict"                           Type="CreepingNodeExclusive">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeDistrictFood" Operation ="Addition" Value="$(DistrictFood)" Path="./ClassCreepingNode"/>
+      <SimulationModifierDescriptor TargetProperty="NodeDistrictIndustry" Operation ="Addition" Value="$(DistrictIndustry)" Path="./ClassCreepingNode"/>
+      <SimulationModifierDescriptor TargetProperty="NodeDistrictDust" Operation ="Addition" Value="$(DistrictDust)" Path="./ClassCreepingNode"/>
+      <SimulationModifierDescriptor TargetProperty="NodeDistrictScience" Operation ="Addition" Value="$(DistrictScience)" Path="./ClassCreepingNode"/>
+      <SimulationModifierDescriptor TargetProperty="NodeDistrictCityPoint" Operation ="Addition" Value="$(DistrictCityPoint)" Path="./ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- This descriptor is manually added by code to points of intereset that are occupied by a creeping node -->
+  <SimulationDescriptor Name="InfectedPointOfInterest">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- This descriptor is manually added by code to villages where the construction of a creeping node is complete-->
+  <SimulationDescriptor Name="VillageInfectionComplete">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="NodeExtractorFoodCost"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesFoodUpkeep"     Operation="Addition"     Value="$(NodeExtractorCost)"     Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="NodeRuinsFoodCost"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesFoodUpkeep"     Operation="Addition"     Value="$(NodeOvergrownRuinCost)"     Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="NodeVillageFoodCost"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesFoodUpkeep"     Operation="Addition"     Value="$(NodeOvergrownVillageCost)"     Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="NodeTower0FoodCost"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesFoodUpkeep"     Operation="Addition"     Value="$(NodeWatchtowerCost)"     Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="NodeTower1FoodCost"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesFoodUpkeep"     Operation="Addition"     Value="$(NodeWatchtowerCost)"     Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="NodeTower2FoodCost"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesFoodUpkeep"     Operation="Addition"     Value="$(NodeWatchtowerCost)"     Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="CreepingVision0"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="1"    Operation="Addition"   Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="CreepingVision1"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="2"    Operation="Addition"   Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CreepingVision2"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="3"    Operation="Addition"   Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CreepingVision3"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="5"    Operation="Addition"   Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CreepingVision4"    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="VisionRange"              Value="7"    Operation="Addition"   Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ExtractorsUpkeep" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesUpkeep"          Operation="Addition"   Value="0" Path="./ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="RuinsUpkeep" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesUpkeep"          Operation="Addition"   Value="0" Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="VillagesUpkeep" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesUpkeep"          Operation="Addition"   Value="0" Path="./ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Tower0Upkeep" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesUpkeep"          Operation="Addition"   Value="0" Path="./ClassCity"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.15" Operation="Addition"   Path="ClassCreepingNode"/>
+      <SimulationModifierDescriptor TargetProperty="VisionHeight"             Value="100"  Operation="Addition"   Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Tower1Upkeep" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesUpkeep"          Operation="Addition"   Value="0" Path="./ClassCity"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.20" Operation="Addition"   Path="ClassCreepingNode"/>
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier"  Value="0.20" Operation="Addition"   Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="Tower2Upkeep" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNodesUpkeep"          Operation="Addition"   Value="0" Path="./ClassCity"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="OwnedUnitRegenModifier"   Value="0.25" Operation="Addition"   Path="ClassCreepingNode"/>
+      <SimulationModifierDescriptor TargetProperty="AlliedUnitRegenModifier"  Value="0.25" Operation="Addition"   Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ScienceBoost1" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Addition"   Value="2"  Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ScienceBoost2" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CityScience"              Operation="Addition"   Value="4"  Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="HalfFIDSI" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FIDSIMultiplier"              Operation="Addition"   Value="0.5"  Path="ClassCreepingNode"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="FullFIDSI" Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="FIDSIMultiplier"              Operation="Addition"   Value="1"  Path="ClassCreepingNode"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- ##################################################### -->
+  <!-- ##### CREEPING NODE RESOURCE DEPOSIT EXTRACTORS ##### -->
+  <!-- ##################################################### -->
+  
+  <!-- Strategic1 -->
+  <SimulationDescriptor Name="CreepingExtractor_Strategic1"                    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic1"             Value="$(NodeResourceGain)"        Operation="Addition"    TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic1"             Value="$(NodeResourceBonus)"       Operation="Addition"    TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic1"             Value="$(NodeNetStrategic1)"           Operation="Addition"     Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strategic2 -->
+  <SimulationDescriptor Name="CreepingExtractor_Strategic2"                    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                        Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic2"             Value="$(NodeResourceGain)"        Operation="Addition"    TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic2"             Value="$(NodeResourceBonus)"       Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetStrategic2"             Value="$(NodeNetStrategic2)"           Operation="Addition"     Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strategic3 -->
+  <SimulationDescriptor Name="CreepingExtractor_Strategic3"                    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic3"             Value="$(NodeResourceGain)"        Operation="Addition"    TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic3"             Value="$(NodeResourceBonus)"       Operation="Addition"    TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic3"             Value="$(NodeNetStrategic3)"           Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strategic4 -->
+  <SimulationDescriptor Name="CreepingExtractor_Strategic4"                    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                        Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic4"             Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic4"             Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic4"             Value="$(NodeNetStrategic4)"           Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strategic5 -->
+  <SimulationDescriptor Name="CreepingExtractor_Strategic5"                    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                        Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic5"             Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic5"             Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NetStrategic5"             Value="$(NodeNetStrategic5)"           Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strategic6 -->
+  <SimulationDescriptor Name="CreepingExtractor_Strategic6"                    Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                        Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic6"             Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetStrategic6"             Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetStrategic6"             Value="$(NodeNetStrategic6)"           Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury1 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury1"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                        Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury1"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury1"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury1"                Value="$(NodeNetLuxury1)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury2 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury2"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                          Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury2"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury2"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury2"                Value="$(NodeNetLuxury2)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury3 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury3"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury3"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury3"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury3"                Value="$(NodeNetLuxury3)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury4 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury4"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury4"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury4"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury4"                Value="$(NodeNetLuxury4)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury5 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury5"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury5"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury5"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury5"                Value="$(NodeNetLuxury5)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury6 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury6"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury6"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury6"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury6"                Value="$(NodeNetLuxury6)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury7 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury7"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury7"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury7"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury7"                Value="$(NodeNetLuxury7)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury8 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury8"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury8"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury8"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury8"                Value="$(NodeNetLuxury8)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury9 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury9"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                          Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury9"                Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury9"                Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury9"                Value="$(NodeNetLuxury9)"              Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury10 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury10"                      Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                         Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury10"               Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury10"               Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury10"               Value="$(NodeNetLuxury10)"             Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury11 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury11"                      Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                          Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury11"               Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury11"               Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury11"               Value="$(NodeNetLuxury11)"             Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury12 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury12"                      Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                          Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury12"               Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury12"               Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury12"               Value="$(NodeNetLuxury12)"             Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury13 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury13"                      Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                          Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury13"               Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury13"               Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury13"               Value="$(NodeNetLuxury13)"             Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury14 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury14"                      Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                          Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury14"               Value="$(NodeResourceGain)"        Operation="Addition"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury14"               Value="$(NodeResourceBonus)"       Operation="Addition"  TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury14"               Value="$(NodeNetLuxury14)"             Operation="Addition"     Path="./ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury15 -->
+  <SimulationDescriptor Name="CreepingExtractor_Luxury15"                      Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="NodeResourceGain"              Value="1"                          Operation="Addition"    TooltipHidden="true"/>
+      
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury15"               Value="$(NodeResourceGain)"        Operation="Addition" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NodeNetLuxury15"               Value="$(NodeResourceBonus)"       Operation="Addition" TooltipHidden="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="NetLuxury15"               Value="$(NodeNetLuxury15)"             Operation="Addition"     Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  
+  
+  <!-- ##################################### -->
+  <!-- ##### CREEPING NODE FAST TRAVEL ##### -->
+  <!-- ##################################### -->
+
+  <SimulationDescriptor Name="EntryTravelNodeDescriptor"                       Type="CreepingNodeImprovement">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="ExitTravelNodeDescriptor"                         Type="CreepingNodeImprovement">
+  </SimulationDescriptor>
+
+  <!-- ##################################### -->
+  <!-- ##### CREEPING NODE DAMAGEABLE ##### -->
+  <!-- ##################################### -->
+
+  <SimulationDescriptor Name="DamageableNodeDescriptor"                       Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="RetaliationDamage"        Value="60"        Operation="Addition"/>  
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- This descriptor is added when start Dismantle and removed when stop or finish -->
+  <SimulationDescriptor Name="DismantelingStatus">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+  <!-- ##################################### -->
+  <!-- ##### CREEPING NODE COUNTERS ##### -->
+  <!-- ##################################### -->
+  <SimulationDescriptor Name="TowerExtraExploit"                         Type="CreepingNodeImprovement">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CreepingNode_StrategicExtractor_Counter"        Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNode_StrategicExtractor"  Value="1"   Operation="Addition"  Path="!PointOfInterestStatusPillaged/../EmpireTypeMajor"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NumberOfFinishedCreepingNodes"  Value="1"   Operation="Addition"  Path="./ClassCity,MainCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CreepingNode_LuxuryExtractor_Counter"        Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNode_LuxuryExtractor"  Value="1"   Operation="Addition"  Path="!PointOfInterestStatusPillaged/../EmpireTypeMajor"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NumberOfFinishedCreepingNodes"  Value="1"   Operation="Addition"  Path="./ClassCity,MainCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CreepingNode_Ruin_Counter"        Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNode_Ruin"  Value="1"   Operation="Addition"  Path="!PointOfInterestStatusPillaged/../EmpireTypeMajor"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NumberOfFinishedCreepingNodes"  Value="1"   Operation="Addition"  Path="./ClassCity,MainCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CreepingNode_Foundation_Counter"        Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNode_Foundation"  Value="1"   Operation="Addition"  Path="!PointOfInterestStatusPillaged/../EmpireTypeMajor"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NumberOfFinishedCreepingNodes"  Value="1"   Operation="Addition"  Path="./ClassCity,MainCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="CreepingNode_Village_Counter"        Type="CreepingNodeImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="CreepingNode_Village"  Value="1"   Operation="Addition"  Path="!PointOfInterestStatusPillaged/../EmpireTypeMajor"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NumberOfFinishedCreepingNodes"  Value="1"   Operation="Addition"  Path="./ClassCity,MainCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+</Datatable>

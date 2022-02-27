@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="DistrictTypeExploitation"                     Type="DistrictType">
+    <SimulationModifierDescriptors>
+      <!--
+      <SimulationModifierDescriptor TargetProperty="Food" Operation="Multiplication" Value="1"/>
+      -->
+      <!--<SimulationModifierDescriptor TargetProperty="VisionRange" Operation="Addition" Value="1"/>-->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictTypeCenter"                           Type="DistrictType">
+    <SimulationModifierDescriptors>
+      <!-- City center shortcuts -->
+      <SimulationModifierDescriptor TargetProperty="CityCenterLevel" Operation="Force" Value="$(Level)" Path="./ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="CityCenterLevelDisplayed" Operation="Force" Value="$(LevelDistrictDisplayed)" Path="./ClassCity"/>
+
+      <SimulationModifierDescriptor       TargetProperty="DistrictFood"             Operation="Addition"    Value="-1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictDust"             Operation="Addition"    Value="1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictScience"          Operation="Addition"    Value="1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictCityPoint"        Operation="Addition"    Value="1"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictDust"             Operation="Addition"    Left="2"    BinaryOperation="Multiplication" Right="$(Level)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictScience"          Operation="Addition"    Left="2"    BinaryOperation="Multiplication" Right="$(Level)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"        Operation="Addition"    Left="2"    BinaryOperation="Multiplication" Right="$(Level)" />
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"  Operation="Addition"    Left="20"   BinaryOperation="Multiplication" Right="$(Level)" Path="./ClassCity" IsBindOnSource="true"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"    Left="15"   BinaryOperation="Multiplication" Right="$(Level)" />
+
+      <SimulationModifierDescriptor       TargetProperty="NumberOfExtensionInCity"  Operation="Addition"    Value="1" Path="./ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictTypeExtension"                        Type="DistrictType">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovementExtension"                 Type="DistrictImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="CityApproval"             Operation="Subtraction" Value="10"  />
+
+      <SimulationModifierDescriptor       TargetProperty="DistrictFood"             Operation="Addition"    Value="-1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictDust"             Operation="Addition"    Value="1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictScience"          Operation="Addition"    Value="1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictCityPoint"        Operation="Addition"    Value="1"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictDust"             Operation="Addition"    Left="2"    BinaryOperation="Multiplication" Right="$(Level)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictScience"          Operation="Addition"    Left="2"    BinaryOperation="Multiplication" Right="$(Level)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"        Operation="Addition"    Left="2"    BinaryOperation="Multiplication" Right="$(Level)" />
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"  Operation="Addition"    Left="20"   BinaryOperation="Multiplication" Right="$(Level)" Path="./ClassCity" IsBindOnSource="true"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"    Left="15"   BinaryOperation="Multiplication" Right="$(Level)" />
+
+      <SimulationModifierDescriptor       TargetProperty="NumberOfExtensionInCity"  Operation="Addition"    Value="1" Path="./ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor       TargetProperty="NumberOfDistrictsInCity"  Operation="Addition"    Value="1" Path="./ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor       TargetProperty="NumberOfBoroughsInCity"   Operation="Addition"    Value="1" Path="./ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictTypeImprovement"                      Type="DistrictType">
+    <!--
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="DistrictFood"             Operation="Addition"    Value="1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictDust"             Operation="Addition"    Value="1"/>
+      <SimulationModifierDescriptor       TargetProperty="CityApproval"             Operation="Addition"    Value="10"  Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+    -->
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovement1Availability"             Type="DistrictType" />
+
+  <SimulationDescriptor Name="DistrictImprovement1NecrophageAvailability"   Type="DistrictType" />
+
+  <SimulationDescriptor Name="DistrictImprovementDocks"                     Type="DistrictImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="DistrictFood"             Operation="Addition"    Value="1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictDust"             Operation="Addition"    Value="1"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictIndustry"         Operation="Addition"    Value="5"   Path="./ClassCity/TerrainTagWater"/>
+      <SimulationModifierDescriptor       TargetProperty="CityApproval"             Operation="Addition"    Value="10"  Path="./ClassCity"/>
+
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictFood"             Operation="Addition"    Left="2"    BinaryOperation="Multiplication" Right="$(Level)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictDust"             Operation="Addition"    Left="2"    BinaryOperation="Multiplication" Right="$(Level)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictIndustry"         Operation="Addition"    Left="10"   BinaryOperation="Multiplication" Right="$(Level)" />
+
+      <SimulationModifierDescriptor       TargetProperty="NumberOfExtensionInCity"  Operation="Addition"    Value="1" Path="./ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictType1Mimics"                      Type="DistrictType">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="OnlyOneConstructionPerCity"                   Type="DistrictImprovementLimitation">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="OnlyOnePerCity"                               Type="DistrictImprovementLimitation">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DocksLocation"                                Type="DistrictImprovementLimitation">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="OceanRoadCreation"                            Type="DistrictImprovementLimitation">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="EmbarkDisembarkBonus"                         Type="DistrictImprovementLimitation">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovementExtractingCapacity"        Type="DistrictImprovement">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######           WONDERS            ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="DistrictImprovementWonder"                    Type="DistrictImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor     TargetProperty="NumberOfExtensionInCity"  Operation="Addition"  Value="1" Path="./ClassCity"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor     TargetProperty="NumberOfDistrictsInCity"  Operation="Addition"  Value="1" Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovementWonder1"                   Type="DistrictImprovementWonder">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval"            Operation="Addition"  Left="20"      Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementWonder1" IsBindOnSource="true"/>
+      <SimulationModifierDescriptor       TargetProperty="EmpireMoney"             Operation="Percent"   Value="0.2"    Path="../ClassEmpire,ApprovalStatusTagEmpireHappy"/>
+      <SimulationModifierDescriptor       TargetProperty="EmpireResearch"          Operation="Percent"   Value="0.2"    Path="../ClassEmpire,ApprovalStatusTagEmpireHappy"/>
+      <SimulationModifierDescriptor       TargetProperty="TechnologyCostReductionFromEmpirePlan"          Operation="Percent"   Value="0.2"    Path="../ClassEmpire,ApprovalStatusTagEmpireHappy"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovementWonder2"                   Type="DistrictImprovementWonder">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictIndustry"         Operation="Addition"  Left="25"      Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementWonder2" IsBindOnSource="true"/>
+      <SimulationModifierDescriptor       TargetProperty="BoroughCostFactor"        Operation="Percent"   Value="-0.2"   Path="../ClassEmpire"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovementWonder3"                   Type="DistrictImprovementWonder">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictScience"           Operation="Addition"  Left="25"     Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementWonder3" IsBindOnSource="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era1ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra2" TooltipHidden="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era2ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra3" TooltipHidden="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era3ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra4" TooltipHidden="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era4ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra5" TooltipHidden="true"/>
+      <SimulationModifierDescriptor      TargetProperty="Era5ReductionCost"          Operation="Percent"   Value="0.2"   Path="../ClassEmpire/ClassResearch,TechnologyEra6" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovementWonder4"                   Type="DistrictImprovementWonder">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"            Operation="Addition"  Left="50"      Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementWonder4" IsBindOnSource="true"/>
+      <SimulationModifierDescriptor TargetProperty="DiplomaticTermsFactor"              Operation="Subtraction"     Value="0.30"   Path="../EmpireTypeMajor" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovementWonder5"                   Type="DistrictImprovementWonder">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictDust"            Operation="Addition"  Left="100"      Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementWonder5" IsBindOnSource="true"/>
+      <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                Operation="Percent"   Value="-0.50"  Path="../ClassEmpire/Garrison"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######     WINTER SHIFTERS PACK     ###### -->
+  <!-- ########################################## -->
+
+  <SimulationDescriptor Name="StrategicResourceDepositRequirements"         Type="DistrictImprovementOrbUnlock" />
+
+  <SimulationDescriptor Name="LuxuryResourceDepositRequirements"            Type="DistrictImprovementOrbUnlock" />
+
+  <SimulationDescriptor Name="AnomalyRequirements"                          Type="DistrictImprovementOrbUnlock" />
+
+  <SimulationDescriptor Name="InWinterRequirements"                         Type="DistrictImprovementOrbUnlock" />
+
+  <!-- Altar of Auriga -->
+  <SimulationDescriptor Name="DistrictImprovementAltarOfAuriga"             Type="DistrictImprovementAltarOfAuriga">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor   TargetProperty="CityApproval"             Operation="Addition"  Left="5"  Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementAltarOfAuriga" IsBindOnSource="true"/>
+      <BinarySimulationModifierDescriptor   TargetProperty="DistrictFood"             Operation="Addition"  Left="3"  Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementAltarOfAuriga" IsBindOnSource="true"/>
+      <BinarySimulationModifierDescriptor   TargetProperty="DistrictCityPoint"        Operation="Addition"  Left="2"  Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementAltarOfAuriga" IsBindOnSource="true"/>
+
+      <SimulationModifierDescriptor         TargetProperty="NumberOfExtensionInCity"  Operation="Addition"  Value="1" Path="./ClassCity"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor         TargetProperty="NumberOfDistrictsInCity"  Operation="Addition"  Value="1" Path="./ClassCity"  TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="AltarOfAurigaUnlocking">
+    <SimulationModifierDescriptors>
+	  <!-- Tooltip Override -->
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictImprovementOrbUnlock"                 Type="DistrictImprovement">
+    <SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Anomaly intensifier -->
+  <SimulationDescriptor Name="DistrictImprovementOrbUnlock6"                Type="DistrictImprovementOrbUnlock">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="DistrictFood"           Operation="Multiplication"  Value="2" />
+      <SimulationModifierDescriptor       TargetProperty="DistrictDust"           Operation="Multiplication"  Value="2" />
+      <SimulationModifierDescriptor       TargetProperty="DistrictScience"        Operation="Multiplication"  Value="2" />
+      <SimulationModifierDescriptor       TargetProperty="DistrictCityPoint"      Operation="Multiplication"  Value="2" />
+      <SimulationModifierDescriptor       TargetProperty="DistrictIndustry"       Operation="Multiplication"  Value="2" />
+      <SimulationModifierDescriptor       TargetProperty="CityApproval"           Operation="Multiplication"  Value="2" />
+
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictFood"           Operation="Addition"        Left="5"  BinaryOperation="Multiplication" Right="$(LevelDistrictDisplayed)"  Priority="2"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictFood"           Operation="Addition"        Value="3" Path="./ClassCity/!DistrictImprovementOrbUnlock6,TerrainTagAnomaly" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Strategic intensifier -->
+  <SimulationDescriptor Name="DistrictImprovementOrbUnlock7"                Type="DistrictImprovementOrbUnlock">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictScience"           Operation="Addition"       Left="10"  BinaryOperation="Multiplication" Right="$(LevelDistrictDisplayed)"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictScience"           Operation="Addition"       Value="10" Path="./ClassCity/!DistrictImprovementOrbUnlock7,PointOfInterestBonusStrategic"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Luxury intensifier -->
+  <SimulationDescriptor Name="DistrictImprovementOrbUnlock8"                Type="DistrictImprovementOrbUnlock">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictDust"             Operation="Addition"       Left="10"  BinaryOperation="Multiplication" Right="$(LevelDistrictDisplayed)"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictDust"             Operation="Addition"       Value="10" Path="./ClassCity/!DistrictImprovementOrbUnlock8,PointOfInterestBonusLuxury"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Winter Borough -->
+  <SimulationDescriptor Name="DistrictImprovementOrbUnlock9"                Type="DistrictImprovementOrbUnlock">
+    <SimulationModifierDescriptors>
+      <BinarySimulationModifierDescriptor       TargetProperty="DistrictFood"       Operation="Addition"    Left="2" BinaryOperation="Multiplication" Path="./ClassCity/ClassDistrict,#Winter" Right="$(LevelDistrictDisplayed)"/>
+      <BinarySimulationModifierDescriptor       TargetProperty="DistrictIndustry"   Operation="Addition"    Left="2" BinaryOperation="Multiplication" Path="./ClassCity/ClassDistrict,#Winter" Right="$(LevelDistrictDisplayed)"/>
+      <BinarySimulationModifierDescriptor       TargetProperty="DistrictDust"       Operation="Addition"    Left="1" BinaryOperation="Multiplication" Path="./ClassCity/ClassDistrict,#Winter" Right="$(LevelDistrictDisplayed)"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Winter Shifters 'Orb Architecture' -->
+  <SimulationDescriptor Name="DistrictImprovementOrbUnlock18WinterShifters" Type="DistrictImprovement">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="CityApproval"             Operation="Subtraction" Value="5"  />
+
+      <SimulationModifierDescriptor       TargetProperty="DistrictFood"             Operation="Addition"    Value="2"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictIndustry"         Operation="Addition"    Value="2"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictDust"             Operation="Addition"    Value="2"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictScience"          Operation="Addition"    Value="2"/>
+      <SimulationModifierDescriptor       TargetProperty="DistrictCityPoint"        Operation="Addition"    Value="2"/>
+
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictDust"             Operation="Addition"    Left="4"    BinaryOperation="Multiplication" Right="$(Level)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictScience"          Operation="Addition"    Left="4"    BinaryOperation="Multiplication" Right="$(Level)"/>
+      <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"        Operation="Addition"    Left="4"    BinaryOperation="Multiplication" Right="$(Level)"/>
+
+      <BinarySimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"  Operation="Addition"    Left="20"   BinaryOperation="Multiplication" Right="$(Level)" Path="./ClassCity" IsBindOnSource="true"/>
+      <BinarySimulationModifierDescriptor TargetProperty="CityApproval"             Operation="Addition"    Left="15"   BinaryOperation="Multiplication" Right="$(Level)" />
+
+      <SimulationModifierDescriptor       TargetProperty="NumberOfExtensionInCity"  Operation="Addition"    Value="1" Path="./ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor       TargetProperty="NumberOfDistrictsInCity"  Operation="Addition"    Value="1" Path="./ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor       TargetProperty="NumberOfBoroughsInCity"   Operation="Addition"    Value="1" Path="./ClassCity" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  
+  
+  
+  <!-- ########################################## -->
+  <!-- ######       SUMMER FLAMES PACK     ###### -->
+  <!-- ########################################## -->
+
+  <!-- Camp Center -->
+  <SimulationDescriptor Name="DistrictTypeCamp" Type="DistrictType">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="PopulationBonus"        Operation="Addition"  Value="1"    Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Camp Exploitation -->
+  <SimulationDescriptor Name="DistrictProxyCampExploitation" Type="DistrictProxyCamp">
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="DistrictExploitableResource"        Type="DistrictExploitableResource">
+  </SimulationDescriptor>
+
+</Datatable>

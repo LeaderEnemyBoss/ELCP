@@ -1351,7 +1351,7 @@ public class BattleSimulation : IDisposable
 				else
 				{
 					int range = (int)Math.Truncate((double)unit.GetPropertyValue(SimulationProperties.BattleRange));
-					if (this.CanAttackTarget(unit, unit.Target) && unit.GetPreferredPositionToAttackUnit(unit.Target.Unit) == WorldPosition.Invalid && !this.BlockingActiveReinforcementPosition(unit))
+					if (this.CanAttackTarget(unit, unit.Target) && unit.GetPreferredPositionToAttackUnit(unit.Target.Unit) == WorldPosition.Invalid)
 					{
 						this.ComputeAttack(unit);
 					}
@@ -2340,14 +2340,6 @@ public class BattleSimulation : IDisposable
 
 	public void EndBattle()
 	{
-		IGameService service = Services.GetService<IGameService>();
-		Diagnostics.Assert(service != null);
-		IEncounterRepositoryService service2 = service.Game.Services.GetService<IEncounterRepositoryService>();
-		Encounter encounter = null;
-		if (this.Encounter != null)
-		{
-			service2.TryGetValue(this.Encounter.EncounterGUID, out encounter);
-		}
 		for (int i = 0; i < this.battleSimulationArmies.Count; i++)
 		{
 			this.battleSimulationArmies[i].Contender.IsDead = this.battleSimulationArmies[i].IsDead;
@@ -2355,38 +2347,8 @@ public class BattleSimulation : IDisposable
 			{
 				BattleSimulationUnit battleSimulationUnit = this.battleSimulationArmies[i].Units[j];
 				battleSimulationUnit.PositionUpdate = (BattleSimulationUnit.PositionUpdateHandler)Delegate.Remove(battleSimulationUnit.PositionUpdate, new BattleSimulationUnit.PositionUpdateHandler(this.BattleSimulationUnit_PositionUpdateHandler));
-				if (battleSimulationUnit.IsBattleSimulated)
-				{
-					float propertyValue = battleSimulationUnit.GetPropertyValue(SimulationProperties.Armor);
-					float propertyValue2 = battleSimulationUnit.GetPropertyValue(SimulationProperties.MaximumArmor);
-					if (propertyValue2 > 0f)
-					{
-						if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-						{
-							Diagnostics.Log("ELCP Battlesimulation EndBattle() simulated for {0}/{3} with armor {1} of {2} {4}", new object[]
-							{
-								battleSimulationUnit.Unit.UnitDesign.LocalizedName,
-								propertyValue,
-								propertyValue2,
-								battleSimulationUnit.UnitGUID,
-								encounter == null
-							});
-						}
-						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.MaximumArmor, propertyValue2, false, null, false);
-						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Armor, propertyValue, false, null, false);
-						if (encounter != null && propertyValue < propertyValue2)
-						{
-							EncounterUnit encounterUnitByGUID = encounter.GetEncounterUnitByGUID(battleSimulationUnit.UnitGUID);
-							if (encounterUnitByGUID != null)
-							{
-								encounterUnitByGUID.IsOnBattlefield = true;
-							}
-						}
-					}
-				}
 			}
 		}
-		this.Encounter = null;
 	}
 
 	public float GetUnitsSimulationAverageData(byte group, StaticString propertyName)
@@ -2623,10 +2585,6 @@ public class BattleSimulation : IDisposable
 		{
 			throw new Exception("Contender deployment is null.");
 		}
-		if (encounter.OrderCreateEncounter.IsAutomaticBattle)
-		{
-			this.Encounter = encounter;
-		}
 		this.battleZone.AddContenderDeployment(contender.Deployment);
 		this.pathfindingWorldContextByContenderGroup[0].SearchArea = this.battleZone;
 		this.pathfindingWorldContextByContenderGroup[1].SearchArea = this.battleZone;
@@ -2671,7 +2629,6 @@ public class BattleSimulation : IDisposable
 		Diagnostics.Assert(contender.Garrison != null && contender.Garrison.Units != null);
 		List<BattleSimulationUnit> list = new List<BattleSimulationUnit>();
 		Unit unit;
-		Predicate<UnitDeployment> <>9__0;
 		foreach (Unit unit2 in contender.Garrison.Units)
 		{
 			unit = unit2;
@@ -2689,20 +2646,15 @@ public class BattleSimulation : IDisposable
 			{
 				battleSimulationUnit.IsBattleSimulated = true;
 			}
+			IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
 			SimulationDescriptor descriptor;
-			if (Databases.GetDatabase<SimulationDescriptor>(false).TryGetValue("ClassBattleUnit", out descriptor))
+			if (database.TryGetValue("ClassBattleUnit", out descriptor))
 			{
 				battleSimulationUnit.SimulationObject.AddDescriptor(descriptor);
 			}
 			battleSimulationUnit.Refresh(false);
-			UnitDeployment[] unitDeployment = contender.Deployment.UnitDeployment;
-			Predicate<UnitDeployment> match;
-			if ((match = <>9__0) == null)
-			{
-				match = (<>9__0 = ((UnitDeployment deployment) => deployment.UnitGUID == unit.GUID));
-			}
-			UnitDeployment unitDeployment2 = Array.Find<UnitDeployment>(unitDeployment, match);
-			battleSimulationUnit.SetPosition((unitDeployment2 != null) ? unitDeployment2.WorldPosition : WorldPosition.Invalid, null);
+			UnitDeployment unitDeployment = Array.Find<UnitDeployment>(contender.Deployment.UnitDeployment, (UnitDeployment deployment) => deployment.UnitGUID == unit.GUID);
+			battleSimulationUnit.SetPosition((unitDeployment != null) ? unitDeployment.WorldPosition : WorldPosition.Invalid, null);
 			BattleActionUnit[] array = this.InitializeBattleActionUnits(unit);
 			if (array != null)
 			{
@@ -2713,56 +2665,23 @@ public class BattleSimulation : IDisposable
 				battleSimulationUnit.AddBattleAction(battleActionUnit, BattleEffect.BattleEffectApplicationMethod.Additive);
 			}
 			Diagnostics.Assert(battleSimulationUnit.SimulationObject != null);
-			if (!ELCPUtilities.UseELCPFortificationPointRuleset)
+			if (encounter is BattleCityAssaultEncounter)
 			{
-				if (encounter is BattleCityAssaultEncounter)
+				BattleCityAssaultEncounter battleCityAssaultEncounter = encounter as BattleCityAssaultEncounter;
+				IGameEntity gameEntity2 = null;
+				if (this.gameEntityRepositoryService.TryGetValue(battleCityAssaultEncounter.CityGuid, out gameEntity2) && gameEntity2 is City)
 				{
-					BattleCityAssaultEncounter battleCityAssaultEncounter = encounter as BattleCityAssaultEncounter;
-					IGameEntity gameEntity2 = null;
-					if (this.gameEntityRepositoryService.TryGetValue(battleCityAssaultEncounter.CityGuid, out gameEntity2) && gameEntity2 is City)
+					City city = gameEntity2 as City;
+					if (city.Empire == contender.Garrison.Empire)
 					{
-						City city = gameEntity2 as City;
-						if (city.Empire == contender.Garrison.Empire)
-						{
-							float num = 1f;
-							if (DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve != null)
-							{
-								num = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(city.Ownership[city.Empire.Index]);
-							}
-							float propertyValue = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
-							battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.MaximumArmor, propertyValue * num, false, null, false);
-							battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Armor, propertyValue * num, false, null, false);
-							battleSimulationUnit.Refresh(true);
-						}
-					}
-				}
-			}
-			else
-			{
-				List<BattleContender> list2 = encounter.BattleContenders.FindAll((BattleContender X) => X.IsMainContender);
-				bool flag = false;
-				City city2 = null;
-				if (list2.Count == 2)
-				{
-					flag = ELCPUtilities.IsELCPCityBattle(new List<IGarrison>
-					{
-						list2[0].Garrison,
-						list2[1].Garrison
-					}, out city2);
-				}
-				if (flag)
-				{
-					District district = this.worldPositionningService.GetDistrict(contender.WorldPosition);
-					if (district != null && District.IsACityTile(district) && district.City.Empire == contender.Garrison.Empire && district.City == city2)
-					{
-						float propertyValue2 = district.City.GetPropertyValue(SimulationProperties.CityDefensePoint);
-						float num2 = 1f;
+						float num = 1f;
 						if (DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve != null)
 						{
-							num2 = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(district.City.Ownership[district.City.Empire.Index]);
+							num = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(city.Ownership[city.Empire.Index]);
 						}
-						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.MaximumArmor, propertyValue2 * num2, false, null, false);
-						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Armor, propertyValue2 * num2, false, null, false);
+						float propertyValue = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
+						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.MaximumArmor, propertyValue * num, false, null, false);
+						battleSimulationUnit.SetPropertyBaseValue(SimulationProperties.Armor, propertyValue * num, false, null, false);
 						battleSimulationUnit.Refresh(true);
 					}
 				}
@@ -3084,37 +3003,6 @@ public class BattleSimulation : IDisposable
 		}
 	}
 
-	private bool BlockingActiveReinforcementPosition(BattleSimulationUnit unit)
-	{
-		bool flag = false;
-		BattleContender contender = unit.Contender;
-		Diagnostics.Assert(contender.Deployment.ReinforcementPoints != null);
-		for (int i = 0; i < contender.Deployment.ReinforcementPoints.Length; i++)
-		{
-			WorldPosition worldPosition = contender.Deployment.ReinforcementPoints[i];
-			if (worldPosition.Equals(unit.Position))
-			{
-				flag = true;
-				break;
-			}
-		}
-		if (!flag)
-		{
-			return false;
-		}
-		using (List<BattleSimulationArmy>.Enumerator enumerator = this.armiesByGroup[contender.Group].GetEnumerator())
-		{
-			while (enumerator.MoveNext())
-			{
-				if (enumerator.Current.HasWaitingReinforcements)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public const PathfindingFlags BattlePathfindingFlags = PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons;
 
 	private List<WorldPosition> validPositions = new List<WorldPosition>();
@@ -3170,8 +3058,6 @@ public class BattleSimulation : IDisposable
 	private IDatabase<BattleTargetingStrategy> battleTargetingStrategyDatabase;
 
 	private List<SimulationDescriptor> descriptors = new List<SimulationDescriptor>();
-
-	private BattleEncounter Encounter;
 
 	[StructLayout(LayoutKind.Sequential, Size = 1)]
 	public struct GroundAction

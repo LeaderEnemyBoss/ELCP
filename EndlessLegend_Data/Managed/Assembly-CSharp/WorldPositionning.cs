@@ -752,9 +752,12 @@ public class WorldPositionning : GameAncillary, IService, IWorldPositionningServ
 				for (int j = 0; j < this.World.Regions[i].PointOfInterests.Length; j++)
 				{
 					PointOfInterest pointOfInterest = this.World.Regions[i].PointOfInterests[j];
-					if (this.GetDistance(pointOfInterest.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange && (regionRestriction == -1 || regionRestriction == pointOfInterest.Region.Index))
+					if (this.GetDistance(pointOfInterest.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange)
 					{
-						targetList.Add(pointOfInterest);
+						if (regionRestriction == -1 || regionRestriction == pointOfInterest.Region.Index)
+						{
+							targetList.Add(pointOfInterest);
+						}
 					}
 				}
 			}
@@ -765,116 +768,135 @@ public class WorldPositionning : GameAncillary, IService, IWorldPositionningServ
 		for (int k = 0; k < game.Empires.Length; k++)
 		{
 			global::Empire empire = game.Empires[k];
-			if (((!flag && !flag2) || empire is MajorEmpire) && (targetEmpireIndex == -1 || targetEmpireIndex == k))
+			if ((!flag && !flag2) || empire is MajorEmpire)
 			{
-				DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
-				if (agency != null)
+				if (targetEmpireIndex == -1 || targetEmpireIndex == k)
 				{
-					int l = 0;
-					while (l < agency.Armies.Count)
+					DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
+					if (agency != null)
 					{
-						Army army = agency.Armies[l];
-						if (flag || flag2)
+						int l = 0;
+						while (l < agency.Armies.Count)
 						{
-							if (!army.IsPrivateers)
+							Army army = agency.Armies[l];
+							if (flag || flag2)
 							{
-								bool flag3 = false;
-								for (int m = 0; m < army.StandardUnits.Count; m++)
+								if (!army.IsPrivateers)
 								{
-									if (army.StandardUnits[m].SimulationObject.Tags.Contains(WorldPositionning.FriendlyBannerDescriptor))
+									bool flag3 = false;
+									for (int m = 0; m < army.StandardUnits.Count; m++)
 									{
-										flag3 = true;
+										if (army.StandardUnits[m].SimulationObject.Tags.Contains(WorldPositionning.FriendlyBannerDescriptor))
+										{
+											flag3 = true;
+										}
 									}
-								}
-								if ((army.Hero == null || !army.Hero.IsSkillUnlocked(WorldPositionning.FriendlyBannerSkill)) && !flag3)
-								{
-									int distance = this.GetDistance(army.WorldPosition, inputArmy.WorldPosition);
-									float propertyValue = inputArmy.GetPropertyValue(SimulationProperties.DetectionRange);
-									if (!army.IsCamouflaged)
+									if ((army.Hero == null || !army.Hero.IsSkillUnlocked(WorldPositionning.FriendlyBannerSkill)) && !flag3)
 									{
-										goto IL_240;
-									}
-									if ((float)distance <= propertyValue)
-									{
-										goto IL_240;
+										int distance = this.GetDistance(army.WorldPosition, inputArmy.WorldPosition);
+										float propertyValue = inputArmy.GetPropertyValue(SimulationProperties.DetectionRange);
+										if (!army.IsCamouflaged || (float)distance <= propertyValue)
+										{
+											goto IL_2B1;
+										}
 									}
 								}
 							}
-						}
-						else if (army.Empire == inputArmy.Empire || !army.IsCamouflaged || this.VisibilityService.IsWorldPositionDetectedFor(army.WorldPosition, inputArmy.Empire))
-						{
-							goto IL_240;
-						}
-						IL_238:
-						l++;
-						continue;
-						IL_240:
-						if (this.GetDistance(army.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange && (regionRestriction == -1 || regionRestriction == (int)this.GetRegionIndex(army.WorldPosition)))
-						{
+							else if (army.Empire == inputArmy.Empire || !army.IsCamouflaged || this.VisibilityService.IsWorldPositionDetectedFor(army.WorldPosition, inputArmy.Empire))
+							{
+								goto IL_2B1;
+							}
+							IL_2FA:
+							l++;
+							continue;
+							IL_2B1:
+							if (this.GetDistance(army.WorldPosition, inputArmy.WorldPosition) > inputArmy.LineOfSightVisionRange)
+							{
+								goto IL_2FA;
+							}
+							if (regionRestriction != -1 && regionRestriction != (int)this.GetRegionIndex(army.WorldPosition))
+							{
+								goto IL_2FA;
+							}
 							targetList.Add(army);
-							goto IL_238;
+							goto IL_2FA;
 						}
-						goto IL_238;
 					}
-				}
-				if (empire is MajorEmpire)
-				{
-					DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
-					if (agency2 != null)
+					if (empire is MajorEmpire)
 					{
-						for (int n = 0; n < agency2.Cities.Count; n++)
+						DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
+						if (agency2 != null)
 						{
-							City city = agency2.Cities[n];
-							if ((city.Empire == inputArmy.Empire || flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(city)) && this.GetDistance(city.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange && (regionRestriction == -1 || regionRestriction == city.Region.Index))
+							for (int n = 0; n < agency2.Cities.Count; n++)
 							{
-								targetList.Add(city);
+								City city = agency2.Cities[n];
+								if (city.Empire == inputArmy.Empire || flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(city))
+								{
+									if (this.GetDistance(city.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange)
+									{
+										if (regionRestriction == -1 || regionRestriction == city.Region.Index)
+										{
+											targetList.Add(city);
+										}
+									}
+								}
 							}
 						}
-						for (int num = 0; num < agency2.Camps.Count; num++)
+						MajorEmpire majorEmpire = empire as MajorEmpire;
+						for (int num = 0; num < majorEmpire.ConvertedVillages.Count; num++)
 						{
-							Camp camp = agency2.Camps[num];
-							if ((camp.Empire == inputArmy.Empire || flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(camp)) && this.GetDistance(camp.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange && (regionRestriction == -1 || regionRestriction == camp.City.Region.Index))
+							Village village = majorEmpire.ConvertedVillages[num];
+							if (flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(village))
 							{
-								targetList.Add(camp);
-							}
-						}
-					}
-					MajorEmpire majorEmpire = empire as MajorEmpire;
-					for (int num2 = 0; num2 < majorEmpire.ConvertedVillages.Count; num2++)
-					{
-						Village village = majorEmpire.ConvertedVillages[num2];
-						if ((flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(village)) && this.GetDistance(village.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange && (regionRestriction == -1 || regionRestriction == village.Region.Index))
-						{
-							targetList.Add(village);
-						}
-					}
-				}
-				else if (empire is MinorEmpire)
-				{
-					BarbarianCouncil agency3 = empire.GetAgency<BarbarianCouncil>();
-					if (agency3 != null)
-					{
-						for (int num3 = 0; num3 < agency3.Villages.Count; num3++)
-						{
-							Village village2 = agency3.Villages[num3];
-							if ((flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(village2)) && this.GetDistance(village2.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange && (regionRestriction == -1 || regionRestriction == village2.Region.Index))
-							{
-								targetList.Add(village2);
+								if (this.GetDistance(village.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange)
+								{
+									if (regionRestriction == -1 || regionRestriction == village.Region.Index)
+									{
+										targetList.Add(village);
+									}
+								}
 							}
 						}
 					}
-				}
-				else if (empire is NavalEmpire)
-				{
-					PirateCouncil agency4 = empire.GetAgency<PirateCouncil>();
-					if (agency4 != null)
+					else if (empire is MinorEmpire)
 					{
-						for (int num4 = 0; num4 < agency4.Fortresses.Count; num4++)
+						BarbarianCouncil agency3 = empire.GetAgency<BarbarianCouncil>();
+						if (agency3 != null)
 						{
-							Fortress fortress = agency4.Fortresses[num4];
-							if ((flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(fortress)) && this.GetDistance(fortress.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange && (regionRestriction == -1 || regionRestriction == fortress.Region.Index))
+							for (int num2 = 0; num2 < agency3.Villages.Count; num2++)
 							{
-								targetList.Add(fortress);
+								Village village2 = agency3.Villages[num2];
+								if (flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(village2))
+								{
+									if (this.GetDistance(village2.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange)
+									{
+										if (regionRestriction == -1 || regionRestriction == village2.Region.Index)
+										{
+											targetList.Add(village2);
+										}
+									}
+								}
+							}
+						}
+					}
+					else if (empire is NavalEmpire)
+					{
+						PirateCouncil agency4 = empire.GetAgency<PirateCouncil>();
+						if (agency4 != null)
+						{
+							for (int num3 = 0; num3 < agency4.Fortresses.Count; num3++)
+							{
+								Fortress fortress = agency4.Fortresses[num3];
+								if (flag || flag2 || departmentOfForeignAffairs == null || departmentOfForeignAffairs.CanAttack(fortress))
+								{
+									if (this.GetDistance(fortress.WorldPosition, inputArmy.WorldPosition) <= inputArmy.LineOfSightVisionRange)
+									{
+										if (regionRestriction == -1 || regionRestriction == fortress.Region.Index)
+										{
+											targetList.Add(fortress);
+										}
+									}
+								}
 							}
 						}
 					}

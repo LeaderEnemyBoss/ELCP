@@ -23,10 +23,6 @@ public class NavyArmy : BaseNavyArmy
 	public override void DisplayDebug()
 	{
 		base.DisplayDebug();
-		if (this.OpportunityAttackableTarget != null)
-		{
-			GUILayout.Label(string.Format("Opportunity Attackable Target: {0}", this.OpportunityAttackableTarget.LocalizedName), new GUILayoutOption[0]);
-		}
 		if (this.SecondaryTarget != null)
 		{
 			GUILayout.Label(string.Format("Opportunity Target: {0}", this.SecondaryTarget.OpportunityPosition), new GUILayoutOption[0]);
@@ -154,8 +150,6 @@ public class NavyArmy : BaseNavyArmy
 			this.navyLayer.NavyTasks.Remove(navyTask_AutoAction);
 		}
 	}
-
-	public IGarrisonWithPosition OpportunityAttackableTarget { get; set; }
 
 	private AILayer_Navy navyLayer;
 

@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+  <!--=== ARMAGEDON ===--><!--
+  <BattleActionUser Name="BattleActionUserArmagedon">
+
+    <Period Type="Incantation"  Duration="1" />
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="3" />
+    
+    <BattleEffects TargetsFilter="EnemyGroup Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectUnitArmagedon" PropertyName="Health" InterpreterFormula="0 - 1" />
+    </BattleEffects>
+
+  </BattleActionUser>
+
+
+  
+  --><!--=== HEAL 20 ===-->
+  <!--
+  <BattleActionUser Name="BattleActionUserMegaHeal">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="3" />
+    
+    <BattleEffects TargetsFilter="SameGroup Alive Alive">
+      -->
+  <!-- TODO : can't heal more than MaxHealth--><!--
+      --><!-- max 0 : forbids healers to wound allies when their Health > MaxHealth --><!--
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectUnitMegaHeal" PropertyName="Health" InterpreterFormula="($LinkProperty(Initiator;ClassUnit:Offense) * 2) min ($Property(ClassUnit:MaximumHealth) - $Property(ClassUnit:Health)) max 0"/>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+  
+  
+  
+  --><!--=== STOMP ===-->
+  <!--
+  <BattleActionUser Name="BattleActionUserStomp">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="3" />
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true">
+      <BattleEffects TargetsFilter="Target Alive">
+        -->
+  <!-- Changement de carac. unité --><!--
+        <BattleEffect_UnitSimulation Name="BattleEffectStun" Duration="2">
+          <SimulationDescriptorReference Name="UnitActionStun" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+    --><!-- Cumul d'action de bataille sur l'unité -->
+      <!--
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_BattleActionUnit Name="BattleEffectUnitDirectDamage" Duration="2">
+        <BattleActionUnitReference Name="BattleActionUnitDirectDamage"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+  
+  
+  -->
+      <!--=== MEGA CHARGE ===-->
+  <!--
+  <BattleActionUser Name="BattleActionUserMegaCharge">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="3" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+
+      -->
+  <!-- Changement de carac. unité --><!--
+      <BattleEffect_UnitSimulation Name="BattleEffectMegaCharge" Duration="2">
+        <SimulationDescriptorReference Name="UnitActionSpeedUp" />
+        <SimulationDescriptorReference Name="UnitActionChargeUp" />
+      </BattleEffect_UnitSimulation>
+
+      --><!-- Cumul d'action de bataille sur l'unité --><!--
+      <BattleEffect_BattleActionUnit Name="BattleEffectUnitCavalryChargeUp" Duration="3">
+        <BattleActionUnitReference Name="BattleActionUnitCavalryChargeUp"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+
+  </BattleActionUser>-->
+
+
+
+
+  <!-- ========================================
+       ============ BROKEN LORDS ==============
+       ======================================== -->
+
+  
+  <!-- ===================================== BROKEN LORDS INFANTRY ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserBrokenLordsInfantry" SubCategory="SubCategoryDamage">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+      <BattleEffects TargetsFilter="Initiator Alive">
+
+        <BattleEffect_UnitSimulation Name="BattleActionUserBrokenLordsInfantry_BattleEffectEnrage" Duration="2">
+          <SimulationDescriptorReference Name="UnitActionAttributeAttackUp" />
+          <SimulationDescriptorReference Name="UnitActionDamageUp" />
+        </BattleEffect_UnitSimulation>
+
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleActionUserBrokenLordsInfantry_BattleEffectHeal" PropertyName="Health" Operation="Addition" InterpreterFormula="0 max $Property(ClassUnit:MaximumHealth) * 0.50" Duration="2"/>
+        
+      </BattleEffects>
+    
+      <BattleEffects TargetsFilter="Target Alive">
+        <!-- used to trig fx -->
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleActionUserBrokenLordsInfantry_BattleEffectDrain" PropertyName="Health" Operation="Addition" InterpreterFormula="0" Duration="2"/>
+
+      </BattleEffects>
+
+  </BattleActionUser>
+
+
+  <!-- ===================================== BROKEN LORDS CAVALRY ======================================== -->
+  
+  <BattleActionUser Name="BattleActionUserBrokenLordsCavalry" SubCategory="SubCategoryDamage">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserBrokenLordsCavalry" Duration="1">
+        <BattleActionUnitReference Name="BattleActionUnitBrokenLordsCavalryActive1"/>
+        <BattleActionUnitReference Name="BattleActionUnitBrokenLordsCavalryActive3"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+
+  <!-- ===================================== BROKEN LORDS BLACK BISHOP ======================================== -->
+  
+  <BattleActionUser Name="BattleActionUserBrokenLordsBlackBishop" SubCategory="SubCategoryHeal">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="EnemyGroup Alive">
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleActionUserBrokenLordsBlackBishop_BattleEffectDamage" PropertyName="Health" Operation="Subtraction" InterpreterFormula="(0 max $Property(ClassUnit:AttributeAttack)) * 0.2" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="SameGroup Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleActionUserBrokenLordsBlackBishop_BattleEffectHeal" PropertyName="Health" Operation="Addition" InterpreterFormula="(0 max $Property(ClassUnit:AttributeAttack)) * 0.2" />
+    </BattleEffects>
+
+  </BattleActionUser>
+
+  
+  <!-- ===================================== BROKEN LORDS CAPTAIN / HERO ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserBrokenLordsCaptain" SubCategory="SubCategoryBuff">
+
+    <Period Type="Duration"     Duration="2" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="SameGroup Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffectInvincible">
+        <SimulationDescriptorReference Name="UnitActionInvincible" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+  
+
+
+  <!-- =======================================
+       ============ MAD FAIRIES ===============
+       ======================================== -->
+  
+
+  <!-- ===================================== MAD FAIRIES FOREST SPIRIT ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserMadFairiesForestSpirit" SubCategory="SubCategoryCrowdControl">
+
+    <Period Type="Duration"     Duration="2" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffectEnrage" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionAttributeAttackUp" />
+        <SimulationDescriptorReference Name="UnitActionDamageUp" />
+      </BattleEffect_UnitSimulation>
+
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserMadFairiesForestSpirit" Duration="1">
+        <BattleActionUnitReference Name="BattleActionUnitMadFairiesForestSpiritActive1"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+
+
+  <!-- ===================================== MAD FAIRIES SHAMAN ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserMadFairiesShaman" SubCategory="SubCategoryDamage">
+
+    <Period Type="Duration"     Duration="2" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleEffectEnrage" Duration="3">
+      <SimulationDescriptorReference Name="UnitActionEnrage" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleActionUserMadFairiesShaman_BattleEffectDamage" PropertyName="Health" InterpreterFormula="(0 min ($Property(ClassUnit:AttributeDefense) - ($LinkProperty(Initiator;ClassUnit:AttributeAttack) * $LinkProperty(Initiator;ClassUnit:DamageMultiplier))))" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+
+
+  <!-- ===================================== MAD FAIRIES ARCHER ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserMadFairiesArcher" SubCategory="SubCategoryDamage">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserMadFairiesArcher" Duration="1">
+        <BattleActionUnitReference Name="BattleActionUnitMadFairiesArcherActive1"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+
+  <!-- ===================================== MAD FAIRIES CAPTAIN / HERO ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserMadFairiesCaptain" SubCategory="SubCategoryBuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="SameGroup Alive">
+      <BattleEffect_ChangeBattlePeriodDurationValue Name="BattleActionUserMadFairiesCaptain_BattleEffectPeriod" PeriodType="Cooldown" Operation="Affectation" InterpreterFormula="0" />
+    </BattleEffects>
+
+  </BattleActionUser>
+
+
+  
+
+  <!-- ========================================
+       ============ RAGE WIZARDS ==============
+       ======================================== -->
+  
+  
+  <!-- ===================================== RAGE WIZARDS WITCH ======================================== -->
+  
+  <BattleActionUser Name="BattleActionUserRageWizardsWitch" SubCategory="SubCategoryDamage">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserRageWizardsWitch" Duration="1">
+        <BattleActionUnitReference Name="BattleActionUnitRageWizardsWitchActive1"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>        
+    
+  </BattleActionUser>
+
+  
+  
+  <!-- ===================================== RAGE WIZARDS BATTLEMAGE ======================================== -->
+  
+  <BattleActionUser Name="BattleActionUserRageWizardsBattleMage" SubCategory="SubCategoryDamage">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserRageWizardsBattleMage" Duration="2">
+        <BattleActionUnitReference Name="BattleActionUnitRageWizardsBattleMageActive1"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+    
+  </BattleActionUser>
+
+  
+  
+  <!-- ===================================== RAGE WIZARDS PHOENIX ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserRageWizardsPhoenix" SubCategory="SubCategoryHeal" CanBeAppliedByDeadUnit="true">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <!-- AoE on death position -->
+    <BattleEffectsArea TargetsFilter="Initiator Dead" Type="Circle" Parameter1="1" AvoidCastingUnit="true">
+      <BattleEffects TargetsFilter="Target Alive">
+        <InterpreterPrerequisite Inverted="false">$LinkProperty(Initiator;ClassUnit:Health) le 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectPhoenixReviveDamage" PropertyName="Health" Operation="Subtraction" InterpreterFormula="0 max (($LinkProperty(Initiator;ClassUnit:AttributeAttack) * $LinkProperty(Initiator;ClassUnit:DamageMultiplier)) - $Property(ClassUnit:AttributeDefense))" />
+      </BattleEffects>
+    </BattleEffectsArea>
+    
+    <!-- Teleport on free tile -->
+    <BattleEffects TargetsFilter="Initiator Dead">
+      <InterpreterPrerequisite Inverted="false">$LinkProperty(Initiator;ClassUnit:Health) le 0</InterpreterPrerequisite>
+      <BattleEffect_Teleport Name="BattleEffectReviveTeleport"/>
+    </BattleEffects>
+
+    <!-- Revive -->
+    <BattleEffects TargetsFilter="Initiator Dead">
+      <InterpreterPrerequisite Inverted="false">$LinkProperty(Initiator;ClassUnit:Health) le 0</InterpreterPrerequisite>
+      <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectRevive" PropertyName="Health" Operation="Affectation" InterpreterFormula="(0 max $Property(ClassUnit:MaximumHealth))" />
+    </BattleEffects>
+    
+  </BattleActionUser>
+
+  <!-- ===================================== RAGE WIZARDS CAPTAIN / HERO ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserRageWizardsCaptain" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="6" />
+
+    <BattleEffects TargetsFilter="EnemyGroup Alive">
+      <BattleEffect_ChangeBattlePeriodDurationValue Name="BattleEffectPeriod" PeriodType="Cooldown" Operation="Addition" InterpreterFormula="3" />
+    </BattleEffects>
+
+  </BattleActionUser>
+
+  
+  
+  <!-- ========================================
+       ============ NECROPHAGES ==============
+       ======================================== --><!--
+  
+  
+  --><!-- ===================================== NECROPHAGES NECROHUNTER ======================================== --><!--
+  
+  <BattleActionUser Name="BattleActionUserNecrophagesNecrohunter" SubCategory="">
+
+    <Period Type="Duration"     Duration="" />
+    <Period Type="Cooldown"     Duration="" />
+
+    <BattleEffects TargetsFilter="">
+    </BattleEffects>        
+    
+  </BattleActionUser>
+
+  
+  --><!-- ===================================== NECROPHAGES ZOMBAT ======================================== --><!--
+  
+  <BattleActionUser Name="BattleActionUserNecrophagesZombat" SubCategory="">
+
+    <Period Type="Duration"     Duration="" />
+    <Period Type="Cooldown"     Duration="" />
+
+    <BattleEffects TargetsFilter="">
+    </BattleEffects>
+    
+  </BattleActionUser>
+
+  
+  --><!-- ===================================== NECROPHAGES LICHBUG ======================================== --><!--
+
+  <BattleActionUser Name="BattleActionUserNecrophagesLichbug" SubCategory="">
+
+    <Period Type="Duration"     Duration="" />
+    <Period Type="Cooldown"     Duration="" />
+
+    <BattleEffects TargetsFilter="">
+  </BattleEffects>
+    
+  </BattleActionUser>
+
+
+  --><!-- ===================================== NECROPHAGES CAPTAIN / HERO ======================================== --><!--
+
+  <BattleActionUser Name="BattleActionUserNecrophagesCaptain" SubCategory="">
+
+    <Period Type="Duration"     Duration="" />
+    <Period Type="Cooldown"     Duration="" />
+
+    <BattleEffects TargetsFilter="">
+    </BattleEffects>
+
+  </BattleActionUser>-->
+
+
+  <!-- ========================================
+       ============ MINOR FACTIONS ============
+       ======================================== -->
+  
+
+
+  <!-- ===================================== URCES GIANT OGRE ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserUrcesGiantOgre" SubCategory="SubCategoryDamage">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="2" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitSimulation Name="BattleActionUserUrcesGiantOgre_Buff" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionDamageUp" />
+        <SimulationDescriptorReference Name="UnitActionAttributeAttackUp" />
+      </BattleEffect_UnitSimulation>
+
+      <BattleEffect_BattleActionUnit Name="BattleActionUserUrcesGiantOgre_SweepAttack" Duration="1" ApplicationMethod="Override">
+        <BattleActionUnitReference Name="BattleActionUnitUrcesGiantOgreActive1"/>
+      </BattleEffect_BattleActionUnit>
+
+      <!-- Force the targetting to target the tile in front of the unit. -->
+      <BattleEffect_UnitSimulation Name="BattleActionUserUrcesGiantOgre_BlindAttackSimulation" Duration="1">
+        <SimulationDescriptorReference Name="UnitActionBlindAttack" />
+      </BattleEffect_UnitSimulation>
+      
+      <BattleEffect_UnitBehavior Name="BattleActionUserUrcesGiantOgre_BlindAttackBehavior" Duration="1" ApplicationMethod="Override">
+        <BattleTargetingUnitBehaviorWeightReference Name="UnitBehaviorBlindAttack" />
+      </BattleEffect_UnitBehavior>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+
+
+  <!-- ===================================== CERATAN DRIDER ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserCeratanDrider" SubCategory="SubCategoryHeal">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="2" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_UnitBehavior Name="BattleActionUserCeratanDrider_TargetAlly" ApplicationMethod="Override">
+        <BattleTargetingUnitBehaviorWeightReference Name="UnitBehaviorCeratanDriderBattleActionUserHealer" />
+      </BattleEffect_UnitBehavior>
+
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserCeratanDrider_Buff" Duration="1">
+        <BattleActionUnitReference Name="BattleActionUnitCeratanDriderActive1"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+  </BattleActionUser>
+
+
+
+  <!-- ===================================== ERYCIS HYDRA ======================================== -->
+
+
+  <BattleActionUser Name="BattleActionUserErycisHydra" SubCategory="SubCategoryDamageOverTime">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="3" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserErycisHydra" Duration="1" ApplicationMethod="Override">
+        <BattleActionUnitReference Name="BattleActionUnitErycisHydraActive1"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+
+  <!-- ===================================== SILICS GOLEM ======================================== -->
+
+
+  <BattleActionUser Name="BattleActionUserSilicsGolem" SubCategory="SubCategoryCrowdControl">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="3" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+
+      <BattleEffect_BattleActionUnit Name="BattleActionUserSilicsGolem_BeamAttack" Duration="1" ApplicationMethod="Override">
+        <BattleActionUnitReference Name="BattleActionUnitSilicsGolemActive1"/>
+      </BattleEffect_BattleActionUnit>
+
+      <!-- Not Implemented Yet -->
+      <!--<BattleEffect_UnitBehavior Name="BattleActionUserSilicsGolem_BlindAttack" Duration="1" ApplicationMethod="Override">
+        <BattleTargetingUnitBehaviorWeightReference Name="UnitBehaviorBlindAttack" />
+      </BattleEffect_UnitBehavior>-->
+    </BattleEffects>
+    
+  </BattleActionUser>
+
+
+  <!-- ===================================== DELVERS DWARF ======================================== -->
+
+
+  <BattleActionUser Name="BattleActionUserDelversDwarf" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="3" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserDelversDwarf" Duration="1">
+        <BattleActionUnitReference Name="BattleActionUnitDelversDwarfActive1"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+  
+  
+  <!-- ===================================== KAZANJI DEVIL ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserKazanjiDevil" SubCategory="SubCategoryCrowdControl">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="2" />
+
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true">
+      <BattleEffects TargetsFilter="Target EnemyGroup Alive">
+        <BattleEffect_UnitBehavior Name="BattleActionUserKazanjiDevil_Possession" ApplicationMethod="Override" Duration="2">
+          <BattleTargetingUnitBehaviorWeightReference Name="UnitBehaviorKazanjiDevilBattleActionUserPossession" />
+        </BattleEffect_UnitBehavior>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  
+  
+  <!-- ===================================== SISTERS OF MERCY JUSTICERE ======================================== -->
+
+  <BattleActionUser Name="BattleActionUserSistersOfMercyJusticere" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="3" />
+
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_BattleActionUnit Name="BattleEffectUserSistersOfMercyJusticere" Duration="1">
+        <BattleActionUnitReference Name="BattleActionUnitSistersOfMercyJusticereActive1"/>
+      </BattleEffect_BattleActionUnit>
+    </BattleEffects>
+
+  </BattleActionUser>
+
+
+
+  <!-- =====================================            SPELL            ======================================== -->
+
+  <!--<BattleActionUser Name="BattleActionUserSpellDefenseBonus" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffects TargetsFilter="Target">
+      <BattleEffect_BattleActionGround Name="BattleEffect_Drop_BattleActionGroundSpellDefenseBonus" Duration="1">
+        <BattleActionGroundReferences Name="BattleActionGroundSpellDefenseBonus"/>
+      </BattleEffect_BattleActionGround>
+    </BattleEffects>
+
+  </BattleActionUser>-->
+
+  <!-- === SPELL 1 === -->
+
+  <BattleActionUser Name="BattleActionUserSpell1Level1" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+          <SimulationDescriptorReference Name="Spell1Level1Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell1Level2" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+          <SimulationDescriptorReference Name="Spell1Level2Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell1Level3" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+          <SimulationDescriptorReference Name="Spell1Level3Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell1Level4" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+          <SimulationDescriptorReference Name="Spell1Level4Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell1Level5" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+          <SimulationDescriptorReference Name="Spell1Level5Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+
+  <!-- === SPELL 2 === -->
+
+  <BattleActionUser Name="BattleActionUserSpell2Level1" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level1Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell2Level2" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level2Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell2Level3" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level3Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell2Level4" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level4Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell2Level5" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level5Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+
+  <!-- === SPELL 3 === -->
+
+  <BattleActionUser Name="BattleActionUserSpell3Level1" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
+          <SimulationDescriptorReference Name="UnitActionStun" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell3Level2" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
+          <SimulationDescriptorReference Name="UnitActionStun" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell3Level3" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
+          <SimulationDescriptorReference Name="Spell3Level3Effect" />
+          <SimulationDescriptorReference Name="UnitActionStun" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell3Level4" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
+          <SimulationDescriptorReference Name="Spell3Level4Effect" />
+          <SimulationDescriptorReference Name="UnitActionStun" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell3Level5" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="2">
+          <SimulationDescriptorReference Name="Spell3Level5Effect" />
+          <SimulationDescriptorReference Name="UnitActionStun" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+
+  <!-- === SPELL 4 === -->
+
+  <BattleActionUser Name="BattleActionUserSpell4Level1" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="8" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell4Level2" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="16" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell4Level3" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="24" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell4Level4" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="32" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell4Level5" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="40" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+  
+
+  <!-- === SPELL 5 === -->
+
+  <BattleActionUser Name="BattleActionUserSpell5Level1" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="10" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell5Level2" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="20" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell5Level3" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="30" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell5Level4" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="40" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+
+  <BattleActionUser Name="BattleActionUserSpell5Level5" SubCategory="SubCategoryDebuff">
+
+    <Period Type="Duration"     Duration="1" />
+    <Period Type="Cooldown"     Duration="1" />
+
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="50" />
+      </BattleEffects>
+    </BattleEffectsArea>
+
+  </BattleActionUser>
+  
+</Datatable>

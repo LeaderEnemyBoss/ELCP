@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <SimulationDescriptor Name="UnitHero" Type="UnitHero">
+    <SimulationPropertyDescriptors>
+      <SimulationProportionalPropertyDescriptor Name="AssignmentCooldown" StartingRatio="0" Maximum="$(MaximumAssignmentCooldown)"/>
+      <SimulationPropertyDescriptor Name="MaximumAssignmentCooldown"  BaseValue="5"/>
+
+      <SimulationProportionalPropertyDescriptor Name="InfiltrationCooldown" StartingRatio="0" Maximum="$(MaximumInfiltrationCooldown)"/>
+      <SimulationPropertyDescriptor Name="MaximumInfiltrationCooldown"  BaseValue="0"/>
+
+      <SimulationPropertyDescriptor Name="MaximumInfiltrationCooldownFromGround"  BaseValue="0"/>
+      <SimulationPropertyDescriptor Name="MaximumInfiltrationCooldownFromEmpire"  BaseValue="0"/>
+
+      <SimulationPropertyDescriptor Name="HeroUpkeep"                 BaseValue="0" MinValue="0"/>
+
+      <!-- Hero upkeep related property -->
+      <SimulationPropertyDescriptor Name="HeroCount" BaseValue="1"/>
+
+      <!-- Injured related properties-->
+      <SimulationProportionalPropertyDescriptor Name="CurrentInjuredValue" StartingRatio="0" Maximum="$(MaximumInjuredValue)"/>
+      <SimulationPropertyDescriptor Name="MaximumInjuredValue" BaseValue="100"/>
+      <SimulationPropertyDescriptor Name="InjuredRecoveryPerTurn" BaseValue="5"/>
+      <!-- healing an injusred hero : the injured percentage is multiplied by this next factor to set the dust cost-->
+      <SimulationPropertyDescriptor Name="InjuredValueToEmpireMoneyConversion" BaseValue="0"/>
+
+      <!--Used to reduce Spy Action costs for the infiltrated hero-->
+      <SimulationPropertyDescriptor Name="SpyActionCostModifier"                    BaseValue="1"/>
+
+      <!--Used to increase infiltrationpoints gain due to previous spy actions performed-->
+      <SimulationPropertyDescriptor Name="InfiltrationSeniorityFactor"      BaseValue="1"/>
+
+      <SimulationPropertyDescriptor Name="ArmyRetrofitCostMultiplier" BaseValue="1"/>
+    </SimulationPropertyDescriptors>
+
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor             TargetProperty="UnitSlotCount"  Operation="Force"           Value="0"/>
+      <BinarySimulationModifierDescriptor       TargetProperty="HeroUpkeep"     Operation="Addition"        Left="$(Level)" BinaryOperation="Subtraction"     Right="1" Priority="0"/>
+      <BinarySimulationModifierDescriptor       TargetProperty="HeroUpkeep"     Operation="Multiplication"  Left="$(Level)" BinaryOperation="Division"        Right="4" Priority="1"/>
+      <BinarySimulationModifierDescriptor       TargetProperty="HeroUpkeep"     Operation="Addition"        Left="2"        BinaryOperation="Multiplication"  Right="$(LevelDisplayed)" Priority="2"/>
+      <SimulationModifierDescriptor             TargetProperty="HeroUpkeep"     Operation="Addition"        Value="$(SkillPointsSpent)"/>
+      <SimulationModifierDescriptor             TargetProperty="HeroUpkeep"     Operation="Addition"        Value="$(HeroCount)" Path="../ClassEmpire" IsBindOnSource="true" />
+
+      <!-- don't use the sum system to avoid to create properties in army and city class-->
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep"     Operation="Addition"  Value="$(HeroUpkeep)"         Path="!HeroStatusCaptured/../ClassEmpire"/>
+
+      <SimulationModifierDescriptor       TargetProperty="InjuredValueToEmpireMoneyConversion" Operation="Addition"       Value="0.65"/>
+      <BinarySimulationModifierDescriptor TargetProperty="InjuredValueToEmpireMoneyConversion" Operation="Multiplication" Left="1" BinaryOperation="Addition" Right="$(Level)" />
+
+      <SimulationModifierDescriptor TargetProperty="LevelDisplayed" Operation="Addition" Value="$(LevelDisplayed)" Path="./ClassCity/DistrictImprovementWonder4" IsBindOnSource="true"/>
+
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep" Operation="Addition"   Value="2" Path="../ClassEmpire/Garrison/UnitHero" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="HeroUpkeep" Operation="Addition"   Value="2" Path="../ClassEmpire/UnitHero" Priority="2"/>
+
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitKaijusMonster" Type="UnitHero">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="DeploymentPriority"        Operation="Force" Value="-1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- #################################### -->
+  <!-- ##### MAD FAIRIES HERO PROFILES #### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileMadFairiesHero1"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="24"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMadFairiesHero2"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="24"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMadFairiesHero3"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMadFairiesHero4"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMadFairiesHero5"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMadFairiesHero6"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- The Architect -->
+  <SimulationDescriptor Name="UnitProfileMadFairiesHero7"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="74"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="120"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################ -->
+  <!-- #### VAULTERS HERO PROFILES #### -->
+  <!-- ################################ -->
+
+  <SimulationDescriptor Name="UnitProfileVaultersHero1"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="24"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileVaultersHero2"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="24"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileVaultersHero3"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileVaultersHero4"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileVaultersHero5"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="24"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileVaultersHero6"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="24"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileVaultersHero7"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- From Replicants quest -->
+  <SimulationDescriptor Name="UnitProfileVaultersHero9"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+        <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+        <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="28"/>
+        <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+        <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+        <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+        <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition" Value="600"/>
+      </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- #### ROVING CLANS HERO PROFILES #### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileRovingClansHero1"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRovingClansHero2"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRovingClansHero3"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRovingClansHero4"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRovingClansHero5"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="44"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="56"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRovingClansHero6"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- #### RAGE WIZARDS HERO PROFILES #### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileRageWizardsHero1"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRageWizardsHero2"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRageWizardsHero3"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRageWizardsHero4"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRageWizardsHero5"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileRageWizardsHero6"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="74"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- ##### NECROPHAGES HERO PROFILES #### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileNecrophagesHero1"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="24"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="164"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileNecrophagesHero2"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="24"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="164"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileNecrophagesHero3"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="146"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileNecrophagesHero4"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="182"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileNecrophagesHero5"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileNecrophagesHero6"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ka-Riss -->
+  <SimulationDescriptor Name="UnitProfileNecrophagesHero7"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- ####   DRAKKENS HERO PROFILES   #### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileDrakkensHero1"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="182"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileDrakkensHero2"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="182"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileDrakkensHero3"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="8"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="200"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileDrakkensHero4"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="8"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="200"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileDrakkensHero5"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="164"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileDrakkensHero6"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="146"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Researcher Namkang -->
+  <SimulationDescriptor Name="UnitProfileDrakkensHero7"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="146"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--Replicants Faction Quest-->
+  <SimulationDescriptor Name="UnitProfileDrakkensHero8"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="164"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition" Value="600"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- ####   CULTISTS HERO PROFILES   #### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileCultistsHero1"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="146"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileCultistsHero2"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="146"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileCultistsHero3"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileCultistsHero4"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileCultistsHero5"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileCultistsHero6"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- #### BROKEN LORDS HERO PROFILES #### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileBrokenLordsHero1"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileBrokenLordsHero2"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileBrokenLordsHero3"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="52"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileBrokenLordsHero4"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="52"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileBrokenLordsHero5"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileBrokenLordsHero6"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- The Marquis -->
+  <SimulationDescriptor Name="UnitProfileBrokenLordsHero7"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="110"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="120"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- The Halloween hero -->
+  <SimulationDescriptor Name="UnitProfileBrokenLordsHero8"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="52"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- ####  REPLICANTS HERO PROFILES  #### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero1"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="14"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="112"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero2"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="14"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="122"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero3"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="14"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="134"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero4"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="104"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero5"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="14"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="134"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero6"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="104"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero4FinalQuestReward" Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="104"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="1120"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero5FinalQuestReward" Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="14"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="134"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="1120"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileReplicantsHero6FinalQuestReward" Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="104"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="1120"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ziema in weak form-->
+  <SimulationDescriptor Name="UnitProfileReplicantsHero7Alt"              Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="10"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="68"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- Ziema -->
+  <SimulationDescriptor Name="UnitProfileReplicantsHero7"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="130"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="400"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!--Enemy in Replicants Faction Quest-->
+  <SimulationDescriptor Name="UnitProfileReplicantsHero8"                 Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="1"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="840"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- ### WINTER SHIFTERS HERO PROFILES ## -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileWinterShiftersHero1"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="98"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileWinterShiftersHero2"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="98"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileWinterShiftersHero3"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="86"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileWinterShiftersHero4"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="42"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileWinterShiftersHero5"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="86"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileWinterShiftersHero6"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- ##    SEA DEMONS HERO PROFILES    ## -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileSeaDemonsHero1"                  Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="52"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileSeaDemonsHero2"                  Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="48"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileSeaDemonsHero3"                  Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="60"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileSeaDemonsHero4"                  Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="52"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileSeaDemonsHero5"                  Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="48"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileSeaDemonsHero6"                  Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition"  Value="52"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition"  Value="16"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition"  Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- #################################### -->
+  <!-- ####### FLAMES HERO PROFILES ####### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileFlamesHero1"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="42"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="109"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileFlamesHero2"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="35"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="27"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="122"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileFlamesHero3"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="25"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="35"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="100"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileFlamesHero4"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="35"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="27"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="122"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileFlamesHero5"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="25"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="35"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="100"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileFlamesHero6"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="42"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="109"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileFlamesHero7"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="25"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="35"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="100"/>
+      <SimulationModifierDescriptor       TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="240"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileFlamesHeroQuestEnemy"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="50"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="50"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="150"/>
+      <SimulationModifierDescriptor       TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="200"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- #################################### -->
+  <!-- ####### MIMICS HERO PROFILES ####### -->
+  <!-- #################################### -->
+
+  <SimulationDescriptor Name="UnitProfileMimicsHero1"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="25"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="45"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="109"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMimicsHero2"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="45"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="32"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="109"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMimicsHero3"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="42"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="109"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMimicsHero4"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="30"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="130"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMimicsHero5"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="45"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="33"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="100"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMimicsHero6"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="42"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="109"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMimicsHero7"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="42"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="28"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="38"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="109"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMimicsHeroQuestEnemy"                Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="50"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="20"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="50"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="90"/>
+      <SimulationModifierDescriptor       TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="80"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- ################################### -->
+  <!-- #####  MEZARI HERO PROFILES  ###### -->
+  <!-- ################################### -->
+
+  <SimulationDescriptor Name="UnitProfileMezariHero1"                     Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <!-- MWNL profiles -->
+  <SimulationDescriptor Name="UnitProfileMezariHero2"                     Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="40"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="30"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="18"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileMezariHero3"                     Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="38"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="32"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="26"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="46"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="116"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################### -->
+  <!-- ##### TUTORIAL HERO PROFILES ###### -->
+  <!-- ################################### -->
+
+  <SimulationDescriptor Name="UnitProfileTutorialHero1"                   Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"           Operation="Addition" Value="34"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"        Operation="Addition" Value="20"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDamage"            Operation="Addition" Value="22"/>
+      <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"              Operation="Addition" Value="92"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################### -->
+  <!-- ####### HAUNTS HERO PROFILES ###### -->
+  <!-- ################################### -->
+
+  <SimulationDescriptor Name="UnitProfileHauntsHero1"                     Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="36"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="12"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="128"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
+
+  <!-- ################################### -->
+  <!-- ##### SISTERS HERO PROFILES ####### -->
+  <!-- ################################### -->
+
+  <SimulationDescriptor Name="UnitProfileSistersOfMercyHero1"             Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="110"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+  <SimulationDescriptor Name="UnitProfileSistersOfMercyHero1QuestReward"  Type="UnitProfile">
+    <SimulationModifierDescriptors>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeAttack"        Operation="Addition"  Value="40"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDefense"       Operation="Addition"  Value="34"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeInitiative"    Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseAttributeDamage"        Operation="Addition"  Value="26"/>
+      <SimulationModifierDescriptor       TargetProperty="BaseMaximumHealth"          Operation="Addition"  Value="110"/>
+      <SimulationModifierDescriptor       TargetProperty="ExperienceRewardAtQuestHeroCreation"     Operation="Addition"  Value="240"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+</Datatable>

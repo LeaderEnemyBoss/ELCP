@@ -81,9 +81,9 @@ public class AICommanderMission_PrivateersHarass : AICommanderMissionWithRequest
 
 	protected override void GetNeededArmyPower(out float minMilitaryPower, out bool isMaxPower, out bool perUnitTest)
 	{
-		isMaxPower = false;
-		perUnitTest = false;
-		minMilitaryPower = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, this.TargetCity, 0);
+		isMaxPower = true;
+		perUnitTest = true;
+		minMilitaryPower = float.MaxValue;
 	}
 
 	protected override int GetNeededAvailabilityTime()
@@ -93,7 +93,12 @@ public class AICommanderMission_PrivateersHarass : AICommanderMissionWithRequest
 
 	protected override bool IsMissionCompleted()
 	{
-		return this.TargetCity == null || this.TargetCity.Empire == base.Commander.Empire || this.aiDataRepository.GetAIData<AIData_City>(this.TargetCity.GUID) == null;
+		if (this.TargetCity == null || this.TargetCity.Empire == base.Commander.Empire)
+		{
+			return true;
+		}
+		AIData_City aidata = this.aiDataRepository.GetAIData<AIData_City>(this.TargetCity.GUID);
+		return aidata == null;
 	}
 
 	protected override bool MissionCanAcceptHero()
@@ -104,7 +109,7 @@ public class AICommanderMission_PrivateersHarass : AICommanderMissionWithRequest
 	protected override void Pending()
 	{
 		base.Completion = AICommanderMission.AICommanderMissionCompletion.Running;
-		base.State = TickableState.NoTick;
+		this.State = TickableState.NoTick;
 	}
 
 	protected override void Running()
@@ -163,14 +168,6 @@ public class AICommanderMission_PrivateersHarass : AICommanderMissionWithRequest
 			}
 		}
 		return result;
-	}
-
-	public override void SetExtraArmyRequestInformation()
-	{
-		if (this.requestArmy != null)
-		{
-			this.requestArmy.OnlyMercenaries = true;
-		}
 	}
 
 	private City nearestCity;

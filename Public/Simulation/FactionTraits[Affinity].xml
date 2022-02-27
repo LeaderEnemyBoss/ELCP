@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ########################################## -->
+  <!-- ######        MAJOR FACTIONS        ###### -->
+  <!-- ########################################## -->
+
+  <!-- Broken Lords -->
+  <FactionAffinity                  Name="AffinityBrokenLords"                  SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityBrokenLords"/>
+    <DefaultAffinityMapping         Name="AffinityMappingBrokenLords"/>
+    <Personality                    Name="PersonalityAffinityBrokenLords"/>
+    <SubTrait                       Name="FactionTraitBrokenLordsMainQuest"                                           Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitBrokenLords2"/>                 <!-- Affinity: Appetite for Dust -->
+    <SubTrait                       Name="FactionTraitBrokenLordsHeatWave"/>          <!-- Heat wave effect: MasterShare -->
+    <SubTrait                       Name="FactionTraitBrokenLordsUnit1"/>
+    <SubTrait                       Name="FactionTraitBrokenLordsUnit2"/>
+    <SubTrait                       Name="FactionTraitBrokenLordsUnit3"/>
+    <IntegrationDescriptor          Name="BrokenLordsIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileBrokenLordsHero1,UnitDesignBrokenLordsSettler#1,UnitDesignBrokenLordsInfantry#1,UnitDesignBrokenLordsInfantry#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Mad Fairies -->
+  <FactionAffinity                  Name="AffinityMadFairies"                   SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityMadFairies"/>
+    <DefaultAffinityMapping         Name="AffinityMappingMadFairies"/>
+    <Personality                    Name="PersonalityAffinityMadFairies"/>
+    <SubTrait                       Name="FactionTraitMadFairiesMainQuest"                                            Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMadFairiesTheSharing"/>     <!-- Affinity: Sharing -->
+    <SubTrait                       Name="FactionTraitMadFairiesHeatWave"/>    <!-- Heat wave effect: MasterShare -->
+    <SubTrait                       Name="FactionTraitMadFairiesUnit1"/>
+    <SubTrait                       Name="FactionTraitMadFairiesUnit2"/>
+    <SubTrait                       Name="FactionTraitMadFairiesUnit3"/>
+    <IntegrationDescriptor          Name="MadFairiesIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileMadFairiesHero1,UnitDesignMadFairiesSettler#1,UnitDesignMadFairiesArcher#1,UnitDesignMadFairiesArcher#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Necrophages -->
+  <FactionAffinity                  Name="AffinityNecrophages"                  SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityNecrophages"/>
+    <DefaultAffinityMapping         Name="AffinityMappingNecrophages"/>
+    <Personality                    Name="PersonalityAffinityNecrophages"/>
+    <SubTrait                       Name="FactionTraitNecrophagesMainQuest"                                           Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitNecrophagesRecycling"/>     <!-- Affinity: Recycling -->
+    <SubTrait                       Name="FactionTraitNecrophagesHeatWave"/> <!-- Heat wave effect: Heatborn -->
+    <SubTrait                       Name="FactionTraitNecrophagesUnit1"/>
+    <SubTrait                       Name="FactionTraitNecrophagesUnit2"/>
+    <SubTrait                       Name="FactionTraitNecrophagesUnit3"/>
+    <IntegrationDescriptor          Name="NecrophagesIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileNecrophagesHero1,UnitDesignNecrophagesSettler#1,UnitDesignNecrophagesNecrohunter#1,UnitDesignNecrophagesNecrohunter#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Rage Wizards -->
+  <FactionAffinity                  Name="AffinityRageWizards"                  SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityRageWizards"/>
+    <DefaultAffinityMapping         Name="AffinityMappingRageWizards"/>
+    <Personality                    Name="PersonalityAffinityRageWizards"/>
+    <SubTrait                       Name="FactionTraitRageWizardsMainQuest"                                           Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitRageWizardsArcanaUse"/>     <!-- Affinity: Power through Pain -->
+    <SubTrait                       Name="FactionTraitRageWizardsHeatWave"/>    <!-- Heat wave effect: damage from hate -->
+    <SubTrait                       Name="FactionTraitRageWizardsUnit1"/>
+    <SubTrait                       Name="FactionTraitRageWizardsUnit2"/>
+    <SubTrait                       Name="FactionTraitRageWizardsUnit3"/>
+    <IntegrationDescriptor          Name="RageWizardsIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileRageWizardsHero1,UnitDesignRageWizardsSettler#1,UnitDesignRageWizardsBattleMage#1,UnitDesignRageWizardsBattleMage#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Vaulters -->
+  <FactionAffinity                  Name="AffinityVaulters"                     SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityVaulters"/>
+    <DefaultAffinityMapping         Name="AffinityMappingVaulters"/>
+    <Personality                    Name="PersonalityAffinityVaulters"/>
+    <SubTrait                       Name="FactionTraitVaultersMainQuest"                                              Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitAffinityStrategic"/>          <!-- Affinity: Holy Resource -->
+    <SubTrait                       Name="FactionTraitVaultersHeatWave"/>           <!-- HeatWave effect -->
+    <SubTrait                       Name="FactionTraitVaultersUnit1"/>
+    <SubTrait                       Name="FactionTraitVaultersUnit2"/>
+    <SubTrait                       Name="FactionTraitVaultersUnit3"/>
+    <SubTrait                       Name="FactionTraitVaultersMezari"                                                 Hidden="true"/>
+	  <IntegrationDescriptor          Name="VaultersIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileVaultersHero1,UnitDesignVaultersSettler#1,UnitDesignVaultersMarine#1,UnitDesignVaultersMarine#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Roving Clans -->
+  <FactionAffinity                  Name="AffinityRovingClans"                  SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityRovingClans"/>
+    <DefaultAffinityMapping         Name="AffinityMappingRovingClans"/>
+    <Personality                    Name="PersonalityAffinityRovingClans"/>
+    <SubTrait                       Name="FactionTraitRovingClansMainQuest"                                           Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitRovingClans12"/>              <!-- Affinity: Nomadic Cities -->
+    <SubTrait                       Name="FactionTraitRovingClansHeatWave"/>    <!-- Heat wave effect: mating season -->
+    <SubTrait                       Name="FactionTraitRovingClansUnit1"/>
+    <SubTrait                       Name="FactionTraitRovingClansUnit2"/>
+    <SubTrait                       Name="FactionTraitRovingClansUnit3"/>
+    <IntegrationDescriptor          Name="RovingClansIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileRovingClansHero1,UnitDesignRovingClansSettler#1,UnitDesignRovingClansDervish#1,UnitDesignRovingClansDervish#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Drakkens -->
+  <FactionAffinity                  Name="AffinityDrakkens"                     SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityDrakkens"/>
+    <DefaultAffinityMapping         Name="AffinityMappingDrakkens"/>
+    <Personality                    Name="PersonalityAffinityDrakkens"/>
+    <SubTrait                       Name="FactionTraitDrakkensMainQuest"                                              Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitDrakkens6"/>                    <!-- Affinity: Diplomatic Pressure -->
+    <SubTrait                       Name="FactionTraitDrakkensHeatWave"/>               <!-- Heat Wave effect-->
+    <SubTrait                       Name="FactionTraitDrakkensUnit1"/>
+    <SubTrait                       Name="FactionTraitDrakkensUnit2"/>
+    <SubTrait                       Name="FactionTraitDrakkensUnit3"/>
+    <IntegrationDescriptor          Name="DrakkensIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileDrakkensHero1,UnitDesignDrakkensSettler#1,UnitDesignDrakkensDrakkenling#1,UnitDesignDrakkensDrakkenling#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Cultists -->
+  <FactionAffinity                  Name="AffinityCultists"                     SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityCultists"/>
+    <DefaultAffinityMapping         Name="AffinityMappingCultists"/>
+    <Personality                    Name="PersonalityAffinityCultists"/>
+    <SubTrait                       Name="FactionTraitCultistsMainQuest"                                              Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitCultists7"/>                    <!-- Affinity: High Seat of the Queen -->
+    <SubTrait                       Name="FactionTraitCultistsHeatWave"/>          <!-- Heat wave effect -->
+    <SubTrait                       Name="FactionTraitCultistsUnit1"/>
+    <SubTrait                       Name="FactionTraitCultistsUnit2"/>
+    <SubTrait                       Name="FactionTraitCultistsUnit3"/>
+    <IntegrationDescriptor          Name="CultistsIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileCultistsHero1,UnitDesignCultistsSettler#1,UnitDesignCultistsPreacher#1,UnitDesignCultistsPreacher#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Mezari -->
+  <FactionAffinity                  Name="AffinityMezari"                       SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityMezari"/>
+    <DefaultAffinityMapping         Name="AffinityMappingMezari"/>
+    <Personality                    Name="PersonalityAffinityVaulters"/>
+    <SubTrait                       Name="FactionTraitVaultersMainQuest"                                              Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitAffinityStrategic"/>        <!-- Affinity: Holy Resource -->
+    <SubTrait                       Name="FactionTraitVaultersHeatWave"/>           <!-- HeatWave effect -->
+    <SubTrait                       Name="FactionTraitMezariUnit1"/>
+    <SubTrait                       Name="FactionTraitMezariUnit2"/>
+    <SubTrait                       Name="FactionTraitMezariUnit3"/>
+    <SubTrait                       Name="FactionTraitVaultersMezari"                                                 Hidden="true"/>
+    <IntegrationDescriptor          Name="VaultersIntegrationDescriptor1"/>                   
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileMezariHero1,UnitDesignMezariSettler#1,UnitDesignMezariMarine#1,UnitDesignMezariMarine#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Replicants -->
+  <FactionAffinity                  Name="AffinityReplicants"                   SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityReplicants"/>
+    <DefaultAffinityMapping         Name="AffinityMappingReplicants"/>
+    <Personality                    Name="PersonalityAffinityReplicants"/>
+    <SubTrait                       Name="FactionTraitReplicantsMainQuest"                                            Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitReplicants1"/>            <!-- Affinity: Science-Phobic -->
+    <SubTrait                       Name="FactionTraitReplicantsHeatWave"/>      <!-- Heat wave effect -->
+    <SubTrait                       Name="FactionTraitReplicantsUnit1"/>
+    <SubTrait                       Name="FactionTraitReplicantsUnit2"/>
+    <SubTrait                       Name="FactionTraitReplicantsUnit3"/>
+    <IntegrationDescriptor          Name="ReplicantsIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileReplicantsHero1,UnitDesignReplicantsSettler#1,UnitDesignReplicantsAssassin#1,UnitDesignReplicantsAssassin#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Winter Shifters -->
+  <FactionAffinity                  Name="AffinityWinterShifters"               SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityWinterShifters"/>
+    <DefaultAffinityMapping         Name="AffinityMappingWinterShifters"/>
+    <Personality                    Name="PersonalityAffinityWinterShifters"/>
+    <SubTrait                       Name="FactionTraitWinterShiftersMainQuest"                                        Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitWinterShifters1"/>        <!-- Affinity: Shifting -->
+    <SubTrait                       Name="FactionTraitWinterShiftersHeatWave"/> <!-- Heat wave effect: Shifter's hurry -->
+    <SubTrait                       Name="FactionTraitWinterShiftersUnit1"/>
+    <SubTrait                       Name="FactionTraitWinterShiftersUnit2"/>
+    <SubTrait                       Name="FactionTraitWinterShiftersUnit3"/>
+    <IntegrationDescriptor          Name="WinterShiftersIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileWinterShiftersHero2,UnitDesignWinterShiftersSettler#1,UnitDesignWinterShiftersFeline#1,UnitDesignWinterShiftersFeline#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Sea Demons -->
+  <FactionAffinity                  Name="AffinitySeaDemons"                    SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinitySeaDemons"/>
+    <DefaultAffinityMapping         Name="AffinityMappingSeaDemons"/>
+    <Personality                    Name="PersonalityAffinitySeaDemons"/>
+    <SubTrait                       Name="FactionTraitSeaDemonsMainQuest"                                             Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitSeaDemons1"/>             <!-- Affinity: Neptunian -->
+    <SubTrait                       Name="FactionTraitSeaDemonsHeatWave"/>     <!-- Heat wave effect: wave masters -->
+    <SubTrait                       Name="FactionTraitSeaDemonsUnit1"/>
+    <SubTrait                       Name="FactionTraitSeaDemonsUnit2"/>
+    <SubTrait                       Name="FactionTraitSeaDemonsUnit3"/>
+    <IntegrationDescriptor          Name="SeaDemonsIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileSeaDemonsHero5,UnitDesignSeaDemonsSettler#1,UnitDesignSeaDemonsMastermind#1,UnitDesignSeaDemonsMastermind#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+    <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Conditional">
+      <Key Name="30"/>
+      <Key Name="40"/>
+      <Key Name="50"/>
+    </OptionDefinitionConstraint>
+    <OptionDefinitionConstraint OptionName="WorldShape" Type="Conditional">
+      <Key Name="2LargeContinents"/>
+      <Key Name="4Continents"/>
+      <Key Name="FewContinents"/>
+      <Key Name="ManyContinents"/>
+      <Key Name="Supercontinent"/>
+      <Key Name="LargeSupercontinent"/>
+      <Key Name="LargeIslands"/>
+      <Key Name="Islands"/>
+      <Key Name="Custom"/>
+    </OptionDefinitionConstraint>
+  </FactionAffinity>
+    
+  <!-- Flames -->
+  <FactionAffinity                  Name="AffinityFlames"                       SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityFlames"/>
+    <DefaultAffinityMapping         Name="AffinityMappingFlames"/>
+    <Personality                    Name="PersonalityAffinityFlames"/>
+    <SubTrait                       Name="FactionTraitFlamesMainQuest"                                                Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitFlames3"/>     <!-- Affinity: Lythovores -->
+    <SubTrait                       Name="FactionTraitFlamesUnit1"/>
+    <SubTrait                       Name="FactionTraitFlamesUnit2"/>
+    <SubTrait                       Name="FactionTraitFlamesUnit3"/>
+    <SubTrait                       Name="FactionTraitFlamesHeatWave"/>      <!-- Heat wave effect -->
+    <IntegrationDescriptor          Name="FlamesIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileFlamesHero1,UnitDesignFlamesSettler#1,UnitDesignFlamesGolem#1,UnitDesignFlamesGolem#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+    <OptionDefinitionConstraint OptionName="VolcanicActivity" Type="Conditional">
+      <Key Name="Some"/>
+      <Key Name="Many"/>
+    </OptionDefinitionConstraint>
+  </FactionAffinity>
+
+  <!-- Mimics -->
+  <FactionAffinity                  Name="AffinityMimics"                       SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityMimics"/>
+    <DefaultAffinityMapping         Name="AffinityMappingMimics"/>
+    <Personality                    Name="PersonalityAffinityMimics"/>
+    <SubTrait                       Name="FactionTraitMimicsMainQuest"                                                Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitMimics1"/>                <!-- Affinity: Creeping Presence -->
+    <!-- SubTrait                       Name="FactionTraitMimics2"/-->                <!-- Affinity: Industry Phobic -->
+    <SubTrait                       Name="FactionTraitMimicsUnit1"/>
+    <SubTrait                       Name="FactionTraitMimicsUnit2"/>
+    <SubTrait                       Name="FactionTraitMimicsUnit3"/>
+    <SubTrait                       Name="FactionTraitMimicsHeatWave"/>         <!-- Heat wave effect -->
+    <IntegrationDescriptor          Name="MimicsIntegrationDescriptor1"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitProfileMimicsHero1,UnitDesignMimicsSettler#1,UnitDesignMimicsUnit1#1,UnitDesignMimicsUnit1#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Faction Tutorial-->
+  <FactionAffinity                  Name="AffinityTutorial"                     SubCategory="TutorialFactionAffinity" Hidden="true" Cost="80">
+    <SimulationDescriptorReference  Name="AffinityTutorial"/>
+    <Personality                    Name="PersonalityAffinityVaulters"/>
+    <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
+    <SubTrait                       Name="FactionTraitTutorialUnit1"                                                  Hidden="true"/>
+    <SubTrait                       Name="FactionTraitTutorialUnit2"                                                  Hidden="true"/>
+    <SubTrait                       Name="FactionTraitTutorialUnit3"                                                  Hidden="true"/>
+    <Command                        Name="CreateArmy"                           Arguments="UnitDesignTutorialSettler#1"/>
+    <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Colossus -->
+  <FactionAffinity                  Name="AffinityColossus"                                                           Hidden="true">
+    <SimulationDescriptorReference  Name="AffinityColossus"/>
+  </FactionAffinity>
+
+  <!-- Guardian Killers -->
+  <FactionAffinity                  Name="AffinityGuardianKiller"                                                     Hidden="true">
+    <SimulationDescriptorReference  Name="AffinityGuardianKiller"/>
+  </FactionAffinity>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######        MINOR FACTIONS        ###### -->
+  <!-- ########################################## -->
+
+  <FactionAffinity                  Name="AffinityBos"                          SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityBos"/>
+    <Personality                    Name="PersonalityMinorFactionWeak"/>
+    <SimulationDescriptorReference  Name="FactionTraitBos"/>
+    <SimulationDescriptorReference  Name="AffinityBos"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityCeratan"                      SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityCeratan"/>
+    <Personality                    Name="PersonalityMinorFactionWeak"/>
+    <SimulationDescriptorReference  Name="FactionTraitCeratan"/>
+    <SimulationDescriptorReference  Name="AffinityCeratan"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityDelvers"                      SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityDelvers"/>
+    <Personality                    Name="PersonalityMinorFactionNormal"/>
+    <SimulationDescriptorReference  Name="FactionTraitDelvers"/>
+    <SimulationDescriptorReference  Name="AffinityDelvers"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityErycis"                       SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityErycis"/>
+    <Personality                    Name="PersonalityMinorFactionStrong"/>
+    <SimulationDescriptorReference  Name="FactionTraitErycis"/>
+    <SimulationDescriptorReference  Name="AffinityErycis"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityHaunts"                       SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityHaunts" />
+    <Personality                    Name="PersonalityMinorFactionStrong"/>
+    <SimulationDescriptorReference  Name="FactionTraitHaunts"/>
+    <SimulationDescriptorReference  Name="AffinityHaunts" />
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityKazanji"                      SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityKazanji"/>
+    <Personality                    Name="PersonalityMinorFactionStrong"/>
+    <SimulationDescriptorReference  Name="FactionTraitKazanji"/>
+    <SimulationDescriptorReference  Name="AffinityKazanji"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinitySistersOfMercy"               SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinitySistersOfMercy"/>
+    <Personality                    Name="PersonalityMinorFactionWeak"/>
+    <SimulationDescriptorReference  Name="FactionTraitSistersOfMercy"/>
+    <SimulationDescriptorReference  Name="AffinitySistersOfMercy"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinitySilics"                       SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinitySilics"/>
+    <Personality                    Name="PersonalityMinorFactionNormal"/>
+    <SimulationDescriptorReference  Name="FactionTraitSilics"/>
+    <SimulationDescriptorReference  Name="AffinitySilics"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityUrces"                        SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityUrces"/>
+    <Personality                    Name="PersonalityMinorFactionNormal"/>
+    <SimulationDescriptorReference  Name="FactionTraitUrces"/>
+    <SimulationDescriptorReference  Name="AffinityUrces"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityJotus"                        SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityJotus"/>
+    <Personality                    Name="PersonalityMinorFactionStrong"/>
+    <SimulationDescriptorReference  Name="FactionTraitJotus"/>
+    <SimulationDescriptorReference  Name="AffinityJotus"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityHurnas"                       SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityHurnas"/>
+    <Personality                    Name="PersonalityMinorFactionNormal"/>
+    <SimulationDescriptorReference  Name="FactionTraitHurnas"/>
+    <SimulationDescriptorReference  Name="AffinityHurnas"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityGauran"                       SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityGauran"/>
+    <Personality                    Name="PersonalityMinorFactionNormal"/>
+    <SimulationDescriptorReference  Name="FactionTraitGauran"/>
+    <SimulationDescriptorReference  Name="AffinityGauran"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityBirdhive"                     SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityBirdhive"/>
+    <Personality                    Name="PersonalityMinorFactionNormal"/>
+    <SimulationDescriptorReference  Name="FactionTraitBirdhive"/>
+    <SimulationDescriptorReference  Name="AffinityBirdhive"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityGeldirus"                     SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityGeldirus"/>
+    <Personality                    Name="PersonalityMinorFactionStrong"/>
+    <SimulationDescriptorReference  Name="FactionTraitGeldirus"/>
+    <SimulationDescriptorReference  Name="AffinityGeldirus"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityEyelessOnes"                  SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityEyelessOnes"/>
+    <Personality                    Name="PersonalityMinorFactionStrong"/>
+    <SimulationDescriptorReference  Name="FactionTraitEyelessOnes"/>
+    <SimulationDescriptorReference  Name="AffinityEyelessOnes"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityDorgeshi"                     SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityDorgeshi"/>
+    <Personality                    Name="PersonalityMinorFactionStrong"/>
+    <SimulationDescriptorReference  Name="FactionTraitDorgeshi"/>
+    <SimulationDescriptorReference  Name="AffinityDorgeshi"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityFomorians"                    SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityBrokenLords"/>
+    <SimulationDescriptorReference  Name="FactionTraitFomorians"/>
+    <SimulationDescriptorReference  Name="AffinityFomorians"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityDawnShua"                     SubCategory="MinorFactionAffinity"    Hidden="true">
+    <Personality                    Name="PersonalityAffinityDawnShua"/>
+    <Personality                    Name="PersonalityMinorFactionStrong"/>
+    <SimulationDescriptorReference  Name="FactionTraitDawnShua"/>
+    <SimulationDescriptorReference  Name="AffinityDawnShua"/>
+  </FactionAffinity>
+
+  <!-- Kaijus -->
+  
+  <FactionAffinity                  Name="AffinityKaijus1"                      SubCategory="KaijuFactionAffinity"    Hidden="true">
+    <SimulationDescriptorReference  Name="AffinityKaijus1"/>
+  </FactionAffinity>
+  
+  <FactionAffinity                  Name="AffinityKaijus2"                      SubCategory="KaijuFactionAffinity"    Hidden="true">
+    <SimulationDescriptorReference  Name="AffinityKaijus2"/>
+  </FactionAffinity>
+
+  <FactionAffinity                  Name="AffinityKaijus3"                      SubCategory="KaijuFactionAffinity"    Hidden="true">
+    <SimulationDescriptorReference  Name="AffinityKaijus3"/>
+  </FactionAffinity>
+
+
+  <!-- Lesser Empire -->
+  <FactionAffinity                  Name="AffinityLesser"                       SubCategory="LesserFactionAffinity"   Hidden="true">
+    <Personality                    Name="PersonalityAffinityBrokenLords"/>
+    <SimulationDescriptorReference  Name="AffinityLesser"/>
+  </FactionAffinity>
+
+</Datatable>

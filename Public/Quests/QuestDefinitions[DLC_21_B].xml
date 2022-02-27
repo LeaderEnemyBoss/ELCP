@@ -1,0 +1,1162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<!--============ TITLE: Chapter 1: Who Goes There? ============-->
+	<QuestDefinition Name="DLC21_07Chapter1WhoGoesThere" Category="SideQuest" SubCategory="Ruins"
+					 Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+		<!--============ TAGS ============-->
+		<Tags>Interact</Tags>
+
+		<!--============ PREREQUISITES ============-->
+		<Prerequisites Target="$(Empire)">
+			<DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+			<PathPrerequisite Inverted="true">../EmpireTypeMajor,AffinityRovingClans</PathPrerequisite>
+			<PathPrerequisite Inverted="true">../EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+			<PathPrerequisite Inverted="true">../EmpireTypeMajor,AffinitySeaDemons</PathPrerequisite>
+		</Prerequisites>
+
+		<!--============ VARIABLES ============-->
+
+		<Vars>
+
+			<Var VarName="$InstigatorEmpire">
+				<From Source="$Empire"/>
+			</Var>
+
+			<!--Get the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOI">
+				<From Source="$TargetPointsOfInterest"/>
+			</Var>
+
+			<!--Get the position of the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOILocation">
+				<From Source="$TargetPointsOfInterest.$Position"/>
+			</Var>
+
+			<!--Set the Strategic Resource to gather-->
+			<Var VarName="$AllRegionsButInitialCityRegion">
+				<From Source="$Regions">
+					<Where>
+						<FilterRegionIsContinent/>
+						<FilterRegionByDistance PositionToCompareVarName="$InitialQuestPOILocation" DistanceMin="0"/>
+					</Where>
+				</From>
+			</Var>
+
+			<Var VarName="$NearestRegionsFromTheInspectedPOI">
+				<From Source="$Regions">
+					<OrderBy>
+						<SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialQuestPOILocation"/>
+					</OrderBy>
+				</From>
+			</Var>
+
+			<Var VarName="$QuestMarkerStrategicPOI"/>
+
+			<!-- Select a random strategic resource -->
+			<Var VarName="$StrategicPOI">
+				<First>
+					<From Source="$NearestRegionsFromTheInspectedPOI.$PointsOfInterest">
+						<Where>
+							<PathPrerequisite Flags="Prerequisite">ResourceTypeStrategic</PathPrerequisite>
+							<PathPrerequisite Flags="Prerequisite">ResourceDepositTypeStrategic1</PathPrerequisite>
+						</Where>
+					</From>
+				</First>
+			</Var>
+
+			<Var VarName="$NameOfStrategicResourceToGather">
+				<Any>
+					<From Source="$StrategicPOI.$ResourceName"/>
+				</Any>
+			</Var>
+
+			<!-- Set the different amount of resource to gather -->
+			<Var VarName="$StrategicResourceAmount" Value="20"/>
+
+			<InterpretedVar VarName="InitialResourceAmount" Target="$(Empire)">
+				<Expression>$Property(ClassEmpire:Strategic1Stock)</Expression>
+			</InterpretedVar>
+
+			<InterpretedVar VarName="$GuiResourceAmount" Target="$(Empire)">
+				<Expression>($(InitialResourceAmount)) + 20</Expression>
+			</InterpretedVar>
+
+			<!-- For localization purposes -->
+			<LocalizationVar LocalizationKey="$LuxuryName"    Source="$StrategicPOI" />
+			<LocalizationVar LocalizationKey="$LuxuryAmount"  Source="$GuiResourceAmount"  />
+
+		</Vars>
+
+		<!--============ SEQUENCE ============-->
+		<Controller_Sequence>
+
+			<Action_AddQuestMarker TargetEntityVarName="$StrategicPOI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerStrategicPOI"/>
+			<Action_UpdateStep StepName="DLC21_Chapter1WhoGoesThere_Step1" State="InProgress"/>
+
+			<Controller_Parallel CompletionPolicy="Any">
+				<Decorator_BeginTurn Initiator="Empire">
+					<ConditionCheck_Prerequisite>
+						<Prerequisites Target="$Empire">
+							<InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:Strategic1Stock) ge (20 + $(InitialResourceAmount))</InterpreterPrerequisite>
+						</Prerequisites>
+					</ConditionCheck_Prerequisite>
+				</Decorator_BeginTurn>
+			</Controller_Parallel>
+
+			<Action_UpdateStep StepName="DLC21_Chapter1WhoGoesThere_Step1" State="Completed"/>
+			<Action_UpdateQuest State="Completed"/>
+			<Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerStrategicPOI"/>
+
+		</Controller_Sequence>
+
+		<!--============ REWARDS ============-->
+		<Steps>
+			<Step Name="DLC21_Chapter1WhoGoesThere_Step1">
+				<ProgressionRange StartValue="0" EndValue="30"/>
+				<Reward Droplist="DroplistGlobalQuestDustEra1" />
+			</Step>
+		</Steps>
+
+		<!--============ TRIGGERS ============-->
+		<Triggers>
+			<OnQuestCompleted>
+				<Tags>DLC21_Chapter2TheToolForTheJob</Tags>
+			</OnQuestCompleted>
+		</Triggers>
+
+	</QuestDefinition>
+
+	<!--============ TITLE: Chapter 2: The tool for the job ============-->
+	<QuestDefinition Name="DLC21_08Chapter2TheToolForTheJob" Category="SideQuest" SubCategory="Ruins"
+					   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+		<!--============ TAGS ============-->
+		<Tags>DLC21_Chapter2TheToolForTheJob</Tags>
+
+		<!--============ PREREQUISITES ============-->
+		<Prerequisites Target="$(Empire)">
+			<DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
+		</Prerequisites>
+
+		<!--============ VARIABLES ============-->
+
+		<Vars>
+
+			<Var VarName="$InstigatorEmpire">
+				<From Source="$Empire"/>
+			</Var>
+
+		</Vars>
+
+		<!--============ SEQUENCE ============-->
+		<Controller_Sequence>
+
+			<Action_UpdateStep StepName="DLC21_Chapter2TheToolForTheJob_Step1" State="InProgress"/>
+
+			<Controller_Loop LoopCount="2">
+				<Decorator_Inspect ForceDifferentTargets="true" Output_InteractionTargetVarName="$Global_InspectionTarget" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InteractionTargetIsGlobal="true" LinkedStepProgression="DLC21_Chapter2TheToolForTheJob_Step1" Initiator="Empire">
+					<ConditionCheck_Prerequisite>
+						<Prerequisites Target="$Global_InspectionTarget">
+							<PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+						</Prerequisites>
+						<Prerequisites Target="$InspectionInstigatorSimObject">
+							<PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+						</Prerequisites>
+					</ConditionCheck_Prerequisite>
+				</Decorator_Inspect>
+			</Controller_Loop>
+
+			<Action_UpdateStep StepName="DLC21_Chapter2TheToolForTheJob_Step1" State="Completed"/>
+			<Action_UpdateQuest State="Completed"/>
+
+		</Controller_Sequence>
+
+		<!--============ REWARDS ============-->
+		<Steps>
+			<Step Name="DLC21_Chapter2TheToolForTheJob_Step1">
+				<ProgressionRange StartValue="0" EndValue="2"/>
+				<Reward Droplist="DroplistGlobalQuestStrategicResourceEra2" />
+			</Step>
+		</Steps>
+
+		<!--============ TRIGGERS ============-->
+		<Triggers>
+			<OnQuestCompleted>
+				<Tags>DLC21_Chapter3OriginOfTheEvil</Tags>
+			</OnQuestCompleted>
+		</Triggers>
+
+
+	</QuestDefinition>
+
+	<!--============ TITLE: Chapter 3: Origin of the Evil ============-->
+	<!--TODO: Reward: New science trinket-->
+	<QuestDefinition Name="DLC21_09Chapter3OriginOfTheEvil" Category="SideQuest" SubCategory="Ruins"
+					   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+		<!--============ TAGS ============-->
+		<Tags>DLC21_Chapter3OriginOfTheEvil</Tags>
+
+		<!--============ PREREQUISITES ============-->
+		<Prerequisites Target="$(Empire)">
+			<DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
+		</Prerequisites>
+
+		<!--============ VARIABLES ============-->
+
+		<Vars>
+
+			<Var VarName="$InstigatorEmpire">
+				<From Source="$Empire"/>
+			</Var>
+
+			<InterpretedVar VarName="TotalScience" Target="$(Empire)">
+				<Expression>45 + $Property(ClassEmpire:EmpireResearch)</Expression>
+			</InterpretedVar>
+
+		</Vars>
+		<LocalizationVar LocalizationKey="$Science" Source="$TotalScience"/>
+
+		<!--============ SEQUENCE ============-->
+		<Controller_Sequence>
+
+			<Action_UpdateStep StepName="DLC21_Chapter3OriginOfTheEvil_Step1" State="InProgress"/>
+
+			<Decorator_BeginTurn Initiator="Empire">
+				<ConditionCheck_Prerequisite>
+					<Prerequisites Target="$InstigatorEmpire">
+						<InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:EmpireResearch) ge ($(TotalScience))</InterpreterPrerequisite>
+					</Prerequisites>
+				</ConditionCheck_Prerequisite>
+			</Decorator_BeginTurn>
+
+			<Action_UpdateStep StepName="DLC21_Chapter3OriginOfTheEvil_Step1" State="Completed"/>
+			<Action_UpdateQuest State="Completed"/>
+
+		</Controller_Sequence>
+
+		<!--============ REWARDS ============-->
+		<Steps>
+			<Step Name="DLC21_Chapter3OriginOfTheEvil_Step1">
+				<Reward Droplist="DroplistMadFairiesMainQuestRewards" />
+			</Step>
+		</Steps>
+
+		<!--============ TRIGGERS ============-->
+		<Triggers>
+			<OnQuestCompleted>
+				<Tags>DLC21_Chapter4OldVoices</Tags>
+			</OnQuestCompleted>
+		</Triggers>
+
+	</QuestDefinition>
+
+	<!--============ TITLE: Chapter 4: Old Voices ============-->
+	<!--TODO: Reward: One of the Science victory Condition Techs-->
+	<QuestDefinition Name="DLC21_10Chapter4OldVoices" Category="SideQuest" SubCategory="Ruins"
+					   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+		<!--============ TAGS ============-->
+		<Tags>DLC21_Chapter4OldVoices</Tags>
+
+		<!--============ PREREQUISITES ============-->
+		<Prerequisites Target="$(Empire)">
+			<DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
+		</Prerequisites>
+
+		<!--============ VARIABLES ============-->
+		<Vars>
+
+			<Var VarName="$InstigatorEmpire">
+				<From Source="$Empire"/>
+			</Var>
+
+			<Var VarName="$Global_InspectionTarget" FromGlobal="true" />
+
+			<Var VarName="$PositionToSpawn">
+				<From Source="$Global_InspectionTarget.$Position"/>
+			</Var>
+
+			<Var VarName="$RegionQuest">
+				<From Source="$PositionToSpawn.$Region"/>
+			</Var>
+
+		</Vars>
+
+		<!--============ SEQUENCE ============-->
+		<Controller_Sequence>
+			<!--Step 1-->
+			<Action_UpdateStep StepName="DLC21_Chapter4OldVoices_Step1" State="InProgress"/>
+			<Action_AddQuestMarker TargetEntityVarName="$Global_InspectionTarget" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerStrategicPOI"/>
+			<Controller_Sequence>
+				<Decorator_Inspect TargetEntityVarName="$Global_InspectionTarget" Initiator="Empire" Output_InstigatorGUIDVarName="$ArmyID1"/>
+			</Controller_Sequence>
+			<Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerStrategicPOI"/>
+			<Action_UpdateStep StepName="DLC21_Chapter4OldVoices_Step1" State="Completed"/>
+
+			<!--Step 2-->
+			<Action_UpdateStep StepName="DLC21_Chapter4OldVoices_Step2" State="InProgress"/>
+			<Action_SpawnArmy HaveActionPointOnSpawn="true" CanMoveOnSpawn="true" SpawnLocationVarName="$PositionToSpawn" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter1" Output_EnemyArmyGUIDVarName="$EnemyArmyID1"/>
+			<Action_UpdateArmyObjective ArmyGUIDVarName="$EnemyArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+
+			<Controller_Parallel CompletionPolicy="Any">
+
+				<!-- Check the 11 turns -->
+				<Controller_Sequence>
+					<Controller_Loop LoopCount="11">
+						<Decorator_EndTurn Initiator="Empire"/>
+					</Controller_Loop>
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID1" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID2" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID3" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID4" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID5" />
+					<Action_UpdateStep StepName="DLC21_Chapter4OldVoices_Step2" State="Failed"/>
+					<Action_UpdateQuest State="Failed"/>
+				</Controller_Sequence>
+
+				<!-- Check if the Army is still in the region or alive -->
+				<Controller_Sequence>
+					<Decorator_EndTurn Initiator="Empire">
+						<ConditionCheck_DistanceArmyToLocation Inverted="true" LocationVarName="$PositionToSpawn" DistanceVarName="3" RegionVarName="$RegionQuest" ExcludeWaterTile="true"/>
+					</Decorator_EndTurn>
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID1" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID2" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID3" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID4" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID5" />
+					<Action_UpdateStep StepName="DLC21_Chapter4OldVoices_Step2" State="Failed"/>
+					<Action_UpdateQuest State="Failed"/>
+				</Controller_Sequence>
+
+				<!-- Spawns armies during 10 turns -->
+				<Controller_Sequence>
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Action_SpawnArmy HaveActionPointOnSpawn="true" CanMoveOnSpawn="true" SpawnLocationVarName="$PositionToSpawn" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter1" Output_EnemyArmyGUIDVarName="$EnemyArmyID2"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$EnemyArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Action_SpawnArmy HaveActionPointOnSpawn="true" CanMoveOnSpawn="true" SpawnLocationVarName="$PositionToSpawn" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter1" Output_EnemyArmyGUIDVarName="$EnemyArmyID3"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$EnemyArmyID3" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Action_SpawnArmy HaveActionPointOnSpawn="true" CanMoveOnSpawn="true" SpawnLocationVarName="$PositionToSpawn" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter1" Output_EnemyArmyGUIDVarName="$EnemyArmyID4"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$EnemyArmyID4" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Action_SpawnArmy HaveActionPointOnSpawn="true" CanMoveOnSpawn="true" SpawnLocationVarName="$PositionToSpawn" ArmyDroplist="DroplistArmyDefinitionMainQuestBrokenLordsChapter1" Output_EnemyArmyGUIDVarName="$EnemyArmyID5"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$EnemyArmyID5" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="DLC21_Chapter4OldVoices_Step2"/>
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID1" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID2" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID3" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID4" />
+					<Action_DestroyArmy ArmyGUIDVarName="$EnemyArmyID5" />
+					<Action_UpdateStep StepName="DLC21_Chapter4OldVoices_Step2" State="Completed"/>
+					<Action_UpdateQuest State="Completed"/>
+
+				</Controller_Sequence>
+
+			</Controller_Parallel>
+
+		</Controller_Sequence>
+
+		<!--============ REWARDS ============-->
+		<Steps>
+			<Step Name="DLC21_Chapter4OldVoices_Step1">
+				<Reward Droplist="DroplistGlobalQuestDustEra1" />
+			</Step>
+			<Step Name="DLC21_Chapter4OldVoices_Step2">
+				<ProgressionRange StartValue="0" EndValue="10"/>
+				<Reward Droplist="DroplistScience" />
+				<Reward Droplist="DroplistGlobalQuestDustEra4" />
+			</Step>
+		</Steps>
+
+	</QuestDefinition>
+
+	<!--============ TITLE: Their Back was Turned ============-->
+	<!--TODO: Reward: Advanced Military Tech (tier 4 )-->
+	<QuestDefinition Name="DLC21_11TheirBackWasTurned" Category="SideQuest" SubCategory="Ruins"
+				   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+		<!--============ TAGS ============-->
+		<Tags>Interact</Tags>
+
+		<!--============ PREREQUISITES ============-->
+		<Prerequisites Target="$(Empire)">
+			<DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:AllianceCount) ge 1 or $Property(ClassEmpire:TruceCount) ge 1</InterpreterPrerequisite>
+			<PathPrerequisite Flags="Prerequisite" Inverted="true">../EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+		</Prerequisites>
+
+		<!--============ VARIABLES ============-->
+
+		<Vars>
+			<!--Get the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOI">
+				<From Source="$TargetPointsOfInterest"/>
+			</Var>
+
+			<!--Get the position of the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOILocation">
+				<From Source="$TargetPointsOfInterest.$Position"/>
+			</Var>
+
+			<Var VarName="$InstigatorEmpire">
+				<From Source="$Empire"/>
+			</Var>
+		</Vars>
+
+		<!--============ SEQUENCE ============-->
+		<Controller_Sequence>
+			<!--Step 1-->
+			<Action_UpdateStep StepName="DLC21_TheirBackWasTurned_Step1" State="InProgress"/>
+			<Controller_Parallel CompletionPolicy="Any">
+				<Controller_Sequence>
+					<Decorator_DiplomaticContractChange Initiator="Empire" DiplomaticTermDefinitionName="AllianceToWar" Output_EmpireVarName="$TargetedEmpire">
+					</Decorator_DiplomaticContractChange>
+				</Controller_Sequence>
+				<Controller_Sequence>
+					<Decorator_DiplomaticContractChange Initiator="Empire" DiplomaticTermDefinitionName="TruceToWar" Output_EmpireVarName="$TargetedEmpire">
+					</Decorator_DiplomaticContractChange>
+				</Controller_Sequence>
+				<Controller_Sequence>
+					<Decorator_DiplomaticContractChange Initiator="Empire" DiplomaticTermDefinitionName="AllianceToColdWar" Output_EmpireVarName="$TargetedEmpire">
+					</Decorator_DiplomaticContractChange>
+				</Controller_Sequence>
+				<Controller_Sequence>
+					<Decorator_DiplomaticContractChange Initiator="Empire" DiplomaticTermDefinitionName="TruceToColdWar" Output_EmpireVarName="$TargetedEmpire">
+					</Decorator_DiplomaticContractChange>
+				</Controller_Sequence>
+			</Controller_Parallel>
+			<Action_UpdateStep StepName="DLC21_TheirBackWasTurned_Step1" State="Completed"/>
+
+			<!--Step 2-->
+			<Action_UpdateStep StepName="DLC21_TheirBackWasTurned_Step2" State="InProgress"/>
+			<Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+			<Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+			<Controller_Parallel CompletionPolicy="Any">
+
+				<!--if army defeated counter reachs 3-->
+				<Controller_Sequence>
+					<Decorator_BeginTurn Initiator="Empire">
+						<ConditionCheck_IsStepProgressionComplete StepName="DLC21_TheirBackWasTurned_Step2"/>
+					</Decorator_BeginTurn>
+					<Action_UpdateStep StepName="DLC21_TheirBackWasTurned_Step2" State="Completed"/>
+					<Action_UpdateQuest State="Completed"/>
+				</Controller_Sequence>
+
+				<!--Serialization issue fix-->
+				<Controller_Sequence>
+					<Controller_Loop LoopCount="1000">
+						<Action_UpdateVar EmpireVarName="$TargetedEmpire"/>
+						<Decorator_BeginTurn/>
+					</Controller_Loop>
+				</Controller_Sequence>
+
+				<!--if player kills the 3 armies-->
+				<Controller_Sequence>
+					<Controller_Loop LoopCount="3">
+						<Decorator_KillArmy UpdateVarName="true" FocusedEmpireVarName="$TargetedEmpire" Output_LooserVarName="$LooserArmy" TargetOption="Any" LinkedStepProgression="DLC21_TheirBackWasTurned_Step2" Initiator="Empire" CountAllDeadEnemyArmiesForStepProgression="true"/>
+					</Controller_Loop>
+					<Action_UpdateStep StepName="DLC21_TheirBackWasTurned_Step2" State="Completed"/>
+					<Action_UpdateQuest State="Completed"/>
+				</Controller_Sequence>
+
+				<!--if turns runs out-->
+				<Controller_Sequence>
+					<Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" Initiator="Empire">
+					</Decorator_TimerEnded>
+					<Action_UpdateStep StepName="DLC21_TheirBackWasTurned_Step2" State="Failed"/>
+					<Action_UpdateQuest State="Failed"/>
+				</Controller_Sequence>
+
+			</Controller_Parallel>
+
+		</Controller_Sequence>
+
+		<!--============ REWARDS ============-->
+		<Steps>
+			<Step Name="DLC21_TheirBackWasTurned_Step1">
+				<Reward Droplist="DroplistGlobalQuestDustEra1" />
+			</Step>
+			<Step Name="DLC21_TheirBackWasTurned_Step2">
+				<ProgressionRange StartValue="0" EndValue="3"/>
+				<Reward Droplist="DroplistScience" />
+				<Reward Droplist="DroplistGlobalQuestDustEra4" />
+			</Step>
+		</Steps>
+
+	</QuestDefinition>
+
+	<!--============ TITLE: Sounds from below ============-->
+	<QuestDefinition Name="DLC21_16SoundsFromBelow" Category="SideQuest" SubCategory="Ruins"
+				 Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+		<!--============ TAGS ============-->
+		<Tags>Interact</Tags>
+
+		<!--============ PREREQUISITES ============-->
+		<Prerequisites Target="$(Empire)">
+			<DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (20 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 20</InterpreterPrerequisite>
+
+		</Prerequisites>
+
+		<!--============ VARIABLES ============-->
+
+		<Vars>
+
+			<Var VarName="$InstigatorEmpire">
+				<From Source="$Empire"/>
+			</Var>
+
+			<!--Get the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOI">
+				<From Source="$TargetPointsOfInterest">
+					<Where>
+						<FilterRegionIsContinent/>
+						<PathPrerequisite>!NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+					</Where>
+				</From>
+			</Var>
+
+
+			<!--Get the position of the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOILocation">
+				<From Source="$TargetPointsOfInterest.$Position"/>
+			</Var>
+
+			<Var VarName="$RewardSpawnPosition">
+				<From Source="$InitialQuestPOILocation"/>
+			</Var>
+			<!--Recien pegado-->
+			<Var VarName="$City">
+				<Any>
+					<From Source="$Empire.$Cities"/>
+				</Any>
+			</Var>
+			<Var VarName="$CityLocation">
+				<From Source="$City.$Position"/>
+			</Var>
+			<!--Set all regions but Player's regions-->
+			<Var VarName="$AllRegionsButPlayerRegions">
+				<From Source="$Regions">
+					<Where>
+						<FilterRegionIsContinent/>
+						<FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+					</Where>
+				</From>
+			</Var>
+			<!--Sort by distance from the 1st selected Player's city, all regions that doesn't belong to Player -->
+			<Var VarName="$SortedAllRegionsButPlayerRegions">
+				<From Source="$AllRegionsButPlayerRegions">
+					<OrderBy>
+						<SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialQuestPOILocation"/>
+					</OrderBy>
+				</From>
+			</Var>
+
+			<!--Set the possible locations to spawn the 1st-->
+			<Var VarName="$RegionToSpawnArmyID1">
+				<Limit LimitMin="2" LimitMax="3">
+					<From Source="$SortedAllRegionsButPlayerRegions">
+						<Where>
+							<FilterRegionIsContinent/>
+							<PathPrerequisite>!NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+						</Where>
+					</From>
+				</Limit>
+			</Var>
+			<Var VarName="$LocationsToSpawnArmyID1">
+				<From Source="$RegionToSpawnArmyID1.$Positions"/>
+			</Var>
+
+			<!--Set the possible locations to spawn the 2st-->
+			<Var VarName="$RegionToSpawnArmyID2">
+				<Limit LimitMin="2" LimitMax="3">
+					<From Source="$SortedAllRegionsButPlayerRegions">
+						<Where>
+							<FilterRegionIsContinent/>
+							<PathPrerequisite>!NavalQuestLocationTypeSunkenRuin</PathPrerequisite>
+						</Where>
+					</From>
+				</Limit>
+			</Var>
+			<Var VarName="$LocationsToSpawnArmyID2">
+				<From Source="$TargetPointsOfInterest.$Position.$Region.$Position"/>
+			</Var>
+
+			<LocalizationVar LocalizationKey="$Region1Name" Source="$RegionToSpawnArmyID1"/>
+			<LocalizationVar LocalizationKey="$Region2Name" Source="$TargetPointsOfInterest.$Position.$Region"/>
+
+			<!-- Select a random strategic resource -->
+			<Var VarName="$LuxuryResourceDepositPointOfInterest">
+				<Any>
+					<From Source="$Regions.$PointsOfInterest">
+						<Where>
+							<PathPrerequisite Inverted="false" Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury6</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury7</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury8</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury9</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury11</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury12</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury13</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury14</PathPrerequisite>
+							<PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury15</PathPrerequisite>
+						</Where>
+					</From>
+				</Any>
+			</Var>
+
+			<Var VarName="$NameOfLuxuryResourceToGather">
+				<Any>
+					<From Source="$LuxuryResourceDepositPointOfInterest.$ResourceName"/>
+				</Any>
+			</Var>
+
+			<!-- Set the different amount of resource to gather -->
+			<Var VarName="$LuxuryResourceAmount" Value="20"/>
+			<Var VarName="$LuxuryResourceAmountTransfer" Value="-20"/>
+
+			<!-- For localization purposes -->
+			<LocalizationVar LocalizationKey="$LuxuryName"    Source="$LuxuryResourceDepositPointOfInterest" />
+			<LocalizationVar LocalizationKey="$LuxuryAmount"  Source="$LuxuryResourceAmount"  />
+		</Vars>
+
+		<!--============ SEQUENCE ============-->
+		<Controller_Sequence>
+			<!--Step 1-->
+			<Action_UpdateStep StepName="DLC21_SoundsFromBelow_Step1" State="InProgress"/>
+			<Action_AddQuestMarker TargetEntityVarName="$InitialQuestPOI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerStrategicPOI"/>
+
+			<Controller_Sequence>
+				<Decorator_Inspect TargetEntityVarName="$InitialQuestPOI" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+					<ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfLuxuryResourceToGather" WantedAmountVarName="$LuxuryResourceAmount"/>
+				</Decorator_Inspect>
+				<Action_UpdateStep StepName="DLC21_SoundsFromBelow_Step1" State="Completed"/>
+				<Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerStrategicPOI"/>
+				<Action_TransferResource ResourceNameVarName="$NameOfLuxuryResourceToGather" AmountVarName="$LuxuryResourceAmountTransfer"/>
+			</Controller_Sequence>
+
+			<!--Step 2-->
+			<Action_UpdateStep StepName="DLC21_SoundsFromBelow_Step2" State="InProgress"/>
+			<Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID1" ArmyDroplist="DroplistArmyDefinitionUrkans" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+			<!--<Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire"/>-->
+			<Action_SpawnArmy SpawnLocationVarName="$LocationsToSpawnArmyID2" ArmyDroplist="DroplistArmyDefinitionUrkans" Output_EnemyArmyGUIDVarName="$ArmyID2"/>
+			<Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+
+			<Controller_Parallel CompletionPolicy="Any">
+				<!--If empire kill the lices-->
+				<Controller_Sequence>
+					<Controller_Loop LoopCount="2">
+						<Decorator_KillArmy CountAllDeadEnemyArmiesForStepProgression="true" LinkedStepProgression="DLC21_SoundsFromBelow_Step2" TargetOption="Any" Initiator="Empire" Output_Position="$RewardSpawnPosition">
+							<EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+							<EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+						</Decorator_KillArmy>
+					</Controller_Loop>
+
+					<Action_SpawnArmy SpawnLocationVarName="$RewardSpawnPosition" UseBehaviorInitiatorEmpire="true" ArmyDroplist="DroplistArmyRewardSoundFromBelow" />
+					<Action_UpdateStep StepName="DLC21_SoundsFromBelow_Step2" State="Completed"/>
+					<Action_UpdateQuest State="Completed"/>
+
+				</Controller_Sequence>
+				<!--If other empire kill the lice-->
+				<Controller_Sequence>
+					<Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+						<EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+					</Decorator_KillArmy>
+					<Action_DestroyArmy ArmyGUIDVarName="$ArmyID2" />
+					<Action_UpdateQuest State="Failed"/>
+					<Action_UpdateStep StepName="DLC21_SoundsFromBelow_Step2" State="Failed"/>
+				</Controller_Sequence>
+				<!--If other empire kill the lice-->
+				<Controller_Sequence>
+					<Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+						<EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+					</Decorator_KillArmy>
+					<Action_DestroyArmy ArmyGUIDVarName="$ArmyID1" />
+					<Action_UpdateQuest State="Failed"/>
+					<Action_UpdateStep StepName="DLC21_SoundsFromBelow_Step2" State="Failed"/>
+				</Controller_Sequence>
+			</Controller_Parallel>
+
+
+
+
+		</Controller_Sequence>
+
+		<!--============ REWARDS ============-->
+		<Steps>
+			<Step Name="DLC21_SoundsFromBelow_Step1">
+				<Reward Droplist="DroplistGlobalQuestDustEra1" />
+			</Step>
+			<Step Name="DLC21_SoundsFromBelow_Step2">
+				<ProgressionRange StartValue="0" EndValue="2"/>
+				<Reward Droplist="DroplistMadFairiesMainQuestRewards" />
+				<Reward LocalizationKey="%DLC21_SoundsFromBelow_Reward"/>
+			</Step>
+		</Steps>
+
+		<!--============ TRIGGERS ============
+		<Triggers>
+		</Triggers>
+		-->
+
+	</QuestDefinition>
+
+	<!--============ TITLE: A raging fire  ============-->
+	<QuestDefinition Name="DLC21_19ARagingFire" Category="SideQuest" SubCategory="Ruins"
+				   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+		<!--============ TAGS ============-->
+		<Tags>Interact</Tags>
+
+		<!--============ PREREQUISITES ============-->
+		<Prerequisites Target="$(Empire)">
+			<DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (40 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 40</InterpreterPrerequisite>
+		</Prerequisites>
+
+		<!--============ VARIABLES ============-->
+
+		<Vars>
+			<!--Get the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOI">
+				<From Source="$TargetPointsOfInterest"/>
+			</Var>
+			<!--Get the position of the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOILocation">
+				<From Source="$TargetPointsOfInterest.$Position"/>
+			</Var>
+
+			<Var VarName="$InstigatorEmpire">
+				<From Source="$Empire"/>
+			</Var>
+
+			<!-- Select Titan Bones luxury resource -->
+			<Var VarName="$LuxuryResourceDepositPointOfInterest">
+				<Any>
+					<From Source="$Regions.$PointsOfInterest">
+						<Where>
+							<PathPrerequisite Inverted="false" Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+							<PathPrerequisite Inverted="false" Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+						</Where>
+					</From>
+				</Any>
+			</Var>
+
+			<Var VarName="$NameOfLuxuryResourceToGather">
+				<Any>
+					<From Source="$LuxuryResourceDepositPointOfInterest.$ResourceName"/>
+				</Any>
+			</Var>
+
+			<!-- Set the different amount of resource to gather -->
+			<Var VarName="$LuxuryResourceAmount" Value="5"/>
+			<Var VarName="$LuxuryResourceAmountTransfer" Value="-5"/>
+
+			<!--Get city-->
+			<Var VarName="$City">
+				<Any>
+					<From Source="$Empire.$Cities"/>
+				</Any>
+			</Var>
+			<Var VarName="$CityLocation">
+				<From Source="$City.$Position"/>
+			</Var>
+			<!--Reward-->
+			<Var VarName="$RewardSpawnPosition">
+				<From Source="$InitialQuestPOILocation"/>
+			</Var>
+			
+			<!-- For localization purposes -->
+			<LocalizationVar LocalizationKey="$LuxuryName"    Source="$LuxuryResourceDepositPointOfInterest" />
+			<LocalizationVar LocalizationKey="$LuxuryAmount"  Source="$LuxuryResourceAmount"  />
+
+		</Vars>
+
+
+		<!--============ SEQUENCE ============-->
+		<Controller_Sequence>
+			<!--Step 1-->
+			<Action_UpdateStep StepName="DLC21_ARagingFire_Step1" State="InProgress"/>
+			<Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+			<Action_UpdateTimerLocalization TurnCountBeforeTimeOut="3" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+
+			<Controller_Parallel CompletionPolicy="Any">
+				<!--Gather X amount of resource-->
+				<Controller_Sequence>
+					<Controller_Loop LoopCount="5">
+						<Decorator_BoosterActivated BoosterName="BoosterLuxury10" LinkedStepProgression="DLC21_ARagingFire_Step1" Initiator="Empire"/>
+					</Controller_Loop>
+					<Action_SpawnArmy SpawnLocationVarName="$CityLocation" UseBehaviorInitiatorEmpire="true" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0003C" />
+					<Action_UpdateStep StepName="DLC21_ARagingFire_Step1" State="Completed"/>
+					<Action_UpdateStep StepName="DLC21_ARagingFire_Step2" State="Completed"/>
+					<Action_UpdateQuest State="Completed"/>
+				</Controller_Sequence>
+
+				<!--count 3 turns-->
+				<Controller_Sequence>
+					<Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="3" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+					<Action_UpdateStep StepName="DLC21_ARagingFire_Step1" State="Failed"/>
+					<Action_UpdateStep StepName="DLC21_ARagingFire_Step2" State="InProgress"/>
+					<Action_SpawnArmy SpawnLocationVarName="$InitialQuestPOILocation" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0003C" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Offense" />
+					<Action_AddQuestMarker TargetEntityVarName="$InitialQuestPOI" Tags="Ruins" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarker"/>
+					<Action_LockQuestTarget TargetVarName="$InitialQuestPOI" LockOption="Lock"/>
+				</Controller_Sequence>
+
+			</Controller_Parallel>
+			
+			
+			
+			<!--Step 2-->
+			<Controller_Sequence>
+				<Controller_Parallel CompletionPolicy="Any">
+					<!--If player kills Guardian-->
+					<Controller_Sequence>
+						<Decorator_KillArmy TargetOption="All" Initiator="Empire" Output_Position="$RewardSpawnPosition">
+							<EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+						</Decorator_KillArmy>
+						<Action_SpawnArmy SpawnLocationVarName="$RewardSpawnPosition" UseBehaviorInitiatorEmpire="true" ArmyDroplist="DroplistArmyDefinitionGlobalQuestCompet#0003C" />
+						<Action_UpdateStep StepName="DLC21_ARagingFire_Step2" State="Completed"/>
+						<Action_UpdateQuest State="Completed"/>
+					</Controller_Sequence>
+					<!--If Other player kills Guardian-->
+					<Controller_Sequence>
+						<Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
+							<EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+						</Decorator_KillArmy>
+						<Action_UpdateStep StepName="DLC21_ARagingFire_Step2" State="Failed"/>
+						<Action_UpdateQuest State="Failed"/>
+					</Controller_Sequence>
+				</Controller_Parallel>
+				
+			</Controller_Sequence>
+			<Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarker"/>
+			<Action_LockQuestTarget TargetVarName="$InitialQuestPOI" LockOption="Unlock"/>
+
+
+		</Controller_Sequence>
+
+		<!--============ REWARDS ============-->
+		<Steps>
+			<Step Name="DLC21_ARagingFire_Step1">
+				<Reward LocalizationKey="%DLC21_ARagingFire_Reward"/>
+				<ProgressionRange StartValue="0" EndValue="5"/>
+			</Step>
+			<Step Name="DLC21_ARagingFire_Step2">
+				<Reward LocalizationKey="%DLC21_ARagingFire_Reward"/>
+			</Step>
+		</Steps>
+
+		<!--============ TRIGGERS ============
+		<Triggers>
+		</Triggers>
+		-->
+
+
+	</QuestDefinition>
+
+	<!--============ TITLE: Bunkers of Madness  ============-->
+	<!--TODO: Reward: Advanced Military Tech (tier 4 )-->
+	<QuestDefinition Name="DLC21_20BunkersOfMadness" Category="SideQuest" SubCategory="Ruins"
+				 Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+		<!--============ TAGS ============-->
+		<Tags>Interact</Tags>
+
+		<!--============ PREREQUISITES ============-->
+		<Prerequisites Target="$(Empire)">
+			<DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
+			<PathPrerequisite Inverted="true">../EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+			<InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 55 * $Property(ClassEmpire:GameSpeedMultiplier)</InterpreterPrerequisite>
+		</Prerequisites>
+
+		<!--============ VARIABLES ============-->
+		<Vars>
+
+			<Var VarName="$InstigatorEmpire">
+				<From Source="$Empire"/>
+			</Var>
+
+			<!--Get the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOI">
+				<From Source="$TargetPointsOfInterest"/>
+			</Var>
+
+			<!--Get the position of the Quest POI the Player initially inspects-->
+			<Var VarName="$InitialQuestPOILocation">
+				<From Source="$TargetPointsOfInterest.$Position"/>
+			</Var>
+
+			<!--Recien pegado-->
+			<Var VarName="$City">
+				<Any>
+					<From Source="$Empire.$Cities"/>
+				</Any>
+			</Var>
+			<Var VarName="$CityLocation">
+				<From Source="$City.$Position"/>
+			</Var>
+
+			<!--Set all regions but Player's regions-->
+			<Var VarName="$AllRegionsButPlayerRegions">
+				<From Source="$Regions">
+					<Where>
+						<FilterRegionIsContinent/>
+						<FilterRegionIsColonized Inverted="true"/>
+						<FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+					</Where>
+				</From>
+			</Var>
+
+			<!--Sort by distance from the 1st selected Player's city, all regions that doesn't belong to Player -->
+			<Var VarName="$SortedAllRegionsButPlayerRegions">
+				<From Source="$AllRegionsButPlayerRegions">
+					<OrderBy>
+						<SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialQuestPOILocation"/>
+					</OrderBy>
+				</From>
+			</Var>
+
+			<!-- Select Ruins POI -->
+			<Var VarName="$AllRuinsPOI">
+				<From Source="$SortedAllRegionsButPlayerRegions.$PointsOfInterest">
+					<Where>
+						<PathPrerequisite Flags="Prerequisite">QuestLocationTypeRuin</PathPrerequisite>
+					</Where>
+				</From>
+			</Var>
+
+			<!--Set the possible locations to spawn the 1st-->
+			<Var VarName="$RuinToSpawnArmyID1">
+
+				<Limit LimitMin="1" LimitMax="2">
+					<From Source="$AllRuinsPOI"/>
+				</Limit>
+
+			</Var>
+			<Var VarName="$LocationRuinToSpawnArmyID1">
+				<From Source="$RuinToSpawnArmyID1.$Position"/>
+			</Var>
+
+			<!--Set the possible locations to spawn the 2st-->
+			<Var VarName="$RuinToSpawnArmyID2">
+
+				<Limit LimitMin="2" LimitMax="3">
+					<From Source="$AllRuinsPOI"/>
+				</Limit>
+
+			</Var>
+			<Var VarName="$LocationRuinToSpawnArmyID2">
+				<From Source="$RuinToSpawnArmyID2.$Position"/>
+			</Var>
+
+			<!--Set the possible locations to spawn the 3st-->
+			<Var VarName="$RuinToSpawnArmyID3">
+
+				<Limit LimitMin="3" LimitMax="4">
+					<From Source="$AllRuinsPOI"/>
+				</Limit>
+
+			</Var>
+			<Var VarName="$LocationRuinToSpawnArmyID3">
+				<From Source="$RuinToSpawnArmyID3.$Position"/>
+			</Var>
+
+			<!--Set the possible locations to spawn the 4st-->
+			<Var VarName="$RuinToSpawnArmyID4">
+
+				<Limit LimitMin="4" LimitMax="5">
+					<From Source="$AllRuinsPOI"/>
+				</Limit>
+
+			</Var>
+			<Var VarName="$LocationRuinToSpawnArmyID4">
+				<From Source="$RuinToSpawnArmyID4.$Position"/>
+			</Var>
+
+		</Vars>
+
+		<!--============ SEQUENCE ============-->
+		<Controller_Sequence>
+			<!--Step 1-->
+			<Action_LockQuestTarget TargetVarName="$RuinToSpawnArmyID1" LockOption="Lock"/>
+			<Action_AddQuestMarker TargetEntityVarName="$RuinToSpawnArmyID1" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerStrategicPOI1"/>
+			<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step1" State="InProgress"/>
+			<!--Ruin 1-->
+			<Controller_Sequence>
+				<!--Ruin 1-->
+				<Controller_Sequence>
+					<Decorator_Inspect TargetEntityVarName="$RuinToSpawnArmyID1" Initiator="Empire"/>
+					<Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerStrategicPOI1"/>
+					<Action_LockQuestTarget TargetVarName="$RuinToSpawnArmyID2" LockOption="Lock"/>
+					<Action_SpawnArmy SpawnLocationVarName="$LocationRuinToSpawnArmyID1" ArmyDroplist="DroplistArmyBunkersOfMadnessArmy1" Output_EnemyArmyGUIDVarName="$ArmyID1" HaveActionPointOnSpawn="true"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+					<Controller_Parallel CompletionPolicy="Any">
+						<!--if player kills army-->
+						<Controller_Sequence>
+							<Decorator_KillArmy LinkedStepProgression="DLC21_BunkersOfMadness_Step1" TargetOption="Any" Initiator="Empire">
+								<EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+							</Decorator_KillArmy>
+						</Controller_Sequence>
+						<!--if other player kills army-->
+						<Controller_Sequence>
+							<Decorator_KillArmy LinkedStepProgression="DLC21_BunkersOfMadness_Step1" TargetOption="Any" Initiator="OtherEmpires">
+								<EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
+							</Decorator_KillArmy>
+							<Action_UpdateQuest State="Failed"/>
+							<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step1" State="Failed"/>
+						</Controller_Sequence>
+					</Controller_Parallel>
+
+					<Action_LockQuestTarget TargetVarName="$RuinToSpawnArmyID1" LockOption="Unlock"/>
+				</Controller_Sequence>
+				<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step1" State="Completed"/>
+				<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step2" State="InProgress"/>
+
+				<Action_AddQuestMarker TargetEntityVarName="$RuinToSpawnArmyID2" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerStrategicPOI2"/>
+
+			</Controller_Sequence>
+			<!--Step 2-->
+			<Controller_Sequence>
+				<!--Ruin 2-->
+				<Controller_Sequence>
+					<Decorator_Inspect TargetEntityVarName="$RuinToSpawnArmyID2" Initiator="Empire"/>
+					<Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerStrategicPOI2"/>
+					<Action_LockQuestTarget TargetVarName="$RuinToSpawnArmyID3" LockOption="Lock"/>
+					<Action_SpawnArmy SpawnLocationVarName="$LocationRuinToSpawnArmyID2" ArmyDroplist="DroplistArmyBunkersOfMadnessArmy2" Output_EnemyArmyGUIDVarName="$ArmyID2" HaveActionPointOnSpawn="true"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+					<Controller_Parallel CompletionPolicy="Any">
+						<!--if player kills army-->
+						<Controller_Sequence>
+							<Decorator_KillArmy TargetOption="Any" Initiator="Empire">
+								<EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+							</Decorator_KillArmy>
+						</Controller_Sequence>
+						<Controller_Sequence>
+							<Decorator_KillArmy TargetOption="Any" Initiator="OtherEmpires">
+								<EnemyArmyGUIDVarName>$ArmyID2</EnemyArmyGUIDVarName>
+							</Decorator_KillArmy>
+							<Action_UpdateQuest State="Failed"/>
+							<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step2" State="Failed"/>
+						</Controller_Sequence>
+
+					</Controller_Parallel>
+					<Action_LockQuestTarget TargetVarName="$RuinToSpawnArmyID2" LockOption="Unlock"/>
+				</Controller_Sequence>
+				<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step2" State="Completed"/>
+				<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step3" State="InProgress"/>
+
+				<Action_AddQuestMarker TargetEntityVarName="$RuinToSpawnArmyID3" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerStrategicPOI3"/>
+			</Controller_Sequence>
+			<!--Step 3-->
+			<Controller_Sequence>
+				<!--Ruin 3-->
+				<Controller_Sequence>
+					<Decorator_Inspect TargetEntityVarName="$RuinToSpawnArmyID3" Initiator="Empire"/>
+					<Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerStrategicPOI3"/>
+					<Action_LockQuestTarget TargetVarName="$RuinToSpawnArmyID4" LockOption="Lock"/>
+					<Action_SpawnArmy SpawnLocationVarName="$LocationRuinToSpawnArmyID3" ArmyDroplist="DroplistArmyBunkersOfMadnessArmy3" Output_EnemyArmyGUIDVarName="$ArmyID3" HaveActionPointOnSpawn="true"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID3" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+					<Controller_Parallel CompletionPolicy="Any">
+						<!--if player kills army-->
+						<Controller_Sequence>
+							<Decorator_KillArmy TargetOption="Any" Initiator="Empire">
+								<EnemyArmyGUIDVarName>$ArmyID3</EnemyArmyGUIDVarName>
+							</Decorator_KillArmy>
+						</Controller_Sequence>
+						<Controller_Sequence>
+							<Decorator_KillArmy TargetOption="Any" Initiator="OtherEmpires">
+								<EnemyArmyGUIDVarName>$ArmyID3</EnemyArmyGUIDVarName>
+							</Decorator_KillArmy>
+							<Action_UpdateQuest State="Failed"/>
+							<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step3" State="Failed"/>
+						</Controller_Sequence>
+
+					</Controller_Parallel>
+					<Action_LockQuestTarget TargetVarName="$RuinToSpawnArmyID3" LockOption="Unlock"/>
+				</Controller_Sequence>
+				<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step3" State="Completed"/>
+				<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step4" State="InProgress"/>
+
+				<Action_AddQuestMarker TargetEntityVarName="$RuinToSpawnArmyID4" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerStrategicPOI4"/>
+			</Controller_Sequence>
+			<!--Step 4-->
+			<Controller_Sequence>
+				<!--Ruin 4-->
+				<Controller_Sequence>
+					<Decorator_Inspect TargetEntityVarName="$RuinToSpawnArmyID4" Initiator="Empire"/>
+					<Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerStrategicPOI4"/>
+					<Action_LockQuestTarget TargetVarName="$RuinToSpawnArmyID4" LockOption="Unlock"/>
+					<Action_SpawnArmy SpawnLocationVarName="$LocationRuinToSpawnArmyID4" ArmyDroplist="DroplistArmyBunkersOfMadnessArmy4" Output_EnemyArmyGUIDVarName="$ArmyID4" HaveActionPointOnSpawn="true"/>
+					<Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID4" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming" />
+					<Controller_Parallel CompletionPolicy="Any">
+						<!--if player kills army-->
+						<Controller_Sequence>
+							<Decorator_KillArmy TargetOption="Any" Initiator="Empire">
+								<EnemyArmyGUIDVarName>$ArmyID4</EnemyArmyGUIDVarName>
+							</Decorator_KillArmy>
+						</Controller_Sequence>
+						<Controller_Sequence>
+							<Decorator_KillArmy TargetOption="Any" Initiator="OtherEmpires">
+								<EnemyArmyGUIDVarName>$ArmyID4</EnemyArmyGUIDVarName>
+							</Decorator_KillArmy>
+							<Action_UpdateQuest State="Failed"/>
+							<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step4" State="Failed"/>
+						</Controller_Sequence>
+
+					</Controller_Parallel>
+
+				</Controller_Sequence>
+				<Action_UpdateStep StepName="DLC21_BunkersOfMadness_Step4" State="Completed"/>
+			</Controller_Sequence>
+
+			<Action_UpdateQuest State="Completed"/>
+
+		</Controller_Sequence>
+
+		<!--============ REWARDS ============-->
+		<Steps>
+			<Step Name="DLC21_BunkersOfMadness_Step1">
+				<Reward Droplist="DroplistGlobalQuestDustEra1" />
+			</Step>
+			<Step Name="DLC21_BunkersOfMadness_Step2">
+				<Reward Droplist="DroplistGlobalQuestDustEra2" />
+			</Step>
+			<Step Name="DLC21_BunkersOfMadness_Step3">
+				<Reward Droplist="DroplistGlobalQuestDustEra3" />
+			</Step>
+			<Step Name="DLC21_BunkersOfMadness_Step4">
+				<Reward Droplist="DroplistScience" />
+				<Reward Droplist="DroplistGlobalQuestDustEra4" />
+			</Step>
+		</Steps>
+
+		<!--============ TRIGGERS ============
+		<Triggers>
+		</Triggers>
+		-->
+
+	</QuestDefinition>
+
+</Datatable>

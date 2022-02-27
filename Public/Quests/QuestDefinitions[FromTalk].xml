@@ -1,0 +1,3607 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--=====================================
+   ========================================
+   ============ VILLAGE QUESTS ============
+   ========================================
+   ========================================-->
+
+  <!-- ============ Rise of the Magtay / Magtay ============-->
+  <QuestDefinition Name="SideQuestVillage#0028" Category="SideQuest" SubCategory="Village"
+                     Cooldown="7" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <From Source="$InitialVillage.$MinorEmpire">
+          <Where>
+            <PathPrerequisite Flags="Prerequisite">AffinityDawnShua</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillageLocation">
+        <From Source="$InitialVillagePointOfInterest.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestVillage#0028-Step1" State="InProgress" />
+
+      <Controller_Parallel CompletionPolicy ="Any">
+
+        <!--Step 1-->
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="2">
+            <Decorator_BoosterActivated Initiator="Empire" LinkedStepProgression="SideQuestVillage#0028-Step1"/>
+          </Controller_Loop>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+
+          <Action_UpdateStep StepName="SideQuestVillage#0028-Step1" State="Completed" />
+          <Action_SpawnArmy SpawnLocationVarName="$InitialVillageLocation" ArmyDroplist="DroplistVillageQuest0028UnitsReward" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" EmpireArmyOwnerVarName="$InstigatorEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition 1 - Village is pacified-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Step 1 - Fail Condition 2 - Village is destroyed-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0028-Step1">
+        <Reward LocalizationKey="%SideQuestVillage#0028-Step1Reward"/>
+        <Reward Droplist="DroplistVillageQuest0028ResourcesReward" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+        <ProgressionRange StartValue="0" EndValue="2"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Free our People ============-->
+  <QuestDefinition Name="SideQuestVillage#0001" Category="SideQuest" SubCategory="Village"
+                     Cooldown="7" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Quest will not trigger if there is no land region nearby-->
+      <Var VarName="$ContinentNearbyRegions">
+        <Any>
+          <From Source="$InitialTribeRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsOnSameContinent RegionContextVarName="$InitialTribeRegion"/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 1</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 1</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialTribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillageLocation">
+        <From Source="$TargetPointsOfInterest.$Position"/>
+      </Var>
+      <!--Get the position of the village region-->
+      <Var VarName="$InitialVillageRegionLocation">
+        <From Source="$InitialTribeRegion.$Position"/>
+      </Var>
+
+      <!--Get the minor empire of the village region-->
+      <Var VarName="$InitialVillageMinorEmpire">
+        <From Source="$InitialVillageRegionLocation.$Region.$MinorEmpire"/>
+      </Var>
+
+      <!--Get the list of all the regions excluding the village region-->
+      <Var VarName="$AllRegionsButInitialVillageRegion">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$InitialTribeRegion"/>
+            <FilterRegionByDistance PositionToCompareVarName="$InitialVillageRegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Get the nearest region from the village position (excluding the village region)-->
+      <Var VarName="$NearestRegionFromInitialVillage">
+        <From Source="$AllRegionsButInitialVillageRegion">
+          <OrderBy>
+            <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$InitialVillageLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+      <!--Get the village to destroy-->
+      <Var VarName="$VillagesToDestroy">
+        <First>
+          <From Source="$NearestRegionFromInitialVillage.$Villages">
+            <Where>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+            </Where>
+          </From>
+        </First>
+      </Var>
+
+      <Var VarName="$VillageToDestroy">
+        <Any>
+          <From Source="$VillagesToDestroy">
+            <Where>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Get the POI of the village to destroy for marker -->
+      <Var VarName="$VillageToDestroyPointOfInterest">
+        <From Source="$VillageToDestroy.$PointOfInterest"/>
+      </Var>
+
+      <!--Get the position of the village to destroy-->
+      <Var VarName="$VillageToDestroyLocation">
+        <From Source="$VillageToDestroyPointOfInterest.$Position" />
+      </Var>
+
+      <!--Get the position of the village to destroy-->
+      <Var VarName="$VillageToDestroyRegion">
+        <From Source="$VillageToDestroyLocation.$Region" />
+      </Var>
+
+      <Var VarName="$VillageToDestroyMinorEmpire">
+        <From Source="$VillageToDestroyLocation.$Region.$MinorEmpire"/>
+      </Var>
+
+      <!--Get the biome of the village to destroy-->
+      <Var VarName="$VillageToDestroyBiome">
+        <From Source="$VillageToDestroyLocation.$BiomeTypeName"/>
+      </Var>
+
+      <!--To display through the GUI the Minor Faction Name and the Biome of the villageto destroy-->
+      <LocalizationVar LocalizationKey="$InitialMinorEmpire" Source="$InitialVillageMinorEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$TargetMinorEmpire" Source="$VillageToDestroyMinorEmpire"/>
+      <LocalizationVar LocalizationKey="$BiomeName" Source="$VillageToDestroyBiome"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+      <LocalizationVar LocalizationKey="$VillageToDestroyRegionName" Source="$VillageToDestroyRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <!--Lock the Parley ArmyAction on villages of the same tribe-->
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$VillageToDestroyPointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$VillageToDestroyPointOfInterest" InteractionName="ArmyActionBribe" InteractionLockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$VillageToDestroyPointOfInterest" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!-- Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0001-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$VillageToDestroyPointOfInterest" Tags="Village" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerVillageToDestroyPointOfInterest"/>
+          <Decorator_VillagesDestroyed VillagesVarName="$VillageToDestroy" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageToDestroyPointOfInterest"/>
+          <Action_LockQuestTarget TargetVarName="$VillageToDestroyPointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0001-Step1" State="Completed"/>
+          <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestVillage#0001-Step2" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribe"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0001-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 0: initial village pacified-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageToDestroyPointOfInterest"/>
+          <Action_LockQuestTarget TargetVarName="$VillageToDestroyPointOfInterest" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1: initial village destroyed-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageToDestroyPointOfInterest"/>
+          <Action_LockQuestTarget TargetVarName="$VillageToDestroyPointOfInterest" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2:village to destroy is pacified by another empire-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$VillageToDestroy" TargetOption="All" Initiator="OtherEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageToDestroyPointOfInterest"/>
+          <Action_LockQuestTarget TargetVarName="$VillageToDestroyPointOfInterest" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 3:village to destroy is pacified by player empire through a quest, not destroyed-->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$VillageToDestroy">
+                <PathPrerequisite Flags="Prerequisite">RebuiltVillage</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillageToDestroyPointOfInterest"/>
+          <Action_LockQuestTarget TargetVarName="$VillageToDestroyPointOfInterest" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockInteraction TargetVarName="$VillageToDestroyPointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockInteraction TargetVarName="$VillageToDestroyPointOfInterest" InteractionName="ArmyActionBribe" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0001-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestVillage#0001-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--========= TITLE: A Question of Proof =============-->
+  <QuestDefinition Name="SideQuestVillage#0003" Category="SideQuest" SubCategory="Village"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS============-->
+    <Tags>Talk</Tags>
+
+
+    <!--============ PREREQUISITES ============-->
+    <!--8 techs min researched in Era 1-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 8</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinitySeaDemons</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityCultists</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES============-->
+    <Vars>
+
+      <!--check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 1</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 1</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set Player's empire-->
+      <Var VarName="$PlayerEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set all Player's regions-->
+      <Var VarName="$PlayerRegion">
+        <From Source="$InitialTribeRegion">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire EmpireVarName="$PlayerEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Check that Player has a city in tribe region and a free watch tower spot-->
+      <Var VarName="$RegionCity">
+        <From Source="$InitialTribeRegion.$City">
+          <Where>
+            <PathPrerequisite Flags="Prerequisite">ClassCity/PointOfInterestTypeWatchTower,!ExploitedPointOfInterest</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$RegionCity"/>
+
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0003-Step1" State="InProgress" />
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <Controller_Sequence>
+              <Decorator_ConstructionEnded ConstructionName="WatchTower0" TargetCityVarName="$RegionCity" Initiator="Empire" />
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_ConstructionEnded ConstructionName="WatchTower1" TargetCityVarName="$RegionCity" Initiator="Empire" />
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_ConstructionEnded ConstructionName="WatchTower2" TargetCityVarName="$RegionCity" Initiator="Empire" />
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_ConstructionEnded ConstructionName="WatchTower0ReplicantsPack" TargetCityVarName="$RegionCity" Initiator="Empire" />
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_ConstructionEnded ConstructionName="WatchTower1ReplicantsPack" TargetCityVarName="$RegionCity" Initiator="Empire" />
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_ConstructionEnded ConstructionName="WatchTower2ReplicantsPack" TargetCityVarName="$RegionCity" Initiator="Empire" />
+            </Controller_Sequence>
+
+          </Controller_Parallel>
+
+          <Decorator_BeginTurn/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0003-Step1" State="Completed" />
+          <Action_UpdateQuest State="Completed"/>
+
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0003-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============= TITLE: The Cornerstone of Diplomacy ============-->
+  <QuestDefinition Name="SideQuestVillage#0004" Category="SideQuest" SubCategory="Village"
+                   Cooldown="7" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Era 1 or 2 reached-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistStrategicResourceTransfertAmount"/>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$StrategicResource" Source="$NameOfStrategicResourceToGather"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter" Source="$StrategicResourceAmount"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0004-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_Talk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0004-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0004-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0004-Step1">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Defender of the Weak ===========-->
+  <QuestDefinition Name="SideQuestVillage#0005" Category="SideQuest" SubCategory="Village"
+                   Cooldown="7" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (10 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Quest will not trigger if there is no land region nearby-->
+      <Var VarName="$ContinentNearbyRegion">
+        <Any>
+          <From Source="$InitialTribeRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsOnSameContinent RegionContextVarName="$InitialTribeRegion"/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 1</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 1</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$ContinentNearbyRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0005-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+          <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect" />
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistArmyDefinitionSideQuestVillage#0005" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+          <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0005-Step1" State="Completed" />
+          <Action_LockInteraction TargetVarName="$PointOfInterestToInspect" InteractionName="ArmyActionSearch" InteractionLockOption="Lock"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestVillage#0005-Step2" State="InProgress" />
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+          <Action_UpdateStep StepName="SideQuestVillage#0005-Step2" State="Completed" />
+
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect" />
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockInteraction TargetVarName="$PointOfInterestToInspect" InteractionName="ArmyActionSearch" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0005-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestVillage#0005-Step2">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: An advanced Civilization ============-->
+  <QuestDefinition Name="SideQuestVillage#0006" Category="SideQuest" SubCategory="Village"
+                     Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--7 techs min researched in Era 1, and Era 2 is not already reached-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 7</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Used to lock the parley map army action when the tribe has already provided a quest -->
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <!--Check the village you talk to is not already pacified-->
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <From Source="$InitialVillage.$MinorEmpire"/>
+      </Var>
+
+      <!--Get the POI of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <!--To display through the GUI the Minor Faction Name and the Biome of the villageto destroy-->
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Parallel CompletionPolicy="Any">
+
+      <Controller_Sequence>
+        <!--Lock the Parley ArmyAction on villages of the same tribe-->
+        <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+        <!--Step 1-->
+        <Action_UpdateStep StepName="SideQuestVillage#0006-Step1" State="InProgress"/>
+        <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Decorator_BeginTurn Initiator="Empire">
+          <ConditionCheck_Prerequisite>
+            <Prerequisites Target="$Empire">
+              <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+            </Prerequisites>
+          </ConditionCheck_Prerequisite>
+        </Decorator_BeginTurn>
+        <Action_UpdateStep StepName="SideQuestVillage#0006-Step1" State="Completed"/>
+
+        <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+        <Action_UpdateQuest State="Completed"/>
+      </Controller_Sequence>
+
+      <!--Fail Condition 1-->
+      <Controller_Sequence>
+        <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+        <Action_UpdateQuest State="Failed"/>
+      </Controller_Sequence>
+
+      <!--Fail Condition 2-->
+      <Controller_Sequence>
+        <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+        <Action_UpdateQuest State="Failed"/>
+        <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      </Controller_Sequence>
+
+    </Controller_Parallel>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0006-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Pacifist ============-->
+  <QuestDefinition Name="SideQuestVillage#0007" Category="SideQuest" SubCategory="Village"
+                     Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassEmpirePlan,EmpirePlanEconomy0</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (10 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0004" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0004" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check that the village is not already pacified-->
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the region of the tribe to pacify-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$InitialVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Set the minor Empire of the region + check the number of villages not pacified as prerequisite-->
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Used to lock the parley map army action when the tribe has already provided a quest -->
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <!--To display through the GUI the Minor Empire Name -->
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <!--Lock the Parley ArmyAction on villages of the same tribe-->
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestVillage#0007-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassEmpirePlan,EmpirePlanEconomy1,!EmpirePlanMilitary1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestVillage#0007-Step1" State="Completed"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0007-Step1">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--========= TITLE: Capture the threatening city =============-->
+  <QuestDefinition Name="SideQuestVillage#0008" Category="SideQuest" SubCategory="Village"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <!--check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$InitialTribeBiomeName">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$BiomeTypeName"/>
+      </Var>
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$InitialVillage.$PointOfInterest"/>
+      </Var>
+
+      <!--Set Player's Empire-->
+      <Var VarName="$MyEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Set the regions where to pick up a City to capture-->
+      <Var VarName="$CityToCaptureRegions">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region.$NeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$InitialTribeRegion"/>
+          </Where>
+        </From>
+      </Var>
+      <!--Set the city to capture-->
+      <Var VarName="$CityToCapture">
+        <Any>
+          <From Source="$CityToCaptureRegions.$City">
+            <Where>
+              <FilterCityByEmpire Inverted="true" EmpireVarName="$MyEmpire"/>
+              <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassCity/ClassDistrict,DistrictTypeExtension) le 3</InterpreterPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassCity,MainCity</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the City to capture-->
+      <Var VarName="$CityToCaptureRegion">
+        <From Source="$CityToCapture.$Region"/>
+      </Var>
+
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$StateOfMinorEmpire"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$BiomeName" Source="$InitialTribeBiomeName"/>
+      <LocalizationVar LocalizationKey="$CityToCaptureName" Source="$CityToCaptureRegion"/>
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestVillage#0008-Step1" State="InProgress" />
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_CaptureCity TargetCityVarName="$CityToCapture"  Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0008-Step1" State="Completed" />
+          <Action_PacifyMinorFaction TargetEmpireVarName="$StateOfMinorEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite Inverted="true">
+              <Prerequisites Target="$CityToCapture">
+                <PathPrerequisite Flags="Prerequisite">ClassCity</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestVillage#0008-Step1" State="Completed" />
+          <Action_PacifyMinorFaction TargetEmpireVarName="$StateOfMinorEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2 -->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0008-Step1">
+        <Reward Droplist="DroplistTechnologies" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Rough Men ============-->
+  <QuestDefinition Name="SideQuestVillage#0009" Category="SideQuest" SubCategory="Village"
+                     Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ VARIABLE DEFINITIONS ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Check that the village is not already pacified-->
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the region of the tribe to pacify + quest will not trigger if region is already colonized-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$InitialVillage.$PointOfInterest.$Position.$Region">
+          <Where>
+            <FilterRegionIsColonized Inverted="true"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Quest will not trigger if there is not at least 1 nearby land region-->
+      <Var VarName="$NearbyLandRegions">
+        <From Source="$InitialTribeRegion.$NeighbourRegions">
+          <Where>
+            <FilterRegionIsContinent/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Quest will not trigger if there is not at least 1 village not pacified in a nearby land region-->
+      <Var VarName="$HostileMinorFactionInNearbyRegion">
+        <From Source="$NearbyLandRegions.$Villages">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(MinorEmpireVillage,!PacifiedVillage) ge 1</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the minor Empire of the region + check the number of villages not pacified as prerequisite-->
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Used to lock the parley map army action when the tribe has already provided a quest -->
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <!--Set the region positions to spawn the army-->
+      <Var VarName="$LocationsToSpawnArmyID">
+        <From Source="$InitialTribeRegion.$Positions"/>
+      </Var>
+
+      <!--To display through the GUI the Minor Empire Name -->
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+    <!--============ PARALLEL SEQUENCES ============-->
+
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0009-Step1" State="InProgress"/>
+          <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
+          <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire">
+            <ConditionCheck_RegionContainsEnemy Inverted="true" IsFailureCondition="true" IgnoredEmpiresVarName="$InitialTribeEmpire" RegionVarName="$InitialTribeRegion"/>
+          </Decorator_TimerEnded>
+          <Action_UpdateStep StepName="SideQuestVillage#0009-Step1" State="Completed"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire">
+            <ConditionCheck_RegionContainsEnemy IsFailureCondition="true" IgnoredEmpiresVarName="$InitialTribeEmpire" RegionVarName="$InitialTribeRegion"/>
+          </Decorator_TimerEnded>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 3-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0009-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Diplomacy By Other Means ============-->
+  <QuestDefinition Name="SideQuestVillage#0010" Category="SideQuest" SubCategory="Village"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0022" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0022" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check that the village is not already pacified-->
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      <!--Set the region of the tribe to pacify-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$InitialVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <!--Set the minor Empire of the region + check the number of villages not pacified as prerequisite-->
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Used to lock the parley map army action when the tribe has already provided a quest -->
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <!--To display through the GUI the Minor Empire Name -->
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestVillage#0010-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition -->
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="5">
+            <Controller_Parallel CompletionPolicy="Any">
+
+              <Controller_Sequence>
+                <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0010-Step1">
+                  <ConditionCheck_Prerequisite>
+                    <Prerequisites Target="$Empire">
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassInfantry,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassRanged,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassSupport,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassCavalry,!UnitHero</PathPrerequisite>
+                    </Prerequisites>
+                  </ConditionCheck_Prerequisite>
+                </Decorator_BeginTurn>
+              </Controller_Sequence>
+              <Controller_Sequence>
+                <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0010-Step1">
+                  <ConditionCheck_Prerequisite>
+                    <Prerequisites Target="$Empire">
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassInfantry,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassRanged,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassSupport,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassFlying,!UnitHero</PathPrerequisite>
+                    </Prerequisites>
+                  </ConditionCheck_Prerequisite>
+                </Decorator_BeginTurn>
+              </Controller_Sequence>
+              <Controller_Sequence>
+                <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0010-Step1">
+                  <ConditionCheck_Prerequisite>
+                    <Prerequisites Target="$Empire">
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassFlying,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassRanged,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassSupport,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassCavalry,!UnitHero</PathPrerequisite>
+                    </Prerequisites>
+                  </ConditionCheck_Prerequisite>
+                </Decorator_BeginTurn>
+              </Controller_Sequence>
+              <Controller_Sequence>
+                <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0010-Step1">
+                  <ConditionCheck_Prerequisite>
+                    <Prerequisites Target="$Empire">
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassInfantry,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassRanged,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassFlying,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassCavalry,!UnitHero</PathPrerequisite>
+                    </Prerequisites>
+                  </ConditionCheck_Prerequisite>
+                </Decorator_BeginTurn>
+              </Controller_Sequence>
+              <Controller_Sequence>
+                <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0010-Step1">
+                  <ConditionCheck_Prerequisite>
+                    <Prerequisites Target="$Empire">
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassInfantry,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassFlying,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassSupport,!UnitHero</PathPrerequisite>
+                      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassCity/UnitClassCavalry,!UnitHero</PathPrerequisite>
+                    </Prerequisites>
+                  </ConditionCheck_Prerequisite>
+                </Decorator_BeginTurn>
+              </Controller_Sequence>
+
+            </Controller_Parallel>
+          </Controller_Loop>
+          <Action_UpdateStep StepName="SideQuestVillage#0010-Step1" State="Completed"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0010-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: A Fair Leader===-->
+  <QuestDefinition Name="SideQuestVillage#0011" Category="SideQuest" SubCategory="Village"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0023" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0023" QuestState="Unstarted"/>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$PlayerEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$PlayerRegion">
+        <From Source="$InitialTribeRegion">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire EmpireVarName="$PlayerEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$RegionCity">
+        <From Source="$InitialTribeRegion.$City">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:Approval) ge 60</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:Approval) le 85</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$RegionCity" Source="$RegionCity"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestVillage#0011-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition -->
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="5">
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0011-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$RegionCity">
+                  <PathPrerequisite Flags="Prerequisite">ClassCity,ApprovalStatusTagCityEcstatic</PathPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Loop>
+          <Action_UpdateStep StepName="SideQuestVillage#0011-Step1" State="Completed"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_RegionIsOwnedByEmpire Inverted="true" RegionVarName="$PlayerRegion" EmpireVarName="$PlayerEmpire" />
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0011-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistFallbackMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Make Peace Not War===-->
+  <QuestDefinition Name="SideQuestVillage#0012" Category="SideQuest" SubCategory="Village"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) eq 0</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 9</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityNecrophages</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0024" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0024" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check no necrophages only as competitors-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$AllRegionsButMine">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$OneCityAtLeastOtherThanNecrophages">
+        <Any>
+          <From Source="$AllRegionsButMine.$MajorEmpire">
+            <Where>
+              <PathPrerequisite>!AffinityNecrophages</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestVillage#0012-Step1" State="InProgress"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
+          <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) ge 1</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestVillage#0012-Step1" State="Completed"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) eq 0</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_TimerEnded>
+          <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0012-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: A New Reputation ===-->
+  <QuestDefinition Name="SideQuestVillage#0013" Category="SideQuest" SubCategory="Village"
+                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Cannot be triggered by the cultists-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityCultists</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region">
+          <Where>
+            <FilterRegionIsColonized Inverted="true"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 1</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$MyCity" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <Action_UpdateStep StepName="SideQuestVillage#0013-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Step 1-->
+        <Controller_Sequence>
+          <Decorator_Colonize TargetRegionVarName="$InitialTribeRegion" Output_ColonizedCityVarName="$VillageCity" Initiator="Empire"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0013-Step1" State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_Colonize TargetRegionVarName="$InitialTribeRegion" Initiator="OtherEmpires"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0013-Step1" State="Failed"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0013-Step2" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="SideQuestVillage#0013-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition -->
+        <Controller_Sequence>
+          <Controller_Loop LoopCount="5">
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0013-Step2">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$VillageCity">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityEmpirePoint) ge 3</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Loop>
+          <Action_UpdateStep StepName="SideQuestVillage#0013-Step2" State="Completed"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_RegionIsOwnedByEmpire Inverted="true" RegionVarName="$InitialTribeRegion" EmpireVarName="$InstigatorEmpire" />
+          </Decorator_BeginTurn>
+          <Action_UpdateStep StepName="SideQuestVillage#0013-Step2" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0013-Step2" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0013-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestVillage#0013-Step2">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: The Doubtful Chief  ============-->
+  <QuestDefinition Name="SideQuestVillage#0014" Category="SideQuest" SubCategory="Village"
+                     Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check that the village is not already pacified-->
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the minor Empire of the region + check the number of villages not pacified as prerequisite-->
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialVillage.$PointOfInterest.$Position.$Region.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Set Player's empire-->
+      <Var VarName="$PlayerEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set all Player's regions-->
+      <Var VarName="$PlayerRegion">
+        <From Source="$InitialTribeRegion">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire EmpireVarName="$PlayerEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Check that Player has a city in tribe region and a free watch tower spot-->
+      <Var VarName="$RegionCity">
+        <From Source="$InitialTribeRegion.$City">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassCity/ClassDistrict,DistrictTypeExtension) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Used to check, as a failure condition, when all the villages of the initial region are pacified  -->
+      <Var VarName="$InitialVillages">
+        <From Source="$InitialTribeRegion.$Villages"/>
+      </Var>
+
+      <!--Used to lock the parley map army action when the tribe has already provided a quest -->
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$TribeName" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$CityName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0014-Step1" State="InProgress"/>
+          <Controller_Loop LoopCount="5">
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0014-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$RegionCity">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityGrowth) ge 5</InterpreterPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityProduction) ge 5</InterpreterPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityResearch) ge 5</InterpreterPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityMoney) ge 5</InterpreterPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityEmpirePoint) ge 5</InterpreterPrerequisite>
+                </Prerequisites>
+
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Loop>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0014-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_RegionIsOwnedByEmpire Inverted="true" RegionVarName="$PlayerRegion" EmpireVarName="$PlayerEmpire" />
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillages" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0014-Step1">
+        <ProgressionRange StartValue="0" EndValue="5"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Winter has come  ============-->
+  <QuestDefinition Name="SideQuestVillage#0015" Category="SideQuest" SubCategory="Village"
+                     Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">#Winter</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0006" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0006" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check that the village is not already pacified-->
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Set the minor Empire of the region + check the number of villages not pacified as prerequisite-->
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialVillage.$PointOfInterest.$Position.$Region.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+
+      <!--Set Player's empire-->
+      <Var VarName="$PlayerEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <!--Set that player already owns the tribe region-->
+      <Var VarName="$PlayerRegion">
+        <From Source="$InitialTribeRegion">
+          <Where>
+            <FilterRegionIsContinent/>
+            <FilterRegionByEmpire EmpireVarName="$PlayerEmpire"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Check prerequisites of player's city in tribe region-->
+      <Var VarName="$RegionCity">
+        <From Source="$InitialTribeRegion.$City">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:Population) le 5</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:Population) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:DistrictFood) le 10</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:DistrictFood) ge 3</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityGrowth) le 20</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Used to check, as a failure condition, when all the villages of the initial region are pacified  -->
+      <Var VarName="$InitialVillages">
+        <From Source="$InitialTribeRegion.$Villages"/>
+      </Var>
+
+      <!--Used to lock the parley map army action when the tribe has already provided a quest -->
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$TribeName" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$CityName" Source="$PlayerRegion"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0015-Step1" State="InProgress"/>
+          <Controller_Loop LoopCount="3">
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="SideQuestVillage#0015-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$RegionCity">
+                  <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityGrowth) ge 20</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Loop>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0015-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$Empire">
+                <PathPrerequisite Flags="Prerequisite">!#Winter</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillages" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0015-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistDust" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============= TITLE: The Sad Ones ============-->
+  <QuestDefinition Name="SideQuestVillage#0017" Category="SideQuest" SubCategory="Village"
+                   Cooldown="7" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Era 3 reached-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistStrategicResourceTransfertAmount"/>
+
+      <LocalizationVar LocalizationKey="$MinorEmpire" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$StrategicResource3or4" Source="$NameOfStrategicResourceToGather"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter" Source="$StrategicResourceAmount"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0017-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_Talk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0017-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0017-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0017-Step1">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============= TITLE: The Hole in the Wall ============-->
+  <QuestDefinition Name="SideQuestVillage#0018" Category="SideQuest" SubCategory="Village"
+                   Cooldown="7" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Era 4 reached-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmountEra4"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistStrategicResourceTransfertAmountEra4"/>
+
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+      <LocalizationVar LocalizationKey="$MinorEmpire" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$StrategicResource5or6" Source="$NameOfStrategicResourceToGather"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter" Source="$StrategicResourceAmount"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0018-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_Talk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0018-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0018-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0018-Step1">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============= TITLE: Kickstarting ============-->
+  <QuestDefinition Name="SideQuestVillage#0019" Category="SideQuest" SubCategory="Village"
+                   Cooldown="7" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Era 2 not reached-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$StrategicResourceDepositPointOfInterest">
+        <Any>
+          <From Source="$InitialTribeRegion.$NeighbourRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury6</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury7</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury8</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury9</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury11</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury12</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury13</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury14</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury15</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$NameOfStrategicResourceToGather">
+        <Any>
+          <From Source="$StrategicResourceDepositPointOfInterest.$ResourceName"/>
+        </Any>
+      </Var>
+
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistStrategicResourceAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistStrategicResourceTransfertAmount"/>
+
+      <LocalizationVar LocalizationKey="$MinorEmpire" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$LuxuryResource1to5" Source="$StrategicResourceDepositPointOfInterest"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter" Source="$StrategicResourceAmount"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0019-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_Talk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0019-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0019-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0019-Step1">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============= TITLE: The Incompetent Politician ============-->
+  <QuestDefinition Name="SideQuestVillage#0020" Category="SideQuest" SubCategory="Village"
+                   Cooldown="7" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="5" NumberOfOccurencesPerGame="0">
+
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Era 2 reached, Era 4 not reached yet-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 1</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 1</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$StrategicResourceDepositPointOfInterest1">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury6</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury7</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury8</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury9</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury10</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury11</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury12</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury13</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury14</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury15</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$NameOfStrategicResourceToGather1">
+        <From Source="$StrategicResourceDepositPointOfInterest1.$ResourceName"/>
+      </Var>
+
+      <Var VarName="$StrategicResourceDepositPointOfInterest2">
+        <Any>
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ResourceTypeLuxury</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury1</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury2</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury3</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury4</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury5</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury11</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury12</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury13</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury14</PathPrerequisite>
+              <PathPrerequisite Inverted="true" Flags="Prerequisite">ResourceDepositTypeLuxury15</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$NameOfStrategicResourceToGather2">
+        <From Source="$StrategicResourceDepositPointOfInterest2.$ResourceName"/>
+      </Var>
+
+      <DropListVar VarName="$StrategicResourceAmount1" DropList="DroplistLuxuryAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount1" DropList="DroplistLuxuryTransferAmount"/>
+      <DropListVar VarName="$StrategicResourceAmount2" DropList="DroplistLuxuryAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount2" DropList="DroplistLuxuryTransferAmount"/>
+
+      <LocalizationVar LocalizationKey="$MinorEmpire" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$LuxuryResource1to5" Source="$StrategicResourceDepositPointOfInterest1"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter1" Source="$StrategicResourceAmount1"/>
+      <LocalizationVar LocalizationKey="$LuxuryResource6to10" Source="$StrategicResourceDepositPointOfInterest2"/>
+      <LocalizationVar LocalizationKey="$ResourceCounter2" Source="$StrategicResourceAmount2"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0020-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather1" WantedAmountVarName="$StrategicResourceAmount1"/>
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather2" WantedAmountVarName="$StrategicResourceAmount2"/>
+          </Decorator_Talk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather1" AmountVarName="$StrategicResourceTransfertAmount1"/>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather2" AmountVarName="$StrategicResourceTransfertAmount2"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0020-Step1" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0020-Step1" State="Failed"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0020-Step1">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: The Other Side of the Seas ===========-->
+  <QuestDefinition Name="SideQuestVillage#0022" Category="SideQuest" SubCategory="Village"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 9</InterpreterPrerequisite>
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyItemStaff2Strategic1Tier4SideQuest1</PathPrerequisite>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Quest will not trigger if there is no land region nearby-->
+      <Var VarName="$OverSeaNearbyRegion">
+        <Any>
+          <From Source="$InitialTribeRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsContinent/>
+              <FilterRegionIsOnSameContinent Inverted="true" RegionContextVarName="$InitialTribeRegion"/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Check the number of not pacified/converted villages as prerequisite-->
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 1</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 1</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillages">
+        <From Source="$InitialTribeRegion.$Villages"/>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialVillages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$InitialVillage.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$OverSeaNearbyRegion.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$OverSeaNearbyRegion"/>
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0022-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+          <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Initiator="Empire"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect" />
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0022-Step1" State="Completed" />
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestVillage#0022-Step2" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero/ItemAttributesItemStaff2Strategic1Tier4SideQuest1</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Talk>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0022-Step2" State="Completed" />
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillages" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2: initial village destroyed-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0022-Step1">
+        <Reward Droplist="DroplistSideQuestVillage#0022Step1ItemReward" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestVillage#0022-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Minor Faction, Major Trust ===========-->
+  <QuestDefinition Name="SideQuestVillage#0023" Category="SideQuest" SubCategory="Village"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 4</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassArmy:MinorFactionUnitsCount) ge 3</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0014" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0014" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Check the number of not pacified/converted villages as prerequisite-->
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) le 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) le 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillages">
+        <From Source="$InitialTribeRegion.$Villages"/>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialVillages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$InitialVillage.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <Any>
+          <From Source="$InitialVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestVillage#0023-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/UnitFactionTypeMinorFaction) ge 3</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Talk>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0023-Step1" State="Completed" />
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillages" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 2: initial village destroyed-->
+        <Controller_Sequence>
+          <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0023-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Way of the initiate ===========-->
+  <QuestDefinition Name="SideQuestVillage#0027" Category="SideQuest" SubCategory="Village"
+                   Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <!--Cannot be triggered by if the following Minor Faction is already assimilated + current turn max-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor/AffinityEyelessOnes</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) le (95 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0016" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0016" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Check the number of pacified villages as prerequisite-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Quest will not trigger if there is no land region nearby the initial region -->
+      <Var VarName="$ContinentNearbyRegions">
+        <Any>
+          <From Source="$InitialTribeRegion.$NeighbourRegions">
+            <Where>
+              <FilterRegionIsOnSameContinent RegionContextVarName="$InitialTribeRegion"/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$StateOfMinorEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$Tribe">
+        <From Source="$InitialVillage.$MinorEmpire">
+          <Where>
+            <PathPrerequisite Flags="Prerequisite">AffinityEyelessOnes</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Get the location of the village the Player talk to-->
+      <Var VarName="$InitialVillagePointOfInterest">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+
+
+      <Var VarName="$PointOfInterestToInspect">
+        <Any>
+          <From Source="$ContinentNearbyRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$PointOfInterestToInspect.$Position"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$Tribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$PointOfInterestToInspect"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--Success Condition-->
+        <Controller_Sequence>
+
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0027-Step1" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+          <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitRankHero</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Inspect>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect" />
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistArmyDefinitionEyeLessVillageQuest1" EmpireArmyOwnerVarName="$InstigatorEmpire"/>
+          <Action_LockInteraction TargetVarName="$InitialVillagePointOfInterest" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0027-Step1" State="Completed" />
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestVillage#0027-Step2" State="InProgress" />
+          <Action_AddQuestMarker TargetEntityVarName="$InitialVillagePointOfInterest" Tags="Village" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Decorator_Talk TargetEntityVarName="$InitialVillagePointOfInterest" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(ClassArmy/ClassUnit,UnitTypeEyelessOnesCaecator:LevelDisplayed;ge;2) ge 2</InterpreterPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Talk>
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0027-Step2" State="Completed" />
+
+          <Action_PacifyMinorFaction TargetEmpireVarName="$Tribe"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition 1-->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect" />
+          <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspect" LockOption="Unlock"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerInitialVillagePointOfInterest" />
+          <Action_LockQuestTarget TargetVarName="$InitialVillagePointOfInterest" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0027-Step1">
+        <Reward LocalizationKey="%SideQuestVillage#0027-Step1Reward"/>
+      </Step>
+      <Step Name="SideQuestVillage#0027-Step2">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Too many chiefs ============-->
+  <QuestDefinition Name="SideQuestVillage#0021" Category="SideQuest" SubCategory="Village"
+                     Cooldown="15" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0025" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0025" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0010" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0010" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0011" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0011" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check that the village is not already pacified-->
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillageLocation">
+        <From Source="$InitialVillage.$PointOfInterest.$Position"/>
+      </Var>
+
+      <!--Set the region of the tribe to pacify-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$InitialVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Set the minor Empire of the region + check the number of villages not pacified as prerequisite-->
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Used to check, as a failure condition, when all the villages of the initial region are pacified  -->
+      <Var VarName="$InitialVillages">
+        <From Source="$InitialTribeRegion.$Villages"/>
+      </Var>
+
+      <!--Used to lock the parley map army action when the tribe has already provided a quest -->
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <!--1st Village to talk with -->
+      <Var VarName="$VillagePOI1">
+        <From Source="$InitialVillage.$PointOfInterest"/>
+      </Var>
+
+      <!--2nd Village to talk with -->
+      <Var VarName="$Village2">
+        <Last>
+          <From Source="$InitialVillages">
+            <OrderBy>
+              <SortVillageByDistance SortBy="Nearest" PositionToCompareVarName="$InitialVillageLocation"/>
+            </OrderBy>
+          </From>
+        </Last>
+      </Var>
+
+      <Var VarName="$VillagePOI2">
+        <From Source="$Village2.$PointOfInterest"/>
+      </Var>
+
+      <!--To display through the GUI the Minor Empire Name -->
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <!--Set Dust to give to 1st village-->
+      <DropListVar VarName="$DustAmount" DropList="DroplistStrategicDustAmount"/>
+      <DropListVar VarName="$DustTransfertAmount" DropList="DroplistStrategicDustTransfertAmount"/>
+
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestBrokenLordsChapter1ResourceName"/>
+
+      <LocalizationVar LocalizationKey="$Dust" Source="$DustAmount"/>
+
+
+      <!--Set Strategic Resource to give to 2nd village-->
+      <DropListVar VarName="$StrategicResourceAmount" DropList="DroplistLuxuryAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount" DropList="DroplistLuxuryTransferAmount"/>
+
+      <DropListVar VarName="$NameOfStrategicResourceToGather" DropList="DroplistStrategicResourceName"/>
+
+      <LocalizationVar LocalizationKey="$ResourceAmount" Source="$StrategicResourceAmount"/>
+      <LocalizationVar LocalizationKey="$ResourceName" Source="$NameOfStrategicResourceToGather"/>
+
+      <!--To put in the summary of the quest-->
+      <LocalizationVar LocalizationKey="$TribeName" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$InitialTribeRegion"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$VillagePOI1" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$VillagePOI1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$VillagePOI2" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0021-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$VillagePOI1" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerVillagePOI1"/>
+          <Decorator_Talk TargetEntityVarName="$VillagePOI1" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$DustResource" WantedAmountVarName="$DustAmount"/>
+          </Decorator_Talk>
+          <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="$DustTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI1"/>
+          <Action_LockQuestTarget TargetVarName="$VillagePOI1" LockOption="Unlock"/>
+          <Action_LockInteraction TargetVarName="$VillagePOI1" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0021-Step1" State="Completed"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestVillage#0021-Step2" State="InProgress"/>
+          <Action_LockInteraction TargetVarName="$VillagePOI2" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+          <Action_AddQuestMarker TargetEntityVarName="$VillagePOI2" Tags="Village" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerVillagePOI2"/>
+          <Decorator_Talk TargetEntityVarName="$VillagePOI2" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$NameOfStrategicResourceToGather" WantedAmountVarName="$StrategicResourceAmount"/>
+          </Decorator_Talk>
+          <Action_TransferResource ResourceNameVarName="$NameOfStrategicResourceToGather" AmountVarName="$StrategicResourceTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI2"/>
+          <Action_LockQuestTarget TargetVarName="$VillagePOI2" LockOption="Unlock"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0021-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition -->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI1"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI2"/>
+          <Action_LockQuestTarget TargetVarName="$VillagePOI1" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$VillagePOI2" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0021-Step1">
+        <Reward Droplist="DroplistLowPrestige" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestVillage#0021-Step2">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Too many chiefs (Alternative) ============-->
+  <QuestDefinition Name="SideQuestVillage#0025" Category="SideQuest" SubCategory="Village"
+                     Cooldown="15" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0021" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestVillage#0021" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0010" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0010" QuestState="Unstarted"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0011" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalTalk#0011" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <!--Check that the village is not already pacified-->
+      <Var VarName="$InitialVillage">
+        <From Source="$TargetVillage">
+          <Where>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">PacifiedVillage</PathPrerequisite>
+            <PathPrerequisite Inverted="true" Flags="Prerequisite">ConvertedVillage</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$InitialVillageLocation">
+        <From Source="$InitialVillage.$PointOfInterest.$Position"/>
+      </Var>
+
+      <!--Set the region of the tribe to pacify-->
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$InitialVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <!--Set the minor Empire of the region + check the number of villages not pacified as prerequisite-->
+      <Var VarName="$InitialTribeEmpire">
+        <From Source="$InitialTribeRegion.$MinorEmpire">
+          <Where>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!PacifiedVillage) ge 2</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/MinorEmpireVillage,!ConvertedVillage) ge 2</InterpreterPrerequisite>
+          </Where>
+        </From>
+      </Var>
+
+      <!--Used to check, as a failure condition, when all the villages of the initial region are pacified  -->
+      <Var VarName="$InitialVillages">
+        <From Source="$InitialTribeRegion.$Villages"/>
+      </Var>
+
+      <!--Used to lock the parley map army action when the tribe has already provided a quest -->
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
+
+      <!--1st Village to talk with -->
+      <Var VarName="$VillagePOI1">
+        <From Source="$InitialVillage.$PointOfInterest"/>
+      </Var>
+
+      <!--2nd Village to talk with -->
+      <Var VarName="$Village2">
+        <Last>
+          <From Source="$InitialVillages">
+            <OrderBy>
+              <SortVillageByDistance SortBy="Nearest" PositionToCompareVarName="$InitialVillageLocation"/>
+            </OrderBy>
+          </From>
+        </Last>
+      </Var>
+
+      <Var VarName="$VillagePOI2">
+        <From Source="$Village2.$PointOfInterest"/>
+      </Var>
+
+      <!--To display through the GUI the Minor Empire Name -->
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <!--Set Dust to give to 1st village-->
+      <DropListVar VarName="$DustAmount" DropList="DroplistStrategicDustAmount"/>
+      <DropListVar VarName="$DustTransfertAmount" DropList="DroplistStrategicDustTransfertAmount"/>
+
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestBrokenLordsChapter1ResourceName"/>
+
+      <LocalizationVar LocalizationKey="$Dust" Source="$DustAmount"/>
+
+      <!--To put in the summary of the quest-->
+      <LocalizationVar LocalizationKey="$TribeName" Source="$InitialTribeEmpire"/>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$InitialTribeRegion"/>
+
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockInteraction TargetVarName="$VillagePOI1" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_LockQuestTarget TargetVarName="$VillagePOI1" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$VillagePOI2" LockOption="Lock"/>
+
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <!--Step 1-->
+          <Action_UpdateStep StepName="SideQuestVillage#0025-Step1" State="InProgress"/>
+          <Action_AddQuestMarker TargetEntityVarName="$VillagePOI1" Tags="Village" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerVillagePOI1"/>
+          <Decorator_Talk TargetEntityVarName="$VillagePOI1" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_HasResourceAmount ResourceNameVarName="$DustResource" WantedAmountVarName="$DustAmount"/>
+          </Decorator_Talk>
+          <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="$DustTransfertAmount"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI1"/>
+          <Action_LockQuestTarget TargetVarName="$VillagePOI1" LockOption="Unlock"/>
+          <Action_LockInteraction TargetVarName="$VillagePOI1" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0025-Step1" State="Completed"/>
+
+          <!--Step 2-->
+          <Action_UpdateStep StepName="SideQuestVillage#0025-Step2" State="InProgress"/>
+          <Action_LockInteraction TargetVarName="$VillagePOI2" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+          <Action_AddQuestMarker TargetEntityVarName="$VillagePOI2" Tags="Village" RevealUnexploredLand="false" MarkerVisibleInFogOfWar="false" Output_QuestMarkerVarName="$QuestMarkerVillagePOI2"/>
+          <Decorator_Talk TargetEntityVarName="$VillagePOI2" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$InspectionInstigatorSimObject">
+                <PathPrerequisite Flags="Prerequisite">ClassArmy/UnitRankHero</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_Talk>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI2"/>
+          <Action_LockQuestTarget TargetVarName="$VillagePOI2" LockOption="Unlock"/>
+          <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribeEmpire"/>
+          <Action_UpdateStep StepName="SideQuestVillage#0025-Step2" State="Completed"/>
+          <Action_UpdateQuest State="Completed"/>
+        </Controller_Sequence>
+
+        <!--Fail Condition -->
+        <Controller_Sequence>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI1"/>
+          <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI2"/>
+          <Action_LockQuestTarget TargetVarName="$VillagePOI1" LockOption="Unlock"/>
+          <Action_LockQuestTarget TargetVarName="$VillagePOI2" LockOption="Unlock"/>
+          <Action_UpdateQuest State="Failed"/>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0025-Step1">
+        <Reward Droplist="DroplistLowPrestige" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestVillage#0025-Step2">
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+
+  <!--============ TITLE: Tutorial side quest ============-->
+  <QuestDefinition Name="SideQuestVillage#0024" Category="SideQuest" SubCategory="Village"
+                     Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Talk, TutorialQuest</Tags>
+
+    <!--Cannot be triggered by anyone but the tutorial-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinityTutorial</PathPrerequisite>
+    </Prerequisites>
+
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <Var VarName="$CapitalCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$PointOfInterest">
+        <From Source="$CapitalCity.$Region.$PointsOfInterest">
+          <Where>
+            <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$QuestPOIToInspect">
+        <First>
+          <From Source="$PointOfInterest"/>
+        </First>
+      </Var>
+
+      <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$CapitalCity.$Region.$Villages.$PointOfInterest"/>
+      </Var>
+      <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$QuestPOIToInspect.$Position"/>
+      </Var>
+
+      <Var VarName="$InitialTribe">
+        <Any>
+          <From Source="$TargetVillage.$MinorEmpire"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$InitialTribeRegion">
+        <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$MinorFaction" Source="$InitialTribe"/>
+      <LocalizationVar LocalizationKey="$InitialTribeRegionName" Source="$InitialTribeRegion"/>
+
+      <LocalizationVar LocalizationKey="$QuestPOI" Source="$QuestPOIToInspect"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="SideQuestVillage#0024-Step1" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$QuestPOIToInspect" Tags="POI" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOIToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$QuestPOIToInspect" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" PrerequisiteNotVerifiedMessage="%TutorialArmyPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) ge 2</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerQuestPOIToInspect"/>
+      <Action_UpdateStep StepName="SideQuestVillage#0024-Step1" State="Completed"/>
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="SideQuestVillage#0024-Step2" State="InProgress"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistArmyDefinitionTutorial" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_PacifyMinorFaction TargetEmpireVarName="$InitialTribe"/>
+      <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+      <Action_UpdateStep StepName="SideQuestVillage#0024-Step2" State="Completed"/>
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="SideQuestVillage#0024-Step1">
+        <Reward Droplist="DroplistTutoDye" Picks="1"/>
+      </Step>
+      <Step Name="SideQuestVillage#0024-Step2">
+        <Reward Droplist="DroplistTutoTitanium" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+</Datatable>

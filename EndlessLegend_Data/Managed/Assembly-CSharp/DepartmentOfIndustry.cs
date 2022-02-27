@@ -20,10 +20,10 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderBuyoutConstruction), "BuyoutConstruction")]
 [OrderProcessor(typeof(OrderMoveConstruction), "MoveConstruction")]
 [OrderProcessor(typeof(OrderQueueConstruction), "QueueConstruction")]
 [OrderProcessor(typeof(OrderCancelConstruction), "CancelConstruction")]
+[OrderProcessor(typeof(OrderBuyoutConstruction), "BuyoutConstruction")]
 public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSerializable, IConstructibleElementDatabase
 {
 	public DepartmentOfIndustry(global::Empire empire) : base(empire)
@@ -2230,9 +2230,9 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 	public delegate void ConstructionChangeEventHandler(object sender, ConstructionChangeEventArgs e);
 
 	[CompilerGenerated]
-	private sealed class FillAvailableConstructibleElements>c__AnonStorey920
+	private sealed class FillAvailableConstructibleElements>c__AnonStorey925
 	{
-		internal bool <>m__3D8(DepartmentOfIndustry.ConstructibleElement contructibleElement)
+		internal bool <>m__3DC(DepartmentOfIndustry.ConstructibleElement contructibleElement)
 		{
 			return this.categories.Contains(contructibleElement.Category);
 		}
@@ -2241,9 +2241,9 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 	}
 
 	[CompilerGenerated]
-	private sealed class GetAvailableConstructibleElements>c__AnonStorey921
+	private sealed class GetAvailableConstructibleElements>c__AnonStorey926
 	{
-		internal bool <>m__3D9(DepartmentOfIndustry.ConstructibleElement contructibleElement)
+		internal bool <>m__3DD(DepartmentOfIndustry.ConstructibleElement contructibleElement)
 		{
 			return this.categories.Contains(contructibleElement.Category);
 		}

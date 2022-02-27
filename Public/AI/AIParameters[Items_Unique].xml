@@ -237,6 +237,7 @@
   <!-- RAGE WIZARDS Quest Reward: Strategic 6-->
   <AIParameterDatatableElement Name="ItemScepter2RageWizardsMainQuest">
     <AIParameter   Name="AIEquipmentMaximumHealth" Value="20"/>
+
     <AIParameter   Name="AIEquipmentAttack"        Value="114"/>
     <AIParameter   Name="AIEquipmentDamage"        Value="72"/>
 
@@ -324,8 +325,8 @@
     <AIParameter  Name="AIEquipmentDefense"         Value="6"/>
     <AIParameter  Name="AIUnitDefensePercent"       Value="0.2"/>
     <AIParameter  Name="AIUnitDamagePercent"        Value="0.1"/>
-    <!-- Block level 2 -->
-    <AIParameter  Name="AIUnitDefensePercent"             Value="0.2"/>
+    <!-- Block level 1 -->
+    <AIParameter  Name="AIUnitDefensePercent"             Value="0.1"/>
   </AIParameterDatatableElement>
 
   <!--Side Quest Droplist Reward: Strategic 3-->
@@ -333,8 +334,8 @@
     <AIParameter  Name="AIEquipmentDefense"               Value="22"/>
     <AIParameter  Name="AIUnitMaximumHealthPercent"       Value="0.25"/>
     <AIParameter  Name="AIUnitDefensePercent"             Value="0.3"/>
-    <!-- Block level 3-->
-    <AIParameter  Name="AIUnitDefensePercent"             Value="0.3"/>
+    <!-- Block level 2-->
+    <AIParameter  Name="AIUnitDefensePercent"             Value="0.2"/>
   </AIParameterDatatableElement>
   
   <!--Naval Pack: Dragon Teeth Shield-->
@@ -342,8 +343,8 @@
     <AIParameter  Name="AIEquipmentDefense"               Value="6"/>
     <AIParameter  Name="AIUnitInitiativePercent"          Value="0.3"/>
     <AIParameter  Name="AIUnitDefensePercent"             Value="0.1"/>
-    <!-- Block level 2 -->
-    <AIParameter  Name="AIUnitDefensePercent"             Value="0.2"/>
+    <!-- Block level 1 -->
+    <AIParameter  Name="AIUnitDefensePercent"             Value="0.1"/>
   </AIParameterDatatableElement>
   
   
@@ -359,8 +360,8 @@
     <AIParameter Name="AIItemScience"           Value="0.4"/>
     <AIParameter Name="AIItemDust"              Value="0.4"/>
     <AIParameter Name="AIItemIndustry"          Value="0.4"/>
-    <AIParameter Name="GovernorCity"            Value="0.9"/>
-    <AIParameter Name="GovernorEmpire"          Value="0.9"/>
+    <AIParameter Name="GovernorCity"            Value="0.5"/>
+    <AIParameter Name="GovernorEmpire"          Value="0.5"/>
     <AIParameter Name="ArmySupport"             Value="-1"/>
     <AIParameter Name="ArmyHero"                Value="-1"/>
     <AIParameter Name="Spy"                     Value="-1"/>
@@ -369,40 +370,37 @@
   <!--BROKEN LORDS Quest Reward: Dust-->
   <AIParameterDatatableElement Name="ItemTomeBrokenLordsMainQuest2" >
     <!-- Tome, +20 Science -->
-    <AIParameter Name="AIItemScience"           Value="0.8"/>
-    <AIParameter Name="GovernorCity"            Value="0.9"/>
-    <AIParameter Name="GovernorEmpire"          Value="0.9"/>
+    <AIParameter Name="AIItemScience"           Value="0.9"/>
+    <AIParameter Name="GovernorCity"            Value="0.2"/>
+    <AIParameter Name="GovernorEmpire"          Value="0.8"/>
     <AIParameter Name="ArmySupport"             Value="-1"/>
     <AIParameter Name="ArmyHero"                Value="-1"/>
     <AIParameter Name="Spy"                     Value="-1"/>
   </AIParameterDatatableElement>
 
   <!--NECROPHAGES Quest Reward: Incubator-->
-  <!--
   <AIParameterDatatableElement Name="ItemTomeNecrophagesMainQuest1" >
     <AIParameter Name="AIEquipmentMaximumHealth" Value="100"/>
-  </AIParameterDatatableElement>-->
+  </AIParameterDatatableElement>
 
   <!--ROVING CLANS Quest Reward: Book-->
   <AIParameterDatatableElement Name="ItemTomeRovingClansMainQuest1" >
-    <AIParameter Name="AIItemIndustry"          Value="0.1"/>
-    <AIParameter Name="GovernorCity"            Value="0.5"/>
-    <AIParameter Name="GovernorEmpire"          Value="0.3"/>
-    <AIParameter Name="ArmySupport"             Value="0.1"/>
-    <AIParameter Name="ArmyHero"                Value="0.1"/>
+    <AIParameter Name="AIItemIndustry"          Value="0.5"/>
+    <AIParameter Name="GovernorCity"            Value="0.6"/>
+    <AIParameter Name="GovernorEmpire"          Value="0.6"/>
+    <AIParameter Name="ArmySupport"             Value="0.9"/>
+    <AIParameter Name="ArmyHero"                Value="0.6"/>
+    <AIParameter Name="Spy"                     Value="-1"/>
   </AIParameterDatatableElement>
 
   <!--COLOSSUS Quest Reward: Book-->
   <AIParameterDatatableElement Name="ItemTomeColossusQuest1">
     <!-- UnitAbilityColossusSlayer 0 -->
-    <AIParameter Name="GovernorCity"            Value="-1"/>
-    <AIParameter Name="GovernorEmpire"          Value="-1"/>
-    <AIParameter Name="ArmySupport"             Value="0.4"/>
-    <AIParameter Name="ArmyHero"                Value="0.4"/>
-    <AIParameter Name="Spy"                     Value="-1"/>
+    <AIParameter Name="AIUnitAttackPercent"      Value="0.1"/>
+    <AIParameter Name="AIUnitDamagePercent"      Value="0.1"/>
   </AIParameterDatatableElement>
-  
-    <!--MIMICS Quest Reward: Good Book-->
+
+  <!--MIMICS Quest Reward: Good Book-->
   <AIParameterDatatableElement Name="ItemTomeMimicsQuest2" >
     <!-- Tome, +2 Science and Influence per Population -->
     <AIParameter Name="AIItemScience"           Value="0.9"/>
@@ -414,51 +412,44 @@
     <AIParameter Name="Spy"                     Value="-1"/>
   </AIParameterDatatableElement>
 
+
   <!-- ########### Insignia ########### -->
 
   <!--BROKEN LORDS Quest Reward: Dust-->
   <AIParameterDatatableElement Name="ItemInsigniaBrokenLordsMainQuest1">
-    <AIParameter Name="GovernorCity"            Value="-1"/>
-    <AIParameter Name="GovernorEmpire"          Value="-1"/>
-    <AIParameter Name="ArmySupport"             Value="0.4"/>
-    <AIParameter Name="ArmyHero"                Value="0.4"/>
-    <AIParameter Name="Spy"                     Value="-1"/>
+    <AIParameter Name="AIEquipmentDefense"         Value="20"/>
   </AIParameterDatatableElement>
 
   <!--VAULTERS Quest Reward: Strategic 1-->
   <AIParameterDatatableElement Name="ItemInsigniaVaultersMainQuest1">
-    <AIParameter Name="GovernorCity"            Value="-1"/>
-    <AIParameter Name="GovernorEmpire"          Value="-1"/>
-    <AIParameter Name="ArmySupport"             Value="0.7"/>
-    <AIParameter Name="ArmyHero"                Value="0.7"/>
-    <AIParameter Name="Spy"                     Value="-1"/>
+    <AIParameter Name="AIEquipmentInitiative"      Value="6"/>
   </AIParameterDatatableElement>
 
   <!--DRAKKENS Quest Reward: Pendant-->
   <AIParameterDatatableElement Name="ItemInsigniaDrakkensMainQuest1">
     <!-- Inspiring leader and vision range bonus -->
-    <AIParameter Name="GovernorCity"            Value="-1"/>
-    <AIParameter Name="GovernorEmpire"          Value="-1"/>
-    <AIParameter Name="ArmySupport"             Value="0.4"/>
-    <AIParameter Name="ArmyHero"                Value="0.4"/>
+    <AIParameter Name="GovernorCity"            Value="-0.75"/>
+    <AIParameter Name="GovernorEmpire"          Value="-0.75"/>
+    <AIParameter Name="ArmySupport"             Value="0.8"/>
+    <AIParameter Name="ArmyHero"                Value="0.6"/>
     <AIParameter Name="Spy"                     Value="-1"/>
   </AIParameterDatatableElement>
 
   <!--CULTISTS Quest Reward: -->
   <AIParameterDatatableElement Name="ItemInsigniaCultistsMainQuest1">
-    <AIParameter Name="AIUnitDefensePercent"          Value="0.4"/>
-    <AIParameter Name="AIUnitInitiativePercent"       Value="0.4"/>
-    <AIParameter Name="AIUnitDamagePercent"           Value="0.4"/>
+    <AIParameter Name="AIUnitDefensePercent"     Value="0.35"/>
+    <AIParameter Name="AIUnitInitiativePercent"  Value="0.35"/>
+    <AIParameter Name="AIUnitDamagePercent"      Value="0.35"/>
     <!-- UnitAbilityRegeneration -->
-    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0.6"/>
+    <AIParameter Name="AIUnitMaximumHealthPercent"        Value="0.30"/>
   </AIParameterDatatableElement>
 
   <!--CULTISTS Quest Reward: -->
   <AIParameterDatatableElement Name="ItemInsigniaCultistsMainQuest2">
-    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0.5"/>
-    <AIParameter Name="AIUnitAttackPercent"           Value="0.5"/>
+    <AIParameter Name="AIUnitMaximumHealthPercent"        Value="0.35"/>
+    <AIParameter Name="AIUnitAttackPercent"               Value="0.35"/>
     <!-- UnitAbilityDarkProof -->
-    <AIParameter Name="AIEquipmentMaximumMovement"        Value="0.5"/>
+    <AIParameter Name="AIEquipmentMaximumMovement"        Value="2"/>
   </AIParameterDatatableElement>
 
   <!--Free Weekend Reward: Dust Insignia-->
@@ -467,47 +458,40 @@
     <AIParameter Name="GovernorCity"            Value="-1"/>
     <AIParameter Name="GovernorEmpire"          Value="-1"/>
     <AIParameter Name="ArmySupport"             Value="0.8"/>
-    <AIParameter Name="ArmyHero"                Value="0.8"/>
+    <AIParameter Name="ArmyHero"                Value="0.6"/>
     <AIParameter Name="Spy"                     Value="-1"/>
   </AIParameterDatatableElement>
 
   <!--VICTORY Quest Reward-->
   <AIParameterDatatableElement Name="ItemTalismanVictoryQuest2">
     <!-- Army Vision 2, Defensive Impulse 0, Slow 0 -->
-    <AIParameter Name="GovernorCity"            Value="-1"/>
-    <AIParameter Name="GovernorEmpire"          Value="-1"/>
-    <AIParameter Name="ArmySupport"             Value="0.5"/>
-    <AIParameter Name="ArmyHero"                Value="0.5"/>
-    <AIParameter Name="Spy"                     Value="-1"/>
+    <AIParameter Name="ArmySupport"             Value="0.8"/>
+    <AIParameter Name="ArmyHero"                Value="0.8"/>
   </AIParameterDatatableElement>
 
   <!--WINTER SHIFTERS Quest Reward -->
   <AIParameterDatatableElement Name="ItemTalismanWinterShiftersMainQuest1">
     <!-- Shifting Combo 1 -->
-    <AIParameter Name="GovernorCity"            Value="-1"/>
-    <AIParameter Name="GovernorEmpire"          Value="-1"/>
-    <AIParameter Name="ArmySupport"             Value="0.4"/>
-    <AIParameter Name="ArmyHero"                Value="0.4"/>
-    <AIParameter Name="Spy"                     Value="-1"/>
+    <AIParameter Name="AIUnitDamagePercent"      Value="0.5"/>
   </AIParameterDatatableElement>
 
   <!-- ########### Ring ########### -->
 
   <!--BROKEN LORDS Quest Reward: Strategic 5-->
   <AIParameterDatatableElement Name="ItemRingBrokenLordsMainQuest1">
-    <AIParameter Name="AIUnitDefensePercent"          Value="0.4"/>
+    <AIParameter Name="AIEquipmentDefense"         Value="20"/>
   </AIParameterDatatableElement>
 
   <!--BROKEN LORDS Quest Reward:Strategic 6-->
   <AIParameterDatatableElement Name="ItemRingBrokenLordsMainQuest2">
-    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0.6"/>
-    <AIParameter Name="AIUnitDefensePercent"          Value="0.4"/>
+    <AIParameter Name="AIEquipmentMaximumHealth"   Value="30"/>
+    <AIParameter Name="AIEquipmentDefense"         Value="10"/>
   </AIParameterDatatableElement>
 
   <!--HALLOWEEN Quest Reward:Strategic 4-->
   <AIParameterDatatableElement Name="ItemRingStrategic4Tier4SideQuest1">
     <!-- UnitAbilityRegeneration 2 -->
-    <AIParameter Name="AIUnitMaximumHealthPercent"    Value="0.6"/>
+    <AIParameter Name="AIUnitMaximumHealthPercent"        Value="0.40"/>
   </AIParameterDatatableElement>
 
   <!--Free Weekend Reward: Dust Ring-->
@@ -528,29 +512,20 @@
 
   <AIParameterDatatableElement Name="ItemGemstoneMedalEra4MilitaryReward">
     <!-- Guardian ability cooldown reduction -->
-    <AIParameter Name="AIUnitAttackPercent"           Value="0.4"/>
-	<AIParameter Name="AIUnitInitiativePercent"           Value="0.4"/>
+    <AIParameter Name="AIUnitAttackPercent"               Value="0.7"/>
+    <AIParameter Name="AIUnitDefensePercent"              Value="0.7"/>
   </AIParameterDatatableElement>
 
   <AIParameterDatatableElement Name="ItemTalismanMedalEra2MilitaryReward">
     <!-- Free counter -->
-    <AIParameter Name="AIUnitAttackPercent"               Value="0.4"/>
-    <AIParameter Name="AIUnitDefensePercent"              Value="0.4"/>
-    <AIParameter Name="AIUnitDamagePercent"           	  Value="0.4"/>
-	<AIParameter Name="UnitClassInfantry"           Value="0.7"/>
-	<AIParameter Name="UnitClassCavalry"           Value="0.4"/>
-	<AIParameter Name="UnitClassFlying"           Value="0.4"/>
+    <AIParameter Name="AIUnitAttackPercent"               Value="0.6"/>
+    <AIParameter Name="AIUnitDamagePercent"               Value="0.6"/>
   </AIParameterDatatableElement>
-  
+
   <AIParameterDatatableElement Name="ItemTorsoMedalEra5HeroesReward">
     <AIParameter   Name="AIEquipmentMaximumHealth" Value="168"/>
     <AIParameter   Name="AIEquipmentDefense"       Value="52"/>
   </AIParameterDatatableElement>
 
-  <AIParameterDatatableElement Name="ItemLegsLavaWalker">
-    <AIParameter Name="AIEquipmentDefense"            Value="36"/>
-    <AIParameter Name="AIEquipmentInitiative"         Value="12"/>
-    <AIParameter Name="AIUnitDefensePercent"          Value="0.20"/>
-	<AIParameter Name="AIUnitInitiativePercent"          Value="0.1"/>
-  </AIParameterDatatableElement>
+
 </Datatable>

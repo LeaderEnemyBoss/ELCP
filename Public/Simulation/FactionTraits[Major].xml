@@ -1,0 +1,1335 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ########################################## -->
+  <!-- ######            GLOBAL            ###### -->
+  <!-- ########################################## -->
+
+  <FactionTrait Name="FactionTraitMajorFaction" Hidden="true">
+    <SimulationDescriptorReference Name="EmpireTypeMajor"/>
+    <SimulationDescriptorReference Name="FacilityUnique1Malus"/>
+    <SimulationDescriptorReference Name="FacilityUnique2Malus"/>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionBoosterFood"/>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionBoosterIndustry"/>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionBoosterScience"/>
+  </FactionTrait>
+
+  <FactionTrait Name="TraitRandomizeFaction" Hidden="true"/>
+
+  <FactionTrait Name="TraitRandomFaction" SubCategory="StandardTrait" Hidden="true"/>
+
+  <FactionTrait Name="TraitCustomFaction" SubCategory="StandardTrait" Hidden="true" Custom="true"/>
+
+  <!-- SAMPLE FOR A MULTI-LEVEL TRAIT
+  <FactionTrait Name="TraitToto1"             SubCategory="StandardTrait" Family="Trait" Root="Toto" Level="1" Custom="true" Cost="0">
+  <SimulationDescriptorReference Name="Toto1"/>
+  </FactionTrait>
+
+  <FactionTrait Name="TraitToto2"             SubCategory="StandardTrait" Family="Trait" Root="Toto" Level="2" Custom="true" Cost="0">
+  <SimulationDescriptorReference Name="Toto2"/>
+  </FactionTrait>
+
+  <FactionTrait Name="TraitToto3"             SubCategory="StandardTrait" Family="Trait" Root="Toto" Level="3" Custom="true" Cost="0">
+  <SimulationDescriptorReference Name="Toto3"/>
+  </FactionTrait>
+  -->
+
+  <FactionTrait Name="FactionTraitVaultersMezari" SubCategory="StandardTrait" Hidden="true">
+    <SimulationDescriptorReference Name="FactionTraitVaultersMezari"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######         TECHNOLOGIES         ###### -->
+  <!-- ########################################## -->
+
+  <!-- Unlocked Technologies at Start -->
+  <FactionTrait Name="FactionTraitTechnologyFood0"                               SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>!AffinityBrokenLords</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionFood0"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyIndustry0"                           SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionIndustry0"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDust0"                               SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionDust0"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDust1"                               SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionDust1"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyScience0"                            SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitReplicants1</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionScience0"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyScience8"                            SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitReplicants1</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionScience8"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyApproval1"                           SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionApproval1"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyWeaponCommonTier1"                   SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionWeaponCommonTier1"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyArmorCommonTier1"                    SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionArmorCommonTier1"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyStrategicExtractionCommon"           SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionStrategicExtractionCommon"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyLuxuryExtractionCommon"              SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionLuxuryExtractionCommon"/>
+  </FactionTrait>
+
+  <!--Arcana of Matter-->
+  <FactionTrait Name="FactionTraitTechnologyDefinitionRageWizards7"              SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="6">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionRageWizards7"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards7"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionRageWizards7Custom"        SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionRageWizards7"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards7"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <!--Arcana of Agility-->
+  <FactionTrait Name="FactionTraitTechnologyDefinitionRageWizards8"              SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="6">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionRageWizards8"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards8"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionRageWizards8Custom"        SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionRageWizards8"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards8"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionMarketplaceResources"      SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="15">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionMarketplaceResources"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionMarketplaceMercenaries"    SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionMarketplaceMercenaries"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionMapActionParley"           SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitNecrophages5</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionMapActionParley"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionMapActionPillage"          SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>dlc:ReplicantsPack</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionMapActionPillage"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionSearchBonus"               SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionSearchBonus"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionDefense1"                  SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionDefense1"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionNecrophagesUnit2"          SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>AffinityNecrophages</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionNecrophagesUnit2"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionWinterShiftersUnit2"       SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>AffinityWinterShifters</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionWinterShiftersUnit2"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionShip"                      SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="15">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionShip"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitTechnologyDefinitionDiplomacyPeace"            SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitNecrophages5</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionDiplomacyPeace"/>
+  </FactionTrait>
+
+  <!-- Unlocked Orb Unlocks at Start -->
+  <FactionTrait Name="FactionTraitTechnologyDefinitionOrbUnlock18WinterShifters" SubCategory="StartingOrbUnlockTrait"  Family="StartingOrbUnlock"  Custom="true" Cost="10">
+    <SimulationDescriptorReference Name="FactionTraitTechnologyDefinitionOrbUnlock18WinterShifters"/>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionOrbUnlock18WinterShifters"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######        MAJOR FACTIONS        ###### -->
+  <!-- ########################################## -->
+
+  <!-- ########################################## -->
+  <!-- ######         BROKEN LORDS         ###### -->
+  <!-- ########################################## -->
+
+  <!-- Appetite for Dust -->
+  <!-- Can't see/gather Food. Dust can be used to generate growth -->
+  <FactionTrait Name="FactionTraitBrokenLords2"                SubCategory="AffinityTrait"                                            Cost="10">
+    <SimulationDescriptorReference Name="FactionTraitBrokenLords2"/>
+    <SimulationDescriptorReference Name="FactionTraitBuyOutPopulation"/>
+    <SimulationDescriptorReference Name="FactionTraitBrokenLords3"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitBrokenLordsHeatWave"         SubCategory="DustEclipseTrait"         SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitBrokenLordsHeatWave"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitBrokenLordsMainQuest"        SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+  <!-- MainQuest: -->
+  <!-- -10% Era1 Tech Cost -->
+  <FactionTrait Name="FactionTraitBrokenLords4"                SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- MainQuest: -->
+  <!-- +10% Unit Regen per Pacified Village -->
+  <FactionTrait Name="FactionTraitBrokenLords5"                SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- MainQuest: -->
+  <!-- +0.1 Dust on Empire per XP Gain -->
+  <!--<FactionTrait Name="FactionTraitBrokenLords6"         SubCategory="MainQuestTrait"        Hidden="true">
+  </FactionTrait>-->
+
+  <!-- MainQuest: -->
+  <!-- BL Wonder -->
+  <FactionTrait Name="FactionTraitBrokenLords7"                SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- MainQuest: -->
+  <!-- Units are instantly healed after battle -->
+  <FactionTrait Name="FactionTraitBrokenLords8"                SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- Trait: Dust Efficient -->
+  <!-- +1 Dust on Dust tiles -->
+  <FactionTrait Name="FactionTraitBrokenLords1"                SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="25">
+    <Prerequisites>!FactionTraitEconomy10Negative</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitBrokenLords1"/>
+  </FactionTrait>
+
+  <!-- Trait: Dust Dependent -->
+  <!-- No HP regen bonus bonuses and techs -->
+  <FactionTrait Name="FactionTraitBrokenLords3"                SubCategory="StandardTrait"          Hidden="true">
+    <SimulationDescriptorReference Name="FactionTraitBrokenLords3"/>
+  </FactionTrait>
+
+  <!-- Trait: Dustborn -->
+  <!-- Population buyout with Dust -->
+  <FactionTrait Name="FactionTraitBuyOutPopulation"            SubCategory="StandardTrait"          Hidden="true">
+    <Prerequisites>!FactionTraitNecrophages8</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitBuyOutPopulation"/>
+  </FactionTrait>
+
+  <!-- Unit1: Infantry -->
+  <FactionTrait Name="FactionTraitBrokenLordsUnit1"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyBrokenLordsInfantry"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Cavalry -->
+  <FactionTrait Name="FactionTraitBrokenLordsUnit2"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyBrokenLordsCavalry"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Black Bishop -->
+  <FactionTrait Name="FactionTraitBrokenLordsUnit3"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyBrokenLordsBlackBishop"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######         MAD FAIRIES          ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: The Sharing -->
+  <FactionTrait Name="FactionTraitMadFairiesTheSharing"        SubCategory="AffinityTrait"                                            Cost="15">
+    <SimulationDescriptorReference Name="FactionTraitMadFairiesTheSharing"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitMadFairiesHeatWave"          SubCategory="DustEclipseTrait"         SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitMadFairiesHeatWave"/>
+  </FactionTrait>
+  
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitMadFairiesMainQuest"         SubCategory="MainQuestTrait">
+    <SimulationDescriptorReference Name="FactionTraitMadFairiesMainQuest"/>
+    <SubTrait Name="FactionTraitMadFairies3"/>
+    <SubTrait Name="FactionTraitMadFairies4"/>
+  </FactionTrait>
+
+  <!-- MainQuest: Survival Instinct -->
+  <!-- +2 Movement if enemy within sight -->
+  <FactionTrait Name="FactionTraitMadFairies3"                 SubCategory="MainQuestTrait"         Hidden="true">
+    <SimulationDescriptorReference Name="FactionTraitMadFairies3"/>
+  </FactionTrait>
+
+  <!-- MainQuest: Visions of Glory -->
+  <!-- + 5 Empire Points earned on construction complete -->
+  <FactionTrait Name="FactionTraitMadFairies4"                 SubCategory="MainQuestTrait"         Hidden="true">
+    <SimulationDescriptorReference Name="FactionTraitMadFairies4"/>
+  </FactionTrait>
+
+  <!-- Faction Trait: Living Towns -->
+  <!-- +1 Industry per pop on Forest tiles -->
+  <FactionTrait Name="FactionTraitMadFairies1"                 SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="25">
+    <SimulationDescriptorReference Name="FactionTraitMadFairies1"/>
+  </FactionTrait>
+
+  <!-- Faction Tech: Way of the Woodlands -->
+  <!-- +25% Defense on Units on Forest tiles -->
+  <FactionTrait Name="FactionTraitMadFairies2"                 SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionMadFairies2"/>
+    <SimulationDescriptorReference Name="FactionTraitMadFairies2"/>
+  </FactionTrait>
+
+  <!-- Unit1: Dekari Ranger -->
+  <FactionTrait Name="FactionTraitMadFairiesUnit1"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMadFairiesArcher"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Ayache Shaman -->
+  <FactionTrait Name="FactionTraitMadFairiesUnit2"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMadFairiesShaman"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Tenei Walker -->
+  <FactionTrait Name="FactionTraitMadFairiesUnit3"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMadFairiesForestSpirit"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######          VAULTERS            ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Holy Resource -->
+  <!-- Define an affinity strategic resource -->
+  <FactionTrait Name="FactionTraitAffinityStrategic"           SubCategory="AffinityTrait"                                            Cost="25">
+    <SimulationDescriptorReference Name="FactionTraitAffinityStrategic"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitVaultersHeatWave"            SubCategory="DustEclipseTrait"         SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitVaultersHeatWave"/>
+  </FactionTrait>
+
+  <!-- Faction Trait: Knack for Knowledge -->
+  <!-- +1 Science on Science tiles -->
+  <FactionTrait Name="FactionTraitVaulters1"                   SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="20">
+    <Prerequisites>!FactionTraitReplicants1,!FactionTraitEconomy11Negative</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitVaulters1"/>
+  </FactionTrait>
+
+  <!-- Faction Trait -->
+  <!-- +1 Resource per Extractor -->
+  <FactionTrait Name="FactionTraitVaulters5"                   SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="15">
+    <SimulationDescriptorReference Name="FactionTraitVaulters5"/>
+  </FactionTrait>
+
+  <!-- Faction Tech: Deep Generator -->
+  <!-- +10% FIDS on City -->
+  <FactionTrait Name="FactionTraitVaulters2"                   SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>FactionTraitVaultersMezari</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionVaulters2"/>
+    <SimulationDescriptorReference Name="FactionTraitVaulters2"/>
+  </FactionTrait>
+
+  <!-- Faction Tech: Strength of the Vault -->
+  <!-- +20 Defense Points on City -->
+  <!-- +5 Defense Recovery on City -->
+  <FactionTrait Name="FactionTraitVaulters3"                   SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="5">
+    <Prerequisites>FactionTraitVaultersMezari</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionVaulters3"/>
+    <SimulationDescriptorReference Name="FactionTraitVaulters3"/>
+  </FactionTrait>
+
+  <!-- Faction Tech: Endless Recycling -->
+  <!-- +2 Science on all tiles -->
+  <FactionTrait Name="FactionTraitVaulters4"                   SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>FactionTraitVaultersMezari,!FactionTraitReplicants1</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionVaulters4"/>
+    <SimulationDescriptorReference Name="FactionTraitVaulters4"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitVaultersMainQuest"           SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+  <!-- Unit1: Marine -->
+  <FactionTrait Name="FactionTraitVaultersUnit1"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyVaultersMarine"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Dawn Officer -->
+  <FactionTrait Name="FactionTraitVaultersUnit2"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyVaultersDawnOfficer"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Titan -->
+  <FactionTrait Name="FactionTraitVaultersUnit3"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyVaultersTitan"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######         NECROPHAGES         ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Recycling -->
+  <FactionTrait Name="FactionTraitNecrophagesRecycling"        SubCategory="AffinityTrait"                                            Cost="15">
+    <Prerequisites>!FactionTraitFlames9</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitNecrophagesRecycling"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitNecrophagesHeatWave"         SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitNecrophagesHeatWave"/>
+  </FactionTrait>
+  
+  <!-- Faction Trait: Agriculturally Challenged -->
+  <!-- -1 Food on Food tile -->
+  <FactionTrait Name="FactionTraitNecrophages1"                SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="-10">
+    <Prerequisites>!AffinityBrokenLords,!FactionTraitEconomy7Positive,!FactionTraitFlames3</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitNecrophages1"/>
+  </FactionTrait>
+
+  <!-- Faction Trait: Will of the Hive -->
+  <!-- +4 attack on all units for each declared war -->
+  <FactionTrait Name="FactionTraitNecrophages2"                SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="5">
+    <SimulationDescriptorReference Name="FactionTraitNecrophages2"/>
+  </FactionTrait>
+
+  <!-- Faction Trait: Fast Epimorphosis -->
+  <!-- +5% HP regen on units -->
+  <FactionTrait Name="FactionTraitNecrophages3"                SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="10">
+    <Prerequisites>!AffinityBrokenLords</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitNecrophages3"/>
+  </FactionTrait>
+
+  <!-- Faction Trait: Cull the Herd -->
+  <!-- +2 Food per pop per pacified Village in region -->
+  <FactionTrait Name="FactionTraitNecrophages4"                SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="10">
+    <Prerequisites>!AffinityBrokenLords</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitNecrophages4"/>
+  </FactionTrait>
+
+  <!-- Faction Trait: Pitiless -->
+  <!-- No peace/alliance / No diplomacy techs and victory / No bribe/talk techs -->
+  <FactionTrait Name="FactionTraitNecrophages5"                SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="-10">
+    <Prerequisites>!FactionTraitRovingClans6,!FactionTraitRovingClans8,!FactionTraitDrakkens6,!FactionTraitTechnologyDefinitionMapActionParley,!FactionTraitTechnologyDefinitionDiplomacyPeace,!AffinityWinterShifters</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitNecrophages5"/>
+  </FactionTrait>
+
+  <!-- Faction Trait: Cannon Fodder -->
+  <!-- -50% unit upkeep -->
+  <FactionTrait Name="FactionTraitNecrophages6"                SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="15">
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionNecrophages6"/>
+    <SimulationDescriptorReference Name="FactionTraitNecrophages6"/>
+  </FactionTrait>
+
+  <!-- Faction Trait: Cellulose Mutation -->
+  <!-- Boroughs are less expensive and need 1 pop -->
+  <FactionTrait Name="FactionTraitNecrophages12"               SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="25">
+    <SimulationDescriptorReference Name="FactionTraitNecrophages12" />
+  </FactionTrait>
+
+  <!-- Faction Tech: Demanding Gods -->
+  <!-- Sacrifice 1 pop  -->
+  <FactionTrait Name="FactionTraitNecrophages8"                SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!AffinityBrokenLords</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionNecrophages8"/>
+    <SimulationDescriptorReference Name="FactionTraitNecrophages8"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitNecrophagesMainQuest"        SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+  <!-- MainQuest: The Nest -->
+  <!-- +4 Food per pop on City -->
+  <FactionTrait Name="FactionTraitNecrophages7"                SubCategory="MainQuestTrait"         Hidden="true">
+    <Prerequisites>!AffinityBrokenLords</Prerequisites>
+  </FactionTrait>
+
+  <!-- MainQuest: Necro Boost -->
+  <!-- +XP at Unit Creation -->
+  <FactionTrait Name="FactionTraitNecrophages9"                SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- MainQuest: Mindless Slaughter -->
+  <!-- +30 Attack on all Units -->
+  <FactionTrait Name="FactionTraitNecrophages10"               SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- MainQuest:  -->
+  <!-- XP gained in Winter battles is doubled -->
+  <FactionTrait Name="FactionTraitNecrophages11"               SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- Unit1: Necrohunter -->
+  <FactionTrait Name="FactionTraitNecrophagesUnit1"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyNecrophagesNecrohunter"/>
+  </FactionTrait>
+
+  <!-- Unit1: Zombat -->
+  <FactionTrait Name="FactionTraitNecrophagesUnit2"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyNecrophagesZombat"/>
+  </FactionTrait>
+
+  <!-- Unit1: Lichbug -->
+  <FactionTrait Name="FactionTraitNecrophagesUnit3"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyNecrophagesLichbug"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######         RAGE WIZARDS         ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Arcana Use -->
+  <!-- "Arcana use" is used as reduction for pillar faction trait cost. -->
+  <FactionTrait Name="FactionTraitRageWizardsArcanaUse"        SubCategory="AffinityTrait"                                            Cost="10">
+    <SimulationDescriptorReference Name="FactionTraitRageWizardsArcanaUse"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitRageWizardsHeatWave"             SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitRageWizardsHeatWave"/>
+  </FactionTrait>
+  
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitRageWizardsMainQuest"        SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+  <!-- MainQuest: Analysis Lab -->
+  <FactionTrait Name="FactionTraitRageWizards2"                SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- Arcana of Authority -->
+  <FactionTrait Name="FactionTraitRageWizards9"                SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="6">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards9"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards9"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitRageWizards9Custom"          SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards9"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards9"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <!-- Arcana of Materializing -->
+  <FactionTrait Name="FactionTraitRageWizards10"               SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="6">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards10"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards10"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitRageWizards10Custom"         SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards10"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards10"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <!-- Arcana of Renewal -->
+  <FactionTrait Name="FactionTraitRageWizards11"               SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="6">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityBrokenLords,!AffinityMimics</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards11"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards11"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitRageWizards11Custom"         SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityBrokenLords,!AffinityMimics</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards11"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards11"/>
+
+    <SubTrait Name="FactionTraitPillarActivated"/>
+  </FactionTrait>
+
+  <!-- Dust Purifier -->
+  <FactionTrait Name="FactionTraitRageWizards12"               SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="4">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,FactionTraitPillarActivated,!AffinityMimics</Prerequisites>
+
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards12"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards12"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitRageWizards12Custom"         SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,FactionTraitPillarActivated,!AffinityMimics</Prerequisites>
+
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards12"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards12"/>
+  </FactionTrait>
+
+  <!-- Painosphere -->
+  <FactionTrait Name="FactionTraitRageWizards13"               SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="4">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,FactionTraitPillarActivated,!AffinityMimics</Prerequisites>
+
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards13"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards13"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitRageWizards13Custom"         SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,FactionTraitPillarActivated,!AffinityMimics</Prerequisites>
+
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards13"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards13"/>
+  </FactionTrait>
+
+  <!-- Dust Mechanics -->
+  <FactionTrait Name="FactionTraitRageWizards14"               SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="4">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,FactionTraitPillarActivated,!AffinityMimics</Prerequisites>
+
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards14"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards14"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitRageWizards14Custom"         SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,FactionTraitPillarActivated,!AffinityMimics</Prerequisites>
+
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards14"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards14"/>
+  </FactionTrait>
+
+  <!-- Sacrificial Amplifiers -->
+  <FactionTrait Name="FactionTraitRageWizards15"               SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="4">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,FactionTraitPillarActivated,!AffinityMimics</Prerequisites>
+
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards15"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards15"/>
+  </FactionTrait>
+
+  <FactionTrait Name="FactionTraitRageWizards15Custom"         SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,FactionTraitPillarActivated,!AffinityMimics</Prerequisites>
+
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards15"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards15"/>
+  </FactionTrait>
+
+  <!-- Unit1: Battle Mage -->
+  <FactionTrait Name="FactionTraitRageWizardsUnit1"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyRageWizardsBattleMage"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Witch -->
+  <FactionTrait Name="FactionTraitRageWizardsUnit2"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyRageWizardsWitch"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Phoenix -->
+  <FactionTrait Name="FactionTraitRageWizardsUnit3"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyRageWizardsPhoenix"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######        ROVING CLANS          ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Nomadic Cities -->
+  <FactionTrait Name="FactionTraitRovingClans12"               SubCategory="AffinityTrait"                                            Cost="15">
+    <SimulationDescriptorReference Name="FactionTraitRovingClans12"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitRovingClansHeatWave"         SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitRovingClansHeatWave"/>
+  </FactionTrait>
+  
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitRovingClansMainQuest"        SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+  <!-- MainQuest: Ground Exploration -->
+  <FactionTrait Name="FactionTraitRovingClans2"                SubCategory="MainQuestTrait"         Hidden="true">
+  </FactionTrait>
+
+  <!-- Faction Trait: Peace and Prosperity -->
+  <!-- Commercial agreement and Research agreement ratified automatically with peace treaties -->
+  <FactionTrait Name="FactionTraitRovingClans6"                SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitNecrophages5</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitRovingClans6" />
+  </FactionTrait>
+
+  <!-- The Army without Banners -->
+  <FactionTrait Name="FactionTraitRovingClans7"                SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="20">
+    <SimulationDescriptorReference Name="FactionTraitRovingClans7" />
+  </FactionTrait>
+
+  <!-- Faction Trait: Make Trade Not War -->
+  <!-- No declare war diplomatic option -->
+  <FactionTrait Name="FactionTraitRovingClans8"                SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="-10">
+    <Prerequisites>!FactionTraitNecrophages5,!AffinityDrakkens</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitRovingClans8" />
+  </FactionTrait>
+
+  <!-- Insider Trading -->
+  <!-- Additional information on the marketplace -->
+  <FactionTrait Name="FactionTraitRovingClans9"                SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="5">
+    <SimulationDescriptorReference Name="FactionTraitRovingClans9" />
+  </FactionTrait>
+
+  <!-- Cuts Both Ways -->
+  <!-- Dust bonus for each item bought or sold by another empire from the marketplace -->
+  <FactionTrait Name="FactionTraitRovingClans10"               SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="10">
+    <SimulationDescriptorReference Name="FactionTraitRovingClans10" />
+  </FactionTrait>
+
+  <!-- Keys to the Market -->
+  <!-- Market Ban -->
+  <FactionTrait Name="FactionTraitRovingClans11"               SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="10">
+    <SimulationDescriptorReference Name="FactionTraitRovingClans11" />
+  </FactionTrait>
+
+  <!-- Upkeep malus in Winter -->
+  <FactionTrait Name="FactionTraitRovingClans13"               SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="-5">
+    <SimulationDescriptorReference Name="FactionTraitRovingClans13" />
+  </FactionTrait>
+
+  <!-- Unit1: Dervish -->
+  <FactionTrait Name="FactionTraitRovingClansUnit1"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyRovingClansDervish"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Kassai -->
+  <FactionTrait Name="FactionTraitRovingClansUnit2"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyRovingClansKassai"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Berzerk -->
+  <FactionTrait Name="FactionTraitRovingClansUnit3"            SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyRovingClansBerzerk"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######           DRAKKENS           ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Diplomatic Pressure -->
+  <FactionTrait Name="FactionTraitDrakkens6"                   SubCategory="AffinityTrait"                                            Cost="25">
+    <Prerequisites>!FactionTraitNecrophages5</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitDrakkens6"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitDrakkensHeatWave"              SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitDrakkensHeatWave"/>
+  </FactionTrait>
+
+  <!-- Well Connected -->
+  <FactionTrait Name="FactionTraitDrakkens7Placeholder"        SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="15">
+    <SimulationDescriptorReference Name="FactionTraitDrakkens7Placeholder"/>
+    <SubTrait Name="FactionTraitDrakkens7"                                                       Hidden="true"/>
+  </FactionTrait>
+  <FactionTrait Name="FactionTraitDrakkens7"                   SubCategory="StandardTrait"          Hidden="true">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionDrakkens7"/>
+  </FactionTrait>
+
+  <!-- Advanced Empire Plan -->
+  <FactionTrait Name="FactionTraitDrakkens8"                   SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="5">
+    <SimulationDescriptorReference Name="FactionTraitDrakkens8"/>
+  </FactionTrait>
+
+  <!-- Ancient Library -->
+  <FactionTrait Name="FactionTraitDrakkens9"                   SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="10">
+    <SimulationDescriptorReference Name="FactionTraitDrakkens9"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitDrakkensMainQuest"           SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+  <!-- Unit1: Drakkenling -->
+  <FactionTrait Name="FactionTraitDrakkensUnit1"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyDrakkensDrakkenling"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Wyvern -->
+  <FactionTrait Name="FactionTraitDrakkensUnit2"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyDrakkensWyvern"/>
+  </FactionTrait>
+
+  <!-- Unit 3: AncientDragon -->
+  <FactionTrait Name="FactionTraitDrakkensUnit3"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyDrakkensAncientDragon"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######           CULTISTS           ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: High Seat of the Queen -->
+  <FactionTrait Name="FactionTraitCultists7"                   SubCategory="AffinityTrait"                                            Cost="-10">
+    <SimulationDescriptorReference Name="FactionTraitCultists7"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitCultistsHeatWave"           SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitCultistsHeatWave"/>
+  </FactionTrait>
+  
+  <!-- Weapons of the Enemy -->
+  <!-- Razing after capture -->
+  <FactionTrait Name="FactionTraitCultists9"                   SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="15">
+    <Prerequisites>!AffinityDrakkens,!FactionTraitMimics3</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitCultists9"/>
+  </FactionTrait>
+
+  <!-- Walls of Faith -->
+  <!-- +50 Defense on City -->
+  <FactionTrait Name="FactionTraitCultists11"                  SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="10">
+    <SimulationDescriptorReference Name="FactionTraitCultists11"/>
+  </FactionTrait>
+
+  <!-- Conversion -->
+  <FactionTrait Name="FactionTraitCultists14"                  SubCategory="StandardTrait"          Family="Trait"      Custom="true" Cost="40">
+    <Prerequisites>!AffinityMimics</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitCultists14"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitCultistsMainQuest"           SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+  <!-- Unit1: Preacher -->
+  <FactionTrait Name="FactionTraitCultistsUnit1"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyCultistsPreacher"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Fanatic -->
+  <FactionTrait Name="FactionTraitCultistsUnit2"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyCultistsFanatic"/>
+  </FactionTrait>
+
+  <!-- Unit 3: NamelessGuard -->
+  <FactionTrait Name="FactionTraitCultistsUnit3"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyCultistsNamelessGuard"/>
+  </FactionTrait>
+
+  <!-- Destructive analysis -->
+  <FactionTrait Name="FactionTraitCultists12"                  SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="5">
+    <Prerequisites>FactionTraitCultists9</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitCultists12"/>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionCultists12"/>
+  </FactionTrait>
+
+  <!-- We are legion -->
+  <FactionTrait Name="FactionTraitCultists13"                  SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>FactionTraitCultists14</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitCultists13"/>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionCultists13"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######        FACTION MEZARI        ###### -->
+  <!-- ########################################## -->
+
+  <!-- Unit1: Mezari -->
+  <FactionTrait Name="FactionTraitMezariUnit1"                 SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMezariMarine"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Mezari -->
+  <FactionTrait Name="FactionTraitMezariUnit2"                 SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMezariDawnOfficer"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Mezari -->
+  <FactionTrait Name="FactionTraitMezariUnit3"                 SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMezariTitan"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######     FACTION REPLICANTS       ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Science-phobic -->
+  <FactionTrait Name="FactionTraitReplicants1"                 SubCategory="AffinityTrait"                                            Cost="-10">
+    <SimulationDescriptorReference Name="FactionTraitReplicants1"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitReplicantsHeatWave"          SubCategory="DustEclipseTrait"         SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitReplicantsHeatWave"/>
+  </FactionTrait>
+
+  <!-- Expert Forager -->
+  <FactionTrait Name="FactionTraitReplicants2"                 SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="10">
+    <Prerequisites>dlc:ReplicantsPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitReplicants2"/>
+  </FactionTrait>
+
+  <!-- Practiced Pillage -->
+  <FactionTrait Name="FactionTraitReplicants3"                 SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="5">
+    <Prerequisites>dlc:ReplicantsPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitReplicants3"/>
+  </FactionTrait>
+
+  <!-- Knowledge Seekers -->
+  <FactionTrait Name="FactionTraitReplicants4"                 SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="10">
+    <Prerequisites>dlc:ReplicantsPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitReplicants4"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitReplicantsMainQuest"         SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+  <!-- Unit1: Replicants -->
+  <FactionTrait Name="FactionTraitReplicantsUnit1"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyReplicantsAssassin"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Replicants -->
+  <FactionTrait Name="FactionTraitReplicantsUnit2"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyReplicantsPredatore"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Replicants -->
+  <FactionTrait Name="FactionTraitReplicantsUnit3"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyReplicantsMyst"/>
+  </FactionTrait>
+
+  <!-- Learn from Others -->
+  <FactionTrait Name="FactionTraitReplicants5"                 SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:ReplicantsPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionReplicants5"/>
+    <SimulationDescriptorReference Name="FactionTraitReplicants5"/>
+  </FactionTrait>
+
+  <!-- What’s Mine is Mine -->
+  <FactionTrait Name="FactionTraitReplicants6"                 SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="5">
+    <Prerequisites>dlc:ReplicantsPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionReplicants6"/>
+    <SimulationDescriptorReference Name="FactionTraitReplicants6"/>
+  </FactionTrait>
+
+  <!-- Dust Sense -->
+  <FactionTrait Name="FactionTraitReplicants7"                 SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:ReplicantsPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionReplicants7"/>
+    <SimulationDescriptorReference Name="FactionTraitReplicants7"/>
+  </FactionTrait>
+
+  <!-- Caudata Sanctuary -->
+  <FactionTrait Name="FactionTraitReplicants12"                SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:ReplicantsPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionReplicants12"/>
+    <SimulationDescriptorReference Name="FactionTraitReplicants12"/>
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######    FACTION WINTER SHIFTERS   ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Shifting -->
+  <FactionTrait Name="FactionTraitWinterShifters1"             SubCategory="AffinityTrait"                                            Cost="20">
+    <Prerequisites>dlc:WinterShiftersPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitWinterShifters1"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitWinterShiftersHeatWave"      SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitWinterShiftersHeatWave"/>
+  </FactionTrait>
+
+  <!-- Orb hunter -->
+  <FactionTrait Name="FactionTraitWinterShifters2"             SubCategory="StandardTrait"          Family="Trait"      Custom="true" Cost="15">
+    <Prerequisites>dlc:WinterShiftersPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitWinterShifters2"/>
+  </FactionTrait>
+
+  <!-- Breath of Auriga -->
+  <FactionTrait Name="FactionTraitWinterShifters3"             SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="10">
+    <Prerequisites>dlc:WinterShiftersPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitWinterShifters3"/>
+  </FactionTrait>
+
+  <!-- We Chosen Few -->
+  <FactionTrait Name="FactionTraitWinterShifters4"             SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="-15">
+    <Prerequisites>dlc:WinterShiftersPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitWinterShifters4"/>
+  </FactionTrait>
+
+  <!-- Mercurial diplomats -->
+  <FactionTrait Name="FactionTraitWinterShifters5"             SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="5">
+    <Prerequisites>dlc:WinterShiftersPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitWinterShifters5"/>
+  </FactionTrait>
+
+  <!-- Battlefield Symbiosis -->
+  <FactionTrait Name="FactionTraitWinterShifters6"             SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="5">
+    <Prerequisites>dlc:WinterShiftersPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitWinterShifters6"/>
+  </FactionTrait>
+
+  <!-- Luxury Alchemists -->
+  <FactionTrait Name="FactionTraitWinterShifters7"             SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="5">
+    <Prerequisites>dlc:WinterShiftersPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionWinterShifters7"/>
+    <SimulationDescriptorReference Name="FactionTraitWinterShifters7"/>
+  </FactionTrait>
+
+  <!-- Unit1: WINTER SHIFTERS -->
+  <FactionTrait Name="FactionTraitWinterShiftersUnit1"         SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyWinterShiftersFeline"/>
+  </FactionTrait>
+
+  <!-- Unit 2: WINTER SHIFTERS -->
+  <FactionTrait Name="FactionTraitWinterShiftersUnit2"         SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyWinterShiftersManta"/>
+  </FactionTrait>
+
+  <!-- Unit 3: WINTER SHIFTERS -->
+  <FactionTrait Name="FactionTraitWinterShiftersUnit3"         SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyWinterShiftersDarkAngel"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitWinterShiftersMainQuest"     SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+
+
+  <!-- ########################################## -->
+  <!-- ######      FACTION SEA DEMONS      ###### -->
+  <!-- ########################################## -->
+
+  <!-- Affinity: Neptunian -->
+  <FactionTrait Name="FactionTraitSeaDemons1"                  SubCategory="AffinityTrait"                                            Cost="5">
+    <Prerequisites>dlc:NavalPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitSeaDemons1"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitSeaDemonsHeatWave"             SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitSeaDemonsHeatWave"/>
+  </FactionTrait>
+  
+  <!-- Hydrophilic -->
+  <FactionTrait Name="FactionTraitSeaDemons2"                  SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="15">
+    <Prerequisites>dlc:NavalPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitSeaDemons2"/>
+  </FactionTrait>
+
+  <!-- Sea Traders -->
+  <FactionTrait Name="FactionTraitSeaDemons3"                  SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="5">
+    <Prerequisites>dlc:NavalPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitSeaDemons3"/>
+  </FactionTrait>
+
+  <!-- Seeds of Dissent -->
+  <FactionTrait Name="FactionTraitSeaDemons4"                  SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="10">
+    <Prerequisites>dlc:NavalPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitSeaDemons4"/>
+  </FactionTrait>
+
+  <!-- Catspaws -->
+  <FactionTrait Name="FactionTraitSeaDemons5"                  SubCategory="StandardTrait"          Family="Military"   Custom="true" Cost="10">
+    <Prerequisites>dlc:NavalPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitSeaDemons5"/>
+  </FactionTrait>
+
+  <!-- The Black Spot -->
+  <FactionTrait Name="FactionTraitSeaDemons6"                  SubCategory="StandardTrait"          Family="Diplomacy"  Custom="true" Cost="10">
+    <Prerequisites>dlc:NavalPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitSeaDemons6"/>
+  </FactionTrait>
+
+  <!-- Fortress Commander -->
+  <FactionTrait Name="FactionTraitSeaDemons8"                  SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:NavalPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionSeaDemons8"/>
+    <SimulationDescriptorReference Name="FactionTraitSeaDemons8"/>
+  </FactionTrait>
+
+  <!-- Unit 1: SEA DEMONS -->
+  <FactionTrait Name="FactionTraitSeaDemonsUnit1"              SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodySeaDemonsMastermind"/>
+  </FactionTrait>
+
+  <!-- Unit 2: SEA DEMONS -->
+  <FactionTrait Name="FactionTraitSeaDemonsUnit2"              SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodySeaDemonsTurtleShip"/>
+  </FactionTrait>
+
+  <!-- Unit 3: SEA DEMONS -->
+  <FactionTrait Name="FactionTraitSeaDemonsUnit3"              SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodySeaDemonsLeviathan"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitSeaDemonsMainQuest"          SubCategory="MainQuestTrait">
+  </FactionTrait>
+
+
+  <!-- ########################################## -->
+  <!-- ######            FLAMES            ###### -->
+  <!-- ########################################## -->
+
+  <!-- Lithovores -->
+  <FactionTrait Name="FactionTraitFlames3"                SubCategory="AffinityTrait"          Family="Economy"    Custom="false" Cost="20">
+    <Prerequisites>dlc:SummerFlamesPack,!AffinityBrokenLords,!FactionTraitEconomy7Positive</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitFlames3"/>
+  </FactionTrait>
+
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitFlamesHeatWave"             SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitFlamesHeatWave"/>
+  </FactionTrait>
+
+  <!-- Unit1: Golem -->
+  <FactionTrait Name="FactionTraitFlamesUnit1"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyFlamesGolem"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Flame Harrier -->
+  <FactionTrait Name="FactionTraitFlamesUnit2"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyFlamesGeomancer"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Golem Rider -->
+  <FactionTrait Name="FactionTraitFlamesUnit3"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyFlamesGorilla"/>
+  </FactionTrait>
+	
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitFlamesMainQuest"         SubCategory="MainQuestTrait">
+    <SimulationDescriptorReference Name="FactionTraitFlamesMainQuest"/>
+  </FactionTrait>
+  
+  <!-- Trait: Volcanoform -->
+  <FactionTrait Name="FactionTraitFlames1"         SubCategory="StandardTrait"       Family="Economy"       Custom="true"           Cost="15">
+    <Prerequisites>dlc:SummerFlamesPack,!AffinityVaulters,!AffinityMezari,!AffinityReplicants</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitFlames1"/>
+  </FactionTrait>
+  
+  <!-- Golem workers 
+  <FactionTrait Name="FactionTraitFlames2"                  SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionFlames2"/>
+    <SimulationDescriptorReference Name="FactionTraitFlames2"/>
+  </FactionTrait>-->
+  
+  <!-- Endless Fascination  -->
+  <FactionTrait Name="FactionTraitFlames8"                SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="5">
+    <Prerequisites>dlc:SummerFlamesPack,!FactionTraitReplicants1</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitFlames8"/>
+  </FactionTrait>
+
+  <!-- Hydrophobic -->
+  <!--<FactionTrait Name="FactionTraitFlames4"                  SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="-5">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitFlames4"/>
+  </FactionTrait>-->
+
+  <!-- Golem workers 2
+  <FactionTrait Name="FactionTraitFlames5"                  SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionFlames3"/>
+    <SimulationDescriptorReference Name="FactionTraitFlames5"/>
+  </FactionTrait>-->
+
+  <!-- Golem workers 3
+  <FactionTrait Name="FactionTraitFlames6"                  SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionFlames4"/>
+    <SimulationDescriptorReference Name="FactionTraitFlames6"/>
+  </FactionTrait>-->
+
+  <!-- Concrete's Moon -->
+  <FactionTrait Name="FactionTraitFlames7"             SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="10">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitFlames7"/>
+  </FactionTrait>
+
+  <!-- Rubble Rousers-->
+  <FactionTrait Name="FactionTraitFlames9"                  SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:SummerFlamesPack,!AffinityNecrophages,!AffinityVaulters,!AffinityMezari</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionFlames9"/>
+    <SimulationDescriptorReference Name="FactionTraitFlames9"/>
+  </FactionTrait>
+
+  <!-- Golem Camps -->
+  <FactionTrait Name="FactionTraitFlames10"                  SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionFlames14"/>
+    <SimulationDescriptorReference Name="FactionTraitFlames10"/>
+  </FactionTrait>
+
+  <!-- ########################################## -->
+  <!-- ######            MIMICS            ###### -->
+  <!-- ########################################## -->
+
+  <!-- Creeping Prescence -->
+  <FactionTrait Name="FactionTraitMimics1"                SubCategory="AffinityTrait"                                            Cost="25">
+    <Prerequisites>dlc:MimicsPack,!AffinityVaulters,!AffinityMezari,!AffinityReplicants</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitMimics1"/>
+    <SimulationDescriptorReference Name="FactionTraitToxicLands"/>
+  </FactionTrait>
+
+  <!-- Overgrown cities -->
+  <FactionTrait Name="FactionTraitMimics3"                SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="10">
+    <Prerequisites>dlc:MimicsPack,!FactionTraitCultists9</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitMimics3"/>
+  </FactionTrait>
+
+  <!-- Organic Industry -->
+  <FactionTrait Name="FactionTraitMimics6"                SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="15">
+    <Prerequisites>dlc:MimicsPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitMimics6"/>
+  </FactionTrait>
+
+  <!-- Moar City Defense -->
+  <FactionTrait Name="FactionTraitMimics7"                SubCategory="StandardTrait"          Family="Military"    Custom="true" Cost="15">
+    <Prerequisites>dlc:MimicsPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitMimics7"/>
+  </FactionTrait>
+
+  <!-- Mining flaws -->
+  <FactionTrait Name="FactionTraitMimics8"                SubCategory="StandardTrait"          Family="Economy"    Custom="true" Cost="-10">
+    <Prerequisites>dlc:MimicsPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitMimics8"/>
+  </FactionTrait>
+
+  <!-- Garrison Units in Kaiju -->
+  <FactionTrait Name="FactionTraitMimics4"                SubCategory="FactionTechnologyTrait"          Family="Technology"    Custom="true" Cost="5">
+    <Prerequisites>dlc:MimicsPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionMimics1"/>
+    <SimulationDescriptorReference Name="FactionTraitMimics4"/>
+  </FactionTrait>
+
+  <!-- Kaiju Diplomacy -->
+  <FactionTrait Name="FactionTraitMimics5"                SubCategory="FactionTechnologyTrait"          Family="Technology"    Custom="true" Cost="5">
+    <Prerequisites>dlc:MimicsPack</Prerequisites>
+    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionMimics2"/>
+    <SimulationDescriptorReference Name="FactionTraitMimics5"/>
+  </FactionTrait>
+
+  <!-- Unit1: Unit1 -->
+  <FactionTrait Name="FactionTraitMimicsUnit1"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMimicsUnit1"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Unit2 -->
+  <FactionTrait Name="FactionTraitMimicsUnit2"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMimicsUnit2"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Unit3 -->
+  <FactionTrait Name="FactionTraitMimicsUnit3"             SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyMimicsUnit3"/>
+  </FactionTrait>
+
+  <!-- MainQuest -->
+  <FactionTrait Name="FactionTraitMimicsMainQuest"         SubCategory="MainQuestTrait">
+    <SimulationDescriptorReference Name="FactionTraitMimicsMainQuest"/>
+  </FactionTrait>
+  
+  <!-- Heat Wave Effect -->
+  <FactionTrait Name="FactionTraitMimicsHeatWave"             SubCategory="DustEclipseTrait"          SeasonType="HeatWave">
+    <Prerequisites>dlc:SummerFlamesPack</Prerequisites>
+    <SimulationDescriptorReference Name="FactionTraitMimicsHeatWave"/>
+  </FactionTrait>
+  
+  <!-- ########################################## -->
+  <!-- ######       FACTION TUTORIAL       ###### -->
+  <!-- ########################################## -->
+
+  <!-- Unit1: Tutorial -->
+  <FactionTrait Name="FactionTraitTutorialUnit1"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyTutorialUnit1"/>
+  </FactionTrait>
+
+  <!-- Unit 2: Tutorial -->
+  <FactionTrait Name="FactionTraitTutorialUnit2"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyTutorialUnit2"/>
+  </FactionTrait>
+
+  <!-- Unit 3: Tutorial -->
+  <FactionTrait Name="FactionTraitTutorialUnit3"               SubCategory="UnitTrait">
+    <FactionTraitTooltipOverride Type="Constructible" OverrideName="UnitBodyTutorialUnit3"/>
+  </FactionTrait>
+
+  <!-- 2 units limit -->
+  <FactionTrait Name="FactionTraitTechnologyDefinitionMezari1" SubCategory="StandardTrait"          Hidden="true">
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionMezari1"/>
+  </FactionTrait>
+
+</Datatable>

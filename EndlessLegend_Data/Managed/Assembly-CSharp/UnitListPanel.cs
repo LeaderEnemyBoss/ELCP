@@ -214,35 +214,27 @@ public class UnitListPanel : GuiCollapsingPanel
 
 	public void OnUnitToggle(GameObject obj)
 	{
-		if (Input.GetKey(KeyCode.Mouse0))
+		AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
+		List<UnitGuiItem> children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
+		for (int i = 0; i < children.Count; i++)
 		{
-			AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
-			List<UnitGuiItem> children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
-			for (int i = 0; i < children.Count; i++)
+			bool flag = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+			if (children[i].UnitToggle == component)
 			{
-				bool flag = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-				if (children[i].UnitToggle == component)
+				if (!flag)
 				{
-					if (!flag)
-					{
-						children[i].UnitToggle.State = true;
-					}
-				}
-				else if (!flag)
-				{
-					children[i].UnitToggle.State = false;
+					children[i].UnitToggle.State = true;
 				}
 			}
-			this.ComputeSelection();
-			if (this.parent != null)
+			else if (!flag)
 			{
-				this.parent.SendMessage("OnUnitToggle");
-				return;
+				children[i].UnitToggle.State = false;
 			}
 		}
-		else
+		this.ComputeSelection();
+		if (this.parent != null)
 		{
-			this.OnELCPRightClick(obj);
+			this.parent.SendMessage("OnUnitToggle");
 		}
 	}
 
@@ -902,17 +894,6 @@ public class UnitListPanel : GuiCollapsingPanel
 			this.SellButton.AgeTooltip.Content = "%SellTabNoCandidateDescription";
 			return false;
 		}
-		if (this.Garrison is Army)
-		{
-			IWorldPositionningService service = base.GameService.Game.Services.GetService<IWorldPositionningService>();
-			Army army = this.Garrison as Army;
-			Region region = service.GetRegion(army.WorldPosition);
-			if (region == null || region.Owner != army.Empire)
-			{
-				this.SellButton.AgeTooltip.Content = "%SellTabNotInOwnRegionDescription";
-				return false;
-			}
-		}
 		float num = this.TotalSellPriceOfSalableUnits();
 		string text = GuiFormater.FormatStock(num, DepartmentOfTheTreasury.Resources.EmpireMoney, 0, true);
 		string formattedLine = GuiFormater.FormatInstantCost(this.Garrison.Empire, num, DepartmentOfTheTreasury.Resources.EmpireMoney, true, 1);
@@ -1099,29 +1080,6 @@ public class UnitListPanel : GuiCollapsingPanel
 		if (e.Result == MessagePanelResult.Yes)
 		{
 			this.DisbandSelectedUnits();
-		}
-	}
-
-	public void OnELCPRightClick(GameObject obj)
-	{
-		if (!this.IsOtherEmpire)
-		{
-			AgeControlToggle component = obj.GetComponent<AgeControlToggle>();
-			List<UnitGuiItem> children = this.UnitsTable.GetChildren<UnitGuiItem>(true);
-			int j;
-			int i;
-			for (i = 0; i < children.Count; i = j + 1)
-			{
-				if (children[i].UnitToggle == component && children[i].GuiUnit.UnitDesign != null && this.departmentOfDefense.AvailableUnitDesigns.Find((UnitDesign unitDesign) => unitDesign.Model == children[i].GuiUnit.UnitDesign.Model) != null)
-				{
-					base.GuiService.GetGuiPanel<UnitDesignModalPanel>().CreateMode = false;
-					base.GuiService.GetGuiPanel<UnitDesignModalPanel>().Show(new object[]
-					{
-						children[i].GuiUnit.UnitDesign
-					});
-				}
-				j = i;
-			}
 		}
 	}
 

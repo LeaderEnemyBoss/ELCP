@@ -1,0 +1,1532 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://SeaDemonsw.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://SeaDemonsw.w3.org/2001/XMLSchema">
+
+  <!-- ======================================
+     ========= Sea Demons - CHAPTER 1 =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter1" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter1,BeginTurn</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,AffinitySeaDemons</PathPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
+    </Prerequisites>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter1-Step1" State="InProgress"/>
+      <Decorator_BeginTurn>
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassResearch,TechnologySeaDemonsUnit2</PathPrerequisite>
+            <PathPrerequisite Flags="Prerequisite">ClassEmpire/ClassCity/TerrainTagWater,!TerrainTypeInlandWater</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter1-Step1" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter1-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter2</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ========= Sea Demons - CHAPTER 2 =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter2,BeginTurn</Tags>
+
+    <!--===========PREREQUISITES=============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite QuestDefinitionName="MainQuestSeaDemons-Chapter1" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$InstigatorEmpire.$Cities">
+            <Where>
+              <PathPrerequisite Flags="Prerequisite">ClassCity/TerrainTagWater,!TerrainTypeInlandWater</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+      <Var VarName="$EmpireCityLocation">
+        <From Source="$EmpireCity.$Position"/>
+      </Var>
+
+      <!--Filter 2 Oceanic Regions only, and having min 2 fortresses-->
+      <Var VarName="$Min2FortressesOceanicRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOcean/>
+            <FilterRegionIsOceanWithFortresses MinimumNumber="2"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$ForeignFortresses">
+        <From Source="$Min2FortressesOceanicRegions.$Fortresses" />
+      </Var>
+
+      <Var VarName="$ForeignFortressesSortedByDistance">
+        <From Source="$ForeignFortresses">
+          <OrderBy>
+            <SortFortressByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityLocation"/>
+          </OrderBy>
+        </From>
+      </Var>
+
+      <Var VarName="$TargetFortress1">
+        <Limit LimitMin="1" LimitMax="2">
+          <From Source="$ForeignFortressesSortedByDistance"/>
+        </Limit>
+      </Var>
+      <Var VarName="$Region1">
+        <From Source="$TargetFortress1.$Region"/>
+      </Var>
+      <Var VarName="$TargetFortress1CitadelPOI">
+        <Any>
+          <From Source="$TargetFortress1.$PointOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$TargetFortress2">
+        <Limit LimitMin="2" LimitMax="3">
+          <From Source="$ForeignFortressesSortedByDistance"/>
+        </Limit>
+      </Var>
+      <Var VarName="$Region2">
+        <From Source="$TargetFortress2.$Region"/>
+      </Var>
+      <Var VarName="$TargetFortress2CitadelPOI">
+        <Any>
+          <From Source="$TargetFortress2.$PointOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeCitadel</PathPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$Fortress1Name" Source="$TargetFortress1CitadelPOI"/>
+      <LocalizationVar LocalizationKey="$Fortress2Name" Source="$TargetFortress2CitadelPOI"/>
+
+      <LocalizationVar LocalizationKey="$Region1Name" Source="$Region1"/>
+      <LocalizationVar LocalizationKey="$Region2Name" Source="$Region2"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$TargetFortress1CitadelPOI" LockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$TargetFortress2CitadelPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter2-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/Garrison/UnitTypeSeaDemonsTurtleShip) ge 2</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter2-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter2-Step2" State="InProgress"/>
+      <Action_AddQuestMarker TargetEntityVarName="$TargetFortress1CitadelPOI" IgnoreInteraction="true" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Initiator="Empire" Output_QuestMarkerVarName="$QuestMarkerTargetFortress1CitadelPOI"/>
+      <Action_AddQuestMarker TargetEntityVarName="$TargetFortress2CitadelPOI" IgnoreInteraction="true" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Initiator="Empire" Output_QuestMarkerVarName="$QuestMarkerTargetFortress2CitadelPOI"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Sequence>
+          <Decorator_OccupyFortress Initiator="Empire" TargetFortressVarName="$TargetFortress1CitadelPOI"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsFortressOwnedByEmpire FortressVarName="$TargetFortress1CitadelPOI" EmpireVarName="$InstigatorEmpire"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_OccupyFortress Initiator="Empire" TargetFortressVarName="$TargetFortress2CitadelPOI"/>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsFortressOwnedByEmpire FortressVarName="$TargetFortress2CitadelPOI" EmpireVarName="$InstigatorEmpire"/>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortress1CitadelPOI"/>
+      <Action_LockQuestTarget TargetVarName="$TargetFortress1CitadelPOI" LockOption="Unlock"/>
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerTargetFortress2CitadelPOI"/>
+      <Action_LockQuestTarget TargetVarName="$TargetFortress2CitadelPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter2-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter2-Step1">
+        <Reward Droplist="DroplistMainQuestSeaDemonsChapter2Step1TechnologyCityImprovementReward" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter2-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter3</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ======== Sea Demons - CHAPTER 3 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter3" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter3,BeginTurn</Tags>
+
+    <!--===========PREREQUISITES=============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite QuestDefinitionName="MainQuestSeaDemons-Chapter2" QuestState="Completed"/>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <InterpretedVar VarName="DurationObjective" Target="$(Empire)">
+        <Expression>10 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Filter Oceanic Regions only-->
+      <Var VarName="$Min2FortressesOceanicRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOcean/>
+            <FilterRegionIsOceanWithFortresses MinimumNumber="2"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$PlayerFortress">
+        <Any>
+          <From Source="$Min2FortressesOceanicRegions.$Fortresses">
+            <Where>
+              <FilterFortressByEmpire EmpireVarName="$InstigatorEmpire"/>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <Var VarName="$PlayerFortressRegion">
+        <From Source="$PlayerFortress.$Region"/>
+      </Var>
+
+      <Var VarName="$PlayerFortressRegionLocation">
+        <From Source="$PlayerFortressRegion.$Position"/>
+      </Var>
+
+      <Var VarName="$NearbyRegions">
+        <From Source="$PlayerFortressRegion.$NeighbourRegions">
+          <Where>
+            <FilterRegionByDistance PositionToCompareVarName="$PlayerFortressRegionLocation" DistanceMin="1"/>
+          </Where>
+        </From>
+      </Var>
+
+      <!--In a region next to the first one, select a POI that is not a Citadel (central part of a fortress) and neither a village-->
+      <Var VarName="$NeighBourRegionCitadelOrVillagePOI">
+        <Any>
+          <From Source="$NearbyRegions.$PointsOfInterest">
+            <Where>
+              <InterpreterPrerequisite Flags="Prerequisite">$Path(PointOfInterestTypeCitadel) or $Path(PointOfInterestTypeVillage)</InterpreterPrerequisite>
+            </Where>
+          </From>
+        </Any>
+      </Var>
+
+      <!--Set the region of the previously selected POI. It will be used in the quest sequence as the second region where all ruins must have been searched-->
+      <Var VarName="$NeighBourRegion">
+        <From Source="$NeighBourRegionCitadelOrVillagePOI.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$Region1Name" Source="$PlayerFortressRegion"/>
+      <LocalizationVar LocalizationKey="$Region2Name" Source="$NeighBourRegion"/>
+
+      <LocalizationVar LocalizationKey="$TurnDuration" Source="DurationObjective"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter3-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Loop LoopCount="20">
+          <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="MainQuestSeaDemons-Chapter3-Step1">
+            <ConditionCheck_RegionIsOwnedByEmpire RegionVarName="$PlayerFortressRegion" EmpireVarName="$InstigatorEmpire"/>
+          </Decorator_EndTurn>
+        </Controller_Loop>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestSeaDemons-Chapter3-Step1" />
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter3-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter3-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="All">
+
+        <Controller_Parallel CompletionPolicy="Any">
+
+          <Controller_Sequence>
+            <Decorator_Dive Initiator="Empire">
+              <ConditionCheck_AllRegionRuinsSearchedByEmpire RegionVarName="$PlayerFortressRegion" />
+            </Decorator_Dive>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_AllRegionRuinsSearchedByEmpire RegionVarName="$PlayerFortressRegion" />
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+        <Controller_Parallel CompletionPolicy="Any">
+
+          <Controller_Sequence>
+            <Decorator_Dive Initiator="Empire">
+              <ConditionCheck_AllRegionRuinsSearchedByEmpire RegionVarName="$NeighBourRegion" />
+            </Decorator_Dive>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_Inspect Initiator="Empire">
+              <ConditionCheck_AllRegionRuinsSearchedByEmpire RegionVarName="$NeighBourRegion" />
+            </Decorator_Inspect>
+          </Controller_Sequence>
+
+          <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire">
+              <ConditionCheck_AllRegionRuinsSearchedByEmpire RegionVarName="$NeighBourRegion" />
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+
+        </Controller_Parallel>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter3-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter3-Step1">
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter3-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter4</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ========= Sea Demons - CHAPTER 4 =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter4" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter4</Tags>
+
+    <!--===========PREREQUISITES=============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,FactionTraitSeaDemons5</PathPrerequisite>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="Unstarted"/>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="Unstarted"/>
+
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$SurroundingRegions">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$QuestPOI">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$SurroundingRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$QuestPOIRegionLocations">
+        <From Source="$QuestPOI.$Position.$Region.$Positions"/>
+      </Var>
+
+      <Var VarName="$QuestPOIRegion">
+        <From Source="$QuestPOI.$Position.$Region"/>
+      </Var>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOIRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4-Step1" State="InProgress"/>
+      <Decorator_Catspaw Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/Garrison,Catspaw) ge 2</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Catspaw>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4-Step2" State="InProgress"/>
+      <Action_SpawnArmy SpawnLocationVarName="$QuestPOIRegionLocations" CanMoveOnSpawn="false" ArmyDroplist="DroplistArmyDefinitionMainQuestSeaDemonsChapter4AltStep2" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Offense" SiegeTurnsNumberVarName="6"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter4-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter4-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+   <!-- ======================================
+     ====== Sea Demons - CHAPTER 4 Alt1 ======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter4Alt1" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter4</Tags>
+
+    <!--===========PREREQUISITES=============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,FactionTraitSeaDemons4</PathPrerequisite>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="Unstarted"/>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$SurroundingRegions">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$QuestPOI">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$SurroundingRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$QuestPOIRegionLocations">
+        <From Source="$QuestPOI.$Position.$Region.$Positions"/>
+      </Var>
+
+      <Var VarName="$QuestPOIRegion">
+        <From Source="$QuestPOI.$Position.$Region"/>
+      </Var>
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOIRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4Alt1-Step1" State="InProgress"/>
+      <Controller_Loop LoopCount="3">
+        <Decorator_DissentVillage Initiator="Empire" LinkedStepProgression="MainQuestSeaDemons-Chapter4Alt1-Step1"/>
+      </Controller_Loop>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4Alt1-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4Alt1-Step2" State="InProgress"/>
+      <Action_SpawnArmy SpawnLocationVarName="$QuestPOIRegionLocations" CanMoveOnSpawn="false" ArmyDroplist="DroplistArmyDefinitionMainQuestSeaDemonsChapter4Alt1And2Step2" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Offense" SiegeTurnsNumberVarName="6"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4Alt1-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter4Alt1-Step1">
+        <ProgressionRange StartValue="0" EndValue="3"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter4Alt1-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ====== Sea Demons - CHAPTER 4 Alt2 =====
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter4Alt2" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter4</Tags>
+
+    <!--===========PREREQUISITES=============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,!FactionTraitSeaDemons4</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,!FactionTraitSeaDemons5</PathPrerequisite>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="Unstarted"/>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$SurroundingRegions">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$QuestPOI">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$SurroundingRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$QuestPOIRegionLocations">
+        <From Source="$QuestPOI.$Position.$Region.$Positions"/>
+      </Var>
+
+      <Var VarName="$QuestPOIRegion">
+        <From Source="$QuestPOI.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOIRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4Alt2-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/Garrison/Mercenary) ge 5</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4Alt2-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4Alt2-Step2" State="InProgress"/>
+      <Action_SpawnArmy SpawnLocationVarName="$QuestPOIRegionLocations" CanMoveOnSpawn="false" ArmyDroplist="DroplistArmyDefinitionMainQuestSeaDemonsChapter4Alt1And2Step2" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Offense" SiegeTurnsNumberVarName="6"/>
+      <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+        <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+      </Decorator_KillArmy>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4Alt2-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter4Alt2-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter4Alt2-Step2">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ====== Sea Demons - CHAPTER 4AI =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter4AI" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter4</Tags>
+
+    <!--===========PREREQUISITES=============-->
+    <Prerequisites Target="$(Empire)">
+      <InterpreterPrerequisite Flags="Prerequisite">
+        $Path(EmpireTypeMajor,GameDifficultyNewbieAIMajorEmpire)
+        or $Path(EmpireTypeMajor,GameDifficultyEasyAIMajorEmpire)
+        or $Path(EmpireTypeMajor,GameDifficultyNormalAIMajorEmpire)
+        or $Path(EmpireTypeMajor,GameDifficultyHardAIMajorEmpire)
+        or $Path(EmpireTypeMajor,GameDifficultySeriousAIMajorEmpire)
+        or $Path(EmpireTypeMajor,GameDifficultyImpossibleAIMajorEmpire)
+        or $Path(EmpireTypeMajor,GameDifficultyEndlessAIMajorEmpire)
+      </InterpreterPrerequisite>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt"  QuestState="Unstarted"/>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt1" QuestState="Unstarted"/>
+
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter4Alt2" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <InterpretedVar VarName="DurationObjective" Target="$(Empire)">
+        <Expression>8 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <Var VarName="$EmpireCity">
+        <Any>
+          <From Source="$Empire.$Cities"/>
+        </Any>
+      </Var>
+
+      <Var VarName="$EmpireCityRegion">
+        <From Source="$EmpireCity.$Region"/>
+      </Var>
+
+      <Var VarName="$SurroundingRegions">
+        <From Source="$EmpireCityRegion.$RegionWithNeighbourRegions">
+          <Where>
+            <FilterRegionIsOnSameContinent RegionContextVarName="$EmpireCityRegion"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$QuestPOI">
+        <Limit LimitMin="5" LimitMax="6">
+          <From Source="$SurroundingRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite>PointOfInterestTypeQuestLocation</PathPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>
+
+      <Var VarName="$QuestPOIRegionLocations">
+        <From Source="$QuestPOI.$Position.$Region.$Positions"/>
+      </Var>
+
+      <Var VarName="$QuestPOIRegion">
+        <From Source="$QuestPOI.$Position.$Region"/>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$RegionName" Source="$QuestPOIRegion"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Lock"/>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4AI-Step1" State="InProgress"/>
+      <Decorator_Catspaw Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$Empire">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassEmpire/Garrison,Catspaw) ge 2</InterpreterPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Catspaw>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4AI-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4AI-Step2" State="InProgress"/>
+      <!--<Action_SpawnArmy SpawnLocationVarName="$QuestPOIRegionLocations" CanMoveOnSpawn="false" ArmyDroplist="DroplistArmyDefinitionMainQuestSeaDemonsChapter4AltStep2" Output_EnemyArmyGUIDVarName="$ArmyID"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Offense" SiegeTurnsNumberVarName="6"/>-->
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <!--<Controller_Sequence>
+          <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">
+            <EnemyArmyGUIDVarName>$ArmyID</EnemyArmyGUIDVarName>
+          </Decorator_KillArmy>
+        </Controller_Sequence>-->
+
+        <Controller_Loop LoopCount="16">
+          <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="MainQuestSeaDemons-Chapter4AI-Step2"/>
+        </Controller_Loop>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestSeaDemons-Chapter4AI-Step2" />
+          </Decorator_BeginTurn>
+          <Action_DestroyArmy ArmyGUIDVarName="$ArmyID" />
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_LockQuestTarget TargetVarName="$QuestPOI" LockOption="Unlock"/>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter4AI-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter4AI-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter4AI-Step2">
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter5</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ======== Sea Demons - CHAPTER 5 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter5" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter5</Tags>
+
+    <!--===========PREREQUISITES=============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter5Alt" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter5Alt" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter5Alt" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <InterpretedVar VarName="CurrentEmpireDustFromTiles" Target="$(Empire)">
+        <Expression>$SumProperty(EmpireTypeMajor/ClassCity/ClassDistrict:DistrictDust) + $SumProperty(EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict:DistrictDust) + $SumProperty(EmpireTypeMajor/ClassFortress:FortressTileDust)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="EmpireDustFromTilesObjective" Target="$(Empire)">
+        <Expression>$(CurrentEmpireDustFromTiles) * 1.4</Expression>
+      </InterpretedVar>
+
+
+      <!--Filter 2 Oceanic Regions only, and having min 2 fortresses-->
+      <Var VarName="$FortressOceanicRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOcean/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="NumberOfLuxuryResourcePOIs">
+        <Count>
+          <From Source="$FortressOceanicRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Inverted="false" Flags="Prerequisite">FacilityResourceDeposit_Luxury</PathPrerequisite>
+            </Where>
+          </From>
+        </Count>
+      </Var>
+
+      <InterpretedVar VarName="CurrentNumberOfPlayerLuxuryResourceFacilities" Target="$(Empire)">
+        <Expression>$Count(EmpireTypeMajor/ClassFortress/PointOfInterestTypeFacility,ResourceExtractor_Luxury,RevealedFacility)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="LuxuryResourceFacilitiesObjective" Target="$(Empire)">
+        <Expression>$(NumberOfLuxuryResourcePOIs) / 2.5</Expression>
+      </InterpretedVar>
+
+      <LocalizationVar LocalizationKey="$DustObjective" Source="EmpireDustFromTilesObjective"/>
+      <LocalizationVar LocalizationKey="$LuxuryFacilityObjective" Source="LuxuryResourceFacilitiesObjective"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter5-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$SumProperty(EmpireTypeMajor/ClassCity/ClassDistrict:DistrictDust) + $SumProperty(EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict:DistrictDust) + $SumProperty(EmpireTypeMajor/ClassFortress:FortressTileDust)" StepName="MainQuestSeaDemons-Chapter5-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter5-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter5-Step2" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Count(EmpireTypeMajor/ClassFortress/PointOfInterestTypeFacility,ResourceExtractor_Luxury,RevealedFacility)" StepName="MainQuestSeaDemons-Chapter5-Step2" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter5-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter5-Step1">
+        <ProgressionRange StartValueVarName="CurrentEmpireDustFromTiles" EndValueVarName="EmpireDustFromTilesObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter5-Step2">
+        <ProgressionRange StartValueVarName="CurrentNumberOfPlayerLuxuryResourceFacilities" EndValueVarName="LuxuryResourceFacilitiesObjective"/>
+        <Reward Droplist="DroplistMainQuestSeaDemonsChapter5And5AltStep2TechnologyItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ======= Sea Demons - CHAPTER 5Alt ======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter5Alt" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter5</Tags>
+
+    <!--===========PREREQUISITES=============-->
+    <Prerequisites Target="$(Empire)">
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter5" QuestState="Completed"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter5" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="MainQuestSeaDemons-Chapter5" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <InterpretedVar VarName="CurrentEmpireScienceFromTiles" Target="$(Empire)">
+        <Expression>$SumProperty(EmpireTypeMajor/ClassCity/ClassDistrict:DistrictScience) + $SumProperty(EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict:DistrictScience) + $SumProperty(EmpireTypeMajor/ClassFortress:FortressTileScience)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="EmpireScienceFromTilesObjective" Target="$(Empire)">
+        <Expression>$(CurrentEmpireScienceFromTiles) * 1.4</Expression>
+      </InterpretedVar>
+
+      <!--Filter 2 Oceanic Regions only, and having min 2 fortresses-->
+      <Var VarName="$FortressOceanicRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOcean/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="NumberOfStrategicResourcePOIs">
+        <Count>
+          <From Source="$FortressOceanicRegions.$PointsOfInterest">
+            <Where>
+              <PathPrerequisite Inverted="false" Flags="Prerequisite">FacilityResourceDeposit_Strategic</PathPrerequisite>
+            </Where>
+          </From>
+        </Count>
+      </Var>
+      <InterpretedVar VarName="CurrentNumberOfPlayerLuxuryResourceFacilities" Target="$(Empire)">
+        <Expression>$Count(EmpireTypeMajor/ClassFortress/PointOfInterestTypeFacility,ResourceExtractor_Luxury,RevealedFacility)</Expression>
+      </InterpretedVar>
+      <InterpretedVar VarName="CurrentNumberOfPlayerStrategicResourceFacilities" Target="$(Empire)">
+        <Expression>$Count(EmpireTypeMajor/ClassFortress/PointOfInterestTypeFacility,ResourceExtractor_Strategic,RevealedFacility)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="StrategicResourceFacilitiesObjective" Target="$(Empire)">
+        <Expression>$(NumberOfStrategicResourcePOIs) / 2.5</Expression>
+      </InterpretedVar>
+
+      <LocalizationVar LocalizationKey="$ScienceObjective" Source="EmpireScienceFromTilesObjective"/>
+      <LocalizationVar LocalizationKey="$StrategicFacilityObjective" Source="StrategicResourceFacilitiesObjective"/>
+
+    </Vars>
+
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter5Alt-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$SumProperty(EmpireTypeMajor/ClassCity/ClassDistrict:DistrictScience) + $SumProperty(EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict:DistrictScience) + $SumProperty(EmpireTypeMajor/ClassFortress:FortressTileScience)" StepName="MainQuestSeaDemons-Chapter5Alt-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter5Alt-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter5Alt-Step2" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Count(EmpireTypeMajor/ClassFortress/PointOfInterestTypeFacility,ResourceExtractor_Strategic,RevealedFacility)" StepName="MainQuestSeaDemons-Chapter5Alt-Step2" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter5Alt-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter5Alt-Step1">
+        <ProgressionRange StartValueVarName="CurrentEmpireScienceFromTiles" EndValueVarName="EmpireScienceFromTilesObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter5Alt-Step2">
+        <ProgressionRange StartValueVarName="CurrentNumberOfPlayerStrategicResourceFacilities" EndValueVarName="StrategicResourceFacilitiesObjective"/>
+        <Reward Droplist="DroplistMainQuestSeaDemonsChapter5And5AltStep2TechnologyItemReward" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter6</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+
+  <!-- ======================================
+     ========= Sea Demons - CHAPTER 6 =======
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter6" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter6</Tags>
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfDamnedUnits" Target="$(Empire)">
+        <Expression>$Count(EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityMarkOfTheDamnedDescriptor)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="UnitCountObjective" Target="$(Empire)">
+        <Expression>3</Expression>
+      </InterpretedVar>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter6-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <InterpretedVarsToUpdate>
+          <Var>NumberOfDamnedUnits</Var>
+        </InterpretedVarsToUpdate>
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$(NumberOfDamnedUnits)" StepName="MainQuestSeaDemons-Chapter6-Step1" />
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter6-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter6-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Loop LoopCount="2">
+          <Decorator_KillArmy CountAllDeadEnemyArmiesForStepProgression="true" Output_WinnerVarName="$EmpireArmy" LinkedStepProgression="MainQuestSeaDemons-Chapter6-Step2" TargetOption="Any" Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$EmpireArmy">
+                <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassArmy/ClassUnit,!UnitAbilityMarkOfTheDamnedDescriptor</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_KillArmy>
+        </Controller_Loop>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestSeaDemons-Chapter6-Step2" />
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter6-Step2" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter6-Step1">
+        <ProgressionRange StartValue="0" EndValueVarName="UnitCountObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter6-Step2">
+        <ProgressionRange StartValue="0" EndValue="2"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter7</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ======== Sea Demons - CHAPTER 7 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter7" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter7</Tags>
+
+
+    <!--===========VARIABLES=============-->
+    <Vars>
+
+      <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="DurationObjective" Target="$(Empire)">
+        <Expression>10 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+      <Var VarName="$AllRegionsButMine">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionByEmpire Inverted="true" EmpireVarName="$InstigatorEmpire"/>
+          </Where>
+        </From>
+      </Var>
+      <Var VarName="$OtherEmpires">
+        <From Source="$AllRegionsButMine.$MajorEmpire"/>
+      </Var>
+      <Var VarName="$TargetedEmpire1">
+        <First>
+          <From Source="$AllRegionsButMine.$MajorEmpire"/>
+        </First>
+      </Var>
+      <Var VarName="$TargetedEmpire2">
+        <Last>
+          <From Source="$AllRegionsButMine.$MajorEmpire"/>
+        </Last>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$EmpireName1"  Source="$TargetedEmpire1"/>
+      <LocalizationVar LocalizationKey="$EmpireName2"  Source="$TargetedEmpire2"/>
+      <LocalizationVar LocalizationKey="$Duration"     Source="DurationObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter7-Step1" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Loop LoopCount="9999">
+
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <Controller_Sequence>
+              <Decorator_DiplomaticContract Initiator="Empire" DiplomaticTermDefinitionName="BlackSpot" TargetEmpireVarName="$TargetedEmpire1"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_IsEmpireBlackspottedBy Initiator="Empire" TargetEmpireVarName="$TargetedEmpire1"/>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+
+          </Controller_Parallel>
+
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <Controller_Loop LoopCount="20">
+              <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="MainQuestSeaDemons-Chapter7-Step1"/>
+            </Controller_Loop>
+
+            <Controller_Sequence>
+              <Controller_Parallel CompletionPolicy="Any">
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="BlackSpotRemoval" TargetEmpireVarName="$TargetedEmpire1"/>
+                </Controller_Sequence>
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="BlackSpotNullification" TargetEmpireVarName="$TargetedEmpire1"/>
+                </Controller_Sequence>
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="WarToTruce" TargetEmpireVarName="$TargetedEmpire1"/>
+                </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="WarToTruceDeclaration" TargetEmpireVarName="$TargetedEmpire1"/>
+                </Controller_Sequence>
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="ColdWarToPeace" TargetEmpireVarName="$TargetedEmpire1"/>
+                </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="ColdWarToPeaceDeclaration" TargetEmpireVarName="$TargetedEmpire1"/>
+                </Controller_Sequence>
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="ColdWarToAlliance" TargetEmpireVarName="$TargetedEmpire1"/>
+                </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="ColdWarToAllianceDeclaration" TargetEmpireVarName="$TargetedEmpire1"/>
+                </Controller_Sequence>
+
+              </Controller_Parallel>
+            </Controller_Sequence>
+          </Controller_Parallel>
+        </Controller_Loop>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestSeaDemons-Chapter7-Step1" />
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$TargetedEmpire1">
+                <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor,EmpireEliminated</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter7-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter7-Step2" State="InProgress"/>
+      <Controller_Parallel CompletionPolicy="Any">
+
+        <Controller_Loop LoopCount="999">
+
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <Controller_Sequence>
+              <Decorator_DiplomaticContract Initiator="Empire" DiplomaticTermDefinitionName="BlackSpot" TargetEmpireVarName="$TargetedEmpire2"/>
+            </Controller_Sequence>
+
+            <Controller_Sequence>
+              <Decorator_BeginTurn Initiator="Empire">
+                <ConditionCheck_IsEmpireBlackspottedBy Initiator="Empire" TargetEmpireVarName="$TargetedEmpire2"/>
+              </Decorator_BeginTurn>
+            </Controller_Sequence>
+
+          </Controller_Parallel>
+
+          <Controller_Parallel CompletionPolicy="Any">
+
+            <Controller_Loop LoopCount="20">
+              <Decorator_EndTurn Initiator="Empire" LinkedStepProgression="MainQuestSeaDemons-Chapter7-Step2"/>
+            </Controller_Loop>
+
+            <Controller_Sequence>
+              <Controller_Parallel CompletionPolicy="Any">
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="BlackSpotRemoval" TargetEmpireVarName="$TargetedEmpire2"/>
+                </Controller_Sequence>
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="BlackSpotNullification" TargetEmpireVarName="$TargetedEmpire2"/>
+                </Controller_Sequence>
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="WarToTruce" TargetEmpireVarName="$TargetedEmpire2"/>
+                </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="WarToTruceDeclaration" TargetEmpireVarName="$TargetedEmpire2"/>
+                </Controller_Sequence>
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="ColdWarToPeace" TargetEmpireVarName="$TargetedEmpire2"/>
+                </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="ColdWarToPeaceDeclaration" TargetEmpireVarName="$TargetedEmpire2"/>
+                </Controller_Sequence>
+
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="ColdWarToAlliance" TargetEmpireVarName="$TargetedEmpire2"/>
+                </Controller_Sequence>
+                <Controller_Sequence>
+                  <Decorator_DiplomaticContract Initiator="Empire" IsMutual="true" DiplomaticTermDefinitionName="ColdWarToAllianceDeclaration" TargetEmpireVarName="$TargetedEmpire2"/>
+                </Controller_Sequence>
+
+              </Controller_Parallel>
+            </Controller_Sequence>
+          </Controller_Parallel>
+        </Controller_Loop>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_IsStepProgressionComplete StepName="MainQuestSeaDemons-Chapter7-Step2" />
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+        <Controller_Sequence>
+          <Decorator_BeginTurn Initiator="Empire">
+            <ConditionCheck_Prerequisite>
+              <Prerequisites Target="$TargetedEmpire2">
+                <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor,EmpireEliminated</PathPrerequisite>
+              </Prerequisites>
+            </ConditionCheck_Prerequisite>
+          </Decorator_BeginTurn>
+        </Controller_Sequence>
+
+      </Controller_Parallel>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter7-Step2" State="Completed" />
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter7-Step1">
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter7-Step2">
+        <ProgressionRange StartValue="0" EndValueVarName="DurationObjective"/>
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,SeaDemons,Chapter8</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+
+  <!-- ======================================
+     ========= Sea Demons -CHAPTER 8 ========
+     ======================================== -->
+  <QuestDefinition Name="MainQuestSeaDemons-Chapter8" Category="MainQuest" SubCategory="Main" Cooldown="0" SkipLockedQuestTarget="false" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>MainQuest,SeaDemons,Chapter8</Tags>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+
+      <InterpretedVar VarName="DustStockObjective" Target="$(Empire)">
+        <Expression>2000 * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <InterpretedVar VarName="DustTransfer" Target="$(Empire)">
+        <Expression>(0 - 2000) * $Property(ClassEmpire:GameSpeedMultiplier)</Expression>
+      </InterpretedVar>
+
+      <!--Set Empire Index-->
+      <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+
+      <!--Filter 2 Oceanic Regions only, and having min 2 fortresses-->
+      <Var VarName="$Min2FortressesOceanicRegions">
+        <From Source="$Regions">
+          <Where>
+            <FilterRegionIsOcean/>
+            <FilterRegionIsOceanWithFortresses MinimumNumber="2"/>
+          </Where>
+        </From>
+      </Var>
+
+      <Var VarName="$Region1">
+        <First>
+          <From Source="$Min2FortressesOceanicRegions"/>
+        </First>
+      </Var>
+
+      <Var VarName="$Region2">
+        <Last>
+          <From Source="$Min2FortressesOceanicRegions"/>
+        </Last>
+      </Var>
+
+      <LocalizationVar LocalizationKey="$OceanicRegion1Name" Source="$Region1"/>
+      <LocalizationVar LocalizationKey="$OceanicRegion2Name" Source="$Region2"/>
+
+      <DropListVar VarName="$DustResource" DropList="DroplistMainQuestBrokenLordsChapter1ResourceName"/>
+
+      <LocalizationVar LocalizationKey="$DustAmount" Source="DustStockObjective"/>
+
+    </Vars>
+
+    <!--============ SEQUENCE ============-->
+    <Controller_Sequence>
+
+      <!--Step 1-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter8-Step1" State="InProgress"/>
+      <Decorator_BeginTurn Initiator="Empire">
+        <ConditionCheck_RegionIsOwnedByEmpire RegionVarName="$Region1" EmpireVarName="$InstigatorEmpire"/>
+        <ConditionCheck_RegionIsOwnedByEmpire RegionVarName="$Region2" EmpireVarName="$InstigatorEmpire"/>
+      </Decorator_BeginTurn>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter8-Step1" State="Completed" />
+
+      <!--Step 2-->
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter8-Step2" State="InProgress"/>
+
+      <Decorator_SeasonChange Initiator="Empire">
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Property(EmpireTypeMajor:BankAccount)" StepName="MainQuestSeaDemons-Chapter8-Step2" />
+        <ConditionCheck_RegionIsOwnedByEmpire RegionVarName="$Region1" EmpireVarName="$InstigatorEmpire"/>
+        <ConditionCheck_RegionIsOwnedByEmpire RegionVarName="$Region2" EmpireVarName="$InstigatorEmpire"/>
+      </Decorator_SeasonChange>
+
+      <Action_TransferResource ResourceNameVarName="$DustResource" AmountVarName="DustTransfer"/>
+      <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter8-Step2" State="Completed"/>
+
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
+      <Step Name="MainQuestSeaDemons-Chapter8-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+      </Step>
+      <Step Name="MainQuestSeaDemons-Chapter8-Step2">
+        <ProgressionRange StartValue="0" EndValueVarName="DustStockObjective"/>
+        <Reward Droplist="DroplistMainQuestSeaDemonsChapter8Step2TechnologyReward" Picks="1"/>
+        <Reward Droplist="DroplistWonderVictory" Picks="1"/>
+      </Step>
+    </Steps>
+
+    <!--============ TRIGGER ============-->
+    <Triggers>
+      <OnQuestCompleted>
+        <Tags>MainQuest,VictoryQuest,Chapter0</Tags>
+      </OnQuestCompleted>
+    </Triggers>
+
+  </QuestDefinition>
+
+</Datatable>

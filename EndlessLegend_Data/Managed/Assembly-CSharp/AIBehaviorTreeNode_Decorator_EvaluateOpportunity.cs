@@ -52,11 +52,6 @@ public class AIBehaviorTreeNode_Decorator_EvaluateOpportunity : AIBehaviorTreeNo
 		int distance3 = worldPositionningService.GetDistance(opportunityPosition, mainTargetPosition);
 		float propertyValue = army.GetPropertyValue(SimulationProperties.MaximumMovement);
 		numberOfTurnsTillMainTarget = (int)((float)distance2 / propertyValue);
-		if (distance < 2)
-		{
-			numberOfTurnsAfterDetour = numberOfTurnsTillMainTarget;
-			return true;
-		}
 		numberOfTurnsAfterDetour = (int)((float)(distance + distance3) / propertyValue);
 		return true;
 	}

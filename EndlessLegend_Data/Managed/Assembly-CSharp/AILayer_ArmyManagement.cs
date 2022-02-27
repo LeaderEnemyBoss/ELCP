@@ -5,11 +5,10 @@ using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
-using Amplitude.Unity.Session;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
-public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializable, ITickable
+public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializable
 {
 	public AILayer_ArmyManagement() : base("AILayer_ArmyManagement")
 	{
@@ -51,9 +50,11 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 					}
 				}
 				reader.ReadEndElement();
-				return;
 			}
-			reader.Skip();
+			else
+			{
+				reader.Skip();
+			}
 		}
 	}
 
@@ -94,17 +95,13 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 		yield return base.Initialize(aiEntity);
 		this.animationCurveDatabase = Databases.GetDatabase<AnimationCurve>(false);
 		this.endturnService = Services.GetService<IEndTurnService>();
-		IGameService service = Services.GetService<IGameService>();
-		this.playerRepositoryService = service.Game.Services.GetService<IPlayerRepositoryService>();
-		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
+		IGameService gameService = Services.GetService<IGameService>();
+		this.worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
 		this.intelligenceAIHelper = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
-		this.worldAtlasHelper = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
 		this.aiDataRepositoryHelper = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
 		this.departmentOfDefense = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
-		this.departmentOfDefense.OnSiegeStateChange += this.CitySiegeResponse;
 		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
-		this.departmentOfScience = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
 		base.AIEntity.RegisterPass(AIEntity.Passes.ExecuteNeeds.ToString(), "AILayer_ArmyManagement_ExecuteNeedsPass", new AIEntity.AIAction(this.ExecuteNeeds), this, new StaticString[]
 		{
 			"AILayerArmyRecruitment_ExecuteNeedsPass"
@@ -112,17 +109,14 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 		this.optionalMissions.Add(AICommanderMissionDefinition.AICommanderCategory.Exploration, new List<GlobalObjectiveMessage>());
 		this.optionalMissions.Add(AICommanderMissionDefinition.AICommanderCategory.Patrol, new List<GlobalObjectiveMessage>());
 		this.optionalMissions.Add(AICommanderMissionDefinition.AICommanderCategory.WarPatrol, new List<GlobalObjectiveMessage>());
-		IPersonalityAIHelper service2 = AIScheduler.Services.GetService<IPersonalityAIHelper>();
-		this.empirePillageOpportunityBoost = service2.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_ArmyManagement.registryPath, "PillageOpportunityBoost"), this.empirePillageOpportunityBoost);
-		string registryValue = service2.GetRegistryValue<string>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_ArmyManagement.registryPath, "PillageOpportunityBoostByTurn/CurveName"), string.Empty);
-		if (!string.IsNullOrEmpty(registryValue))
+		IPersonalityAIHelper personalityAIHelper = AIScheduler.Services.GetService<IPersonalityAIHelper>();
+		this.empirePillageOpportunityBoost = personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_ArmyManagement.registryPath, "PillageOpportunityBoost"), this.empirePillageOpportunityBoost);
+		string pillageCurveName = personalityAIHelper.GetRegistryValue<string>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_ArmyManagement.registryPath, "PillageOpportunityBoostByTurn/CurveName"), string.Empty);
+		if (!string.IsNullOrEmpty(pillageCurveName))
 		{
-			this.pillageOpportunityBoostByTurnCurve = this.animationCurveDatabase.GetValue(registryValue);
+			this.pillageOpportunityBoostByTurnCurve = this.animationCurveDatabase.GetValue(pillageCurveName);
 		}
-		this.pillageOpportunityBoostByTurnMaximumTurn = service2.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_ArmyManagement.registryPath, "PillageOpportunityBoostByTurn/MaximumTurn"), this.pillageOpportunityBoostByTurnMaximumTurn);
-		ITickableRepositoryAIHelper service3 = AIScheduler.Services.GetService<ITickableRepositoryAIHelper>();
-		Diagnostics.Assert(service3 != null);
-		service3.Register(this);
+		this.pillageOpportunityBoostByTurnMaximumTurn = personalityAIHelper.GetRegistryValue<float>(base.AIEntity.Empire, string.Format("{0}/{1}", AILayer_ArmyManagement.registryPath, "PillageOpportunityBoostByTurn/MaximumTurn"), this.pillageOpportunityBoostByTurnMaximumTurn);
 		yield break;
 	}
 
@@ -148,21 +142,11 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 		this.worldPositionningService = null;
 		this.intelligenceAIHelper = null;
 		this.aiDataRepositoryHelper = null;
-		this.playerRepositoryService = null;
-		if (this.departmentOfDefense != null)
-		{
-			this.departmentOfDefense.OnSiegeStateChange -= this.CitySiegeResponse;
-			this.departmentOfDefense = null;
-		}
+		this.departmentOfDefense = null;
 		this.departmentOfForeignAffairs = null;
 		this.departmentOfTheInterior = null;
-		this.departmentOfScience = null;
 		this.commanderLimitByType.Clear();
 		this.optionalMissions.Clear();
-		this.worldAtlasHelper = null;
-		ITickableRepositoryAIHelper service = AIScheduler.Services.GetService<ITickableRepositoryAIHelper>();
-		Diagnostics.Assert(service != null);
-		service.Unregister(this);
 	}
 
 	public void UnregisterCommanderLimitDelegate(StaticString commanderType)
@@ -173,37 +157,24 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 	protected override void ExecuteNeeds(StaticString context, StaticString pass)
 	{
 		base.ExecuteNeeds(context, pass);
-		this.State = TickableState.NeedTick;
-		this.lastTickTime = global::Game.Time;
-		this.Assignjobless = false;
-		if (!this.IsActive())
-		{
-			this.State = TickableState.NoTick;
-		}
 		ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
 		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_ExecuteNeeds));
-		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_ManageFullCities));
-		if (base.AIEntity.Empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait))
-		{
-			service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_ManageVillageArmies));
-		}
-		if (DepartmentOfTheInterior.CanPlaceGolemCamps(base.AIEntity.Empire))
-		{
-			service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_ManageFullCamps));
-		}
 		this.freeArmies.Clear();
 		for (int i = 0; i < this.departmentOfDefense.Armies.Count; i++)
 		{
 			AIData_Army aidata = this.aiDataRepositoryHelper.GetAIData<AIData_Army>(this.departmentOfDefense.Armies[i].GUID);
-			if (aidata != null && aidata.CommanderMission == null && !aidata.IsSolitary && !aidata.Army.IsSeafaring && !aidata.Army.HasCatspaw && !(aidata.Army is KaijuArmy))
+			if (aidata != null && aidata.CommanderMission == null)
 			{
-				if (aidata.Army.IsSettler)
+				if (!aidata.IsSolitary && !aidata.Army.IsSeafaring && !aidata.Army.HasCatspaw)
 				{
-					this.BailArmy(aidata);
-				}
-				else if (aidata.IsTaggedFreeForExploration() && !this.intelligenceAIHelper.IsArmyBlockedInCityUnderSiege(aidata.Army))
-				{
-					this.freeArmies.Add(aidata);
+					if (aidata.Army.IsSettler)
+					{
+						this.BailArmy(aidata);
+					}
+					else if (aidata.IsTaggedFreeForExploration() && !this.intelligenceAIHelper.IsArmyBlockedInCityUnderSiege(aidata.Army))
+					{
+						this.freeArmies.Add(aidata);
+					}
 				}
 			}
 		}
@@ -226,7 +197,8 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 			list3.Sort((GlobalObjectiveMessage left, GlobalObjectiveMessage right) => -1 * left.Interest.CompareTo(right.Interest));
 			num += list3.Count;
 			this.freeArmies.Sort((AIData_Army left, AIData_Army right) => -1 * left.Army.GetPropertyValue(SimulationProperties.MilitaryPower).CompareTo(right.Army.GetPropertyValue(SimulationProperties.MilitaryPower)));
-			if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
+			bool flag = this.departmentOfForeignAffairs.IsInWarWithSomeone();
+			if (flag)
 			{
 				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.WarPatrol, false);
 				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, false);
@@ -234,51 +206,38 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 				this.DistributeFreeArmiesToCities();
 				if (num != 0)
 				{
-					for (int j = 0; j < 3; j++)
-					{
-						if (this.freeArmies.Count <= 0)
-						{
-							return;
-						}
-						for (int k = 0; k < this.freeArmies.Count; k++)
-						{
-							if (j > 0)
-							{
-								this.ignoreMP = true;
-							}
-							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.WarPatrol, true);
-							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, true);
-							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, true);
-						}
-					}
-					this.ignoreMP = false;
-					return;
-				}
-			}
-			else
-			{
-				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, false);
-				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, false);
-				this.DistributeFreeArmiesToCities();
-				if (num != 0)
-				{
 					int num2 = 0;
 					while (num2 < 3 && this.freeArmies.Count > 0)
 					{
-						if (num2 > 0)
+						for (int j = 0; j < this.freeArmies.Count; j++)
 						{
-							this.ignoreMP = true;
-						}
-						for (int l = 0; l < this.freeArmies.Count; l++)
-						{
-							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, true);
+							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.WarPatrol, true);
 							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, true);
+							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, true);
 						}
 						num2++;
 					}
 				}
 			}
-			this.ignoreMP = false;
+			else
+			{
+				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, false);
+				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, false);
+				this.DistributeFreeArmiesToCities();
+				if (num != 0)
+				{
+					int num3 = 0;
+					while (num3 < 3 && this.freeArmies.Count > 0)
+					{
+						for (int k = 0; k < this.freeArmies.Count; k++)
+						{
+							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, true);
+							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, true);
+						}
+						num3++;
+					}
+				}
+			}
 		}
 	}
 
@@ -323,7 +282,7 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 			StaticString objectiveType = this.objectives[j].ObjectiveType;
 			if (!this.commandersByType.ContainsKey(objectiveType) || commanderLimit > this.commandersByType[objectiveType].Count)
 			{
-				goto IL_27B;
+				goto IL_295;
 			}
 			float num = this.objectives[j].Interest;
 			num /= 2f;
@@ -339,27 +298,27 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 			}
 			if (flag)
 			{
-				goto IL_27B;
+				goto IL_295;
 			}
-			IL_272:
+			IL_35E:
 			j++;
 			continue;
-			IL_27B:
-			AICommanderWithObjective aicommanderWithObjective2 = this.GenerateCommanderByType(this.objectives[j]);
-			if (aicommanderWithObjective2 != null)
+			IL_295:
+			AICommanderWithObjective aicommanderWithObjective = this.GenerateCommanderByType(this.objectives[j]);
+			if (aicommanderWithObjective == null)
 			{
-				if (!this.commandersByType.ContainsKey(this.objectives[j].ObjectiveType))
-				{
-					this.commandersByType.Add(this.objectives[j].ObjectiveType, new List<AICommanderWithObjective>());
-				}
-				this.commandersByType[this.objectives[j].ObjectiveType].Add(aicommanderWithObjective2);
-				aicommanderWithObjective2.GlobalPriority = this.objectives[j].GlobalPriority;
-				aicommanderWithObjective2.LocalPriority = this.objectives[j].LocalPriority;
-				aicommanderWithObjective2.GlobalPillageModifier = this.pillageOpportunityModifier;
-				this.AddCommander(aicommanderWithObjective2);
-				goto IL_272;
+				goto IL_35E;
 			}
-			goto IL_272;
+			if (!this.commandersByType.ContainsKey(this.objectives[j].ObjectiveType))
+			{
+				this.commandersByType.Add(this.objectives[j].ObjectiveType, new List<AICommanderWithObjective>());
+			}
+			this.commandersByType[this.objectives[j].ObjectiveType].Add(aicommanderWithObjective);
+			aicommanderWithObjective.GlobalPriority = this.objectives[j].GlobalPriority;
+			aicommanderWithObjective.LocalPriority = this.objectives[j].LocalPriority;
+			aicommanderWithObjective.GlobalPillageModifier = this.pillageOpportunityModifier;
+			this.AddCommander(aicommanderWithObjective);
+			goto IL_35E;
 		}
 		base.RefreshCommanders(context, pass);
 	}
@@ -404,27 +363,39 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 			return;
 		}
 		List<GlobalObjectiveMessage> list = this.optionalMissions[category];
-		for (int i = 0; i < list.Count; i++)
+		int i = 0;
+		while (i < list.Count)
 		{
 			GlobalObjectiveMessage globalObjectiveMessage = list[i];
-			if (multipleCommanders || base.AIEntity.GetCommanderProcessingTheNeededGlobalObjective(globalObjectiveMessage.ID) == null)
+			if (multipleCommanders)
 			{
-				float minMilitaryPower = this.GetMinMilitaryPower(category, globalObjectiveMessage.RegionIndex);
-				for (int j = 0; j < this.freeArmies.Count; j++)
+				goto IL_50;
+			}
+			AICommander commanderProcessingTheNeededGlobalObjective = base.AIEntity.GetCommanderProcessingTheNeededGlobalObjective(globalObjectiveMessage.ID);
+			if (commanderProcessingTheNeededGlobalObjective == null)
+			{
+				goto IL_50;
+			}
+			IL_E1:
+			i++;
+			continue;
+			IL_50:
+			float minMilitaryPower = this.GetMinMilitaryPower(category, globalObjectiveMessage.RegionIndex);
+			for (int j = 0; j < this.freeArmies.Count; j++)
+			{
+				AIData_Army aidata_Army = this.freeArmies[j];
+				if (minMilitaryPower <= aidata_Army.Army.GetPropertyValue(SimulationProperties.MilitaryPower))
 				{
-					AIData_Army aidata_Army = this.freeArmies[j];
-					if (minMilitaryPower <= aidata_Army.Army.GetPropertyValue(SimulationProperties.MilitaryPower) || this.ignoreMP)
-					{
-						this.freeArmies.RemoveAt(j);
-						this.GenerateDefaultCommanderByType(globalObjectiveMessage, aidata_Army.Army.GUID);
-						break;
-					}
-				}
-				if (this.freeArmies.Count == 0)
-				{
-					return;
+					this.freeArmies.RemoveAt(j);
+					this.GenerateDefaultCommanderByType(globalObjectiveMessage, aidata_Army.Army.GUID);
+					break;
 				}
 			}
+			if (this.freeArmies.Count == 0)
+			{
+				return;
+			}
+			goto IL_E1;
 		}
 	}
 
@@ -433,9 +404,13 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 		List<City> list = new List<City>();
 		for (int i = 0; i < this.departmentOfTheInterior.Cities.Count; i++)
 		{
-			if (this.departmentOfTheInterior.Cities[i].BesiegingEmpire == null && this.departmentOfTheInterior.Cities[i].MaximumUnitSlot - this.departmentOfTheInterior.Cities[i].StandardUnits.Count > 2)
+			if (this.departmentOfTheInterior.Cities[i].BesiegingEmpire == null)
 			{
-				list.Add(this.departmentOfTheInterior.Cities[i]);
+				int num = this.departmentOfTheInterior.Cities[i].MaximumUnitSlot - this.departmentOfTheInterior.Cities[i].StandardUnits.Count;
+				if (num > 2)
+				{
+					list.Add(this.departmentOfTheInterior.Cities[i]);
+				}
 			}
 		}
 		for (int j = this.freeArmies.Count - 1; j >= 0; j--)
@@ -446,8 +421,8 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 			{
 				if (list[k].Region.Index == regionIndex)
 				{
-					int num = this.departmentOfTheInterior.Cities[k].MaximumUnitSlot - this.departmentOfTheInterior.Cities[k].StandardUnits.Count;
-					if (count <= num)
+					int num2 = this.departmentOfTheInterior.Cities[k].MaximumUnitSlot - this.departmentOfTheInterior.Cities[k].StandardUnits.Count;
+					if (count <= num2)
 					{
 						this.BailArmy(this.freeArmies[j]);
 						this.freeArmies.RemoveAt(j);
@@ -514,51 +489,45 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 				LocalPriority = objective.LocalPriority
 			};
 		}
-		if (objective.ObjectiveType == "Village" && objective.SubObjectifGUID != GameEntityGUID.Zero)
+		if (objective.ObjectiveType == "Village")
 		{
-			return new AICommander_Village(objective.ID, objective.RegionIndex)
+			if (objective.SubObjectifGUID != GameEntityGUID.Zero)
 			{
-				AIPlayer = base.AIEntity.AIPlayer,
-				RegionTarget = this.worldPositionningService.GetRegion(objective.RegionIndex),
-				Empire = base.AIEntity.Empire,
-				GlobalPriority = objective.GlobalPriority,
-				LocalPriority = objective.LocalPriority,
-				SubObjectiveGuid = objective.SubObjectifGUID
-			};
+				return new AICommander_Village(objective.ID, objective.RegionIndex)
+				{
+					AIPlayer = base.AIEntity.AIPlayer,
+					RegionTarget = this.worldPositionningService.GetRegion(objective.RegionIndex),
+					Empire = base.AIEntity.Empire,
+					GlobalPriority = objective.GlobalPriority,
+					LocalPriority = objective.LocalPriority,
+					SubObjectiveGuid = objective.SubObjectifGUID
+				};
+			}
 		}
-		if (objective.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.Victory.ToString() && objective.SubObjectifGUID != GameEntityGUID.Zero)
+		else
 		{
-			return new AICommander_Victory(objective.ID, objective.RegionIndex)
+			if (objective.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.Terraformation.ToString())
 			{
-				AIPlayer = base.AIEntity.AIPlayer,
-				RegionTarget = this.worldPositionningService.GetRegion(objective.RegionIndex),
-				Empire = base.AIEntity.Empire,
-				GlobalPriority = objective.GlobalPriority,
-				LocalPriority = objective.LocalPriority,
-				SubObjectiveGuid = objective.SubObjectifGUID
-			};
-		}
-		if (objective.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.Terraformation.ToString())
-		{
-			return new AICommander_Terraformation(objective.ID, objective.RegionIndex)
+				return new AICommander_Terraformation(objective.ID, objective.RegionIndex)
+				{
+					AIPlayer = base.AIEntity.AIPlayer,
+					RegionTarget = this.worldPositionningService.GetRegion(objective.RegionIndex),
+					Empire = base.AIEntity.Empire,
+					GlobalPriority = objective.GlobalPriority,
+					LocalPriority = objective.LocalPriority
+				};
+			}
+			if (objective.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.KaijuAdquisition.ToString())
 			{
-				AIPlayer = base.AIEntity.AIPlayer,
-				RegionTarget = this.worldPositionningService.GetRegion(objective.RegionIndex),
-				Empire = base.AIEntity.Empire,
-				GlobalPriority = objective.GlobalPriority,
-				LocalPriority = objective.LocalPriority
-			};
-		}
-		if (objective.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.KaijuAdquisition.ToString())
-		{
-			return new AICommander_KaijuAdquisition(objective.ID, objective.RegionIndex)
-			{
-				AIPlayer = base.AIEntity.AIPlayer,
-				Empire = base.AIEntity.Empire,
-				GlobalPriority = objective.GlobalPriority,
-				LocalPriority = objective.LocalPriority,
-				SubObjectiveGuid = objective.SubObjectifGUID
-			};
+				return new AICommander_KaijuAdquisition(objective.ID, objective.RegionIndex)
+				{
+					AIPlayer = base.AIEntity.AIPlayer,
+					Empire = base.AIEntity.Empire,
+					GlobalPriority = objective.GlobalPriority,
+					LocalPriority = objective.LocalPriority,
+					SubObjectiveGuid = objective.SubObjectifGUID
+				};
+			}
 		}
 		return null;
 	}
@@ -650,68 +619,40 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 			}
 			this.currentRetrofitOrderTicket = null;
 		}
-		bool flag = true;
-		foreach (Player player in this.playerRepositoryService)
-		{
-			if (player.Type == PlayerType.Human && player.State != PlayerState.Ready)
-			{
-				flag = false;
-				break;
-			}
-		}
-		if (flag)
-		{
-			Diagnostics.Log("ELCP: AILayer_ArmyManagement SynchronousJob_ExecuteNeeds detected all humans are ready, aborting");
-			foreach (EvaluableMessage_RetrofitUnit evaluableMessage_RetrofitUnit in base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_RetrofitUnit>(BlackboardLayerID.Empire))
-			{
-				evaluableMessage_RetrofitUnit.SetFailedToObtain();
-			}
-			return SynchronousJobState.Failure;
-		}
 		DepartmentOfDefense agency = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
 		AIData_Unit unitData;
-		Func<UnitDesign, bool> <>9__2;
-		foreach (EvaluableMessage_RetrofitUnit evaluableMessage_RetrofitUnit2 in base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_RetrofitUnit>(BlackboardLayerID.Empire))
+		foreach (EvaluableMessage_RetrofitUnit evaluableMessage_RetrofitUnit in base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_RetrofitUnit>(BlackboardLayerID.Empire))
 		{
-			if (evaluableMessage_RetrofitUnit2.EvaluationState == EvaluableMessage.EvaluableMessageState.Validate)
+			if (evaluableMessage_RetrofitUnit.EvaluationState == EvaluableMessage.EvaluableMessageState.Validate)
 			{
-				if (this.aiDataRepositoryHelper.TryGetAIData<AIData_Unit>(evaluableMessage_RetrofitUnit2.ElementGuid, out unitData))
+				if (this.aiDataRepositoryHelper.TryGetAIData<AIData_Unit>(evaluableMessage_RetrofitUnit.ElementGuid, out unitData))
 				{
 					if (!(unitData.Unit.UnitDesign is UnitProfile))
 					{
-						IEnumerable<UnitDesign> userDefinedUnitDesigns = agency.UnitDesignDatabase.UserDefinedUnitDesigns;
-						Func<UnitDesign, bool> predicate;
-						if ((predicate = <>9__2) == null)
-						{
-							predicate = (<>9__2 = ((UnitDesign design) => design.Model == unitData.Unit.UnitDesign.Model));
-						}
-						UnitDesign unitDesign = userDefinedUnitDesigns.FirstOrDefault(predicate);
+						UnitDesign unitDesign = agency.UnitDesignDatabase.UserDefinedUnitDesigns.FirstOrDefault((UnitDesign design) => design.Model == unitData.Unit.UnitDesign.Model);
 						if (unitDesign == null || unitDesign.ModelRevision <= unitData.Unit.UnitDesign.ModelRevision)
 						{
-							evaluableMessage_RetrofitUnit2.SetFailedToObtain();
+							evaluableMessage_RetrofitUnit.SetFailedToObtain();
 						}
 						else
 						{
-							DepartmentOfDefense departmentOfDefense = agency;
-							Unit unit = unitData.Unit;
-							IConstructionCost[] retrofitCosts = agency.GetRetrofitCosts(unitData.Unit, unitDesign);
-							IConstructionCost[] costs = retrofitCosts;
-							if (departmentOfDefense.CheckRetrofitPrerequisites(unit, costs) == DepartmentOfDefense.CheckRetrofitPrerequisitesResult.Ok)
+							DepartmentOfDefense.CheckRetrofitPrerequisitesResult checkRetrofitPrerequisitesResult = agency.CheckRetrofitPrerequisites(unitData.Unit, agency.GetRetrofitCosts(unitData.Unit, unitDesign));
+							if (checkRetrofitPrerequisitesResult == DepartmentOfDefense.CheckRetrofitPrerequisitesResult.Ok)
 							{
 								OrderRetrofitUnit order = new OrderRetrofitUnit(base.AIEntity.Empire.Index, new GameEntityGUID[]
 								{
-									evaluableMessage_RetrofitUnit2.ElementGuid
+									evaluableMessage_RetrofitUnit.ElementGuid
 								});
 								base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out this.currentRetrofitOrderTicket, null);
 								return SynchronousJobState.Running;
 							}
-							evaluableMessage_RetrofitUnit2.SetFailedToObtain();
+							evaluableMessage_RetrofitUnit.SetFailedToObtain();
 						}
 					}
 				}
 				else
 				{
-					evaluableMessage_RetrofitUnit2.SetFailedToObtain();
+					evaluableMessage_RetrofitUnit.SetFailedToObtain();
 				}
 			}
 		}
@@ -731,682 +672,6 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 		}
 		return this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.AIEntity.Empire, maxHostileArmy, 0);
 	}
-
-	private SynchronousJobState SynchronousJob_ManageVillageArmies()
-	{
-		MajorEmpire majorEmpire = base.AIEntity.Empire as MajorEmpire;
-		SynchronousJobState result;
-		if (majorEmpire == null)
-		{
-			result = SynchronousJobState.Success;
-		}
-		else
-		{
-			float num;
-			base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num, false);
-			DepartmentOfScience agency = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
-			float propertyValue = base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireMoney);
-			foreach (Village village in majorEmpire.ConvertedVillages)
-			{
-				if (village.UnitsCount != 0 && !village.IsInEncounter && this.AreaIsSave(village, 7))
-				{
-					List<Unit> list = new List<Unit>();
-					list.AddRange(village.Units);
-					if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
-					{
-						if (num + propertyValue < 100f + (float)(this.endturnService.Turn * 5) + (float)(majorEmpire.ConvertedVillages.Count * 40) && agency.CanTradeUnits(false))
-						{
-							OrderSelloutTradableUnits order = new OrderSelloutTradableUnits(base.AIEntity.Empire.Index, list.ConvertAll<GameEntityGUID>((Unit unit) => unit.GUID).ToArray());
-							Ticket ticket;
-							base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out ticket, null);
-						}
-						if (propertyValue >= 0f || num > 100f)
-						{
-							this.CreateVillageArmy(village, list);
-						}
-					}
-					else if (num + propertyValue < 400f + (float)(this.endturnService.Turn * 5) + (float)(majorEmpire.ConvertedVillages.Count * 80) && agency.CanTradeUnits(false))
-					{
-						OrderSelloutTradableUnits order2 = new OrderSelloutTradableUnits(base.AIEntity.Empire.Index, list.ConvertAll<GameEntityGUID>((Unit unit) => unit.GUID).ToArray());
-						Ticket ticket2;
-						base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order2, out ticket2, null);
-					}
-					else if (propertyValue >= 10f)
-					{
-						this.CreateVillageArmy(village, list);
-					}
-				}
-			}
-			result = SynchronousJobState.Success;
-		}
-		return result;
-	}
-
-	private void CreateVillageArmy(Village village, List<Unit> units)
-	{
-		List<WorldPosition> availablePositionsForArmyCreation = DepartmentOfDefense.GetAvailablePositionsForArmyCreation(village);
-		IGameService service = Services.GetService<IGameService>();
-		if (service.Game != null)
-		{
-			IPathfindingService service2 = service.Game.Services.GetService<IPathfindingService>();
-			if (service2 != null)
-			{
-				for (int i = 0; i < availablePositionsForArmyCreation.Count; i++)
-				{
-					WorldPosition worldPosition = availablePositionsForArmyCreation[i];
-					bool flag = true;
-					for (int j = 0; j < units.Count; j++)
-					{
-						Unit unit2 = units[j];
-						float transitionCost = service2.GetTransitionCost(village.WorldPosition, worldPosition, unit2, PathfindingFlags.IgnoreFogOfWar, null);
-						if (unit2.GetPropertyValue(SimulationProperties.Movement) < transitionCost)
-						{
-							flag = false;
-							break;
-						}
-					}
-					if (flag)
-					{
-						OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(village.Empire.Index, village.GUID, units.ConvertAll<GameEntityGUID>((Unit unit) => unit.GUID).ToArray(), worldPosition, StaticString.Empty, false, true, true);
-						Ticket ticket;
-						base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OnCreateResponse));
-						return;
-					}
-				}
-			}
-		}
-	}
-
-	private bool AreaIsSave(Village village, int size)
-	{
-		bool result;
-		if (size < 1)
-		{
-			result = true;
-		}
-		else
-		{
-			global::Empire owner = village.Region.Owner;
-			if (owner == base.AIEntity.Empire)
-			{
-				result = true;
-			}
-			else if (owner != null && !this.departmentOfForeignAffairs.IsEnnemy(owner))
-			{
-				result = true;
-			}
-			else
-			{
-				if (owner == null || !this.departmentOfForeignAffairs.IsEnnemy(owner))
-				{
-					WorldArea worldArea = new WorldArea(new WorldPosition[]
-					{
-						village.WorldPosition
-					});
-					for (int i = 0; i < size; i++)
-					{
-						worldArea = worldArea.Grow(this.worldPositionningService.World.WorldParameters);
-					}
-					foreach (WorldPosition worldPosition in worldArea.WorldPositions)
-					{
-						Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(worldPosition);
-						if (armyAtPosition != null && !armyAtPosition.IsFomorian)
-						{
-							Region region = this.worldPositionningService.GetRegion(worldPosition);
-							if (!(armyAtPosition.Empire is MinorEmpire) || region == village.Region)
-							{
-								if (armyAtPosition.IsPrivateers)
-								{
-									return false;
-								}
-								if (this.departmentOfForeignAffairs.IsEnnemy(armyAtPosition.Empire))
-								{
-									return false;
-								}
-							}
-						}
-					}
-					return true;
-				}
-				result = false;
-			}
-		}
-		return result;
-	}
-
-	protected void OnCreateResponse(object sender, TicketRaisedEventArgs args)
-	{
-		if (args.Result == PostOrderResponse.Processed)
-		{
-			OrderTransferGarrisonToNewArmy orderTransferGarrisonToNewArmy = args.Order as OrderTransferGarrisonToNewArmy;
-			IGameService service = Services.GetService<IGameService>();
-			if (orderTransferGarrisonToNewArmy != null && orderTransferGarrisonToNewArmy.ArmyGuid.IsValid)
-			{
-				IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
-				IGameEntity gameEntity;
-				if (service2 != null && service2.TryGetValue(orderTransferGarrisonToNewArmy.ArmyGuid, out gameEntity))
-				{
-					Army army = gameEntity as Army;
-					if (army != null)
-					{
-						AIData_Army aidata = this.aiDataRepositoryHelper.GetAIData<AIData_Army>(army.GUID);
-						if (aidata != null)
-						{
-							this.freeArmies.Add(aidata);
-							this.ignoreMP = true;
-							if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
-							{
-								List<GlobalObjectiveMessage> list = this.optionalMissions[AICommanderMissionDefinition.AICommanderCategory.WarPatrol];
-								if (list.Count < 1)
-								{
-									list.Clear();
-									list.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.WarPatrol.ToString() && match.State != BlackboardMessage.StateValue.Message_Canceled));
-									list.Sort((GlobalObjectiveMessage left, GlobalObjectiveMessage right) => -1 * left.Interest.CompareTo(right.Interest));
-								}
-								this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.WarPatrol, true);
-								if (this.freeArmies.Count > 0)
-								{
-									list = this.optionalMissions[AICommanderMissionDefinition.AICommanderCategory.Patrol];
-								}
-								if (list.Count < 1)
-								{
-									list.Clear();
-									list.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.Patrol.ToString() && match.State != BlackboardMessage.StateValue.Message_Canceled));
-									list.Sort((GlobalObjectiveMessage left, GlobalObjectiveMessage right) => -1 * left.Interest.CompareTo(right.Interest));
-								}
-								this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, true);
-								this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, true);
-								return;
-							}
-							List<GlobalObjectiveMessage> list2 = this.optionalMissions[AICommanderMissionDefinition.AICommanderCategory.Patrol];
-							if (list2.Count < 1)
-							{
-								list2.Clear();
-								list2.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.Patrol.ToString() && match.State != BlackboardMessage.StateValue.Message_Canceled));
-								list2.Sort((GlobalObjectiveMessage left, GlobalObjectiveMessage right) => -1 * left.Interest.CompareTo(right.Interest));
-							}
-							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, true);
-							if (this.freeArmies.Count > 0)
-							{
-								list2 = this.optionalMissions[AICommanderMissionDefinition.AICommanderCategory.Exploration];
-							}
-							if (list2.Count < 1)
-							{
-								list2.Clear();
-								list2.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.Exploration.ToString() && match.State != BlackboardMessage.StateValue.Message_Canceled));
-								list2.Sort((GlobalObjectiveMessage left, GlobalObjectiveMessage right) => -1 * left.Interest.CompareTo(right.Interest));
-							}
-							this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, true);
-							this.ignoreMP = false;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private SynchronousJobState SynchronousJob_ManageFullCities()
-	{
-		bool flag = false;
-		if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
-		{
-			using (IEnumerator<City> enumerator = this.departmentOfTheInterior.Cities.GetEnumerator())
-			{
-				while (enumerator.MoveNext())
-				{
-					if (enumerator.Current.BesiegingEmpire != null)
-					{
-						flag = true;
-						break;
-					}
-				}
-			}
-		}
-		List<Army> list = new List<Army>();
-		if (flag)
-		{
-			list = this.departmentOfDefense.Armies.ToList<Army>().FindAll((Army match) => !match.IsSeafaring && !match.IsSettler && !match.IsSolitary);
-		}
-		foreach (City city in this.departmentOfTheInterior.Cities)
-		{
-			if (!city.IsInfected)
-			{
-				if (flag && (list.Count < 8 || list.Count < this.departmentOfTheInterior.Cities.Count * 2) && city.StandardUnits.Count > 0 && city.BesiegingEmpire == null && AILayer_Military.AreaIsSave(city.WorldPosition, 8, this.departmentOfForeignAffairs, false))
-				{
-					List<Unit> units = city.StandardUnits.ToList<Unit>().FindAll((Unit x) => !x.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1));
-					this.CreateCityArmy(city, units);
-				}
-				else if (!this.departmentOfScience.CanParley() && !this.worldAtlasHelper.IsRegionPacified(base.AIEntity.Empire, city.Region) && !this.departmentOfForeignAffairs.IsInWarWithSomeone() && city.StandardUnits.Count > 1)
-				{
-					if (city.StandardUnits != null)
-					{
-						List<Unit> list2 = new List<Unit>();
-						foreach (Unit unit in city.StandardUnits)
-						{
-							if (!unit.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) && !unit.CheckUnitAbility(UnitAbility.ReadonlyResettle, -1))
-							{
-								list2.Add(unit);
-							}
-						}
-						this.CreateCityArmy(city, list2);
-					}
-				}
-				else
-				{
-					ConstructionQueue constructionQueue = base.AIEntity.Empire.GetAgency<DepartmentOfIndustry>().GetConstructionQueue(city);
-					int num = 0;
-					DepartmentOfTheTreasury agency = base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>();
-					float num2 = 0f;
-					if (!agency.TryGetResourceStockValue(city, DepartmentOfTheTreasury.Resources.Production, out num2, false))
-					{
-						num2 = 0f;
-					}
-					num2 += city.GetPropertyValue(SimulationProperties.NetCityProduction);
-					num2 = Math.Max(1f, num2);
-					if (constructionQueue.PendingConstructions.Count == 0 && city.BesiegingEmpire == null)
-					{
-						num = 1;
-					}
-					else
-					{
-						for (int i = 0; i < constructionQueue.PendingConstructions.Count; i++)
-						{
-							Construction construction = constructionQueue.PeekAt(i);
-							float num3 = 0f;
-							for (int j = 0; j < construction.CurrentConstructionStock.Length; j++)
-							{
-								if (construction.CurrentConstructionStock[j].PropertyName == "Production")
-								{
-									num3 += construction.CurrentConstructionStock[j].Stock;
-									if (construction.IsBuyout)
-									{
-										num3 = DepartmentOfTheTreasury.GetProductionCostWithBonus(city, construction.ConstructibleElement, "Production");
-									}
-								}
-							}
-							float num4 = DepartmentOfTheTreasury.GetProductionCostWithBonus(city, construction.ConstructibleElement, "Production") - num3;
-							num2 -= num4;
-							if (num2 >= 0f && construction.ConstructibleElement is UnitDesign && !(construction.ConstructibleElement as UnitDesign).Tags.Contains(UnitDesign.TagSeafaring) && !(construction.ConstructibleElement as UnitDesign).Tags.Contains(DownloadableContent9.TagColossus))
-							{
-								num++;
-							}
-							if (num2 < 0f)
-							{
-								break;
-							}
-						}
-					}
-					if (city.StandardUnits != null && city.StandardUnits.Count > 0 && city.StandardUnits.Count + num > city.MaximumUnitSlot)
-					{
-						int num5 = city.StandardUnits.Count + num - city.MaximumUnitSlot;
-						if (num5 < 3)
-						{
-							num5 = 3;
-						}
-						if (num5 > city.StandardUnits.Count)
-						{
-							num5 = city.StandardUnits.Count;
-						}
-						List<Unit> list3 = new List<Unit>();
-						for (int k = 0; k < num5; k++)
-						{
-							list3.Add(city.StandardUnits[k]);
-						}
-						this.CreateCityArmy(city, list3);
-					}
-				}
-			}
-		}
-		return SynchronousJobState.Success;
-	}
-
-	private void CreateCityArmy(City city, List<Unit> units)
-	{
-		if (units.Count == 0)
-		{
-			return;
-		}
-		List<WorldPosition> availablePositionsForArmyCreation = DepartmentOfDefense.GetAvailablePositionsForArmyCreation(city);
-		IGameService service = Services.GetService<IGameService>();
-		if (service.Game != null && service.Game.Services.GetService<IPathfindingService>() != null)
-		{
-			for (int i = 0; i < availablePositionsForArmyCreation.Count; i++)
-			{
-				WorldPosition armyPosition = availablePositionsForArmyCreation[i];
-				for (int j = 0; j < units.Count; j++)
-				{
-					if (units[j].GetPropertyValue(SimulationProperties.Movement) < 3f)
-					{
-						units.RemoveAt(j);
-						j--;
-					}
-				}
-				if (units.Count > 0)
-				{
-					OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(city.Empire.Index, city.GUID, units.ConvertAll<GameEntityGUID>((Unit unit) => unit.GUID).ToArray(), armyPosition, StaticString.Empty, false, true, true);
-					Ticket ticket;
-					base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OnCreateResponse));
-					return;
-				}
-			}
-		}
-	}
-
-	private SynchronousJobState SynchronousJob_ManageFullCamps()
-	{
-		foreach (Camp camp in this.departmentOfTheInterior.Camps)
-		{
-			if (!camp.IsInEncounter && AILayer_Military.GetCampDefenseLocalPriority(camp, 0.8f, AICommanderMission_GarrisonCamp.SimulatedUnitsCount) == 0f && camp.StandardUnits.Count > camp.MaximumUnitSlot / 2)
-			{
-				List<Unit> list = new List<Unit>();
-				list.AddRange(camp.StandardUnits);
-				this.CreateCampArmy(camp, list);
-			}
-		}
-		return SynchronousJobState.Success;
-	}
-
-	private void CreateCampArmy(Camp camp, List<Unit> units)
-	{
-		WorldPosition worldPosition = camp.WorldPosition;
-		if (this.worldPositionningService.GetArmyAtPosition(worldPosition) == null)
-		{
-			bool flag = true;
-			for (int i = 0; i < units.Count; i++)
-			{
-				if (units[i].GetPropertyValue(SimulationProperties.Movement) < 1.5f)
-				{
-					flag = false;
-				}
-			}
-			if (flag)
-			{
-				OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(camp.Empire.Index, camp.GUID, units.ConvertAll<GameEntityGUID>((Unit unit) => unit.GUID).ToArray(), worldPosition, StaticString.Empty, false, true, true);
-				Ticket ticket;
-				base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OnCreateResponse));
-				return;
-			}
-		}
-	}
-
-	private bool AreaIsSave(WorldPosition pos, int size)
-	{
-		if (size < 1)
-		{
-			return true;
-		}
-		WorldArea worldArea = new WorldArea(new WorldPosition[]
-		{
-			pos
-		});
-		for (int i = 0; i < size; i++)
-		{
-			worldArea = worldArea.Grow(this.worldPositionningService.World.WorldParameters);
-		}
-		foreach (WorldPosition worldPosition in worldArea.WorldPositions)
-		{
-			Army armyAtPosition = this.worldPositionningService.GetArmyAtPosition(worldPosition);
-			if (armyAtPosition != null && !armyAtPosition.IsFomorian && !armyAtPosition.IsNaval && !(armyAtPosition.Empire is MinorEmpire))
-			{
-				if (armyAtPosition.IsPrivateers)
-				{
-					return false;
-				}
-				if (this.departmentOfForeignAffairs.IsEnnemy(armyAtPosition.Empire))
-				{
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	public void CitySiegeResponse(object sender, SiegeStateChangedEventArgs eventArgs)
-	{
-		Diagnostics.Assert(eventArgs.City != null);
-		if (eventArgs.Attacker.IsSeafaring)
-		{
-			return;
-		}
-		if (base.AIEntity.Empire.Index == eventArgs.Attacker.Empire.Index)
-		{
-			GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
-			AIPlayer_MajorEmpire aiplayer_MajorEmpire;
-			if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(eventArgs.City.Empire as MajorEmpire, out aiplayer_MajorEmpire))
-			{
-				AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
-				if (entity != null)
-				{
-					AILayer_ArmyManagement layer = entity.GetLayer<AILayer_ArmyManagement>();
-					if (layer.IsActive())
-					{
-						layer.CitySiegeResponse(sender, eventArgs);
-					}
-				}
-			}
-		}
-		if (base.AIEntity.Empire.Index != eventArgs.City.Empire.Index || !eventArgs.NewState || !this.IsActive())
-		{
-			return;
-		}
-		List<Army> list = new List<Army>();
-		list = this.departmentOfDefense.Armies.ToList<Army>().FindAll((Army match) => !match.IsSeafaring && !match.IsSettler && !match.IsSolitary);
-		foreach (City city in this.departmentOfTheInterior.Cities)
-		{
-			if ((list.Count < 8 || list.Count < this.departmentOfTheInterior.Cities.Count * 2) && city.StandardUnits.Count > 0 && ((city.BesiegingEmpire == null && AILayer_Military.AreaIsSave(city.WorldPosition, 8, this.departmentOfForeignAffairs, false)) || city.GetPropertyValue(SimulationProperties.CityDefensePoint) < DepartmentOfTheInterior.GetBesiegingPower(city, true)))
-			{
-				List<Unit> units = city.StandardUnits.ToList<Unit>().FindAll((Unit x) => !x.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1));
-				this.CreateCityArmy(city, units);
-			}
-		}
-		if (eventArgs.City.Camp != null && eventArgs.City.Camp.GUID.IsValid && !eventArgs.City.Camp.IsInEncounter && eventArgs.City.Camp.StandardUnits.Count > 0)
-		{
-			List<Unit> list2 = new List<Unit>();
-			list2.AddRange(eventArgs.City.Camp.StandardUnits);
-			this.CreateCampArmy(eventArgs.City.Camp, list2);
-		}
-	}
-
-	public void Tick()
-	{
-		if (this.State == TickableState.NeedTick)
-		{
-			this.lastTickTime = global::Game.Time;
-		}
-		this.State = TickableState.Optional;
-		if (global::Game.Time - this.lastTickTime < 20.0)
-		{
-			return;
-		}
-		if (!this.IsActive())
-		{
-			this.State = TickableState.NoTick;
-			return;
-		}
-		if (!this.Assignjobless)
-		{
-			this.InstantRegroup();
-			this.Assignjobless = true;
-			return;
-		}
-		this.AssignJoblessArmies();
-		this.Assignjobless = false;
-		this.lastTickTime = global::Game.Time;
-	}
-
-	private void AssignJoblessArmies()
-	{
-		this.freeArmies.Clear();
-		bool flag = false;
-		for (int i = 0; i < this.departmentOfDefense.Armies.Count; i++)
-		{
-			if (this.departmentOfDefense.Armies[i].GetPropertyBaseValue(SimulationProperties.Movement) > 0.001f)
-			{
-				AIData_Army aidata = this.aiDataRepositoryHelper.GetAIData<AIData_Army>(this.departmentOfDefense.Armies[i].GUID);
-				if (aidata != null && !aidata.IsSolitary && !aidata.Army.IsSeafaring && !aidata.Army.HasCatspaw && !aidata.Army.IsPrivateers && !(aidata.Army is KaijuArmy))
-				{
-					flag = true;
-					if (aidata.CommanderMission == null)
-					{
-						if (aidata.Army.IsSettler)
-						{
-							this.BailArmy(aidata);
-						}
-						else if (!this.intelligenceAIHelper.IsArmyBlockedInCityUnderSiege(aidata.Army))
-						{
-							this.freeArmies.Add(aidata);
-						}
-					}
-				}
-			}
-		}
-		if (!flag)
-		{
-			this.State = TickableState.NoTick;
-			return;
-		}
-		if (this.freeArmies.Count > 0)
-		{
-			this.ignoreMP = true;
-			if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
-			{
-				List<GlobalObjectiveMessage> list = this.optionalMissions[AICommanderMissionDefinition.AICommanderCategory.WarPatrol];
-				if (list.Count < 1)
-				{
-					list.Clear();
-					list.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.WarPatrol.ToString() && match.State != BlackboardMessage.StateValue.Message_Canceled));
-					list.Sort((GlobalObjectiveMessage left, GlobalObjectiveMessage right) => -1 * left.Interest.CompareTo(right.Interest));
-				}
-				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.WarPatrol, true);
-				if (this.freeArmies.Count > 0)
-				{
-					list = this.optionalMissions[AICommanderMissionDefinition.AICommanderCategory.Patrol];
-				}
-				if (list.Count < 1)
-				{
-					list.Clear();
-					list.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.Patrol.ToString() && match.State != BlackboardMessage.StateValue.Message_Canceled));
-					list.Sort((GlobalObjectiveMessage left, GlobalObjectiveMessage right) => -1 * left.Interest.CompareTo(right.Interest));
-				}
-				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, true);
-				this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, true);
-				return;
-			}
-			List<GlobalObjectiveMessage> list2 = this.optionalMissions[AICommanderMissionDefinition.AICommanderCategory.Exploration];
-			if (list2.Count < 1)
-			{
-				list2.Clear();
-				list2.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<GlobalObjectiveMessage>(BlackboardLayerID.Empire, (GlobalObjectiveMessage match) => match.ObjectiveType == AICommanderMissionDefinition.AICommanderCategory.Exploration.ToString() && match.State != BlackboardMessage.StateValue.Message_Canceled));
-				list2.Sort((GlobalObjectiveMessage left, GlobalObjectiveMessage right) => -1 * left.Interest.CompareTo(right.Interest));
-			}
-			this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Exploration, true);
-			this.DistributeFreeArmies(AICommanderMissionDefinition.AICommanderCategory.Patrol, true);
-			this.ignoreMP = false;
-		}
-	}
-
-	private bool IsMercArmy(Army army)
-	{
-		if (army.IsPrivateers)
-		{
-			return true;
-		}
-		if (army.StandardUnits.Count == 0)
-		{
-			return false;
-		}
-		using (IEnumerator<Unit> enumerator = army.StandardUnits.GetEnumerator())
-		{
-			while (enumerator.MoveNext())
-			{
-				if (!enumerator.Current.UnitDesign.Tags.Contains(TradableUnit.ReadOnlyMercenary))
-				{
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	private void InstantRegroup()
-	{
-		DepartmentOfDefense agency = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
-		AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
-		IGameService service = Services.GetService<IGameService>();
-		IPathfindingService pathfindingService = service.Game.Services.GetService<IPathfindingService>();
-		int num = (int)base.AIEntity.Empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot);
-		Dictionary<Army, Army> dictionary = new Dictionary<Army, Army>();
-		List<Army> UsedArmies = new List<Army>();
-		List<Army> list = agency.Armies.ToList<Army>().FindAll((Army x) => !x.IsSolitary && !x.HasSeafaringUnits() && !x.HasCatspaw && !x.IsSettler && !x.IsPillaging && x.StandardUnits.Count < num && !x.SimulationObject.Tags.Contains(DepartmentOfTheInterior.ArmyStatusBesiegerDescriptorName) && !x.IsDismantlingDevice && !(x is KaijuArmy));
-		list.RemoveAll((Army x) => this.aiDataRepositoryHelper.GetAIData<AIData_Army>(x.GUID) != null && this.aiDataRepositoryHelper.GetAIData<AIData_Army>(x.GUID).CommanderMission != null && this.aiDataRepositoryHelper.GetAIData<AIData_Army>(x.GUID).CommanderMission is AICommanderMission_VictoryRuinFinal);
-		for (int i = 0; i < list.Count; i++)
-		{
-			Army army = list[i];
-			if (!UsedArmies.Contains(army))
-			{
-				List<Army> list2 = list.FindAll((Army x) => !UsedArmies.Contains(x) && this.worldPositionningService.GetDistance(army.WorldPosition, x.WorldPosition) == 1 && pathfindingService.IsTransitionPassable(army.WorldPosition, x.WorldPosition, army, PathfindingFlags.IgnoreArmies, null));
-				int num5 = -1;
-				int num2 = int.MinValue;
-				for (int j = 0; j < list2.Count; j++)
-				{
-					if ((army.GetPropertyValue(SimulationProperties.Movement) > 0.1f || list2[j].GetPropertyValue(SimulationProperties.Movement) > 0.1f) && (army.Hero == null || list2[j].Hero == null) && (this.IsMercArmy(army) == this.IsMercArmy(list2[j]) || (army.StandardUnits.Count == 0 && !list2[j].IsPrivateers)))
-					{
-						int num3 = army.StandardUnits.Count + list2[j].StandardUnits.Count;
-						if (num3 == num)
-						{
-							num5 = j;
-							break;
-						}
-						int num4 = num3 - num;
-						if (num4 < 0 && num4 > num2)
-						{
-							num2 = num4;
-							num5 = j;
-						}
-					}
-				}
-				if (num5 >= 0)
-				{
-					dictionary.Add(army, list2[num5]);
-					UsedArmies.Add(army);
-					UsedArmies.Add(list2[num5]);
-				}
-			}
-		}
-		foreach (KeyValuePair<Army, Army> keyValuePair in dictionary)
-		{
-			Army army3;
-			Army army2;
-			if (keyValuePair.Key.GetPropertyValue(SimulationProperties.Movement) >= keyValuePair.Value.GetPropertyValue(SimulationProperties.Movement))
-			{
-				army3 = keyValuePair.Key;
-				army2 = keyValuePair.Value;
-			}
-			else
-			{
-				army2 = keyValuePair.Key;
-				army3 = keyValuePair.Value;
-			}
-			AIData_Army aidata = this.aiDataRepositoryHelper.GetAIData<AIData_Army>(army3.GUID);
-			if (aidata != null && aidata.CommanderMission != null)
-			{
-				aidata.CommanderMission.Interrupt();
-			}
-			OrderTransferUnits order = new OrderTransferUnits(base.AIEntity.Empire.Index, army3.GUID, army2.GUID, army3.Units.ToList<Unit>().ConvertAll<GameEntityGUID>((Unit unit) => unit.GUID).ToArray(), false);
-			base.AIEntity.Empire.PlayerControllers.Server.PostOrder(order);
-			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
-			{
-				Diagnostics.Log("ELCP: {0} Merging Armies at {1} with {2}", new object[]
-				{
-					base.AIEntity.Empire,
-					army3.WorldPosition,
-					army2.WorldPosition
-				});
-			}
-		}
-	}
-
-	public TickableState State { get; set; }
 
 	private static string registryPath = "AI/MajorEmpire/AILayer_ArmyManagement";
 
@@ -1445,18 +710,4 @@ public class AILayer_ArmyManagement : AILayerCommanderController, IXmlSerializab
 	private AnimationCurve pillageOpportunityBoostByTurnCurve;
 
 	private float pillageOpportunityBoostByTurnMaximumTurn = 200f;
-
-	private bool ignoreMP;
-
-	private double lastTickTime;
-
-	private AILayer_ArmyRecruitment RecruitmentLayer;
-
-	private bool Assignjobless;
-
-	private IPlayerRepositoryService playerRepositoryService;
-
-	private DepartmentOfScience departmentOfScience;
-
-	private IWorldAtlasAIHelper worldAtlasHelper;
 }

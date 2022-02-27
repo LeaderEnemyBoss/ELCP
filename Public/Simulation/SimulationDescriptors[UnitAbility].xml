@@ -477,32 +477,30 @@
   <!-- Slavery: + 1 FI / Village -->
   <SimulationDescriptor Name="UnitAbilitySlaveryDescriptor1"                      Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-	<CountSimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation" Operation="Addition" Value="1" Path="../ClassCity" CountPath="ClassCity/!ConvertedVillage,!PointOfInterestStatusPillaged,RebuiltVillage,PacifiedVillage" IsBindOnSource="false"/>
-	<CountSimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation" Operation="Addition" Value="1" Path="../ClassCity" CountPath="ClassCity/!ConvertedVillage,!PointOfInterestStatusPillaged,RebuiltVillage,PacifiedVillage" IsBindOnSource="false"/>
-    <!--  <BinarySimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"            Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>
-      <BinarySimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"        Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>-->
+      <BinarySimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"            Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"        Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Buyout Bonus -->
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor1"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true"    Operation="Addition" Value="0.1" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true"    Operation="Addition" Value="0.1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.1" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor2"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"         MultiplicativeStacking="true"   Operation="Addition" Value="0.2" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"     MultiplicativeStacking="true"   Operation="Addition" Value="0.2" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.2" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.2" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor3"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true"   Operation="Addition" Value="0.3" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true"    Operation="Addition" Value="0.3" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.3" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.3" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
