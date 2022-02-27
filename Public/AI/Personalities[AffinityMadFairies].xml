@@ -23,12 +23,23 @@
             <!-- MaximumNumberOfTurnToReachNextPopulation = RangeRatio *  IdealNumberOfTurnToReachNextPopulation -->
             <RangeRatio>0.75</RangeRatio>
           </PopulationReferenceTurnCountAgent>
+		  
+		  <MoneyPrintTermAgent>
+            <Multiplier>0</Multiplier>
+		  </MoneyPrintTermAgent>
 
         </AgentDefinition>
 
         <MajorEmpire>
           <AIEntity_Empire>
-
+			
+			<AILayer_Victory>
+				<VictoryFocusMilitary>1.4</VictoryFocusMilitary>
+				<VictoryFocusDiplomacy>1.5</VictoryFocusDiplomacy>
+				<VictoryFocusEconomy>1.3</VictoryFocusEconomy>
+				<VictoryFocusTechnology>1.2</VictoryFocusTechnology>
+			</AILayer_Victory>
+			
             <!-- The degree to which various attitude modifiers are taken into account -->
             <AILayer_Attitude>
               <!-- ##### -->
@@ -140,7 +151,7 @@
               -->
               <Network>
                 <MilitaryEmpireNeedAgent>
-                  <GlobalUnitCountMultiplier>0.75</GlobalUnitCountMultiplier>
+                  <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
 
                   <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
                   <CityUnitNeedStartTurn>1</CityUnitNeedStartTurn>
@@ -158,7 +169,7 @@
                   <WarUnitNeedOffset>0.8</WarUnitNeedOffset>
                   <WarUnitNeedStartTurn>1.2</WarUnitNeedStartTurn>
                   <WarUnitNeedTurnRatio>1.2</WarUnitNeedTurnRatio>
-                  <MinimumNumberOfWarUnit>0.8</MinimumNumberOfWarUnit>
+                  <MinimumNumberOfWarUnit>1</MinimumNumberOfWarUnit>
                   <MaximumNumberOfWarUnit>0.8</MaximumNumberOfWarUnit>
 
                   <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
@@ -218,7 +229,7 @@
                 <AIEmpireUnlockMarketUnit>1.4</AIEmpireUnlockMarketUnit>
                 <AIEmpireUnlockMarketResource>1.6</AIEmpireUnlockMarketResource>
                 <AIEmpireUnlockBooster>1.4</AIEmpireUnlockBooster>
-                <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
+                <AIEmpireUnlockBoosterCultist>1</AIEmpireUnlockBoosterCultist>
                 <AIEmpireUnlockDiplomacyPositive>1.6</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>

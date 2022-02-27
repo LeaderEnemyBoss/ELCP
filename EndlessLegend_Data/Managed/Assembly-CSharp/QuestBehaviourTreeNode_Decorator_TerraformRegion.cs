@@ -26,22 +26,27 @@ public class QuestBehaviourTreeNode_Decorator_TerraformRegion : QuestBehaviourTr
 
 	protected override State Execute(QuestBehaviour questBehaviour, EventEmpireWorldTerraformed e, params object[] parameters)
 	{
-		if (base.CheckAgainstQuestInitiatorFilter(questBehaviour, e.TerraformingEmpire as global::Empire, base.QuestInitiatorFilter) && e.TerraformedTiles.Length > 0)
+		if (!e.Reversible && base.CheckAgainstQuestInitiatorFilter(questBehaviour, e.TerraformingEmpire as global::Empire, base.QuestInitiatorFilter) && e.TerraformedTiles.Length != 0)
 		{
 			IGameService service = Services.GetService<IGameService>();
+			World world = (service.Game as global::Game).World;
 			IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
 			Diagnostics.Assert(service2 != null);
 			for (int i = 0; i < e.TerraformedTiles.Length; i++)
 			{
-				Region region = service2.GetRegion(e.TerraformedTiles[i]);
+				QuestBehaviourTreeNode_Decorator_TerraformRegion.<>c__DisplayClass0_0 CS$<>8__locals1 = new QuestBehaviourTreeNode_Decorator_TerraformRegion.<>c__DisplayClass0_0();
+				CS$<>8__locals1.region = service2.GetRegion(e.TerraformedTiles[i]);
 				bool flag = true;
-				for (int j = 0; j < region.WorldPositions.Length; j++)
+				int k;
+				int j;
+				for (j = 0; j < CS$<>8__locals1.region.WorldPositions.Length; j = k + 1)
 				{
-					if (!service2.IsWaterTile(region.WorldPositions[j]) && !service2.HasRidge(region.WorldPositions[j]) && !service2.ContainsTerrainTag(region.WorldPositions[j], "TerrainTagVolcanic"))
+					if (!service2.IsWaterTile(CS$<>8__locals1.region.WorldPositions[j]) && !service2.HasRidge(CS$<>8__locals1.region.WorldPositions[j]) && (!service2.ContainsTerrainTag(CS$<>8__locals1.region.WorldPositions[j], "TerrainTagVolcanic") || world.TemporaryTerraformations.Exists((World.TemporaryTerraformation tt) => tt.worldPosition == CS$<>8__locals1.region.WorldPositions[j])))
 					{
 						flag = false;
 						break;
 					}
+					k = j;
 				}
 				if (flag)
 				{

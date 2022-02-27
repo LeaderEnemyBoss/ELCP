@@ -87,15 +87,21 @@ public class WorldGenerator : IDisposable
 													text3,
 													text4
 												});
-												for (int k = 0; k < list.Count; k++)
+												int k = 0;
+												while (k < list.Count)
 												{
 													if (list[k].Name == text3)
 													{
 														if (k < i)
 														{
 															Amplitude.Diagnostics.Log("Rollback has been triggered.");
+															break;
 														}
 														break;
+													}
+													else
+													{
+														k++;
 													}
 												}
 											}
@@ -164,6 +170,10 @@ public class WorldGenerator : IDisposable
 						{
 							string text6 = list[i].DefaultName;
 							service.Session.SetLobbyData(text, text6, true);
+							if (text6 != lobbyData)
+							{
+								i--;
+							}
 							Amplitude.Diagnostics.LogWarning("Invalid value for option (name: '{0}', value: '{1}') has been reset to default (value: '{2}').", new object[]
 							{
 								text,
@@ -243,137 +253,140 @@ public class WorldGenerator : IDisposable
 
 	public IEnumerator WriteConfigurationFile()
 	{
-		global::WorldGeneratorConfiguration configuration = new global::WorldGeneratorConfiguration();
+		global::WorldGeneratorConfiguration worldGeneratorConfiguration = new global::WorldGeneratorConfiguration();
 		Amplitude.Unity.Session.Session session = null;
-		ISessionService sessionService = Services.GetService<ISessionService>();
-		if (sessionService != null)
+		ISessionService service = Services.GetService<ISessionService>();
+		if (service != null)
 		{
-			session = sessionService.Session;
+			session = service.Session;
 		}
-		IDatabase<WorldGeneratorOptionDefinition> worldGeneratorOptionDefinitionDatabase = Databases.GetDatabase<WorldGeneratorOptionDefinition>(false);
-		if (worldGeneratorOptionDefinitionDatabase != null)
+		IDatabase<WorldGeneratorOptionDefinition> database = Databases.GetDatabase<WorldGeneratorOptionDefinition>(false);
+		if (database != null)
 		{
+			WorldGenerator.<>c__DisplayClass0_0 CS$<>8__locals1 = new WorldGenerator.<>c__DisplayClass0_0();
 			System.Random random = new System.Random();
-			string seedChoice = session.GetLobbyData<string>("SeedChoice", null);
-			WorldGeneratorOptionDefinition optionDefinitionSeedNumber;
-			if (seedChoice == "User" && worldGeneratorOptionDefinitionDatabase.TryGetValue("SeedNumber", out optionDefinitionSeedNumber))
+			WorldGeneratorOptionDefinition worldGeneratorOptionDefinition;
+			if (session.GetLobbyData<string>("SeedChoice", null) == "User" && database.TryGetValue("SeedNumber", out worldGeneratorOptionDefinition))
 			{
-				Amplitude.Diagnostics.Assert(optionDefinitionSeedNumber.ItemDefinitions.Length == 1);
-				Amplitude.Diagnostics.Assert(optionDefinitionSeedNumber.ItemDefinitions[0].KeyValuePairs.Length == 1);
-				string value = optionDefinitionSeedNumber.ItemDefinitions[0].KeyValuePairs[0].Value;
-				int integer;
-				if (int.TryParse(value, out integer))
+				Amplitude.Diagnostics.Assert(worldGeneratorOptionDefinition.ItemDefinitions.Length == 1);
+				Amplitude.Diagnostics.Assert(worldGeneratorOptionDefinition.ItemDefinitions[0].KeyValuePairs.Length == 1);
+				int seed;
+				if (int.TryParse(worldGeneratorOptionDefinition.ItemDefinitions[0].KeyValuePairs[0].Value, out seed))
 				{
-					random = new System.Random(integer);
+					random = new System.Random(seed);
 				}
 			}
-			Dictionary<OptionDefinition, OptionDefinition.ItemDefinition> optionAndItemCollection = new Dictionary<OptionDefinition, OptionDefinition.ItemDefinition>();
-			OptionDefinition[] optionDefinitions = worldGeneratorOptionDefinitionDatabase.GetValues();
-			for (int index = 0; index < optionDefinitions.Length; index++)
+			Dictionary<OptionDefinition, OptionDefinition.ItemDefinition> dictionary = new Dictionary<OptionDefinition, OptionDefinition.ItemDefinition>();
+			WorldGenerator.<>c__DisplayClass0_0 CS$<>8__locals2 = CS$<>8__locals1;
+			OptionDefinition[] values = database.GetValues();
+			CS$<>8__locals2.optionDefinitions = values;
+			for (int i = 0; i < CS$<>8__locals1.optionDefinitions.Length; i++)
 			{
-				if (optionDefinitions[index] is WorldGeneratorOptionDefinition)
+				if (CS$<>8__locals1.optionDefinitions[i] is WorldGeneratorOptionDefinition)
 				{
-					OptionDefinition.ItemDefinition optionItemDefinition = null;
+					OptionDefinition.ItemDefinition itemDefinition = null;
 					if (session != null)
 					{
-						string itemName = session.GetLobbyData<string>(optionDefinitions[index].Name, optionDefinitions[index].DefaultName);
+						string itemName = session.GetLobbyData<string>(CS$<>8__locals1.optionDefinitions[i].Name, CS$<>8__locals1.optionDefinitions[i].DefaultName);
 						if (!string.IsNullOrEmpty(itemName))
 						{
-							optionItemDefinition = Array.Find<OptionDefinition.ItemDefinition>(optionDefinitions[index].ItemDefinitions, (OptionDefinition.ItemDefinition iterator) => iterator.Name == itemName);
+							itemDefinition = Array.Find<OptionDefinition.ItemDefinition>(CS$<>8__locals1.optionDefinitions[i].ItemDefinitions, (OptionDefinition.ItemDefinition iterator) => iterator.Name == itemName);
 							if (itemName == "Random")
 							{
-								OptionDefinition.ItemDefinition[] itemDefinitions = (from iterator in optionDefinitions[index].ItemDefinitions
+								OptionDefinition.ItemDefinition[] array = (from iterator in CS$<>8__locals1.optionDefinitions[i].ItemDefinitions
 								where iterator.Name != "Custom" && iterator.Name != "Random"
 								select iterator).ToArray<OptionDefinition.ItemDefinition>();
-								if (itemDefinitions.Length > 0)
+								if (array.Length != 0)
 								{
-									List<OptionDefinition.ItemDefinition> authorizedItemDefinitions = new List<OptionDefinition.ItemDefinition>();
-									authorizedItemDefinitions.AddRange(itemDefinitions);
-									for (int i = itemDefinitions.Length - 1; i >= 0; i--)
+									List<OptionDefinition.ItemDefinition> list = new List<OptionDefinition.ItemDefinition>();
+									list.AddRange(array);
+									for (int j = array.Length - 1; j >= 0; j--)
 									{
-										if (itemDefinitions[i].OptionDefinitionConstraints != null)
+										if (array[j].OptionDefinitionConstraints != null)
 										{
-											bool authorized = true;
-											foreach (OptionDefinitionConstraint optionDefinitionConstraint in from iterator in itemDefinitions[i].OptionDefinitionConstraints
+											bool flag = true;
+											foreach (OptionDefinitionConstraint optionDefinitionConstraint in from iterator in array[j].OptionDefinitionConstraints
 											where iterator.Type == OptionDefinitionConstraintType.Conditional
 											select iterator)
 											{
 												if (string.IsNullOrEmpty(optionDefinitionConstraint.OptionName))
 												{
-													authorized = false;
+													flag = false;
 													break;
 												}
-												string constrainedValue = session.GetLobbyData<string>(optionDefinitionConstraint.OptionName, null);
-												if (string.IsNullOrEmpty(constrainedValue))
+												string lobbyData = session.GetLobbyData<string>(optionDefinitionConstraint.OptionName, null);
+												if (string.IsNullOrEmpty(lobbyData))
 												{
 													Amplitude.Diagnostics.LogWarning("Unhandled constraint on option '{0}' from option definition '{1}', item '{2}'.", new object[]
 													{
 														optionDefinitionConstraint.OptionName,
-														optionDefinitions[index].Name,
-														optionItemDefinition.Name
+														CS$<>8__locals1.optionDefinitions[i].Name,
+														itemDefinition.Name
 													});
 												}
 												else
 												{
 													if (optionDefinitionConstraint.Keys == null || optionDefinitionConstraint.Keys.Length == 0)
 													{
-														authorized = false;
+														flag = false;
 														break;
 													}
-													if (!optionDefinitionConstraint.Keys.Select((OptionDefinitionConstraint.Key key) => key.Name).Contains(constrainedValue))
+													if (!optionDefinitionConstraint.Keys.Select((OptionDefinitionConstraint.Key key) => key.Name).Contains(lobbyData))
 													{
-														authorized = false;
+														flag = false;
 														break;
 													}
 												}
 											}
-											if (!authorized)
+											if (!flag)
 											{
-												authorizedItemDefinitions.RemoveAt(i);
+												list.RemoveAt(j);
 											}
 										}
 									}
-									int selection = random.Next() % authorizedItemDefinitions.Count;
-									optionItemDefinition = authorizedItemDefinitions[selection];
+									int index = random.Next() % list.Count;
+									itemDefinition = list[index];
 								}
 							}
 						}
 					}
-					if (optionItemDefinition == null)
+					if (itemDefinition == null)
 					{
-						optionItemDefinition = optionDefinitions[index].Default;
+						itemDefinition = CS$<>8__locals1.optionDefinitions[i].Default;
 					}
-					if (optionItemDefinition != null)
+					if (itemDefinition != null)
 					{
-						optionAndItemCollection.Add(optionDefinitions[index], optionItemDefinition);
+						dictionary.Add(CS$<>8__locals1.optionDefinitions[i], itemDefinition);
 					}
 				}
 			}
-			for (int jndex = 0; jndex < optionDefinitions.Length; jndex++)
+			for (int k = 0; k < CS$<>8__locals1.optionDefinitions.Length; k++)
 			{
-				if (optionDefinitions[jndex] is WorldGeneratorOptionDefinition)
+				if (CS$<>8__locals1.optionDefinitions[k] is WorldGeneratorOptionDefinition)
 				{
-					OptionDefinition.ItemDefinition optionItemDefinition2 = null;
-					if (optionAndItemCollection.TryGetValue(optionDefinitions[jndex], out optionItemDefinition2))
+					OptionDefinition.ItemDefinition itemDefinition2 = null;
+					if (dictionary.TryGetValue(CS$<>8__locals1.optionDefinitions[k], out itemDefinition2) && itemDefinition2.OptionDefinitionConstraints != null)
 					{
-						if (optionItemDefinition2.OptionDefinitionConstraints != null)
+						using (IEnumerator<OptionDefinitionConstraint> enumerator = (from element in itemDefinition2.OptionDefinitionConstraints
+						where element.Type == OptionDefinitionConstraintType.Control
+						select element).GetEnumerator())
 						{
-							foreach (OptionDefinitionConstraint optionDefinitionConstraint2 in from element in optionItemDefinition2.OptionDefinitionConstraints
-							where element.Type == OptionDefinitionConstraintType.Control
-							select element)
+							while (enumerator.MoveNext())
 							{
+								OptionDefinitionConstraint optionDefinitionConstraint2 = enumerator.Current;
 								if (optionDefinitionConstraint2.Keys != null && optionDefinitionConstraint2.Keys.Length != 0)
 								{
-									KeyValuePair<OptionDefinition, OptionDefinition.ItemDefinition> constrainedOptionAndItem = optionAndItemCollection.FirstOrDefault((KeyValuePair<OptionDefinition, OptionDefinition.ItemDefinition> iterator) => iterator.Key.Name == optionDefinitionConstraint2.OptionName);
-									if (constrainedOptionAndItem.Key != null)
+									KeyValuePair<OptionDefinition, OptionDefinition.ItemDefinition> keyValuePair = dictionary.FirstOrDefault((KeyValuePair<OptionDefinition, OptionDefinition.ItemDefinition> iterator) => iterator.Key.Name == optionDefinitionConstraint2.OptionName);
+									if (keyValuePair.Key != null)
 									{
-										if (!optionDefinitionConstraint2.Keys.Select((OptionDefinitionConstraint.Key key) => key.Name).Contains(constrainedOptionAndItem.Value.Name))
+										if (!(from key in optionDefinitionConstraint2.Keys
+										select key.Name).Contains(keyValuePair.Value.Name))
 										{
-											OptionDefinition.ItemDefinition constrainedItemOptionDefinition = constrainedOptionAndItem.Key.ItemDefinitions.FirstOrDefault((OptionDefinition.ItemDefinition iterator) => iterator.Name == optionDefinitionConstraint2.Keys[0].Name);
-											if (constrainedItemOptionDefinition != null)
+											OptionDefinition.ItemDefinition itemDefinition3 = keyValuePair.Key.ItemDefinitions.FirstOrDefault((OptionDefinition.ItemDefinition iterator) => iterator.Name == optionDefinitionConstraint2.Keys[0].Name);
+											if (itemDefinition3 != null)
 											{
-												optionAndItemCollection[constrainedOptionAndItem.Key] = constrainedItemOptionDefinition;
-												session.SetLobbyData(constrainedOptionAndItem.Key.Name, constrainedItemOptionDefinition.Name.ToString(), true);
+												dictionary[keyValuePair.Key] = itemDefinition3;
+												session.SetLobbyData(keyValuePair.Key.Name, itemDefinition3.Name.ToString(), true);
 											}
 										}
 									}
@@ -383,62 +396,65 @@ public class WorldGenerator : IDisposable
 					}
 				}
 			}
-			for (int kndex = 0; kndex < optionDefinitions.Length; kndex++)
+			int l;
+			int kndex;
+			for (kndex = 0; kndex < CS$<>8__locals1.optionDefinitions.Length; kndex = l + 1)
 			{
-				if (optionDefinitions[kndex] is WorldGeneratorOptionDefinition)
+				if (CS$<>8__locals1.optionDefinitions[kndex] is WorldGeneratorOptionDefinition)
 				{
-					OptionDefinition.ItemDefinition optionItemDefinition3 = null;
-					if (optionAndItemCollection.TryGetValue(optionDefinitions[kndex], out optionItemDefinition3))
+					OptionDefinition.ItemDefinition itemDefinition4 = null;
+					if (dictionary.TryGetValue(CS$<>8__locals1.optionDefinitions[kndex], out itemDefinition4))
 					{
-						if (optionItemDefinition3.KeyValuePairs != null)
+						if (itemDefinition4.KeyValuePairs != null)
 						{
-							if (!optionItemDefinition3.KeyValuePairs.Any((OptionDefinition.ItemDefinition.KeyValuePair iterator) => iterator.Key == optionDefinitions[kndex].Name))
+							if (!itemDefinition4.KeyValuePairs.Any((OptionDefinition.ItemDefinition.KeyValuePair iterator) => iterator.Key == CS$<>8__locals1.optionDefinitions[kndex].Name))
 							{
-								configuration.Properties.Add(optionDefinitions[kndex].Name, optionItemDefinition3.Name);
+								worldGeneratorConfiguration.Properties.Add(CS$<>8__locals1.optionDefinitions[kndex].Name, itemDefinition4.Name);
 							}
-							foreach (OptionDefinition.ItemDefinition.KeyValuePair keyValuePair in optionItemDefinition3.KeyValuePairs)
+							foreach (OptionDefinition.ItemDefinition.KeyValuePair keyValuePair2 in itemDefinition4.KeyValuePairs)
 							{
-								if (!configuration.Properties.ContainsKey(keyValuePair.Key))
+								if (!worldGeneratorConfiguration.Properties.ContainsKey(keyValuePair2.Key))
 								{
-									configuration.Properties.Add(keyValuePair.Key, keyValuePair.Value);
+									worldGeneratorConfiguration.Properties.Add(keyValuePair2.Key, keyValuePair2.Value);
 								}
 							}
 						}
 						else
 						{
-							configuration.Properties.Add(optionDefinitions[kndex].Name, optionItemDefinition3.Name);
+							worldGeneratorConfiguration.Properties.Add(CS$<>8__locals1.optionDefinitions[kndex].Name, itemDefinition4.Name);
 						}
 					}
 				}
+				l = kndex;
 			}
-			IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
-			configuration.Properties.Add("DownloadableContent16", downloadableContentService.IsShared(DownloadableContent16.ReadOnlyName).ToString());
-			configuration.Properties.Add("DownloadableContent19", downloadableContentService.IsShared(DownloadableContent19.ReadOnlyName).ToString());
-			configuration.Properties.Add("DownloadableContent20", downloadableContentService.IsShared(DownloadableContent20.ReadOnlyName).ToString());
-			configuration.Properties.Add("DownloadableContent21", downloadableContentService.IsShared(DownloadableContent21.ReadOnlyName).ToString());
-			IAdvancedVideoSettingsService advancedVideoSettingsService = Services.GetService<IAdvancedVideoSettingsService>();
-			if (advancedVideoSettingsService != null)
+			IDownloadableContentService service2 = Services.GetService<IDownloadableContentService>();
+			worldGeneratorConfiguration.Properties.Add("DownloadableContent16", service2.IsShared(DownloadableContent16.ReadOnlyName).ToString());
+			worldGeneratorConfiguration.Properties.Add("DownloadableContent19", service2.IsShared(DownloadableContent19.ReadOnlyName).ToString());
+			worldGeneratorConfiguration.Properties.Add("DownloadableContent20", service2.IsShared(DownloadableContent20.ReadOnlyName).ToString());
+			worldGeneratorConfiguration.Properties.Add("DownloadableContent21", service2.IsShared(DownloadableContent21.ReadOnlyName).ToString());
+			IAdvancedVideoSettingsService service3 = Services.GetService<IAdvancedVideoSettingsService>();
+			if (service3 != null)
 			{
-				StaticString worldGeometryTypeName = "Geometry";
-				string optionValue = advancedVideoSettingsService.WorldGeometryType;
-				string worldGeometryTypeValue = optionValue;
-				configuration.Properties[worldGeometryTypeName] = worldGeometryTypeValue;
-				WorldGeneratorOptionDefinition worldGeneratorOptionDefinition;
-				if (worldGeneratorOptionDefinitionDatabase.TryGetValue("Geometry", out worldGeneratorOptionDefinition) && worldGeneratorOptionDefinition.ItemDefinitions != null)
+				StaticString key2 = "Geometry";
+				string worldGeometryType = service3.WorldGeometryType;
+				string value = worldGeometryType;
+				worldGeneratorConfiguration.Properties[key2] = value;
+				WorldGeneratorOptionDefinition worldGeneratorOptionDefinition2;
+				if (database.TryGetValue("Geometry", out worldGeneratorOptionDefinition2) && worldGeneratorOptionDefinition2.ItemDefinitions != null)
 				{
-					int optionIndex = -1;
-					for (int itemPosition = 0; itemPosition < worldGeneratorOptionDefinition.ItemDefinitions.Length; itemPosition++)
+					int num = -1;
+					for (int m = 0; m < worldGeneratorOptionDefinition2.ItemDefinitions.Length; m++)
 					{
-						if (worldGeneratorOptionDefinition.ItemDefinitions[itemPosition].Name == optionValue)
+						if (worldGeneratorOptionDefinition2.ItemDefinitions[m].Name == worldGeometryType)
 						{
-							optionIndex = itemPosition;
+							num = m;
 							break;
 						}
 					}
-					OptionDefinition.ItemDefinition itemDefinition = (optionIndex < 0) ? worldGeneratorOptionDefinition.Default : worldGeneratorOptionDefinition.ItemDefinitions[optionIndex];
-					for (int keyValuePairIndex = 0; keyValuePairIndex < itemDefinition.KeyValuePairs.Length; keyValuePairIndex++)
+					OptionDefinition.ItemDefinition itemDefinition5 = (num < 0) ? worldGeneratorOptionDefinition2.Default : worldGeneratorOptionDefinition2.ItemDefinitions[num];
+					for (int n = 0; n < itemDefinition5.KeyValuePairs.Length; n++)
 					{
-						configuration.Properties[itemDefinition.KeyValuePairs[keyValuePairIndex].Key] = itemDefinition.KeyValuePairs[keyValuePairIndex].Value;
+						worldGeneratorConfiguration.Properties[itemDefinition5.KeyValuePairs[n].Key] = itemDefinition5.KeyValuePairs[n].Value;
 					}
 				}
 			}
@@ -447,13 +463,13 @@ public class WorldGenerator : IDisposable
 				Amplitude.Diagnostics.Assert(false);
 			}
 		}
-		string worldGeneratorConfigurationPath = Amplitude.Unity.Framework.Path.GetFullPath(this.ConfigurationPath);
-		string worldGeneratorConfigurationDirectory = System.IO.Path.GetDirectoryName(worldGeneratorConfigurationPath);
-		if (!Directory.Exists(worldGeneratorConfigurationDirectory))
+		string fullPath = Amplitude.Unity.Framework.Path.GetFullPath(this.ConfigurationPath);
+		string directoryName = System.IO.Path.GetDirectoryName(fullPath);
+		if (!Directory.Exists(directoryName))
 		{
-			Directory.CreateDirectory(worldGeneratorConfigurationDirectory);
+			Directory.CreateDirectory(directoryName);
 		}
-		XmlWriterSettings xmlWriterSettings = new XmlWriterSettings
+		XmlWriterSettings settings = new XmlWriterSettings
 		{
 			Encoding = Encoding.UTF8,
 			Indent = true,
@@ -462,15 +478,16 @@ public class WorldGenerator : IDisposable
 			NewLineHandling = NewLineHandling.Replace,
 			OmitXmlDeclaration = false
 		};
-		using (StreamWriter stream = new StreamWriter(worldGeneratorConfigurationPath, false))
+		using (StreamWriter streamWriter = new StreamWriter(fullPath, false))
 		{
-			using (XmlWriter writer = XmlWriter.Create(stream, xmlWriterSettings))
+			using (XmlWriter xmlWriter = XmlWriter.Create(streamWriter, settings))
 			{
-				writer.WriteStartDocument();
-				configuration.WriteOuterXml(writer, null);
-				writer.WriteEndDocument();
-				writer.Flush();
-				writer.Close();
+				xmlWriter.WriteStartDocument();
+				worldGeneratorConfiguration.WriteOuterXml(xmlWriter, null);
+				xmlWriter.WriteEndDocument();
+				xmlWriter.Flush();
+				xmlWriter.Close();
+				yield break;
 			}
 		}
 		yield break;
@@ -604,6 +621,11 @@ public class WorldGenerator : IDisposable
 							Amplitude.Diagnostics.Log(this.logData[i]);
 						}
 					}
+					num = this.logData[i].IndexOf("ELCP");
+					if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && num != -1)
+					{
+						Amplitude.Diagnostics.Log(this.logData[i]);
+					}
 				}
 			}
 			this.logData.Clear();
@@ -687,10 +709,18 @@ public class WorldGenerator : IDisposable
 		{
 			return;
 		}
-		int num = e.Data.IndexOf("[Report");
-		if (num != -1)
+		if (e.Data.IndexOf("[Report") != -1)
 		{
 			this.logData.Add(e.Data);
+			return;
+		}
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			if (e.Data.IndexOf("ELCP") != -1)
+			{
+				this.logData.Add(e.Data);
+				return;
+			}
 		}
 		else
 		{

@@ -11,6 +11,8 @@ using Amplitude.Extensions;
 using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using Amplitude.Unity.Gui;
+using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Xml;
 using Amplitude.Xml;
@@ -27,17 +29,11 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 
 	static DepartmentOfForeignAffairs()
 	{
-		DepartmentOfForeignAffairs.DiplomaticCostReductionFromEmpirePropertyNames = new StaticString[]
+		DepartmentOfForeignAffairs.DiplomaticCostReductionFromEmpirePropertyNames = new StaticString[15];
+		for (int i = 0; i < 15; i++)
 		{
-			new StaticString("DiplomaticCostReduction0"),
-			new StaticString("DiplomaticCostReduction1"),
-			new StaticString("DiplomaticCostReduction2"),
-			new StaticString("DiplomaticCostReduction3"),
-			new StaticString("DiplomaticCostReduction4"),
-			new StaticString("DiplomaticCostReduction5"),
-			new StaticString("DiplomaticCostReduction6"),
-			new StaticString("DiplomaticCostReduction7")
-		};
+			DepartmentOfForeignAffairs.DiplomaticCostReductionFromEmpirePropertyNames[i] = new StaticString("DiplomaticCostReduction" + i);
+		}
 	}
 
 	public event EventHandler<DiplomaticRelationStateChangeEventArgs> DiplomaticRelationStateChange;
@@ -285,6 +281,84 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 					num += Math.Max(0f, valueFor);
 				}
 			}
+		}
+		float num2;
+		if (diplomaticTerm is DiplomaticTermTechnologyExchange && num > 0f && DepartmentOfForeignAffairs.ProgressiveTechTradeCost(out num2))
+		{
+			IDiplomaticContractRepositoryService service = (Services.GetService<IGameService>().Game as global::Game).Services.GetService<IDiplomaticContractRepositoryService>();
+			IDiplomacyService service2 = (Services.GetService<IGameService>().Game as global::Game).Services.GetService<IDiplomacyService>();
+			global::Empire empireA = diplomaticTerm.EmpireWhichProposes;
+			global::Empire empire = diplomaticTerm.EmpireWhichProvides;
+			if (empireA == empire)
+			{
+				empire = diplomaticTerm.EmpireWhichReceives;
+			}
+			DiplomaticContract diplomaticContract = null;
+			global::IGuiService service3 = Services.GetService<global::IGuiService>();
+			Amplitude.Unity.Gui.GuiPanel[] array2;
+			if (service != null && service3.TryGetGuiPanelByType(Type.GetType("ContractPanel"), out array2))
+			{
+				for (int j = 0; j < array2.Length; j++)
+				{
+					if (array2[j] is ContractPanel)
+					{
+						diplomaticContract = ((array2[j] as ContractPanel).DiplomaticContract as DiplomaticContract);
+					}
+					if (diplomaticContract != null && ((diplomaticContract.EmpireWhichProposes == empireA && diplomaticContract.EmpireWhichReceives == empire) || (diplomaticContract.EmpireWhichProposes == empire && diplomaticContract.EmpireWhichReceives == empireA)))
+					{
+						break;
+					}
+					diplomaticContract = null;
+				}
+			}
+			if (diplomaticContract == null && !service2.TryGetActiveDiplomaticContract(empireA, empire, out diplomaticContract))
+			{
+				service2.TryGetActiveDiplomaticContract(empire, empireA, out diplomaticContract);
+			}
+			int num3 = 0;
+			int num4 = 0;
+			Predicate<DiplomaticContract> match = (DiplomaticContract contract) => (contract.EmpireWhichProposes == empireA || contract.EmpireWhichReceives == empireA) && contract.State == DiplomaticContractState.Signed;
+			foreach (DiplomaticContract diplomaticContract2 in service.FindAll(match))
+			{
+				bool flag = false;
+				if ((diplomaticContract2.EmpireWhichProposes == empireA && diplomaticContract2.EmpireWhichReceives == empire) || (diplomaticContract2.EmpireWhichProposes == empire && diplomaticContract2.EmpireWhichReceives == empireA))
+				{
+					flag = true;
+				}
+				using (IEnumerator<DiplomaticTerm> enumerator2 = diplomaticContract2.Terms.GetEnumerator())
+				{
+					while (enumerator2.MoveNext())
+					{
+						if (enumerator2.Current is DiplomaticTermTechnologyExchange)
+						{
+							num3++;
+							if (flag)
+							{
+								num4++;
+							}
+						}
+					}
+				}
+			}
+			if (diplomaticContract != null)
+			{
+				foreach (DiplomaticTerm diplomaticTerm2 in diplomaticContract.Terms)
+				{
+					DiplomaticTermTechnologyExchange diplomaticTermTechnologyExchange = diplomaticTerm2 as DiplomaticTermTechnologyExchange;
+					if (diplomaticTermTechnologyExchange != null)
+					{
+						if (diplomaticTermTechnologyExchange.Equals(diplomaticTerm) && diplomaticTermTechnologyExchange.Index > -1)
+						{
+							break;
+						}
+						num3++;
+						num4++;
+					}
+				}
+			}
+			float num5 = num2 * diplomaticTerm.EmpireWhichProposes.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+			num5 *= 1f + 0.0003f * (float)num3 * (float)num3;
+			num += num5 * (float)num3 + 2f * num5 * (float)num4;
 		}
 		return num;
 	}
@@ -989,7 +1063,7 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 	{
 		get
 		{
-			if (base.Empire.SimulationObject.Tags.Contains(PanelFeatureTerrainOrb.OrbHunterFactionTrait))
+			if (base.Empire.SimulationObject.Tags.Contains(PanelFeatureTerrainOrb.OrbHunterFactionTrait) || (ELCPUtilities.UseELCPSymbiosisBuffs && base.Empire.SimulationObject.Tags.Contains("WinterShiftersIntegrationDescriptor1")))
 			{
 				return true;
 			}
@@ -999,7 +1073,7 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 				{
 					DiplomaticRelation diplomaticRelation = this.DiplomaticRelations[i];
 					bool flag = diplomaticRelation.HasActiveAbility(PanelFeatureTerrainOrb.MapExchangeDiplomaticAbilityName);
-					bool flag2 = this.majorEmpires[diplomaticRelation.OtherEmpireIndex].SimulationObject.Tags.Contains(PanelFeatureTerrainOrb.OrbHunterFactionTrait);
+					bool flag2 = this.majorEmpires[diplomaticRelation.OtherEmpireIndex].SimulationObject.Tags.Contains(PanelFeatureTerrainOrb.OrbHunterFactionTrait) || (ELCPUtilities.UseELCPSymbiosisBuffs && this.majorEmpires[diplomaticRelation.OtherEmpireIndex].SimulationObject.Tags.Contains("WinterShiftersIntegrationDescriptor1"));
 					if (flag && flag2)
 					{
 						return true;
@@ -1478,7 +1552,7 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 				{
 					return true;
 				}
-				if (empire2.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim))
+				if (!ELCPUtilities.UseELCPBlackspotRuleset && empire2.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim))
 				{
 					return true;
 				}
@@ -1509,6 +1583,10 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 					Village village = opponentGameEntity as Village;
 					if (village != null)
 					{
+						if (village.HasBeenPacified && !village.HasBeenConverted)
+						{
+							return false;
+						}
 						if (!village.HasBeenConverted)
 						{
 							return true;
@@ -1524,7 +1602,7 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 						DiplomaticRelation diplomaticRelation4 = this.GetDiplomaticRelation(village.Converter);
 						if (diplomaticRelation4.State.Name == DiplomaticRelationState.Names.ColdWar)
 						{
-							return !village.Region.IsRegionColonized() || village.Region.Owner == base.Empire;
+							return !village.Region.IsRegionColonized() || village.Region.Owner == base.Empire || !(village.Region.Owner is MajorEmpire);
 						}
 						return diplomaticRelation4.HasActiveAbility(DiplomaticAbilityDefinition.AttackCities);
 					}
@@ -1541,7 +1619,7 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 							{
 								return false;
 							}
-							if (fortress.Occupant.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim))
+							if (!ELCPUtilities.UseELCPBlackspotRuleset && fortress.Occupant.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim))
 							{
 								return true;
 							}
@@ -1554,6 +1632,15 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 						}
 						else
 						{
+							Kaiju kaiju = opponentGameEntity as Kaiju;
+							if (kaiju != null && !kaiju.IsStunned())
+							{
+								Garrison activeTroops = kaiju.GetActiveTroops();
+								if (activeTroops != null)
+								{
+									opponentGameEntity = activeTroops;
+								}
+							}
 							KaijuGarrison kaijuGarrison = opponentGameEntity as KaijuGarrison;
 							if (kaijuGarrison != null && !kaijuGarrison.Kaiju.IsStunned())
 							{
@@ -1568,33 +1655,13 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 								}
 								DiplomaticRelation diplomaticRelation6 = this.GetDiplomaticRelation(empire4);
 								Diagnostics.Assert(diplomaticRelation6 != null);
-								return diplomaticRelation6.HasActiveAbility(DiplomaticAbilityDefinition.AttackCities);
+								return diplomaticRelation6.HasActiveAbility(DiplomaticAbilityDefinition.AttackArmies) || diplomaticRelation6.HasActiveAbility(DiplomaticAbilityDefinition.ColdWarAttackArmies);
 							}
 							else
 							{
 								KaijuArmy kaijuArmy = opponentGameEntity as KaijuArmy;
-								if (kaijuArmy != null && !kaijuArmy.Kaiju.IsStunned())
+								if (kaijuArmy == null || kaijuArmy.Kaiju.IsStunned())
 								{
-									global::Empire empire5 = kaijuArmy.Kaiju.Empire;
-									if (!(empire5 is MajorEmpire))
-									{
-										return true;
-									}
-									if (empire5.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim))
-									{
-										return true;
-									}
-									DiplomaticRelation diplomaticRelation7 = this.GetDiplomaticRelation(empire5);
-									Diagnostics.Assert(diplomaticRelation7 != null);
-									return diplomaticRelation7.HasActiveAbility(DiplomaticAbilityDefinition.AttackArmies);
-								}
-								else
-								{
-									Kaiju kaiju = opponentGameEntity as Kaiju;
-									if (kaiju != null && !kaiju.IsStunned())
-									{
-										return true;
-									}
 									Diagnostics.LogWarning("DepartmentOfForeignAffairs.CanAttack: Unknown game entity {0} of type {1}.", new object[]
 									{
 										opponentGameEntity.GUID,
@@ -1602,6 +1669,18 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 									});
 									return false;
 								}
+								global::Empire empire5 = kaijuArmy.Kaiju.Empire;
+								if (!(empire5 is MajorEmpire))
+								{
+									return true;
+								}
+								if (empire5.SimulationObject.Tags.Contains(DiplomaticAbilityDefinition.BlackSpotVictim))
+								{
+									return true;
+								}
+								DiplomaticRelation diplomaticRelation7 = this.GetDiplomaticRelation(empire5);
+								Diagnostics.Assert(diplomaticRelation7 != null);
+								return diplomaticRelation7.HasActiveAbility(DiplomaticAbilityDefinition.AttackArmies) || diplomaticRelation7.HasActiveAbility(DiplomaticAbilityDefinition.ColdWarAttackArmies);
 							}
 						}
 					}
@@ -1821,16 +1900,16 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 		Diagnostics.Assert(this.worldPositionningService != null);
 		Region region = this.worldPositionningService.GetRegion(regionIndex);
 		Diagnostics.Assert(region != null);
-		if (region.City != null && region.City.Empire != null && !region.IsOcean)
+		if (!region.IsOcean && region.Owner != null && region.Owner is MajorEmpire)
 		{
-			global::Empire empire = region.City.Empire;
-			if (empire is MajorEmpire && empire.Index != base.Empire.Index)
+			global::Empire owner = region.Owner;
+			if (owner.Index != base.Empire.Index)
 			{
-				DepartmentOfForeignAffairs agency = empire.GetAgency<DepartmentOfForeignAffairs>();
+				DepartmentOfForeignAffairs agency = owner.GetAgency<DepartmentOfForeignAffairs>();
 				Diagnostics.Assert(agency != null);
 				DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(base.Empire as global::Empire);
 				Diagnostics.Assert(diplomaticRelation != null);
-				if (diplomaticRelation.HasActiveAbility(DiplomaticAbilityDefinition.CloseBorders) && (!base.Empire.SimulationObject.Tags.Contains(this.seasonEffectDiplomacy1) || empire.SimulationObject.Tags.Contains(SeasonEffect.WinterEffectImmunity)))
+				if (diplomaticRelation.HasActiveAbility(DiplomaticAbilityDefinition.CloseBorders) && (!base.Empire.SimulationObject.Tags.Contains(this.seasonEffectDiplomacy1) || owner.SimulationObject.Tags.Contains(SeasonEffect.WinterEffectImmunity)))
 				{
 					return false;
 				}
@@ -1894,23 +1973,23 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 	protected override IEnumerator OnLoadGame(Amplitude.Unity.Game.Game game)
 	{
 		yield return base.OnLoadGame(game);
-		global::Game fantasyGame = game as global::Game;
-		Diagnostics.Assert(fantasyGame != null && fantasyGame.Empires != null);
-		this.majorEmpires = (from empire in fantasyGame.Empires
+		global::Game game2 = game as global::Game;
+		Diagnostics.Assert(game2 != null && game2.Empires != null);
+		this.majorEmpires = (from empire in game2.Empires
 		where empire is MajorEmpire
 		select empire).ToArray<global::Empire>();
 		if (this.diplomaticRelationStateWithOtherMajorEmpires == null)
 		{
 			this.diplomaticRelationStateWithOtherMajorEmpires = new DiplomaticRelation[this.majorEmpires.Length];
 			Diagnostics.Assert(this.diplomaticRelationStateWithOtherMajorEmpires != null);
-			for (int index = 0; index < this.majorEmpires.Length; index++)
+			for (int i = 0; i < this.majorEmpires.Length; i++)
 			{
-				Diagnostics.Assert(fantasyGame.Empires[index] is MajorEmpire);
-				float turnDurationFactor = base.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-				this.diplomaticRelationStateWithOtherMajorEmpires[index] = new DiplomaticRelation(base.Empire.Index, index, turnDurationFactor);
-				if (base.Empire.Index != index)
+				Diagnostics.Assert(game2.Empires[i] is MajorEmpire);
+				float propertyValue = base.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+				this.diplomaticRelationStateWithOtherMajorEmpires[i] = new DiplomaticRelation(base.Empire.Index, i, propertyValue);
+				if (base.Empire.Index != i)
 				{
-					((IForeignAffairsManagment)this).SetDiplomaticRelationState(fantasyGame.Empires[index], DiplomaticRelationState.Names.Unknown, false);
+					((IForeignAffairsManagment)this).SetDiplomaticRelationState(game2.Empires[i], DiplomaticRelationState.Names.Unknown, false);
 				}
 			}
 		}
@@ -2027,6 +2106,31 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 		return Mathf.Clamp(value, 0f, propertyValue);
 	}
 
+	public static bool ProgressiveTechTradeCost(out float factor)
+	{
+		factor = 0f;
+		ISessionService service = Services.GetService<ISessionService>();
+		Diagnostics.Assert(service != null);
+		string lobbyData = service.Session.GetLobbyData<string>("TechTradeCost", "Vanilla");
+		if (lobbyData == "Vanilla")
+		{
+			return false;
+		}
+		if (lobbyData == "Light")
+		{
+			factor = 1f;
+		}
+		if (lobbyData == "Moderate")
+		{
+			factor = 2f;
+		}
+		if (lobbyData == "Harsh")
+		{
+			factor = 4f;
+		}
+		return true;
+	}
+
 	public static readonly StaticString[] DiplomaticCostReductionFromEmpirePropertyNames;
 
 	public static StaticString SymetricFailureTag = "SymetricFailure";
@@ -2074,11 +2178,12 @@ public class DepartmentOfForeignAffairs : Agency, Amplitude.Xml.Serialization.IX
 			base.TooltipClass = DepartmentOfForeignAffairs.ConstructibleElement.ReadOnlyDefaultTooltipClass;
 		}
 
-		[XmlElement(Type = typeof(DiplomaticRelationStatePrerequisite), ElementName = "DiplomaticRelationStatePrerequisite")]
-		[XmlElement(Type = typeof(DiplomaticAbilityPrerequisite), ElementName = "DiplomaticAbilityPrerequisite")]
 		[XmlElement(Type = typeof(DiplomaticContractContainsTermPrerequisite), ElementName = "DiplomaticContractContainsTermPrerequisite")]
+		[XmlElement(Type = typeof(DiplomaticAbilityPrerequisite), ElementName = "DiplomaticAbilityPrerequisite")]
+		[XmlElement(Type = typeof(DiplomaticRelationStatePrerequisite), ElementName = "DiplomaticRelationStatePrerequisite")]
 		[XmlElement(Type = typeof(DiplomaticMetaPrerequisite), ElementName = "DiplomaticMetaPrerequisite")]
 		[XmlElement(Type = typeof(DiplomaticRelationStateEmpirePrerequisite), ElementName = "DiplomaticRelationStateEmpirePrerequisite")]
+		[XmlElement(Type = typeof(DiplomaticCooldownPrerequisite), ElementName = "DiplomaticCooldownPrerequisite")]
 		public DiplomaticPrerequisite[] DiplomaticPrerequisites { get; private set; }
 
 		public static readonly string ReadOnlyDefaultTooltipClass = "Constructible";

@@ -69,7 +69,7 @@ public class BattleEncounterState_Setup : BattleEncounterState
 				break;
 			}
 			flag2 &= (base.BattleEncounter.BattleContenders[i].ContenderEncounterOptionChoice == EncounterOptionChoice.Simulated);
-			flag3 &= (base.BattleEncounter.BattleContenders[i].ContenderEncounterOptionChoice != EncounterOptionChoice.Manual);
+			flag3 &= (base.BattleEncounter.BattleContenders[i].ContenderEncounterOptionChoice > EncounterOptionChoice.Manual);
 		}
 		if (flag)
 		{
@@ -91,25 +91,41 @@ public class BattleEncounterState_Setup : BattleEncounterState
 				{
 					base.BattleEncounter.OrderCreateEncounter.EncounterMode = EncounterOptionChoice.Spectator;
 				}
+				else if (ELCPUtilities.UseXumukMPBattleRules)
+				{
+					PlayerController playerController = base.BattleEncounter.PlayerController;
+					if (playerController != null)
+					{
+						for (int j = 0; j < base.BattleEncounter.BattleContenders.Count; j++)
+						{
+							if (!base.BattleEncounter.BattleContenders[j].Garrison.Empire.IsControlledByAI)
+							{
+								OrderChangeContenderEncounterOption order = new OrderChangeContenderEncounterOption(base.BattleEncounter.EncounterGUID, base.BattleEncounter.BattleContenders[j].GUID, EncounterOptionChoice.Manual);
+								playerController.PostOrder(order);
+							}
+						}
+					}
+				}
 			}
-			PlayerController playerController = base.BattleEncounter.PlayerController;
-			if (playerController != null)
-			{
-				OrderBeginEncounter order = new OrderBeginEncounter(base.BattleEncounter.EncounterGUID, base.BattleEncounter.OrderCreateEncounter.Instant, base.BattleEncounter.OrderCreateEncounter.EncounterMode);
-				playerController.PostOrder(order);
-			}
-			base.BattleEncounter.PostStateChange(typeof(BattleEncounterState_Setup_WaitForContendersAcknowledge), new object[0]);
-		}
-		else if (this.setupEndTime > 0.0 && this.setupEndTime <= Game.Time)
-		{
-			this.setupEndTime = -1.0;
 			PlayerController playerController2 = base.BattleEncounter.PlayerController;
 			if (playerController2 != null)
 			{
-				for (int j = 0; j < base.BattleEncounter.BattleContenders.Count; j++)
+				OrderBeginEncounter order2 = new OrderBeginEncounter(base.BattleEncounter.EncounterGUID, base.BattleEncounter.OrderCreateEncounter.Instant, base.BattleEncounter.OrderCreateEncounter.EncounterMode);
+				playerController2.PostOrder(order2);
+			}
+			base.BattleEncounter.PostStateChange(typeof(BattleEncounterState_Setup_WaitForContendersAcknowledge), new object[0]);
+			return;
+		}
+		if (this.setupEndTime > 0.0 && this.setupEndTime <= Game.Time)
+		{
+			this.setupEndTime = -1.0;
+			PlayerController playerController3 = base.BattleEncounter.PlayerController;
+			if (playerController3 != null)
+			{
+				for (int k = 0; k < base.BattleEncounter.BattleContenders.Count; k++)
 				{
-					OrderReadyForDeployment order2 = new OrderReadyForDeployment(base.BattleEncounter.EncounterGUID, base.BattleEncounter.BattleContenders[j].GUID, base.BattleEncounter.BattleContenders[j].ContenderEncounterOptionChoice, false);
-					playerController2.PostOrder(order2);
+					OrderReadyForDeployment order3 = new OrderReadyForDeployment(base.BattleEncounter.EncounterGUID, base.BattleEncounter.BattleContenders[k].GUID, base.BattleEncounter.BattleContenders[k].ContenderEncounterOptionChoice, false);
+					playerController3.PostOrder(order3);
 				}
 			}
 		}

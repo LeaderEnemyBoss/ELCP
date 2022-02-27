@@ -6,7 +6,7 @@
     <SimulationDescriptorReference Name="TechnologyUnlockWeaponTier2" />
     <SimulationDescriptorReference Name="TechnologyUnlockArmorTier2" />
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier2" />
-    <InterpreterPrerequisite Flags="Prerequisite,Era">$Property(EmpireTypeMajor/ClassResearch:Era1RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Era">($Property(EmpireTypeMajor/ClassResearch:Era1RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)) or $Path(#Era2,EmpireTypeMajor,EmpireEliminated)</InterpreterPrerequisite>
   </TechnologyEraDefinition>
 
   <!-- Double unlock : Improvements Food1 & Food7 -->

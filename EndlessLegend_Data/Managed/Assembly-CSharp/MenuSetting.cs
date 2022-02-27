@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
+using Amplitude.Unity.Session;
 using UnityEngine;
 
 public class MenuSetting : MonoBehaviour
@@ -82,7 +83,7 @@ public class MenuSetting : MonoBehaviour
 		}
 	}
 
-	public void RefreshContent(Session session, bool readOnly)
+	public void RefreshContent(global::Session session, bool readOnly)
 	{
 		if (this.OptionDefinition == null)
 		{
@@ -218,6 +219,21 @@ public class MenuSetting : MonoBehaviour
 					break;
 				}
 			}
+			ISessionService service2 = Services.GetService<ISessionService>();
+			if (service2 != null && service2.Session != null)
+			{
+				foreach (OptionDefinitionConstraint optionDefinitionConstraint2 in from element in this.OptionDefinition.OptionDefinitionConstraints
+				where element.Type == OptionDefinitionConstraintType.Conditional
+				select element)
+				{
+					if (!string.IsNullOrEmpty(optionDefinitionConstraint2.OptionName) && optionDefinitionConstraint2.OptionName == "Multiplayer" && service2.Session.SessionMode == SessionMode.Single)
+					{
+						this.AgeTransform.Enable = false;
+						this.Title.AgeTransform.AgeTooltip.Content = "%MultiplayerOnlyTitle";
+						break;
+					}
+				}
+			}
 		}
 		string value;
 		if (!optionValuesByName.TryGetValue(this.OptionDefinition.Name, out value))
@@ -236,8 +252,9 @@ public class MenuSetting : MonoBehaviour
 		if (this.OptionDefinition.GuiControlType == MenuSetting.GuiControlTypeToggle)
 		{
 			this.RefreshToggle(value, readOnly);
+			return;
 		}
-		else if (this.OptionDefinition.GuiControlType == MenuSetting.GuiControlTypeDropList)
+		if (this.OptionDefinition.GuiControlType == MenuSetting.GuiControlTypeDropList)
 		{
 			this.RefreshDropList(value, readOnly);
 			if (this.OptionDefinition.ItemDefinitions != null)
@@ -248,42 +265,42 @@ public class MenuSetting : MonoBehaviour
 					if (itemDefinition.OptionDefinitionConstraints != null)
 					{
 						bool flag = true;
-						foreach (OptionDefinitionConstraint optionDefinitionConstraint2 in from element in itemDefinition.OptionDefinitionConstraints
+						foreach (OptionDefinitionConstraint optionDefinitionConstraint3 in from element in itemDefinition.OptionDefinitionConstraints
 						where element.Type == OptionDefinitionConstraintType.Conditional
 						select element)
 						{
-							if (string.IsNullOrEmpty(optionDefinitionConstraint2.OptionName))
+							if (string.IsNullOrEmpty(optionDefinitionConstraint3.OptionName))
 							{
 								flag = false;
 								break;
 							}
-							string value2;
-							if (!optionValuesByName.TryGetValue(optionDefinitionConstraint2.OptionName, out value2))
+							string text;
+							if (!optionValuesByName.TryGetValue(optionDefinitionConstraint3.OptionName, out text))
 							{
 								Diagnostics.LogWarning("Unhandled constraint on option '{0}' from option definition '{1}', item '{2}'.", new object[]
 								{
-									optionDefinitionConstraint2.OptionName,
+									optionDefinitionConstraint3.OptionName,
 									this.OptionDefinition.Name,
 									itemDefinition.Name
 								});
 							}
-							else if (string.IsNullOrEmpty(value2))
+							else if (string.IsNullOrEmpty(text))
 							{
 								Diagnostics.LogWarning("Unhandled constraint on option '{0}' from option definition '{1}', item '{2}'.", new object[]
 								{
-									optionDefinitionConstraint2.OptionName,
+									optionDefinitionConstraint3.OptionName,
 									this.OptionDefinition.Name,
 									itemDefinition.Name
 								});
 							}
 							else
 							{
-								if (optionDefinitionConstraint2.Keys == null || optionDefinitionConstraint2.Keys.Length == 0)
+								if (optionDefinitionConstraint3.Keys == null || optionDefinitionConstraint3.Keys.Length == 0)
 								{
 									flag = false;
 									break;
 								}
-								if (!optionDefinitionConstraint2.Keys.Select((OptionDefinitionConstraint.Key key) => key.Name).Contains(value2))
+								if (!optionDefinitionConstraint3.Keys.Select((OptionDefinitionConstraint.Key key) => key.Name).Contains(text))
 								{
 									flag = false;
 									break;
@@ -292,16 +309,16 @@ public class MenuSetting : MonoBehaviour
 						}
 						if (flag && service != null)
 						{
-							foreach (OptionDefinitionConstraint optionDefinitionConstraint3 in from element in itemDefinition.OptionDefinitionConstraints
+							foreach (OptionDefinitionConstraint optionDefinitionConstraint4 in from element in itemDefinition.OptionDefinitionConstraints
 							where element.Type == OptionDefinitionConstraintType.DownloadableContentConditional
 							select element)
 							{
-								if (string.IsNullOrEmpty(optionDefinitionConstraint3.OptionName))
+								if (string.IsNullOrEmpty(optionDefinitionConstraint4.OptionName))
 								{
 									flag = false;
 									break;
 								}
-								if (!service.IsShared(optionDefinitionConstraint3.OptionName))
+								if (!service.IsShared(optionDefinitionConstraint4.OptionName))
 								{
 									flag = false;
 									break;
@@ -311,6 +328,7 @@ public class MenuSetting : MonoBehaviour
 						this.DropList.EnableItem(i, flag);
 					}
 				}
+				return;
 			}
 		}
 		else if (this.OptionDefinition.GuiControlType == MenuSetting.GuiControlTypeTextField)

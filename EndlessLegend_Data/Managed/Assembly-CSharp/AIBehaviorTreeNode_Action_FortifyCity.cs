@@ -9,6 +9,12 @@ using Amplitude.Unity.Game;
 
 public class AIBehaviorTreeNode_Action_FortifyCity : AIBehaviorTreeNode_Action
 {
+	public AIBehaviorTreeNode_Action_FortifyCity()
+	{
+		this.failuresFlags = new List<StaticString>();
+		this.TargetVarName = string.Empty;
+	}
+
 	[XmlAttribute]
 	public string TargetVarName { get; set; }
 
@@ -40,29 +46,49 @@ public class AIBehaviorTreeNode_Action_FortifyCity : AIBehaviorTreeNode_Action
 		else
 		{
 			Army army;
-			AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-			if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+			if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
+			{
+				return State.Failure;
+			}
+			if (this.worldPositionningService.IsWaterTile(army.WorldPosition))
 			{
 				return State.Failure;
 			}
 			float propertyValue = army.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
 			float propertyValue2 = army.GetPropertyValue(SimulationProperties.ActionPointsSpent);
 			float costInActionPoints = this.armyActionFortify.GetCostInActionPoints();
-			if (propertyValue <= propertyValue2 + costInActionPoints)
+			if (propertyValue < propertyValue2 + costInActionPoints)
 			{
 				aiBehaviorTree.ErrorCode = 33;
 				return State.Failure;
 			}
-			if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
+			City city = null;
+			if (this.TargetVarName == string.Empty)
 			{
-				aiBehaviorTree.LogError("${0} not set", new object[]
+				District district = this.worldPositionningService.GetDistrict(army.WorldPosition);
+				if (district == null || !District.IsACityTile(district) || (district.City.Empire.Index != army.Empire.Index && !army.Empire.GetAgency<DepartmentOfForeignAffairs>().IsFriend(district.City.Empire)))
 				{
-					this.TargetVarName
-				});
-				return State.Failure;
+					return State.Failure;
+				}
+				city = district.City;
 			}
-			City city = aiBehaviorTree.Variables[this.TargetVarName] as City;
-			if (city == null)
+			else
+			{
+				if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
+				{
+					aiBehaviorTree.LogError("${0} not set", new object[]
+					{
+						this.TargetVarName
+					});
+					return State.Failure;
+				}
+				city = (aiBehaviorTree.Variables[this.TargetVarName] as City);
+				if (city == null)
+				{
+					return State.Failure;
+				}
+			}
+			if (city.GetPropertyValue(SimulationProperties.CityDefensePoint) < 50f)
 			{
 				return State.Failure;
 			}
@@ -77,13 +103,9 @@ public class AIBehaviorTreeNode_Action_FortifyCity : AIBehaviorTreeNode_Action
 			if (service2 != null)
 			{
 				IEnumerable<Encounter> enumerable = service2;
-				if (enumerable != null)
+				if (enumerable != null && enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(city.GUID, false)))
 				{
-					bool flag = enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false));
-					if (flag)
-					{
-						return State.Running;
-					}
+					return State.Running;
 				}
 			}
 			this.orderExecuted = false;
@@ -97,12 +119,13 @@ public class AIBehaviorTreeNode_Action_FortifyCity : AIBehaviorTreeNode_Action
 
 	protected override bool Initialize(AIBehaviorTree aiBehaviorTree)
 	{
-		IDatabase<ArmyAction> database = Databases.GetDatabase<ArmyAction>(false);
 		ArmyAction armyAction;
-		if (database.TryGetValue("ArmyActionFortify", out armyAction))
+		if (Databases.GetDatabase<ArmyAction>(false).TryGetValue("ArmyActionFortify", out armyAction))
 		{
 			this.armyActionFortify = (armyAction as ArmyAction_Fortify);
 		}
+		IGameService service = Services.GetService<IGameService>();
+		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
 		return base.Initialize(aiBehaviorTree);
 	}
 
@@ -113,9 +136,11 @@ public class AIBehaviorTreeNode_Action_FortifyCity : AIBehaviorTreeNode_Action
 
 	private ArmyAction_Fortify armyActionFortify;
 
-	private List<StaticString> failuresFlags = new List<StaticString>();
+	private List<StaticString> failuresFlags;
 
 	private bool orderExecuted;
 
 	private Ticket ticket;
+
+	private IWorldPositionningService worldPositionningService;
 }

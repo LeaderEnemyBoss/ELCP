@@ -3,7 +3,9 @@
 
   <!-- "Sacrificial Amplitifers" (battle magic upgrade) -->    
   <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards15">
-      <AIParameter Name="EmpireBattleMagicArcana"      Value="1"  />
+      <AIParameter Name="EmpirePillarArcana"        Value="2"/>
+	  <AIParameter Name="AITechMustHave" Value="0.15 * $Property(EmpireTypeMajor:PillarsCount)"/>
+	  <AIParameter Name="AITechMustHave" Value="0.15 * $Property(EmpireTypeMajor:PillarsCount)"/>
   </AIParameterDatatableElement>
     
 </Datatable>

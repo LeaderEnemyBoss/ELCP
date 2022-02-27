@@ -251,8 +251,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 		List<Tradable> list = new List<Tradable>();
 		foreach (KeyValuePair<string, Marketplace.Collector> keyValuePair in this.collectors)
 		{
-			Marketplace.Collector value = keyValuePair.Value;
-			List<Tradable> list2 = value(game);
+			List<Tradable> list2 = keyValuePair.Value(game);
 			if (list2 != null && list2.Count > 0)
 			{
 				list.AddRange(list2);
@@ -267,8 +266,21 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 				list3 = new List<Tradable>();
 				list3.Add(tradable);
 				this.tradablesPerCategory.Add(tradable.TradableCategoryDefinition.Name, list3);
-				this.tradableCategoryTendencies.Add(tradable.TradableCategoryDefinition.Name, new TradableCategoryTendency());
-				this.tradableCategoryStockFactors.Add(tradable.TradableCategoryDefinition.Name, new TradableCategoryStockFactor());
+				if (!this.tradableCategoryTendencies.ContainsKey(tradable.TradableCategoryDefinition.Name))
+				{
+					this.tradableCategoryTendencies.Add(tradable.TradableCategoryDefinition.Name, new TradableCategoryTendency());
+				}
+				else
+				{
+					Diagnostics.LogError("ELCP: tradableCategoryTendencies already contains {0}", new object[]
+					{
+						tradable.TradableCategoryDefinition.Name
+					});
+				}
+				if (!this.tradableCategoryStockFactors.ContainsKey(tradable.TradableCategoryDefinition.Name))
+				{
+					this.tradableCategoryStockFactors.Add(tradable.TradableCategoryDefinition.Name, new TradableCategoryStockFactor());
+				}
 			}
 			else
 			{
@@ -289,12 +301,12 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					}
 					if (flag)
 					{
-						goto IL_21B;
+						goto IL_23F;
 					}
 				}
 				list3.Add(tradable);
 			}
-			IL_21B:;
+			IL_23F:;
 		}
 		foreach (List<Tradable> list4 in this.tradablesPerCategory.Values)
 		{
@@ -330,8 +342,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					int k = 0;
 					while (k < list6.Count)
 					{
-						int num = game.Turn - list6[k].TurnWhenFirstPlacedOnMarket;
-						if (num >= maximumLifeTimeOnMarket)
+						if (game.Turn - list6[k].TurnWhenFirstPlacedOnMarket >= maximumLifeTimeOnMarket)
 						{
 							this.ReleaseTradable(list6[k], true);
 							list6.RemoveAt(k);
@@ -344,8 +355,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 				}
 			}
 		}
-		string[] array;
-		foreach (string key2 in array)
+		foreach (string key2 in this.tradablesPerCategory.Keys.ToArray<string>())
 		{
 			List<Tradable> list7 = this.tradablesPerCategory[key2];
 			if (list7.Count != 0)
@@ -356,18 +366,18 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					list7 = list7.Randomize(null);
 					list7.Sort((Tradable left, Tradable right) => right.TurnWhenLastHitOnMarket.CompareTo(left.TurnWhenLastHitOnMarket));
 					this.tradablesPerCategory[key2] = list7.Take(maximumNumberOfOccurencesOnMarket).ToList<Tradable>();
-					for (int m = this.tradablesPerCategory[key2].Count; m < list7.Count; m++)
+					for (int l = this.tradablesPerCategory[key2].Count; l < list7.Count; l++)
 					{
-						this.ReleaseTradable(list7[m], true);
+						this.ReleaseTradable(list7[l], true);
 					}
 				}
 			}
 		}
 		this.OnCollectionChange(new TradableCollectionChangeEventArgs(null, null));
-		int num2 = 100;
-		if (this.transactions.Count > num2)
+		int num = 100;
+		if (this.transactions.Count > num)
 		{
-			this.transactions.RemoveRange(0, this.transactions.Count - num2);
+			this.transactions.RemoveRange(0, this.transactions.Count - num);
 		}
 	}
 
@@ -965,29 +975,44 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 		Amplitude.Unity.Framework.AnimationCurve animationCurve;
 		if (database != null && database.TryGetValue(Marketplace.tradableUnitLevelModifier, out animationCurve))
 		{
-			float num2 = animationCurve.EvaluateWithScaledAxis((float)game.Turn, this.gameSpeedMultiplier, 1f);
-			num = (int)num2;
+			num = (int)animationCurve.EvaluateWithScaledAxis((float)game.Turn, this.gameSpeedMultiplier, 1f);
 			num = Math.Max(0, Math.Min(100, num));
 		}
-		for (int i = 0; i < game.Empires.Length; i++)
+		int num2 = 1;
+		for (int i = 0; i < base.Game.Empires.Length; i++)
 		{
-			MajorEmpire majorEmpire = game.Empires[i] as MajorEmpire;
+			MajorEmpire majorEmpire = base.Game.Empires[i] as MajorEmpire;
 			if (majorEmpire == null)
 			{
 				break;
 			}
-			int empireExclusionBits = ~(1 << majorEmpire.Index);
-			int num3 = (int)Math.Ceiling((double)majorEmpire.GetPropertyValue(SimulationProperties.DurationOfHeroesExclusivity));
-			int num4 = (int)Math.Ceiling((double)majorEmpire.GetPropertyValue(SimulationProperties.MaximumNumberOfExclusiveHeroes));
+			DepartmentOfScience agency = majorEmpire.GetAgency<DepartmentOfScience>();
+			if (agency == null)
+			{
+				break;
+			}
+			num2 = Math.Max(num2, agency.CurrentTechnologyEraNumber);
+		}
+		bool flag = num2 > num + 1;
+		int min = num;
+		for (int j = 0; j < game.Empires.Length; j++)
+		{
+			MajorEmpire majorEmpire2 = game.Empires[j] as MajorEmpire;
+			if (majorEmpire2 == null)
+			{
+				break;
+			}
+			int empireExclusionBits = ~(1 << majorEmpire2.Index);
+			int num3 = (int)Math.Ceiling((double)majorEmpire2.GetPropertyValue(SimulationProperties.DurationOfHeroesExclusivity));
+			int num4 = (int)Math.Ceiling((double)majorEmpire2.GetPropertyValue(SimulationProperties.MaximumNumberOfExclusiveHeroes));
 			int num5 = 0;
 			List<Tradable> list4 = new List<Tradable>();
-			for (int j = 0; j < list2.Count; j++)
+			for (int k = 0; k < list2.Count; k++)
 			{
-				Tradable tradable = list2[j];
-				if ((tradable.EmpireExclusionBits & 1 << majorEmpire.Index) == 0)
+				Tradable tradable = list2[k];
+				if ((tradable.EmpireExclusionBits & 1 << majorEmpire2.Index) == 0)
 				{
-					int num6 = game.Turn - tradable.TurnWhenFirstPlacedOnMarket;
-					if (num6 >= num3)
+					if (game.Turn - tradable.TurnWhenFirstPlacedOnMarket >= num3)
 					{
 						list4.Add(tradable);
 					}
@@ -1000,6 +1025,10 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 			while (num5++ < num4)
 			{
 				GameEntityGUID gameEntityGUID = service2.GenerateGUID();
+				if (ELCPUtilities.UseELCPSymbiosisBuffs && flag)
+				{
+					num = UnityEngine.Random.Range(min, num2);
+				}
 				Unit unit;
 				if (service.TryPick(gameEntityGUID, out unit))
 				{
@@ -1018,10 +1047,9 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					tradableHero.TurnWhenFirstPlacedOnMarket = base.Game.Turn;
 					tradableHero.TurnWhenLastExchangedOnMarket = base.Game.Turn;
 					tradableHero.TurnWhenLastHitOnMarket = base.Game.Turn;
-					Tradable tradable2 = tradableHero;
 					ulong uid;
 					this.nextAvailableTradableUID = (uid = this.nextAvailableTradableUID) + 1UL;
-					tradable2.UID = uid;
+					tradableHero.UID = uid;
 					tradableHero.Value = 0f;
 					TradableHero tradableHero2 = tradableHero;
 					tradableHero2.Value = TradableUnit.GetValue(unit);
@@ -1029,13 +1057,13 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					list.Add(tradableHero2);
 				}
 			}
-			for (int k = 0; k < list4.Count; k++)
+			for (int l = 0; l < list4.Count; l++)
 			{
-				Tradable tradable3 = list4[k];
-				tradable3.EmpireExclusionBits = 0;
-				tradable3.TradableCategoryDefinition = tradableCategoryDefinition2;
-				list2.Remove(tradable3);
-				list3.Add(tradable3);
+				Tradable tradable2 = list4[l];
+				tradable2.EmpireExclusionBits = 0;
+				tradable2.TradableCategoryDefinition = tradableCategoryDefinition2;
+				list2.Remove(tradable2);
+				list3.Add(tradable2);
 			}
 		}
 		return list;
@@ -1074,6 +1102,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 		}
 		NavalEmpire navalEmpire = null;
 		int num = 0;
+		Func<Fortress, bool> <>9__0;
 		for (int i = 0; i < game.Empires.Length; i++)
 		{
 			navalEmpire = (game.Empires[i] as NavalEmpire);
@@ -1082,7 +1111,13 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 				PirateCouncil agency = navalEmpire.GetAgency<PirateCouncil>();
 				if (agency != null)
 				{
-					num = agency.Fortresses.Count((Fortress fortress) => fortress.Empire == navalEmpire);
+					IEnumerable<Fortress> fortresses = agency.Fortresses;
+					Func<Fortress, bool> selector;
+					if ((selector = <>9__0) == null)
+					{
+						selector = (<>9__0 = ((Fortress fortress) => fortress.Empire == navalEmpire));
+					}
+					num = fortresses.Count(selector);
 					break;
 				}
 			}
@@ -1116,11 +1151,10 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 		Amplitude.Unity.Framework.AnimationCurve animationCurve2;
 		if (database2 != null && database2.TryGetValue(Marketplace.tradableUnitLevelModifier, out animationCurve2))
 		{
-			float num5 = animationCurve2.EvaluateWithScaledAxis((float)game.Turn, this.gameSpeedMultiplier, 1f);
-			num4 = (int)num5;
+			num4 = (int)animationCurve2.EvaluateWithScaledAxis((float)game.Turn, this.gameSpeedMultiplier, 1f);
 			num4 = Math.Max(0, Math.Min(100, num4));
 		}
-		int num6 = 1;
+		int num5 = 1;
 		for (int j = 0; j < base.Game.Empires.Length; j++)
 		{
 			MajorEmpire majorEmpire = base.Game.Empires[j] as MajorEmpire;
@@ -1133,9 +1167,13 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 			{
 				break;
 			}
-			num6 = Math.Max(num6, agency2.CurrentTechnologyEraNumber);
+			num5 = Math.Max(num5, agency2.CurrentTechnologyEraNumber);
 		}
-		num6--;
+		num5--;
+		if (ELCPUtilities.UseELCPSymbiosisBuffs)
+		{
+			num4 = Mathf.Max(num4, num5);
+		}
 		IDatabase<Droplist> database3 = Databases.GetDatabase<Droplist>(false);
 		Droplist droplist;
 		if (database3 == null || !database3.TryGetValue("TradableNeutralSeafaringUnitsCollection", out droplist))
@@ -1147,7 +1185,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 			Droplist droplist2;
 			DroppableString droppableString = droplist.Pick(null, out droplist2, new object[]
 			{
-				num6
+				num5
 			}) as DroppableString;
 			if (droppableString != null && !string.IsNullOrEmpty(droppableString.Value))
 			{
@@ -1162,8 +1200,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					unitDesign = (UnitDesign)unitDesign.Clone();
 					this.ownedCopyOfDatabaseUnitDesigns.Add(value, unitDesign);
 				}
-				GameEntityGUID guid = service.GenerateGUID();
-				Unit unit = DepartmentOfDefense.CreateUnitByDesign(guid, unitDesign);
+				Unit unit = DepartmentOfDefense.CreateUnitByDesign(service.GenerateGUID(), unitDesign);
 				if (unit != null)
 				{
 					unit.Level = num4;
@@ -1180,10 +1217,9 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					tradableUnit.TurnWhenFirstPlacedOnMarket = base.Game.Turn;
 					tradableUnit.TurnWhenLastExchangedOnMarket = base.Game.Turn;
 					tradableUnit.TurnWhenLastHitOnMarket = base.Game.Turn;
-					Tradable tradable = tradableUnit;
 					ulong uid;
 					this.nextAvailableTradableUID = (uid = this.nextAvailableTradableUID) + 1UL;
-					tradable.UID = uid;
+					tradableUnit.UID = uid;
 					tradableUnit.Value = 0f;
 					TradableUnit tradableUnit2 = tradableUnit;
 					tradableUnit2.Value = TradableUnit.GetValue(unit);
@@ -1237,55 +1273,50 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 		for (int j = 0; j < game.Empires.Length; j++)
 		{
 			MinorEmpire minorEmpire = game.Empires[j] as MinorEmpire;
-			if (minorEmpire != null)
+			if (minorEmpire != null && minorEmpire.Region != null)
 			{
-				if (minorEmpire.Region != null)
+				int num2 = 0;
+				if (minorEmpire.Region.City != null)
 				{
-					int num2 = 0;
-					if (minorEmpire.Region.City != null)
+					num2 = 1;
+				}
+				BarbarianCouncil agency = minorEmpire.GetAgency<BarbarianCouncil>();
+				if (agency != null)
+				{
+					int num3 = 0;
+					foreach (Village village in agency.Villages)
 					{
-						num2 = 1;
-					}
-					BarbarianCouncil agency = minorEmpire.GetAgency<BarbarianCouncil>();
-					if (agency != null)
-					{
-						int num3 = 0;
-						foreach (Village village in agency.Villages)
+						if (!agency.IsVillageDestroyed(village))
 						{
-							if (!agency.IsVillageDestroyed(village))
-							{
-								num3++;
-							}
+							num3++;
 						}
-						if (num3 > 0)
+					}
+					if (num3 > 0)
+					{
+						MinorFaction minorFaction = minorEmpire.Faction as MinorFaction;
+						if (minorFaction != null)
 						{
-							MinorFaction minorFaction = minorEmpire.Faction as MinorFaction;
-							if (minorFaction != null)
+							int num4 = array[num2].IndexOf(minorFaction);
+							if (num4 == -1)
 							{
-								int num4 = array[num2].IndexOf(minorFaction);
-								if (num4 == -1)
-								{
-									num4 = 0;
-									array[num2].Insert(num4, minorFaction);
-									array2[num2].Insert(num4, 0);
-								}
-								List<int> list2;
-								List<int> list = list2 = array2[num2];
-								int num5;
-								int index = num5 = num4;
-								num5 = list2[num5];
-								list[index] = num5 + num3;
-								if (num2 == 0)
-								{
-									num += num3;
-								}
+								num4 = 0;
+								array[num2].Insert(num4, minorFaction);
+								array2[num2].Insert(num4, 0);
+							}
+							List<int> list = array2[num2];
+							int index;
+							int num5 = list[index = num4];
+							list[index] = num5 + num3;
+							if (num2 == 0)
+							{
+								num += num3;
 							}
 						}
 					}
 				}
 			}
 		}
-		List<Tradable> list3 = new List<Tradable>();
+		List<Tradable> list2 = new List<Tradable>();
 		int a = num;
 		IDatabase<Amplitude.Unity.Framework.AnimationCurve> database2 = Databases.GetDatabase<Amplitude.Unity.Framework.AnimationCurve>(false);
 		if (database2 != null)
@@ -1306,11 +1337,10 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 		Amplitude.Unity.Framework.AnimationCurve animationCurve2;
 		if (database2 != null && database2.TryGetValue(Marketplace.tradableUnitLevelModifier, out animationCurve2))
 		{
-			float num9 = animationCurve2.EvaluateWithScaledAxis((float)game.Turn, this.gameSpeedMultiplier, 1f);
-			num8 = (int)num9;
+			num8 = (int)animationCurve2.EvaluateWithScaledAxis((float)game.Turn, this.gameSpeedMultiplier, 1f);
 			num8 = Math.Max(0, Math.Min(100, num8));
 		}
-		int num10 = 1;
+		int num9 = 1;
 		for (int k = 0; k < base.Game.Empires.Length; k++)
 		{
 			MajorEmpire majorEmpire = base.Game.Empires[k] as MajorEmpire;
@@ -1323,36 +1353,38 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 			{
 				break;
 			}
-			num10 = Math.Max(num10, agency2.CurrentTechnologyEraNumber);
+			num9 = Math.Max(num9, agency2.CurrentTechnologyEraNumber);
 		}
-		num10--;
+		num9--;
+		if (ELCPUtilities.UseELCPSymbiosisBuffs)
+		{
+			num8 = Mathf.Max(num8, num9);
+		}
 		while (a-- > 0)
 		{
-			int num11 = 0;
-			if (array[num11].Count == 0)
+			int num10 = 0;
+			if (array[num10].Count == 0)
 			{
-				num11 = 1;
+				num10 = 1;
 			}
-			int num12 = UnityEngine.Random.Range(0, array[num11].Count);
-			MinorFaction minorFaction2 = array[num11][num12];
-			List<int> list5;
-			List<int> list4 = list5 = array2[num11];
-			int num5;
-			int index2 = num5 = num12;
-			num5 = list5[num5];
-			list4[index2] = num5 - 1;
-			if (array2[num11][num12] == 0)
+			int num11 = UnityEngine.Random.Range(0, array[num10].Count);
+			MinorFaction minorFaction2 = array[num10][num11];
+			List<int> list3 = array2[num10];
+			int index2;
+			int num12 = list3[index2 = num11];
+			list3[index2] = num12 - 1;
+			if (array2[num10][num11] == 0)
 			{
-				array[num11].RemoveAt(num12);
-				array2[num11].RemoveAt(num12);
+				array[num10].RemoveAt(num11);
+				array2[num10].RemoveAt(num11);
 			}
 			if (minorFaction2.MercenaryUnitDesignReferences != null && minorFaction2.MercenaryUnitDesignReferences.Length != 0)
 			{
 				int num13 = UnityEngine.Random.Range(0, minorFaction2.MercenaryUnitDesignReferences.Length);
 				string x = minorFaction2.MercenaryUnitDesignReferences[num13];
-				if (num10 >= 0 && num10 < minorFaction2.MercenaryUnitDesignReferences.Length)
+				if (num9 >= 0 && num9 < minorFaction2.MercenaryUnitDesignReferences.Length)
 				{
-					x = minorFaction2.MercenaryUnitDesignReferences[num10];
+					x = minorFaction2.MercenaryUnitDesignReferences[num9];
 				}
 				else
 				{
@@ -1368,8 +1400,7 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					unitDesign = (UnitDesign)unitDesign.Clone();
 					this.ownedCopyOfDatabaseUnitDesigns.Add(x, unitDesign);
 				}
-				GameEntityGUID guid = service.GenerateGUID();
-				Unit unit = DepartmentOfDefense.CreateUnitByDesign(guid, unitDesign);
+				Unit unit = DepartmentOfDefense.CreateUnitByDesign(service.GenerateGUID(), unitDesign);
 				if (unit != null)
 				{
 					unit.Level = num8;
@@ -1386,19 +1417,18 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 					tradableUnit.TurnWhenFirstPlacedOnMarket = base.Game.Turn;
 					tradableUnit.TurnWhenLastExchangedOnMarket = base.Game.Turn;
 					tradableUnit.TurnWhenLastHitOnMarket = base.Game.Turn;
-					Tradable tradable = tradableUnit;
 					ulong uid;
 					this.nextAvailableTradableUID = (uid = this.nextAvailableTradableUID) + 1UL;
-					tradable.UID = uid;
+					tradableUnit.UID = uid;
 					tradableUnit.Value = 0f;
 					TradableUnit tradableUnit2 = tradableUnit;
 					tradableUnit2.Value = TradableUnit.GetValue(unit);
 					this.ReserveTradableUnitBarcode(tradableUnit2, unitDesign);
-					list3.Add(tradableUnit2);
+					list2.Add(tradableUnit2);
 				}
 			}
 		}
-		return list3;
+		return list2;
 	}
 
 	private List<Tradable> CollectTradableResources(global::Game game, params string[] resourceTypes)
@@ -1703,20 +1733,20 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 		TradableCategoryStockFactor stockFactor;
 		if (this.tradableCategoryStockFactors.TryGetValue(tradableCategoryDefinition.Name, out stockFactor))
 		{
-			num2 = stockFactor;
+			num2 = stockFactor * tradableCategoryDefinition.SensitivityToStockFactor;
 		}
 		float num3 = referencePrice * (1f + num + num2);
 		float num4 = referencePrice * Tradable.MinimumPriceMultiplier;
 		if (num3 < num4)
 		{
-			num = num4 / referencePrice - 1f;
+			num = num4 / referencePrice - 1f - num2;
 		}
 		else
 		{
 			float num5 = referencePrice * Tradable.MaximumPriceMultiplier;
 			if (num3 > num5)
 			{
-				num = num5 / referencePrice - 1f;
+				num = num5 / referencePrice - 1f - num2;
 			}
 		}
 		if (update)
@@ -2056,7 +2086,29 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	private delegate List<Tradable> Collector(global::Game game);
 
 	[CompilerGenerated]
-	private sealed class TryReserveTradable>c__AnonStorey8C6
+	private sealed class TryReserveTradable>c__AnonStorey8C2
+	{
+		internal bool <>m__315(Tradable predicate)
+		{
+			return predicate.UID == this.uid;
+		}
+
+		internal ulong uid;
+	}
+
+	[CompilerGenerated]
+	private sealed class TryGetTradableByUID>c__AnonStorey8C3
+	{
+		internal bool <>m__316(Tradable predicate)
+		{
+			return predicate.UID == this.uid;
+		}
+
+		internal ulong uid;
+	}
+
+	[CompilerGenerated]
+	private sealed class TryConsumeTradableAndAllocateTo>c__AnonStorey8C4
 	{
 		internal bool <>m__317(Tradable predicate)
 		{
@@ -2067,31 +2119,9 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	}
 
 	[CompilerGenerated]
-	private sealed class TryGetTradableByUID>c__AnonStorey8C7
+	private sealed class CollectTradableResource>c__AnonStorey8C5
 	{
-		internal bool <>m__318(Tradable predicate)
-		{
-			return predicate.UID == this.uid;
-		}
-
-		internal ulong uid;
-	}
-
-	[CompilerGenerated]
-	private sealed class TryConsumeTradableAndAllocateTo>c__AnonStorey8C8
-	{
-		internal bool <>m__319(Tradable predicate)
-		{
-			return predicate.UID == this.uid;
-		}
-
-		internal ulong uid;
-	}
-
-	[CompilerGenerated]
-	private sealed class CollectTradableResource>c__AnonStorey8C9
-	{
-		internal bool <>m__31A(Tradable iterator)
+		internal bool <>m__318(Tradable iterator)
 		{
 			return iterator.TradableCategoryDefinition.Name == this.tradableResource.TradableCategoryDefinition.Name;
 		}
@@ -2100,9 +2130,9 @@ public class Marketplace : GameAncillary, Amplitude.Xml.Serialization.IXmlSerial
 	}
 
 	[CompilerGenerated]
-	private sealed class CollectTradableBooster>c__AnonStorey8CA
+	private sealed class CollectTradableBooster>c__AnonStorey8C6
 	{
-		internal bool <>m__31B(TradableBooster iterator)
+		internal bool <>m__319(TradableBooster iterator)
 		{
 			return iterator.BoosterDefinitionName == this.tradableBooster.BoosterDefinitionName;
 		}

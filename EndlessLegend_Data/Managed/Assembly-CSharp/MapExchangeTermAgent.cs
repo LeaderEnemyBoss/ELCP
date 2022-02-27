@@ -51,6 +51,10 @@ public class MapExchangeTermAgent : DiplomaticTermAgent
 		IWorldAtlasAIHelper service = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
 		float worldExplorationRatio = service.GetWorldExplorationRatio(base.Empire);
 		float worldExplorationRatio2 = service.GetWorldExplorationRatio(base.EmpireWhichReceives);
+		if (Mathf.Abs(worldExplorationRatio - worldExplorationRatio2) < 0.1f)
+		{
+			return 0f;
+		}
 		float value = Mathf.Max(0.1f, worldExplorationRatio2) / Mathf.Max(0.1f, worldExplorationRatio) - 1f;
 		num += this.explorationLeadBonus * Mathf.Clamp(value, -1f, 1f);
 		num *= this.multiplier;

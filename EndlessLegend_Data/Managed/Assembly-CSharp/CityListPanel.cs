@@ -229,6 +229,7 @@ public class CityListPanel : global::GuiPanel
 	{
 		yield return base.OnLoadGame();
 		this.refreshCityLineDelegate = new AgeTransform.RefreshTableItem<City>(this.RefreshCityLine);
+		this.playerControllerRepository = base.Game.Services.GetService<IPlayerControllerRepositoryService>();
 		yield break;
 	}
 
@@ -237,7 +238,7 @@ public class CityListPanel : global::GuiPanel
 		yield return base.OnShow(parameters);
 		CityLine.CurrentCity = null;
 		this.selectionClient = null;
-		if (parameters.Length > 0)
+		if (parameters.Length != 0)
 		{
 			CityLine.CurrentCity = (parameters[0] as City);
 			if (parameters.Length > 1)
@@ -246,6 +247,32 @@ public class CityListPanel : global::GuiPanel
 			}
 		}
 		this.SortsContainer.SetContent(this.CityLinePrefab, "CityLine", null);
+		global::Empire empire = this.playerControllerRepository.ActivePlayerController.Empire as global::Empire;
+		bool flag = empire.SimulationObject.Tags.Contains(DepartmentOfTheInterior.FactionTraitBuyOutPopulation);
+		bool flag2 = empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitReplicants1);
+		bool flag3 = empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics2);
+		for (int i = 5; i < 10; i++)
+		{
+			AgeControlButton component = this.SortsContainer.SortButtons[i].AgeTransform.GetComponent<AgeControlButton>();
+			if (i == 5 && flag)
+			{
+				component.OnMiddleClickMethod = string.Empty;
+			}
+			else if (i == 6 && flag3)
+			{
+				component.OnMiddleClickMethod = string.Empty;
+			}
+			else if (i == 7 && flag2)
+			{
+				component.OnMiddleClickMethod = string.Empty;
+			}
+			else
+			{
+				component.OnMiddleClickMethod = "OnMiddleClick";
+				component.OnMiddleClickObject = base.gameObject;
+				component.OnMiddleClickData = (i - 5).ToString();
+			}
+		}
 		yield break;
 	}
 
@@ -253,6 +280,7 @@ public class CityListPanel : global::GuiPanel
 	{
 		this.CitiesTable.DestroyAllChildren();
 		this.refreshCityLineDelegate = null;
+		this.playerControllerRepository = null;
 		base.OnUnloadGame(game);
 	}
 
@@ -326,6 +354,26 @@ public class CityListPanel : global::GuiPanel
 		}
 	}
 
+	private void OnMiddleClick(GameObject obj)
+	{
+		if (!this.InteractionAllowed || this.FilteredCities == null || this.FilteredCities.Count == 0)
+		{
+			return;
+		}
+		int num = int.Parse(obj.GetComponent<AgeControlButton>().OnMiddleClickData);
+		global::Empire empire = this.playerControllerRepository.ActivePlayerController.Empire as global::Empire;
+		foreach (City city in this.FilteredCities)
+		{
+			if (!city.IsInfected && city.Empire == empire && !city.SimulationObject.Tags.Contains(City.TagCityStatusRazed))
+			{
+				float[] array = new float[5];
+				array[num] = city.GetPropertyValue(SimulationProperties.Workers);
+				OrderAssignPopulation order = new OrderAssignPopulation(this.Empire.Index, city.GUID, AILayer_Population.PopulationResource, array);
+				this.playerControllerRepository.ActivePlayerController.PostOrder(order);
+			}
+		}
+	}
+
 	public const string LastSortString = "ZZZZZZZ";
 
 	public AgeTransform Background;
@@ -351,6 +399,8 @@ public class CityListPanel : global::GuiPanel
 	private bool interactionAllowed;
 
 	private AgeTransform.RefreshTableItem<City> refreshCityLineDelegate;
+
+	private IPlayerControllerRepositoryService playerControllerRepository;
 
 	public delegate int CompareLine(CityLine l, CityLine r);
 }

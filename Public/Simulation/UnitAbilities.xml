@@ -28,7 +28,10 @@
 
   <UnitAbility Name="UnitAbilityBlockGrowth" Hidden="false"/>
 
-  <UnitAbility Name="UnitAbilityResettle" Hidden="false"/>
+  <!-- ELCP added tag so AI recognizes Resettle units as colonization units -->
+  <UnitAbility Name="UnitAbilityResettle" Hidden="false">
+    <SimulationDescriptorReference Name="WithUnitAbilityColonization"/>
+  </UnitAbility>
 
   <UnitAbility Name="UnitAbilityUnsalable" Persistent="true"/>
 
@@ -2260,10 +2263,15 @@
   <UnitAbility Name="UnitAbilitySnare">
     <BattleActionUnitReference Name="BattleActionUnitAbilitySnare"/>
     <SimulationDescriptorReference Name="UnitCanDebuff"/>
-    <SimulationDescriptorReference Name="BonusUnitAbilityOffensiveMilitaryPower1"/>
+    <SimulationDescriptorReference Name="BonusUnitAbilityDefensiveMilitaryPower1"/>
     <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorSlowDownOffense"/>
     <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorSlowDownOpportunity"/>
     <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorSlowDownHoldPosition"/>
   </UnitAbility>
-  
+  <!-- ELCP defensive snare -->
+  <UnitAbility Name="UnitAbilitySnareBack" Hidden="true">
+    <BattleActionUnitReference Name="BattleActionUnitAbilitySnareBack"/>
+    <SimulationDescriptorReference Name="UnitCanDebuff"/>
+    <BattleTargetingUnitBehaviorWeightsReferences Name="UnitBehaviorGloryOfDeathOffense"/>
+  </UnitAbility>
 </Datatable>

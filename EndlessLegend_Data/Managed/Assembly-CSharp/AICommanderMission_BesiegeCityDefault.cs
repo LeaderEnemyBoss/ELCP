@@ -54,12 +54,17 @@ public class AICommanderMission_BesiegeCityDefault : AICommanderMissionWithReque
 	public override void Initialize(AICommander commander)
 	{
 		base.Initialize(commander);
+		if (commander.Empire is MajorEmpire)
+		{
+			this.departmentOfForeignAffairs = commander.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		}
 	}
 
 	public override void Release()
 	{
 		base.Release();
 		this.TargetCity = null;
+		this.departmentOfForeignAffairs = null;
 	}
 
 	public override void SetParameters(AICommanderMissionDefinition missionDefinition, params object[] parameters)
@@ -82,12 +87,7 @@ public class AICommanderMission_BesiegeCityDefault : AICommanderMissionWithReque
 
 	protected override bool IsMissionCompleted()
 	{
-		if (this.TargetCity == null || this.TargetCity.Empire == base.Commander.Empire)
-		{
-			return true;
-		}
-		AIData_City aidata = this.aiDataRepository.GetAIData<AIData_City>(this.TargetCity.GUID);
-		return aidata == null;
+		return this.TargetCity == null || this.TargetCity.Empire == base.Commander.Empire || (this.departmentOfForeignAffairs != null && !this.departmentOfForeignAffairs.CanBesiegeCity(this.TargetCity)) || this.aiDataRepository.GetAIData<AIData_City>(this.TargetCity.GUID) == null;
 	}
 
 	protected override void Pending()
@@ -121,4 +121,19 @@ public class AICommanderMission_BesiegeCityDefault : AICommanderMissionWithReque
 			this.MayAttack
 		});
 	}
+
+	protected override void Success()
+	{
+		base.Success();
+		if (this.TargetCity == null || this.TargetCity.Empire == base.Commander.Empire || (this.departmentOfForeignAffairs != null && !this.departmentOfForeignAffairs.CanBesiegeCity(this.TargetCity)))
+		{
+			base.SetArmyFree();
+		}
+		if (this.aiDataRepository.GetAIData<AIData_City>(this.TargetCity.GUID) == null)
+		{
+			base.SetArmyFree();
+		}
+	}
+
+	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
 }

@@ -392,8 +392,7 @@ public class MenuJoinGameScreen : GuiMenuScreen
 				List<VictoryCondition> list = new List<VictoryCondition>();
 				foreach (VictoryCondition victoryCondition in database)
 				{
-					bool flag = this.TryGetLobbyData<bool>(matchMakingService, steamIDLobby, victoryCondition.Name, false);
-					if (flag)
+					if (this.TryGetLobbyData<bool>(matchMakingService, steamIDLobby, victoryCondition.Name, false))
 					{
 						list.Add(victoryCondition);
 					}
@@ -471,8 +470,6 @@ public class MenuJoinGameScreen : GuiMenuScreen
 
 		public string WorldTemperature { get; private set; }
 
-		public string WorldWrap { get; private set; }
-
 		public bool HasFlag(MenuJoinGameScreen.LobbyDescription.LobbyFlag flag)
 		{
 			return (this.Flags & flag) == flag;
@@ -539,8 +536,7 @@ public class MenuJoinGameScreen : GuiMenuScreen
 					{
 						return (T)((object)Enum.Parse(typeof(T), lobbyData));
 					}
-					object obj = Convert.ChangeType(lobbyData, typeof(T));
-					return (T)((object)obj);
+					return (T)((object)Convert.ChangeType(lobbyData, typeof(T)));
 				}
 				catch
 				{
@@ -548,10 +544,17 @@ public class MenuJoinGameScreen : GuiMenuScreen
 			}
 			if (validationRequired)
 			{
+				Diagnostics.LogWarning("ELCP: Lobby Data {0} {1} failed to validate", new object[]
+				{
+					lobbyDataKey,
+					(lobbyData == null) ? "null" : lobbyData
+				});
 				this.IsValid = false;
 			}
 			return default(T);
 		}
+
+		public string WorldWrap { get; private set; }
 
 		[Flags]
 		public enum LobbyFlag

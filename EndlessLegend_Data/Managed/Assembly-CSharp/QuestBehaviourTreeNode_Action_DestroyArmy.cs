@@ -19,9 +19,6 @@ public class QuestBehaviourTreeNode_Action_DestroyArmy : QuestBehaviourTreeNode_
 	[XmlIgnore]
 	private global::Game Game { get; set; }
 
-	[XmlElement]
-	public ulong ArmyGUID { get; set; }
-
 	protected override State Execute(QuestBehaviour questBehaviour, params object[] parameters)
 	{
 		global::Empire empire2 = this.Game.Empires.FirstOrDefault((global::Empire empire) => empire.Bits == questBehaviour.Quest.EmpireBits);
@@ -90,4 +87,7 @@ public class QuestBehaviourTreeNode_Action_DestroyArmy : QuestBehaviourTreeNode_
 		}
 		return base.Initialize(questBehaviour);
 	}
+
+	[XmlElement]
+	public ulong ArmyGUID { get; set; }
 }

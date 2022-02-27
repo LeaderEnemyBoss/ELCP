@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Amplitude;
@@ -16,6 +17,7 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 		this.WorldArea = new WorldArea();
 		base.IsAbleToTrackFocusedWorldPositionable = false;
 		this.nodeBoundryObjects = new Dictionary<GameEntityGUID, GameObject>();
+		this.NodesToDraw = new List<CreepingNode>();
 	}
 
 	public City City { get; private set; }
@@ -86,18 +88,17 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 		if (game != null)
 		{
 			this.PlayerControllerRepositoryService = game.Services.GetService<IPlayerControllerRepositoryService>();
+			return;
 		}
-		else
+		this.PlayerControllerRepositoryService = null;
+		if (this.City != null)
 		{
-			this.PlayerControllerRepositoryService = null;
-			if (this.City != null)
-			{
-				this.City.CityDistrictCollectionChange -= this.City_CityDistrictCollectionChange;
-				this.City.Empire.GetAgency<DepartmentOfTheInterior>().CitiesCollectionChanged -= this.DistrictWorldCursor_CitiesCollectionChanged;
-				this.City = null;
-			}
-			this.WorldDistrict = null;
+			this.City.CityDistrictCollectionChange -= this.City_CityDistrictCollectionChange;
+			this.City.Empire.GetAgency<DepartmentOfTheInterior>().CitiesCollectionChanged -= this.DistrictWorldCursor_CitiesCollectionChanged;
+			this.City = null;
 		}
+		this.WorldDistrict = null;
+		this.CheckNodes = false;
 	}
 
 	protected override void OnCursorActivate(bool activate, params object[] parameters)
@@ -190,7 +191,13 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 		}
 		this.City.OnCityCampChanged += this.City_OnCityCampChanged;
 		this.City.OnCityDisposed += this.City_OnCityDisposed;
-		this.SelectCreepingNodes();
+		global::Empire empire = this.PlayerControllerRepositoryService.ActivePlayerController.Empire as global::Empire;
+		if (this.City.Empire.Index == empire.Index && empire.SimulationObject.Tags.Contains("FactionTraitMimics1"))
+		{
+			this.departmentOfCreepingNodes = empire.GetAgency<DepartmentOfCreepingNodes>();
+			this.CheckNodes = true;
+		}
+		this.SelectCreepingNodes(10);
 	}
 
 	protected void OnCursorDeactivate()
@@ -224,11 +231,14 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 			array[i] = null;
 		}
 		this.nodeBoundryObjects.Clear();
+		this.NodesToDraw.Clear();
 		if (this.worldEntityHelperContent != null)
 		{
 			this.worldEntityHelperContent.Clear();
 			this.worldEntityHelperContent = null;
 		}
+		this.departmentOfCreepingNodes = null;
+		this.CheckNodes = false;
 	}
 
 	protected override void OnCursorUp(MouseButton mouseButton, Amplitude.Unity.View.CursorTarget[] cursorTargets)
@@ -242,12 +252,12 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 		{
 			this.ResourceRendererService = technique.Services.GetService<IResourceRendererService>();
 			this.VisibilityRendererService = technique.Services.GetService<IVisibilityRendererService>();
+			this.worldEntityCullingService = technique.GetService<IWorldEntityCullingService>();
+			return;
 		}
-		else
-		{
-			this.ResourceRendererService = null;
-			this.VisibilityRendererService = null;
-		}
+		this.ResourceRendererService = null;
+		this.VisibilityRendererService = null;
+		this.worldEntityCullingService = null;
 	}
 
 	private bool Accept(WorldPosition worldPosition)
@@ -292,7 +302,7 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 				}
 			}
 			this.Districts = this.ResourceRendererService.FromPositionsToWorldArea();
-			this.SelectCreepingNodes();
+			this.SelectCreepingNodes(1);
 		}
 	}
 
@@ -316,7 +326,7 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 					this.ResourceRendererService.Add(this.City.Camp.Districts[j].WorldPosition);
 				}
 			}
-			this.SelectCreepingNodes();
+			this.SelectCreepingNodes(1);
 		}
 	}
 
@@ -327,23 +337,21 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 			this.City = null;
 			this.ResourceRendererService.SetSelectedRegion(-1);
 			this.ResourceRendererService.Clear();
+			this.CheckNodes = false;
 		}
 	}
 
 	private void DistrictWorldCursor_CitiesCollectionChanged(object sender, CollectionChangeEventArgs e)
 	{
-		CollectionChangeAction action = e.Action;
-		if (action == CollectionChangeAction.Remove)
+		if (e.Action == CollectionChangeAction.Remove && e.Element == this.City)
 		{
-			if (e.Element == this.City)
+			base.Back();
+			if (this.City != null)
 			{
-				base.Back();
-				if (this.City != null)
-				{
-					this.City.CityDistrictCollectionChange -= this.City_CityDistrictCollectionChange;
-					this.City.Empire.GetAgency<DepartmentOfTheInterior>().CitiesCollectionChanged -= this.DistrictWorldCursor_CitiesCollectionChanged;
-					this.City = null;
-				}
+				this.City.CityDistrictCollectionChange -= this.City_CityDistrictCollectionChange;
+				this.City.Empire.GetAgency<DepartmentOfTheInterior>().CitiesCollectionChanged -= this.DistrictWorldCursor_CitiesCollectionChanged;
+				this.City = null;
+				this.CheckNodes = false;
 			}
 		}
 	}
@@ -356,31 +364,23 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 			DepartmentOfCreepingNodes agency = empire.GetAgency<DepartmentOfCreepingNodes>();
 			if (agency.Nodes.Count > 0)
 			{
-				for (int i = 0; i < agency.Nodes.Count; i++)
+				ReadOnlyCollection<IWorldEntityWithCulling> readOnlyCollection;
+				if (this.worldEntityCullingService.TryGetVisibleEntities<WorldCreepingNode>(out readOnlyCollection))
 				{
-					CreepingNode creepingNode = agency.Nodes[i];
-					WorldArea worldArea = new WorldArea();
-					if (base.WorldPositionningService != null)
+					for (int i = 0; i < readOnlyCollection.Count; i++)
 					{
-						int fidsiextractionRange = creepingNode.NodeDefinition.FIDSIExtractionRange;
-						int index = creepingNode.PointOfInterest.Region.Index;
-						WorldCircle worldCircle = new WorldCircle(creepingNode.WorldPosition, fidsiextractionRange);
-						WorldPosition[] worldPositions = worldCircle.GetWorldPositions(base.WorldPositionningService.World.WorldParameters);
-						for (int j = 0; j < worldPositions.Length; j++)
+						WorldCreepingNode worldCreepingNode = readOnlyCollection[i] as WorldCreepingNode;
+						if (worldCreepingNode != null && worldCreepingNode.CreepingNode != null && worldCreepingNode.CreepingNode.Empire.Index == empire.Index)
 						{
-							if (worldPositions[j].IsValid && (int)base.WorldPositionningService.GetRegionIndex(worldPositions[j]) == creepingNode.PointOfInterest.Region.Index && base.WorldPositionningService.GetDistrict(worldPositions[j]) == null && !base.WorldPositionningService.HasRidge(worldPositions[j]))
-							{
-								this.ResourceRendererService.Add(worldPositions[j]);
-								worldArea.WorldPositions.Add(worldPositions[j]);
-							}
+							this.ELCPDrawCreepingNode(worldCreepingNode.CreepingNode);
 						}
-						if (worldArea.WorldPositions.Count == 0)
-						{
-							worldArea.WorldPositions.Add(creepingNode.WorldPosition);
-						}
-						this.CreateNodeBoundaryIFN(creepingNode, worldArea);
-						this.CreateCreepingNodeHexFidsIFN(creepingNode, worldArea);
 					}
+					return;
+				}
+				for (int j = 0; j < agency.Nodes.Count; j++)
+				{
+					CreepingNode creepingNode = agency.Nodes[j];
+					this.ELCPDrawCreepingNode(creepingNode);
 				}
 			}
 		}
@@ -475,7 +475,87 @@ public class DistrictWorldCursor : GarrisonWorldCursor
 		this.worldEntityHelperContent.Show();
 	}
 
+	private void ELCPDrawCreepingNode(CreepingNode creepingNode)
+	{
+		WorldArea worldArea = new WorldArea();
+		if (base.WorldPositionningService != null)
+		{
+			int fidsiextractionRange = creepingNode.NodeDefinition.FIDSIExtractionRange;
+			int index = creepingNode.PointOfInterest.Region.Index;
+			for (int i = 0; i < creepingNode.ExploitedTiles.Count; i++)
+			{
+				if (creepingNode.ExploitedTiles[i].IsValid && (int)base.WorldPositionningService.GetRegionIndex(creepingNode.ExploitedTiles[i]) == creepingNode.PointOfInterest.Region.Index && base.WorldPositionningService.GetDistrict(creepingNode.ExploitedTiles[i]) == null && !base.WorldPositionningService.HasRidge(creepingNode.ExploitedTiles[i]))
+				{
+					this.ResourceRendererService.Add(creepingNode.ExploitedTiles[i]);
+					worldArea.WorldPositions.Add(creepingNode.ExploitedTiles[i]);
+				}
+			}
+			if (worldArea.WorldPositions.Count == 0)
+			{
+				worldArea.WorldPositions.Add(creepingNode.WorldPosition);
+			}
+			this.CreateNodeBoundaryIFN(creepingNode, worldArea);
+			this.CreateCreepingNodeHexFidsIFN(creepingNode, worldArea);
+		}
+	}
+
+	private void SelectCreepingNodes(int DrawCount = 1)
+	{
+		if (this.CheckNodes && this.departmentOfCreepingNodes.Nodes.Count > 0 && this.departmentOfCreepingNodes.Nodes.Count > this.nodeBoundryObjects.Count)
+		{
+			ReadOnlyCollection<IWorldEntityWithCulling> readOnlyCollection;
+			if (this.NodesToDraw.Count == 0 && this.worldEntityCullingService.TryGetVisibleEntities<WorldCreepingNode>(out readOnlyCollection))
+			{
+				new List<CreepingNode>();
+				for (int i = 0; i < readOnlyCollection.Count; i++)
+				{
+					WorldCreepingNode worldCreepingNode = readOnlyCollection[i] as WorldCreepingNode;
+					if (worldCreepingNode != null && worldCreepingNode.CreepingNode != null && worldCreepingNode.CreepingNode.Empire.Index == this.City.Empire.Index && !this.nodeBoundryObjects.ContainsKey(worldCreepingNode.CreepingNode.GUID))
+					{
+						this.NodesToDraw.Add(worldCreepingNode.CreepingNode);
+					}
+				}
+				int num;
+				for (int j = 0; j < this.departmentOfCreepingNodes.Nodes.Count; j = num + 1)
+				{
+					if (!this.nodeBoundryObjects.ContainsKey(this.departmentOfCreepingNodes.Nodes[j].GUID))
+					{
+						this.NodesToDraw.Add(this.departmentOfCreepingNodes.Nodes[j]);
+					}
+					num = j;
+				}
+			}
+			while (this.NodesToDraw.Count > 0 && DrawCount > 0)
+			{
+				CreepingNode creepingNode = this.NodesToDraw[0];
+				this.NodesToDraw.RemoveAt(0);
+				if (!this.nodeBoundryObjects.ContainsKey(creepingNode.GUID))
+				{
+					this.ELCPDrawCreepingNode(creepingNode);
+					DrawCount--;
+				}
+			}
+		}
+	}
+
+	public override void LateUpdate()
+	{
+		base.LateUpdate();
+		if (base.IsActive && this.ResourceRendererService != null)
+		{
+			this.SelectCreepingNodes(1);
+		}
+	}
+
 	private Dictionary<GameEntityGUID, GameObject> nodeBoundryObjects;
 
 	private WorldEntityHelper.WorldEntityHelperContent worldEntityHelperContent;
+
+	private IWorldEntityCullingService worldEntityCullingService;
+
+	private List<CreepingNode> NodesToDraw;
+
+	private DepartmentOfCreepingNodes departmentOfCreepingNodes;
+
+	private bool CheckNodes;
 }

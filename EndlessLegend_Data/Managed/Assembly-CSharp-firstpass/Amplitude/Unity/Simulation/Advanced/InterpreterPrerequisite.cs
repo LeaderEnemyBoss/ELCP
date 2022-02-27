@@ -5,6 +5,12 @@ namespace Amplitude.Unity.Simulation.Advanced
 {
 	public class InterpreterPrerequisite : Prerequisite
 	{
+		public InterpreterPrerequisite()
+		{
+			this.initialValue = string.Empty;
+			base..ctor();
+		}
+
 		[XmlText]
 		public string XmlSerializableInterperterValue
 		{
@@ -72,8 +78,13 @@ namespace Amplitude.Unity.Simulation.Advanced
 			return this.initialValue;
 		}
 
+		public InterpreterPrerequisite(string InterperterValue, bool inverted, params string[] flags) : base(inverted, flags)
+		{
+			this.XmlSerializableInterperterValue = InterperterValue;
+		}
+
 		private object[] interpreterTokens;
 
-		private string initialValue = string.Empty;
+		private string initialValue;
 	}
 }

@@ -28,12 +28,15 @@ public class QuestBehaviourTreeNode_Action_PacifyMinorFaction : QuestBehaviourTr
 	protected override State Execute(QuestBehaviour questBehaviour, params object[] parameters)
 	{
 		global::Empire empire = this.game.Empires[this.TargetEmpireIndex];
-		OrderPacifyMinorFaction orderPacifyMinorFaction = new OrderPacifyMinorFaction(questBehaviour.Initiator.Index, empire.Index, true);
-		this.playerControllerRepositoryService.ActivePlayerController.PostOrder(orderPacifyMinorFaction);
-		Diagnostics.Log("Posting order: {0}.", new object[]
+		if (!questBehaviour.Initiator.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
 		{
-			orderPacifyMinorFaction.ToString()
-		});
+			OrderPacifyMinorFaction orderPacifyMinorFaction = new OrderPacifyMinorFaction(questBehaviour.Initiator.Index, empire.Index, true);
+			this.playerControllerRepositoryService.ActivePlayerController.PostOrder(orderPacifyMinorFaction);
+			Diagnostics.Log("Posting order: {0}.", new object[]
+			{
+				orderPacifyMinorFaction.ToString()
+			});
+		}
 		return State.Success;
 	}
 

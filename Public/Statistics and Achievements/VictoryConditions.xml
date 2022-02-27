@@ -24,8 +24,8 @@
   <!-- Annihilation? -->
   <InterpreterBasedVictoryCondition Name="LastEmpireStanding"             Category="Victory" SubCategory="Elimination">
     <Expression>($(NumberOfMajorEmpiresLeft) eq 1) and ($Count(./ClassEmpire,EmpireEliminated) eq 0)</Expression>
-    <Alert Repeat="false">($(NumberOfMajorEmpiresEliminated) ge 1) and (($Count(./ClassEmpire/ClassCity,!CityStatusRazed) / $(NumberOfCitiesLeft)) ge 0.5)</Alert>
-    <Alert Repeat="false">($(NumberOfMajorEmpiresEliminated) ge 1) and (($Count(./ClassEmpire/ClassCity,!CityStatusRazed) + 1) eq $(NumberOfCitiesLeft))</Alert>
+    <Alert Repeat="false">(($(NumberOfMajorEmpiresEliminated) ge 1) and (($Count(./ClassEmpire/ClassCity,!CityStatusRazed) / $(NumberOfCitiesLeft)) ge 0.5)) and ($(NumberOfMajorEmpiresLeft) lt ($(NumberOfMajorEmpires) - 1))</Alert>
+    <Alert Repeat="false">(($(NumberOfMajorEmpiresEliminated) ge 1) and (($Count(./ClassEmpire/ClassCity,!CityStatusRazed) + 1) eq $(NumberOfCitiesLeft))) and ($(NumberOfMajorEmpiresLeft) lt ($(NumberOfMajorEmpires) - 1))</Alert>
     <Progression Format="%VictoryProgressAnnihilation" SortVariable="Ratio">
       <Var Name="Value">$Count(./ClassEmpire/ClassCity,!CityStatusRazed)</Var>
       <Var Name="TargetValue" Format="Ceil">$(NumberOfCitiesLeft)</Var>
@@ -34,20 +34,20 @@
   </InterpreterBasedVictoryCondition>
 
   <InterpreterBasedVictoryCondition Name="Expansion"                      Category="Victory" SubCategory="Expansion">
-    <Expression>($Count(./ClassEmpire/ClassCity,!CityStatusRazed) / $(NumberOfLandRegions)) ge $Property(ExpansionThreshold)</Expression>
-    <Alert Repeat="false">($Count(./ClassEmpire/ClassCity,!CityStatusRazed) / $(NumberOfLandRegions)) ge ($Property(ExpansionThreshold) * 0.5)</Alert>
-    <Alert Repeat="false">(($Count(./ClassEmpire/ClassCity,!CityStatusRazed) + 1) / $(NumberOfLandRegions)) ge $Property(ExpansionThreshold)</Alert>
+    <Expression>(($Count(./ClassEmpire/ClassCity,!CityStatusRazed) + $Count(./ClassEmpire/ClassKaiju,KaijuGarrisonMode) + $Property(./ELCPEmpireProperties:NumberOfOwnedOceanicRegions))/ $(TotalNumberOfRegions)) ge $Property(ExpansionThreshold)</Expression>
+    <Alert Repeat="false">(($Count(./ClassEmpire/ClassCity,!CityStatusRazed) + $Count(./ClassEmpire/ClassKaiju,KaijuGarrisonMode) + $Property(./ELCPEmpireProperties:NumberOfOwnedOceanicRegions)) / $(TotalNumberOfRegions)) ge ($Property(ExpansionThreshold) * 0.6)</Alert>
+    <Alert Repeat="false">((($Count(./ClassEmpire/ClassCity,!CityStatusRazed) + $Count(./ClassEmpire/ClassKaiju,KaijuGarrisonMode) + $Property(./ELCPEmpireProperties:NumberOfOwnedOceanicRegions)) + 3) / $(TotalNumberOfRegions)) ge $Property(ExpansionThreshold)</Alert>
     <Progression Format="%VictoryProgressExpansion" SortVariable="Ratio">
-      <Var Name="Value">$Count(./ClassEmpire/ClassCity,!CityStatusRazed)</Var>
-      <Var Name="TargetValue" Format="Ceil">$(NumberOfLandRegions) * $Property(ExpansionThreshold)</Var>
-      <Var Name="Ratio">$Count(./ClassEmpire/ClassCity,!CityStatusRazed) / ($(NumberOfLandRegions) * $Property(ExpansionThreshold))</Var>
+      <Var Name="Value">$Count(./ClassEmpire/ClassCity,!CityStatusRazed) + $Count(./ClassEmpire/ClassKaiju,KaijuGarrisonMode) + $Property(./ELCPEmpireProperties:NumberOfOwnedOceanicRegions)</Var>
+      <Var Name="TargetValue" Format="Ceil">$(TotalNumberOfRegions) * $Property(ExpansionThreshold)</Var>
+      <Var Name="Ratio">($Count(./ClassEmpire/ClassCity,!CityStatusRazed) + $Count(./ClassEmpire/ClassKaiju,KaijuGarrisonMode) + $Property(./ELCPEmpireProperties:NumberOfOwnedOceanicRegions)) / ($(TotalNumberOfRegions) * $Property(ExpansionThreshold))</Var>
     </Progression>
   </InterpreterBasedVictoryCondition>
 
   <InterpreterBasedVictoryCondition Name="Economy"                        Category="Victory" SubCategory="Accumulation">
     <Expression>$Property(./ClassEmpire:EmpireMoneyAccumulator) ge $Property(EmpireMoneyThreshold)</Expression>
-    <Alert Repeat="false">$Property(./ClassEmpire:EmpireMoneyAccumulator) ge ($Property(EmpireMoneyThreshold) * 0.75)</Alert>
-    <Alert Repeat="false">$Property(./ClassEmpire:EmpireMoneyAccumulator) ge ($Property(EmpireMoneyThreshold) * 0.9)</Alert>
+    <Alert Repeat="false">$Property(./ClassEmpire:EmpireMoneyAccumulator) ge ($Property(EmpireMoneyThreshold) * 0.3)</Alert>
+    <Alert Repeat="false">$Property(./ClassEmpire:EmpireMoneyAccumulator) ge ($Property(EmpireMoneyThreshold) * 0.65)</Alert>
     <Progression Format="%VictoryProgressEconomy" SortVariable="Ratio">
       <Var Name="Value" Format="Ceil">$Property(./ClassEmpire:EmpireMoneyAccumulator)</Var>
       <Var Name="TargetValue">$Property(EmpireMoneyThreshold)</Var>
@@ -57,8 +57,8 @@
   
   <InterpreterBasedVictoryCondition Name="Diplomacy"                      Category="Victory" SubCategory="Accumulation">
     <Expression>$Property(./ClassEmpire:EmpirePeacePointStock) ge $Property(PeacePointThreshold)</Expression>
-    <Alert Repeat="false">$Property(./ClassEmpire:EmpirePeacePointStock) ge ($Property(PeacePointThreshold) * 0.75)</Alert>
-    <Alert Repeat="false">$Property(./ClassEmpire:EmpirePeacePointStock) ge ($Property(PeacePointThreshold) * 0.9)</Alert>
+    <Alert Repeat="false">$Property(./ClassEmpire:EmpirePeacePointStock) ge ($Property(PeacePointThreshold) * 0.6)</Alert>
+    <Alert Repeat="false">$Property(./ClassEmpire:EmpirePeacePointStock) ge ($Property(PeacePointThreshold) * 0.8)</Alert>
     <Progression Format="%VictoryProgressDiplomacy" SortVariable="Ratio">
       <Var Name="Value" Format="Ceil">$Property(./ClassEmpire:EmpirePeacePointStock)</Var>
       <Var Name="TargetValue">$Property(PeacePointThreshold)</Var>
@@ -69,9 +69,9 @@
   <InterpreterBasedVictoryCondition Name="Wonder"                         Category="Victory" SubCategory="Wonder">
     <Expression>($Count(./ClassEmpire/ClassCity/CityImprovementEndlessTemple) + $Count(./ClassEmpire/ClassCity/CityImprovementEndlessTemple)) gt 0</Expression>
     <Alert Repeat="false">$Count(./ClassEmpire/ClassCity,EndlessTempleWonderInQueue) gt 0</Alert>
-    <Progression Format="%VictoryProgressWonder" SortVariable="Value">
+    <Progression Format="%VictoryProgressWonder" SortVariable="Ratio">
       <Var Name="Value">$Count(./ClassEmpire/ClassCity/CityImprovementEndlessTemple)</Var>
-      <Var Name="Ratio">$Count(./ClassEmpire/ClassCity/CityImprovementEndlessTemple)</Var>
+      <Var Name="Ratio">$(VictoryWonderProgress)</Var>
     </Progression>
   </InterpreterBasedVictoryCondition>
 
@@ -103,9 +103,7 @@
   
   <InterpreterBasedVictoryCondition Name="Quest"                          Category="Victory" SubCategory="Quest"       NotifySelf="false">
     <Expression>$Property(./ClassEmpire/ClassResearch:VictoryQuestChapterCount) ge $Property(VictoryQuestChapterThreshold)</Expression>
-    <Alert Repeat="false" ImagePath="Gui/DynamicBitmaps/Quests/QuestVictory1">$Property(./ClassEmpire/ClassResearch:VictoryQuestChapterCount) eq 1</Alert>
-    <Alert Repeat="false" ImagePath="Gui/DynamicBitmaps/Quests/QuestVictory2">$Property(./ClassEmpire/ClassResearch:VictoryQuestChapterCount) eq 2</Alert>
-    <Alert Repeat="false" ImagePath="Gui/DynamicBitmaps/Quests/QuestVictory3">$Property(./ClassEmpire/ClassResearch:VictoryQuestChapterCount) eq 3</Alert>
+    <Alert Repeat="false" ImagePath="Gui/DynamicBitmaps/Quests/QuestVictory1">$Property(./ClassEmpire/ClassResearch:VictoryQuestChapterCount) eq 2</Alert>
     <Alert Repeat="false" ImagePath="Gui/DynamicBitmaps/Quests/QuestVictory4">$Property(./ClassEmpire/ClassResearch:VictoryQuestChapterCount) eq 4</Alert>
     <Alert Repeat="false" ImagePath="Gui/DynamicBitmaps/Quests/QuestVictory5">$Property(./ClassEmpire/ClassResearch:VictoryQuestChapterCount) eq 5</Alert>
     <Progression Format="%VictoryProgressExpansion" SortVariable="Ratio">

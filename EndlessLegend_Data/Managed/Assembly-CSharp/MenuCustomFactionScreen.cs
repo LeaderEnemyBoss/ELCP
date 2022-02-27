@@ -16,13 +16,16 @@ public class MenuCustomFactionScreen : GuiMenuScreen
 {
 	public MenuCustomFactionScreen()
 	{
+		this.ViewportLayer = "DiplomacyNotification";
+		this.standardGuiTraits = new List<GuiFactionTrait>();
+		this.affinityGuiTraits = new List<GuiFactionTrait>();
+		this.affinityMappingGuiTraits = new List<GuiFactionTrait>();
+		this.availableGuiTraits = new List<GuiFactionTrait>();
+		this.preselectedGuiTraits = new List<GuiFactionTrait>();
+		this.selectedGuiTraits = new List<GuiFactionTrait>();
+		this.customTraitFamilies = new List<string>();
 		this.profanityError = string.Empty;
 		this.invalidColor = new Color(0.7529412f, 0.2509804f, 0.2509804f);
-		base..ctor();
-	}
-
-	private void StartProfanityFiltering()
-	{
 	}
 
 	public GuiFactionTrait SelectedAffinity
@@ -461,16 +464,6 @@ public class MenuCustomFactionScreen : GuiMenuScreen
 		AgeManager.Instance.FocusedControl = null;
 	}
 
-	private void OnAuthorTextChangedCB(GameObject gameObject)
-	{
-		this.StartProfanityFiltering();
-	}
-
-	private void OnDescriptionChangedCB(GameObject gameObject)
-	{
-		this.StartProfanityFiltering();
-	}
-
 	private void OnToggleFilter(CustomTraitFamilyFilterToggle familyFilterToggle)
 	{
 		this.selectedCustomTraitFamily = familyFilterToggle.Family;
@@ -880,13 +873,21 @@ public class MenuCustomFactionScreen : GuiMenuScreen
 		yield break;
 	}
 
+	private void StartProfanityFiltering()
+	{
+	}
+
+	private void OnAuthorTextChangedCB(GameObject gameObject)
+	{
+		this.StartProfanityFiltering();
+	}
+
+	private void OnDescriptionChangedCB(GameObject gameObject)
+	{
+		this.StartProfanityFiltering();
+	}
+
 	private const string CustomTraitFamilyAll = "All";
-
-	private string profanityError;
-
-	private UnityEngine.Coroutine profanityFilterCoroutine;
-
-	private Color invalidColor;
 
 	public Transform CustomTraitFamilyFilterTogglePrefab;
 
@@ -934,7 +935,7 @@ public class MenuCustomFactionScreen : GuiMenuScreen
 
 	public Faction Faction;
 
-	public string ViewportLayer = "DiplomacyNotification";
+	public string ViewportLayer;
 
 	private GuiFactionTrait selectedAffinity;
 
@@ -950,19 +951,19 @@ public class MenuCustomFactionScreen : GuiMenuScreen
 
 	private bool modified;
 
-	private List<GuiFactionTrait> standardGuiTraits = new List<GuiFactionTrait>();
+	private List<GuiFactionTrait> standardGuiTraits;
 
-	private List<GuiFactionTrait> affinityGuiTraits = new List<GuiFactionTrait>();
+	private List<GuiFactionTrait> affinityGuiTraits;
 
-	private List<GuiFactionTrait> affinityMappingGuiTraits = new List<GuiFactionTrait>();
+	private List<GuiFactionTrait> affinityMappingGuiTraits;
 
-	private List<GuiFactionTrait> availableGuiTraits = new List<GuiFactionTrait>();
+	private List<GuiFactionTrait> availableGuiTraits;
 
-	private List<GuiFactionTrait> preselectedGuiTraits = new List<GuiFactionTrait>();
+	private List<GuiFactionTrait> preselectedGuiTraits;
 
-	private List<GuiFactionTrait> selectedGuiTraits = new List<GuiFactionTrait>();
+	private List<GuiFactionTrait> selectedGuiTraits;
 
-	private List<string> customTraitFamilies = new List<string>();
+	private List<string> customTraitFamilies;
 
 	private AgeTransform.RefreshTableItem<GuiFactionTrait> setupAvailableGuiTraitDelegate;
 
@@ -971,4 +972,10 @@ public class MenuCustomFactionScreen : GuiMenuScreen
 	private AgeTransform.RefreshTableItem<string> setupCustomTraitFamilyDelegate;
 
 	private DiplomaticNegotiationViewport diplomaticNegotiationViewport;
+
+	private string profanityError;
+
+	private UnityEngine.Coroutine profanityFilterCoroutine;
+
+	private Color invalidColor;
 }

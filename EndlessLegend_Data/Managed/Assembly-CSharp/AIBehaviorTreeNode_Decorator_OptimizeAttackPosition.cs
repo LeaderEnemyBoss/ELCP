@@ -33,8 +33,7 @@ public class AIBehaviorTreeNode_Decorator_OptimizeAttackPosition : AIBehaviorTre
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -43,6 +42,10 @@ public class AIBehaviorTreeNode_Decorator_OptimizeAttackPosition : AIBehaviorTre
 			return State.Failure;
 		}
 		Garrison garrison = aiBehaviorTree.Variables[this.TargetVarName] as Garrison;
+		if (aiBehaviorTree.Variables[this.TargetVarName] is Kaiju)
+		{
+			garrison = (aiBehaviorTree.Variables[this.TargetVarName] as Kaiju).GetActiveTroops();
+		}
 		if (garrison == null)
 		{
 			aiBehaviorTree.ErrorCode = 10;
@@ -61,8 +64,7 @@ public class AIBehaviorTreeNode_Decorator_OptimizeAttackPosition : AIBehaviorTre
 		{
 			return State.Failure;
 		}
-		float propertyValue = army.GetPropertyValue(SimulationProperties.Movement);
-		if (propertyValue <= 0f)
+		if (army.GetPropertyValue(SimulationProperties.Movement) <= 0f)
 		{
 			return State.Failure;
 		}

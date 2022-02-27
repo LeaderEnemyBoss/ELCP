@@ -153,6 +153,7 @@ public class ArmyAction_DestroyRegionBuilding : ArmyActionWithCooldown, IArmyAct
 				orderDestroyPointOfInterestImprovement.ArmyActionCooldownDuration = base.ComputeCooldownDuration(army);
 				Diagnostics.Assert(playerController != null);
 				playerController.PostOrder(orderDestroyPointOfInterestImprovement, out ticket, ticketRaisedEventHandler);
+				return;
 			}
 		}
 		else
@@ -161,15 +162,32 @@ public class ArmyAction_DestroyRegionBuilding : ArmyActionWithCooldown, IArmyAct
 			this.FilterPointsOfInterest(army, ref ArmyAction.FailureFlags);
 			if (ArmyAction.FailureFlags.Count == 0 && this.PointsOfInterest.Count > 0)
 			{
-				GameEntityGUID[] pointsOfInterestGUIDs = (from enumerator in this.PointsOfInterest
+				GameEntityGUID[] array = (from enumerator in this.PointsOfInterest
+				where enumerator.PointOfInterestImprovement != null && enumerator.CreepingNodeGUID == GameEntityGUID.Zero
 				select enumerator.GUID).ToArray<GameEntityGUID>();
-				OrderDestroyPointOfInterestImprovement orderDestroyPointOfInterestImprovement2 = new OrderDestroyPointOfInterestImprovement(army.Empire.Index, pointsOfInterestGUIDs);
-				orderDestroyPointOfInterestImprovement2.ArmyGUID = army.GUID;
-				orderDestroyPointOfInterestImprovement2.ArmyActionName = this.Name;
-				orderDestroyPointOfInterestImprovement2.NumberOfActionPointsToSpend = base.GetCostInActionPoints();
-				orderDestroyPointOfInterestImprovement2.ArmyActionCooldownDuration = base.ComputeCooldownDuration(army);
-				Diagnostics.Assert(playerController != null);
-				playerController.PostOrder(orderDestroyPointOfInterestImprovement2, out ticket, ticketRaisedEventHandler);
+				GameEntityGUID[] array2 = (from enumerator in this.PointsOfInterest
+				where enumerator.CreepingNodeGUID != GameEntityGUID.Zero
+				select enumerator.CreepingNodeGUID).ToArray<GameEntityGUID>();
+				for (int i = 0; i < array2.Length; i++)
+				{
+					StaticString armyActionName = new StaticString();
+					if (i == 0 && array.Length == 0)
+					{
+						armyActionName = this.Name;
+					}
+					OrderDismantleCreepingNodeSucceed order = new OrderDismantleCreepingNodeSucceed(army.Empire.Index, army.GUID, array2[i], armyActionName);
+					playerController.PostOrder(order);
+				}
+				if (array.Length != 0)
+				{
+					OrderDestroyPointOfInterestImprovement orderDestroyPointOfInterestImprovement2 = new OrderDestroyPointOfInterestImprovement(army.Empire.Index, array);
+					orderDestroyPointOfInterestImprovement2.ArmyGUID = army.GUID;
+					orderDestroyPointOfInterestImprovement2.ArmyActionName = this.Name;
+					orderDestroyPointOfInterestImprovement2.NumberOfActionPointsToSpend = base.GetCostInActionPoints();
+					orderDestroyPointOfInterestImprovement2.ArmyActionCooldownDuration = base.ComputeCooldownDuration(army);
+					Diagnostics.Assert(playerController != null);
+					playerController.PostOrder(orderDestroyPointOfInterestImprovement2, out ticket, ticketRaisedEventHandler);
+				}
 			}
 		}
 	}
@@ -208,63 +226,18 @@ public class ArmyAction_DestroyRegionBuilding : ArmyActionWithCooldown, IArmyAct
 		IPathfindingService service2 = service.Game.Services.GetService<IPathfindingService>();
 		IWorldPositionningService service3 = service.Game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(service3 != null);
-		if (!(this is IArmyActionWithTargetSelection))
+		PointOfInterest pointOfInterest = service3.GetPointOfInterest(army.WorldPosition);
+		if (pointOfInterest != null)
 		{
-			Region region = service3.GetRegion(army.WorldPosition);
-			int i = 0;
-			while (i < region.PointOfInterests.Length)
-			{
-				PointOfInterest pointOfInterest = region.PointOfInterests[i];
-				if (pointOfInterest.WorldPosition == army.WorldPosition)
-				{
-					StaticString category = ((ICategoryProvider)pointOfInterest).Category;
-					if (StaticString.IsNullOrEmpty(category))
-					{
-						break;
-					}
-					if (this.PointOfInterestCategories != null && !this.PointOfInterestCategories.Contains(category))
-					{
-						break;
-					}
-					this.PointsOfInterest.Add(pointOfInterest);
-					break;
-				}
-				else
-				{
-					i++;
-				}
-			}
+			this.AddPOIifPossible(pointOfInterest, service2, army);
 		}
 		List<WorldPosition> neighbours = army.WorldPosition.GetNeighbours(game.World.WorldParameters);
-		for (int j = 0; j < neighbours.Count; j++)
+		for (int i = 0; i < neighbours.Count; i++)
 		{
-			Region region2 = service3.GetRegion(neighbours[j]);
-			int k = 0;
-			while (k < region2.PointOfInterests.Length)
+			PointOfInterest pointOfInterest2 = service3.GetPointOfInterest(neighbours[i]);
+			if (pointOfInterest2 != null)
 			{
-				PointOfInterest pointOfInterest2 = region2.PointOfInterests[k];
-				if (pointOfInterest2.WorldPosition == neighbours[j])
-				{
-					StaticString category2 = ((ICategoryProvider)pointOfInterest2).Category;
-					if (StaticString.IsNullOrEmpty(category2))
-					{
-						break;
-					}
-					if (this.PointOfInterestCategories != null && !this.PointOfInterestCategories.Contains(category2))
-					{
-						break;
-					}
-					if (service2 != null && !service2.IsTransitionPassable(army.WorldPosition, pointOfInterest2.WorldPosition, army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null))
-					{
-						break;
-					}
-					this.PointsOfInterest.Add(pointOfInterest2);
-					break;
-				}
-				else
-				{
-					k++;
-				}
+				this.AddPOIifPossible(pointOfInterest2, service2, army);
 			}
 		}
 		return this.PointsOfInterest.Count;
@@ -274,7 +247,7 @@ public class ArmyAction_DestroyRegionBuilding : ArmyActionWithCooldown, IArmyAct
 	{
 		for (int i = this.PointsOfInterest.Count - 1; i >= 0; i--)
 		{
-			if (this.PointsOfInterest[i].PointOfInterestImprovement == null)
+			if (this.PointsOfInterest[i].PointOfInterestImprovement == null && (!ELCPUtilities.UseELCPSymbiosisBuffs || this.PointsOfInterest[i].CreepingNodeGUID == GameEntityGUID.Zero))
 			{
 				this.PointsOfInterest.RemoveAt(i);
 			}
@@ -283,5 +256,23 @@ public class ArmyAction_DestroyRegionBuilding : ArmyActionWithCooldown, IArmyAct
 				this.PointsOfInterest.RemoveAt(i);
 			}
 		}
+	}
+
+	private void AddPOIifPossible(PointOfInterest pointOfInterest, IPathfindingService pathfindingService, Army army)
+	{
+		StaticString category = ((ICategoryProvider)pointOfInterest).Category;
+		if (StaticString.IsNullOrEmpty(category) && pointOfInterest.Type != ELCPUtilities.QuestLocation)
+		{
+			return;
+		}
+		if (this.PointOfInterestCategories != null && !this.PointOfInterestCategories.Contains(category) && (!ELCPUtilities.UseELCPSymbiosisBuffs || pointOfInterest.CreepingNodeGUID == GameEntityGUID.Zero))
+		{
+			return;
+		}
+		if (army.WorldPosition != pointOfInterest.WorldPosition && !pathfindingService.IsTransitionPassable(army.WorldPosition, pointOfInterest.WorldPosition, army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null))
+		{
+			return;
+		}
+		this.PointsOfInterest.Add(pointOfInterest);
 	}
 }

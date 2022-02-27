@@ -129,7 +129,7 @@ public class PanelFeatureEffects_Terraformation : GuiPanelFeature
 		if (this.worldPositionningService.IsExploitable(worldPosition, activeEmpire.Bits))
 		{
 			Region region = this.worldPositionningService.GetRegion(worldPosition);
-			bool flag = region != null && region.BelongToEmpire(activeEmpire as global::Empire);
+			bool flag = region != null && region.BelongToEmpire(activeEmpire as global::Empire) && region.City != null;
 			if (!region.IsOcean && !region.IsWasteland && simulationObject == null)
 			{
 				this.districtProxy.RemoveAllDescriptors_ModifierForwardType_ChildrenOnly();

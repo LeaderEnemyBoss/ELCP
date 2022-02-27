@@ -8,7 +8,7 @@
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryDustMaterial" />
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier2" />
 
-    <InterpreterPrerequisite Flags="Prerequisite,Era">$Property(EmpireTypeMajor/ClassResearch:Era4RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Era">($Property(EmpireTypeMajor/ClassResearch:Era4RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)) or $Path(#Era5,EmpireTypeMajor,EmpireEliminated)</InterpreterPrerequisite>
   </TechnologyEraDefinition>
 
 
@@ -157,7 +157,7 @@
     <SimulationDescriptorReference Name="TechnologyCountIncreaseEra5" />
     <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era5CostMultiplier)</CustomCost>
     <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra5</PathPrerequisite>
-    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">FactionTraitCultists7,FactionTraitCultists9</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">($Path(.../EmpireTypeMajor,FactionTraitCultists7)) and ($Path(.../EmpireTypeMajor,FactionTraitCultists9))</InterpreterPrerequisite>
     
   </TechnologyDefinition>
 

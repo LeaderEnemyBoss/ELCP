@@ -1495,9 +1495,11 @@
 
       <!--Step 2-->
       <Action_UpdateStep StepName="MainQuestSeaDemons-Chapter8-Step2" State="InProgress"/>
-
-      <Decorator_SeasonChange Initiator="Empire">
-        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Property(EmpireTypeMajor:BankAccount)" StepName="MainQuestSeaDemons-Chapter8-Step2" />
+	  
+	  <!-- ELCP: removed initiator from season change, otherwise the trigger only works for the host! -->
+	  <!-- this change also required adding a EmpireVarName to IsStepProgressionComplete (otherwise it would always check the bankaccount of the event initiator, which is the host) -->
+      <Decorator_SeasonChange> 
+        <ConditionCheck_IsStepProgressionComplete InterpretedValue="$Property(EmpireTypeMajor:BankAccount)" StepName="MainQuestSeaDemons-Chapter8-Step2" EmpireVarName="$InstigatorEmpire"/>
         <ConditionCheck_RegionIsOwnedByEmpire RegionVarName="$Region1" EmpireVarName="$InstigatorEmpire"/>
         <ConditionCheck_RegionIsOwnedByEmpire RegionVarName="$Region2" EmpireVarName="$InstigatorEmpire"/>
       </Decorator_SeasonChange>

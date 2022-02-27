@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Amplitude;
 using Amplitude.Unity.AI.BehaviourTree;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -23,8 +22,7 @@ public class AIBehaviorTreeNode_Decorator_ComputeSavingPosition : AIBehaviorTree
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -42,12 +40,12 @@ public class AIBehaviorTreeNode_Decorator_ComputeSavingPosition : AIBehaviorTree
 			return State.Failure;
 		}
 		WorldPosition worldPosition = WorldPosition.Invalid;
-		this.ComputeSavingPosition(army, list, out worldPosition);
-		IGameService service = Services.GetService<IGameService>();
-		Diagnostics.Assert(service != null);
-		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
-		Diagnostics.Assert(service2 != null);
-		worldPosition = WorldPosition.GetValidPosition(worldPosition, service2.World.WorldParameters);
+		if (!this.ComputeSavingPosition(army, list, out worldPosition))
+		{
+			aiBehaviorTree.ErrorCode = 15;
+			return State.Failure;
+		}
+		worldPosition = WorldPosition.GetValidPosition(worldPosition, this.worldPositionningService.World.WorldParameters);
 		if (worldPosition == WorldPosition.Invalid)
 		{
 			aiBehaviorTree.ErrorCode = 15;
@@ -66,21 +64,55 @@ public class AIBehaviorTreeNode_Decorator_ComputeSavingPosition : AIBehaviorTree
 
 	private bool ComputeSavingPosition(Army army, List<Army> targetList, out WorldPosition destination)
 	{
+		bool flag = false;
+		for (int i = 0; i < army.StandardUnits.Count; i++)
+		{
+			if (army.StandardUnits[i].SimulationObject.Tags.Contains(WorldPositionning.FriendlyBannerDescriptor))
+			{
+				flag = true;
+			}
+		}
+		if (army.Hero != null && army.Hero.IsSkillUnlocked(WorldPositionning.FriendlyBannerSkill))
+		{
+			flag = true;
+		}
 		destination = army.WorldPosition;
+		for (int j = 0; j < targetList.Count; j++)
+		{
+			Army army2 = targetList[j];
+			if (flag && (army2.Empire is MinorEmpire || army2.Empire is NavalEmpire))
+			{
+				targetList.RemoveAt(j);
+				j--;
+			}
+			else
+			{
+				float propertyValue = army2.GetPropertyValue(SimulationProperties.Movement);
+				if ((float)this.worldPositionningService.GetDistance(destination, army2.WorldPosition) > propertyValue + 2f)
+				{
+					targetList.RemoveAt(j);
+					j--;
+				}
+			}
+		}
+		if (targetList.Count == 0)
+		{
+			return false;
+		}
 		float num = 0f;
 		float num2 = 0f;
-		for (int i = 0; i < targetList.Count; i++)
+		for (int k = 0; k < targetList.Count; k++)
 		{
-			Army army2 = targetList[i];
-			float num3 = (float)(army.WorldPosition.Column - army2.WorldPosition.Column);
-			float num4 = (float)(army.WorldPosition.Row - army2.WorldPosition.Row);
+			Army army3 = targetList[k];
+			float num3 = (float)(army.WorldPosition.Column - army3.WorldPosition.Column);
+			float num4 = (float)(army.WorldPosition.Row - army3.WorldPosition.Row);
 			float num5 = num3 * num3 + num4 * num4;
-			num += (float)(army.WorldPosition.Column - army2.WorldPosition.Column) / num5;
-			num2 += (float)(army.WorldPosition.Row - army2.WorldPosition.Row) / num5;
+			num += (float)(army.WorldPosition.Column - army3.WorldPosition.Column) / num5;
+			num2 += (float)(army.WorldPosition.Row - army3.WorldPosition.Row) / num5;
 		}
 		destination.Column += (short)(num * 2f * (float)army.LineOfSightVisionRange);
 		destination.Row += (short)(num2 * 2f * (float)army.LineOfSightVisionRange);
-		return true;
+		return !(destination == army.WorldPosition);
 	}
 
 	private List<Army> GetArmiesFromWorldPositionableList(List<IWorldPositionable> sourceList, Army myArmy, AIBehaviorTree aiBehaviourTree)
@@ -108,4 +140,13 @@ public class AIBehaviorTreeNode_Decorator_ComputeSavingPosition : AIBehaviorTree
 		}
 		return list;
 	}
+
+	public override bool Initialize(BehaviourTree behaviourTree)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
+		return base.Initialize(behaviourTree);
+	}
+
+	private IWorldPositionningService worldPositionningService;
 }

@@ -19,7 +19,7 @@ public class NavyBehavior_Blitz : NavyBehavior
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.WaitForNextTick));
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action2 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.WaitForNextTurn));
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action3 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.Optional));
-		OrderAction<BaseNavyArmy> orderAction = new OrderAction<BaseNavyArmy>(new Func<BaseNavyArmy, Amplitude.Unity.Game.Orders.Order>(base.Attack));
+		OrderAction<BaseNavyArmy> orderAction = new OrderAction<BaseNavyArmy>(new Func<BaseNavyArmy, Amplitude.Unity.Game.Orders.Order>(base.Bombard));
 		Sequence<BaseNavyArmy> sequence = new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
 			action3,

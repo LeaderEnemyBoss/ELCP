@@ -91,8 +91,12 @@ public class TradableBooster : Tradable, IXmlSerializable, ITradableWithStacking
 		TradableCategoryDefinition tradableCategoryDefinition;
 		if (database.TryGetValue(key, out tradableCategoryDefinition))
 		{
-			float unitPrice = Tradable.GetUnitPrice(tradableCategoryDefinition, 0f);
-			return Tradable.ApplySalesTaxes(unitPrice * quantity, transactionType, empire);
+			float num = Tradable.GetUnitPrice(tradableCategoryDefinition, 0f);
+			if (ELCPUtilities.UseELCPStockpileRulseset && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceStockpileCostMultiplier) > 0f)
+			{
+				num *= empire.GetPropertyValue(SimulationProperties.MarketplaceStockpileCostMultiplier);
+			}
+			return Tradable.ApplySalesTaxes(num * quantity, transactionType, empire);
 		}
 		return 0f;
 	}

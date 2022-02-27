@@ -240,8 +240,7 @@ public class NotificationPanelQuest : NotificationPanelBase
 				}
 				else
 				{
-					GuiEmpire guiEmpire = new GuiEmpire(this.game.Empires[value]);
-					text = guiEmpire.GetColorizedLocalizedNameAndFaction(this.empire, false);
+					text = new GuiEmpire(this.game.Empires[value]).GetColorizedLocalizedNameAndFaction(this.empire, false);
 				}
 			}
 		}

@@ -19,13 +19,14 @@ public class NavyBehavior_Interception : NavyBehavior
 		Condition<BaseNavyArmy> condition3 = new Condition<BaseNavyArmy>(new Func<BaseNavyArmy, bool>(base.CanReachTargetThisTurn));
 		Condition<BaseNavyArmy> condition4 = new Condition<BaseNavyArmy>(new Func<BaseNavyArmy, bool>(base.HasMovementLeft));
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.WaitForNextTick));
-		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action2 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.WaitForNextTurn));
-		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action3 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.Optional));
+		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action2 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.InvalidateBehavior));
+		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action3 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.WaitForNextTurn));
+		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action4 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.Optional));
 		OrderAction<BaseNavyArmy> orderAction = new OrderAction<BaseNavyArmy>(new Func<BaseNavyArmy, Amplitude.Unity.Game.Orders.Order>(base.Attack));
 		OrderAction<BaseNavyArmy> orderAction2 = new OrderAction<BaseNavyArmy>(new Func<BaseNavyArmy, Amplitude.Unity.Game.Orders.Order>(base.GotoAndAttackMain));
 		Sequence<BaseNavyArmy> sequence = new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
-			action3,
+			action4,
 			action
 		});
 		Sequence<BaseNavyArmy> sequence2 = new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
@@ -50,13 +51,19 @@ public class NavyBehavior_Interception : NavyBehavior
 			condition3,
 			orderAction2
 		});
+		Sequence<BaseNavyArmy> sequence5 = new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
+		{
+			condition4,
+			action2
+		});
 		return new Selector<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
 			base.SearchRuinSequence(),
 			sequence3,
 			sequence4,
 			base.MoveMainWithOpportunity(),
-			action2
+			sequence5,
+			action3
 		});
 	}
 }

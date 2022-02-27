@@ -16,13 +16,10 @@ public class MenuNewGameScreen : GuiMenuScreen
 {
 	public MenuNewGameScreen()
 	{
+		this.guiFactions = new List<GuiFaction>();
+		this.colorsList = new List<Color>();
 		this.profanityError = string.Empty;
 		this.invalidColor = new Color(0.7529412f, 0.2509804f, 0.2509804f);
-		base..ctor();
-	}
-
-	private void StartProfanityFiltering()
-	{
 	}
 
 	public override string MenuName
@@ -56,11 +53,6 @@ public class MenuNewGameScreen : GuiMenuScreen
 			}
 			return this.Session.GetLobbyData<bool>("_GameInProgress", false) || this.Session.GetLobbyData<bool>("_Launching", false);
 		}
-	}
-
-	private void OnSessionNameChangeCB(GameObject gameObject)
-	{
-		this.StartProfanityFiltering();
 	}
 
 	private bool IsMultiplayerSave
@@ -378,10 +370,10 @@ public class MenuNewGameScreen : GuiMenuScreen
 		base.AgeTransform.Enable = false;
 		this.BuildFactionsLists();
 		this.BuildColorsList();
-		IGameSerializationService gameSerializationService = Services.GetService<IGameSerializationService>();
-		if (gameSerializationService != null)
+		IGameSerializationService service = Services.GetService<IGameSerializationService>();
+		if (service != null)
 		{
-			this.GameSaveDescriptor = gameSerializationService.GameSaveDescriptor;
+			this.GameSaveDescriptor = service.GameSaveDescriptor;
 		}
 		else
 		{
@@ -394,14 +386,14 @@ public class MenuNewGameScreen : GuiMenuScreen
 			SessionState.OnLockLobbyGUI += this.SessionState_OnLockLobbyGUI;
 			if (this.Session != null && this.Session.IsHosting)
 			{
-				IDatabase<WorldGeneratorOptionDefinition> optionDefinitions = Databases.GetDatabase<WorldGeneratorOptionDefinition>(false);
-				WorldGeneratorOptionDefinition optionDefinitionSeedNumber;
-				if (optionDefinitions != null && optionDefinitions.TryGetValue("SeedNumber", out optionDefinitionSeedNumber))
+				IDatabase<WorldGeneratorOptionDefinition> database = Databases.GetDatabase<WorldGeneratorOptionDefinition>(false);
+				WorldGeneratorOptionDefinition worldGeneratorOptionDefinition;
+				if (database != null && database.TryGetValue("SeedNumber", out worldGeneratorOptionDefinition))
 				{
-					Diagnostics.Assert(optionDefinitionSeedNumber.ItemDefinitions.Length == 1);
-					Diagnostics.Assert(optionDefinitionSeedNumber.ItemDefinitions[0].KeyValuePairs.Length == 1);
-					int seed = Amplitude.Unity.Framework.Application.Registry.GetValue<int>("Preferences/Lobby/Seed", 0);
-					optionDefinitionSeedNumber.ItemDefinitions[0].KeyValuePairs[0].Value = seed.ToString();
+					Diagnostics.Assert(worldGeneratorOptionDefinition.ItemDefinitions.Length == 1);
+					Diagnostics.Assert(worldGeneratorOptionDefinition.ItemDefinitions[0].KeyValuePairs.Length == 1);
+					int value = Amplitude.Unity.Framework.Application.Registry.GetValue<int>("Preferences/Lobby/Seed", 0);
+					worldGeneratorOptionDefinition.ItemDefinitions[0].KeyValuePairs[0].Value = value.ToString();
 				}
 			}
 		}
@@ -837,11 +829,6 @@ public class MenuNewGameScreen : GuiMenuScreen
 		}
 	}
 
-	private void OnSessionNameChangedCB(GameObject gameObject)
-	{
-		this.StartProfanityFiltering();
-	}
-
 	private void RefreshButtons()
 	{
 		if (this.Session == null)
@@ -853,7 +840,7 @@ public class MenuNewGameScreen : GuiMenuScreen
 			this.StartReadyToggle.AgeTransform.Enable = false;
 			return;
 		}
-		bool flag = this.Session.SessionMode != SessionMode.Single;
+		bool flag = this.Session.SessionMode > SessionMode.Single;
 		this.StartButton.AgeTransform.Visible = !flag;
 		this.StartReadyToggle.AgeTransform.Visible = flag;
 		if (flag)
@@ -1080,15 +1067,70 @@ public class MenuNewGameScreen : GuiMenuScreen
 			this.CompetitorsTable.DestroyAllChildren();
 			return;
 		}
+		if (this.lastHDStatus != AgeUtils.HighDefinition && this.CompetitorTabDropList != null)
+		{
+			this.CompetitorTabDropList.AgeTransform.DestroyAllChildren();
+			UnityEngine.Object.Destroy(this.CompetitorTabDropList.gameObject);
+			this.CompetitorTabDropList = null;
+		}
+		if (this.CompetitorTabDropList == null)
+		{
+			bool highDefinition = AgeUtils.HighDefinition;
+			this.lastHDStatus = highDefinition;
+			AgeUtils.HighDefinition = false;
+			AgeTransform ageTransform = this.CompetitorsTable.GetComponentInParent<AgeTransform>().transform.parent.GetComponent<AgeTransform>().InstanciateChild(this.SessionTypeDropList.AgeTransform.transform, "CompetitorTabDropList");
+			this.CompetitorTabDropList = ageTransform.GetComponent<AgeControlDropList>();
+			this.CompetitorTabDropList.AgeTransform.PixelMarginRight = 10f * (highDefinition ? 1.5f : 1f);
+			this.CompetitorTabDropList.AgeTransform.PixelMarginTop = 2f * (highDefinition ? 1.5f : 1f);
+			this.CompetitorTabDropList.OnSelectionMethod = "OnCompetitorTabDropListCB";
+			this.CompetitorTabDropList.ReadOnly = true;
+			AgeUtils.HighDefinition = highDefinition;
+		}
 		this.UnbindCompetitorSlots();
 		int numberOfSlots = this.GetNumberOfSlots();
-		this.CompetitorsTable.ReserveChildren(numberOfSlots, this.MenuCompetitorSlotPrefab, "Item");
-		List<int> list = new List<int>(numberOfSlots);
-		for (int i = 0; i < numberOfSlots; i++)
+		int num = (numberOfSlots - 1) / 8 + 1;
+		string text = AgeLocalizer.Instance.LocalizeString("%GameOptionNumberOfMajorFactionsTitle");
+		List<string> list = new List<string>();
+		this.CompetitorTabDropList.ReadOnly = (num == 1);
+		for (int i = 0; i < num; i++)
 		{
-			list.Add(i);
+			int num2 = i * 8 + 1;
+			int num3 = 7;
+			if (i == num - 1)
+			{
+				num3 = ((numberOfSlots % 8 == 0) ? 7 : (numberOfSlots % 8 - 1));
+			}
+			int num4 = num2 + num3;
+			string item = string.Concat(new object[]
+			{
+				text,
+				" ",
+				num2,
+				" - ",
+				num4
+			});
+			list.Add(item);
 		}
-		this.CompetitorsTable.RefreshChildrenIList<int>(list, this.setupCompetitorSlotDelegate, true, false);
+		int num5 = 8;
+		if (this.CompetitorTabDropList.SelectedItem == num - 1 && numberOfSlots % 8 != 0)
+		{
+			num5 = numberOfSlots % 8;
+		}
+		this.CompetitorTabDropList.ItemTable = list.ToArray();
+		this.CompetitorTabDropList.TooltipTable = list.ToArray();
+		if (this.CompetitorTabDropListSelection > num - 1)
+		{
+			this.CompetitorTabDropListSelection = num - 1;
+		}
+		this.CompetitorTabDropList.SelectedItem = this.CompetitorTabDropListSelection;
+		this.CompetitorsTable.ReserveChildren(num5, this.MenuCompetitorSlotPrefab, "Item");
+		List<int> list2 = new List<int>(num5);
+		int num6 = this.CompetitorTabDropList.SelectedItem * 8;
+		for (int j = num6; j < num6 + num5; j++)
+		{
+			list2.Add(j);
+		}
+		this.CompetitorsTable.RefreshChildrenIList<int>(list2, this.setupCompetitorSlotDelegate, true, false);
 	}
 
 	private void UnbindCompetitorSlots()
@@ -1147,11 +1189,6 @@ public class MenuNewGameScreen : GuiMenuScreen
 				this.HandleCancelRequest();
 			}
 		}
-	}
-
-	private void XGPKickEventHandler(object sender, MessagePanelResultEventArgs e)
-	{
-		Amplitude.Unity.Framework.Application.Quit();
 	}
 
 	private void Session_LobbyDataChange(object sender, LobbyDataChangeEventArgs e)
@@ -1317,16 +1354,39 @@ public class MenuNewGameScreen : GuiMenuScreen
 		MenuCompetitorSlot component = tableItem.GetComponent<MenuCompetitorSlot>();
 		if (component != null)
 		{
-			component.Bind(this.Session, index, this);
+			component.Bind(this.Session, title, this);
 			component.RefreshContent(this.guiFactions, this.colorsList, this.HasGameBeenLaunchedOnce, this.CanModifyOwnEmpireSettings, this.guiLocked);
 		}
 	}
 
-	private string profanityError;
+	private void OnCompetitorTabDropListCB(GameObject gameObject)
+	{
+		AgeControlDropList component = gameObject.GetComponent<AgeControlDropList>();
+		if (component != null)
+		{
+			this.CompetitorTabDropListSelection = component.SelectedItem;
+		}
+		base.NeedRefresh = true;
+	}
 
-	private UnityEngine.Coroutine profanityFilterCoroutine;
+	private void StartProfanityFiltering()
+	{
+	}
 
-	private Color invalidColor;
+	private void OnSessionNameChangedCB(GameObject gameObject)
+	{
+		this.StartProfanityFiltering();
+	}
+
+	private void XGPKickEventHandler(object sender, MessagePanelResultEventArgs e)
+	{
+		Amplitude.Unity.Framework.Application.Quit();
+	}
+
+	private void OnSessionNameChangeCB(GameObject gameObject)
+	{
+		this.StartProfanityFiltering();
+	}
 
 	public static Faction SelectedFaction;
 
@@ -1394,9 +1454,9 @@ public class MenuNewGameScreen : GuiMenuScreen
 
 	public DlcIconEnumerator ClientDlcIconEnumerator;
 
-	private List<GuiFaction> guiFactions = new List<GuiFaction>();
+	private List<GuiFaction> guiFactions;
 
-	private List<Color> colorsList = new List<Color>();
+	private List<Color> colorsList;
 
 	private global::Session session;
 
@@ -1415,4 +1475,16 @@ public class MenuNewGameScreen : GuiMenuScreen
 	private AgeTransform.RefreshTableItem<int> setupCompetitorSlotDelegate;
 
 	private List<WorldGeneratorScenarioDefinition> scenarios;
+
+	private AgeControlDropList CompetitorTabDropList;
+
+	private int CompetitorTabDropListSelection;
+
+	private bool lastHDStatus;
+
+	private string profanityError;
+
+	private UnityEngine.Coroutine profanityFilterCoroutine;
+
+	private Color invalidColor;
 }

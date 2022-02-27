@@ -119,7 +119,7 @@ public class GameMarketplaceScreen : GuiPlayerControllerScreen
 		{
 			return;
 		}
-		if (this.DepartmentOfScience != null && this.DepartmentOfScience.CanTradeResourcesAndBoosters(false))
+		if (this.DepartmentOfScience != null && this.DepartmentOfScience.CanTradeResourcesAndBoosters(false) && !base.Empire.SimulationObject.Tags.Contains(Empire.TagEmpireEliminated))
 		{
 			this.SalablePanel.Show(new object[0]);
 		}

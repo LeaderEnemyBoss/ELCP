@@ -258,8 +258,7 @@ public class ControlBanner : GuiPlayerControllerPanel
 		{
 			return;
 		}
-		EventTechnologyEnded eventTechnologyEnded = e.RaisedEvent as EventTechnologyEnded;
-		if (eventTechnologyEnded != null)
+		if (e.RaisedEvent != null && (e.RaisedEvent is EventTechnologyEnded || e.RaisedEvent is EventELCPSpectator))
 		{
 			this.UpdateButtonsAvailability();
 		}
@@ -267,7 +266,7 @@ public class ControlBanner : GuiPlayerControllerPanel
 
 	private void UpdateButtonsAvailability()
 	{
-		if (this.DepartmentOfScience.HaveResearchedAtLeastOneTradeTechnology())
+		if (this.DepartmentOfScience.HaveResearchedAtLeastOneTradeTechnology() || base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
 		{
 			this.MarketplaceToggle.AgeTransform.Enable = true;
 			this.MarketplaceToggle.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%MarketplaceScreenShortcutDescription");
@@ -278,7 +277,7 @@ public class ControlBanner : GuiPlayerControllerPanel
 			string text = string.Empty;
 			IGuiPanelHelper guiPanelHelper = Services.GetService<global::IGuiService>().GuiPanelHelper;
 			Diagnostics.Assert(guiPanelHelper != null, "Unable to access GuiPanelHelper");
-			for (int i = 0; i < this.DepartmentOfScience.TechnologiesToUnlockMarketplace.Length; i++)
+			for (int i = 1; i < this.DepartmentOfScience.TechnologiesToUnlockMarketplace.Length; i++)
 			{
 				GuiElement guiElement;
 				if (guiPanelHelper.TryGetGuiElement(this.DepartmentOfScience.TechnologiesToUnlockMarketplace[i], out guiElement))
@@ -306,11 +305,9 @@ public class ControlBanner : GuiPlayerControllerPanel
 		if (this.EspionageplaceToggle.AgeTransform.Visible)
 		{
 			this.ControlTable.HorizontalSpacing = this.WideSpacing * AgeUtils.CurrentUpscaleFactor();
+			return;
 		}
-		else
-		{
-			this.ControlTable.HorizontalSpacing = this.StandardSpacing * AgeUtils.CurrentUpscaleFactor();
-		}
+		this.ControlTable.HorizontalSpacing = this.StandardSpacing * AgeUtils.CurrentUpscaleFactor();
 	}
 
 	private IEnumerator CheckShortcut()

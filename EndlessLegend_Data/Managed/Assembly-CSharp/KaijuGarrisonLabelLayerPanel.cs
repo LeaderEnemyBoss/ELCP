@@ -67,10 +67,9 @@ public class KaijuGarrisonLabelLayerPanel : LabelLayerPanel<KaijuGarrisonLabelLa
 			return;
 		}
 		bool flag = base.Counter % 10 == 0;
-		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
-		if (service.IsShared(DownloadableContent20.ReadOnlyName) && component.KaijuGarrison != worldKaiju.Kaiju.KaijuGarrison)
+		if (Services.GetService<IDownloadableContentService>().IsShared(DownloadableContent20.ReadOnlyName) && component.KaijuGarrison != worldKaiju.Kaiju.KaijuGarrison)
 		{
-			component.Bind(worldKaiju.Kaiju.KaijuGarrison, base.GuiService);
+			component.Bind(worldKaiju.Kaiju.KaijuGarrison, base.GuiService, base.Empire);
 			tableitem.Visible = true;
 			flag = true;
 		}

@@ -92,22 +92,22 @@ public class DepartmentOfHealth : Agency
 	protected override IEnumerator OnInitialize()
 	{
 		yield return base.OnInitialize();
-		IDatabase<ApprovalStatus> approvalStatusDatabase = Databases.GetDatabase<ApprovalStatus>(false);
-		ApprovalStatus[] approvalStatus = approvalStatusDatabase.GetValues();
-		for (int index = 0; index < approvalStatus.Length; index++)
+		ApprovalStatus[] values = Databases.GetDatabase<ApprovalStatus>(false).GetValues();
+		for (int i = 0; i < values.Length; i++)
 		{
-			StaticString targetClass = approvalStatus[index].TargetClass;
+			StaticString targetClass = values[i].TargetClass;
 			if (!this.approvalStatusByClass.ContainsKey(targetClass))
 			{
 				this.approvalStatusByClass.Add(targetClass, new List<ApprovalStatus>());
 			}
-			this.approvalStatusByClass[targetClass].Add(approvalStatus[index]);
+			this.approvalStatusByClass[targetClass].Add(values[i]);
 		}
-		foreach (KeyValuePair<StaticString, List<ApprovalStatus>> kvp in this.approvalStatusByClass)
+		foreach (KeyValuePair<StaticString, List<ApprovalStatus>> keyValuePair in this.approvalStatusByClass)
 		{
-			this.SortApprovalStatus(kvp.Value);
+			this.SortApprovalStatus(keyValuePair.Value);
 		}
 		base.Empire.RegisterPass("GameClientState_Turn_End", "RefreshApprovalStatus", new Agency.Action(this.GameClientState_Turn_End_RefreshApprovalStatus), new string[0]);
+		base.Empire.RegisterPass("GameClientState_Turn_Begin", "RefreshApprovalStatusAgain", new Agency.Action(this.GameClientState_Turn_End_RefreshApprovalStatus), new string[0]);
 		yield break;
 	}
 

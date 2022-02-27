@@ -28,8 +28,6 @@ public class GuiNotificationEncounter : global::GuiNotification
 
 	public Encounter Encounter { get; protected set; }
 
-	public GameEntityGUID EncounterGUID { get; protected set; }
-
 	public List<GuiGarrison> AlliedGuiGarrisons { get; private set; }
 
 	public List<GuiGarrison> EnemyGuiGarrisons { get; private set; }
@@ -70,7 +68,7 @@ public class GuiNotificationEncounter : global::GuiNotification
 
 	public override bool CanProcessEndTurn()
 	{
-		return this.CanDismiss();
+		return this.CanDismiss() || this.Encounter == null;
 	}
 
 	public override string GetGuiElementName()
@@ -227,11 +225,6 @@ public class GuiNotificationEncounter : global::GuiNotification
 		}
 	}
 
-	private void Encounter_EncounterDisposed(object sender, EventArgs e)
-	{
-		base.GuiNotificationService.DestroyNotification(this);
-	}
-
 	private NotificationPanelEncounterBase GetNotificationPanelEncounter()
 	{
 		global::IGuiService service = Services.GetService<global::IGuiService>();
@@ -266,6 +259,13 @@ public class GuiNotificationEncounter : global::GuiNotification
 				}
 			}
 		}
+	}
+
+	public GameEntityGUID EncounterGUID { get; protected set; }
+
+	private void Encounter_EncounterDisposed(object sender, EventArgs e)
+	{
+		base.GuiNotificationService.DestroyNotification(this);
 	}
 
 	protected string guiElementName;

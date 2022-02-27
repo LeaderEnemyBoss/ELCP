@@ -117,22 +117,57 @@ public class WorldEffect_FIDSModifier : WorldEffect, IXmlSerializable
 	public override void Deactivate()
 	{
 		base.Deactivate();
-		Region region = base.WorldEffectManager.WorldPositionningService.GetRegion(base.WorldPosition);
-		if (region.City != null)
+		WorldCircle worldCircle = new WorldCircle(base.WorldPosition, base.WorldEffectDefinition.Range);
+		List<short> list = new List<short>();
+		WorldPosition[] worldPositions = worldCircle.GetWorldPositions(base.WorldEffectManager.WorldPositionningService.World.WorldParameters);
+		for (int i = 0; i < worldPositions.Length; i++)
 		{
-			for (int i = 0; i < region.City.Districts.Count; i++)
+			short regionIndex = base.WorldEffectManager.WorldPositionningService.GetRegionIndex(worldPositions[i]);
+			if (!list.Contains(regionIndex))
 			{
-				District district = region.City.Districts[i];
-				if (this.descriptorsAppliedOnDistrict.ContainsKey(district.WorldPosition))
+				Region region = base.WorldEffectManager.WorldPositionningService.GetRegion(worldPositions[i]);
+				if (region.City != null)
 				{
-					List<string> list = this.descriptorsAppliedOnDistrict[district.WorldPosition];
-					for (int j = 0; j < list.Count; j++)
+					for (int j = 0; j < region.City.Districts.Count; j++)
 					{
-						StaticString descriptorNames = list[j];
-						district.RemoveDescriptorByName(descriptorNames);
+						District district = region.City.Districts[j];
+						if (this.descriptorsAppliedOnDistrict.ContainsKey(district.WorldPosition))
+						{
+							List<string> list2 = this.descriptorsAppliedOnDistrict[district.WorldPosition];
+							for (int k = 0; k < list2.Count; k++)
+							{
+								StaticString descriptorNames = list2[k];
+								district.RemoveDescriptorByName(descriptorNames);
+							}
+						}
+						district.Refresh(false);
 					}
 				}
-				district.Refresh(false);
+				list.Add(regionIndex);
+			}
+		}
+		worldPositions = new WorldCircle(base.WorldPosition, base.WorldEffectDefinition.Range + 1).GetWorldPositions(base.WorldEffectManager.WorldPositionningService.World.WorldParameters);
+		for (int l = 0; l < worldPositions.Length; l++)
+		{
+			PointOfInterest pointOfInterest = base.WorldEffectManager.WorldPositionningService.GetPointOfInterest(worldPositions[l]);
+			if (pointOfInterest != null)
+			{
+				if (pointOfInterest.CreepingNodeGUID != GameEntityGUID.Zero)
+				{
+					IGameEntity gameEntity = null;
+					if (base.WorldEffectManager.GameEntityRepositoryService.TryGetValue(pointOfInterest.CreepingNodeGUID, out gameEntity))
+					{
+						CreepingNode creepingNode = gameEntity as CreepingNode;
+						if (!creepingNode.IsUnderConstruction)
+						{
+							creepingNode.ReApplyFIMSEOnCreepingNode();
+						}
+					}
+				}
+				else if (pointOfInterest.SimulationObject.Tags.Contains(Village.ConvertedVillage))
+				{
+					DepartmentOfTheInterior.ReApplyFIMSEOnConvertedVillage(pointOfInterest.Empire, pointOfInterest);
+				}
 			}
 		}
 	}
@@ -140,14 +175,49 @@ public class WorldEffect_FIDSModifier : WorldEffect, IXmlSerializable
 	private List<District> GetAffectedDistrict()
 	{
 		List<District> list = new List<District>();
-		Region region = base.WorldEffectManager.WorldPositionningService.GetRegion(base.WorldPosition);
-		if (region.City != null)
+		WorldCircle worldCircle = new WorldCircle(base.WorldPosition, base.WorldEffectDefinition.Range);
+		List<short> list2 = new List<short>();
+		WorldPosition[] worldPositions = worldCircle.GetWorldPositions(base.WorldEffectManager.WorldPositionningService.World.WorldParameters);
+		for (int i = 0; i < worldPositions.Length; i++)
 		{
-			foreach (District district in region.City.Districts)
+			short regionIndex = base.WorldEffectManager.WorldPositionningService.GetRegionIndex(worldPositions[i]);
+			if (!list2.Contains(regionIndex))
 			{
-				if (base.HasAnEffectOnPosition(district.WorldPosition))
+				Region region = base.WorldEffectManager.WorldPositionningService.GetRegion(worldPositions[i]);
+				if (region.City != null)
 				{
-					list.Add(district);
+					foreach (District district in region.City.Districts)
+					{
+						if (base.HasAnEffectOnPosition(district.WorldPosition))
+						{
+							list.Add(district);
+						}
+					}
+				}
+				list2.Add(regionIndex);
+			}
+		}
+		worldPositions = new WorldCircle(base.WorldPosition, base.WorldEffectDefinition.Range + 1).GetWorldPositions(base.WorldEffectManager.WorldPositionningService.World.WorldParameters);
+		for (int j = 0; j < worldPositions.Length; j++)
+		{
+			PointOfInterest pointOfInterest = base.WorldEffectManager.WorldPositionningService.GetPointOfInterest(worldPositions[j]);
+			if (pointOfInterest != null)
+			{
+				if (pointOfInterest.CreepingNodeGUID != GameEntityGUID.Zero)
+				{
+					IGameEntity gameEntity = null;
+					if (base.WorldEffectManager.GameEntityRepositoryService.TryGetValue(pointOfInterest.CreepingNodeGUID, out gameEntity))
+					{
+						CreepingNode creepingNode = gameEntity as CreepingNode;
+						if (!creepingNode.IsUnderConstruction)
+						{
+							creepingNode.ReApplyFIMSEOnCreepingNode();
+						}
+					}
+				}
+				else if (pointOfInterest.SimulationObject.Tags.Contains(Village.ConvertedVillage))
+				{
+					DepartmentOfTheInterior.ReApplyFIMSEOnConvertedVillage(pointOfInterest.Empire, pointOfInterest);
 				}
 			}
 		}

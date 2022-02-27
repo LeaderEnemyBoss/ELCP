@@ -54,128 +54,7 @@ public class MenuFactionScreen : GuiMenuScreen
 		{
 			children[i].SelectionToggle.State = (this.SelectedGuiFaction != null && children[i].GuiFaction.Faction.Name == this.SelectedGuiFaction.Faction.Name);
 		}
-		if (this.SelectedGuiFaction != null)
-		{
-			this.ValidateButton.AgeTransform.Enable = true;
-			if (this.SelectedGuiFaction.IsCustom)
-			{
-				bool enable = GuiFaction.IsValidCustomFaction(this.SelectedGuiFaction.Faction, null);
-				this.ValidateButton.AgeTransform.Enable = enable;
-			}
-			IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
-			if (service != null)
-			{
-				bool flag;
-				if (service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFaction, this.SelectedGuiFaction.Faction.Name, out flag) && !flag)
-				{
-					this.ValidateButton.AgeTransform.Enable = false;
-					this.ValidateButton.AgeTransform.AgeTooltip.Content = "%RestrictedDownloadableContentTitle";
-				}
-				if (this.SelectedGuiFaction.Faction.Affinity != null && service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFactionAffinity, this.SelectedGuiFaction.Faction.Affinity.Name, out flag) && !flag)
-				{
-					this.ValidateButton.AgeTransform.Enable = false;
-					this.ValidateButton.AgeTransform.AgeTooltip.Content = "%RestrictedDownloadableContentTitle";
-				}
-				if (this.ValidateButton.AgeTransform.Enable)
-				{
-					foreach (FactionTrait factionTrait in Faction.EnumerableTraits(this.SelectedGuiFaction.Faction))
-					{
-						if (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFactionTrait, factionTrait.Name, out flag) || !flag)
-						{
-							this.ValidateButton.AgeTransform.Enable = false;
-							this.ValidateButton.AgeTransform.AgeTooltip.Content = "%RestrictedDownloadableContentTitle";
-							break;
-						}
-					}
-				}
-			}
-			this.DestroyFactionButton.AgeTransform.Enable = this.SelectedGuiFaction.IsCustom;
-			this.ModifyFactionButton.AgeTransform.Enable = this.SelectedGuiFaction.IsCustom;
-			this.FactionDescriptionScrollView.AgeTransform.Visible = true;
-			this.FactionTitle.AgeTransform.Visible = true;
-			this.FactionTitleUnderline.AgeTransform.Visible = true;
-			this.FactionAuthor.AgeTransform.Visible = true;
-			this.FactionTitle.Text = this.SelectedGuiFaction.Title;
-			this.FactionAuthor.Text = string.Empty;
-			string author = this.SelectedGuiFaction.Faction.Author;
-			if (author != "AMPLITUDE Studios")
-			{
-				this.FactionAuthor.Text = this.SelectedGuiFaction.Faction.Author;
-			}
-			if (this.diplomaticNegotiationViewport != null)
-			{
-				this.FactionMoodImage.AgeTransform.Visible = false;
-				XmlNamedReference xmlNamedReference = (!this.SelectedGuiFaction.IsRandom) ? this.SelectedGuiFaction.Faction.AffinityMapping : new XmlNamedReference(GuiFaction.FactionRandomMappingName);
-				bool flag2 = this.diplomaticNegotiationViewport.AffinityMapping == null || this.diplomaticNegotiationViewport.AffinityMapping != xmlNamedReference;
-				this.diplomaticNegotiationViewport.SetApparence(xmlNamedReference);
-				if (flag2)
-				{
-					this.diplomaticNegotiationViewport.TriggerAlternativeIdle(0.1f);
-				}
-			}
-			else
-			{
-				this.FactionMoodImage.AgeTransform.Visible = true;
-				this.FactionMoodImage.Image = this.SelectedGuiFaction.GetImageTexture(GuiPanel.IconSize.NegotiationLarge, false);
-				this.FactionDescription.AgeTransform.Height = 0f;
-			}
-			if (this.SelectedGuiFaction.IsRandom)
-			{
-				this.FactionDescription.Text = this.SelectedGuiFaction.Description;
-			}
-			else
-			{
-				this.FactionDescription.Text = AgeLocalizer.Instance.LocalizeString("%" + this.SelectedGuiFaction.Faction.Affinity.Name + "VictoryType") + "\n \n" + AgeLocalizer.Instance.LocalizeString(this.SelectedGuiFaction.Description);
-			}
-			this.FactionDescriptionScrollView.ResetUp();
-			if (!this.SelectedGuiFaction.Faction.IsRandom)
-			{
-				this.FactionTraitsScrollView.AgeTransform.Visible = true;
-				this.UnitBodyGroup.Visible = true;
-				this.FactionTraitsContainers.Visible = true;
-				List<GuiFactionTrait> list = (from trait in Faction.EnumerableTraits(this.SelectedGuiFaction.Faction)
-				where !trait.IsHidden && !trait.IsAffinityRelated
-				select new GuiFactionTrait(trait)).ToList<GuiFactionTrait>();
-				list.Sort();
-				this.FactionTraitsTable.Height = 0f;
-				this.FactionTraitsTable.ReserveChildren(list.Count, this.FactionTraitPrefab, "Item");
-				this.FactionTraitsTable.RefreshChildrenIList<GuiFactionTrait>(list, this.setupGuiFactionTraitDelegate, true, false);
-				this.FactionTraitsTable.ArrangeChildren();
-				this.FactionTraitsScrollView.ResetUp();
-				this.factionUnitBodies.Clear();
-				for (int j = 0; j < this.unitBodyDefinitions.Count; j++)
-				{
-					UnitBodyDefinition unitBodyDefinition = this.unitBodyDefinitions[j];
-					if (!unitBodyDefinition.Tags.Contains("Hidden"))
-					{
-						SimulationDescriptorReference[] simulationDescriptorReferences = unitBodyDefinition.SimulationDescriptorReferences;
-						for (int k = 0; k < simulationDescriptorReferences.Length; k++)
-						{
-							if (simulationDescriptorReferences[k].Name == this.SelectedGuiFaction.Faction.Affinity.Name)
-							{
-								this.factionUnitBodies.Add(unitBodyDefinition);
-							}
-						}
-					}
-				}
-				if (this.currentBody >= this.factionUnitBodies.Count)
-				{
-					this.currentBody = 0;
-				}
-				if (this.currentBody >= 0 && this.currentBody < this.factionUnitBodies.Count)
-				{
-					this.UnitBodyCard.RefreshContent(this.factionUnitBodies[this.currentBody]);
-				}
-				this.RefreshCurrentBody();
-			}
-			else
-			{
-				this.FactionTraitsScrollView.AgeTransform.Visible = false;
-				this.UnitBodyGroup.Visible = false;
-				this.FactionTraitsContainers.Visible = false;
-			}
-		}
-		else
+		if (this.SelectedGuiFaction == null)
 		{
 			this.FactionTitle.AgeTransform.Visible = false;
 			this.FactionTitleUnderline.AgeTransform.Visible = false;
@@ -184,7 +63,123 @@ public class MenuFactionScreen : GuiMenuScreen
 			this.FactionDescriptionScrollView.AgeTransform.Visible = false;
 			this.FactionTraitsScrollView.AgeTransform.Visible = false;
 			this.UnitBodyGroup.Visible = false;
+			return;
 		}
+		this.ValidateButton.AgeTransform.Enable = true;
+		if (this.SelectedGuiFaction.IsCustom)
+		{
+			bool enable = GuiFaction.IsValidCustomFaction(this.SelectedGuiFaction.Faction, null);
+			this.ValidateButton.AgeTransform.Enable = enable;
+		}
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		if (service != null)
+		{
+			bool flag;
+			if (service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFaction, this.SelectedGuiFaction.Faction.Name, out flag) && !flag)
+			{
+				this.ValidateButton.AgeTransform.Enable = false;
+				this.ValidateButton.AgeTransform.AgeTooltip.Content = "%RestrictedDownloadableContentTitle";
+			}
+			if (this.SelectedGuiFaction.Faction.Affinity != null && service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFactionAffinity, this.SelectedGuiFaction.Faction.Affinity.Name, out flag) && !flag)
+			{
+				this.ValidateButton.AgeTransform.Enable = false;
+				this.ValidateButton.AgeTransform.AgeTooltip.Content = "%RestrictedDownloadableContentTitle";
+			}
+			if (this.ValidateButton.AgeTransform.Enable)
+			{
+				foreach (FactionTrait factionTrait in Faction.EnumerableTraits(this.SelectedGuiFaction.Faction))
+				{
+					if (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFactionTrait, factionTrait.Name, out flag) || !flag)
+					{
+						this.ValidateButton.AgeTransform.Enable = false;
+						this.ValidateButton.AgeTransform.AgeTooltip.Content = "%RestrictedDownloadableContentTitle";
+						break;
+					}
+				}
+			}
+		}
+		this.DestroyFactionButton.AgeTransform.Enable = this.SelectedGuiFaction.IsCustom;
+		this.ModifyFactionButton.AgeTransform.Enable = this.SelectedGuiFaction.IsCustom;
+		this.FactionDescriptionScrollView.AgeTransform.Visible = true;
+		this.FactionTitle.AgeTransform.Visible = true;
+		this.FactionTitleUnderline.AgeTransform.Visible = true;
+		this.FactionAuthor.AgeTransform.Visible = true;
+		this.FactionTitle.Text = this.SelectedGuiFaction.Title;
+		this.FactionAuthor.Text = string.Empty;
+		if (this.SelectedGuiFaction.Faction.Author != "AMPLITUDE Studios")
+		{
+			this.FactionAuthor.Text = this.SelectedGuiFaction.Faction.Author;
+		}
+		if (this.diplomaticNegotiationViewport != null)
+		{
+			this.FactionMoodImage.AgeTransform.Visible = false;
+			XmlNamedReference xmlNamedReference = (!this.SelectedGuiFaction.IsRandom) ? this.SelectedGuiFaction.Faction.AffinityMapping : new XmlNamedReference(GuiFaction.FactionRandomMappingName);
+			bool flag2 = this.diplomaticNegotiationViewport.AffinityMapping == null || this.diplomaticNegotiationViewport.AffinityMapping != xmlNamedReference;
+			this.diplomaticNegotiationViewport.SetApparence(xmlNamedReference);
+			if (flag2)
+			{
+				this.diplomaticNegotiationViewport.TriggerAlternativeIdle(0.1f);
+			}
+		}
+		else
+		{
+			this.FactionMoodImage.AgeTransform.Visible = true;
+			this.FactionMoodImage.Image = this.SelectedGuiFaction.GetImageTexture(GuiPanel.IconSize.NegotiationLarge, false);
+			this.FactionDescription.AgeTransform.Height = 0f;
+		}
+		if (this.SelectedGuiFaction.IsRandom || this.SelectedGuiFaction.Name == "FactionELCPSpectator")
+		{
+			this.FactionDescription.Text = this.SelectedGuiFaction.Description;
+		}
+		else
+		{
+			this.FactionDescription.Text = AgeLocalizer.Instance.LocalizeString("%" + this.SelectedGuiFaction.Faction.Affinity.Name + "VictoryType") + "\n \n" + AgeLocalizer.Instance.LocalizeString(this.SelectedGuiFaction.Description);
+		}
+		this.FactionDescriptionScrollView.ResetUp();
+		if (!this.SelectedGuiFaction.Faction.IsRandom)
+		{
+			this.FactionTraitsScrollView.AgeTransform.Visible = true;
+			this.UnitBodyGroup.Visible = true;
+			this.FactionTraitsContainers.Visible = true;
+			List<GuiFactionTrait> list = (from trait in Faction.EnumerableTraits(this.SelectedGuiFaction.Faction)
+			where !trait.IsHidden && !trait.IsAffinityRelated
+			select new GuiFactionTrait(trait)).ToList<GuiFactionTrait>();
+			list.Sort();
+			this.FactionTraitsTable.Height = 0f;
+			this.FactionTraitsTable.ReserveChildren(list.Count, this.FactionTraitPrefab, "Item");
+			this.FactionTraitsTable.RefreshChildrenIList<GuiFactionTrait>(list, this.setupGuiFactionTraitDelegate, true, false);
+			this.FactionTraitsTable.ArrangeChildren();
+			this.FactionTraitsScrollView.ResetUp();
+			this.factionUnitBodies.Clear();
+			for (int j = 0; j < this.unitBodyDefinitions.Count; j++)
+			{
+				UnitBodyDefinition unitBodyDefinition = this.unitBodyDefinitions[j];
+				if (!unitBodyDefinition.Tags.Contains("Hidden"))
+				{
+					SimulationDescriptorReference[] simulationDescriptorReferences = unitBodyDefinition.SimulationDescriptorReferences;
+					for (int k = 0; k < simulationDescriptorReferences.Length; k++)
+					{
+						if (simulationDescriptorReferences[k].Name == this.SelectedGuiFaction.Faction.Affinity.Name)
+						{
+							this.factionUnitBodies.Add(unitBodyDefinition);
+						}
+					}
+				}
+			}
+			if (this.currentBody >= this.factionUnitBodies.Count)
+			{
+				this.currentBody = 0;
+			}
+			if (this.currentBody >= 0 && this.currentBody < this.factionUnitBodies.Count)
+			{
+				this.UnitBodyCard.RefreshContent(this.factionUnitBodies[this.currentBody]);
+			}
+			this.RefreshCurrentBody();
+			return;
+		}
+		this.FactionTraitsScrollView.AgeTransform.Visible = false;
+		this.UnitBodyGroup.Visible = false;
+		this.FactionTraitsContainers.Visible = false;
 	}
 
 	protected override IEnumerator OnShow(params object[] parameters)
@@ -306,6 +301,11 @@ public class MenuFactionScreen : GuiMenuScreen
 		{
 			component.AgeTransform.Enable = false;
 			component.AgeTransform.AgeTooltip.Content = "%RestrictedDownloadableContentTitle";
+		}
+		if ((service.Session.SessionMode == SessionMode.Single || !service.Session.GetLobbyData<bool>("SpectatorMode", false) || service.Session.GetLobbyData<int>("NumberOfMajorFactions", 0) < 3) && guiFaction.Name == "FactionELCPSpectator")
+		{
+			component.AgeTransform.Enable = false;
+			component.AgeTransform.AgeTooltip.Content = "%GameOptionSpectatorModeDisabled";
 		}
 	}
 

@@ -7,7 +7,7 @@
     <SimulationDescriptorReference Name="TechnologyUnlockArmorDustMaterial" />
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryDustMaterial" />
 
-    <InterpreterPrerequisite Flags="Prerequisite,Era">$Property(EmpireTypeMajor/ClassResearch:Era3RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Era">($Property(EmpireTypeMajor/ClassResearch:Era3RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)) or $Path(#Era4,EmpireTypeMajor,EmpireEliminated)</InterpreterPrerequisite>
   </TechnologyEraDefinition>
 
 
@@ -284,9 +284,9 @@
   <TechnologyDefinition  Name="TechnologyDefinitionRageWizards11"             TechnologyFlags="Affinity">
     <UnlockCategoryOverride Category="Empire" SubCategory="SubCategoryArcana"/>
     <SimulationDescriptorReference Name="TechnologyRageWizards11" />
-    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra4" />
-    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era4CostMultiplier)</CustomCost>
-    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
+    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
+    <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable">EmpireTypeMajor,FactionTraitRageWizards11</PathPrerequisite>
   </TechnologyDefinition>
 

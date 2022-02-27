@@ -178,25 +178,19 @@ public class ArmyAction_Attack : ArmyAction_BaseVillage, IArmyActionWithTargetSe
 						}
 					}
 				}
-				if (region2.City != null)
+				if (region2.City != null && region2.City.Empire != null && region2.City.Empire.Index != army.Empire.Index)
 				{
-					if (region2.City.Empire != null && region2.City.Empire.Index != army.Empire.Index)
+					for (int l = 0; l < region2.City.Districts.Count; l++)
 					{
-						for (int l = 0; l < region2.City.Districts.Count; l++)
+						District district = region2.City.Districts[l];
+						if (list.Contains(district.WorldPosition) && district.Type != DistrictType.Exploitation)
 						{
-							District district = region2.City.Districts[l];
-							if (list.Contains(district.WorldPosition))
-							{
-								if (district.Type != DistrictType.Exploitation)
-								{
-									targets.Add(district);
-								}
-							}
+							targets.Add(district);
 						}
-						if (region2.City.Camp != null && list.Contains(region2.City.Camp.WorldPosition))
-						{
-							targets.Add(region2.City.Camp);
-						}
+					}
+					if (region2.City.Camp != null && list.Contains(region2.City.Camp.WorldPosition))
+					{
+						targets.Add(region2.City.Camp);
 					}
 				}
 			}
@@ -223,12 +217,12 @@ public class ArmyAction_Attack : ArmyAction_BaseVillage, IArmyActionWithTargetSe
 								KaijuArmy kaijuArmy = army2 as KaijuArmy;
 								if (kaijuArmy != null && !kaijuArmy.Kaiju.OnArmyMode())
 								{
-									goto IL_40D;
+									goto IL_389;
 								}
 							}
 							targets.Add(army2);
 						}
-						IL_40D:;
+						IL_389:;
 					}
 				}
 				DepartmentOfTheInterior agency3 = game.Empires[m].GetAgency<DepartmentOfTheInterior>();

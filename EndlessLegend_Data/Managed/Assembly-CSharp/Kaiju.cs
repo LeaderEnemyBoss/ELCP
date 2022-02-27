@@ -13,7 +13,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffectsProvider<IRegionalEffectsProviderGameEntity>, IGameEntity, IGameEntityWithEmpire, IGameEntityWithWorldPosition, IRegionalEffectsProviderGameEntity, IWorldPositionable
+public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffectsProvider<IRegionalEffectsProviderGameEntity>, IGameEntity, IGameEntityWithEmpire, IGameEntityWithWorldPosition, IWorldPositionable, IRegionalEffectsProviderGameEntity
 {
 	public Kaiju(KaijuEmpire kaijuEmpire, GameEntityGUID guid) : base("Kaiju#" + guid.ToString())
 	{
@@ -404,11 +404,10 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 
 	public IEnumerator OnLoadGame(Amplitude.Unity.Game.Game game)
 	{
-		IGameEntityRepositoryService gameEntityRepository = game.Services.GetService<IGameEntityRepositoryService>();
+		IGameEntityRepositoryService service = game.Services.GetService<IGameEntityRepositoryService>();
 		if (this.kaijuArmyGUID != GameEntityGUID.Zero)
 		{
-			DepartmentOfDefense departmentOfDefense = this.Empire.GetAgency<DepartmentOfDefense>();
-			Army army = departmentOfDefense.GetArmy(this.kaijuArmyGUID);
+			Army army = this.Empire.GetAgency<DepartmentOfDefense>().GetArmy(this.kaijuArmyGUID);
 			if (army != null && army is KaijuArmy)
 			{
 				KaijuArmy kaijuArmy = army as KaijuArmy;
@@ -422,8 +421,7 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 		{
 			if (this.OnGarrisonMode())
 			{
-				IWorldPositionningService worldPositionningService = game.Services.GetService<IWorldPositionningService>();
-				Region region = worldPositionningService.GetRegion(this.KaijuGarrison.WorldPosition);
+				Region region = game.Services.GetService<IWorldPositionningService>().GetRegion(this.KaijuGarrison.WorldPosition);
 				this.Region = region;
 				this.Region.KaijuGarrisonGUID = this.KaijuGarrison.GUID;
 				this.Region.KaijuEmpire = this.KaijuGarrison.KaijuEmpire;
@@ -435,15 +433,15 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 		}
 		if (this.OnGarrisonMode())
 		{
-			gameEntityRepository.Register(this.KaijuGarrison);
-			gameEntityRepository.Unregister(this.KaijuArmy);
+			service.Register(this.KaijuGarrison);
+			service.Unregister(this.KaijuArmy);
 			this.HideKaijuArmyFromMap();
 			this.Empire.RemoveChild(this.KaijuArmy);
 		}
 		else if (this.OnArmyMode())
 		{
-			gameEntityRepository.Register(this.KaijuArmy);
-			gameEntityRepository.Unregister(this.KaijuGarrison);
+			service.Register(this.KaijuArmy);
+			service.Unregister(this.KaijuGarrison);
 			this.ShowKaijuArmyInMap();
 		}
 		this.RegisterTroops();
@@ -633,8 +631,7 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 		{
 			this.OnPrepareToConvertToGarrisonDelegate();
 		}
-		IWorldPositionningService service = this.GameService.Game.Services.GetService<IWorldPositionningService>();
-		Region region = service.GetRegion(this.KaijuArmy.WorldPosition);
+		Region region = this.GameService.Game.Services.GetService<IWorldPositionningService>().GetRegion(this.KaijuArmy.WorldPosition);
 		SimulationDescriptor value = this.SimulationDescriptorDatabase.GetValue(Kaiju.KaijuArmyModeDescriptor);
 		if (value != null)
 		{
@@ -706,6 +703,25 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 		this.KaijuArmy.Empire = this.Empire;
 		this.KaijuArmy.Refresh(false);
 		this.KaijuGarrison.Refresh(false);
+		if (this.MajorEmpire != null && !this.MajorEmpire.IsEliminated && this.MajorEmpire.GetAgency<DepartmentOfDefense>().TechnologyDefinitionShipState == DepartmentOfScience.ConstructibleElement.State.Researched)
+		{
+			IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
+			SimulationDescriptor descriptor;
+			if (database != null && database.TryGetValue(PathfindingContext.MovementCapacitySailDescriptor, out descriptor))
+			{
+				if (!this.KaijuArmy.SimulationObject.Tags.Contains(PathfindingContext.MovementCapacitySailDescriptor))
+				{
+					this.KaijuArmy.AddDescriptor(descriptor, true);
+				}
+				foreach (Unit unit in this.KaijuArmy.Units)
+				{
+					if (!unit.SimulationObject.Tags.Contains(PathfindingContext.MovementCapacitySailDescriptor))
+					{
+						unit.AddDescriptor(descriptor, true);
+					}
+				}
+			}
+		}
 		this.KaijuArmy.Refresh(false);
 		this.ShowKaijuArmyInMap();
 		this.KaijuGarrison.OnConvertedToArmy();
@@ -832,12 +848,33 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 			Diagnostics.LogError("Cannot retreive the region.");
 			return;
 		}
+		Garrison activeTroops = this.GetActiveTroops();
+		List<Unit> list = new List<Unit>();
+		foreach (Unit unit in activeTroops.StandardUnits)
+		{
+			if (unit.SimulationObject.Tags.Contains(DownloadableContent16.TransportShipUnit))
+			{
+				list.Add(unit);
+			}
+		}
+		if (list.Count > 0)
+		{
+			for (int i = 0; i < list.Count; i++)
+			{
+				list[i].SwitchToEmbarkedUnit(false);
+			}
+			if (this.OnArmyMode())
+			{
+				this.KaijuArmy.SetSails();
+			}
+		}
 		this.MoveTo(position);
 		if (this.OnArmyMode())
 		{
 			this.ChangeToGarrisonMode(false);
+			return;
 		}
-		else if (this.OnGarrisonMode())
+		if (this.OnGarrisonMode())
 		{
 			this.LeaveCurrentRegion();
 			this.OwnRegion(region);
@@ -937,19 +974,16 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 		this.ComputeNextTurnToRecoverFromStun();
 	}
 
-	public void ComputeNextTurnToSpawnUnits(bool resetPreviousComputedTurn = false)
+	public void ComputeNextTurnToSpawnUnits()
 	{
-		if (resetPreviousComputedTurn || this.NextTurnToSpawnUnit <= -1 || this.NextTurnToSpawnUnit < Mathf.FloorToInt((float)(this.GameService.Game as global::Game).Turn))
+		this.NextTurnToSpawnUnit = -1;
+		float num = (float)Mathf.CeilToInt(this.GetPropertyValue(SimulationProperties.KaijuUnitProductionTimer));
+		if (num > 0f)
 		{
-			this.NextTurnToSpawnUnit = -1;
-			float num = (float)Mathf.CeilToInt(this.GetPropertyValue(SimulationProperties.KaijuUnitProductionTimer));
-			if (num > 0f)
-			{
-				this.NextTurnToSpawnUnit = Mathf.FloorToInt((float)(this.GameService.Game as global::Game).Turn + num * this.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier));
-			}
-			base.SimulationObject.SetPropertyBaseValue(SimulationProperties.KaijuNextTurnToSpawnUnit, (float)this.NextTurnToSpawnUnit);
-			this.Refresh(false);
+			this.NextTurnToSpawnUnit = Mathf.FloorToInt((float)(this.GameService.Game as global::Game).Turn + num * this.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier));
 		}
+		base.SimulationObject.SetPropertyBaseValue(SimulationProperties.KaijuNextTurnToSpawnUnit, (float)this.NextTurnToSpawnUnit);
+		this.Refresh(false);
 	}
 
 	public void ComputeNextTurnToRecoverFromStun()
@@ -1079,14 +1113,25 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 			return;
 		}
 		Garrison activeTroops = this.GetActiveTroops();
-		float regenModifier = this.Empire.GetPropertyValue(SimulationProperties.InOwnedRegionUnitRegenModifier) + activeTroops.GetPropertyValue(SimulationProperties.InGarrisonRegenModifier);
+		float num = activeTroops.GetPropertyValue(SimulationProperties.InGarrisonRegenModifier);
+		if (this.majorEmpire != null)
+		{
+			Region region = this.gameService.Game.Services.GetService<IWorldPositionningService>().GetRegion(this.WorldPosition);
+			if (region.Owner != null && region.Owner.Index == this.Empire.Index)
+			{
+				num += this.Empire.GetPropertyValue(SimulationProperties.InOwnedRegionUnitRegenModifier);
+			}
+		}
+		else
+		{
+			num += this.Empire.GetPropertyValue(SimulationProperties.InOwnedRegionUnitRegenModifier);
+		}
 		foreach (Unit unit in activeTroops.Units)
 		{
-			DepartmentOfDefense.RegenUnit(unit, regenModifier, 0);
+			DepartmentOfDefense.RegenUnit(unit, num, 0);
 			unit.Refresh(false);
 		}
-		DepartmentOfDefense agency = this.Empire.GetAgency<DepartmentOfDefense>();
-		agency.CleanGarrisonAfterEncounter(activeTroops);
+		this.Empire.GetAgency<DepartmentOfDefense>().CleanGarrisonAfterEncounter(activeTroops);
 		this.Refresh(false);
 	}
 
@@ -1265,6 +1310,68 @@ public class Kaiju : SimulationObjectWrapper, IXmlSerializable, IRegionalEffects
 	private void WorldPawn_OnFinalWorldOrientationChanged(object sender, WorldPawnFinalWorldOrientationChanged worldPawnFinalWorldOrientationChanged)
 	{
 		this.WorldOrientation = worldPawnFinalWorldOrientationChanged.FinalWorldOrientation;
+	}
+
+	public void ComputeNextTurnToSpawnUnits(bool resetPreviousComputedTurn = false)
+	{
+		if (resetPreviousComputedTurn || this.NextTurnToSpawnUnit <= -1 || this.NextTurnToSpawnUnit < Mathf.FloorToInt((float)(this.GameService.Game as global::Game).Turn))
+		{
+			this.NextTurnToSpawnUnit = -1;
+			float num = (float)Mathf.CeilToInt(this.GetPropertyValue(SimulationProperties.KaijuUnitProductionTimer));
+			if (num > 0f)
+			{
+				this.NextTurnToSpawnUnit = Mathf.FloorToInt((float)(this.GameService.Game as global::Game).Turn + num * this.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier));
+			}
+			base.SimulationObject.SetPropertyBaseValue(SimulationProperties.KaijuNextTurnToSpawnUnit, (float)this.NextTurnToSpawnUnit);
+			this.Refresh(false);
+		}
+	}
+
+	public void MoveToRegionWithoutSettling(WorldPosition position)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		if (service == null)
+		{
+			Diagnostics.LogError("Cannot retreive the gameService.");
+			return;
+		}
+		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
+		if (service2 == null)
+		{
+			Diagnostics.LogError("Cannot retreive the worldPositionningService.");
+			return;
+		}
+		if (service2.GetRegion(position) == null)
+		{
+			Diagnostics.LogError("Cannot retreive the region.");
+			return;
+		}
+		Garrison activeTroops = this.GetActiveTroops();
+		List<Unit> list = new List<Unit>();
+		foreach (Unit unit in activeTroops.StandardUnits)
+		{
+			if (unit.SimulationObject.Tags.Contains(DownloadableContent16.TransportShipUnit))
+			{
+				list.Add(unit);
+			}
+		}
+		if (list.Count > 0)
+		{
+			for (int i = 0; i < list.Count; i++)
+			{
+				list[i].SwitchToEmbarkedUnit(false);
+			}
+			if (this.OnArmyMode())
+			{
+				this.KaijuArmy.SetSails();
+			}
+		}
+		this.MoveTo(position);
+		if (this.OnGarrisonMode())
+		{
+			this.ChangeToArmyMode(false);
+		}
+		this.LeaveCurrentRegion();
 	}
 
 	public static readonly StaticString ClassKaijuGarrison = "ClassKaijuGarrison";

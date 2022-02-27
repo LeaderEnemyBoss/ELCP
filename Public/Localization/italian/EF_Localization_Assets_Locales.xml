@@ -2686,7 +2686,7 @@ PUNTA UN'UNITÀ ALLEATA (CLIC DESTRO) PER BENEFICIARE DI QUESTO EFFETTO IN BATTA
 PUNTA UN'UNITÀ ALLEATA (CLIC DESTRO) PER BENEFICIARE DI QUESTO EFFETTO IN BATTAGLIA</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityDebuffImmunity3Title">Benedizione 3</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityDebuffImmunity3Description">#FFB43F#EFFETTI IN BATTAGLIA#REVERT#
-   RIMUOVE GLI EFFETTI DI STATO NEGATIVI DA UN'UNITÀ ALLEATA BERSAGLIO E DALLE UNITÀ ALLEATE ADIACENTI E DONA LORO IMMUNITÀ PER 2 TURNI
+   RIMUOVE GLI EFFETTI DI STATO NEGATIVI DA UN'UNITÀ ALLEATA BERSAGLIO E DALLE UNITÀ ALLEATE ADIACENTI E DONA LORO IMMUNITÀ PER 6 TURNI
    CURA L'UNITÀ ALLEATA E LE UNITÀ ALLEATE ADIACENTI PER UNA VITA \7770\ PARI AL 25% DEL VALORE DEL DANNO DEL MAGO
  
 #FFB43F#CAPACITÀ SUPPORTO:#REVERT# 
@@ -3464,7 +3464,8 @@ LIVELLO 3
    DIFESA \7773\ INCREMENTATO</LocalizationPair>
   <LocalizationPair Name="%BattleEffectSpell2Title">Incantesimo della Fretta</LocalizationPair>
   <LocalizationPair Name="%BattleEffectSpell2Description">#FFB43F#EFFETTI#REVERT#
-   ATTACCO \7772\ INCREMENTATO</LocalizationPair>
+   ATTACCO \7772\ INCREMENTATO
+   INIZIATIVA \7774\ INCREMENTATO</LocalizationPair>
   <LocalizationPair Name="%BattleEffectSpell3Title">Incantesimo di Indebolimento</LocalizationPair>
   <LocalizationPair Name="%BattleEffectSpell3Description">#FFB43F#EFFETTI#REVERT#
    STORDITO</LocalizationPair>
@@ -5649,7 +5650,7 @@ LIVELLO 3
   <LocalizationPair Name="%SideQuestVillage#0010Title">Diplomazia alternativa</LocalizationPair>
   <LocalizationPair Name="%SideQuestVillage#0010Description">A prescindere che tu sia convinto o meno dell'utilità della guerra, dovrai affrontare persone che ne sono fiere sostenitrici. Per ottenere il rispetto di questa Fazione Minore, dovrai mostrare loro come sviluppi, spieghi e istruisci le tue truppe.</LocalizationPair>
   <LocalizationPair Name="%SideQuestVillage#0010Objective">Per pacificare il $MinorFaction in $InitialTribeRegionName, le tue truppe hanno bisogno di padroneggiare tutte le arti della guerra. Assolda e allena unità de distinto tipo.</LocalizationPair>
-  <LocalizationPair Name="%SideQuestVillage#0010-Step1">Per 5 turni $Progression, fai in modo di avere un'unità di almeno 4 delle 5 classi di unità esistenti nelle guarnigioni del tuo impero.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestVillage#0010-Step1">Per 3 turni $Progression, fai in modo di avere un'unità di almeno 3 delle 5 classi di unità esistenti nelle guarnigioni del tuo impero.</LocalizationPair>
   <LocalizationPair Name="%SideQuestVillage#0010-Step1Tooltip">Non importa se le unità sono tutte adunate in una sola città o sparse in diverse città, a patto che siano sotto il tuo comando. I turni non devono essere convalidati successivamente. Le classi di unità sono le seguenti: Fanteria \7739\, Cavalleria \7740\, Attacco a distanza \7741\, Supporto \7742\ e Volante \7743\. Milizia ed Eroe non vengono presi in considerazione.</LocalizationPair>
   <LocalizationPair Name="%SideQuestVillage#0010Outcome">I tuoi eserciti sono esperti in arti della guerra. Hai mostrato il tuo talento per la sopravvivenza, ottenendo così l'attenzione di una nuova Fazione Minore...</LocalizationPair>
   <LocalizationPair Name="%SideQuestVillage#0011Title">Un leader fiero</LocalizationPair>
@@ -5853,7 +5854,7 @@ LIVELLO 3
   <LocalizationPair Name="%SideQuestPOI#0013Title">Corpo e sangue</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0013Description">Sui muri di queste rovine sono incise saggie parole: "Se l'impero è il corpo, il popolo è il suo sangue". Comprendi così che la chiave per raggiungere la gloria è il popolo e che avere più mani a disposizione ti aiuterà ad affrontare le sfide che ti aspettano.</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0013Objective">Accresci la popolazione del tuo impero in modo da incrementare il tuo potere.</LocalizationPair>
-  <LocalizationPair Name="%SideQuestPOI#0013-Step1">Raggiungi una Popolazione \7705\ di 8 o più unità in una delle tue città entro $Timer turni.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestPOI#0013-Step1">Raggiungi una Popolazione \7705\ di $PopulationToReach o più unità in una delle tue città entro $Timer turni.</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0013-Step1Tooltip">La Popolazione \7705\ cresce più velocemente se produci Cibo \7700\.</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0013Outcome">Puoi vedere molti bambini che giocano nelle tue strade e ti immagini i mercanti, i contadini o i soldati che diventeranno un giorno.</LocalizationPair>
   <LocalizationPair Name="%SideQuestPOI#0014Title">Corpo e sangue</LocalizationPair>
@@ -6049,7 +6050,7 @@ L'esplorazione terrà anche le loro menti lontane dalla nostra condizione - ed �
  
 Eppure, è così facile ...</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1Objective">Costruisci un esercito ed esplora l'area circostante alla tua nuova città. Valuta attentamente le rovine nella regione per trovare resti di tecnologia degli Eterni.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step1">Scorta un Eroe dei Signori Infranti con almeno 3 unità di Fanteria \7739\ per ispezionare il $QuestPOI</LocalizationPair>
+  <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step1">Scorta un Eroe dei Signori Infranti con almeno 2 unità di Fanteria \7739\ per ispezionare il $QuestPOI</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step1Tooltip">Il Raggio di Polvere ti mostra l'esatta posizione sulla mappa.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step2">La porta rimane chiusa: richiede un esatto quantitativo di Polvere per essere aperta. Raccogli $Dust\7703\ e prova nuovamente ad aprirla.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter1-Step2Tooltip">Il Raggio di Polvere ti mostra l'esatta posizione sulla mappa.</LocalizationPair>
@@ -6063,9 +6064,9 @@ Marquis Suluzzo è forse il peggiore. Anche se tutti i nobili e i fanatici cerca
  
 Ma non posso accettare tutto questo. Sarebbe un'opportunità, ma ciò non lo rende giusto o adeguato. Purtroppo, mi è stata forzata la mano e non ho altra scelta che lasciare che i saggi e alchimisti studino, cercando una risposta che sia gradita ai loro avidi padroni. Andremo avanti con la ricerca per migliorare al contempo le nostre conoscenze - anche se io lo faccio per altri motivi. Da parte mia vorrei vedere la nostra gente resistere a questa tentazione, anche se è rischioso. C'è una ragione se la prima parola del sigillo reale è "onore".</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2Objective">I misteri del passato del pianeta potrebbe essere le chiavi per il tuo futuro. Migliora la conoscenza scientifica per aiutarti a decifrarli.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step1">Ricerca 8 tecnologie dell'Era di Ricerca I $Progression.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step1">Ricerca 6 tecnologie dell'Era di Ricerca I $Progression.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step1Tooltip">Le tecnologie ottenute attraverso le quest non entrano nel conteggio per accedere ad una nuova Era tecnologica e non hanno impatti sui costi di Ricerca.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step2">Ricerca 8 tecnologie dell'Era di Ricerca I $Progression.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step2">Ricerca 10 tecnologie dell'Era di Ricerca I $Progression.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2-Step2Tooltip">Le tecnologie ottenute attraverso le quest non entrano nel conteggio per accedere ad una nuova Era tecnologica e non hanno impatti sui costi di Ricerca.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter2Outcome">Questo è molto interessante. Oltre ad ottenere nuovi grandi progressi nella magia e nell'alchimia, abbiamo scoperto anche qualcosa di antico e potente; un piccolo anello che vibra di una forza repressa.</LocalizationPair>
   <LocalizationPair Name="%MainQuestBrokenLords-Chapter3Title">3. Frontiere pericolose</LocalizationPair>
@@ -6837,7 +6838,7 @@ Peggio ancora, li ho visti. La Regina, il Silenzioso. La freddezza, l'odio, l'os
 Mi hanno incuriosito e vorrei vedere cosa c'è sotto quelle strane armature e macchine che essi indossano. Forse allora potrei capire quello che cercano di studiare e comprendere e conoscere il perché di tutto ciò.</LocalizationPair>
   <LocalizationPair Name="%MainQuestCultists-Chapter3AltObjective">La Regina e il Silenzioso vogliono potere - e privacy. Vorrebbero accrescere la loro conoscenza e la loro città, scoprendo i segreti mentre tengono lontani gli occhi indiscreti. Devi costruire una città più grande e assicurarti che non ci siano eserciti erranti nella loro regione.</LocalizationPair>
   <LocalizationPair Name="%MainQuestCultists-Chapter3Alt-Step1">Assegna un Eroe dei Cultisti alla Città per 10 turni $Progression.</LocalizationPair>
-  <LocalizationPair Name="%MainQuestCultists-Chapter3Alt-Step1Tooltip">Gli eroi possono essere assoldati al Mercato, a patto di aver sviluppato la tecnologia Rookery.</LocalizationPair>
+  <LocalizationPair Name="%MainQuestCultists-Chapter3Alt-Step1Tooltip">Gli eroi possono essere assoldati al Mercato, a patto di aver sviluppato la tecnologia Mercato dei Mercenari.</LocalizationPair>
   <LocalizationPair Name="%MainQuestCultists-Chapter3Alt-Step2">Porta il tuo Centro Città al livello 2</LocalizationPair>
   <LocalizationPair Name="%MainQuestCultists-Chapter3Alt-Step2Tooltip">Una casella Città aumenta di livello con la costruzione nelle sue vicinanze di almeno 4 Quartieri</LocalizationPair>
   <LocalizationPair Name="%MainQuestCultists-Chapter3AltOutcome">Ho sentito delle voci interessanti che circolano tra i fedeli. Dicono che "la cosa" è pronta per "iniziare". L'immaginazione mi è di poco aiuto, dal momento che entrambi i leader e i loro scopi mi sono estranei e senza vita. Così inizierà.. ma che cosa inizierà?</LocalizationPair>
@@ -9567,8 +9568,8 @@ Gli altri Imperi possono aiutarti a raggiungere questo obiettivo.</LocalizationP
   <LocalizationPair Name="%InfiltrationActionDamageFortificationTitle">Fortificazioni danneggiate</LocalizationPair>
   <LocalizationPair Name="%InfiltrationActionDamageFortification_Level2Description">Riduce le fortificazioni \7809\ del 25% del loro valore massimo</LocalizationPair>
   <LocalizationPair Name="%InfiltrationActionDamageFortification_Level3Description">Riduce le fortificazioni \7809\ del 50% del loro valore massimo</LocalizationPair>
-  <LocalizationPair Name="%InfiltrationActionDamageFortification_Level4Description">Riduce le fortificazioni \7809\ del 100% del loro valore massimo</LocalizationPair>
-  <LocalizationPair Name="%InfiltrationActionDamageFortification_Level5Description">Riduce le fortificazioni \7809\ a zero per $Duration turni \7708\</LocalizationPair>
+  <LocalizationPair Name="%InfiltrationActionDamageFortification_Level4Description">Riduce le fortificazioni \7809\ del 75% del loro valore massimo</LocalizationPair>
+  <LocalizationPair Name="%InfiltrationActionDamageFortification_Level5Description">Riduce le fortificazioni \7809\ del 100% del loro valore massimo</LocalizationPair>
   <LocalizationPair Name="%InfiltrationActionPoisonGovernorTitle">Governatore sotto attacco</LocalizationPair>
   <LocalizationPair Name="%InfiltrationActionPoisonGovernor_Level3Description">-30% salute \7770\ per turno al Governatore per $Duration turni \7708\</LocalizationPair>
   <LocalizationPair Name="%InfiltrationActionPoisonGovernor_Level4Description">Rimanda il Governatore alla sua Accademia con lo stato Inabilitato</LocalizationPair>
@@ -10626,7 +10627,7 @@ La Fazione Minore deve rimanere assimilata durante la missione.</LocalizationPai
   <LocalizationPair Name="%SideQuestLore#0017Description">Gli Erycis saranno anche primitivi, ma sono religiosi. Come le loro forme multi-testa, non venerano un solo dio ma molti. I principali sono: il dio degli alberi Boikiss, il dio delle erbe Natriss, il dio delle sabbie Getulass e il dio delle pietre Sebaess. Mostra rispetto costruendo le tue città sui terreni di questi dei per farti accettare dagli Erycis.</LocalizationPair>
   <LocalizationPair Name="%SideQuestLore#0017Objective">Mostra rispetto ai tanti dei della cultura degli Erycis costruendo le tue città sui loro vari terreni.
 La Fazione Minore deve rimanere assimilata durante la missione.</LocalizationPair>
-  <LocalizationPair Name="%SideQuestLore#0017-Step1">Costruisci nuova città Quartieri su almeno altri tre tipi di terreno per il tuo impero $Progression.</LocalizationPair>
+  <LocalizationPair Name="%SideQuestLore#0017-Step1">Costruisci nuova città Quartieri su almeno altri due tipi di terreno per il tuo impero $Progression.</LocalizationPair>
   <LocalizationPair Name="%SideQuestLore#0017-Step1Tooltip">I principali dei di alberi, erba, sabbia e pietra corrispondono a foresta, pianura, terreno arido e roccioso. Posiziona il mouse sopra una casella per vedere il tipo di terreno.</LocalizationPair>
   <LocalizationPair Name="%SideQuestLore#0017Outcome">Le tue città sono piacevoli ai tanti occhi degli Erycis, che ti giurano fedeltà e due unità per il tuo esercito. Ti confidano il loro principio religioso, secondo cui tutti gli dei sono manifestazioni del vero Dio: il Dio Supremo.</LocalizationPair>
   <LocalizationPair Name="%SideQuestLore#0018Title">Trasferimento dei ciechi</LocalizationPair>
@@ -10671,8 +10672,8 @@ La Fazione Minore deve rimanere assimilata durante la missione.</LocalizationPai
   <LocalizationPair Name="%SideQuestLore#0015-Step3RewardDescription">Un esercito composto da 2 unità dei Nidya</LocalizationPair>
   <LocalizationPair Name="%SideQuestLore#0019-Step3RewardTitle">\7766\ Esercito degli Hurnas: 2 Unità</LocalizationPair>
   <LocalizationPair Name="%SideQuestLore#0019-Step3RewardDescription">Un esercito composto da 2 unità degli Hurnas</LocalizationPair>
-  <LocalizationPair Name="%SideQuestLore#0017-Step1RewardTitle">\7766\ Esercito degli Erycis: 2 Unità</LocalizationPair>
-  <LocalizationPair Name="%SideQuestLore#0017-Step1RewardDescription">Un esercito composto da 2 unità degli Erycis</LocalizationPair>
+  <LocalizationPair Name="%SideQuestLore#0017-Step1RewardTitle">\7766\ Esercito degli Erycis</LocalizationPair>
+  <LocalizationPair Name="%SideQuestLore#0017-Step1RewardDescription">Un esercito composto da unità degli Erycis</LocalizationPair>
   <LocalizationPair Name="%SideQuestLore#0020-Step2RewardTitle">\7766\ Esercito dei Bos: 1 unità</LocalizationPair>
   <LocalizationPair Name="%SideQuestLore#0020-Step2RewardDescription">Un esercito composto da 1 unità dei Bos</LocalizationPair>
   <LocalizationPair Name="%Soundtrack2PackTitle">Eco di Auriga</LocalizationPair>
@@ -13241,7 +13242,10 @@ Solo uno per città</LocalizationPair>
 #FFB43F#EFFETTI IN BATTAGLIA#REVERT#
    +20% DANNO \7776\ SULLE CASELLE VULCANICHE</LocalizationPair>
   <LocalizationPair Name="%UnitAbilityGeomancy0Title">Geomanzia</LocalizationPair>
-  <LocalizationPair Name="%UnitAbilityGeomancy0Description">#FFB43F#EFFETTI IN BATTAGLIA#REVERT#
+  <LocalizationPair Name="%UnitAbilityGeomancy0Description">#FFB43F#EFFETTI#REVERT#
+GENERATES TEMPORARY VOLCANIC TERRAIN AT THE BEGINNING OF EACH TURN
+  
+#FFB43F#EFFETTI IN BATTAGLIA#REVERT#
    +20% ATTACCO \7772\ ALLE UNITÀ AMICHE SE USATO DAL TERRENO VULCANICO
    +10 INIZIATIVA \7774\ ALLE UNITÀ AMICHE SE USATO DAL TERRENO FORESTALE
    +20% DIFESA \7773\ SULLE UNITÀ AMICHE SE USATO DA UN ALTRO TERRENO</LocalizationPair>
@@ -13613,7 +13617,7 @@ Siano essi divorati da ghiacci o fiamme, i Kapaku lasceranno il segno su questo 
   <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step1Tooltip">Produci la quantità di Scienza necessaria nella tua città.</LocalizationPair>
   <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step2">L'ingresso del laboratorio sarà sigillato con la magia. Invia un Eroe dei Maghi Ardenti equipaggiato con lo Scettro Trascendente di Verda e alla guida di un esercito con almeno due Ateshi Zeloti di Level 6 Ateshi Zeloti, per cercare le rovine nella regione $RegionName.</LocalizationPair>
   <LocalizationPair Name="%MainQuestRageWizards-Chapter6Alt-Step2Tooltip">L'esatta posizione di ogni rovina è indicata sulla mappa da un raggio di Polvere</LocalizationPair>
-  <LocalizationPair Name="%BoosterBattleborn">Durante le Eclissi, le scorte riciclate creano, oltre al bonus di Cibo, 2 Nati per la battaglia nella città selezionata.</LocalizationPair>
+  <LocalizationPair Name="%BoosterBattleborn">Durante le Eclissi, le scorte riciclate creano, oltre al bonus di Cibo, 1 Nati per la battaglia nella città selezionata.</LocalizationPair>
   <LocalizationPair Name="%BoosterStrategicLavapoolTooltipEffect">Permette ai tuoi eserciti di trasformare le caselle di qualunque tipo in terreno vulcanico.</LocalizationPair>
   <LocalizationPair Name="%AnomalyTypeAnomaly54Title">Comignolo di lava</LocalizationPair>
   <LocalizationPair Name="%AnomalyTypeAnomaly54Description">Inusuali tra i terreni vulcanici, i Comignoli di lava peccano in quanto a potenza esplosiva a differenza delle simili Fumarole, ma si tratta di calamite geologiche che attirano a sé grosse quantità di Polvere, il che li rende una risorsa molto ambita.</LocalizationPair>
@@ -13624,9 +13628,9 @@ Siano essi divorati da ghiacci o fiamme, i Kapaku lasceranno il segno su questo 
   <LocalizationPair Name="%AnomalyTypeAnomaly57Title">Caldera</LocalizationPair>
   <LocalizationPair Name="%AnomalyTypeAnomaly57Description">Abbastanza calde da far brillare la Polvere ma non da causare ustioni, le Caldere sono una proprietà del terreno vulcanico che permette di accumulare una notevole quantità di Polvere, al contempo fungendo da piccola fonte di calore naturale.</LocalizationPair>
   <LocalizationPair Name="%InfiltrationActionStealEmpireMoneyTitle">Opportunisti della Polvere</LocalizationPair>
-  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level2Description">Ruba una quantità fissa più una piccola percentuale di Polvere \7703\ dell'impero infiltrato</LocalizationPair>
-  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level3Description">Ruba una piccola quantità fissa più una percentuale di Polvere \7703\ dell'impero infiltrato</LocalizationPair>
-  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level4Description">Ruba un'esigua quantità fissa più una grossa percentuale di Polvere \7703\ dell'impero infiltrato</LocalizationPair>
+  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level2Description">Ruba una quantità fissa più una piccola percentuale di Polvere dell'impero infiltrato$Amount</LocalizationPair>
+  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level3Description">Ruba una piccola quantità fissa più una percentuale di Polvere dell'impero infiltrato$Amount</LocalizationPair>
+  <LocalizationPair Name="%InfiltrationActionStealEmpireMoney_Level4Description">Ruba un'esigua quantità fissa più una grossa percentuale di Polvere dell'impero infiltrato$Amount</LocalizationPair>
   <LocalizationPair Name="%TerraformDevice1Title">Vulcanoformante</LocalizationPair>
   <LocalizationPair Name="%TerraformDevice1Description">Ideato dagli Eterni Concreti e alimentato dalle ricchezze di Auriga, il Vulcanoformante può trasformare qualsiasi terra selvaggia in pianure di basalto e lava.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionGreetings_Flames">Ave a voi, Allogeni! Siamo i Kapaku, legittimi eredi di Auriga.</LocalizationPair>
@@ -14007,7 +14011,7 @@ Le Città virenti arrestano il loro sviluppo e convogliano le risorse delle case
   <LocalizationPair Name="%FactionTraitMimics5TooltipEffect">-30% costo di Influenza #8A7DFF#\7704\#REVERT# delle interazioni diplomatiche per ogni Urkan sotto il tuo controllo</LocalizationPair>
   <LocalizationPair Name="%FactionTraitMimics6Title">Industria organica</LocalizationPair>
   <LocalizationPair Name="%FactionTraitMimics6Description">I Mykara, nutrendosi di un composto vivente e simbioticamente intrecciato con il nucleo stesso, sono in grado di usare il frutto di questi giardini come produzione industriale.</LocalizationPair>
-  <LocalizationPair Name="%FactionTraitMimics6TooltipEffect">Fornisce alla Città principale un bonus nella produzione di Industria \7701\ pari al 10% della produzione di Cibo \7700\</LocalizationPair>
+  <LocalizationPair Name="%FactionTraitMimics6TooltipEffect">Fornisce alla Città principale un bonus nella produzione di Industria \7701\ pari al 15% della produzione di Cibo \7700\</LocalizationPair>
   <LocalizationPair Name="%FactionTraitMimics7Title">Difesa organica</LocalizationPair>
   <LocalizationPair Name="%FactionTraitMimics7Description">Grazie alle reti miceliali che compongono la struttura portante della città, le difese sono più resistenti delle friabili roccia e argilla. Inoltre, godono della capacità di autoripararsi dopo aver subito danni.</LocalizationPair>
   <LocalizationPair Name="%FactionTraitMimics8Title">Estrazione inefficace</LocalizationPair>
@@ -14031,7 +14035,7 @@ Le città nemiche nelle regioni limitrofe producono -15% Cibo #CFE14F#\7700\#REV
   <LocalizationPair Name="%TechnologyDefinitionKaiju1Unlock2Title">Secrezione curativa</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju1Unlock2Description">Gli Urkan secernono un particolare feromone in grado di favorire la difesa e la rigenerazione degli eserciti vicini. Si crede che tale effetto sia correlato con le simbiosi tra i batteri in guerra.</LocalizationPair>
   <LocalizationPair Name="%TechnologyKaiju1Unlock2EffectOverride">Mentre un Urkan è in forma da battaglia
-Le unità alleate nella stessa regione hanno +20% Difesa \7773\
+Le unità alleate nella stessa regione hanno +10% Difesa \7773\
 Le unità alleate nella stessa regione hanno +20% Rigenerazione Vita \7770\</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju1Unlock2PrerequisiteDescription">Richiede Kazar</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju1Unlock3Title">Carapace rinforzato</LocalizationPair>
@@ -14093,8 +14097,8 @@ Le città nemiche nelle regioni limitrofe producono -10% Polvere #FFD768#\7703\#
   <LocalizationPair Name="%TechnologyDefinitionKaiju3Unlock2Title">Sangue dell'Iracondo</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju3Unlock2Description">Il sangue degli Urkan (o qualunque cosa esso sia) è molto potente, e lo stesso vale per il divino icore di Fakir. Se miscelato con un raro minerale e ingurgitato, causa un'impellente chiamata alle armi che tramuta gli eserciti in feroci bestie. Per via della sua fragilità, non percorre molta strada.</LocalizationPair>
   <LocalizationPair Name="%TechnologyKaiju3Unlock2EffectOverride">Mentre un Urkan è in forma da battaglia
-Le unità alleate nella stessa regione hanno +15% Attacco \7772\
-Le unità alleate nella stessa regione hanno +15% Danno \7776\</LocalizationPair>
+Le unità alleate nella stessa regione hanno +10% Attacco \7772\
+Le unità alleate nella stessa regione hanno +10% Danno \7776\</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju3Unlock2PrerequisiteDescription">Richiede Fakir</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju3Unlock3Title">Condizionamento degli Urkan</LocalizationPair>
   <LocalizationPair Name="%TechnologyDefinitionKaiju3Unlock3Description">Controllando Fakir, gli addestratori riescono a istruire tutta la cerchia di Urkan sotto il loro comando, permettendo loro di essere più indipendenti e incrementandone il dinamismo.</LocalizationPair>
@@ -14118,47 +14122,60 @@ Le unità di Urkan e Parassiti che controlli hanno 2 Movimento \7757\</Localizat
   <LocalizationPair Name="%CityConstructibleActionIntegrateFactionDescription">L'habitat di ogni specie è diverso dagli altri, ma ciò non può dirsi vero per i Mykara. Maestri della simbiosi, i Mykara attaccano rapidamente ogni città per scoprirne gli utili segreti.</LocalizationPair>
   <LocalizationPair Name="%CityConstructibleActionIntegrateFactionTooltipEffect">Descrizione degli effetti dell'Integrazione di una fazione</LocalizationPair>
   <LocalizationPair Name="%BrokenLordsIntegrationDescriptor1Title">Penitenza della Polvere</LocalizationPair>
-  <LocalizationPair Name="%BrokenLordsIntegrationDescriptor1EffectOverride">+1 \7703\ SU TERRENO CON \7703\
+  <LocalizationPair Name="%BrokenLordsIntegrationDescriptor1EffectOverride">+1 #FFD768#\7703\#REVERT SU TERRENO CON #FFD768#\7703\#REVERT
 +1% RIGENERAZIONE SALUTE \7770\ PER CIASCUN VILLAGGIO PACIFICATO NELL'IMPERO</LocalizationPair>
   <LocalizationPair Name="%MadFairiesIntegrationDescriptor1Title">Anima della Foresta</LocalizationPair>
   <LocalizationPair Name="%MadFairiesIntegrationDescriptor1EffectOverride">+20% DIFESA \7773\ SULLE CASELLE DI FORESTA
-+1 \7701\ SULLE CASELLE DI FORESTA DURANTE L'ESTATE</LocalizationPair>
++1 #FF926D#\7701\#REVERT# SULLE CASELLE DI FORESTA DURANTE L'ESTATE
+GRANTS CAMOUFLAGE FOR ALL UNITS</LocalizationPair>
   <LocalizationPair Name="%NecrophagesIntegrationDescriptor1Title">Potere dei Popoli</LocalizationPair>
   <LocalizationPair Name="%NecrophagesIntegrationDescriptor1EffectOverride">+5% RIGENERAZIONE SALUTE \7770\ NELL'IMPERO
--25% \7703\ DA MANTENIMENTO DELLE FORZE ARMATE NELL'IMPERO</LocalizationPair>
+-50% \7703\ DA MANTENIMENTO DELLE FORZE ARMATE NELL'IMPERO</LocalizationPair>
   <LocalizationPair Name="%RageWizardsIntegrationDescriptor1Title">Frammenti di Trascendenza</LocalizationPair>
-  <LocalizationPair Name="%RageWizardsIntegrationDescriptor1EffectOverride">+1 \7704\ PER POPOLAZIONE \7705\ SU CITTÀ
-+5 \7704\ SU CITTÀ
-+15 \7706\ SU CITTÀ</LocalizationPair>
+  <LocalizationPair Name="%RageWizardsIntegrationDescriptor1EffectOverride">+1 #8A7DFF#\7704\#REVERT# PER POPOLAZIONE \7705\ SU CITTÀ
++5 #8A7DFF#\7704\#REVERT# SULLA CITTÀ PRINCIPALE PER CITTÀ
++15 #F0A1FF#\7706\#REVERT# SU CITTÀ</LocalizationPair>
   <LocalizationPair Name="%VaultersIntegrationDescriptor1Title">Abitanti delle profondità</LocalizationPair>
-  <LocalizationPair Name="%VaultersIntegrationDescriptor1EffectOverride">+1 \7702\ SU TERRENO CON \7702\
+  <LocalizationPair Name="%VaultersIntegrationDescriptor1EffectOverride">+1 #59DEFF#\7702\#REVERT# SU TERRENO CON #59DEFF#\7702\#REVERT#
 IMMUNITÀ AGLI EFFETTI DELLA RIDUZIONE DI CIBO E APPROVAZIONE CAUSATI DALL'INVERNO PER LE CITTÀ</LocalizationPair>
   <LocalizationPair Name="%RovingClansIntegrationDescriptor1Title">Fioritura rigogliosa</LocalizationPair>
-  <LocalizationPair Name="%RovingClansIntegrationDescriptor1EffectOverride">50% RIDUZIONE DEL COSTO \7704\ PER ACCORDI COMMERCIALI E DI RICERCA
-+10% GUADAGNO \7703\ E \7702\ BONUS SULLE ROTTE COMMERCIALI</LocalizationPair>
+  <LocalizationPair Name="%RovingClansIntegrationDescriptor1EffectOverride">50% RIDUZIONE DEL COSTO #8A7DFF#\7704\#REVERT# PER ACCORDI COMMERCIALI E DI RICERCA
++50% GUADAGNO #FFD768#\7703\#REVERT# E #59DEFF#\7702\#REVERT# BONUS SULLE ROTTE COMMERCIALI
+UNLOCKS ALL MARKETPLACE TECHNOLOGIES
+INFORMAZIONI SUPPLEMENTARI SULL'UTILIZZO DEL MERCATO
+RICEVE 8% #FFD768#\7703\#REVERT# DI OGNI TASSA DI TRANSAZIONE PAGATA DAGLI ALTRI IMPERI</LocalizationPair>
   <LocalizationPair Name="%DrakkensIntegrationDescriptor1Title">Tribù e tributo</LocalizationPair>
-  <LocalizationPair Name="%DrakkensIntegrationDescriptor1EffectOverride">100% RIDUZIONE DEL COSTO SU ANNESSIONE DI UNA FAZIONE MINORE
-+2 SULLA CITTÀ PRINCIPALE PER CIASCUN VILLAGGIO PACIFICATO NELL'IMPERO</LocalizationPair>
+  <LocalizationPair Name="%DrakkensIntegrationDescriptor1EffectOverride">100% #8A7DFF#\7704\#REVERT# RIDUZIONE DEL COSTO SU ANNESSIONE DI UNA FAZIONE MINORE
++2 #8A7DFF#\7704\#REVERT# SULLA CITTÀ PRINCIPALE PER CIASCUN VILLAGGIO PACIFICATO NELL'IMPERO
+REDUCED COST FOR OVERGROWING VILLAGES</LocalizationPair>
   <LocalizationPair Name="%CultistsIntegrationDescriptor1Title">Potenza dell'isolamento</LocalizationPair>
   <LocalizationPair Name="%CultistsIntegrationDescriptor1EffectOverride">+75 FORTIFICAZIONI \7809\ SULLA CITTÀ PRINCIPALE
-+50 XP QUANDO ASSOLDI UN'UNITÀ</LocalizationPair>
++50 FORTIFICATION \7809\ ON ALL CITIES
++1 MILITIA ON ALL CITIES
++100 XP QUANDO ASSOLDI UN'UNITÀ</LocalizationPair>
   <LocalizationPair Name="%ReplicantsIntegrationDescriptor1Title">Ombre e Polvere</LocalizationPair>
   <LocalizationPair Name="%ReplicantsIntegrationDescriptor1EffectOverride">+10 SICUREZZA \7813\ SU CITTÀ
 +2 PUNTI INFILTRAZIONE \7812\ SU EROE INFILTRATO
-+50% \7703\ DAL SACCHEGGIO</LocalizationPair>
++50% #FFD768#\7703\#REVERT# DAL SACCHEGGIO
+UNLOCKS PILLAGE
++3 FORTIFICATION DAMAGE \7820\ ON ALL UNITS</LocalizationPair>
   <LocalizationPair Name="%WinterShiftersIntegrationDescriptor1Title">Gelo agghiacciante</LocalizationPair>
   <LocalizationPair Name="%WinterShiftersIntegrationDescriptor1EffectOverride">-100% MARGINE DI ERRORE PER LE PREDIZIONI INVERNALI
--25% COSTO \7704\ DELLE DICHIARAZIONI DIPLOMATICHE DURANTE L'INVERNO
--25% COSTO \7704\ DELLE DICHIARAZIONI DIPLOMATICHE DURANTE L'ESTATE</LocalizationPair>
+-25% COSTO #8A7DFF#\7704\#REVERT# DELLE DICHIARAZIONI DIPLOMATICHE DURANTE L'INVERNO
+-25% COSTO #8A7DFF#\7704\#REVERT# DELLE DICHIARAZIONI DIPLOMATICHE DURANTE L'ESTATE
+INDICA LA POSIZIONE DEI \7818\ GRAPPOLI DI PERLE SULLE CASELLE ESPLORATE
+PERLE \7818\ OTTENUTE DURANTE LE RICERCHE TRA LE ROVINE</LocalizationPair>
   <LocalizationPair Name="%SeaDemonsIntegrationDescriptor1Title">Cantico dei mari</LocalizationPair>
   <LocalizationPair Name="%SeaDemonsIntegrationDescriptor1EffectOverride">IMBARCO/SBARCO LIBERO
-+1 \7701\ SULLE CASELLE MARE, FIUME E LAGO
-+1 \7702\ SULLE CASELLE MARE, FIUME E LAGO</LocalizationPair>
++1 #FF926D#\7701\#REVERT# SULLE CASELLE MARE, FIUME E LAGO
++1 #59DEFF#\7702\#REVERT# SULLE CASELLE MARE, FIUME E LAGO
+UNLOCKS SHIPYARD</LocalizationPair>
   <LocalizationPair Name="%FlamesIntegrationDescriptor1Title">Custodi della Fiamma</LocalizationPair>
   <LocalizationPair Name="%FlamesIntegrationDescriptor1EffectOverride">10% DANNO \7776\ SULLE CASELLE VULCANICHE
-IN GRADO DI PREVEDERE ECLISSI DI POLVERE</LocalizationPair>
+IN GRADO DI PREVEDERE ECLISSI DI POLVERE
+SCIENZA #59DEFF#\7702\#REVERT# RICEVUTI DOPO AVER PERLUSTRATO LE ROVINE</LocalizationPair>
   <LocalizationPair Name="%MimicsIntegrationDescriptor1Title">Industria vivace</LocalizationPair>
-  <LocalizationPair Name="%MimicsIntegrationDescriptor1EffectOverride">10% BONUS DI INDUSTRIA \7701\ IN BASE ALLA PRODUZIONE DI CIBO \7700\ NELLA TUA CITTÀ</LocalizationPair>
+  <LocalizationPair Name="%MimicsIntegrationDescriptor1EffectOverride">15% BONUS DI INDUSTRIA INDUSTRY #FF926D#\7701\#REVERT# IN BASE ALLA PRODUZIONE DI CIBO #CFE14F#\7700\#REVERT# NELLA TUA CITTÀ</LocalizationPair>
   <LocalizationPair Name="%SharedAffinityIntegrationTitle">Affinità condivisa</LocalizationPair>
   <LocalizationPair Name="%SharedAffinityIntegrationDescription">Questa Fazione condivide la tua Affinità e non può essere integrata. 
 La città fornisce FIDSI automaticamente alla tua Città Principale.</LocalizationPair>
@@ -14748,126 +14765,126 @@ Ma per prima cosa, dobbiamo difendere il vascello...</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1">Una delle vostre bestioline Urkan si trova in una regione vicina. Speriamo sia socievole e educato.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1">Non ci fidiamo del vostro Urkan che si aggira qui nei paraggi. Qualora lo usaste contro di noi, saremo costretti a reagire!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1">Avete schierato un Urkan troppo vicino a noi. Lo consideriamo quasi un atto di guerra!</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijLostFeedbackPositive_Occurrence1">L'Urkan era uno strumento di autodifesa. È un peccato che ce l'abbiate portato via.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1">Avete vanificato il nostro tentativo di controllare un Urkan. Tale gesto non è affatto gradito!</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1">Uccidereste qualunque creatura pur di averla vinta, perfino un Urkan di Auriga!</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1">L'Urkan era uno strumento di autodifesa. È un peccato che ce l'abbiate portato via.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1">Avete vanificato il nostro tentativo di controllare un Urkan. Tale gesto non è affatto gradito!</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1">Uccidereste qualunque creatura pur di averla vinta, perfino un Urkan di Auriga!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_Mimics">Quell'Urkan era importante per i Mykara. Ci rattrista sapere che siete stati costretti a distruggerlo.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_Mimics">L'Urkan era un'estensione della nostra nazione Mykara. Il vostro attacco non è affatto tollerato!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_Mimics">I Mykara non perdoneranno la sconsiderata uccisione dell'Urkan!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_Mimics">Avete condotto un Urkan fino a una regione vicina dei Mykara. Ci auguriamo che sia solo per una questione di difesa.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_Mimics">I Mykara diffidano del vostro Urkan vicino. I nostri filamenti lo osservano e siamo pronti a reagire.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_Mimics">Il vostro Urkan affamato non fa che fissare il nostro territorio. Potreste scoprire che esistono specie di spore alquanto mortali.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_Mimics">L'Urkan sconfitto cominciava a costare troppo. I Mykara non si rammaricano di vederlo andar via.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_Mimics">Il nostro legame con l'Urkan è recente, ma voi l'avete reciso. Speriamo che abbiate avuto una buona motivazione.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_Mimics">Sareste disposti a lasciare i Mykara indifesi, distruggendo il nostro Urkan? Scatenereste la nostra ira e noi reclameremmo la nostra vendetta.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_Mimics">L'Urkan sconfitto cominciava a costare troppo. I Mykara non si rammaricano di vederlo andar via.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_Mimics">Il nostro legame con l'Urkan è recente, ma voi l'avete reciso. Speriamo che abbiate avuto una buona motivazione.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_Mimics">Sareste disposti a lasciare i Mykara indifesi, distruggendo il nostro Urkan? Scatenereste la nostra ira e noi reclameremmo la nostra vendetta.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_MadFairies">Il vostro Bocciolo Fungino è affascinante. Siamo curiosi di scoprire cosa diverrà.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_MadFairies">Un Bocciolo Fungino è come una struttura. Dovreste fare più attenzione a dove lo costruite.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_MadFairies">Il vostro Bocciolo Fungino è una specie invasiva e indesiderata!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_MadFairies">Il vostro Urkan si aggira in una regione limitrofa. Lo osserveremo con grande curiosità.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_MadFairies">Vediamo che il vostro Urkan è nei paraggi. Ci domandiamo se costituirà una minaccia...</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_MadFairies">Se ci attaccate con questo Urkan al nostro confine, scoprirete il vero significato della parola ira...</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_MadFairies">L'Urkan era tanto strano quanto potente, e siamo lieti di non dovercene più prendere cura.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_MadFairies">Vi immischiate negli affari del nostro impero, attaccando il nostro Urkan. Siate cauti.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_MadFairies">L'assassinio del nostro Urkan è un'offesa imperdonabile!</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_MadFairies">L'Urkan era tanto strano quanto potente, e siamo lieti di non dovercene più prendere cura.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_MadFairies">Vi immischiate negli affari del nostro impero, attaccando il nostro Urkan. Siate cauti.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_MadFairies">L'assassinio del nostro Urkan è un'offesa imperdonabile!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_Vaulters">Per molti anni abbiamo vissuto su funghi nascosti nelle caverne. Il vostro Bocciolo Fungino ci intriga.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_Vaulters">Sebbene condividiamo la vostra curiosità per il Bocciolo Fungino, non siamo lieti che l'abbiate posizionato.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_Vaulters">Il vostro Bocciolo Fungino riporta a galla spiacevoli ricordi, vorremmo pertanto che lo rimuoveste!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_Vaulters">Il vostro Urkan è tanto strano quanto affascinante. Siamo lieti di poterlo osservare.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_Vaulters">Non temiamo alcuna bestia, né alcuna guerra. Lo scoprirete direttamente se oserete schierare il vostro Urkan contro di noi.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_Vaulters">Vediamo il vostro Urkan come uno strumento atto all'invasione, pertanto reagiremo di conseguenza!</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_Vaulters">Ci rammarica sapere che avete distrutto il nostro Urkan, ma si trattava di un esperimento molto costoso.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_Vaulters">Non potremo più scoprire nulla sugli Urkan, dal momento che ce lo avete distrutto. È una grande perdita per la scienza.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_Vaulters">Il vostro desiderio di distruzione ci ha privati del nostro Urkan!</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_Vaulters">Ci rammarica sapere che avete distrutto il nostro Urkan, ma si trattava di un esperimento molto costoso.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_Vaulters">Non potremo più scoprire nulla sugli Urkan, dal momento che ce lo avete distrutto. È una grande perdita per la scienza.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_Vaulters">Il vostro desiderio di distruzione ci ha privati del nostro Urkan!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_Necrophages">Il vostro Bocciolo Fungino è affascinante. Abbiamo sempre nutrito interesse per nuove fonti di nutrimento.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_Necrophages">Se il vostro Bocciolo Fungino si rivelerà un'arma d'attacco, reagiremo esattamente come vi aspettate.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_Necrophages">Rimuovete il vostro Bocciolo Fungino. Non vogliamo che si trovi così vicino.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_Necrophages">L'Urkan che avete liberato accanto a noi è più strano e più orribile di noi. </LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_Necrophages">Il vostro Urkan è grosso e imponente. Assicuratevi che si tenga a debita distanza.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_Necrophages">Osserviamo il vostro Urkan affamati e armati di lame affilate. Attendiamo solo una scusa per agire...</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_Necrophages">L'Urkan necessitava di troppo cibo ed era difficile da domare. Non ne sentiremo la mancanza.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_Necrophages">Seppure l'Urkan meritasse la morte, avremmo dovuto essere noi a somministrarla. State alla larga dalle questioni interne.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_Necrophages">Avete distrutto il nostro Urkan. Possano la fame e la collera dell'alveare abbattersi su di voi.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_Necrophages">L'Urkan necessitava di troppo cibo ed era difficile da domare. Non ne sentiremo la mancanza.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_Necrophages">Seppure l'Urkan meritasse la morte, avremmo dovuto essere noi a somministrarla. State alla larga dalle questioni interne.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_Necrophages">Avete distrutto il nostro Urkan. Possano la fame e la collera dell'alveare abbattersi su di voi.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_RageWizards">Siamo curiosi di scoprire quali sostanze verranno generate dal vostro Bocciolo Fungino.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_RageWizards">Il vostro Bocciolo Fungino ci è estraneo. Lo osserveremo con attenzione.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_RageWizards">Non apprezziamo il fatto che il vostro Bocciolo Fungino sia così prossimo al nostro territorio. Rimuovetelo, o ne patirete le conseguenze.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_RageWizards">Siamo curiosi di scoprire di più sull'Urkan che avete posizionato nei pressi delle nostre terre.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_RageWizards">Il vostro Urkan è una distrazione e una minaccia. Non siamo lieti di saperlo così vicino.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_RageWizards">Voi lasciate che il vostro Urkan sia così vicino a noi. Ideeremo un castigo straziante per punirvi.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_RageWizards">L'Urkan era avventato e crudele. Una tale perdita non ci scalfisce.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_RageWizards">Avremmo desiderato scoprire di più sui limiti dell'Urkan. Perché l'avete distrutto?</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_RageWizards">L'Urkan avrebbe dovuto far impazzire noi. Non avevate il diritto di ucciderlo!</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_RageWizards">L'Urkan era avventato e crudele. Una tale perdita non ci scalfisce.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_RageWizards">Avremmo desiderato scoprire di più sui limiti dell'Urkan. Perché l'avete distrutto?</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_RageWizards">L'Urkan avrebbe dovuto far impazzire noi. Non avevate il diritto di ucciderlo!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_RovingClans">Il Bocciolo Fungino che è sbocciato non lontano da qui sembra interessante... Che possa portarci giovamento?</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_RovingClans">Non abbiamo intenzione di distruggere il vostro Bocciolo Fungino, purché esso non interferisca con i commerci.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_RovingClans">Il fetore del vostro Bocciolo Fungino allontana i clienti! Rimuovetelo.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_RovingClans">È divertente osservare l'Urkan che avete posizionato vicino a noi. Potremmo avviare una vendita di biglietti per osservarlo da vicino.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_RovingClans">Un essere pericoloso come un Urkan, così vicino a noi, rischia di influenzare negativamente gli affari...</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_RovingClans">Avete posizionato il vostro Urkan appositamente per spaventare i clienti e impedire i commerci? È inaccettabile!</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_RovingClans">I clan non ne potevano più del fragore e del fetore dell'Urkan. Non ne sentiremo la mancanza.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_RovingClans">L'Urkan era un investimento dispendioso! Avremmo preferito se non lo aveste distrutto.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_RovingClans">Come avete osato distruggere quell'Urkan? È una specie molto rara e ora abbiamo perso della Polvere!</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_RovingClans">I clan non ne potevano più del fragore e del fetore dell'Urkan. Non ne sentiremo la mancanza.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_RovingClans">L'Urkan era un investimento dispendioso! Avremmo preferito se non lo aveste distrutto.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_RovingClans">Come avete osato distruggere quell'Urkan? È una specie molto rara e ora abbiamo perso della Polvere!</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_Drakkens">Studieremo il vostro Bocciolo Fungino con una mentalità aperta e tanta curiosità.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_Drakkens">Non siamo del tutto lieti del vostro Bocciolo Fungino, ma lasceremo correre.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_Drakkens">Il vostro Bocciolo Fungino è troppo vicino a noi, tanto da alterare il nostro normale equilibrio! Deve sparire.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_Drakkens">L'Urkan appartiene alle creature di Auriga. Pertanto, siamo lieti di poterlo studiare e osservare.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_Drakkens">L'Urkan nei pressi del nostro confine è dotato di un grande potere. Francamente, ci mette a disagio...</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_Drakkens">Vi spingete verso i nostri confini con un mostruoso Urkan! Non tollereremo che situazione si protragga oltre.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_Drakkens">È triste vedere una creatura morire, anche quando si tratta di un mostruoso Urkan. Tuttavia, questo è il destino che ci attende tutti.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_Drakkens">Il vostro desiderio di distruggere il nostro Urkan sconvolge l'equilibrio di Auriga. Non ne siamo lieti.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_Drakkens">Uccidere un Urkan è terribile atto perpetrato ai danni di una così nobile creatura! Come ci ricompenserete?</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_Drakkens">È triste vedere una creatura morire, anche quando si tratta di un mostruoso Urkan. Tuttavia, questo è il destino che ci attende tutti.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_Drakkens">Il vostro desiderio di distruggere il nostro Urkan sconvolge l'equilibrio di Auriga. Non ne siamo lieti.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_Drakkens">Uccidere un Urkan è terribile atto perpetrato ai danni di una così nobile creatura! Come ci ricompenserete?</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_Cultists">La Regina ha notato il vostro Bocciolo Fungino nelle vicinanze e ne è incuriosita. Potete rallegrarvi.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_Cultists">La Fine Eterna tutto osserva. Il vostro Bocciolo Fungino la inquieta.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_Cultists">Il Silente odia il vostro Bocciolo Fungino. Potrebbe segnare la vostra fine.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_Cultists">Osserviamo il vostro Urkan, chiedendoci in che modo possa essere utile ai piani della Regina.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_Cultists">Vediamo il vostro Urkan vicino a noi. Prestate attenzione, affinché non adiri i Silenti.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_Cultists">Cercate ci suscitare in noi paura usando il vostro Urkan! Il Culto non conosce timore, né misericordia.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_Cultists">Il nostro Urkan è andato. A quanto pare, non faceva parte del grande progetto della Regina.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_Cultists">L'Urkan era un simbolo di potere della Fine Eterna! Come avete osato annientarlo?</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_Cultists">Avete distrutto l'Urkan entrato nelle grazie della Regina! Ora, è usanza che noi distruggiamo voi.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_Cultists">Il nostro Urkan è andato. A quanto pare, non faceva parte del grande progetto della Regina.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_Cultists">L'Urkan era un simbolo di potere della Fine Eterna! Come avete osato annientarlo?</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_Cultists">Avete distrutto l'Urkan entrato nelle grazie della Regina! Ora, è usanza che noi distruggiamo voi.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_Mezari">Vediamo il vostro Bocciolo Fungino. È strano, ma interessante.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_Mezari">Il Bocciolo Fungino a cui dedicate tanta cura non creerà guai, vero? Mmmh...</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_Mezari">Non mi piace l'aspetto del vostro Bocciolo Fungino. Desidero che venga rimosso da qui.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_Mezari">Quell'Urkan è un gran brutto ceffo. Ci diverte osservarlo, anche se è molto vicino.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_Mezari">Osserviamo quell'Urkan giorno dopo giorno, chiedendoci perché l'avete posizionato proprio accanto a noi.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_Mezari">Avete messo quell'Urkan proprio accanto a noi. Ciò significa che cercate rogne. In tal caso, saremo lieti di crearvene in abbondanza.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_Mezari">Dovevate proprio uccidere il nostro Urkan? Beh, forse sì.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_Mezari">Non avreste dovuto uccidere il nostro Urkan. Assumerne il controllo causa sempre grossi problemi.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_Mezari">Uccidere il nostro Urkan è stato un vero e proprio atto di guerra. È davvero questo che volete?</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_Mezari">Dovevate proprio uccidere il nostro Urkan? Beh, forse sì.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_Mezari">Non avreste dovuto uccidere il nostro Urkan. Assumerne il controllo causa sempre grossi problemi.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_Mezari">Uccidere il nostro Urkan è stato un vero e proprio atto di guerra. È davvero questo che volete?</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_Replicants">Anche un cieco noterebbe il vostro Bocciolo Fungino così vicino. E noi non siamo ciechi.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_Replicants">Il vostro Bocciolo Fungino è motivo di angoscia. Ci angustia.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_Replicants">Le nostre lame sono pronte, ma noi ci chiediamo: è più consigliabile attaccare voi o il vostro Bocciolo Fungino?</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_Replicants">Impariamo così tanto osservando il vostro Urkan vicino a noi. Continueremo a farlo.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_Replicants">Gli Obliati sono preoccupati per il vostro enorme Urkan così vicino a noi.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_Replicants">Se portate un Urkan così vicino a noi, vorrà dire che desiderate impiegarlo contro di noi. Dovremmo prepararci per la guerra?</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_Replicants">Quell'Urkan era un abominio strano e pericoloso. Eppure, ci mancherà.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_Replicants">Il nostro Urkan è morto per mano vostra. Non intendiamo ripagarvi con la stessa moneta, ma non ne siamo lieti.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_Replicants">Uccidendo il nostro Urkan, uccidete uno dei nostri pargoli. Provate a immaginare come potremmo sentirci.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_Replicants">Quell'Urkan era un abominio strano e pericoloso. Eppure, ci mancherà.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_Replicants">Il nostro Urkan è morto per mano vostra. Non intendiamo ripagarvi con la stessa moneta, ma non ne siamo lieti.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_Replicants">Uccidendo il nostro Urkan, uccidete uno dei nostri pargoli. Provate a immaginare come potremmo sentirci.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_WinterShifters">Il vostro Bocciolo Fungino è un'altra delle numerose e bizzarre meraviglie di Auriga.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_WinterShifters">Sebbene il vostro Bocciolo Fungino sia una naturale escrescenza di Auriga, la sua posizione ci preoccupa.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_WinterShifters">Il vostro Bocciolo Fungino è come una spia o una testa di ponte! Se rimarrà dov'è, ci vedremo costretti a reagire.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_WinterShifters">Il vostro Urkan è forse la più grande e più bizzarra creatura di Auriga. Ci diverte.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_WinterShifters">Il posizionamento del vostro Urkan è motivo di preoccupazione per noi. D'ora in avanti, diffideremo di voi.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_WinterShifters">Abbiamo motivo di credere che l'Urkan accanto a noi sia lì per conquistarci!</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_WinterShifters">Ci rammarica vedere una creatura di Auriga morire. L'Urkan, tuttavia, non verrà pianto in alcun modo.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_WinterShifters">Tendete a uccidere troppo facilmente. Avremmo preferito lasciar vivere il nostro Urkan.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_WinterShifters">Distruggendo il nostro Urkan, ci attaccate direttamente! Pondereremo la nostra rappresaglia.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_WinterShifters">Ci rammarica vedere una creatura di Auriga morire. L'Urkan, tuttavia, non verrà pianto in alcun modo.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_WinterShifters">Tendete a uccidere troppo facilmente. Avremmo preferito lasciar vivere il nostro Urkan.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_WinterShifters">Distruggendo il nostro Urkan, ci attaccate direttamente! Pondereremo la nostra rappresaglia.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_SeaDemons">Il vostro strano Bocciolo Fungino vicino alle nostre terre non ci preoccupa. La sua peculiarità ci affascina.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_SeaDemons">Ci fidiamo a malapena degli altri, e il Bocciolo Fungino così vicino non è d'aiuto.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_SeaDemons">Posizionate un Bocciolo Fungino come prodromo di un attacco. È evidente.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_SeaDemons">Ammiriamo il vostro Urkan. Tenetelo vicino a noi, cosicché possiamo averlo sott'occhio.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_SeaDemons">Noi, tutti noi, vediamo il vostro Urkan. Qualora dovesse compiere follie, saremo pronti a reagire.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_SeaDemons">Vediamo il vostro Urkan e riconosciamo che è uno strumento atto ad attaccarci e soggiogarci.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_SeaDemons">Dovete proprio distruggere il nostro Urkan? Quell'iraconda bestia solitaria faceva ormai parte di noi come una famiglia.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_SeaDemons">Controlliamo altri esseri per proteggerci. Ora, non controlliamo più l'Urkan che avete distrutto.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_SeaDemons">Il nostro Urkan ci era utile. L'avete distrutto, il che lascia presagire un attacco. Percepiamo lo sdegno e l'odio che provate.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_SeaDemons">Dovete proprio distruggere il nostro Urkan? Quell'iraconda bestia solitaria faceva ormai parte di noi come una famiglia.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_SeaDemons">Controlliamo altri esseri per proteggerci. Ora, non controlliamo più l'Urkan che avete distrutto.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_SeaDemons">Il nostro Urkan ci era utile. L'avete distrutto, il che lascia presagire un attacco. Percepiamo lo sdegno e l'odio che provate.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackPositive_Occurrence1_Flames">Questo Bocciolo Fungino che avete posizionato vicino a noi non è che un'altra strana meraviglia di Auriga.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNeutral_Occurrence1_Flames">Consideriamo il vostro Bocciolo Fungino un'altra pericolosa specie aliena.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionCreepingNodePlacedFeedbackNegative_Occurrence1_Flames">Non apprezziamo il vostro Bocciolo Fungino, né apprezziamo voi. Dev'essere purificato con il fuoco.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackPositive_Occurrence1_Flames">Il vostro Urkan si diletta nei pressi delle nostre terre. Forse non disdegna il sapore di ceneri e lava?</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNeutral_Occurrence1_Flames">Ci auguriamo che non impiegherete il vostro Urkan contro di noi. Eppure, la sua vicinanza ci mette a disagio.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionKaijuPlacedNearMyCityFeedbackNegative_Occurrence1_Flames">Se lasciate il vostro Urkan così vicino a noi, i nostri sciamani faranno sì che muoia avvolto dalle fiamme!</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackPositive_Occurrence1_Flames">Ci avete sottratto il nostro Urkan. Era una bestia violenta, pertanto non ne sentiremo la mancanza.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNeutral_Occurrence1_Flames">Avete deciso di distruggere il nostro Urkan. Chissà dove vi condurrà ora la vostra frenesia distruttrice.</LocalizationPair>
-  <LocalizationPair Name="%DiplomaticInteractionKaijuLostFeedbackNegative_Occurrence1_Flames">Non vi è scusante per la distruzione del nostro Urkan! Ci assicureremo che veniate puniti dal fuoco.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackPositive_Occurrence1_Flames">Ci avete sottratto il nostro Urkan. Era una bestia violenta, pertanto non ne sentiremo la mancanza.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNeutral_Occurrence1_Flames">Avete deciso di distruggere il nostro Urkan. Chissà dove vi condurrà ora la vostra frenesia distruttrice.</LocalizationPair>
+  <LocalizationPair Name="%DiplomaticInteractionKaijuAttackedFeedbackNegative_Occurrence1_Flames">Non vi è scusante per la distruzione del nostro Urkan! Ci assicureremo che veniate puniti dal fuoco.</LocalizationPair>
   <LocalizationPair Name="%AttitudeScoreDismantleCreepingNodeSufferedTitle">Bocciolo Fungino eliminato</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionAlliedWithMyEnemyFeedbackPositive_Occurrence1_Flames">Anche se hai stretto un'#F3EAD8#alleanza con un nemico#REVERT#, sentiamo ancora ardere in te le fiamme della speranza.</LocalizationPair>
   <LocalizationPair Name="%DiplomaticInteractionAlliedWithMyEnemyFeedbackNeutral_Occurrence1_Flames">Hai stretto un'#F3EAD8#alleanza con un nemico#REVERT#. Non ci è dato sapere se sia un bene o un male.</LocalizationPair>
@@ -14897,4 +14914,15 @@ Ma per prima cosa, dobbiamo difendere il vascello...</LocalizationPair>
   <LocalizationPair Name="%SubtitlesMimics12">Quel giorno, mi donai completamente al Mykara.</LocalizationPair>
   <LocalizationPair Name="%SubtitlesMimics13">E diventammo una temibile potenza...</LocalizationPair>
   <LocalizationPair Name="%SubtitlesMimics14">desiderosa di vendetta...</LocalizationPair>
+  
+  <!-- ELCP New localization -->
+  <LocalizationPair Name="%ELCPNWEREEffectAddedTitle">Nwere</LocalizationPair>
+  <LocalizationPair Name="%ELCPNWEREEffectAddedDescription">An Empire got their hands on a powerful magical item. Be careful, they could be Nwere! Your armies have heightened awareness.</LocalizationPair>
+  <LocalizationPair Name="%ELCPNWEREEffectRemovedTitle">Detection bonus removed.</LocalizationPair>
+  <LocalizationPair Name="%ELCPNWEREEffectRemovedDescription">The awarenes of your troops returns back to normal. But Nwere is still out there ...</LocalizationPair>
+  <LocalizationPair Name="%BattleEffect_IncreasedFire3Title">Fuoco Aumentato 3</LocalizationPair>
+  <LocalizationPair Name="%BattleEffect_IncreasedFire3Description">#FFB43F#EFFETTI#REVERT#
+   +75% ATTACCO \7772\</LocalizationPair>
+  <LocalizationPair Name="%ELCPSideQuestLore#0014RewardTitle">\7766\ Esercito dei Ceratan</LocalizationPair>
+  <LocalizationPair Name="%ELCPSideQuestLore#0014RewardDescription">Un esercito composto da unità Ceratan</LocalizationPair>
 </Datatable>

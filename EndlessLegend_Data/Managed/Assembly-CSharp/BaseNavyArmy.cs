@@ -144,24 +144,19 @@ public abstract class BaseNavyArmy : ArmyWithTask, IXmlSerializable
 		this.FilterTasks();
 		this.taskEvaluations.Sort((NavyTaskEvaluation left, NavyTaskEvaluation right) => -1 * left.Fitness.CompareTo(right.Fitness));
 		NavyTaskEvaluation navyTaskEvaluation = this.taskEvaluations.Find((NavyTaskEvaluation match) => match.Task.AssignedArmy != null && match.Task.AssignedArmy == this);
-		if (navyTaskEvaluation != null)
-		{
-		}
 		if (navyTaskEvaluation == null)
 		{
 			navyTaskEvaluation = this.taskEvaluations.Find((NavyTaskEvaluation match) => match.Task.AssignedArmy == null && match.Fitness > 0f);
-			for (int i = 0; i < this.taskEvaluations.Count; i++)
+			int num = 0;
+			while (num < this.taskEvaluations.Count && this.taskEvaluations[num].Fitness > 0f)
 			{
-				if (this.taskEvaluations[i].Fitness <= 0f)
+				float num2 = this.taskEvaluations[num].Fitness;
+				if (this.taskEvaluations[num].Task.AssignedArmy == null || num2 > this.taskEvaluations[num].Task.CurrentAssignationFitness)
 				{
+					navyTaskEvaluation = this.taskEvaluations[num];
 					break;
 				}
-				float num = this.taskEvaluations[i].Fitness;
-				if (this.taskEvaluations[i].Task.AssignedArmy == null || num >= this.taskEvaluations[i].Task.CurrentAssignationFitness)
-				{
-					navyTaskEvaluation = this.taskEvaluations[i];
-					break;
-				}
+				num++;
 			}
 		}
 		bool result = false;

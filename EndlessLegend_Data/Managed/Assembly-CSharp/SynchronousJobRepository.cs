@@ -2,11 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using Amplitude;
+using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 
 [Diagnostics.TagAttribute("AI")]
-public class SynchronousJobRepository : AIHelper, ISynchronousJobRepositoryAIHelper, ITickable, IService
+public class SynchronousJobRepository : AIHelper, ISynchronousJobRepositoryAIHelper, IService, ITickable
 {
+	public SynchronousJobRepository()
+	{
+		this.synchronousDelegates = new List<SynchronousJob>();
+		this.tickLimit = 5;
+	}
+
 	public bool IsEmpty
 	{
 		get
@@ -26,6 +33,14 @@ public class SynchronousJobRepository : AIHelper, ISynchronousJobRepositoryAIHel
 		});
 		this.tickableRepositoryAIHelper.Register(this);
 		serviceContainer.AddService<ISynchronousJobRepositoryAIHelper>(this);
+		this.eventService = Services.GetService<IEventService>();
+		if (this.eventService != null)
+		{
+			this.eventService.EventRaise += this.EventService_EventRaise;
+		}
+		this.endTurnService = Services.GetService<IEndTurnService>();
+		this.endTurnService.EndTurnRequested += this.EndTurnService_EndTurnRequested;
+		this.playerControllerservice = game.Services.GetService<IPlayerControllerRepositoryService>();
 		yield break;
 	}
 
@@ -56,44 +71,104 @@ public class SynchronousJobRepository : AIHelper, ISynchronousJobRepositoryAIHel
 		}
 		Diagnostics.Assert(this.synchronousDelegates != null);
 		int num = 0;
-		while (this.lastJobIndex >= 0)
+		while (this.lastJobIndex >= 0 && num++ <= this.tickLimit)
 		{
-			if (num++ > 10)
-			{
-				break;
-			}
 			SynchronousJob synchronousJob = this.synchronousDelegates[this.lastJobIndex];
 			if (synchronousJob == null)
 			{
-				goto IL_C5;
+				goto IL_83;
 			}
 			switch (synchronousJob())
 			{
 			case SynchronousJobState.Running:
 				break;
 			case SynchronousJobState.Success:
-				goto IL_C5;
 			case SynchronousJobState.Failure:
-				Diagnostics.Log("Synchronous job {0} failed.", new object[]
-				{
-					synchronousJob.Method.Name
-				});
-				goto IL_C5;
+				goto IL_83;
 			default:
-				goto IL_C5;
+				goto IL_83;
 			}
-			IL_D6:
+			IL_73:
 			this.lastJobIndex--;
 			continue;
-			IL_C5:
+			IL_83:
 			this.synchronousDelegates.RemoveAt(this.lastJobIndex);
-			goto IL_D6;
+			goto IL_73;
 		}
 	}
 
-	private readonly List<SynchronousJob> synchronousDelegates = new List<SynchronousJob>();
+	private void EventService_EventRaise(object sender, EventRaiseEventArgs e)
+	{
+		if (e.RaisedEvent is EventBeginTurn)
+		{
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				Diagnostics.Log("SynchronousJobRepository Registered Turn start {0} {1}", new object[]
+				{
+					base.Game != null,
+					this.playerControllerservice != null
+				});
+			}
+			this.numberOfLivingEmpires = 0;
+			int num = 0;
+			while (num < base.Game.Empires.Length && base.Game.Empires[num] is MajorEmpire)
+			{
+				if (!(base.Game.Empires[num] as MajorEmpire).ELCPIsEliminated && base.Game.Empires[num].IsControlledByAI)
+				{
+					this.numberOfLivingEmpires++;
+				}
+				num++;
+			}
+			this.tickLimit = 5;
+			if (this.playerControllerservice.ActivePlayerController.Empire == null || (this.playerControllerservice.ActivePlayerController.Empire is MajorEmpire && (this.playerControllerservice.ActivePlayerController.Empire as MajorEmpire).IsEliminated))
+			{
+				this.tickLimit += 5 + this.numberOfLivingEmpires;
+			}
+		}
+	}
+
+	private void EndTurnService_EndTurnRequested(object sender, EventArgs e)
+	{
+		if (this.lastEndTurnRequestTurn == base.Game.Turn)
+		{
+			return;
+		}
+		this.tickLimit = 5 + this.numberOfLivingEmpires;
+		this.lastEndTurnRequestTurn = base.Game.Turn;
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			Diagnostics.Log("SynchronousJobRepository registered end turn request, setting ticklimit to {0}", new object[]
+			{
+				this.tickLimit
+			});
+		}
+	}
+
+	public override void Release()
+	{
+		base.Release();
+		this.eventService.EventRaise -= this.EventService_EventRaise;
+		this.eventService = null;
+		this.endTurnService.EndTurnRequested -= this.EndTurnService_EndTurnRequested;
+		this.endTurnService = null;
+		this.playerControllerservice = null;
+	}
+
+	private readonly List<SynchronousJob> synchronousDelegates;
 
 	private int lastJobIndex;
 
 	private ITickableRepositoryAIHelper tickableRepositoryAIHelper;
+
+	private IEventService eventService;
+
+	private IEndTurnService endTurnService;
+
+	private IPlayerControllerRepositoryService playerControllerservice;
+
+	private int lastEndTurnRequestTurn;
+
+	private int numberOfLivingEmpires;
+
+	private int tickLimit;
 }

@@ -208,7 +208,16 @@ public class GameSaveSessionDescriptor : IXmlSerializable
 		foreach (StaticString x in session.GetLobbyDataKeys())
 		{
 			string text = x;
-			this.lobbyData.Add(text, session.GetLobbyData<string>(text, null));
+			string value = session.GetLobbyData<string>(text, null);
+			if (string.IsNullOrEmpty(value))
+			{
+				object obj = session.GetLobbyData(text);
+				if (obj != null)
+				{
+					value = obj.ToString();
+				}
+			}
+			this.lobbyData.Add(text, value);
 		}
 	}
 

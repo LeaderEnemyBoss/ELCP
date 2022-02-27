@@ -2138,6 +2138,20 @@ public class AgeTransform : MonoBehaviour
 		}
 	}
 
+	public void SetupCustomELCPScaling(float scale)
+	{
+		if (this.customELCPscaling == scale)
+		{
+			return;
+		}
+		if (this.customELCPscaling > 0f)
+		{
+			this.ApplyHighDefinitionHierarchical(1f / this.customELCPscaling);
+		}
+		this.customELCPscaling = scale;
+		this.ApplyHighDefinitionHierarchical(this.customELCPscaling);
+	}
+
 	public const float FadeOnDisableFactor = 0.5f;
 
 	public const float MaxZ = 0.99f;
@@ -2299,6 +2313,8 @@ public class AgeTransform : MonoBehaviour
 	private bool dirtyPosition = true;
 
 	private bool propagateDirty = true;
+
+	private float customELCPscaling;
 
 	public delegate void RefreshTableItem<T>(AgeTransform tableItem, T reference, int index);
 }

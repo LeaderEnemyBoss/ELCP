@@ -128,22 +128,23 @@ public class KaijuTechsManager : GameAncillary, Amplitude.Xml.Serialization.IXml
 		{
 			Diagnostics.LogError("Wasn't able to find the technology database.");
 		}
+		this.researchQueues.Clear();
 		if (this.researchQueues.Count == 0)
 		{
-			Empire[] majorEmpires = Array.FindAll<Empire>(base.Game.Empires, (Empire empire) => empire is MajorEmpire);
-			for (int index = 0; index < majorEmpires.Length; index++)
+			Empire[] array = Array.FindAll<Empire>(base.Game.Empires, (Empire empire) => empire is MajorEmpire);
+			for (int i = 0; i < array.Length; i++)
 			{
-				this.researchQueues.Add(majorEmpires[index].Index, new ConstructionQueue());
+				this.researchQueues.Add(array[i].Index, new ConstructionQueue());
 			}
 		}
 		if (this.researchedTechNames.Count > 0)
 		{
-			for (int index2 = 0; index2 < this.researchedTechNames.Count; index2++)
+			for (int j = 0; j < this.researchedTechNames.Count; j++)
 			{
-				DepartmentOfScience.ConstructibleElement technology = null;
-				if (this.technologyDatabase.TryGetValue(this.researchedTechNames[index2], out technology))
+				DepartmentOfScience.ConstructibleElement item = null;
+				if (this.technologyDatabase.TryGetValue(this.researchedTechNames[j], out item))
 				{
-					this.researchedTechs.Add(technology);
+					this.researchedTechs.Add(item);
 				}
 			}
 		}
@@ -270,19 +271,6 @@ public class KaijuTechsManager : GameAncillary, Amplitude.Xml.Serialization.IXml
 		}
 	}
 
-	public void EmptyConstructionQueueForEmpire(Empire empire)
-	{
-		IPlayerControllerRepositoryService service = base.Game.Services.GetService<IPlayerControllerRepositoryService>();
-		ConstructionQueue constructionQueueForEmpire = this.GetConstructionQueueForEmpire(empire);
-		int length = constructionQueueForEmpire.Length;
-		for (int i = length - 1; i >= 0; i--)
-		{
-			Construction construction = constructionQueueForEmpire.PeekAt(i);
-			OrderCancelKaijuResearch order = new OrderCancelKaijuResearch(empire.Index, construction.GUID);
-			service.ActivePlayerController.PostOrder(order);
-		}
-	}
-
 	private void AssignLuxuryTypes(Dictionary<string, List<PointOfInterestTemplate>> availableLuxuries)
 	{
 		Random random = new Random(World.Seed);
@@ -335,6 +323,18 @@ public class KaijuTechsManager : GameAncillary, Amplitude.Xml.Serialization.IXml
 			}
 		}
 		return dictionary;
+	}
+
+	public void EmptyConstructionQueueForEmpire(Empire empire)
+	{
+		IPlayerControllerRepositoryService service = base.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		ConstructionQueue constructionQueueForEmpire = this.GetConstructionQueueForEmpire(empire);
+		for (int i = constructionQueueForEmpire.Length - 1; i >= 0; i--)
+		{
+			Construction construction = constructionQueueForEmpire.PeekAt(i);
+			OrderCancelKaijuResearch order = new OrderCancelKaijuResearch(empire.Index, construction.GUID);
+			service.ActivePlayerController.PostOrder(order);
+		}
 	}
 
 	private static object[] kaijuTechCostFormula;

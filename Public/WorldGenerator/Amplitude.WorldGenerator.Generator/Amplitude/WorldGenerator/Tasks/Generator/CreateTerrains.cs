@@ -46,9 +46,9 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 				base.Context.LandSelectors[(int)biome.Id].WeightsList = new List<int>();
 				base.Context.LandSelectors[(int)biome.Id].Randomizer = base.Context.Randomizer;
 				array = biome.LandTerrainWeights;
-				for (int j = 0; j < array.Length; j++)
+				for (int k = 0; k < array.Length; k++)
 				{
-					Biome.TerrainWeight tw = array[j];
+					Biome.TerrainWeight tw = array[k];
 					Terrain item2 = base.Context.Settings.Terrains.Find((Terrain t) => t.Name == tw.Name);
 					base.Context.LandSelectors[(int)biome.Id].ItemsList.Add(item2);
 					base.Context.LandSelectors[(int)biome.Id].WeightsList.Add(tw.Weight);
@@ -58,9 +58,9 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 				base.Context.LakeSelectors[(int)biome.Id].WeightsList = new List<int>();
 				base.Context.LakeSelectors[(int)biome.Id].Randomizer = base.Context.Randomizer;
 				array = biome.LakeTerrainWeights;
-				for (int j = 0; j < array.Length; j++)
+				for (int l = 0; l < array.Length; l++)
 				{
-					Biome.TerrainWeight tw = array[j];
+					Biome.TerrainWeight tw = array[l];
 					Terrain item3 = base.Context.Settings.Terrains.Find((Terrain t) => t.Name == tw.Name);
 					base.Context.LakeSelectors[(int)biome.Id].ItemsList.Add(item3);
 					base.Context.LakeSelectors[(int)biome.Id].WeightsList.Add(tw.Weight);
@@ -70,9 +70,9 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 				base.Context.CoastSelectors[(int)biome.Id].WeightsList = new List<int>();
 				base.Context.CoastSelectors[(int)biome.Id].Randomizer = base.Context.Randomizer;
 				array = biome.CoastTerrainWeights;
-				for (int j = 0; j < array.Length; j++)
+				for (int m = 0; m < array.Length; m++)
 				{
-					Biome.TerrainWeight tw = array[j];
+					Biome.TerrainWeight tw = array[m];
 					Terrain item4 = base.Context.Settings.Terrains.Find((Terrain t) => t.Name == tw.Name);
 					base.Context.CoastSelectors[(int)biome.Id].ItemsList.Add(item4);
 					base.Context.CoastSelectors[(int)biome.Id].WeightsList.Add(tw.Weight);
@@ -87,15 +87,15 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			TerrainTransformation terrainTransformation3 = base.Context.Settings.Transformations.Find((TerrainTransformation t) => t.Name == "Volcano");
 			if (terrainTransformation == null)
 			{
-				base.Trace("No 'HighMountain' transformation found - none applied");
+				base.Trace("ELCP: No 'HighMountain' transformation found - none applied");
 			}
 			if (terrainTransformation2 == null)
 			{
-				base.Trace("No 'MediumMountain' transformation found - none applied");
+				base.Trace("ELCP: No 'MediumMountain' transformation found - none applied");
 			}
 			if (terrainTransformation3 == null)
 			{
-				base.Trace("No 'Volcano' transformation found - none applied");
+				base.Trace("ELCP: No 'Volcano' transformation found - none applied");
 			}
 			foreach (District district in base.Context.Districts.Values)
 			{
@@ -157,23 +157,16 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			foreach (District district2 in base.Context.Districts.Values)
 			{
 				array2[(int)district2.Terrain.Id] += district2.Count;
-				using (HashSet<HexPos>.Enumerator enumerator3 = district2.GetEnumerator())
+				foreach (HexPos hexPos2 in district2)
 				{
-					while (enumerator3.MoveNext())
-					{
-						HexPos hex = enumerator3.Current;
-						base.Context.TerrainData[hex.Row, hex.Column] = district2.Terrain.Id;
-						if (base.Context.HasRiver[hex.Row, hex.Column])
-						{
-							River river = base.Context.Rivers.Find((River r) => r.Hexes.Contains(hex));
-							if (river.Type == River.RiverType.LavaRiver && hex == river.StartingHex)
-							{
-								base.Context.ApplyTransformation(terrainTransformation3, district2);
-								base.Context.ApplyTransformation(transform, district2);
-								base.Context.ApplyTransformation(terrainTransformation3, hex);
-							}
-						}
-					}
+					base.Context.TerrainData[hexPos2.Row, hexPos2.Column] = district2.Terrain.Id;
+				}
+			}
+			foreach (River river in base.Context.Rivers)
+			{
+				if (river.Type == River.RiverType.LavaRiver)
+				{
+					base.Context.ApplyTransformation(terrainTransformation3, river.StartingHex);
 				}
 			}
 		}

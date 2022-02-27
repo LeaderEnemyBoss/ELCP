@@ -140,6 +140,7 @@ public class BattleTargetingController : IDisposable
 		{
 			return null;
 		}
+		bool flag = unit.GetPropertyValue(SimulationProperties.BattleRange) > 1.1f;
 		BattleSimulationTarget result = null;
 		float num = float.NegativeInfinity;
 		for (int i = 0; i < battleTargetingUnitBehaviorWeights.Count; i++)
@@ -147,40 +148,41 @@ public class BattleTargetingController : IDisposable
 			BattleTargetingUnitBehaviorWeight battleTargetingUnitBehaviorWeight = battleTargetingUnitBehaviorWeights[i];
 			foreach (BattleSimulationTarget battleSimulationTarget in battleSimulationTargets)
 			{
-				if (battleSimulationTarget.Unit == null || !battleSimulationTarget.Unit.IsDead)
+				if ((battleSimulationTarget.Unit == null || !battleSimulationTarget.Unit.IsDead) && this.FiltersAreVerified(battleTargetingUnitBehaviorWeight, unit, battleSimulationTarget))
 				{
-					if (this.FiltersAreVerified(battleTargetingUnitBehaviorWeight, unit, battleSimulationTarget))
+					float num2 = 0f;
+					if (battleTargetingUnitBehaviorWeight.Weights != null && battleTargetingUnitBehaviorWeight.Weights.Length != 0)
 					{
-						float num2 = 0f;
-						if (battleTargetingUnitBehaviorWeight.Weights != null && battleTargetingUnitBehaviorWeight.Weights.Length > 0)
+						for (int k = 0; k < battleTargetingUnitBehaviorWeight.Weights.Length; k++)
 						{
-							for (int k = 0; k < battleTargetingUnitBehaviorWeight.Weights.Length; k++)
+							BattleTargetingUnitBehaviorWeight.Weight weight = battleTargetingUnitBehaviorWeight.Weights[k];
+							if (weight.ValueAsFloat != 0f)
 							{
-								BattleTargetingUnitBehaviorWeight.Weight weight = battleTargetingUnitBehaviorWeight.Weights[k];
-								if (weight.ValueAsFloat != 0f)
+								float paramValueByName = this.GetParamValueByName(weight.Name, unit, battleSimulationTarget);
+								Amplitude.Unity.Framework.AnimationCurve animationCurve;
+								this.targettingAnimationCurveDatabase.TryGetValue(weight.NormalizationCurveName, out animationCurve);
+								float num3;
+								if (animationCurve != null)
 								{
-									float paramValueByName = this.GetParamValueByName(weight.Name, unit, battleSimulationTarget);
-									Amplitude.Unity.Framework.AnimationCurve animationCurve;
-									this.targettingAnimationCurveDatabase.TryGetValue(weight.NormalizationCurveName, out animationCurve);
-									float num3;
-									if (animationCurve != null)
-									{
-										num3 = animationCurve.Evaluate(paramValueByName) * weight.ValueAsFloat;
-									}
-									else
-									{
-										num3 = paramValueByName * weight.ValueAsFloat;
-									}
-									num2 += num3;
+									num3 = animationCurve.Evaluate(paramValueByName) * weight.ValueAsFloat;
 								}
+								else
+								{
+									num3 = paramValueByName * weight.ValueAsFloat;
+								}
+								num2 += num3;
 							}
-							num2 /= (float)battleTargetingUnitBehaviorWeight.Weights.Length;
 						}
-						if (num2 > num)
-						{
-							result = battleSimulationTarget;
-							num = num2;
-						}
+						num2 /= (float)battleTargetingUnitBehaviorWeight.Weights.Length;
+					}
+					if (flag && float.IsNegativeInfinity(num2) && battleSimulationTarget.Unit != null)
+					{
+						num2 = -1E+07f;
+					}
+					if (num2 > num)
+					{
+						result = battleSimulationTarget;
+						num = num2;
 					}
 				}
 			}

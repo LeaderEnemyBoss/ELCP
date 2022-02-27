@@ -67,7 +67,7 @@ public abstract class TradableLine : SortedLine
 		AgeTooltip ageTooltip = this.PriceLevelGroup.GetComponent<AgeTransform>().AgeTooltip;
 		if (ageTooltip != null)
 		{
-			float referencePriceWithSalesTaxes = this.Tradable.GetReferencePriceWithSalesTaxes(TradableTransactionType.Buyout, null);
+			float referencePriceWithSalesTaxes = this.Tradable.GetReferencePriceWithSalesTaxes(TradableTransactionType.Buyout, this.empire);
 			ageTooltip.Content = string.Concat(new string[]
 			{
 				AgeLocalizer.Instance.LocalizeString("%MarketplaceTradableMaximumPrice"),
@@ -105,7 +105,7 @@ public abstract class TradableLine : SortedLine
 
 	protected string GetPriceLevelName()
 	{
-		float referencePriceWithSalesTaxes = this.Tradable.GetReferencePriceWithSalesTaxes(TradableTransactionType.Buyout, null);
+		float referencePriceWithSalesTaxes = this.Tradable.GetReferencePriceWithSalesTaxes(TradableTransactionType.Buyout, this.empire);
 		float num = referencePriceWithSalesTaxes * Tradable.MinimumPriceMultiplier;
 		float num2 = referencePriceWithSalesTaxes * Tradable.MaximumPriceMultiplier;
 		float num3 = (referencePriceWithSalesTaxes - num) * 0.2f;

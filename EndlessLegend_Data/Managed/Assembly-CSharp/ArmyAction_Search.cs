@@ -162,11 +162,34 @@ public class ArmyAction_Search : ArmyAction_BasePointOfInterest, IArmyActionWith
 		{
 			return false;
 		}
-		if (pointOfInterest.Type != "QuestLocation")
+		if (pointOfInterest.Type != ELCPUtilities.QuestLocation)
 		{
 			return false;
 		}
-		if (pointOfInterest.CreepingNodeGUID != GameEntityGUID.Zero && pointOfInterest.Empire != army.Empire)
+		if (ELCPUtilities.UseELCPPeacefulCreepingNodes)
+		{
+			if (pointOfInterest.CreepingNodeGUID != GameEntityGUID.Zero && pointOfInterest.Empire != army.Empire)
+			{
+				if (pointOfInterest.Empire == null)
+				{
+					return false;
+				}
+				if (!(pointOfInterest.Empire is MajorEmpire))
+				{
+					return false;
+				}
+				DepartmentOfForeignAffairs agency = army.Empire.GetAgency<DepartmentOfForeignAffairs>();
+				if (agency == null)
+				{
+					return false;
+				}
+				if (!agency.IsFriend(pointOfInterest.Empire))
+				{
+					return false;
+				}
+			}
+		}
+		else if (pointOfInterest.CreepingNodeGUID != GameEntityGUID.Zero && pointOfInterest.Empire != army.Empire)
 		{
 			return false;
 		}
@@ -197,14 +220,17 @@ public class ArmyAction_Search : ArmyAction_BasePointOfInterest, IArmyActionWith
 		{
 			return false;
 		}
-		foreach (global::Empire empire in game.Empires)
+		global::Empire[] empires = game.Empires;
+		for (int i = 0; i < empires.Length; i++)
 		{
-			DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
-			foreach (Army army2 in agency.Armies)
+			using (IEnumerator<Army> enumerator2 = empires[i].GetAgency<DepartmentOfDefense>().Armies.GetEnumerator())
 			{
-				if (army2.WorldPosition == pointOfInterest.WorldPosition)
+				while (enumerator2.MoveNext())
 				{
-					return false;
+					if (enumerator2.Current.WorldPosition == pointOfInterest.WorldPosition)
+					{
+						return false;
+					}
 				}
 			}
 		}

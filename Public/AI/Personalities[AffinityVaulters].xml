@@ -28,9 +28,17 @@
           Science-focused
           -->
           <TechnologyReferenceTurnCountAgent>
-            <IdealTechnologyUnlockPeriod>0.5</IdealTechnologyUnlockPeriod>
-            <MaximumPeriodGap>0.5</MaximumPeriodGap>
+            <IdealTechnologyUnlockPeriod>0.75</IdealTechnologyUnlockPeriod>
+            <MaximumPeriodGap>0.75</MaximumPeriodGap>
           </TechnologyReferenceTurnCountAgent>
+		  
+			<MoneyPrintTermAgent>
+                <Multiplier>0</Multiplier>
+            </MoneyPrintTermAgent>
+			
+		<ResearchAgreementTermAgent>
+		    <Multiplier>1.6</Multiplier>
+		</ResearchAgreementTermAgent>
 
         </AgentDefinition>
 
@@ -166,7 +174,7 @@
                   <WarUnitNeedOffset>1.3</WarUnitNeedOffset>
                   <WarUnitNeedStartTurn>1.1</WarUnitNeedStartTurn>
                   <WarUnitNeedTurnRatio>1.1</WarUnitNeedTurnRatio>
-                  <MinimumNumberOfWarUnit>1.1</MinimumNumberOfWarUnit>
+                  <MinimumNumberOfWarUnit>2</MinimumNumberOfWarUnit>
                   <MaximumNumberOfWarUnit>1.1</MaximumNumberOfWarUnit>
 
                   <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
@@ -235,10 +243,37 @@
                 <AIEmpireUnlockMarketUnit>0.9</AIEmpireUnlockMarketUnit>
                 <AIEmpireUnlockMarketResource>1.3</AIEmpireUnlockMarketResource>
                 <AIEmpireUnlockBooster>1.2</AIEmpireUnlockBooster>
-                <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
+                <AIEmpireUnlockBoosterCultist>1</AIEmpireUnlockBoosterCultist>
                 <AIEmpireUnlockDiplomacyPositive>0.8</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>
+			
+			<AILayer_Victory>
+				<VictoryFocusMilitary>1.4</VictoryFocusMilitary>
+				<VictoryFocusDiplomacy>1.5</VictoryFocusDiplomacy>
+				<VictoryFocusEconomy>0.9</VictoryFocusEconomy>
+				<VictoryFocusTechnology>2.5</VictoryFocusTechnology>
+			</AILayer_Victory>
+			
+			<AILayer_Assimilation>
+				<Bos>1</Bos>
+				<Ceratan>1</Ceratan>
+				<Delvers>1</Delvers>
+				<Erycis>1</Erycis>
+				<Haunts>1.3</Haunts>
+				<Kazanji>1</Kazanji>
+				<Silics>1.2</Silics>
+				<SistersOfMercy>1</SistersOfMercy>
+				<Urces>1</Urces>
+				<Jotus>0.8</Jotus>
+				<Hurnas>0.8</Hurnas>
+				<Gauran>1</Gauran>
+				<Birdhive>1</Birdhive>
+				<Geldirus>1</Geldirus>
+				<EyelessOnes>1</EyelessOnes>
+				<Dorgeshi>1</Dorgeshi>	
+				<DawnShua>0.7</DawnShua>
+			</AILayer_Assimilation>
           </AIEntity_Empire>
 
           <AIEntity_City>

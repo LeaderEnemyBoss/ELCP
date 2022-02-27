@@ -20,7 +20,9 @@
     <Trait Name="FactionTraitBrokenLords1"/>                                <!-- Trait:          Dust Efficient            -->
     <Trait Name="FactionTraitBuyOutPopulation"/>                            <!-- Trait:          Dustborn                  -->
     <Trait Name="FactionTraitTechnologyDust0"/>                             <!-- Tech:           Empire Mint               -->
-    <Trait Name="FactionTraitTechnologyArmorCommonTier1"/>                  <!-- Tech:           Advanced Armor            -->
+	<!--ELCP switched ArmorCommonTier1 to WeaponCommonTier1 (which now includes armors aswell)-->
+	<Trait Name="FactionTraitTechnologyWeaponCommonTier1"/>
+    <!--<Trait Name="FactionTraitTechnologyArmorCommonTier1"/>-->                  <!-- Tech:           Advanced Armor            -->
   </Faction>
 
   <Faction Name="FactionVaulters"       Standard="true"   Author="AMPLITUDE Studios" Priority="160">
@@ -51,18 +53,19 @@
     <Trait Name="FactionTraitTechnologyDefinitionNecrophagesUnit2" />       <!-- Tech:           Necrodrone                -->
   </Faction>
 
+  <!--ELCP: Renewal is now Era1 and a sstarting tech, Agility is no longer a starting tech -->
   <Faction Name="FactionRageWizards"    Standard="true"   Author="AMPLITUDE Studios" Priority="190">
     <Affinity Name="AffinityRageWizards"/>
     <AffinityMapping Name="AffinityMappingRageWizards"/>
     <Trait Name="FactionTraitRageWizards9"/>                                <!-- Faction Tech:   Arcana of Authority       -->
     <Trait Name="FactionTraitRageWizards10"/>                               <!-- Faction Tech:   Arcana of Materializing   -->
-    <Trait Name="FactionTraitRageWizards11"/>                               <!-- Faction Tech:   Arcana of Renewal         -->
+    <Trait Name="FactionTraitTechnologyDefinitionRageWizards8"/>            <!-- Tech:           Arcana of Agility         -->
     <Trait Name="FactionTraitRageWizards12"/>                               <!-- Faction Tech:   Dust Purifier             -->
     <Trait Name="FactionTraitRageWizards13"/>                               <!-- Faction Tech:   Painosphere               -->
     <Trait Name="FactionTraitRageWizards14"/>                               <!-- Faction Tech:   Dust Mechanics            -->
     <Trait Name="FactionTraitRageWizards15"/>                               <!-- Faction Tech:   Sacrificial Amplifiers    -->
     <Trait Name="FactionTraitTechnologyDefinitionRageWizards7"/>            <!-- Tech:           Arcana of Matter          -->
-    <Trait Name="FactionTraitTechnologyDefinitionRageWizards8"/>            <!-- Tech:           Arcana of Agility         -->
+	<Trait Name="FactionTraitRageWizards11"/>                               <!-- Faction Tech:   Arcana of Renewal         -->
   </Faction>
 
   <Faction Name="FactionRovingClans"    Standard="true"   Author="AMPLITUDE Studios" Priority="200">
@@ -181,8 +184,8 @@
     <Trait Name="FactionTraitMimics8"/>                                      <!-- Trait:           Mining flaws           -->
     <Trait Name="FactionTraitMimics4"/>                                      <!-- Faction Tech:    Kaiju Garrison         -->
     <Trait Name="FactionTraitMimics5"/>                                      <!-- Faction Tech:    Kaiju Diplomacy        -->
+    <Trait Name="FactionTraitTechnologyScience8"/>                           <!-- Tech:            Topography             -->
     <Trait Name="FactionTraitTechnologyFood0"/>                              <!-- Tech:            Cultivation            -->
-    <Trait Name="FactionTraitTechnologyDefinitionSearchBonus"/>              <!-- Tech:            Search Party           -->
   </Faction>
 
   <Faction Name="FactionTutorial"       Standard="false"  Author="AMPLITUDE Studios">
@@ -198,6 +201,14 @@
     <!-- the trait 'TraitRandomizeFaction' tells the game to randomize the faction by picking a standard one in place of this one -->
     <!-- random factions will have the 'TraitRandomFaction' trait afterwards -->
     <Trait Name="TraitRandomizeFaction"/>
+    <Trait Name="FactionTraitMajorFaction"/>
+  </Faction>
+  
+  <!-- ELCP: Spectator faction -->
+  <!-- The game checks for the faction name and/or the affinity, so dont change these -->
+  <Faction Name="FactionELCPSpectator"         Standard="true"   Author="LeaderEnemyBoss" Priority="10000">
+    <Affinity Name="AffinityELCPSpectator"/>
+	<AffinityMapping Name="AffinityMappingELCPSpectator"/>
     <Trait Name="FactionTraitMajorFaction"/>
   </Faction>
 

@@ -182,10 +182,6 @@ public class MenuOnlineSessionLine : SortedLine
 			this.RefreshVictoryConditionTooltip();
 			this.RefreshDLC13Tooltip();
 		}
-		if (this.LobbyDescription.FreeSlots == 0)
-		{
-			this.AgeTransform.Enable = false;
-		}
 	}
 
 	private string GetWorkshopContentTooltip(ref bool runtimeCheck)
@@ -464,7 +460,7 @@ public class MenuOnlineSessionLine : SortedLine
 			{
 				return this.worldTemperature.CompareTo(other.worldTemperature);
 			}
-			return this.worldWrap.CompareTo(other.worldWrap);
+			return this.worldWrap.CompareTo(other.worldWrap != null);
 		}
 
 		public int CompareTo(object obj)

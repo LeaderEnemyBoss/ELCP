@@ -493,6 +493,10 @@ public class MajorEmpire : global::Empire
 					string key = (text.Length != 0) ? "%EmpireNameFormatAdditionnalHuman" : "%EmpireNameFormatHuman";
 					text += AgeLocalizer.Instance.LocalizeString(key).Replace("$PlayerName", player.LocalizedName);
 				}
+				else if (this.IsSpectator)
+				{
+					text = AgeLocalizer.Instance.LocalizeString("%NotificationEncounterParticipationModeSpectatorTitle");
+				}
 				else
 				{
 					text = MajorEmpire.GenerateAIName(base.Faction.Affinity.Name, base.Index);
@@ -515,6 +519,7 @@ public class MajorEmpire : global::Empire
 
 	public static string GenerateAIName(string affinityName, int index)
 	{
+		index %= 8;
 		return AgeLocalizer.Instance.LocalizeString("%EmpireNameFormatAI").Replace("$Affinity", AgeLocalizer.Instance.LocalizeString("%AILeader" + affinityName + index.ToString()));
 	}
 
@@ -644,9 +649,14 @@ public class MajorEmpire : global::Empire
 
 	internal override void OnEmpireEliminated(global::Empire empire, bool authorized)
 	{
-		if (empire.Index == base.Index && this.ConvertedVillages.Count > 0)
+		if (empire.Index == base.Index)
 		{
-			this.UnconvertAndPacifyAllConvertedVillages();
+			ELCPUtilities.EliminatedEmpireIndices.Add(base.Index);
+			this.ELCPIsEliminated = true;
+			if (this.ConvertedVillages.Count > 0)
+			{
+				this.UnconvertAndPacifyAllConvertedVillages();
+			}
 		}
 		base.OnEmpireEliminated(empire, authorized);
 	}
@@ -737,11 +747,11 @@ public class MajorEmpire : global::Empire
 	{
 		IGameEntityRepositoryService gameEntityRepositoryService = game.Services.GetService<IGameEntityRepositoryService>();
 		Diagnostics.Assert(gameEntityRepositoryService != null);
-		IWorldPositionningService worldPositionningService = game.Services.GetService<IWorldPositionningService>();
-		Diagnostics.Assert(worldPositionningService != null);
+		Diagnostics.Assert(game.Services.GetService<IWorldPositionningService>() != null);
 		if (this.TamedKaijus != null)
 		{
-			for (int index = 0; index < this.TamedKaijus.Count; index++)
+			int num;
+			for (int index = 0; index < this.TamedKaijus.Count; index = num + 1)
 			{
 				Kaiju kaiju = this.TamedKaijus[index];
 				if (kaiju != null)
@@ -754,8 +764,20 @@ public class MajorEmpire : global::Empire
 					gameEntityRepositoryService.Register(kaiju);
 					DepartmentOfTheInterior.GenerateResourcesLeechingForTamedKaijus(kaiju);
 				}
+				kaiju = null;
+				num = index;
+				kaiju = null;
+				kaiju = null;
+				kaiju = null;
+				kaiju = null;
 			}
 			this.Refresh(false);
+		}
+		this.IsSpectator = (base.Faction.Name == "FactionELCPSpectator");
+		this.ELCPIsEliminated = this.IsEliminated;
+		if (this.ELCPIsEliminated)
+		{
+			ELCPUtilities.EliminatedEmpireIndices.Add(base.Index);
 		}
 		yield return base.OnLoadGame(game);
 		yield break;
@@ -818,6 +840,24 @@ public class MajorEmpire : global::Empire
 		yield return null;
 		yield break;
 	}
+
+	public void OnLoadEliminationBackupCheck()
+	{
+		Diagnostics.Log("ELCP {0} OnLoadEliminationBackupCheck, {1}, {2}", new object[]
+		{
+			base.Index,
+			this.IsEliminated,
+			this.ConvertedVillages.Count
+		});
+		if (this.IsEliminated && this.ConvertedVillages.Count > 0)
+		{
+			this.UnconvertAndPacifyAllConvertedVillages();
+		}
+	}
+
+	public bool IsSpectator { get; set; }
+
+	public bool ELCPIsEliminated { get; set; }
 
 	private List<Kaiju> tamedKaijus;
 

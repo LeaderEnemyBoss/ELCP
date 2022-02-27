@@ -431,10 +431,18 @@ namespace Amplitude.Unity.Framework
 			}
 			else
 			{
-				Diagnostics.LogType logType = (Diagnostics.LogType)((long)message.Flags & (long)((ulong)-16777216));
-				this.outputDepugFileStreamWriter.WriteLine("<p class=\"{0}\"><span class=\"time\">{1}</span><a onclick=\"hide('trace0')\">STACK</a>{2}</p>", logType.ToString(), DateTime.Now.ToString("HH:mm:ss:fff"), message);
-				this.outputDepugFileStreamWriter.WriteLine("<pre id=\"trace0\">");
+				Diagnostics.LogType logType = Diagnostics.LogType.Assertion;
+				this.outputDepugFileStreamWriter.WriteLine("<p class=\"{1}\"><span class=\"time\">{2}</span><a onclick=\"hide('trace{0}')\">STACK</a>{3}</p>", new object[]
+				{
+					this.DiagnosticsLogCounter,
+					logType.ToString(),
+					DateTime.Now.ToString("HH:mm:ss:fff"),
+					"Assertion Failed: " + message.Message
+				});
+				this.outputDepugFileStreamWriter.WriteLine("<pre id=\"trace{0}\">", this.DiagnosticsLogCounter);
 				this.Diagnostics_OutputDebugStackTrace(message);
+				int diagnosticsLogCounter = this.DiagnosticsLogCounter;
+				this.DiagnosticsLogCounter = diagnosticsLogCounter + 1;
 				this.outputDepugFileStreamWriter.WriteLine("</pre>");
 			}
 			this.outputDepugFileStreamWriter.Flush();
@@ -779,6 +787,21 @@ namespace Amplitude.Unity.Framework
 				}
 			}
 
+			public static bool ELCPDevMode
+			{
+				get
+				{
+					return Application.Preferences.eLCPDevMode;
+				}
+				set
+				{
+					if (Application.Preferences.eLCPDevMode != value)
+					{
+						Application.Preferences.eLCPDevMode = value;
+					}
+				}
+			}
+
 			private static string customCommandLineArguments = string.Empty;
 
 			private static bool enableOfflineModeWhenSteamClientIsDown = true;
@@ -786,6 +809,8 @@ namespace Amplitude.Unity.Framework
 			private static bool enableModdingTools = false;
 
 			private static bool enableMultiplayer = true;
+
+			private static bool eLCPDevMode;
 		}
 
 		public static class Registers

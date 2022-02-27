@@ -20,10 +20,10 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderQueueResearch), "QueueResearch")]
-[OrderProcessor(typeof(OrderForceUnlockTechnology), "ForceUnlockTechnology")]
 [OrderProcessor(typeof(OrderUnlockTechnologyByInfiltration), "UnlockTechnologyByInfiltration")]
 [OrderProcessor(typeof(OrderCancelResearch), "CancelResearch")]
+[OrderProcessor(typeof(OrderForceUnlockTechnology), "ForceUnlockTechnology")]
+[OrderProcessor(typeof(OrderQueueResearch), "QueueResearch")]
 [OrderProcessor(typeof(OrderBuyOutTechnology), "BuyOutTechnology")]
 public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSerializable
 {
@@ -277,6 +277,10 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 
 	public bool CanTradeHeroes(bool ignoreBan = false)
 	{
+		if (base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
+		{
+			return false;
+		}
 		if (ignoreBan)
 		{
 			return this.HasResearchTag("TechnologyMarketplaceHeroes");
@@ -339,7 +343,7 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 
 	public int GetTechnologyRemainingTurn(TechnologyDefinition technologyDefinition)
 	{
-		int result = int.MaxValue;
+		int result = 20;
 		if (!base.Empire.SimulationObject.Tags.Contains("AffinityReplicants"))
 		{
 			Diagnostics.Assert(this.ResearchQueue != null);
@@ -360,17 +364,22 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		else
 		{
 			float num2 = float.MaxValue;
-			IDatabase<DepartmentOfScience.ConstructibleElement> database = Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false);
 			DepartmentOfScience.ConstructibleElement technology;
-			if (database.TryGetValue(technologyDefinition.Name, out technology))
+			if (Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false).TryGetValue(technologyDefinition.Name, out technology))
 			{
 				num2 = this.GetBuyOutTechnologyCost(technology);
 			}
 			Diagnostics.Assert(this.departmentOfTheTreasury != null);
 			float num3;
-			if (this.departmentOfTheTreasury.TryGetNetResourceValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, out num3, false) && num3 > 0f)
+			if (this.departmentOfTheTreasury.TryGetResourceStockValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, out num3, false))
 			{
-				result = Mathf.CeilToInt(num2 / num3);
+				num2 = Mathf.Max(0f, num2 - num3 * 0.5f);
+			}
+			float num4;
+			if (this.departmentOfTheTreasury.TryGetNetResourceValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, out num4, false))
+			{
+				num4 = Mathf.Max(10f, num4);
+				result = Mathf.CeilToInt(num2 / num4);
 			}
 		}
 		return result;
@@ -852,10 +861,14 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		{
 			throw new ArgumentNullException("order");
 		}
-		bool silent = order.TechnologyDefinitionNames.Length > 0;
-		for (int index = 0; index < order.TechnologyDefinitionNames.Length; index++)
+		bool silent = order.TechnologyDefinitionNames.Length != 0;
+		if (order.Notify)
 		{
-			this.UnlockTechnology(order.TechnologyDefinitionNames[index], silent);
+			silent = false;
+		}
+		for (int i = 0; i < order.TechnologyDefinitionNames.Length; i++)
+		{
+			this.UnlockTechnology(order.TechnologyDefinitionNames[i], silent);
 		}
 		yield break;
 	}
@@ -979,8 +992,7 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		}
 		Diagnostics.Assert(constructibleElement != null);
 		global::Empire empire = base.Empire as global::Empire;
-		DepartmentOfScience departmentOfScience = empire.GetAgency<DepartmentOfScience>();
-		DepartmentOfScience.ConstructibleElement.State technologyState = departmentOfScience.GetTechnologyState(constructibleElement);
+		DepartmentOfScience.ConstructibleElement.State technologyState = empire.GetAgency<DepartmentOfScience>().GetTechnologyState(constructibleElement);
 		if (technologyState != DepartmentOfScience.ConstructibleElement.State.Available)
 		{
 			Diagnostics.LogError("Skipping queue construction process because the constructible element {0} is not available ({1}).", new object[]
@@ -996,41 +1008,42 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 		{
 			Diagnostics.Assert(empire != null && empire.Faction != null && empire.Faction.AffinityMapping != null);
 			construction = new Construction(constructibleElement, order.ConstructionGameEntityGUID, empire.Faction.AffinityMapping.Name, empire);
-			IDatabase<SimulationDescriptor> simulationDescriptorDatatable = Databases.GetDatabase<SimulationDescriptor>(false);
-			SimulationDescriptor classImprovementDescriptor;
-			if (simulationDescriptorDatatable != null && simulationDescriptorDatatable.TryGetValue("ClassConstruction", out classImprovementDescriptor))
+			IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
+			SimulationDescriptor descriptor;
+			if (database != null && database.TryGetValue("ClassConstruction", out descriptor))
 			{
-				construction.AddDescriptor(classImprovementDescriptor, false);
+				construction.AddDescriptor(descriptor, false);
 			}
 		}
 		Diagnostics.Assert(this.departmentOfTheTreasury != null);
-		if (constructibleElement.Costs != null && constructibleElement.Costs.Length > 0)
+		if (constructibleElement.Costs != null && constructibleElement.Costs.Length != 0)
 		{
 			Diagnostics.Assert(construction.CurrentConstructionStock != null && construction.CurrentConstructionStock.Length == constructibleElement.Costs.Length);
 			Diagnostics.Assert(order.ResourceStocks != null && order.ResourceStocks.Length == constructibleElement.Costs.Length);
-			for (int index = 0; index < constructibleElement.Costs.Length; index++)
+			for (int i = 0; i < constructibleElement.Costs.Length; i++)
 			{
-				Diagnostics.Assert(constructibleElement.Costs[index] != null);
-				Diagnostics.Assert(construction.CurrentConstructionStock[index] != null);
-				Diagnostics.Assert(order.ResourceStocks[index] != null);
-				construction.CurrentConstructionStock[index].Stock = order.ResourceStocks[index].Stock;
-				if (constructibleElement.Costs[index].Instant)
+				Diagnostics.Assert(constructibleElement.Costs[i] != null);
+				Diagnostics.Assert(construction.CurrentConstructionStock[i] != null);
+				Diagnostics.Assert(order.ResourceStocks[i] != null);
+				construction.CurrentConstructionStock[i].Stock = order.ResourceStocks[i].Stock;
+				if (constructibleElement.Costs[i].Instant && order.ResourceStocks[i].Stock > 0f && !this.departmentOfTheTreasury.TryTransferResources(base.Empire.SimulationObject, constructibleElement.Costs[i].ResourceName, -order.ResourceStocks[i].Stock))
 				{
-					if (order.ResourceStocks[index].Stock > 0f && !this.departmentOfTheTreasury.TryTransferResources(base.Empire.SimulationObject, constructibleElement.Costs[index].ResourceName, -order.ResourceStocks[index].Stock))
+					Diagnostics.LogError("Order preprocessing failed because the constructible element '{0}' ask for instant resource '{1}' that can't be retrieve.", new object[]
 					{
-						Diagnostics.LogError("Order preprocessing failed because the constructible element '{0}' ask for instant resource '{1}' that can't be retrieve.", new object[]
-						{
-							constructibleElement.Name,
-							constructibleElement.Costs[index].ResourceName
-						});
-						yield break;
-					}
+						constructibleElement.Name,
+						constructibleElement.Costs[i].ResourceName
+					});
+					yield break;
 				}
 			}
 		}
-		ConstructionQueue selectedQueue = this.GetConstructionQueueForTech(construction.ConstructibleElement as TechnologyDefinition);
-		Diagnostics.Assert(selectedQueue != null);
-		selectedQueue.Enqueue(construction);
+		ConstructionQueue constructionQueueForTech = this.GetConstructionQueueForTech(construction.ConstructibleElement as TechnologyDefinition);
+		Diagnostics.Assert(constructionQueueForTech != null);
+		constructionQueueForTech.Enqueue(construction);
+		if (order.InsertAtFirstPlace && constructionQueueForTech.Length > 1)
+		{
+			constructionQueueForTech.Move(construction, 0);
+		}
 		Diagnostics.Assert(this.researchInProgress != null);
 		if (!this.researchInProgress.Any((Construction match) => match.GUID == construction.GUID))
 		{
@@ -1675,6 +1688,14 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 				if (this.playerControllerRepositoryService != null && this.playerControllerRepositoryService.ActivePlayerController != null && this.game.Empires.Count((global::Empire empire) => empire.Index != base.Empire.Index && empire.SimulationObject.GetPropertyValue(SimulationProperties.CurrentEra) >= (float)this.CurrentTechnologyEraNumber) == 0)
 				{
 					this.eventService.Notify(new EventNewEraGlobal(this.playerControllerRepositoryService.ActivePlayerController.Empire, technologyEraDefinition, this.CurrentTechnologyEraNumber, base.Empire));
+					if (ELCPUtilities.SpectatorMode)
+					{
+						string x = "Era" + this.CurrentTechnologyEraNumber;
+						if (!SimulationGlobal.GlobalTagsContains(x))
+						{
+							SimulationGlobal.AddGlobalTag(x, false);
+						}
+					}
 				}
 				IDatabase<PointOfInterestTemplate> database = Databases.GetDatabase<PointOfInterestTemplate>(false);
 				IDatabase<ResourceDefinition> database2 = Databases.GetDatabase<ResourceDefinition>(false);
@@ -1683,36 +1704,24 @@ public class DepartmentOfScience : Agency, Amplitude.Xml.Serialization.IXmlSeria
 					foreach (PointOfInterestTemplate pointOfInterestTemplate in database)
 					{
 						string a;
-						if (pointOfInterestTemplate.Properties.TryGetValue("Type", out a))
+						string x2;
+						string x3;
+						ResourceDefinition resourceDefinition;
+						if (pointOfInterestTemplate.Properties.TryGetValue("Type", out a) && !(a != "ResourceDeposit") && pointOfInterestTemplate.Properties.TryGetValue("VisibilityTechnology", out x2) && !(x2 != technologyEraDefinition.Name) && pointOfInterestTemplate.Properties.TryGetValue("ResourceName", out x3) && database2.TryGetValue(x3, out resourceDefinition))
 						{
-							if (!(a != "ResourceDeposit"))
+							ResourceDefinition.Type resourceType = resourceDefinition.ResourceType;
+							if (resourceType != ResourceDefinition.Type.Strategic)
 							{
-								string x;
-								if (pointOfInterestTemplate.Properties.TryGetValue("VisibilityTechnology", out x))
+								if (resourceType == ResourceDefinition.Type.Luxury)
 								{
-									if (!(x != technologyEraDefinition.Name))
-									{
-										string x2;
-										ResourceDefinition resourceDefinition;
-										if (pointOfInterestTemplate.Properties.TryGetValue("ResourceName", out x2) && database2.TryGetValue(x2, out resourceDefinition))
-										{
-											ResourceDefinition.Type resourceType = resourceDefinition.ResourceType;
-											if (resourceType != ResourceDefinition.Type.Strategic)
-											{
-												if (resourceType == ResourceDefinition.Type.Luxury)
-												{
-													EventResourceTypeLuxuryDiscovered eventToNotify = new EventResourceTypeLuxuryDiscovered((global::Empire)base.Empire, resourceDefinition);
-													this.eventService.Notify(eventToNotify);
-												}
-											}
-											else
-											{
-												EventResourceTypeStrategicDiscovered eventToNotify2 = new EventResourceTypeStrategicDiscovered((global::Empire)base.Empire, resourceDefinition);
-												this.eventService.Notify(eventToNotify2);
-											}
-										}
-									}
+									EventResourceTypeLuxuryDiscovered eventToNotify = new EventResourceTypeLuxuryDiscovered((global::Empire)base.Empire, resourceDefinition);
+									this.eventService.Notify(eventToNotify);
 								}
+							}
+							else
+							{
+								EventResourceTypeStrategicDiscovered eventToNotify2 = new EventResourceTypeStrategicDiscovered((global::Empire)base.Empire, resourceDefinition);
+								this.eventService.Notify(eventToNotify2);
 							}
 						}
 					}

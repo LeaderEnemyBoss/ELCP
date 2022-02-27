@@ -26,25 +26,28 @@ public class PanelFeatureSpellState : GuiPanelFeature
 
 	protected override IEnumerator OnShow(params object[] parameters)
 	{
-		SpellDefinitionTooltipData spellDefinition = null;
+		SpellDefinitionTooltipData spellDefinitionTooltipData = null;
 		if (this.context is SpellDefinitionTooltipData)
 		{
-			spellDefinition = (this.context as SpellDefinitionTooltipData);
+			spellDefinitionTooltipData = (this.context as SpellDefinitionTooltipData);
 		}
 		this.Title.Text = string.Empty;
-		if (spellDefinition != null)
+		if (spellDefinitionTooltipData != null)
 		{
-			if (!this.IsInTargeting(spellDefinition))
+			if (!this.IsInTargeting(spellDefinitionTooltipData))
 			{
 				this.Title.Text = AgeLocalizer.Instance.LocalizeString("%SpellWaitForTargetingPhase");
 			}
+			else if (ELCPUtilities.SpellUsage_HasSpellBeenUsed(spellDefinitionTooltipData.Encounter.GUID, spellDefinitionTooltipData.Empire.Index, spellDefinitionTooltipData.SpellDefinition.Name))
+			{
+				this.Title.Text = AgeLocalizer.Instance.LocalizeString("%SpellActive");
+			}
 			else
 			{
-				bool isThisSpellActive = false;
-				bool isAnySpellActive = this.IsSpellAlreadyCasted(spellDefinition, ref isThisSpellActive);
-				if (isAnySpellActive)
+				bool flag = false;
+				if (this.IsSpellAlreadyCasted(spellDefinitionTooltipData, ref flag))
 				{
-					if (isThisSpellActive)
+					if (flag)
 					{
 						this.Title.Text = AgeLocalizer.Instance.LocalizeString("%SpellActive");
 					}
@@ -70,7 +73,7 @@ public class PanelFeatureSpellState : GuiPanelFeature
 
 	private bool IsSpellAlreadyCasted(SpellDefinitionTooltipData spellDefinitionTooltipData, ref bool isThisSpellActive)
 	{
-		Contender firstAlliedContenderFromEmpire = spellDefinitionTooltipData.Encounter.GetFirstAlliedContenderFromEmpire(spellDefinitionTooltipData.Empire);
+		Contender firstAlliedContenderFromEmpireWithUnits = spellDefinitionTooltipData.Encounter.GetFirstAlliedContenderFromEmpireWithUnits(spellDefinitionTooltipData.Empire);
 		foreach (SpellDefinition spellDefinition in this.spellDefinitionDatabase)
 		{
 			if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(spellDefinitionTooltipData.Empire, spellDefinition, new string[]
@@ -82,7 +85,7 @@ public class PanelFeatureSpellState : GuiPanelFeature
 				{
 					StaticString name = spellDefinition.SpellBattleActions[i].BattleActionUserDefinitionReference.Name;
 					BattleAction.State state;
-					if (firstAlliedContenderFromEmpire.TryGetBattleActionUserState(name, out state) && state != BattleAction.State.Available)
+					if (firstAlliedContenderFromEmpireWithUnits.TryGetBattleActionUserState(name, out state) && state != BattleAction.State.Available)
 					{
 						isThisSpellActive = (spellDefinition.Name == spellDefinitionTooltipData.SpellDefinition.Name);
 						return true;

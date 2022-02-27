@@ -510,18 +510,6 @@ public class InstanciedMeshHolders
 		}
 	}
 
-	public Material GetInstancingMaterialFromMaterialIFP(Material material, int pixelsPerInstance)
-	{
-		for (int i = 0; i < this.materialToMaterialInstancings.Count; i++)
-		{
-			if (this.materialToMaterialInstancings[i].OriginalMaterial.name == material.name && this.materialToMaterialInstancings[i].PixelsPerInstance == pixelsPerInstance)
-			{
-				return this.materialToMaterialInstancings[i].InstancingMaterial;
-			}
-		}
-		return null;
-	}
-
 	private void DrawInstanciedMeshBlocks(ulong layerMask)
 	{
 		this.DrawInstanciedMeshBlocks(layerMask, this.firstInstanciedMeshBlockMatrix0, 0);
@@ -712,6 +700,18 @@ public class InstanciedMeshHolders
 	private Mesh DefaultGetOrCreateUnityEngineMesh()
 	{
 		return new Mesh();
+	}
+
+	public Material GetInstancingMaterialFromMaterialIFP(Material material, int pixelsPerInstance)
+	{
+		for (int i = 0; i < this.materialToMaterialInstancings.Count; i++)
+		{
+			if (this.materialToMaterialInstancings[i].OriginalMaterial.name == material.name && this.materialToMaterialInstancings[i].PixelsPerInstance == pixelsPerInstance)
+			{
+				return this.materialToMaterialInstancings[i].InstancingMaterial;
+			}
+		}
+		return null;
 	}
 
 	public static readonly int MeshCreationOptionNoOption = 0;

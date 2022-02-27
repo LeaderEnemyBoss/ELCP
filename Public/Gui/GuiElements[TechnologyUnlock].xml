@@ -11,6 +11,14 @@
   </GuiElement>
 
   <!-- Unlocks Booster Bonus -->
+  <ExtendedGuiElement Name="TechnologyAllBoosterLevel1">
+    <TooltipElement Ignore="true">
+    </TooltipElement>
+  </ExtendedGuiElement>
+  <ExtendedGuiElement Name="TechnologyAllBoosterLevel2">
+    <TooltipElement Ignore="true">
+    </TooltipElement>
+  </ExtendedGuiElement>
   <ExtendedGuiElement Name="TechnologyBoosterFoodBonus1Value">
     <TooltipElement Ignore="true">
       <EffectOverride>%TechnologyBoosterFoodBonus1ValueTooltipEffect</EffectOverride>
@@ -242,7 +250,7 @@
   <!-- Material Mastery -->
   <ExtendedGuiElement Name="TechnologyMasteryCommonBonus1">
     <TooltipElement Ignore="true">
-      <EffectOverride>%TechnologyStrategyCommonMasteryTooltipEffect</EffectOverride>
+      <EffectOverride>%TechnologyStrategyCommonMasteryTooltipEffectELCP</EffectOverride> <!-- ELCP buff tooltip-->
     </TooltipElement>
   </ExtendedGuiElement>
   
@@ -399,7 +407,7 @@
     <Title>%TechnologyOceanTravelSpeedBonus2TooltipEffect</Title>
   </GuiElement>-->
   <ExtendedGuiElement Name="TechnologyPrivateers">
-    <TooltipElement Ignore="true">
+    <TooltipElement>
       <EffectOverride>%TechnologyPrivateersTooltipEffect</EffectOverride>
     </TooltipElement>
   </ExtendedGuiElement>
@@ -504,6 +512,7 @@
     </TooltipElement>
   </ExtendedGuiElement>
   <ExtendedGuiElement Name="TechnologySeaDemons11">
+	<Title>%TechnologyDefinitionSeaDemons11Title</Title> <!-- ELCP: Bug fix for tooltip display of bonus source -->
     <TooltipElement Ignore="true">
       <EffectOverride>%TechnologySeaDemons11TooltipEffect</EffectOverride>
     </TooltipElement>
@@ -546,7 +555,7 @@
   <ExtendedGuiElement Name="TechnologyMimics1">
     <Title>%FactionTraitMimics4Title</Title>
     <Description>%FactionTraitMimics4Description</Description>
-    <TooltipElement Ignore="true">
+    <TooltipElement Ignore="false">
       <EffectOverride>%FactionTraitMimics4TooltipEffect</EffectOverride>
     </TooltipElement>
   </ExtendedGuiElement>
@@ -559,5 +568,14 @@
       <EffectOverride>%FactionTraitMimics5TooltipEffect</EffectOverride>
     </TooltipElement>
   </ExtendedGuiElement>
+  
+  <!-- ELCP -->
+  <ExtendedGuiElement Name="KaijuTameReduction">
+	<SymbolString>%KaijuTameReductionDescription</SymbolString>
+	<Color Red="255" Green="255" Blue="255" Alpha="255" />
+	<TooltipElement Percent="true">
+    </TooltipElement>
+  </ExtendedGuiElement>
+  
   
 </Datatable>

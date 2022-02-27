@@ -64,15 +64,23 @@ public class GuiEmpire
 
 	public Texture2D GetImageTexture(StaticString size, Empire empireLooking)
 	{
-		if (this.Empire.SimulationObject.Tags.Contains(Empire.TagEmpireEliminated))
+		bool flag = this.Empire is MajorEmpire && (this.Empire as MajorEmpire).IsSpectator;
+		if (this.Empire.SimulationObject.Tags.Contains(Empire.TagEmpireEliminated) && !flag)
 		{
+			if (size == GuiPanel.IconSize.LogoSmall)
+			{
+				return AgeManager.Instance.FindDynamicTexture("eliminatedLogoSmall", false);
+			}
 			return AgeManager.Instance.FindDynamicTexture("Gui/DynamicBitmaps/Factions/elimination" + size, false);
 		}
-		if (GuiEmpire.IsKnownByLookingPlayer(this.Empire, empireLooking))
+		else
 		{
-			return this.GuiFaction.GetImageTexture(size, false);
+			if (GuiEmpire.IsKnownByLookingPlayer(this.Empire, empireLooking) || flag)
+			{
+				return this.GuiFaction.GetImageTexture(size, false);
+			}
+			return this.GuiFaction.GetRandomImageTexture(size);
 		}
-		return this.GuiFaction.GetRandomImageTexture(size);
 	}
 
 	public string GetColorizedLocalizedName(Empire empireLooking, bool useYou = false)

@@ -74,15 +74,11 @@ public abstract class DownloadableContent
 		}
 		for (int i = 0; i < this.Restrictions.Count; i++)
 		{
-			if (this.Restrictions[i].Category == category)
+			if (this.Restrictions[i].Category == category && Amplitude.String.WildcardCompare(contentId, this.Restrictions[i].Wildcard, this.Restrictions[i].IgnoreCase) && (this.Accessibility & this.Restrictions[i].Accessibility) == DownloadableContentAccessibility.None)
 			{
-				bool flag = Amplitude.String.WildcardCompare(contentId, this.Restrictions[i].Wildcard, this.Restrictions[i].IgnoreCase);
-				if (flag && (this.Accessibility & this.Restrictions[i].Accessibility) == DownloadableContentAccessibility.None)
-				{
-					replacement = this.Restrictions[i].Replacement;
-					result = false;
-					return true;
-				}
+				replacement = this.Restrictions[i].Replacement;
+				result = false;
+				return true;
 			}
 		}
 		return true;
@@ -107,18 +103,14 @@ public abstract class DownloadableContent
 		}
 		for (int i = 0; i < this.Restrictions.Count; i++)
 		{
-			if (this.Restrictions[i].Category == category)
+			if (this.Restrictions[i].Category == category && Amplitude.String.WildcardCompare(contentId, this.Restrictions[i].Wildcard, this.Restrictions[i].IgnoreCase))
 			{
-				bool flag = Amplitude.String.WildcardCompare(contentId, this.Restrictions[i].Wildcard, this.Restrictions[i].IgnoreCase);
-				if (flag)
+				found = true;
+				if ((this.Accessibility & this.Restrictions[i].Accessibility) == DownloadableContentAccessibility.None)
 				{
-					found = true;
-					if ((this.Accessibility & this.Restrictions[i].Accessibility) == DownloadableContentAccessibility.None)
-					{
-						replacement = this.Restrictions[i].Replacement;
-						result = false;
-						return true;
-					}
+					replacement = this.Restrictions[i].Replacement;
+					result = false;
+					return true;
 				}
 			}
 		}

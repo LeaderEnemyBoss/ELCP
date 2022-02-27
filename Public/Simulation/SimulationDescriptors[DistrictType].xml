@@ -137,7 +137,8 @@
       <BinarySimulationModifierDescriptor TargetProperty="CityApproval"            Operation="Addition"  Left="20"      Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementWonder1" IsBindOnSource="true"/>
       <SimulationModifierDescriptor       TargetProperty="EmpireMoney"             Operation="Percent"   Value="0.2"    Path="../ClassEmpire,ApprovalStatusTagEmpireHappy"/>
       <SimulationModifierDescriptor       TargetProperty="EmpireResearch"          Operation="Percent"   Value="0.2"    Path="../ClassEmpire,ApprovalStatusTagEmpireHappy"/>
-      <SimulationModifierDescriptor       TargetProperty="TechnologyCostReductionFromEmpirePlan"          Operation="Percent"   Value="0.2"    Path="../ClassEmpire,ApprovalStatusTagEmpireHappy"/>
+	  <!-- ELCP: fixed tech cost reduction for Forgotten -->
+      <SimulationModifierDescriptor       TargetProperty="TechnologyCostReductionFromEmpirePlan"          Operation="Percent"   Value="0.2"    Path="../ClassEmpire,ApprovalStatusTagEmpireHappy,FactionTraitReplicants1/ClassResearch"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -162,7 +163,7 @@
   <SimulationDescriptor Name="DistrictImprovementWonder4"                   Type="DistrictImprovementWonder">
     <SimulationModifierDescriptors>
       <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"            Operation="Addition"  Left="50"      Right="$(LevelDistrictDisplayed)" BinaryOperation="Multiplication"   Path="DistrictImprovementWonder4" IsBindOnSource="true"/>
-      <SimulationModifierDescriptor TargetProperty="DiplomaticTermsFactor"              Operation="Subtraction"     Value="0.30"   Path="../EmpireTypeMajor" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="EmpirePlanCostModifier"             Operation="Percent"   Value="-0.30"   Path="../EmpireTypeMajor"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

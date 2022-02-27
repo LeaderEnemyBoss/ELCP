@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Amplitude.WorldGenerator.Graphs;
 using Amplitude.WorldGenerator.Graphs.Hex;
 using Amplitude.WorldGenerator.Tmx;
 using Amplitude.WorldGenerator.World;
@@ -25,12 +26,18 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			}
 			this.random = new Random(DateTime.Now.GetHashCode());
 			this.GetPointOfInterests();
+			this.AssignRandomAnomalies_Unique();
+			this.AssignRandomAnomalies_Terrain();
 			this.CreateRidgesFromHexes();
-			this.CheckMinimumStrategicDepositPerRegion();
 		}
 
 		private void GetPointOfInterests()
 		{
+			this.customRandomizationGroups = new Dictionary<int, List<int>>();
+			this.randomAnomalyPositions = new List<HexPos>();
+			TerrainTransformation transform = base.Context.Settings.Transformations.Find((TerrainTransformation t) => t.Name == "Volcano");
+			bool flag = base.Context.Configuration.IsDLCAvailable("SummerFlamesPack");
+			bool flag2 = base.Context.Configuration.IsDLCAvailable("NavalPack");
 			for (int i = 0; i < base.Context.Grid.Columns; i++)
 			{
 				for (int j = 0; j < base.Context.Grid.Rows; j++)
@@ -38,8 +45,17 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 					if (this.tmxPointOfInterestLayer.Data[j, i] != 0)
 					{
 						HexPos hexPos = new HexPos(i, j);
-						bool flag = false;
-						string poiName = base.Context.Settings.TmxMap.GetTileProperty(this.tmxPointOfInterestLayer.Data[j, i], ImportTmxPointOfInterestLayer.poiTypeNameProperty);
+						bool flag3 = false;
+						string tileProperty = base.Context.Settings.TmxMap.GetTileProperty(this.tmxPointOfInterestLayer.Data[hexPos.Row, hexPos.Column], "Values");
+						string poiName;
+						if (!string.IsNullOrEmpty(tileProperty))
+						{
+							poiName = this.GetPointOfInterest_CustomRandomization(hexPos, tileProperty);
+						}
+						else
+						{
+							poiName = base.Context.Settings.TmxMap.GetTileProperty(this.tmxPointOfInterestLayer.Data[j, i], ImportTmxPointOfInterestLayer.poiTypeNameProperty);
+						}
 						if (string.IsNullOrEmpty(poiName))
 						{
 							base.ReportTmx(string.Concat(new object[]
@@ -64,16 +80,16 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 									select name).ToArray<string>();
 									poiName = array[this.random.Next(array.Length)];
 								}
-								bool flag2 = false;
+								bool flag4 = false;
 								for (int k = 0; k < 6; k++)
 								{
 									HexPos hexPos2 = hexPos.Neighbour((HexPos.Direction)k);
 									if (hexPos2.Row >= 0 && hexPos2.Row <= base.Context.Settings.Height && hexPos2.Column >= 0 && hexPos2.Column <= base.Context.Settings.Width && this.tmxPointOfInterestLayer.Data[hexPos2.Row, hexPos2.Column] != 0)
 									{
-										string tileProperty = base.Context.Settings.TmxMap.GetTileProperty(this.tmxPointOfInterestLayer.Data[hexPos2.Row, hexPos2.Column], ImportTmxPointOfInterestLayer.poiTypeNameProperty);
-										if (!string.IsNullOrEmpty(tileProperty) && tileProperty.Contains("Citadel"))
+										string tileProperty2 = base.Context.Settings.TmxMap.GetTileProperty(this.tmxPointOfInterestLayer.Data[hexPos2.Row, hexPos2.Column], ImportTmxPointOfInterestLayer.poiTypeNameProperty);
+										if (!string.IsNullOrEmpty(tileProperty2) && tileProperty2.Contains("Citadel"))
 										{
-											if (flag2)
+											if (flag4)
 											{
 												base.ReportTmx(string.Concat(new object[]
 												{
@@ -84,15 +100,15 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 												}));
 												throw new TmxImportException();
 											}
-											flag2 = true;
+											flag4 = true;
 										}
 									}
 								}
-								if (!flag2)
+								if (!flag4)
 								{
-									goto IL_962;
+									goto IL_9F7;
 								}
-								flag = true;
+								flag3 = true;
 							}
 							if (poiName.Contains("Citadel"))
 							{
@@ -104,11 +120,11 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 									select name).ToArray<string>();
 									poiName = array2[this.random.Next(array2.Length)];
 								}
-								flag = true;
+								flag3 = true;
 							}
-							flag |= poiName.Contains("NavalQuestLocation_SunkenRuin");
+							flag3 |= poiName.Contains("NavalQuestLocation_SunkenRuin");
 							Terrain terrain = base.Context.GetTerrain(hexPos);
-							if ((!flag && (terrain.Name.Contains("Ocean") || terrain.Name.Contains("Water"))) || terrain.Name.Contains("Waste"))
+							if ((!flag3 && terrain.IsWaterTile) || terrain.Name.Contains("Waste"))
 							{
 								base.ReportTmx(string.Concat(new object[]
 								{
@@ -118,7 +134,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 									hexPos.Row - base.Context.Grid.Rows + 1
 								}));
 							}
-							else if (flag && !terrain.Name.Contains("Ocean") && !terrain.Name.Contains("Water"))
+							else if (flag3 && !terrain.IsWaterTile)
 							{
 								base.ReportTmx(string.Concat(new object[]
 								{
@@ -130,19 +146,14 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 							}
 							else if (poiName == "Ridge")
 							{
-								if (base.Context.RiverMap[j, i] < 1)
+								this.ridgesHexes.Add(hexPos);
+							}
+							else if (poiName == "Volcano")
+							{
+								this.ridgesHexes.Add(hexPos);
+								if (flag)
 								{
-									this.ridgesHexes.Add(hexPos);
-								}
-								else
-								{
-									base.ReportTmx(string.Concat(new object[]
-									{
-										"?RidgeOnRiver&$Coordinate=",
-										hexPos.Column,
-										",",
-										hexPos.Row - base.Context.Grid.Rows + 1
-									}));
+									base.Context.ApplyTransformation(transform, hexPos);
 								}
 							}
 							else
@@ -151,9 +162,9 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 								{
 									if (poiName == ImportTmxPointOfInterestLayer.randomAnomalyName)
 									{
-										poiName = base.Context.Settings.AnomalyFIDS.Keys.ElementAt(this.random.Next(base.Context.Settings.AnomalyFIDS.Keys.Count));
+										this.randomAnomalyPositions.Add(hexPos);
 									}
-									if (base.Context.Anomalies.Keys.Contains(poiName))
+									else if (base.Context.Anomalies.Keys.Contains(poiName))
 									{
 										if (!base.Context.Anomalies[poiName].Contains(hexPos))
 										{
@@ -183,7 +194,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 										'_'
 									}).Count<string>() < 2)
 									{
-										goto IL_962;
+										goto IL_9F7;
 									}
 									Region region2 = region;
 									int villages = region2.Villages;
@@ -217,6 +228,10 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 									poiName = array5[this.random.Next(array5.Length)];
 								}
 								PointOfInterestTemplate pointOfInterestTemplate = base.Context.Settings.POITemplates.Values.FirstOrDefault((PointOfInterestTemplate template) => template.Name == poiName);
+								if (!flag2 && (poiName.Contains("Facility") || poiName.Contains("Citadel") || poiName.Contains("NavalQuestLocation_SunkenRuin")))
+								{
+									pointOfInterestTemplate = null;
+								}
 								if (pointOfInterestTemplate != null)
 								{
 									if (poiName.Contains("ResourceDeposit"))
@@ -241,9 +256,10 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 							}
 						}
 					}
-					IL_962:;
+					IL_9F7:;
 				}
 			}
+			this.customRandomizationGroups.Clear();
 		}
 
 		private void CreateRidgesFromHexes()
@@ -287,6 +303,116 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			}
 		}
 
+		private string GetPointOfInterest_CustomRandomization(HexPos hexPos, string values)
+		{
+			List<string> list = values.Split(new char[]
+			{
+				',',
+				';'
+			}, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+			int num;
+			if (!int.TryParse(base.Context.Settings.TmxMap.GetTileProperty(this.tmxPointOfInterestLayer.Data[hexPos.Row, hexPos.Column], "Group"), out num) || num < 0)
+			{
+				return list[base.Context.Randomizer.Next(list.Count)].Trim();
+			}
+			if (!this.customRandomizationGroups.ContainsKey(num))
+			{
+				List<int> list2 = Enumerable.Range(0, list.Count).ToList<int>();
+				list2 = (from x in list2
+				orderby base.Context.Randomizer.Next()
+				select x).ToList<int>();
+				this.customRandomizationGroups.Add(num, list2);
+			}
+			int index;
+			int.TryParse(base.Context.Settings.TmxMap.GetTileProperty(this.tmxPointOfInterestLayer.Data[hexPos.Row, hexPos.Column], "Offset"), out index);
+			int index2 = this.customRandomizationGroups[num][index] % list.Count;
+			return list[index2].Trim();
+		}
+
+		private void AssignRandomAnomalies_Unique()
+		{
+			Dictionary<HexPos, int> weights = new Dictionary<HexPos, int>();
+			this.randomAnomalyPositions.ForEach(delegate(HexPos h)
+			{
+				weights.Add(h, 0);
+			});
+			WeightedRandomSelector<HexPos> weightedRandomSelector = new WeightedRandomSelector<HexPos>
+			{
+				Randomizer = base.Context.Randomizer
+			};
+			foreach (string text in base.Context.Settings.UniqueAnomaliesQuantities.Keys)
+			{
+				int num = 0;
+				if (base.Context.Anomalies.ContainsKey(text))
+				{
+					num = base.Context.Anomalies[text].Count;
+				}
+				if (base.Context.Settings.UniqueAnomaliesQuantities[text] > num)
+				{
+					foreach (HexPos hexPos in this.randomAnomalyPositions)
+					{
+						string name = base.Context.GetTerrain(hexPos).Name;
+						weights[hexPos] = 0;
+						if (base.Context.Settings.AnomalyWeightsPerTerrain.ContainsKey(name) && base.Context.Settings.AnomalyWeightsPerTerrain[name].ContainsKey(text))
+						{
+							weights[hexPos] = base.Context.Settings.AnomalyWeightsPerTerrain[name][text];
+						}
+					}
+					weightedRandomSelector.UseDictionary(weights);
+					int num2 = base.Context.Settings.UniqueAnomaliesQuantities[text] - num;
+					if (weightedRandomSelector.IsValid && num2 > 0)
+					{
+						for (int i = 0; i < num2; i++)
+						{
+							if (weightedRandomSelector.IsValid)
+							{
+								HexPos randomSelected = weightedRandomSelector.RandomSelected;
+								weights[randomSelected] = 0;
+								weightedRandomSelector.UseDictionary(weights);
+								if (!base.Context.Anomalies.ContainsKey(text))
+								{
+									base.Context.Anomalies.Add(text, new List<HexPos>());
+								}
+								base.Context.Anomalies[text].Add(randomSelected);
+								base.Context.AnomalyMap[randomSelected.Row, randomSelected.Column] = text;
+								this.randomAnomalyPositions.Remove(randomSelected);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		private void AssignRandomAnomalies_Terrain()
+		{
+			foreach (HexPos hexPos in this.randomAnomalyPositions)
+			{
+				Terrain terrain = base.Context.GetTerrain(hexPos);
+				WeightedRandomSelector<string> weightedRandomSelector = new WeightedRandomSelector<string>();
+				weightedRandomSelector.Randomizer = base.Context.Randomizer;
+				Dictionary<string, int> dictionary = new Dictionary<string, int>(base.Context.Settings.AnomalyWeightsPerTerrain[terrain.Name]);
+				foreach (string key in base.Context.Settings.UniqueAnomaliesQuantities.Keys)
+				{
+					dictionary.Remove(key);
+				}
+				if (dictionary.Count != 0)
+				{
+					weightedRandomSelector.UseDictionary(dictionary);
+					string randomSelected = weightedRandomSelector.RandomSelected;
+					if (!base.Context.Settings.UniqueAnomaliesQuantities.ContainsKey(randomSelected))
+					{
+						if (!base.Context.Anomalies.ContainsKey(randomSelected))
+						{
+							base.Context.Anomalies.Add(randomSelected, new List<HexPos>());
+						}
+						base.Context.Anomalies[randomSelected].Add(hexPos);
+						base.Context.AnomalyMap[hexPos.Row, hexPos.Column] = randomSelected;
+					}
+				}
+			}
+			this.randomAnomalyPositions.Clear();
+		}
+
 		private static string poiTypeNameProperty = "Value";
 
 		private static string randomAnomalyName = "AnomalyRandom";
@@ -306,5 +432,9 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 		private List<HexPos> ridgesHexes = new List<HexPos>();
 
 		private Random random;
+
+		private Dictionary<int, List<int>> customRandomizationGroups;
+
+		private List<HexPos> randomAnomalyPositions;
 	}
 }

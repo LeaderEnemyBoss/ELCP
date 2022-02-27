@@ -119,7 +119,7 @@ public class ArmyAction_TransferUnits : ArmyAction, IArmyActionWithUnitSelection
 		{
 			bool flag4 = false;
 			WorldPosition neighbourTile = service2.GetNeighbourTile(army.WorldPosition, (WorldOrientation)k, 1);
-			if (service3.IsTilePassable(neighbourTile, pathfindingMovementCapacity, (PathfindingFlags)0) && service3.IsTransitionPassable(army.WorldPosition, neighbourTile, pathfindingMovementCapacity, (PathfindingFlags)0) && service3.IsTileStopable(neighbourTile, pathfindingMovementCapacity, PathfindingFlags.IgnoreArmies))
+			if (service3.IsTilePassable(neighbourTile, pathfindingMovementCapacity, (PathfindingFlags)0) && service3.IsTransitionPassable(army.WorldPosition, neighbourTile, army, PathfindingFlags.IgnoreArmies, null) && service3.IsTileStopable(neighbourTile, pathfindingMovementCapacity, PathfindingFlags.IgnoreArmies))
 			{
 				Region region = service2.GetRegion(neighbourTile);
 				if (region.City != null && this.AllowedTransferTarget != ArmyAction_TransferUnits.AllowedTransferTargetType.Army)
@@ -165,7 +165,7 @@ public class ArmyAction_TransferUnits : ArmyAction, IArmyActionWithUnitSelection
 				}
 			}
 		}
-		if (this.AllowedTransferTarget != ArmyAction_TransferUnits.AllowedTransferTargetType.City && flag3)
+		if (this.AllowedTransferTarget > ArmyAction_TransferUnits.AllowedTransferTargetType.City && flag3)
 		{
 			failureFlags.Add(ArmyAction_TransferUnits.NotEnoughSlotsInNeighbouringArmyForTransfer);
 		}
@@ -177,9 +177,7 @@ public class ArmyAction_TransferUnits : ArmyAction, IArmyActionWithUnitSelection
 		{
 			failureFlags.Add(ArmyAction_TransferUnits.NoNeighbouringArmyAvailable);
 		}
-		if (this.AllowedTransferTarget == ArmyAction_TransferUnits.AllowedTransferTargetType.Army)
-		{
-		}
+		ArmyAction_TransferUnits.AllowedTransferTargetType allowedTransferTarget = this.AllowedTransferTarget;
 		return false;
 	}
 

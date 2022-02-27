@@ -930,6 +930,7 @@ public class GameManager : Amplitude.Unity.Game.GameManager, IService, IGameDiag
 		{
 			global::GameManager.Preferences.gameGraphicSettings = new GameGraphicSettings();
 			global::GameManager.Preferences.gameplayGraphicOptions = new GameplayGraphicOptions();
+			global::GameManager.Preferences.questVerboseMode = false;
 		}
 
 		public static bool EnableDebugOverlay

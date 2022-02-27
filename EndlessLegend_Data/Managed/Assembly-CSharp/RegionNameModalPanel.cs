@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class RegionNameModalPanel : GuiModalPanel
 {
-	private void StartProfanityFiltering()
+	public RegionNameModalPanel()
 	{
+		this.profanityError = string.Empty;
+		this.invalidColor = new Color(0.7529412f, 0.2509804f, 0.2509804f);
 	}
 
 	public Region Region { get; private set; }
@@ -129,11 +131,9 @@ public class RegionNameModalPanel : GuiModalPanel
 		return flag;
 	}
 
-	private string profanityError = string.Empty;
-
-	private UnityEngine.Coroutine profanityFilterCoroutine;
-
-	private Color invalidColor = new Color(0.7529412f, 0.2509804f, 0.2509804f);
+	private void StartProfanityFiltering()
+	{
+	}
 
 	public AgeControlTextField NameTextfield;
 
@@ -142,4 +142,10 @@ public class RegionNameModalPanel : GuiModalPanel
 	public AgePrimitiveImage NameSelectionFrame;
 
 	public AgeTransform ValidateButton;
+
+	private string profanityError;
+
+	private UnityEngine.Coroutine profanityFilterCoroutine;
+
+	private Color invalidColor;
 }

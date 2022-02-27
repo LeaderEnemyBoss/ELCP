@@ -1172,6 +1172,28 @@
               </ConditionCheck_Prerequisite>
             </Decorator_BeginTurn>
           </Controller_Sequence>
+		  
+		  <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitGauran</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeGauran) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
+		  
+		  <Controller_Sequence>
+            <Decorator_BeginTurn Initiator="Empire" LinkedStepProgression="MainQuestRovingClans-Chapter7-Step1">
+              <ConditionCheck_Prerequisite>
+                <Prerequisites Target="$Empire">
+                  <PathPrerequisite>EmpireTypeMajor,AssimilationTraitDawnShua</PathPrerequisite>
+                  <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/RebuiltVillage,VillageTypeDawnShua) ge 2</InterpreterPrerequisite>
+                </Prerequisites>
+              </ConditionCheck_Prerequisite>
+            </Decorator_BeginTurn>
+          </Controller_Sequence>
 
         </Controller_Parallel>
 

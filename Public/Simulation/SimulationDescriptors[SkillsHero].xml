@@ -67,9 +67,25 @@
       <SimulationModifierDescriptor TargetProperty="CityApproval"                     Operation="Addition"  Value="10" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+  <!-- ELCP reworked Level 2 skill-->
+  <SimulationDescriptor Name="HeroSkillGovernor04Level2ELCP"               Type="SkillHero">	
+    <SimulationModifierDescriptors>	 
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictFood"  Operation="Addition"  Left="1" Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/TerrainTagVillage"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictFood"  Operation="Addition"  Left="1" Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/ClassCreepingNode,InCapitalRegion/ClassDistrict,TerrainTagVillage" TooltipHidden="true"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictFood"  Operation="Addition"  Left="1" Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/ConvertedVillage,InCapitalRegion/ClassDistrict,TerrainTagVillage" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor04Level3"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="CityApproval"                     Operation="Addition"  Value="10" Path="../ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor> 
+  <!-- ELCP reworked Level 3 skill-->
+  <SimulationDescriptor Name="HeroSkillGovernor04Level3ELCP"               Type="SkillHero">	
+    <SimulationModifierDescriptors>	  
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"  Operation="Addition"  Left="0.25" Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/TerrainTagVillage"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"  Operation="Addition"  Left="0.25" Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/ClassCreepingNode,InCapitalRegion/ClassDistrict,TerrainTagVillage" TooltipHidden="true"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"  Operation="Addition"  Left="0.25" Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/ConvertedVillage,InCapitalRegion/ClassDistrict,TerrainTagVillage" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -89,6 +105,14 @@
       <SimulationModifierDescriptor TargetProperty="CityApproval"       Operation="Addition"  Value="10"    Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+  <!-- ELCP reworked Level 3 skill-->
+  <SimulationDescriptor Name="HeroSkillGovernor04SistersOfMercyLevel3ELCP"     Type="SkillHero">  
+    <SimulationModifierDescriptors>
+	  <BinarySimulationModifierDescriptor TargetProperty="CityIndustry" Operation="Addition"  Left="1"   Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication"   Path="./ClassCity"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+
+
 
   <!-- Narrative Master -->
   <SimulationDescriptor Name="HeroSkillGovernor05Level1"                   Type="SkillHero">
@@ -356,36 +380,36 @@
   <!-- Slave Driver -->
   <SimulationDescriptor Name="HeroSkillGovernor19NecrophagesLevel1"        Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor19NecrophagesLevel2"        Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Game Theory -->
   <SimulationDescriptor Name="HeroSkillGovernor19RovingClansLevel1"        Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor19RovingClansLevel2"        Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"      Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitProductionCostReduction"   MultiplicativeStacking="true"    Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Behemoth Tamer -->
   <SimulationDescriptor Name="HeroSkillGovernor20Level1"                   Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true" Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor20Level2"                   Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition"  Value="0.12" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true" Operation="Addition"  Value="0.12" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -493,14 +517,29 @@
       <SimulationModifierDescriptor TargetProperty="CityDefensePointRecoveryPerTurn"  Operation="Addition"  Value="4" Path="../ClassCity" Priority="2"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+  <!-- ELCP: additional effects (industry & science on strategics)-->
   <SimulationDescriptor Name="HeroSkillGovernor27Level2"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="CityDefensePointRecoveryPerTurn"  Operation="Addition"  Value="8" Path="../ClassCity" Priority="2"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor27Level2ELCP"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition"  Left="1" Right="$(ELCPFortificationOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/PointOfInterestBonusStrategic"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition"  Left="1" Right="$(ELCPFortificationOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/ClassCreepingNode,InCapitalRegion/ClassDistrict,PointOfInterestBonusStrategic" TooltipHidden="true"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictScience"  Operation="Addition"  Left="1" Right="$(ELCPFortificationOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/ConvertedVillage,InCapitalRegion/ClassDistrict,PointOfInterestBonusStrategic" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>  
   <SimulationDescriptor Name="HeroSkillGovernor27Level3"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="CityDefensePointRecoveryPerTurn"  Operation="Addition"  Value="8" Path="../ClassCity" Priority="2"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillGovernor27Level3ELCP"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictIndustry"  Operation="Addition"  Left="1" Right="$(ELCPFortificationOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/PointOfInterestBonusStrategic"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictIndustry"  Operation="Addition"  Left="1" Right="$(ELCPFortificationOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/ClassCreepingNode,InCapitalRegion/ClassDistrict,PointOfInterestBonusStrategic" TooltipHidden="true"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictIndustry"  Operation="Addition"  Left="1" Right="$(ELCPFortificationOverflow)" BinaryOperation="Multiplication" Path="./ClassCity/ConvertedVillage,InCapitalRegion/ClassDistrict,PointOfInterestBonusStrategic" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -659,19 +698,21 @@
   <SimulationDescriptor Name="HeroSkillGovernor37Level1"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                   Operation="Percent"   Value="-0.50" Path="../ClassCity,Garrison/ClassUnit"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"              Operation="Addition"  Left="1" Right="$(UnitsCount)" BinaryOperation="Multiplication" Path="../ClassCity" IsBindOnSource="false"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor37Level2"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                   Operation="Percent"   Value="-0.50" Path="../ClassCity,Garrison/ClassUnit"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint"              Operation="Addition"  Left="1" Right="$(UnitsCount)" BinaryOperation="Multiplication" Path="../ClassCity" IsBindOnSource="false"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Negative food/money immunity on city -->
   <SimulationDescriptor Name="HeroSkillGovernor38Level1"                   Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="NetCityGrowth"                    Operation="Maximum" Value="0"         Path="../ClassCity" TooltipHidden="true"/>
-      <SimulationModifierDescriptor TargetProperty="NetCityMoney"                     Operation="Maximum" Value="0"          Path="../ClassCity" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityGrowth"                    Operation="Maximum" Value="0"         Path="../ClassCity" TooltipHidden="true" Priority="20"/>
+      <SimulationModifierDescriptor TargetProperty="NetCityMoney"                     Operation="Maximum" Value="0"          Path="../ClassCity" TooltipHidden="true" Priority="20"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor38Level1TooltipEffect"      Type="SkillHero">
@@ -704,22 +745,32 @@
       <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Value="10"  Path="./ClassCity,CityHasAnyCoastalDistrict"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-  <SimulationDescriptor Name="HeroSkillGovernor40Level3"               Type="SkillHero">
+  <SimulationDescriptor Name="HeroSkillGovernor40Level3"               Type="SkillHero">	
     <SimulationModifierDescriptors>
       <BinarySimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Left="15"   Right="$(CityHasAnyCoastalDistrict)" BinaryOperation="Multiplication"   Path="./ClassCity" IsBindOnSource="false" TooltipHidden="true"/>
       <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition"  Value="15"  Path="./ClassCity,CityHasAnyCoastalDistrict"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+  <!-- ELCP reworked Level 3 skill-->
+  <SimulationDescriptor Name="HeroSkillGovernor40Level3ELCP"               Type="SkillHero">	
+    <SimulationModifierDescriptors>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint" Operation="Addition"  Left="0.1"   Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication"   Path="./ClassCity/TerrainTagWater"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint" Operation="Addition"  Left="0.1"   Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication"   Path="./ClassCity/ClassCreepingNode,InCapitalRegion/ClassDistrict,TerrainTagWater" TooltipHidden="true"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint" Operation="Addition"  Left="0.1"   Right="$(ELCPApprovalOverflow)" BinaryOperation="Multiplication"   Path="./ClassCity/ConvertedVillage,InCapitalRegion/ClassDistrict,TerrainTagWater" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
 
   <!-- Ship Builder (Sea Demons) -->
+  <!-- small ELCP buff (swapped levels, +5% industry on lvl2)-->
   <SimulationDescriptor Name="HeroSkillGovernor41Level1"               Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"      Operation="Addition"  Value="0.10" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"  MultiplicativeStacking="true"  Operation="Addition"  Value="0.15" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillGovernor41Level2"               Type="SkillHero">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"      Operation="Addition"  Value="0.15" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="SeafaringUnitProductionCostReduction"  MultiplicativeStacking="true"  Operation="Addition"  Value="0.10" Path="../ClassCity"/>
+	  <SimulationModifierDescriptor TargetProperty="CityIndustry"                     Operation="Percent"   Value="0.05" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -757,10 +808,18 @@
       <SimulationModifierDescriptor TargetProperty="CityApproval"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension,TerrainTagVolcanic" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+  
   <SimulationDescriptor Name="HeroSkillGovernor44Level2"                   Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="CityApproval"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter,TerrainTagVolcanic" TooltipHidden="true"/>
       <SimulationModifierDescriptor TargetProperty="CityApproval"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension,TerrainTagVolcanic" TooltipHidden="true"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <!-- ELCP small buff -->
+  <SimulationDescriptor Name="HeroSkillGovernor44Level2ELCP"                   Type="SkillHero">
+    <SimulationModifierDescriptors>
+	  <SimulationModifierDescriptor TargetProperty="DistrictFood"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeCenter,TerrainTagVolcanic" TooltipHidden="true" Priority="2"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictFood"                Operation="Addition"  Value="2" Path="../ClassCity/DistrictTypeExtension,TerrainTagVolcanic" TooltipHidden="true" Priority="2"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   
@@ -838,11 +897,13 @@
   </SimulationDescriptor>
 
   <!-- Army HP regen -->
+  <!-- ELCP now also works on city garrisons -->
   <SimulationDescriptor Name="HeroSkillLeaderMap01SistersOfMercyLevel1"    Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
       <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
       <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+	  <SimulationModifierDescriptor TargetProperty="InGarrisonRegenModifier"             Operation="Addition" Value="0.05"  Path="../ClassCity" />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillLeaderMap01SistersOfMercyLevel2"    Type="SkillHero">
@@ -850,6 +911,7 @@
       <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
       <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
       <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+	  <SimulationModifierDescriptor TargetProperty="InGarrisonRegenModifier"             Operation="Addition" Value="0.05"  Path="../ClassCity" />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillLeaderMap01SistersOfMercyLevel3"    Type="SkillHero">
@@ -857,6 +919,7 @@
       <SimulationModifierDescriptor TargetProperty="InOwnedRegionUnitRegenModifier"       Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
       <SimulationModifierDescriptor TargetProperty="InAlliedRegionUnitRegenModifier"      Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
       <SimulationModifierDescriptor TargetProperty="InNoneAlliedRegionUnitRegenModifier"  Operation="Addition"    Value="0.05" Path="../ClassArmy" Priority="101" />
+	  <SimulationModifierDescriptor TargetProperty="InGarrisonRegenModifier"             Operation="Addition" Value="0.05"  Path="../ClassCity" />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1736,18 +1799,30 @@
   </SimulationDescriptor>
 
   <!-- Bribe Cost Reduction (Winter Shifters) -->
+  <!-- ELCP buff: added governing aspect to skill: +dust to villages -->
   <SimulationDescriptor Name="HeroSkillLeaderMap20Level1"                  Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BribeCostReduction"    Operation="Addition" Value="0.25" Path="../ClassArmy"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictDust"  Operation="Addition" Value="15" Path="./ClassCity/TerrainTagVillage"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictDust"  Operation="Addition" Value="15" Path="./ClassCity/ClassCreepingNode,InCapitalRegion/ClassDistrict,TerrainTagVillage" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictDust"  Operation="Addition" Value="15" Path="./ClassCity/ConvertedVillage,InCapitalRegion/ClassDistrict,TerrainTagVillage" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   <SimulationDescriptor Name="HeroSkillLeaderMap20Level2"                  Type="SkillHero">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BribeCostReduction"    Operation="Addition" Value="0.25" Path="../ClassArmy"/>
+	  <!--<SimulationModifierDescriptor TargetProperty="ELCPAwestrikerRuin"  Operation="Addition" Value="1"/>-->	  
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+  <SimulationDescriptor Name="HeroSkillLeaderMap20Level2ELCP"                  Type="SkillHero">
+    <SimulationModifierDescriptors>
+	  <SimulationModifierDescriptor TargetProperty="ELCPAwestrikerRuin"  Operation="Addition" Value="1" TooltipHidden="true"/>	  
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
 
   <!-- Spy Glass (Sea Demons) -->
+  <!-- ELCP buff: added infiltration points and security -->
   <SimulationDescriptor Name="HeroSkillLeaderMap21Level1"                  Type="SkillHero">
     <SimulationModifierDescriptors>
       <!-- Tooltip Override -->
@@ -1755,7 +1830,8 @@
       <SimulationModifierDescriptor TargetProperty="VisionHeight"   Operation="Addition"  Value="100"            Path="../ClassArmy"  IsBindOnSource="false" Priority="101"/>
       <SimulationModifierDescriptor TargetProperty="DetectionRange" Operation="Force"     Value="$(VisionRange)" Path="../ClassArmy"  IsBindOnSource="false" Priority="101"/>
       <SimulationModifierDescriptor TargetProperty="IgnoreFog"      Operation="Addition"  Value="1"              Path="../ClassArmy"  IsBindOnSource="false" Priority="101" TooltipHidden="true"/>
-      
+      <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"  Operation="Addition"  Value="5"  Path="../SpiedGarrison"  Priority="101"/>
+	  <SimulationModifierDescriptor TargetProperty="CityAntiSpy"           Operation="Addition"  Value="15"    Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

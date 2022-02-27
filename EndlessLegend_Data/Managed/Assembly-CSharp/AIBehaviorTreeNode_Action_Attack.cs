@@ -45,8 +45,7 @@ public class AIBehaviorTreeNode_Action_Attack : AIBehaviorTreeNode_Action
 		else
 		{
 			Army army;
-			AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-			if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+			if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 			{
 				return State.Failure;
 			}
@@ -72,21 +71,15 @@ public class AIBehaviorTreeNode_Action_Attack : AIBehaviorTreeNode_Action
 			}
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
-			if (!service2.Contains(target.GUID))
+			if (!service.Game.Services.GetService<IGameEntityRepositoryService>().Contains(target.GUID))
 			{
 				return State.Success;
 			}
-			IWorldPositionningService service3 = service.Game.Services.GetService<IWorldPositionningService>();
-			IEncounterRepositoryService service4 = service.Game.Services.GetService<IEncounterRepositoryService>();
-			IEnumerable<Encounter> enumerable = service4;
-			if (enumerable != null)
+			IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
+			IEnumerable<Encounter> service3 = service.Game.Services.GetService<IEncounterRepositoryService>();
+			if (service3 != null && service3.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false) || encounter.IsGarrisonInEncounter(target.GUID, false)))
 			{
-				bool flag = enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false) || encounter.IsGarrisonInEncounter(target.GUID, false));
-				if (flag)
-				{
-					return State.Running;
-				}
+				return State.Running;
 			}
 			IGarrison garrison;
 			if (target is Kaiju)
@@ -135,14 +128,14 @@ public class AIBehaviorTreeNode_Action_Attack : AIBehaviorTreeNode_Action
 			if (target is City)
 			{
 				Diagnostics.Assert(AIScheduler.Services != null);
-				IEntityInfoAIHelper service5 = AIScheduler.Services.GetService<IEntityInfoAIHelper>();
-				Diagnostics.Assert(service5 != null);
+				IEntityInfoAIHelper service4 = AIScheduler.Services.GetService<IEntityInfoAIHelper>();
+				Diagnostics.Assert(service4 != null);
 				City city = target as City;
 				if (city.BesiegingEmpire != null && city.BesiegingEmpire != aiBehaviorTree.AICommander.Empire)
 				{
 					return State.Failure;
 				}
-				District districtToAttackFrom = service5.GetDistrictToAttackFrom(army, city);
+				District districtToAttackFrom = service4.GetDistrictToAttackFrom(army, city);
 				if (districtToAttackFrom == null)
 				{
 					aiBehaviorTree.ErrorCode = 12;
@@ -153,21 +146,21 @@ public class AIBehaviorTreeNode_Action_Attack : AIBehaviorTreeNode_Action
 			else if (target is Camp)
 			{
 				Camp camp = target as Camp;
-				if (camp == null)
-				{
-					return State.Failure;
-				}
 				IWorldPositionable worldPositionable = target as IWorldPositionable;
 				if (worldPositionable == null)
 				{
 					return State.Failure;
 				}
-				if (service3.GetDistance(army.WorldPosition, worldPositionable.WorldPosition) != 1)
+				if (service2.GetDistance(army.WorldPosition, worldPositionable.WorldPosition) != 1)
 				{
 					aiBehaviorTree.ErrorCode = 12;
 					return State.Failure;
 				}
 				guid = camp.GUID;
+			}
+			else if (target is Fortress)
+			{
+				guid = target.GUID;
 			}
 			else
 			{
@@ -182,13 +175,13 @@ public class AIBehaviorTreeNode_Action_Attack : AIBehaviorTreeNode_Action
 				{
 					return State.Failure;
 				}
-				District district = service3.GetDistrict(worldPositionable2.WorldPosition);
+				District district = service2.GetDistrict(worldPositionable2.WorldPosition);
 				if (district != null && District.IsACityTile(district) && district.City.Empire == garrison.Empire)
 				{
 					worldPositionable2 = district;
 					guid = district.GUID;
 				}
-				if (service3.GetDistance(army.WorldPosition, worldPositionable2.WorldPosition) != 1)
+				if (service2.GetDistance(army.WorldPosition, worldPositionable2.WorldPosition) != 1)
 				{
 					aiBehaviorTree.ErrorCode = 12;
 					return State.Failure;

@@ -82,23 +82,23 @@ public class LoadingScreen : global::GuiScreen
 		this.previousItem = string.Empty;
 		Diagnostics.Progress.ProgressChange += this.Progress_ProgressChange;
 		this.UpdateProgressBar();
-		int nextLoadingTipNumber = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(global::Application.Registers.NextLoadingTipNumber, 1);
-		bool dontDisplayAnyLoadingTip = false;
-		if (parameters.Length > 0)
+		int num = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(global::Application.Registers.NextLoadingTipNumber, 1);
+		bool flag = false;
+		if (parameters.Length != 0)
 		{
-			for (int index = 0; index < parameters.Length; index++)
+			for (int i = 0; i < parameters.Length; i++)
 			{
-				if (parameters[index] is LoadingScreen.DontDisplayAnyLoadingTip)
+				if (parameters[i] is LoadingScreen.DontDisplayAnyLoadingTip)
 				{
-					dontDisplayAnyLoadingTip = true;
+					flag = true;
 					break;
 				}
 			}
 		}
 		GuiElement guiElement = null;
-		if (!dontDisplayAnyLoadingTip && !base.GuiService.GuiPanelHelper.TryGetGuiElement("LoadingTip" + nextLoadingTipNumber, out guiElement) && nextLoadingTipNumber != 1)
+		if (!flag && !base.GuiService.GuiPanelHelper.TryGetGuiElement("LoadingTip" + num, out guiElement) && num != 1)
 		{
-			nextLoadingTipNumber = 1;
+			num = 1;
 			base.GuiService.GuiPanelHelper.TryGetGuiElement("LoadingTip1", out guiElement);
 		}
 		if (guiElement != null)
@@ -110,8 +110,8 @@ public class LoadingScreen : global::GuiScreen
 			{
 				parent.Visible = true;
 			}
-			nextLoadingTipNumber++;
-			Amplitude.Unity.Framework.Application.Registry.SetValue<int>(global::Application.Registers.NextLoadingTipNumber, nextLoadingTipNumber);
+			num++;
+			Amplitude.Unity.Framework.Application.Registry.SetValue<int>(global::Application.Registers.NextLoadingTipNumber, num);
 		}
 		else
 		{
@@ -127,13 +127,16 @@ public class LoadingScreen : global::GuiScreen
 			if (parameters.Any((object o) => o is bool && (bool)o))
 			{
 				this.PlayerLoadStatusGroup.Visible = true;
+				float num2 = (float)((Diagnostics.MultiplayerProgress.UserProgresses.Length - 1) / 4 + 1);
+				float height = (28f * num2 + 2f) * (AgeUtils.HighDefinition ? AgeUtils.HighDefinitionFactor : 1f);
+				this.PlayerLoadStatusGroup.ForceHeight(height, true);
 				Diagnostics.MultiplayerProgress.ProgressChange += this.MultiplayerProgress_ProgressChange;
 				this.UpdatePlayerLoadStatus();
-				goto IL_348;
+				goto IL_286;
 			}
 		}
 		this.PlayerLoadStatusGroup.Visible = false;
-		IL_348:
+		IL_286:
 		this.DlcAdPanel.Bind(true);
 		yield break;
 	}
@@ -278,6 +281,9 @@ public class LoadingScreen : global::GuiScreen
 			steamIDUser,
 			status
 		});
+		float num = (float)((Diagnostics.MultiplayerProgress.UserProgresses.Length - 1) / 4 + 1);
+		float height = (28f * num + 2f) * (AgeUtils.HighDefinition ? AgeUtils.HighDefinitionFactor : 1f);
+		this.PlayerLoadStatusGroup.ForceHeight(height, true);
 		this.UpdatePlayerLoadStatus();
 	}
 

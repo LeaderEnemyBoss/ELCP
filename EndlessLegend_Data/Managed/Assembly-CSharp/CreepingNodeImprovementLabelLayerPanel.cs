@@ -50,6 +50,7 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 		this.departmentOfIndustry = base.Empire.GetAgency<DepartmentOfIndustry>();
 		this.departmentOfTheTreasury = base.Empire.GetAgency<DepartmentOfTheTreasury>();
 		this.departmentOfTheInterior = base.Empire.GetAgency<DepartmentOfTheInterior>();
+		this.departmentOfForeignAffairs = base.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		if (this.departmentOfCreepingNodes != null)
 		{
 			this.departmentOfCreepingNodes.CollectionChanged += this.ConstructionQueue_CollectionChanged;
@@ -62,6 +63,7 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 		this.departmentOfIndustry = null;
 		this.departmentOfTheTreasury = null;
 		this.departmentOfTheInterior = null;
+		this.departmentOfForeignAffairs = null;
 		if (this.departmentOfCreepingNodes != null)
 		{
 			this.departmentOfCreepingNodes.CollectionChanged -= this.ConstructionQueue_CollectionChanged;
@@ -158,8 +160,7 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 		if (this.departmentOfTheInterior.MainCity != null && base.Empire.SimulationObject.Tags.Contains("FactionTraitMimics1"))
 		{
 			List<StaticString> list = new List<StaticString>();
-			IDatabase<CreepingNodeImprovementDefinition> database = Databases.GetDatabase<CreepingNodeImprovementDefinition>(true);
-			CreepingNodeImprovementDefinition[] values = database.GetValues();
+			CreepingNodeImprovementDefinition[] values = Databases.GetDatabase<CreepingNodeImprovementDefinition>(true).GetValues();
 			if (this.entities == null)
 			{
 				this.entities = new List<IWorldEntityWithCulling>();
@@ -180,57 +181,52 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 			}
 			for (int i = 0; i < this.entities.Count; i++)
 			{
-				WorldPointOfInterest worldPointOfInterest = this.entities[i] as WorldPointOfInterest;
-				PointOfInterest pointOfInterest = worldPointOfInterest.PointOfInterest;
+				PointOfInterest pointOfInterest = (this.entities[i] as WorldPointOfInterest).PointOfInterest;
 				Region region = base.WorldPositionningService.GetRegion(pointOfInterest.WorldPosition);
-				bool flag = region.IsRegionColonized();
-				bool flag2 = region.Kaiju != null;
-				bool flag3 = region.BelongToEmpire(base.Empire);
+				int num = region.IsRegionColonized() ? 1 : 0;
+				bool flag = region.Kaiju != null;
+				bool flag2 = region.BelongToEmpire(base.Empire);
+				bool flag3 = this.departmentOfCreepingNodes.POIIsOnCooldown(pointOfInterest.GUID);
+				if (ELCPUtilities.UseELCPPeacefulCreepingNodes && !flag2 && region.Owner != null && region.Owner is MajorEmpire && pointOfInterest.Type == "QuestLocation")
+				{
+					flag2 = (this.departmentOfForeignAffairs.IsFriend(region.Owner) && this.departmentOfForeignAffairs.CanMoveOn(region.Index, false));
+				}
 				bool flag4 = false;
-				if (flag2)
+				if (flag)
 				{
 					flag4 = (region.Kaiju.IsWild() || region.Kaiju.OwnerEmpireIndex == base.Empire.Index);
 				}
-				if (!flag || flag3 || (flag2 && flag4))
+				if ((num == 0 || flag2 || (flag && flag4)) && !flag3)
 				{
 					bool flag5 = this.IsPoiUnlocked(pointOfInterest);
-					if (pointOfInterest.CreepingNodeImprovement == null)
+					if (pointOfInterest.CreepingNodeImprovement == null && (!(pointOfInterest.Type != "Village") || pointOfInterest.PointOfInterestImprovement == null) && ((base.WorldPositionningService.GetExplorationBits(pointOfInterest.WorldPosition) & base.Empire.Bits) > 0 && flag5))
 					{
-						if (!(pointOfInterest.Type != "Village") || pointOfInterest.PointOfInterestImprovement == null)
+						List<CreepingNodeImprovementDefinition> list2 = new List<CreepingNodeImprovementDefinition>();
+						foreach (CreepingNodeImprovementDefinition creepingNodeImprovementDefinition in values)
 						{
-							if ((base.WorldPositionningService.GetExplorationBits(pointOfInterest.WorldPosition) & base.Empire.Bits) > 0 && flag5)
+							if (creepingNodeImprovementDefinition.PointOfInterestTemplateName == pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName && (!(pointOfInterest.Type == "Village") || (pointOfInterest.SimulationObject.Tags.Contains(Village.PacifiedVillage) && !pointOfInterest.SimulationObject.Tags.Contains(Village.ConvertedVillage))))
 							{
-								List<CreepingNodeImprovementDefinition> list2 = new List<CreepingNodeImprovementDefinition>();
-								foreach (CreepingNodeImprovementDefinition creepingNodeImprovementDefinition in values)
+								list.Clear();
+								DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.departmentOfTheInterior.MainCity, creepingNodeImprovementDefinition, ref list, new string[]
 								{
-									if (creepingNodeImprovementDefinition.PointOfInterestTemplateName == pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName)
+									ConstructionFlags.Prerequisite
+								});
+								if (!list.Contains(ConstructionFlags.Discard) && this.departmentOfTheTreasury.CheckConstructibleInstantCosts(this.departmentOfTheInterior.MainCity, creepingNodeImprovementDefinition))
+								{
+									CreepingNodeImprovementDefinition bestCreepingNodeDefinition = this.departmentOfCreepingNodes.GetBestCreepingNodeDefinition(this.departmentOfTheInterior.MainCity, pointOfInterest, creepingNodeImprovementDefinition, list);
+									if (!list2.Contains(bestCreepingNodeDefinition))
 									{
-										if (!(pointOfInterest.Type == "Village") || (pointOfInterest.SimulationObject.Tags.Contains(Village.PacifiedVillage) && !pointOfInterest.SimulationObject.Tags.Contains(Village.ConvertedVillage)))
-										{
-											list.Clear();
-											DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.departmentOfTheInterior.MainCity, creepingNodeImprovementDefinition, ref list, new string[]
-											{
-												ConstructionFlags.Prerequisite
-											});
-											if (!list.Contains(ConstructionFlags.Discard) && this.departmentOfTheTreasury.CheckConstructibleInstantCosts(this.departmentOfTheInterior.MainCity, creepingNodeImprovementDefinition))
-											{
-												CreepingNodeImprovementDefinition bestCreepingNodeDefinition = this.departmentOfCreepingNodes.GetBestCreepingNodeDefinition(this.departmentOfTheInterior.MainCity, pointOfInterest, creepingNodeImprovementDefinition, list);
-												if (!list2.Contains(bestCreepingNodeDefinition))
-												{
-													list2.Add(bestCreepingNodeDefinition);
-												}
-											}
-										}
+										list2.Add(bestCreepingNodeDefinition);
 									}
 								}
-								if (list2.Count > 0)
-								{
-									for (int k = 0; k < list2.Count; k++)
-									{
-										this.validPointsOfInterest.Add(pointOfInterest);
-										this.validImprovements.Add(list2[k]);
-									}
-								}
+							}
+						}
+						if (list2.Count > 0)
+						{
+							for (int k = 0; k < list2.Count; k++)
+							{
+								this.validPointsOfInterest.Add(pointOfInterest);
+								this.validImprovements.Add(list2[k]);
 							}
 						}
 					}
@@ -255,7 +251,7 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 						list3.Add(m);
 					}
 				}
-				int num = list3.IndexOf(l);
+				int num2 = list3.IndexOf(l);
 				Vector3 vector = this.GlobalPositionningService.Get3DPosition(pointOfInterest2.WorldPosition);
 				bool flag6 = this.IsInsideCamera(this.cameraController.Camera, vector, creepingNodeImprovementLabel.Width, creepingNodeImprovementLabel.Height, 1f);
 				creepingNodeImprovementLabel.AgeTransform.Visible = flag6;
@@ -263,25 +259,25 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 				{
 					Vector3 lhs = vector - transform.position;
 					Vector3 forward = transform.forward;
-					float num2 = Vector3.Dot(lhs, forward);
-					float num3 = 0.01f;
-					if (num2 < num3)
+					float num3 = Vector3.Dot(lhs, forward);
+					float num4 = 0.01f;
+					if (num3 < num4)
 					{
-						vector += forward * (num3 - num2);
+						vector += forward * (num4 - num3);
 					}
 					Vector3 vector2 = this.cameraController.Camera.WorldToScreenPoint(vector);
-					Vector2 vector3 = new Vector3(vector2.x + ((float)num + (float)list3.Count * 0.5f * -1f) * creepingNodeImprovementLabel.Width, (float)Screen.height - vector2.y - this.LabelsTable.Y);
+					Vector2 vector3 = new Vector3(vector2.x + ((float)num2 + (float)list3.Count * 0.5f * -1f) * creepingNodeImprovementLabel.Width, (float)Screen.height - vector2.y - this.LabelsTable.Y);
 					creepingNodeImprovementLabel.Foreground.TiltAngle = 0f;
 					if (vector3.x < 0f)
 					{
 						vector3.x = 0f;
-						vector3.y += ((float)num + (float)list3.Count * 0.5f * -1f) * creepingNodeImprovementLabel.Height;
+						vector3.y += ((float)num2 + (float)list3.Count * 0.5f * -1f) * creepingNodeImprovementLabel.Height;
 						creepingNodeImprovementLabel.Foreground.TiltAngle = 270f;
 					}
 					if (vector3.x > this.LabelsTable.Width - creepingNodeImprovementLabel.Width)
 					{
 						vector3.x = this.LabelsTable.Width - creepingNodeImprovementLabel.Width;
-						vector3.y += ((float)num + (float)list3.Count * 0.5f * -1f) * creepingNodeImprovementLabel.Height;
+						vector3.y += ((float)num2 + (float)list3.Count * 0.5f * -1f) * creepingNodeImprovementLabel.Height;
 						creepingNodeImprovementLabel.Foreground.TiltAngle = 90f;
 					}
 					if (vector3.y < 0f)
@@ -340,8 +336,7 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 	{
 		if (base.PlayerController != null)
 		{
-			AgeControlButton component = obj.GetComponent<AgeControlButton>();
-			CreepingNodeImprovementLabel.CreepingNodePair creepingNodePair = component.OnActivateDataObject as CreepingNodeImprovementLabel.CreepingNodePair;
+			CreepingNodeImprovementLabel.CreepingNodePair creepingNodePair = obj.GetComponent<AgeControlButton>().OnActivateDataObject as CreepingNodeImprovementLabel.CreepingNodePair;
 			PointOfInterest pointOfInterest = creepingNodePair.PointOfInterest;
 			CreepingNodeImprovementDefinition creepingNodeImprovementDefinition = creepingNodePair.CreepingNodeImprovementDefinition;
 			OrderQueueCreepingNode order = new OrderQueueCreepingNode(base.Empire.Index, this.departmentOfTheInterior.MainCity.GUID, pointOfInterest.GUID, creepingNodeImprovementDefinition, pointOfInterest.WorldPosition, false, true);
@@ -351,8 +346,7 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 
 	private void RefreshPointOfInterest(AgeTransform tableitem, PointOfInterest pointOfInterest, int index)
 	{
-		CreepingNodeImprovementLabel component = tableitem.GetComponent<CreepingNodeImprovementLabel>();
-		component.Bind(pointOfInterest, this.validImprovements[index], base.Empire, base.gameObject, base.GuiService.GuiPanelHelper);
+		tableitem.GetComponent<CreepingNodeImprovementLabel>().Bind(pointOfInterest, this.validImprovements[index], base.Empire, base.gameObject, base.GuiService.GuiPanelHelper);
 		tableitem.Visible = true;
 	}
 
@@ -405,4 +399,6 @@ public class CreepingNodeImprovementLabelLayerPanel : LabelLayerPanel<CreepingNo
 	private DepartmentOfTheInterior departmentOfTheInterior;
 
 	private List<IWorldEntityWithCulling> entities;
+
+	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
 }

@@ -430,10 +430,9 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 		Diagnostics.Assert(agency != null);
 		Diagnostics.Assert(agency2.DiplomaticRelations != null);
 		Diagnostics.Assert(agency.DiplomaticRelations != null);
-		IGameService service = Services.GetService<IGameService>();
-		global::Game game = service.Game as global::Game;
-		IDiplomaticContractRepositoryService service2 = game.Services.GetService<IDiplomaticContractRepositoryService>();
-		Diagnostics.Assert(service2 != null);
+		global::Game game = Services.GetService<IGameService>().Game as global::Game;
+		Diagnostics.Assert(game.Services.GetService<IDiplomaticContractRepositoryService>() != null);
+		bool flag = currentPlayerEmpire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated);
 		foreach (DiplomaticRelation diplomaticRelation in agency.DiplomaticRelations)
 		{
 			int otherEmpireIndex = diplomaticRelation.OtherEmpireIndex;
@@ -442,7 +441,7 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 			{
 				DiplomaticRelationState state = diplomaticRelation.State;
 				bool unknown = (state == null || state.Name == DiplomaticRelationState.Names.Unknown) && otherEmpireIndex != this.currentPlayerEmpire.Index;
-				bool dead = (state == null || state.Name == DiplomaticRelationState.Names.Dead) && otherEmpireIndex != this.currentPlayerEmpire.Index;
+				bool dead = (state == null || state.Name == DiplomaticRelationState.Names.Dead) && otherEmpireIndex != this.currentPlayerEmpire.Index && (!flag || game.Empires[otherEmpireIndex].SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated));
 				this.players[playerIndex].Unknown = unknown;
 				this.players[playerIndex].Dead = dead;
 			}
@@ -799,6 +798,7 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 	{
 		public Player(MajorEmpire empire, bool unknown, int diplomaticViewPlayerIndex, GameObject dummyCenter, Vector3 cameraPos)
 		{
+			this.date1 = 0.1f;
 			this.empire = empire;
 			this.unknown = unknown;
 			this.currentUnknownIconStatus = 0f;
@@ -820,6 +820,10 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 			this.ambassadorHolder.transform.parent = dummyCenter.transform;
 			this.ambassadorHolder.transform.localPosition = this.position;
 			this.ambassadorHolder.SetActive(true);
+			if (this.Empire.IsSpectator)
+			{
+				this.SpectatorSocle = AgeManager.Instance.FindDynamicTexture("ELCP/GUI/Spectator/augeGr", false);
+			}
 			this.CreateAmbassadorIcon(cameraPos, this.ambassadorHolder, Vector3.zero);
 			this.CreateStateIcon(this.ambassadorHolder, this.position);
 			this.CreatePlayerIcon(dummyCenter, false);
@@ -944,6 +948,11 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 		public void Unload()
 		{
 			this.empire = null;
+			if (this.SpectatorSocle != null)
+			{
+				UnityEngine.Object.DestroyImmediate(this.SpectatorSocle);
+				this.SpectatorSocle = null;
+			}
 			if (this.playerIcon != null)
 			{
 				UnityEngine.Object.DestroyImmediate(this.playerIcon);
@@ -1104,6 +1113,10 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 		private void CreatePlayerIcon(GameObject parent, bool currentPlayer)
 		{
 			string text = string.Format("Prefabs/Diplomacy/Socle_Player_{0}", this.GetCompatibleFactionName(this.Empire));
+			if (this.Empire.IsSpectator)
+			{
+				text = "Prefabs/Diplomacy/Socle_Player_Unknown";
+			}
 			GameObject gameObject = Resources.Load(text) as GameObject;
 			if (gameObject != null)
 			{
@@ -1113,21 +1126,27 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 				this.playerIcon.transform.localPosition = new Vector3(0f, 0f, 0f);
 				this.playerIcon.name = DiplomaticRelationsViewport.Player.PlayerGameObjectName + this.diplomaticViewPlayerIndex.ToString();
 				DiplomaticViewportUtilities.SetFactionColorMaterialProperty(this.playerIcon, this.empire.Color);
-				this.playerIcon.SetActive(currentPlayer);
-			}
-			else
-			{
-				Diagnostics.LogError("Unable to load prefab {0}", new object[]
+				if (this.Empire.IsSpectator)
 				{
-					text
-				});
+					DiplomaticViewportUtilities.SetSocketTexture(this.playerIcon, this.SpectatorSocle);
+				}
+				this.playerIcon.SetActive(currentPlayer);
+				return;
 			}
+			Diagnostics.LogError("Unable to load prefab {0}", new object[]
+			{
+				text
+			});
 		}
 
 		private void CreateAmbassadorIcon(Vector3 cameraPos, GameObject parent, Vector3 position)
 		{
 			string text = string.Format("Prefabs/Diplomacy/Ambassador_{0}_01", this.GetCompatibleFactionName(this.Empire));
-			string path = "Prefabs/Diplomacy/Ambassador_Unknown_01";
+			string text2 = "Prefabs/Diplomacy/Ambassador_Unknown_01";
+			if (this.Empire.IsSpectator)
+			{
+				text = text2;
+			}
 			Vector3 zero = Vector3.zero;
 			Vector3 zero2 = Vector3.zero;
 			GameObject gameObject = Resources.Load(text) as GameObject;
@@ -1171,6 +1190,16 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 				this.ambassadorIcon.transform.position = Vector3.zero;
 				DiplomaticRelationsViewport.ExtractBoundingBox(this.ambassadorIcon, ref zero, ref zero2);
 				this.ambassadorIcon.transform.localPosition = position;
+				if (this.Empire.IsSpectator)
+				{
+					foreach (Renderer renderer in this.ambassadorIconRenderers)
+					{
+						if (renderer.name == "OBJ_GUI_Diplo_Socle_Unknown")
+						{
+							DiplomaticViewportUtilities.SetSocketTexture(renderer.materials[0], this.SpectatorSocle);
+						}
+					}
+				}
 				this.ambassadorIcon.name = DiplomaticRelationsViewport.Player.AmbassadorGameObjectName + this.diplomaticViewPlayerIndex.ToString();
 				this.ambassadorIcon.SetActive(false);
 			}
@@ -1181,12 +1210,22 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 					text
 				});
 			}
-			GameObject gameObject2 = Resources.Load(path) as GameObject;
+			GameObject gameObject2 = Resources.Load(text2) as GameObject;
 			if (gameObject2 != null)
 			{
 				this.unknownIcon = UnityEngine.Object.Instantiate<GameObject>(gameObject2);
 				this.unknownIcon.transform.parent = parent.transform;
 				this.unknownIconRenderers = this.unknownIcon.GetComponentsInChildren<Renderer>(true);
+				if (this.Empire.IsSpectator)
+				{
+					foreach (Renderer renderer2 in this.unknownIconRenderers)
+					{
+						if (renderer2.name == "OBJ_GUI_Diplo_Socle_Unknown")
+						{
+							DiplomaticViewportUtilities.SetSocketTexture(renderer2.materials[0], this.SpectatorSocle);
+						}
+					}
+				}
 				DiplomaticViewportUtilities.OffsetMaterialOrder(this.unknownIconRenderers, 1);
 				DiplomaticViewportUtilities.SetFactionColorMaterialProperty(this.unknownIcon, this.empire.Color);
 				this.unknownIcon.transform.position = Vector3.zero;
@@ -1329,10 +1368,12 @@ public class DiplomaticRelationsViewport : MonoBehaviour
 
 		private float date0;
 
-		private float date1 = 0.1f;
+		private float date1;
 
 		private float shiftingFormAtDate0;
 
 		private float shiftingFormAtDate1;
+
+		private Texture2D SpectatorSocle;
 	}
 }

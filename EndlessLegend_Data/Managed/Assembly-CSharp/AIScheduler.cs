@@ -819,6 +819,14 @@ public class AIScheduler : IServiceContainer, Amplitude.Unity.Framework.IService
 		}
 	}
 
+	public AIPlayer_LesserEmpire AIPlayer_LesserEmpire
+	{
+		get
+		{
+			return this.aiPlayerLesserEmpire;
+		}
+	}
+
 	private static AIScheduler instance;
 
 	private Dictionary<Type, AIHelper> aiHelpers;

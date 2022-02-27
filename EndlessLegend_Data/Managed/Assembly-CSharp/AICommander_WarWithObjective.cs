@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -51,11 +52,10 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 	{
 		base.Initialize();
 		Diagnostics.Assert(AIScheduler.Services != null);
-		IEntityInfoAIHelper service = AIScheduler.Services.GetService<IEntityInfoAIHelper>();
-		Diagnostics.Assert(service != null);
+		Diagnostics.Assert(AIScheduler.Services.GetService<IEntityInfoAIHelper>() != null);
 		this.CurrentWarStep = AICommander_WarWithObjective.WarSteps.GoingToFrontier;
-		IGameService service2 = Services.GetService<IGameService>();
-		this.worldPositionningService = service2.Game.Services.GetService<IWorldPositionningService>();
+		IGameService service = Services.GetService<IGameService>();
+		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
 		this.aiDataRepository = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
 		this.empireDataRepository = AIScheduler.Services.GetService<IAIEmpireDataAIHelper>();
 		this.intelligenceAIHelper = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
@@ -72,12 +72,9 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 		}
 		for (int i = 0; i < base.Missions.Count; i++)
 		{
-			if (!forceStep || base.Missions[i].Completion != AICommanderMission.AICommanderMissionCompletion.Initializing)
+			if ((!forceStep || base.Missions[i].Completion != AICommanderMission.AICommanderMissionCompletion.Initializing) && base.Missions[i].Completion != AICommanderMission.AICommanderMissionCompletion.Fail && base.Missions[i].Completion != AICommanderMission.AICommanderMissionCompletion.Interrupted && base.Missions[i].Completion != AICommanderMission.AICommanderMissionCompletion.Cancelled)
 			{
-				if (base.Missions[i].Completion != AICommanderMission.AICommanderMissionCompletion.Fail && base.Missions[i].Completion != AICommanderMission.AICommanderMissionCompletion.Interrupted && base.Missions[i].Completion != AICommanderMission.AICommanderMissionCompletion.Cancelled)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 		return true;
@@ -109,13 +106,17 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 		}
 		if (this.NeedPrivateersHarrasementMission && this.CurrentWarStep == AICommander_WarWithObjective.WarSteps.GoingToFrontier)
 		{
-			if (!base.Missions.Exists((AICommanderMission match) => match is AICommanderMission_PrivateersHarass))
+			int num = base.Missions.Count((AICommanderMission match) => match is AICommanderMission_PrivateersHarass);
+			if (num < 6)
 			{
 				tags.AddTag("PrivateersHarass");
-				base.PopulationFirstMissionFromCategory(tags, new object[]
+				for (int i = num; i < 6; i++)
 				{
-					region.City
-				});
+					base.PopulationFirstMissionFromCategory(tags, new object[]
+					{
+						region.City
+					});
+				}
 				tags.RemoveTag("PrivateersHarass");
 			}
 		}
@@ -133,25 +134,22 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 			if (currentWarStep != AICommander_WarWithObjective.WarSteps.BeSiegingCity)
 			{
 				Diagnostics.LogError(string.Format("[AICommander_WarWithObjective] Unknow war step", this.CurrentWarStep.ToString()));
+				return;
 			}
-			else
+			this.PopulateBesiegingCityMission(tags, region);
+			if (region.City.Camp != null)
 			{
-				this.PopulateBesiegingCityMission(tags, region);
-				if (region.City.Camp != null)
+				this.PopulateAttackCampMission(tags, region);
+				return;
+			}
+			List<AICommanderMission> list = base.Missions.FindAll((AICommanderMission match) => match is AICommanderMission_AttackCampDefault);
+			if (list.Count > 0)
+			{
+				for (int j = 0; j < list.Count; j++)
 				{
-					this.PopulateAttackCampMission(tags, region);
+					this.CancelMission(list[j]);
 				}
-				else
-				{
-					List<AICommanderMission> list = base.Missions.FindAll((AICommanderMission match) => match is AICommanderMission_AttackCampDefault);
-					if (list.Count > 0)
-					{
-						for (int i = 0; i < list.Count; i++)
-						{
-							this.CancelMission(list[i]);
-						}
-					}
-				}
+				return;
 			}
 		}
 		else if (!base.Missions.Exists((AICommanderMission match) => match is AICommanderMission_FrontierHarass))
@@ -203,36 +201,32 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 					Diagnostics.LogError("[AICommander_WarWithObjective] DiplomaticRelation is null");
 					return;
 				}
-				AICommanderMission aicommanderMission = base.Missions.Find((AICommanderMission match) => match is AICommanderMission_FrontierHarass);
-				AICommanderMission_FrontierHarass aicommanderMission_FrontierHarass = aicommanderMission as AICommanderMission_FrontierHarass;
-				if (aicommanderMission_FrontierHarass != null && aicommanderMission_FrontierHarass.Completion != AICommanderMission.AICommanderMissionCompletion.Fail && aicommanderMission_FrontierHarass.Completion != AICommanderMission.AICommanderMissionCompletion.Interrupted && aicommanderMission_FrontierHarass.Completion != AICommanderMission.AICommanderMissionCompletion.Cancelled)
+				AICommanderMission_FrontierHarass aicommanderMission_FrontierHarass = base.Missions.Find((AICommanderMission match) => match is AICommanderMission_FrontierHarass) as AICommanderMission_FrontierHarass;
+				if (aicommanderMission_FrontierHarass != null && aicommanderMission_FrontierHarass.Completion != AICommanderMission.AICommanderMissionCompletion.Fail && aicommanderMission_FrontierHarass.Completion != AICommanderMission.AICommanderMissionCompletion.Interrupted && aicommanderMission_FrontierHarass.Completion != AICommanderMission.AICommanderMissionCompletion.Cancelled && aicommanderMission_FrontierHarass.ArrivedToDestination())
 				{
-					if (aicommanderMission_FrontierHarass.ArrivedToDestination())
+					if (diplomaticRelation2.State.Name == DiplomaticRelationState.Names.War)
 					{
-						if (diplomaticRelation2.State.Name == DiplomaticRelationState.Names.War)
+						if (this.aiDataRepository.GetAIData<AIData_Army>(aicommanderMission_FrontierHarass.AIDataArmyGUID) == null)
 						{
-							if (this.aiDataRepository.GetAIData<AIData_Army>(aicommanderMission_FrontierHarass.AIDataArmyGUID) == null)
-							{
-								aicommanderMission_FrontierHarass.Interrupt();
-							}
-							else
-							{
-								base.ForceArmyGUID = aicommanderMission_FrontierHarass.AIDataArmyGUID;
-								this.CurrentWarStep = AICommander_WarWithObjective.WarSteps.BeSiegingCity;
-								this.CancelMission(aicommanderMission_FrontierHarass);
-							}
+							aicommanderMission_FrontierHarass.Interrupt();
 						}
 						else
 						{
-							WantedDiplomaticRelationStateMessage wantedDiplomaticRelationStateMessage = base.AIPlayer.Blackboard.FindFirst<WantedDiplomaticRelationStateMessage>(BlackboardLayerID.Empire, (WantedDiplomaticRelationStateMessage message) => message.OpponentEmpireIndex == region.City.Empire.Index);
-							if (wantedDiplomaticRelationStateMessage == null)
-							{
-								Diagnostics.LogError("[AICommander_WarWithObjective] No WantedDiplomaticRelationStateMessage found");
-							}
-							else if (wantedDiplomaticRelationStateMessage.WantedDiplomaticRelationStateName == DiplomaticRelationState.Names.War)
-							{
-								wantedDiplomaticRelationStateMessage.CurrentWarStatusType = AILayer_War.WarStatusType.Ready;
-							}
+							base.ForceArmyGUID = aicommanderMission_FrontierHarass.AIDataArmyGUID;
+							this.CurrentWarStep = AICommander_WarWithObjective.WarSteps.BeSiegingCity;
+							this.CancelMission(aicommanderMission_FrontierHarass);
+						}
+					}
+					else
+					{
+						WantedDiplomaticRelationStateMessage wantedDiplomaticRelationStateMessage = base.AIPlayer.Blackboard.FindFirst<WantedDiplomaticRelationStateMessage>(BlackboardLayerID.Empire, (WantedDiplomaticRelationStateMessage message) => message.OpponentEmpireIndex == region.City.Empire.Index);
+						if (wantedDiplomaticRelationStateMessage == null)
+						{
+							Diagnostics.LogWarning("[AICommander_WarWithObjective] No WantedDiplomaticRelationStateMessage found");
+						}
+						else if (wantedDiplomaticRelationStateMessage.WantedDiplomaticRelationStateName == DiplomaticRelationState.Names.War)
+						{
+							wantedDiplomaticRelationStateMessage.CurrentWarStatusType = AILayer_War.WarStatusType.Ready;
 						}
 					}
 				}
@@ -243,11 +237,11 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 				break;
 			case AICommander_WarWithObjective.WarSteps.AttackingCity:
 			{
-				AICommanderMission aicommanderMission2 = base.Missions.Find((AICommanderMission match) => match is AICommanderMission_AttackCityDefault);
-				if (aicommanderMission2 != null)
+				AICommanderMission aicommanderMission = base.Missions.Find((AICommanderMission match) => match is AICommanderMission_AttackCityDefault);
+				if (aicommanderMission != null)
 				{
-					base.ForceArmyGUID = aicommanderMission2.AIDataArmyGUID;
-					this.CancelMission(aicommanderMission2);
+					base.ForceArmyGUID = aicommanderMission.AIDataArmyGUID;
+					this.CancelMission(aicommanderMission);
 				}
 				this.CurrentWarStep = AICommander_WarWithObjective.WarSteps.BeSiegingCity;
 				break;
@@ -275,47 +269,45 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 	private void PopulateBesiegingCityMission(Tags tags, Region region)
 	{
 		float armyMaxPower = this.GetArmyMaxPower();
-		float num = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Empire, region.City, 0);
-		num *= this.cityMilitaryPowerFactor;
-		int num2 = Mathf.CeilToInt(num / armyMaxPower);
-		if (num2 == 0)
+		int num = Mathf.CeilToInt(this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Empire, region.City, 0) * this.cityMilitaryPowerFactor / armyMaxPower);
+		if (num == 0)
 		{
-			num2 = 1;
+			num = 1;
 		}
-		else if (num2 > 3)
+		else if (num > 5)
 		{
-			num2 = 3;
+			num = 5;
 		}
+		int num2 = 0;
 		int num3 = 0;
-		int num4 = 0;
 		for (int i = 0; i < base.Missions.Count; i++)
 		{
 			AICommanderMission_BesiegeCityDefault aicommanderMission_BesiegeCityDefault = base.Missions[i] as AICommanderMission_BesiegeCityDefault;
 			if (aicommanderMission_BesiegeCityDefault != null)
 			{
-				if (num3 < num2)
+				if (num2 < num)
 				{
 					aicommanderMission_BesiegeCityDefault.IsReinforcement = false;
 					if (!aicommanderMission_BesiegeCityDefault.AIDataArmyGUID.IsValid)
 					{
-						num4++;
+						num3++;
 					}
 				}
 				else
 				{
-					if (num3 >= num2 + 2)
+					if (num2 >= num + 2)
 					{
 						this.CancelMission(aicommanderMission_BesiegeCityDefault);
-						goto IL_C1;
+						goto IL_9C;
 					}
 					aicommanderMission_BesiegeCityDefault.IsReinforcement = true;
 				}
-				num3++;
+				num2++;
 			}
-			IL_C1:;
+			IL_9C:;
 		}
 		GlobalObjectiveMessage globalObjectiveMessage2;
-		if (num3 - num4 >= num2)
+		if (num2 - num3 >= num)
 		{
 			GlobalObjectiveMessage globalObjectiveMessage;
 			if (base.AIPlayer.Blackboard.TryGetMessage<GlobalObjectiveMessage>(base.GlobalObjectiveID, out globalObjectiveMessage))
@@ -327,7 +319,7 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 		{
 			globalObjectiveMessage2.ObjectiveState = "Preparing";
 		}
-		for (int j = num3; j < num2; j++)
+		for (int j = num2; j < num; j++)
 		{
 			tags.AddTag("BesiegeCity");
 			base.PopulationFirstMissionFromCategory(tags, new object[]
@@ -340,46 +332,44 @@ public class AICommander_WarWithObjective : AICommanderWithObjective, IXmlSerial
 	private void PopulateAttackCampMission(Tags tags, Region region)
 	{
 		float armyMaxPower = this.GetArmyMaxPower();
-		float num = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Empire, region.City.Camp, 0);
-		num *= this.cityMilitaryPowerFactor;
-		int num2 = Mathf.CeilToInt(num / armyMaxPower);
-		if (num2 == 0)
+		int num = Mathf.CeilToInt(this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Empire, region.City.Camp, 0) * this.cityMilitaryPowerFactor / armyMaxPower);
+		if (num == 0)
 		{
-			num2 = 1;
+			num = 1;
 		}
-		else if (num2 > 2)
+		else if (num > 2)
 		{
-			num2 = 2;
+			num = 2;
 		}
+		int num2 = 0;
 		int num3 = 0;
-		int num4 = 0;
 		for (int i = 0; i < base.Missions.Count; i++)
 		{
 			AICommanderMission_AttackCampDefault aicommanderMission_AttackCampDefault = base.Missions[i] as AICommanderMission_AttackCampDefault;
 			if (aicommanderMission_AttackCampDefault != null)
 			{
-				if (num3 < num2)
+				if (num2 < num)
 				{
 					aicommanderMission_AttackCampDefault.IsReinforcement = false;
 					if (!aicommanderMission_AttackCampDefault.AIDataArmyGUID.IsValid)
 					{
-						num4++;
+						num3++;
 					}
 				}
 				else
 				{
-					if (num3 >= num2 + 1)
+					if (num2 >= num + 1)
 					{
 						this.CancelMission(aicommanderMission_AttackCampDefault);
-						goto IL_C6;
+						goto IL_A1;
 					}
 					aicommanderMission_AttackCampDefault.IsReinforcement = true;
 				}
-				num3++;
+				num2++;
 			}
-			IL_C6:;
+			IL_A1:;
 		}
-		for (int j = num3; j < num2; j++)
+		for (int j = num2; j < num; j++)
 		{
 			tags.AddTag("AttackCamp");
 			base.PopulationFirstMissionFromCategory(tags, new object[]

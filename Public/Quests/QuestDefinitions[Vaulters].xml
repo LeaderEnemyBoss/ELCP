@@ -1109,7 +1109,7 @@
       <Action_UpdateStep StepName="MainQuestVaulters-Chapter6-Step2" State="InProgress" />
       <Controller_Sequence ResetPolicy="onFail">
         <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
-        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset" ScaleWithGameSpeed="true"/>
         <Controller_Parallel CompletionPolicy="All">
           
           <Controller_Sequence>
@@ -1126,7 +1126,7 @@
           </Controller_Sequence>
           
           <Controller_Sequence>
-            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true"/>
           </Controller_Sequence>
           
         </Controller_Parallel>
@@ -1215,7 +1215,7 @@
       <Action_UpdateStep StepName="MainQuestVaulters-Chapter6Alt-Step2" State="InProgress" />
       <Controller_Sequence ResetPolicy="onFail">
         <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
-        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset" ScaleWithGameSpeed="true"/>
         <Controller_Parallel CompletionPolicy="All">
 
           <Controller_Sequence>
@@ -1232,7 +1232,7 @@
           </Controller_Sequence>
 
           <Controller_Sequence>
-            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+            <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true"/>
           </Controller_Sequence>
 
         </Controller_Parallel>

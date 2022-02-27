@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Amplitude;
 using Amplitude.Unity;
 using Amplitude.Unity.Audio;
@@ -124,8 +125,9 @@ public class OutGameView : View
 			{
 				return;
 			}
-			if (this.LevelNames != null && this.LevelNames.Length > 0)
+			if (this.LevelNames != null && this.LevelNames.Length != 0)
 			{
+				this.LevelNames = this.LevelNames.Distinct<string>().ToArray<string>();
 				string text = this.LevelNames[UnityEngine.Random.Range(0, this.LevelNames.Length)];
 				if (!string.IsNullOrEmpty(this.lastLevelName))
 				{

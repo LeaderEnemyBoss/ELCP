@@ -11,7 +11,7 @@ public class QuestOccurence : IXmlSerializable
 		this.LastCompletedOnTurn = -1;
 		this.LastStartedOnTurn = -1;
 		this.NumberOfOccurencesThisGame = 0;
-		this.NumberOfOccurrencesForThisEmpireSoFar = new int[8];
+		this.NumberOfOccurrencesForThisEmpireSoFar = new int[ELCPUtilities.NumberOfMajorEmpires];
 	}
 
 	public virtual void ReadXml(XmlReader reader)
@@ -22,7 +22,7 @@ public class QuestOccurence : IXmlSerializable
 		string attribute = reader.GetAttribute("NumberOfOccurrencesPerEmpireSoFar");
 		if (string.IsNullOrEmpty(attribute))
 		{
-			this.NumberOfOccurrencesForThisEmpireSoFar = new int[8];
+			this.NumberOfOccurrencesForThisEmpireSoFar = new int[ELCPUtilities.NumberOfMajorEmpires];
 		}
 		else
 		{

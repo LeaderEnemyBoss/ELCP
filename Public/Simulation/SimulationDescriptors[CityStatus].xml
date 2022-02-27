@@ -100,7 +100,6 @@
       <SimulationModifierDescriptor TargetProperty="NetCityGrowth" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityProduction" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="NetCityEmpirePoint" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" BindOnSource="false" Path="ClassCity"  Priority="10"/>
-      <SimulationModifierDescriptor TargetProperty="PopulationNotOvergrown" Operation="Force" Value="0" BindOnSource="false" Path="ClassCity"  Priority="1"/>
 
       <SimulationModifierDescriptor TargetProperty="NetCityApproval" Operation="Force" Value="60" BindOnSource="false" Path="ClassCity"  Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="PopulationBonus" Operation="Multiplication" Value="$(CityStatusInfectedMultiplier)" Path="ClassCity/PointOfInterestTypeVillage"  Priority="10"/>
@@ -111,6 +110,10 @@
       
       <!-- Faster ownership recovery rate. -->
       <SimulationModifierDescriptor TargetProperty="OwnershipRecoveryRate" Operation="Percent" Value="1.0"/>
+	  
+	  <!-- ELCP -->
+	  <SimulationModifierDescriptor TargetProperty="EmpireScaleFactor"  Operation="Addition"  Value="-0.75"  Path="../EmpireTypeMajor"/>
+	  <SimulationModifierDescriptor TargetProperty="MaximumUnitSlotCount" Operation="Force"  Value="0"  Path="ClassCity/Militia" Priority="20"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

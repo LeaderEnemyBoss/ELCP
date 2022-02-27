@@ -159,8 +159,18 @@ public class AICommanderMission_Terraform : AICommanderMissionWithRequestArmy, I
 	protected override bool IsMissionCompleted()
 	{
 		AICommander_Terraformation commanderObjective = base.Commander as AICommander_Terraformation;
+		if (!commanderObjective.IsPositionValidToTerraform(this.terraformPosition))
+		{
+			return true;
+		}
 		EvaluableMessage_Terraform evaluableMessage_Terraform = commanderObjective.AIPlayer.Blackboard.FindFirst<EvaluableMessage_Terraform>(BlackboardLayerID.Empire, (EvaluableMessage_Terraform match) => match.RegionIndex == commanderObjective.RegionIndex && match.TerraformPosition == commanderObjective.TerraformPosition && match.DeviceDefinitionName == this.DeviceDefinitionName);
 		return evaluableMessage_Terraform == null || evaluableMessage_Terraform.State != BlackboardMessage.StateValue.Message_InProgress;
+	}
+
+	protected override void Success()
+	{
+		base.Success();
+		base.SetArmyFree();
 	}
 
 	private WorldPosition terraformPosition;

@@ -16,8 +16,8 @@ using UnityEngine;
 [Diagnostics.TagAttribute("Agency")]
 [Diagnostics.TagAttribute("Agency")]
 [OrderProcessor(typeof(OrderTransferResources), "TransferResources")]
-[OrderProcessor(typeof(OrderTransferResourcesByInfiltration), "TransferResourcesBySpy")]
 [OrderProcessor(typeof(OrderBailiffReport), "BailiffReport")]
+[OrderProcessor(typeof(OrderTransferResourcesByInfiltration), "TransferResourcesBySpy")]
 public class DepartmentOfTheTreasury : Agency
 {
 	public DepartmentOfTheTreasury(global::Empire empire) : base(empire)
@@ -72,35 +72,36 @@ public class DepartmentOfTheTreasury : Agency
 
 	private IEnumerator GameServerState_Bailiff(string context, string name)
 	{
-		if (base.Empire is MajorEmpire)
+		if (base.Empire is MajorEmpire && !(base.Empire as MajorEmpire).IsEliminated)
 		{
-			float currentBankAccount = 0f;
-			float currentEmpireMoneyNet = 0f;
+			float num = 0f;
+			float num2 = 0f;
 			List<AuctionInstruction> instructions = new List<AuctionInstruction>();
-			for (int index = 0; index < this.Seizures.Length; index++)
+			int num3;
+			for (int index = 0; index < this.Seizures.Length; index = num3 + 1)
 			{
-				if (!this.TryGetResourceStockValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, out currentBankAccount, true))
+				if (!this.TryGetResourceStockValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, out num, true))
 				{
-					currentBankAccount = 0f;
+					num = 0f;
 				}
-				if (!this.TryGetNetResourceValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, out currentEmpireMoneyNet, true))
+				if (!this.TryGetNetResourceValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, out num2, true))
 				{
-					currentEmpireMoneyNet = 0f;
+					num2 = 0f;
 				}
-				if (currentEmpireMoneyNet + currentBankAccount >= 0f)
+				if (num2 + num >= 0f)
 				{
 					break;
 				}
 				yield return this.Seizures[index].Execute(base.Empire as global::Empire, instructions);
+				num3 = index;
 			}
 			if (instructions.Count > 0)
 			{
 				OrderBailiffReport order = new OrderBailiffReport(base.Empire.Index, instructions);
-				IGameService gameService = Services.GetService<IGameService>();
-				IPlayerControllerRepositoryControl playerControllerRepositoryService = gameService.Game.Services.GetService<IPlayerControllerRepositoryService>() as IPlayerControllerRepositoryControl;
-				global::PlayerController serverPlayerController = playerControllerRepositoryService.GetPlayerControllerById("server");
-				serverPlayerController.PostOrder(order);
+				(Services.GetService<IGameService>().Game.Services.GetService<IPlayerControllerRepositoryService>() as IPlayerControllerRepositoryControl).GetPlayerControllerById("server").PostOrder(order);
 			}
+			instructions = null;
+			instructions = null;
 		}
 		yield break;
 	}
@@ -1216,6 +1217,10 @@ public class DepartmentOfTheTreasury : Agency
 				num2 = Math.Abs(transaction.Price - transaction.Price / buyoutMultiplier);
 			}
 		}
+		if (ELCPUtilities.UseELCPSymbiosisBuffs && (base.Empire as global::Empire).SimulationObject.Tags.Contains(DepartmentOfTheInterior.RovingClansIntegrationDescriptor1))
+		{
+			num += 0.08f;
+		}
 		return num2 * num;
 	}
 
@@ -1591,12 +1596,38 @@ public class DepartmentOfTheTreasury : Agency
 	protected override IEnumerator OnLoadGame(Amplitude.Unity.Game.Game game)
 	{
 		yield return base.OnLoadGame(game);
-		if (DepartmentOfTheInterior.CanCollectTollFeeOnTransactions(base.Empire as global::Empire))
+		this.TradeManagementService = game.Services.GetService<ITradeManagementService>();
+		if (this.TradeManagementService != null)
 		{
-			this.TradeManagementService = game.Services.GetService<ITradeManagementService>();
-			if (this.TradeManagementService != null)
+			this.TradeManagementService.TransactionComplete += this.TradeManagementService_TransactionComplete;
+		}
+		if (ELCPUtilities.SpectatorMode && base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
+		{
+			global::Empire[] empires = ((global::Game)game).Empires;
+			for (int i = 0; i < empires.Length; i++)
 			{
-				this.TradeManagementService.TransactionComplete += this.TradeManagementService_TransactionComplete;
+				MajorEmpire majorEmpire = empires[i] as MajorEmpire;
+				if (majorEmpire == null)
+				{
+					break;
+				}
+				if (majorEmpire.Index != base.Empire.Index && !majorEmpire.IsEliminated)
+				{
+					majorEmpire.ArmiesInfiltrationBits |= 1 << base.Empire.Index;
+					DepartmentOfTheInterior agency = majorEmpire.GetAgency<DepartmentOfTheInterior>();
+					foreach (City city in agency.Cities)
+					{
+						city.EmpireInfiltrationBits |= 1 << base.Empire.Index;
+					}
+					foreach (Fortress fortress in agency.OccupiedFortresses)
+					{
+						fortress.PointOfInterest.InfiltrationBits |= 1 << base.Empire.Index;
+					}
+					foreach (Village village in agency.ConvertedVillages)
+					{
+						village.PointOfInterest.InfiltrationBits |= 1 << base.Empire.Index;
+					}
+				}
 			}
 		}
 		yield break;
@@ -1843,7 +1874,7 @@ public class DepartmentOfTheTreasury : Agency
 
 	private void TradeManagementService_TransactionComplete(object sender, TradableTransactionCompleteEventArgs e)
 	{
-		if ((ulong)e.Transaction.EmpireIndex == (ulong)((long)base.Empire.Index))
+		if ((ulong)e.Transaction.EmpireIndex == (ulong)((long)base.Empire.Index) || !DepartmentOfTheInterior.CanCollectTollFeeOnTransactions(base.Empire as global::Empire))
 		{
 			return;
 		}
@@ -1941,6 +1972,76 @@ public class DepartmentOfTheTreasury : Agency
 			return true;
 		}
 		return false;
+	}
+
+	internal virtual void OnEmpireEliminated(global::Empire empire, bool authorized)
+	{
+		if (empire.Index == base.Empire.Index)
+		{
+			float num;
+			if (this.TryGetResourceStockValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, out num, true) && num > 0f)
+			{
+				this.TryTransferResources(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, -num);
+			}
+			if (this.TryGetResourceStockValue(base.Empire, DepartmentOfTheTreasury.Resources.EmpirePoint, out num, true) && num > 0f)
+			{
+				this.TryTransferResources(base.Empire, DepartmentOfTheTreasury.Resources.EmpirePoint, -num);
+			}
+			if (this.TryGetResourceStockValue(base.Empire, DepartmentOfTheTreasury.Resources.Orb, out num, true) && num > 0f)
+			{
+				this.TryTransferResources(base.Empire, DepartmentOfTheTreasury.Resources.Orb, -num);
+			}
+			for (int i = 1; i < 7; i++)
+			{
+				if (this.TryGetResourceStockValue(base.Empire, "Strategic" + i, out num, true) && num > 0f)
+				{
+					this.TryTransferResources(base.Empire, "Strategic" + i, -num);
+				}
+			}
+			for (int j = 1; j < 16; j++)
+			{
+				if (this.TryGetResourceStockValue(base.Empire, "Luxury" + j, out num, true) && num > 0f)
+				{
+					this.TryTransferResources(base.Empire, "Luxury" + j, -num);
+				}
+			}
+			IGameService service = Services.GetService<IGameService>();
+			if (!ELCPUtilities.SpectatorMode || service == null || service.Game == null)
+			{
+				return;
+			}
+			global::Game game = service.Game as global::Game;
+			if (game == null)
+			{
+				return;
+			}
+			global::Empire[] empires = game.Empires;
+			for (int k = 0; k < empires.Length; k++)
+			{
+				MajorEmpire majorEmpire = empires[k] as MajorEmpire;
+				if (majorEmpire == null)
+				{
+					break;
+				}
+				if (majorEmpire.Index != base.Empire.Index && !majorEmpire.IsEliminated)
+				{
+					majorEmpire.ArmiesInfiltrationBits |= 1 << base.Empire.Index;
+					DepartmentOfTheInterior agency = majorEmpire.GetAgency<DepartmentOfTheInterior>();
+					foreach (City city in agency.Cities)
+					{
+						city.EmpireInfiltrationBits |= 1 << base.Empire.Index;
+					}
+					foreach (Fortress fortress in agency.OccupiedFortresses)
+					{
+						fortress.PointOfInterest.InfiltrationBits |= 1 << base.Empire.Index;
+					}
+					foreach (Village village in agency.ConvertedVillages)
+					{
+						village.PointOfInterest.InfiltrationBits |= 1 << base.Empire.Index;
+					}
+				}
+			}
+		}
 	}
 
 	private List<ConstructionCost> summedConstructionCosts = new List<ConstructionCost>();

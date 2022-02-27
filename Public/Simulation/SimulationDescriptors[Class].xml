@@ -11,12 +11,12 @@
 
       <SimulationPropertyDescriptor Name="ActionPoint"                  Composition="Minimum"/>
       <SimulationPropertyDescriptor Name="VisionHeight"                 Composition="Maximum" MinValue="Negative"/>
-      <SimulationPropertyDescriptor Name="VisionRange"                  Composition="Maximum"/>
+      <SimulationPropertyDescriptor Name="VisionRange"                  Composition="Maximum" MinValue="1"/>
       <SimulationPropertyDescriptor Name="MilitaryUpkeep"               Composition="Sum"/>
       <SimulationPropertyDescriptor Name="HeroCount"                    Composition="Sum"/>
       <!--<SimulationPropertyDescriptor Name="ReinforcementPointCount"  BaseValue="1"/>-->
 
-      <SimulationPropertyDescriptor Name="DetectionRange"               BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="DetectionRange"               BaseValue="1" MinValue="1"/>
       <SimulationPropertyDescriptor Name="LevelOfCamouflage"            Composition="Minimum"/>
       <SimulationPropertyDescriptor Name="LevelOfStealth"               Composition="Minimum"/>
       <SimulationPropertyDescriptor Name="IgnoreFog"                    Composition="Sum"/>
@@ -168,6 +168,11 @@
 
   <SimulationDescriptor Name="ClassCity" Type="Class">
     <SimulationPropertyDescriptors>
+      <!-- ELCP: Movement cost of max movement when Teleporting to this city -->
+	  <SimulationPropertyDescriptor Name="TeleportMovementCost" BaseValue="1" MinValue="0"/>
+	  <!-- ELCP: property for reworked approval skills-->
+	  <SimulationPropertyDescriptor Name="ELCPApprovalIndustryBoost"    BaseValue="0"   MinValue="0"/>
+	  
       <!-- City center shortcuts -->
       <SimulationPropertyDescriptor Name="CityCenterLevel" BaseValue="0"/>
       <SimulationPropertyDescriptor Name="CityCenterLevelDisplayed" BaseValue="0"/>
@@ -482,6 +487,8 @@
 
       <!-- Game Speed -->
       <SimulationPropertyDescriptor Name="GameSpeedProductionCostReduction"         MinValue="Negative"/>
+	  <!-- ELCP: Counter weight to make victory wonder not scale -->
+	  <SimulationPropertyDescriptor Name="GameSpeedProductionCostWonderReduction"    MinValue="Negative"/>
 
       <!-- Difficulty -->
       <SimulationPropertyDescriptor Name="AIUnitProductionCostReduction"            MinValue="Negative"/>
@@ -685,7 +692,14 @@
 
       <!-- Industry bonus from growth (Organic Industry) -->
       <BinarySimulationModifierDescriptor TargetProperty="NetOrganicIndustry"       Operation="Addition"        Left="$(NetCityGrowth)"            Right="$(OrganicIndustryPercent)"  BinaryOperation="Multiplication"  />
-
+	  
+	  <!--ELCP: Approval overflow information for governors -->
+	  <BinarySimulationModifierDescriptor TargetProperty="ELCPApprovalOverflow" Operation="Addition" Left="$(CityApproval)" Right="$(CityApprovalUpkeep)" BinaryOperation="Subtraction" TooltipHidden="true" Path="ClassCity/ClassHeroELCP"/>
+	  <SimulationModifierDescriptor TargetProperty="ELCPApprovalOverflow" 	  Operation="Subtraction"  Value="100"  TooltipHidden="true" Path="ClassCity/ClassHeroELCP"/>
+	  <!--ELCP: Fortificationrecovery overflow for governors (needs this precise priority order, because MaximumCityDefensePoint influences CityDefensePoint) -->
+	  <SimulationModifierDescriptor TargetProperty="ELCPFortificationOverflow"      Operation="Subtraction" Value="$(MaximumCityDefensePoint)" TooltipHidden="true" Path="ClassCity/ClassHeroELCP" Priority="1"/>
+	  <SimulationModifierDescriptor TargetProperty="ELCPFortificationOverflow"      Operation="Addition" Value="$(CityDefensePoint)" TooltipHidden="true" Path="ClassCity/ClassHeroELCP" Priority="2"/>
+	  <SimulationModifierDescriptor TargetProperty="ELCPFortificationOverflow"      Operation="Addition" Value="$(CityDefensePointRecoveryPerTurn)" TooltipHidden="true" Path="ClassCity/ClassHeroELCP" Priority="3"/>	  
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -830,7 +844,7 @@
       <BinarySimulationModifierDescriptor TargetProperty="DistrictCityPoint"       Operation="Addition"  Left="$(NodeDistrictCityPoint)"    BinaryOperation="Multiplication"   Right="$(FIDSIMultiplier)"/>
       
       <SimulationModifierDescriptor       TargetProperty="NumberOfCreepingNodes"   Operation="Addition" Value="1" Path="./ClassCity,MainCity" />
-
+	  
       <SimulationModifierDescriptor       TargetProperty="NodeCostIncrement"               Operation="Multiplication" Value="$(NumberOfCreepingNodes)" />
       
       <SimulationModifierDescriptor       TargetProperty="NodeExtractorCost"               Operation="Addition"       Value="$(NodeCostIncrement)" />
@@ -904,6 +918,8 @@
       <SimulationPropertyDescriptor Name="EmpireUpkeep"                         BaseValue="0"/>
       <SimulationPropertyDescriptor Name="GameSpeedMultiplier"                  BaseValue="1"/>
       <SimulationPropertyDescriptor Name="GameSpeedProductionCostReduction"     MinValue="Negative"/>
+	  <!-- ELCP: Counter weight to make victory wonder not scale -->
+	  <SimulationPropertyDescriptor Name="GameSpeedProductionCostWonderReduction"    MinValue="Negative"/>
       <SimulationPropertyDescriptor Name="GameSpeedProductionToMoneyMultiplier" BaseValue="1"/>
       <SimulationPropertyDescriptor Name="MaximumNumberOfColossi"/>
       <SimulationPropertyDescriptor Name="MaximumSeasonPredictabilityError"     BaseValue="10"/>
@@ -926,6 +942,14 @@
       <SimulationPropertyDescriptor Name="DiplomaticCostReduction5" BaseValue="0" MinValue="Negative"/>
       <SimulationPropertyDescriptor Name="DiplomaticCostReduction6" BaseValue="0" MinValue="Negative"/>
       <SimulationPropertyDescriptor Name="DiplomaticCostReduction7" BaseValue="0" MinValue="Negative"/>
+	  <SimulationPropertyDescriptor Name="DiplomaticCostReduction8" BaseValue="0" MinValue="Negative"/>
+	  <SimulationPropertyDescriptor Name="DiplomaticCostReduction9" BaseValue="0" MinValue="Negative"/>
+	  <SimulationPropertyDescriptor Name="DiplomaticCostReduction10" BaseValue="0" MinValue="Negative"/>
+	  <SimulationPropertyDescriptor Name="DiplomaticCostReduction11" BaseValue="0" MinValue="Negative"/>
+	  <SimulationPropertyDescriptor Name="DiplomaticCostReduction12" BaseValue="0" MinValue="Negative"/>
+	  <SimulationPropertyDescriptor Name="DiplomaticCostReduction13" BaseValue="0" MinValue="Negative"/>
+	  <SimulationPropertyDescriptor Name="DiplomaticCostReduction14" BaseValue="0" MinValue="Negative"/>
+	  <SimulationPropertyDescriptor Name="DiplomaticCostReduction15" BaseValue="0" MinValue="Negative"/>
 
       <!--Used to double the Dust Rewards ofrom Pillage, for factions using FactionTraitReplicants7-->
       <SimulationPropertyDescriptor Name="PillageBoost"                    BaseValue="1"/>
@@ -1062,10 +1086,10 @@
       <SimulationPropertyDescriptor Name="DetectionRange" BaseValue="0"/>
 
       <SimulationProportionalPropertyDescriptor Name="PillageDefense"         Maximum="$(MaximumPillageDefense)" Minimum="0" StartingRatio="1"/>
-      <SimulationPropertyDescriptor Name="PillageDefenseRecovery"             BaseValue="4"/>
+      <SimulationPropertyDescriptor Name="PillageDefenseRecovery"             BaseValue="8"/>
       <SimulationPropertyDescriptor Name="MaximumPillageDefense"              BaseValue="0"/>
 
-      <SimulationPropertyDescriptor Name="MaximumPillageCooldown"             BaseValue="8"/>
+      <SimulationPropertyDescriptor Name="MaximumPillageCooldown"             BaseValue="4"/>
       <SimulationPropertyDescriptor Name="PillageCooldown"                    BaseValue="0"/>
       <SimulationPropertyDescriptor Name="CityMoneyUpkeep"                    BaseValue="0"/>
       <SimulationPropertyDescriptor Name="CityDefensePoint"                   BaseValue="0"/>
@@ -1136,7 +1160,8 @@
       <SimulationPropertyDescriptor Name="NumberOfTamedKaijus"                BaseValue="0"/>
 
       <!--MinValue is considered only when the property is used. That's why here the base value is set at -1 even if the min value is 0-->
-      <SimulationPropertyDescriptor Name="ActivatedLuxuryBoosterCountMinusOne"      BaseValue="-1" MinValue="0"/>
+	  <!--ELCP/LeaderEnemyBoss changed BaseValue to 0 to match the ingame description (only activated after 2 boosters before) -->
+      <SimulationPropertyDescriptor Name="ActivatedLuxuryBoosterCountMinusOne"      BaseValue="0" MinValue="0"/>
 
     </SimulationPropertyDescriptors>
 
@@ -1506,6 +1531,8 @@
 
       <!-- Unit Pillage Power based on CityDefensePointLossPerTurn -->
       <SimulationModifierDescriptor       TargetProperty="PillagePower"                 Operation="Force"    Value="$(CityDefensePointLossPerTurn)"       Priority="-2"/>
+	  <!-- ELCP doubled pillage speed -->
+	  <SimulationModifierDescriptor       TargetProperty="PillagePower"                 Operation="Multiplication"    Value="2"       Priority="0"/>
 
       <!-- Unit OrbCollectCapacity multiplied by OrbCollectMultiplieroll -->
       <SimulationModifierDescriptor       TargetProperty="OrbCollectCapacity"   Operation="Multiplication"  Value="$(OrbCollectMultiplier)"                 Priority="-1"/>
@@ -1725,6 +1752,8 @@
       <SimulationModifierDescriptor TargetProperty="NetCityGrowth" Operation="Addition" Value="$(MimicsNetGrowthProductionPerTurn)" Priority="13"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
+  
+  <SimulationDescriptor Name="ELCPNakedSettler" Type="SubClass"/>
 
   <SimulationDescriptor Name="ClassKaiju" Type="Class">
     <SimulationPropertyDescriptors>

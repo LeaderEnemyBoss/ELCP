@@ -10,6 +10,11 @@ using UnityEngine;
 
 public class ScoreGraphsPanel : GuiPanel
 {
+	public ScoreGraphsPanel()
+	{
+		this.visibleEmpires = new List<int>();
+	}
+
 	public GameScoreDefinition CurrentScoreDefinition { get; private set; }
 
 	public global::Empire PlayerEmpire { get; set; }
@@ -107,6 +112,7 @@ public class ScoreGraphsPanel : GuiPanel
 
 	private void RefreshScores()
 	{
+		this.CalculateELCPScaling();
 		this.ParticipantsScoreTable.ReserveChildren(this.EmpireInfos.Length, this.ParticipantScoreLinePrefab, "Item");
 		this.ParticipantsScoreTable.RefreshChildrenArray<EmpireInfo>(this.EmpireInfos, new AgeTransform.RefreshTableItem<EmpireInfo>(this.RefreshParticipantScoreLine), true, false);
 		this.ScoreHistogramContainer.ReserveChildren(this.EmpireInfos.Length, this.ScoreHistogramPrefab, "Item");
@@ -115,8 +121,7 @@ public class ScoreGraphsPanel : GuiPanel
 		float num2 = 0f;
 		for (int i = 0; i < this.ScoreHistogramContainer.GetChildren().Count; i++)
 		{
-			AgePrimitiveHistogramLinear component = this.ScoreHistogramContainer.GetChildren()[i].GetComponent<AgePrimitiveHistogramLinear>();
-			float[] values = component.Values;
+			float[] values = this.ScoreHistogramContainer.GetChildren()[i].GetComponent<AgePrimitiveHistogramLinear>().Values;
 			for (int j = 0; j < values.Length; j++)
 			{
 				if (values[j] > num)
@@ -133,14 +138,14 @@ public class ScoreGraphsPanel : GuiPanel
 		{
 			for (int k = 0; k < this.ScoreHistogramContainer.GetChildren().Count; k++)
 			{
-				AgePrimitiveHistogramLinear component2 = this.ScoreHistogramContainer.GetChildren()[k].GetComponent<AgePrimitiveHistogramLinear>();
-				float[] values = component2.Values;
-				for (int l = 0; l < values.Length; l++)
+				AgePrimitiveHistogramLinear component = this.ScoreHistogramContainer.GetChildren()[k].GetComponent<AgePrimitiveHistogramLinear>();
+				float[] values2 = component.Values;
+				for (int l = 0; l < values2.Length; l++)
 				{
-					values[l] -= num2;
-					values[l] /= num - num2;
+					values2[l] -= num2;
+					values2[l] /= num - num2;
 				}
-				component2.Values = values;
+				component.Values = values2;
 			}
 		}
 		this.verticalGridValues.Clear();
@@ -196,16 +201,13 @@ public class ScoreGraphsPanel : GuiPanel
 
 	private void RefreshParticipantScoreLine(AgeTransform tableitem, EmpireInfo empireInfo, int index)
 	{
-		EmpireInfo empireInfo2 = this.EmpireInfos.FirstOrDefault((EmpireInfo iterator) => iterator.IsActiveOrLocalPlayer);
-		int observerIndex = -1;
-		if (empireInfo2 != null)
-		{
-			observerIndex = empireInfo2.EmpireIndex;
-		}
-		if (this.IsEmpireVisible(empireInfo, observerIndex))
+		tableitem.SetupCustomELCPScaling(this.ParticipantsScoreTableScale);
+		if (this.visibleEmpires.Contains(empireInfo.EmpireIndex))
 		{
 			tableitem.Visible = true;
 			ParticipantScoreLine component = tableitem.GetComponent<ParticipantScoreLine>();
+			component.ParticipantName.AgeTransform.SetupCustomELCPScaling(this.ParticipantsScoreTableScale);
+			component.ParticipantScore.AgeTransform.SetupCustomELCPScaling(this.ParticipantsScoreTableScale);
 			component.ParticipantLogoBackground.TintColor = empireInfo.FactionColor;
 			component.ParticipantName.Text = empireInfo.LocalizedName;
 			GuiFaction guiFaction = new GuiFaction(empireInfo.Faction);
@@ -216,9 +218,39 @@ public class ScoreGraphsPanel : GuiPanel
 			Snapshot snapshot2;
 			if (this.Snapshot.TryGetSnapshot(name, out snapshot) && snapshot.TryGetSnapshot(empireInfo.EmpireName, out snapshot2))
 			{
-				float value;
-				snapshot2.TryRead(this.CurrentScoreDefinition.Name, out value);
-				component.ParticipantScore.Text = GuiFormater.FormatGui(value, false, false, false, 0);
+				float num;
+				snapshot2.TryRead(this.CurrentScoreDefinition.Name, out num);
+				string str = "";
+				int decimals = 0;
+				component.ParticipantScore.WordWrap = false;
+				if (num >= 1000f)
+				{
+					str = "k";
+					if (num <= 10000f)
+					{
+						num = Mathf.Round(num / 100f);
+						num /= 10f;
+						decimals = 1;
+					}
+					else if (num <= 999999f)
+					{
+						num = Mathf.Round(num / 1000f);
+					}
+					else if (num <= 9999999f)
+					{
+						num = Mathf.Round(num / 100000f);
+						num /= 10f;
+						str = "M";
+						decimals = 1;
+					}
+					else if (num > 9999999f)
+					{
+						num = Mathf.Round(num / 1000000f);
+						str = "M";
+					}
+				}
+				component.ParticipantScore.Text = GuiFormater.FormatGui(num, false, false, false, decimals) + str;
+				return;
 			}
 		}
 		else
@@ -328,6 +360,42 @@ public class ScoreGraphsPanel : GuiPanel
 		return false;
 	}
 
+	private void CalculateELCPScaling()
+	{
+		this.visibleEmpires.Clear();
+		this.ParticipantsScoreTableScale = 1f;
+		float num = (!AgeUtils.HighDefinition) ? 32f : (32f * AgeUtils.HighDefinitionFactor);
+		float num2 = (!AgeUtils.HighDefinition) ? 4f : (4f * AgeUtils.HighDefinitionFactor);
+		float num3 = (!AgeUtils.HighDefinition) ? 50f : (50f * AgeUtils.HighDefinitionFactor);
+		EmpireInfo empireInfo = this.EmpireInfos.FirstOrDefault((EmpireInfo iterator) => iterator.IsActiveOrLocalPlayer);
+		int observerIndex = -1;
+		if (empireInfo != null)
+		{
+			observerIndex = empireInfo.EmpireIndex;
+		}
+		foreach (EmpireInfo empireInfo2 in this.EmpireInfos)
+		{
+			if (this.IsEmpireVisible(empireInfo2, observerIndex))
+			{
+				this.visibleEmpires.Add(empireInfo2.EmpireIndex);
+			}
+		}
+		if (this.visibleEmpires.Count > 8 && this.visibleEmpires.Count < 11)
+		{
+			this.ParticipantsScoreTableScale = 0.82f;
+		}
+		if (this.visibleEmpires.Count > 10)
+		{
+			this.ParticipantsScoreTableScale = 0.7f;
+			num2 *= 0.5f;
+			num3 *= 0.6f;
+		}
+		num *= this.ParticipantsScoreTableScale;
+		this.ParticipantsScoreTable.HorizontalSpacing = num;
+		this.ParticipantsScoreTable.VerticalSpacing = num2;
+		this.ParticipantsScoreTable.PixelMarginLeft = num3;
+	}
+
 	public AgeTransform ScoreFiltersTable;
 
 	public Transform ScoreFilterTogglePrefab;
@@ -351,4 +419,8 @@ public class ScoreGraphsPanel : GuiPanel
 	private List<float> verticalGridValues;
 
 	private List<float> verticalGridHeights;
+
+	private List<int> visibleEmpires;
+
+	private float ParticipantsScoreTableScale;
 }

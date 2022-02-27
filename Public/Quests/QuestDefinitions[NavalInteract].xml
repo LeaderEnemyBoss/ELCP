@@ -540,7 +540,7 @@
       <!--Step 1-->
       <Action_UpdateStep StepName="SideQuestNavalInteract#0007-Step1" State="InProgress"/>
       <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
-      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete" ScaleWithGameSpeed="true"/>
       <Controller_Parallel CompletionPolicy="Any">
 
         <Controller_Sequence>
@@ -557,7 +557,7 @@
 
         <!--Fail Condition 1-->
         <Controller_Sequence>
-          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true"/>
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
 
@@ -598,7 +598,7 @@
       <!--Step 1-->
       <Action_UpdateStep StepName="SideQuestNavalInteract#0008-Step1" State="InProgress"/>
       <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
-      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete" ScaleWithGameSpeed="true"/>
       <Controller_Parallel CompletionPolicy="Any">
 
         <Controller_Sequence>
@@ -615,7 +615,7 @@
 
         <!--Fail Condition 1-->
         <Controller_Sequence>
-          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true"/>
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
 

@@ -96,15 +96,7 @@ public class AICommanderMission_Pacification : AICommanderMissionWithRequestArmy
 	{
 		isMaxPower = false;
 		perUnitTest = false;
-		Army maxHostileArmy = AILayer_Pacification.GetMaxHostileArmy(base.Commander.Empire, this.RegionTarget.Index);
-		if (maxHostileArmy == null)
-		{
-			minMilitaryPower = this.intelligenceAIHelper.EvaluateMaxMilitaryPowerOfRegion(base.Commander.Empire, this.RegionTarget.Index);
-		}
-		else
-		{
-			minMilitaryPower = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, maxHostileArmy, 0);
-		}
+		minMilitaryPower = Intelligence.EvaluateAllFactionMaxMilitaryPowerOnRegion(base.Commander.Empire, this.RegionTarget.Index, true);
 	}
 
 	protected override int GetNeededAvailabilityTime()
@@ -145,11 +137,24 @@ public class AICommanderMission_Pacification : AICommanderMissionWithRequestArmy
 		{
 			return false;
 		}
-		Army maxHostileArmy = AILayer_Pacification.GetMaxHostileArmy(base.Commander.Empire, this.RegionTarget.Index);
-		return maxHostileArmy != null && base.TryCreateArmyMission("AttackArmy", new List<object>
+		AIData_Army aidata = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID);
+		if (aidata == null)
 		{
-			maxHostileArmy,
-			-1
+			base.Completion = AICommanderMission.AICommanderMissionCompletion.Fail;
+			return false;
+		}
+		Army maxHostileArmy = AILayer_Pacification.GetMaxHostileArmy(base.Commander.Empire, this.RegionTarget.Index);
+		if (maxHostileArmy != null && aidata.Army.GetPropertyValue(SimulationProperties.MilitaryPower) > 0.8f * maxHostileArmy.GetPropertyValue(SimulationProperties.MilitaryPower))
+		{
+			return base.TryCreateArmyMission("MajorFactionAttackArmy", new List<object>
+			{
+				maxHostileArmy,
+				this.RegionTarget.Index
+			});
+		}
+		return base.TryCreateArmyMission("MajorFactionRoaming", new List<object>
+		{
+			this.RegionTarget.Index
 		});
 	}
 }

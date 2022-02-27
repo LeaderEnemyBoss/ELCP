@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Amplitude;
+using Amplitude.Extensions;
 using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -14,29 +15,61 @@ using Amplitude.Unity.Simulation.Advanced;
 using Amplitude.Utilities.Maps;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
+using UnityEngine;
 
 public class KaijuCouncil : Agency, IXmlSerializable
 {
 	public KaijuCouncil(global::Empire empire) : base(empire)
 	{
+		this.lastLiceArmySpawnTurn = -1;
+		this.liceArmies = new HashSet<GameEntityGUID>();
+		this.kaijuSpawnTurn = -1;
+		this.relocationETA = -1;
+		this.eLCPResourceName = StaticString.Empty;
 	}
 
 	public static WorldPosition GetValidKaijuPosition(Region targetRegion, bool randomFallback = false)
 	{
+		IGameService service = Services.GetService<IGameService>();
+		IWorldPositionningService service3 = service.Game.Services.GetService<IWorldPositionningService>();
 		KaijuCouncil.attractivenessMap = (KaijuCouncil.world.Atlas.GetMap(WorldAtlas.Maps.KaijuAttractiveness) as GridMap<bool>);
 		WorldPosition[] array = (from position in targetRegion.WorldPositions
 		where KaijuCouncil.IsPositionValidForSettleKaiju(position, null)
 		select position).ToArray<WorldPosition>();
 		WorldPosition result = WorldPosition.Invalid;
-		if (array.Length > 0)
+		if (array.Length != 0)
 		{
 			result = array[KaijuCouncil.random.Next(0, array.Length)];
+			if (!ELCPUtilities.UseELCPSymbiosisBuffs)
+			{
+				goto IL_185;
+			}
+			List<WorldPosition> list = array.ToList<WorldPosition>().Randomize(KaijuCouncil.random);
+			List<PointOfInterest> list2 = targetRegion.PointOfInterests.ToList<PointOfInterest>().FindAll((PointOfInterest PointOfInterest) => PointOfInterest.Type == ELCPUtilities.QuestLocation);
+			if (list2 == null || list2.Count <= 0)
+			{
+				goto IL_185;
+			}
+			using (List<WorldPosition>.Enumerator enumerator = list.GetEnumerator())
+			{
+				while (enumerator.MoveNext())
+				{
+					WorldPosition position = enumerator.Current;
+					if (list2.Any((PointOfInterest poi) => service3.GetDistance(poi.WorldPosition, position) == 1))
+					{
+						result = position;
+						break;
+					}
+				}
+				goto IL_185;
+			}
 		}
-		else if (randomFallback)
+		if (randomFallback)
 		{
 			Diagnostics.LogError("Could not find suitable position in starting region!... Picking a random one...");
 			result = targetRegion.WorldPositions[KaijuCouncil.random.Next(0, targetRegion.WorldPositions.Length)];
 		}
+		IL_185:
 		if (!result.IsValid)
 		{
 			Diagnostics.LogError("Could not find a valid kaiju position!");
@@ -68,7 +101,11 @@ public class KaijuCouncil : Agency, IXmlSerializable
 
 	public static bool IsPositionValidForSettleKaiju(WorldPosition worldPosition, Kaiju kaiju = null)
 	{
-		if (!KaijuCouncil.IsRegionValidForSettleKaiju(KaijuCouncil.worldPositionService.GetRegion(worldPosition)))
+		if (!KaijuCouncil.IgnoreRegionRequirements && !KaijuCouncil.IsRegionValidForSettleKaiju(KaijuCouncil.worldPositionService.GetRegion(worldPosition)))
+		{
+			return false;
+		}
+		if (KaijuCouncil.worldPositionService.IsFrozenWaterTile(worldPosition) || KaijuCouncil.worldPositionService.IsWaterTile(worldPosition))
 		{
 			return false;
 		}
@@ -97,17 +134,6 @@ public class KaijuCouncil : Agency, IXmlSerializable
 		}
 	}
 
-	public static KaijuTameCost GetKaijuTameCost()
-	{
-		IDatabase<ArmyAction> database = Databases.GetDatabase<ArmyAction>(false);
-		ArmyAction armyAction = null;
-		if (database == null || !database.TryGetValue(ArmyAction_TameUnstunnedKaiju.ReadOnlyName, out armyAction))
-		{
-			return null;
-		}
-		return (armyAction as IArmyActionWithKaijuTameCost).TameCost;
-	}
-
 	private static void StaticInitialize()
 	{
 		IGameService service = Services.GetService<IGameService>();
@@ -130,7 +156,7 @@ public class KaijuCouncil : Agency, IXmlSerializable
 				Diagnostics.LogError("No MajorEmpires were retrieved");
 			}
 		}
-		KaijuCouncil.random = new Random(World.Seed);
+		KaijuCouncil.random = new System.Random(World.Seed);
 	}
 
 	private static void PreComputeAttractiveness()
@@ -381,24 +407,26 @@ public class KaijuCouncil : Agency, IXmlSerializable
 
 	public float GetIndustryNeededToSpawn()
 	{
-		string value = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<string>(this.KaijuEmpire.SpawnFormulaPath);
-		object[] rpn = Interpreter.InfixTransform(value);
+		object[] rpn = Interpreter.InfixTransform(Amplitude.Unity.Runtime.Runtime.Registry.GetValue<string>(this.KaijuEmpire.SpawnFormulaPath));
 		InterpreterContext interpreterContext = new InterpreterContext(null);
 		interpreterContext.SimulationObject = base.Empire.SimulationObject;
 		interpreterContext.Register("NumberOfPlayers", KaijuCouncil.majorEmpires.Length);
 		float num = (float)Interpreter.Execute(rpn, interpreterContext);
-		Diagnostics.Log("[Kaiju] Kaiju Empire [{0}] formula = n * (NumberOfPlayers = {1}) * (GameSpeedMultiplier = {2}) * (GameDifficultyKaijuSpawnMultiplier = {3})", new object[]
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 		{
-			this.KaijuEmpire.KaijuFaction.LocalizedName,
-			KaijuCouncil.majorEmpires.Length,
-			this.KaijuEmpire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier),
-			this.KaijuEmpire.GetPropertyValue("GameDifficultyKaijuSpawnMultiplier")
-		});
-		Diagnostics.Log("[Kaiju] Kaiju Empire [{0}] Industry needed to Spawn: [{1}]", new object[]
-		{
-			this.KaijuEmpire.KaijuFaction.LocalizedName,
-			num
-		});
+			Diagnostics.Log("[Kaiju] Kaiju Empire [{0}] formula = n * (NumberOfPlayers = {1}) * (GameSpeedMultiplier = {2}) * (GameDifficultyKaijuSpawnMultiplier = {3})", new object[]
+			{
+				this.KaijuEmpire.KaijuFaction.LocalizedName,
+				KaijuCouncil.majorEmpires.Length,
+				this.KaijuEmpire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier),
+				this.KaijuEmpire.GetPropertyValue("GameDifficultyKaijuSpawnMultiplier")
+			});
+			Diagnostics.Log("[Kaiju] Kaiju Empire [{0}] Industry needed to Spawn: [{1}]", new object[]
+			{
+				this.KaijuEmpire.KaijuFaction.LocalizedName,
+				num
+			});
+		}
 		return num;
 	}
 
@@ -589,12 +617,13 @@ public class KaijuCouncil : Agency, IXmlSerializable
 		}
 		this.ComputeTameCosts(game as global::Game);
 		KaijuCouncil.UpdateTameCosts();
+		this.ELCPTameCostCooldown = this.ELCPCalculateTameCostCooldown();
 		yield break;
 	}
 
 	private void ComputeTameCosts(global::Game game)
 	{
-		Random random = new Random(World.Seed);
+		System.Random random = new System.Random(World.Seed);
 		IDatabase<ArmyAction> database = Databases.GetDatabase<ArmyAction>(false);
 		Diagnostics.Assert(database != null);
 		Dictionary<string, List<PointOfInterestTemplate>> dictionary = KaijuTechsManager.ComputeLuxuryAbundance(game);
@@ -642,6 +671,7 @@ public class KaijuCouncil : Agency, IXmlSerializable
 		}
 		this.liceArmies.Clear();
 		this.liceArmiesCache = null;
+		this.eLCPResourceName = null;
 	}
 
 	private void Client_TurnBegin_CheckKaijuStatus()
@@ -707,7 +737,7 @@ public class KaijuCouncil : Agency, IXmlSerializable
 
 	private void Client_TurnBegin_CheckKaijuSpawn()
 	{
-		if ((this.gameService.Game as global::Game).Turn == this.kaijuSpawnTurn && !this.KaijuEmpire.HasSpawnedAnyKaiju)
+		if ((this.gameService.Game as global::Game).Turn >= this.kaijuSpawnTurn && this.kaijuSpawnTurn > 0 && ((this.gameService.Game as global::Game).Turn - this.kaijuSpawnTurn) % 10 == 0 && !this.KaijuEmpire.HasSpawnedAnyKaiju)
 		{
 			global::PlayerController server = this.KaijuEmpire.PlayerControllers.Server;
 			if (server != null)
@@ -747,6 +777,10 @@ public class KaijuCouncil : Agency, IXmlSerializable
 		this.Client_TurnBegin_CheckIndustryThreshold();
 		this.Client_TurnBegin_CheckKaijuSpawn();
 		this.Client_TurnBegin_CheckKaijuStatus();
+		if (ELCPUtilities.UseELCPSymbiosisBuffs)
+		{
+			this.Client_TurnBegin_RecalculateELCPTameResource();
+		}
 		yield break;
 	}
 
@@ -838,11 +872,10 @@ public class KaijuCouncil : Agency, IXmlSerializable
 		{
 			return;
 		}
-		Random randomizer = new Random(World.Seed + turn);
-		IEnumerable<WorldPosition> source = from position in list
+		System.Random randomizer = new System.Random(World.Seed + turn);
+		list = (from position in list
 		orderby this.worldPositionningService.GetDistance(this.Kaiju.WorldPosition, position), randomizer.NextDouble()
-		select position;
-		list = source.ToList<WorldPosition>();
+		select position).ToList<WorldPosition>();
 		WorldPosition[] worldPositions;
 		if (list.Count > num2)
 		{
@@ -863,16 +896,27 @@ public class KaijuCouncil : Agency, IXmlSerializable
 		list3.Add(KaijuCouncil.WildLiceArmyPreferences.ArmyTag);
 		List<StaticString> list4 = new List<StaticString>();
 		list4.Add(KaijuCouncil.WildLiceArmyPreferences.UnitTag);
-		MinorEmpire minorEmpire = null;
-		for (int k = 0; k < game.Empires.Length; k++)
+		List<MajorEmpire> list5 = new List<MajorEmpire>();
+		int k = 0;
+		while (k < game.Empires.Length)
 		{
-			if (game.Empires[k] is MinorEmpire)
+			if (game.Empires[k] is MajorEmpire && !(game.Empires[k] as MajorEmpire).ELCPIsEliminated)
 			{
-				minorEmpire = (game.Empires[k] as MinorEmpire);
+				if (game.Empires[k].GetAgency<DepartmentOfTheInterior>().NonInfectedCities.Count > 0)
+				{
+					list5.Add(game.Empires[k] as MajorEmpire);
+					break;
+				}
 				break;
 			}
+			else
+			{
+				k++;
+			}
 		}
-		OrderSpawnArmies order = new OrderSpawnArmies(minorEmpire.Index, worldPositions, list2.ToArray(), KaijuCouncil.WildLiceArmyPreferences.ArmiesToSpawnCount, list3.ToArray(), list4.ToArray(), Math.Max(0, DepartmentOfScience.GetMaxEraNumber() - 1), QuestArmyObjective.QuestBehaviourType.Offense);
+		DepartmentOfTheInterior agency = list5[game.Turn % list5.Count].GetAgency<DepartmentOfTheInterior>();
+		MinorEmpire minorEmpire = agency.Cities[game.Turn % agency.Cities.Count].Region.MinorEmpire;
+		OrderSpawnArmies order = new OrderSpawnArmies(minorEmpire.Index, worldPositions, list2.ToArray(), KaijuCouncil.WildLiceArmyPreferences.ArmiesToSpawnCount, list3.ToArray(), list4.ToArray(), Math.Max(0, DepartmentOfScience.GetMaxEraNumber()), QuestArmyObjective.QuestBehaviourType.Undefined);
 		Ticket ticket = null;
 		minorEmpire.PlayerControllers.Server.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderSpawnLiceArmies_TicketRaised));
 	}
@@ -943,6 +987,92 @@ public class KaijuCouncil : Agency, IXmlSerializable
 		return text;
 	}
 
+	public static KaijuTameCost GetKaijuTameCost()
+	{
+		IDatabase<ArmyAction> database = Databases.GetDatabase<ArmyAction>(false);
+		ArmyAction armyAction = null;
+		if (database == null || !database.TryGetValue(ArmyAction_TameUnstunnedKaiju.ReadOnlyName, out armyAction))
+		{
+			return null;
+		}
+		return (armyAction as IArmyActionWithKaijuTameCost).TameCost;
+	}
+
+	private void Client_TurnBegin_RecalculateELCPTameResource()
+	{
+		if (this.ELCPTameCostCooldown < 1)
+		{
+			return;
+		}
+		int num = (this.gameService.Game as global::Game).Turn + 1;
+		int num2 = num % this.ELCPTameCostCooldown;
+		if (num2 != 0 && this.eLCPResourceName != StaticString.Empty)
+		{
+			return;
+		}
+		num -= num2;
+		System.Random random = new System.Random(World.Seed + base.Empire.Index * base.Empire.Index * base.Empire.Index * base.Empire.Index * base.Empire.Index + num * num);
+		int maxEraNumber = DepartmentOfScience.GetMaxEraNumber();
+		KaijuTameCost kaijuTameCost = KaijuCouncil.GetKaijuTameCost();
+		Dictionary<string, List<PointOfInterestTemplate>> dictionary = KaijuTechsManager.ComputeLuxuryAbundance(this.gameService.Game as global::Game);
+		List<PointOfInterestTemplate> list = new List<PointOfInterestTemplate>();
+		List<string> list2 = new List<string>();
+		for (int i = 0; i < kaijuTameCost.CostDefinitions.Length; i++)
+		{
+			KaijuTameCost.CostDefinition costDefinition = kaijuTameCost.CostDefinitions[i];
+			if (!list2.Contains(costDefinition.LuxuryTier))
+			{
+				string[] array = costDefinition.EraNumber.Split(new char[]
+				{
+					','
+				});
+				bool flag = false;
+				for (int j = 0; j < array.Length; j++)
+				{
+					int num3 = 0;
+					if (int.TryParse(array[j], out num3) && num3 <= maxEraNumber)
+					{
+						flag = true;
+						break;
+					}
+				}
+				if (flag)
+				{
+					list.AddRange(dictionary[costDefinition.LuxuryTier]);
+					list2.Add(costDefinition.LuxuryTier);
+				}
+			}
+		}
+		PointOfInterestTemplate pointOfInterestTemplate = list[random.Next(list.Count)];
+		string empty = string.Empty;
+		if (pointOfInterestTemplate.Properties.TryGetValue("ResourceName", out empty))
+		{
+			Diagnostics.Log("ELCP {0} Client_TurnBegin_RecalculateELCPTameResource rolled Resource {1} instead of {2}", new object[]
+			{
+				base.Empire.Index.ToString() + "/" + this.KaijuEmpire.KaijuFaction.LocalizedName,
+				empty,
+				kaijuTameCost.ResourceName
+			});
+			this.eLCPResourceName = new StaticString(empty);
+		}
+	}
+
+	public StaticString ELCPResourceName
+	{
+		get
+		{
+			return this.eLCPResourceName;
+		}
+	}
+
+	public int ELCPCalculateTameCostCooldown()
+	{
+		return Mathf.Max((int)((float)Interpreter.Execute(Interpreter.InfixTransform(Amplitude.Unity.Runtime.Runtime.Registry.GetValue<string>("Gameplay/Agencies/KaijuCouncil/ELCPTameCostCooldownFormula", string.Empty)), new InterpreterContext(null)
+		{
+			SimulationObject = base.Empire.SimulationObject
+		})), 1);
+	}
+
 	private static IDatabase<KaijuAttractivenessRule> attractivenessDatabase;
 
 	private static GridMap<bool> attractivenessMap;
@@ -953,7 +1083,7 @@ public class KaijuCouncil : Agency, IXmlSerializable
 
 	private static MajorEmpire[] majorEmpires;
 
-	private static Random random;
+	private static System.Random random;
 
 	public static readonly StaticString PlayWithKaijuGameplaySetting = "Settings/Game/PlayWithKaiju";
 
@@ -981,19 +1111,25 @@ public class KaijuCouncil : Agency, IXmlSerializable
 
 	private IGameService gameService;
 
-	private int lastLiceArmySpawnTurn = -1;
+	private int lastLiceArmySpawnTurn;
 
-	private readonly HashSet<GameEntityGUID> liceArmies = new HashSet<GameEntityGUID>();
+	private readonly HashSet<GameEntityGUID> liceArmies;
 
 	private GameEntityGUID[] liceArmiesCache;
 
-	private int kaijuSpawnTurn = -1;
+	private int kaijuSpawnTurn;
 
-	private int relocationETA = -1;
+	private int relocationETA;
 
 	private ISeasonService seasonService;
 
 	private IWorldPositionningService worldPositionningService;
+
+	private StaticString eLCPResourceName;
+
+	private int ELCPTameCostCooldown;
+
+	public static bool IgnoreRegionRequirements;
 
 	public static class WildLiceArmyPreferences
 	{

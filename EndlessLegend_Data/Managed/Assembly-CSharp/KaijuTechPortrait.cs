@@ -28,7 +28,7 @@ public class KaijuTechPortrait : MonoBehaviour
 		}
 	}
 
-	public void SetupPortrait(Kaiju kaiju, Empire playerEmpire)
+	public void SetupPortrait(Kaiju kaiju)
 	{
 		this.Kaiju = kaiju;
 		if (this.Portrait != null)
@@ -41,11 +41,6 @@ public class KaijuTechPortrait : MonoBehaviour
 				this.Portrait.Image = image;
 			}
 		}
-		Amplitude.Unity.Gui.IGuiService service = Services.GetService<global::IGuiService>();
-		Diagnostics.Assert(service != null);
-		KaijuTameCost kaijuTameCost = KaijuCouncil.GetKaijuTameCost();
-		this.CostGroup.Visible = this.Kaiju.IsWild();
-		this.CostValue.Text = GuiFormater.FormatGui(kaijuTameCost.GetValue(playerEmpire), false, true, false, 0) + service.FormatSymbol(kaijuTameCost.ResourceName);
 		if (this.Background != null)
 		{
 			this.Background.TintColor = this.Kaiju.Empire.Color;
@@ -80,6 +75,32 @@ public class KaijuTechPortrait : MonoBehaviour
 			this.AgeTransform.AgeTooltip.ClientData = null;
 		}
 		this.Kaiju = null;
+	}
+
+	public void SetupPortrait(Kaiju kaiju, Empire playerEmpire)
+	{
+		this.Kaiju = kaiju;
+		if (this.Portrait != null)
+		{
+			IGuiPanelHelper guiPanelHelper = Services.GetService<global::IGuiService>().GuiPanelHelper;
+			Diagnostics.Assert(guiPanelHelper != null, "Unable to access GuiPanelHelper");
+			Texture2D image;
+			if (guiPanelHelper.TryGetTextureFromIcon(this.KaijuGuiElement, global::GuiPanel.IconSize.Large, out image))
+			{
+				this.Portrait.Image = image;
+			}
+		}
+		Amplitude.Unity.Gui.IGuiService service = Services.GetService<global::IGuiService>();
+		Diagnostics.Assert(service != null);
+		KaijuTameCost kaijuTameCost = KaijuCouncil.GetKaijuTameCost();
+		this.CostGroup.Visible = this.Kaiju.IsWild();
+		KaijuCouncil agency = this.Kaiju.KaijuEmpire.GetAgency<KaijuCouncil>();
+		this.CostValue.Text = GuiFormater.FormatGui(kaijuTameCost.GetValue(playerEmpire), false, true, false, 0) + service.FormatSymbol(ELCPUtilities.UseELCPSymbiosisBuffs ? agency.ELCPResourceName : kaijuTameCost.ResourceName);
+		if (this.Background != null)
+		{
+			this.Background.TintColor = this.Kaiju.Empire.Color;
+		}
+		this.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString(KaijuTechPortrait.PortraitClickTooltip);
 	}
 
 	public static string PortraitClickTooltip = "%KaijuPortraitClickTooltip";

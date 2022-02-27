@@ -469,13 +469,9 @@ public class BarbarianCouncil : Agency, IXmlSerializable
 		StaticString tag = "Era" + maxEraNumber;
 		foreach (UnitDesign unitDesign in this.departmentOfDefense.UnitDesignDatabase.GetAvailableUnitDesignsAsEnumerable())
 		{
-			if (!unitDesign.CheckAgainstTag(DownloadableContent16.SeafaringUnit) && !unitDesign.CheckAgainstTag("ConvertedVillageUnit") && !unitDesign.CheckAgainstTag("WildLiceArmy") && unitDesign.CheckAgainstTag(tag))
+			if (!unitDesign.CheckAgainstTag(DownloadableContent16.SeafaringUnit) && !unitDesign.CheckAgainstTag("ConvertedVillageUnit") && !unitDesign.CheckAgainstTag("WildLiceArmy") && unitDesign.CheckAgainstTag(tag) && !unitDesign.Name.Contains("Mercenary"))
 			{
-				string text = unitDesign.Name;
-				if (!text.Contains("Mercenary"))
-				{
-					return unitDesign.Name;
-				}
+				return unitDesign.Name;
 			}
 		}
 		return StaticString.Empty;
@@ -643,21 +639,21 @@ public class BarbarianCouncil : Agency, IXmlSerializable
 	protected override IEnumerator OnLoadGame(Amplitude.Unity.Game.Game game)
 	{
 		yield return base.OnLoadGame(game);
-		for (int index = 0; index < this.villages.Count; index++)
+		for (int i = 0; i < this.villages.Count; i++)
 		{
-			Village village = this.villages[index];
+			Village village = this.villages[i];
 			this.GameEntityRepositoryService.Register(village);
-			foreach (Unit unit in village.Units)
+			foreach (Unit instance in village.Units)
 			{
-				this.GameEntityRepositoryService.Register(unit);
+				this.GameEntityRepositoryService.Register(instance);
 			}
 			if (village.HasBeenConvertedByIndex >= 0 && village.HasBeenConvertedBy == null)
 			{
-				global::Game g = game as global::Game;
-				Diagnostics.Assert(g != null);
-				Diagnostics.Assert(g.Empires != null);
-				Diagnostics.Assert(village.HasBeenConvertedByIndex < g.Empires.Length);
-				village.HasBeenConvertedBy = (g.Empires[village.HasBeenConvertedByIndex] as MajorEmpire);
+				global::Game game2 = game as global::Game;
+				Diagnostics.Assert(game2 != null);
+				Diagnostics.Assert(game2.Empires != null);
+				Diagnostics.Assert(village.HasBeenConvertedByIndex < game2.Empires.Length);
+				village.HasBeenConvertedBy = (game2.Empires[village.HasBeenConvertedByIndex] as MajorEmpire);
 				Diagnostics.Assert(village.Converter != null);
 				Diagnostics.Assert(village.Converter.Index == village.HasBeenConvertedByIndex);
 			}

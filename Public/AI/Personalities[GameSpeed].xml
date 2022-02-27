@@ -18,11 +18,19 @@
                         </AILayer_Village>
                         <AILayer_HeroAssignation>
                             <MaximumTurnForHero>0.5</MaximumTurnForHero>
+							<TurnThresholdforRestore>0.6</TurnThresholdforRestore>
                         </AILayer_HeroAssignation>
+						<AILayer_Research>
+							<IdealBuyoutPeriod>0.5</IdealBuyoutPeriod>
+						</AILayer_Research>	
+						<AILayer_Victory>
+							<EarliestVictoryEvaluationTurn>0.6</EarliestVictoryEvaluationTurn> 
+						</AILayer_Victory>
                     </AIEntity_Empire>
 
                     <AIEntity_City>
                         <AILayer_Production>
+							<ArmyThresholdTurns>0.5</ArmyThresholdTurns>
                             <MinimalTurnDuration>0.5</MinimalTurnDuration>
                             <MaximalTurnDuration>0.5</MaximalTurnDuration>
                         </AILayer_Production>
@@ -33,6 +41,10 @@
                 </MajorEmpire>
 
                 <AgentDefinition>
+					<ConversionNeedPrestigeRatioAgent>
+						<NumberOfTurnToReachObjective>0.6</NumberOfTurnToReachObjective>
+				    </ConversionNeedPrestigeRatioAgent>
+				
                     <TechnologyReferenceTurnCountAgent>
                         <IdealTechnologyUnlockPeriod>0.75</IdealTechnologyUnlockPeriod>
                         <MaximumPeriodGap>0.5</MaximumPeriodGap>
@@ -76,8 +88,8 @@
 
             <!-- AIQuestSolverDefinition -->
             <AIQuestSolverDefinition>
-                <MinimalTurnDuration>0.5</MinimalTurnDuration>
-                <MaximalTurnDuration>0.5</MaximalTurnDuration>
+                <MinimalTurnDuration>0.7</MinimalTurnDuration>
+                <MaximalTurnDuration>0.7</MaximalTurnDuration>
                 <ChanceOfSuccess>1</ChanceOfSuccess>
             </AIQuestSolverDefinition>
 
@@ -139,10 +151,18 @@
                         </AILayer_Village>
                         <AILayer_HeroAssignation>
                             <MaximumTurnForHero>1.5</MaximumTurnForHero>
+							<TurnThresholdforRestore>1.6</TurnThresholdforRestore>
                         </AILayer_HeroAssignation>
+						<AILayer_Research>
+							<IdealBuyoutPeriod>1.5</IdealBuyoutPeriod>
+						</AILayer_Research>	
+						<AILayer_Victory>
+							<EarliestVictoryEvaluationTurn>1.4</EarliestVictoryEvaluationTurn> 
+						</AILayer_Victory>
                     </AIEntity_Empire>
                     <AIEntity_City>
                         <AILayer_Production>
+							<ArmyThresholdTurns>1.5</ArmyThresholdTurns>
                             <MinimalTurnDuration>1.5</MinimalTurnDuration>
                             <MaximalTurnDuration>1.5</MaximalTurnDuration>
                         </AILayer_Production>
@@ -153,6 +173,10 @@
                 </MajorEmpire>
 
                 <AgentDefinition>
+					<ConversionNeedPrestigeRatioAgent>
+						<NumberOfTurnToReachObjective>1.5</NumberOfTurnToReachObjective>
+				    </ConversionNeedPrestigeRatioAgent>
+				
                     <TechnologyReferenceTurnCountAgent>
                         <IdealTechnologyUnlockPeriod>1.5</IdealTechnologyUnlockPeriod>
                         <MaximumPeriodGap>1.5</MaximumPeriodGap>
@@ -241,15 +265,23 @@
                         <AILayer_Village>
                             <TurnLimitBeforeHardPacification>2</TurnLimitBeforeHardPacification>
                         </AILayer_Village>
+						<AILayer_HeroAssignation>
+                            <MaximumTurnForHero>2</MaximumTurnForHero>
+							<TurnThresholdforRestore>2</TurnThresholdforRestore>
+                        </AILayer_HeroAssignation>
+						<AILayer_Research>
+							<IdealBuyoutPeriod>2</IdealBuyoutPeriod>
+						</AILayer_Research>
+						<AILayer_Victory>
+							<EarliestVictoryEvaluationTurn>1.8</EarliestVictoryEvaluationTurn> 
+						</AILayer_Victory>
                     </AIEntity_Empire>
                     <AIEntity_City>
                         <AILayer_Production>
+							<ArmyThresholdTurns>2</ArmyThresholdTurns>
                             <MinimalTurnDuration>2</MinimalTurnDuration>
                             <MaximalTurnDuration>2</MaximalTurnDuration>
                         </AILayer_Production>
-                        <AILayer_HeroAssignation>
-                            <MaximumTurnForHero>1</MaximumTurnForHero>
-                        </AILayer_HeroAssignation>
                         <AILayer_CityAntiSpy>
                             <SpyPresenceProbabilityDecreasePercent>0.5</SpyPresenceProbabilityDecreasePercent>
                         </AILayer_CityAntiSpy>
@@ -257,6 +289,10 @@
                 </MajorEmpire>
 
                 <AgentDefinition>
+					<ConversionNeedPrestigeRatioAgent>
+						<NumberOfTurnToReachObjective>2</NumberOfTurnToReachObjective>
+				    </ConversionNeedPrestigeRatioAgent>
+				
                     <TechnologyReferenceTurnCountAgent>
                         <IdealTechnologyUnlockPeriod>2</IdealTechnologyUnlockPeriod>
                         <MaximumPeriodGap>2</MaximumPeriodGap>

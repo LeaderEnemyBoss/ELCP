@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Amplitude;
 using Amplitude.Unity.AI.SimpleBehaviorTree;
 using Amplitude.Unity.Game.Orders;
 using UnityEngine;
@@ -441,28 +442,22 @@ public abstract class NavyBehavior : BaseNavyBehavior
 				{
 					PointOfInterest pointOfInterest = this.worldPositionService.World.Regions[i].PointOfInterests[j];
 					float num = this.ComputeOpportunityTurnOverhead(army, pointOfInterest.WorldPosition);
-					if (army.CurrentMainTask == null || this.IsDetourWorthChecking(army, num))
+					if ((army.CurrentMainTask == null || this.IsDetourWorthChecking(army, num)) && this.CouldSearch(army, pointOfInterest) && this.IsCloseEnoughToOrigin(army, pointOfInterest.WorldPosition, 2f))
 					{
-						if (this.CouldSearch(army, pointOfInterest))
+						HeuristicValue heuristicValue = new HeuristicValue(0f);
+						heuristicValue.Add(1f, "constant", new object[0]);
+						HeuristicValue heuristicValue2 = new HeuristicValue(0f);
+						float operand = 1f;
+						heuristicValue2.Add(operand, "Factor from xml(constant for now)", new object[0]);
+						heuristicValue2.Multiply(num, "Nb turn added by opportunity", new object[0]);
+						heuristicValue2.Add(1f, "Constant to avoid divide by 0", new object[0]);
+						heuristicValue.Divide(heuristicValue2, "Distance factor", new object[0]);
+						navyArmy.Opportunities.Add(new BehaviorOpportunity
 						{
-							if (this.IsCloseEnoughToOrigin(army, pointOfInterest.WorldPosition))
-							{
-								HeuristicValue heuristicValue = new HeuristicValue(0f);
-								heuristicValue.Add(1f, "constant", new object[0]);
-								HeuristicValue heuristicValue2 = new HeuristicValue(0f);
-								float operand = 1f;
-								heuristicValue2.Add(operand, "Factor from xml(constant for now)", new object[0]);
-								heuristicValue2.Multiply(num, "Nb turn added by opportunity", new object[0]);
-								heuristicValue2.Add(1f, "Constant to avoid divide by 0", new object[0]);
-								heuristicValue.Divide(heuristicValue2, "Distance factor", new object[0]);
-								navyArmy.Opportunities.Add(new BehaviorOpportunity
-								{
-									OpportunityPosition = pointOfInterest.WorldPosition,
-									Score = heuristicValue,
-									Type = BehaviorOpportunity.OpportunityType.Ruin
-								});
-							}
-						}
+							OpportunityPosition = pointOfInterest.WorldPosition,
+							Score = heuristicValue,
+							Type = BehaviorOpportunity.OpportunityType.Ruin
+						});
 					}
 				}
 			}
@@ -480,37 +475,28 @@ public abstract class NavyBehavior : BaseNavyBehavior
 		for (int i = 0; i < service.OrbSpawns.Count; i++)
 		{
 			OrbSpawnInfo orbSpawnInfo = service.OrbSpawns[i];
-			if (orbSpawnInfo != null)
+			if (orbSpawnInfo != null && orbSpawnInfo.CurrentOrbCount != 0f)
 			{
-				if (orbSpawnInfo.CurrentOrbCount != 0f)
+				HeuristicValue heuristicValue = orbSpawnInfo.EmpireNeedModifier[army.Garrison.Empire.Index];
+				if (heuristicValue > 0f)
 				{
-					HeuristicValue heuristicValue = orbSpawnInfo.EmpireNeedModifier[army.Garrison.Empire.Index];
-					if (heuristicValue > 0f)
+					float num = this.ComputeOpportunityTurnOverhead(army, orbSpawnInfo.WorldPosition);
+					if ((army.CurrentMainTask == null || this.IsDetourWorthChecking(army, num)) && this.worldPositionService.IsOceanTile(orbSpawnInfo.WorldPosition) && this.IsCloseEnoughToOrigin(army, orbSpawnInfo.WorldPosition, 1f))
 					{
-						float num = this.ComputeOpportunityTurnOverhead(army, orbSpawnInfo.WorldPosition);
-						if (army.CurrentMainTask == null || this.IsDetourWorthChecking(army, num))
+						HeuristicValue heuristicValue2 = new HeuristicValue(0f);
+						heuristicValue2.Add(heuristicValue, "Orb position eval", new object[0]);
+						float orbDistanceExponent = service.GetOrbDistanceExponent(army.Garrison.Empire);
+						HeuristicValue heuristicValue3 = new HeuristicValue(0f);
+						heuristicValue3.Add(num, "Nb turn added by opportunity", new object[0]);
+						heuristicValue3.Power(orbDistanceExponent, "From xml registry", new object[0]);
+						heuristicValue3.Add(1f, "avoid divide by 0", new object[0]);
+						heuristicValue2.Divide(heuristicValue3, "DistanceFactor", new object[0]);
+						navyArmy.Opportunities.Add(new BehaviorOpportunity
 						{
-							if (this.worldPositionService.IsWaterTile(orbSpawnInfo.WorldPosition))
-							{
-								if (this.IsCloseEnoughToOrigin(army, orbSpawnInfo.WorldPosition))
-								{
-									HeuristicValue heuristicValue2 = new HeuristicValue(0f);
-									heuristicValue2.Add(heuristicValue, "Orb position eval", new object[0]);
-									float orbDistanceExponent = service.GetOrbDistanceExponent(army.Garrison.Empire);
-									HeuristicValue heuristicValue3 = new HeuristicValue(0f);
-									heuristicValue3.Add(num, "Nb turn added by opportunity", new object[0]);
-									heuristicValue3.Power(orbDistanceExponent, "From xml registry", new object[0]);
-									heuristicValue3.Add(1f, "avoid divide by 0", new object[0]);
-									heuristicValue2.Divide(heuristicValue3, "DistanceFactor", new object[0]);
-									navyArmy.Opportunities.Add(new BehaviorOpportunity
-									{
-										OpportunityPosition = orbSpawnInfo.WorldPosition,
-										Score = heuristicValue2,
-										Type = BehaviorOpportunity.OpportunityType.Orbs
-									});
-								}
-							}
-						}
+							OpportunityPosition = orbSpawnInfo.WorldPosition,
+							Score = heuristicValue2,
+							Type = BehaviorOpportunity.OpportunityType.Orbs
+						});
 					}
 				}
 			}
@@ -570,8 +556,7 @@ public abstract class NavyBehavior : BaseNavyBehavior
 		{
 			num = (float)this.worldPositionService.GetDistance(opportunityPosition, army.Commander.RegionData.WaterRegion.Barycenter);
 		}
-		float num2 = num / propertyValue;
-		return num2 <= 2f;
+		return num / propertyValue <= 2f;
 	}
 
 	public Amplitude.Unity.Game.Orders.Order MoveSecondary(BaseNavyArmy army)
@@ -593,10 +578,11 @@ public abstract class NavyBehavior : BaseNavyBehavior
 		PointOfInterest pointOfInterest = this.worldPositionService.GetPointOfInterest(army.Garrison.WorldPosition);
 		if (pointOfInterest != null && this.CouldSearch(army, pointOfInterest))
 		{
-			OrderInteractWith orderInteractWith = new OrderInteractWith(army.Garrison.Empire.Index, army.Garrison.GUID, "ArmyActionSearch");
+			OrderInteractWith orderInteractWith = new OrderInteractWith(army.Garrison.Empire.Index, army.Garrison.GUID, FleetAction_Dive.ReadOnlyName);
 			orderInteractWith.WorldPosition = army.Garrison.WorldPosition;
-			orderInteractWith.Tags.AddTag("Interact");
+			orderInteractWith.Tags.AddTag("NavalInteract");
 			orderInteractWith.TargetGUID = pointOfInterest.GUID;
+			orderInteractWith.ArmyActionName = FleetAction_Dive.ReadOnlyName;
 			return orderInteractWith;
 		}
 		return null;
@@ -741,6 +727,7 @@ public abstract class NavyBehavior : BaseNavyBehavior
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(base.ComputePathToMain));
 		OrderAction<BaseNavyArmy> orderAction = new OrderAction<BaseNavyArmy>(new Func<BaseNavyArmy, Amplitude.Unity.Game.Orders.Order>(base.MoveMain));
 		BehaviorNode<BaseNavyArmy> behaviorNode = this.OpportunitySequence();
+		BehaviorNode<BaseNavyArmy> behaviorNode2 = this.OpportunityAttackSequence();
 		Sequence<BaseNavyArmy> sequence = new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
 			condition,
@@ -749,12 +736,18 @@ public abstract class NavyBehavior : BaseNavyBehavior
 		Selector<BaseNavyArmy> selector = new Selector<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
 			sequence,
+			behaviorNode2,
 			behaviorNode,
 			orderAction
 		});
-		return new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
+		Selector<BaseNavyArmy> selector2 = new Selector<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
 		{
 			condition2,
+			behaviorNode2
+		});
+		return new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
+		{
+			selector2,
 			action,
 			selector
 		});
@@ -790,5 +783,106 @@ public abstract class NavyBehavior : BaseNavyBehavior
 			action3,
 			orderAction
 		});
+	}
+
+	protected BehaviorNode<BaseNavyArmy> OpportunityAttackSequence()
+	{
+		Condition<BaseNavyArmy> condition = new Condition<BaseNavyArmy>(new Func<BaseNavyArmy, bool>(base.HasEnoughActionPoint));
+		Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy> action = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<BaseNavyArmy>(new Func<BaseNavyArmy, BehaviorNodeReturnCode>(this.CollectOpportunityArmies));
+		OrderAction<BaseNavyArmy> orderAction = new OrderAction<BaseNavyArmy>(new Func<BaseNavyArmy, Amplitude.Unity.Game.Orders.Order>(this.GotoAndAttackOpportunity));
+		return new Sequence<BaseNavyArmy>(new BehaviorNode<BaseNavyArmy>[]
+		{
+			condition,
+			action,
+			orderAction
+		});
+	}
+
+	protected BehaviorNodeReturnCode CollectOpportunityArmies(BaseNavyArmy army)
+	{
+		Army navy = army.Garrison as Army;
+		NavyArmy navyArmy = army as NavyArmy;
+		if (navyArmy == null || navy == null || !(navy.Empire is MajorEmpire))
+		{
+			return BehaviorNodeReturnCode.Failure;
+		}
+		float num = navy.GetPropertyValue(SimulationProperties.Movement);
+		if (num < 0.01f)
+		{
+			num = 1f;
+		}
+		List<IGarrison> list = new List<IGarrison>();
+		DepartmentOfForeignAffairs agency = navy.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		AILayer_Military.HasSaveAttackableTargetsNearby(navy, Mathf.CeilToInt(num), agency, out list, true);
+		if (list.Count == 0)
+		{
+			return BehaviorNodeReturnCode.Failure;
+		}
+		list.Sort((IGarrison left, IGarrison right) => this.worldPositionService.GetDistance((left as IWorldPositionable).WorldPosition, navy.WorldPosition).CompareTo(this.worldPositionService.GetDistance((right as IWorldPositionable).WorldPosition, navy.WorldPosition)));
+		foreach (IGarrison garrison in list)
+		{
+			IGameEntityWithWorldPosition gameEntityWithWorldPosition = garrison as IGameEntityWithWorldPosition;
+			IGarrisonWithPosition garrisonWithPosition = garrison as IGarrisonWithPosition;
+			if (gameEntityWithWorldPosition != null && garrisonWithPosition != null)
+			{
+				WorldPosition validTileToAttack = base.GetValidTileToAttack(army, gameEntityWithWorldPosition);
+				navyArmy.PathToSecondaryTarget = base.ComputePathToPosition(army, validTileToAttack, navyArmy.PathToSecondaryTarget);
+				if (navyArmy.PathToSecondaryTarget != null)
+				{
+					if (navyArmy.PathToSecondaryTarget.ControlPoints != null && navyArmy.PathToSecondaryTarget.ControlPoints.Length != 0)
+					{
+						return BehaviorNodeReturnCode.Failure;
+					}
+					Diagnostics.Log("ELCP {0}/{1} found opportunitytarget {2} with path {3}", new object[]
+					{
+						navy.Empire,
+						navy.LocalizedName,
+						garrison.LocalizedName,
+						navyArmy.PathToSecondaryTarget
+					});
+					navyArmy.OpportunityAttackableTarget = garrisonWithPosition;
+					return BehaviorNodeReturnCode.Success;
+				}
+			}
+		}
+		return BehaviorNodeReturnCode.Failure;
+	}
+
+	protected Amplitude.Unity.Game.Orders.Order GotoAndAttackOpportunity(ArmyWithTask army)
+	{
+		NavyArmy navyArmy = army as NavyArmy;
+		if (navyArmy == null || navyArmy.OpportunityAttackableTarget == null)
+		{
+			return null;
+		}
+		Army army2 = navyArmy.Garrison as Army;
+		Diagnostics.Log("ELCP {0}/{1} succesfull GotoAndAttackOpportunity", new object[]
+		{
+			army2.Empire,
+			army2.LocalizedName
+		});
+		return new OrderGoToAndAttack(army.Garrison.Empire.Index, army.Garrison.GUID, navyArmy.OpportunityAttackableTarget.GUID, navyArmy.PathToSecondaryTarget);
+	}
+
+	private bool IsCloseEnoughToOrigin(BaseNavyArmy army, WorldPosition opportunityPosition, float maxturns = 2f)
+	{
+		float propertyValue = army.Garrison.GetPropertyValue(SimulationProperties.MaximumMovement);
+		return (float)this.worldPositionService.GetDistance(opportunityPosition, army.Garrison.WorldPosition) / propertyValue <= maxturns;
+	}
+
+	protected BehaviorNodeReturnCode InvalidateBehavior(ArmyWithTask army)
+	{
+		BaseNavyTask baseNavyTask = army.CurrentMainTask as BaseNavyTask;
+		if (baseNavyTask == null || army.Garrison == null)
+		{
+			return BehaviorNodeReturnCode.Failure;
+		}
+		if (army.MainAttackableTarget != null && army.MainAttackableTarget.IsInEncounter)
+		{
+			return BehaviorNodeReturnCode.Failure;
+		}
+		baseNavyTask.ForbiddenGUIDs.Add(army.Garrison.GUID);
+		army.BehaviorState = ArmyWithTask.ArmyBehaviorState.Succeed;
+		return BehaviorNodeReturnCode.Success;
 	}
 }

@@ -80,11 +80,17 @@
   <!-- Vaulters/Mezari standard teleport, disabled on HeatWave-->
   <ArmyAction_Teleport              Name="ArmyActionTeleport"               AllowTeleportToHeroLedArmy="false">
     <PathPrerequisite Inverted="true">#HeatWave</PathPrerequisite>
+	<!--ELCP: added 1-turn cooldown to City-Teleport to prevent infinite telport with the changes to "Strength of the Vault"-->
+	<!--this cooldown does not scale with abilities or game speed-->
+	<CooldownDuration>1</CooldownDuration>
+	<DoNotScale>true</DoNotScale>
   </ArmyAction_Teleport>
   
   <!-- Vaulters/Mezari standard teleport plus unit transfer by teleport, during Heat Wave only.-->
   <ArmyAction_Teleport              Name="ArmyActionTeleportOrTransfer"     AllowTransferToHeroLedArmy="true">
     <PathPrerequisite Inverted="false">#HeatWave</PathPrerequisite>
+	<CooldownDuration>1</CooldownDuration>
+	<DoNotScale>true</DoNotScale>
   </ArmyAction_Teleport>
 
   <ArmyAction_FastTravel            Name="ArmyActionFastTravel"             ShowInModalPanel="false">
@@ -104,7 +110,7 @@
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
     -->
   </ArmyAction_ToggleDismantleDevice>
-
+  
   <ArmyAction_TransferUnits         Name="ArmyActionTransferUnits"          AllowedTransferTarget="Army">
   </ArmyAction_TransferUnits>
 
@@ -141,6 +147,7 @@
     <AnimationParameterName>ArmyAction_Cast</AnimationParameterName>
     <AnimationParameterType>Trigger</AnimationParameterType>
     <WorldFX>Prefabs/Effects/ArmyActions/FX_ArmyActions_ColossusDust_Regeneration</WorldFX>
+	<DoNotScale>true</DoNotScale>
   </ArmyAction_Heal>
 
   <ArmyAction_TeleportInRange       Name="ArmyActionTeleportInRange">
@@ -168,6 +175,7 @@
     <AnimationParameterName>ArmyAction_Cast</AnimationParameterName>
     <AnimationParameterType>Trigger</AnimationParameterType>
     <WorldFX>Prefabs/Effects/ArmyActions/FX_ArmyActions_ColossusFire_VisionBoost</WorldFX>
+	<DoNotScale>true</DoNotScale>
   </ArmyAction_Ward>
 
   <!-- Fleet Actions -->
@@ -194,18 +202,18 @@
   <ArmyAction_TameKaiju               Name="ArmyActionTameKaiju">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
     <TameCost>
-      <CostDefinition EraNumber="1,2" LuxuryTier="Tier1">10 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
-      <CostDefinition EraNumber="3" LuxuryTier="Tier2">8 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
-      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">5 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+      <CostDefinition EraNumber="1,2" LuxuryTier="Tier1">25 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+      <CostDefinition EraNumber="3" LuxuryTier="Tier2">25 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
+      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">25 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus) + 1)</CostDefinition>
     </TameCost>
   </ArmyAction_TameKaiju>
   
   <ArmyAction_TameUnstunnedKaiju               Name="ArmyActionTameUnstunnedKaiju">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">MimicsPack</DownloadableContentPrerequisite>
     <TameCost>
-      <CostDefinition EraNumber="1,2" LuxuryTier="Tier1">60 + 30 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
-      <CostDefinition EraNumber="3" LuxuryTier="Tier2">40 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
-      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">30 + 15 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))</CostDefinition>
+      <CostDefinition EraNumber="1,2" LuxuryTier="Tier2">(30 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))) * (1 + ($Property(ELCPEmpireProperties:KaijuTameReduction)))</CostDefinition>
+      <CostDefinition EraNumber="3" LuxuryTier="Tier2">(30 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))) * (1 + ($Property(ELCPEmpireProperties:KaijuTameReduction)))</CostDefinition>
+      <CostDefinition EraNumber="4,5,6" LuxuryTier="Tier3">(30 + 20 * ($Property(../EmpireTypeMajor:NumberOfTamedKaijus))) * (1 + ($Property(ELCPEmpireProperties:KaijuTameReduction)))</CostDefinition>
     </TameCost>
   </ArmyAction_TameUnstunnedKaiju>
   

@@ -18,8 +18,7 @@ public class QuestBehaviourTreeNode_Action_Elimination : QuestBehaviourTreeNode_
 		Diagnostics.Assert(initiator.SimulationObject != null);
 		if (!initiator.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
 		{
-			DepartmentOfDefense agency = initiator.GetAgency<DepartmentOfDefense>();
-			if (agency != null)
+			if (initiator.GetAgency<DepartmentOfDefense>() != null)
 			{
 				IEncounterRepositoryService service2 = service.Game.Services.GetService<IEncounterRepositoryService>();
 				if (service2 != null)
@@ -78,8 +77,7 @@ public class QuestBehaviourTreeNode_Action_Elimination : QuestBehaviourTreeNode_
 		{
 			service3.Session.SetLobbyData(string.Format("Empire{0}Eliminated", initiator.Index), true, true);
 		}
-		IPlayerControllerRepositoryService service4 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-		IPlayerControllerRepositoryControl playerControllerRepositoryControl = service4 as IPlayerControllerRepositoryControl;
+		IPlayerControllerRepositoryControl playerControllerRepositoryControl = service.Game.Services.GetService<IPlayerControllerRepositoryService>() as IPlayerControllerRepositoryControl;
 		if (playerControllerRepositoryControl != null)
 		{
 			global::PlayerController playerControllerById = playerControllerRepositoryControl.GetPlayerControllerById("server");

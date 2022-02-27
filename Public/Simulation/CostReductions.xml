@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
+  <CostReduction Name="ELCPBooster">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+  </CostReduction>
+
+  <!-- ELCP: Counter weight to make victory wonder not scale -->
+  <CostReduction Name="ELCPVictoryWonder">
+    <Reduction PropertyName="GameSpeedProductionCostWonderReduction"           Type="Production" Priority="1"/>
+  </CostReduction>
+  
+  <CostReduction Name="ConstructibleDistrict">
+    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
+    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
+    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
+	<Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
+	<Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
+  </CostReduction>
+
   <CostReduction Name="UnitBody">
     <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
     <Reduction PropertyName="AIUnitProductionCostReduction"              Type="Production" Priority="2"/>
@@ -29,16 +46,12 @@
 
   <CostReduction Name="CityImprovement">
     <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
-    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
-    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
     <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
     <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
   </CostReduction>
 
   <CostReduction Name="CategoryNationalBuilding">
     <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
-    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
-    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
     <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
     <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
   </CostReduction>
@@ -190,13 +203,5 @@
 
   <CostReduction Name="UnitSeafaring">
     <Reduction PropertyName="SeafaringUnitProductionCostReduction"        Type="Production" Priority="3"/>
-  </CostReduction>
-
-  <CostReduction Name="ConstructibleDistrict">
-    <Reduction PropertyName="GameSpeedProductionCostReduction"           Type="Production" Priority="1"/>
-    <Reduction PropertyName="AIBuildingProductionCostReduction"          Type="Production" Priority="2"/>
-    <Reduction PropertyName="AIBuildingBuyoutCostReduction"              Type="Buyout"     Priority="2"/>
-    <Reduction PropertyName="BuildingProductionCostReduction"            Type="Production" Priority="3"/>
-    <Reduction PropertyName="BuildingBuyoutReduction"                    Type="Buyout"/>
   </CostReduction>
 </Datatable>

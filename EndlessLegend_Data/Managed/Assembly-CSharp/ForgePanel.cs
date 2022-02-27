@@ -44,8 +44,7 @@ public class ForgePanel : GuiPanel
 
 	public override void RefreshContent()
 	{
-		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
-		if (service.IsShared(DownloadableContent16.ReadOnlyName) && this.editableUnitDesign.UnitBodyDefinition.Tags.Contains(DownloadableContent16.TagSeafaring))
+		if (Services.GetService<IDownloadableContentService>().IsShared(DownloadableContent16.ReadOnlyName) && this.editableUnitDesign.UnitBodyDefinition.Tags.Contains(DownloadableContent16.TagSeafaring))
 		{
 			this.ForgeTitle.Text = "%ArsenalPanelTitle";
 		}
@@ -79,7 +78,8 @@ public class ForgePanel : GuiPanel
 					{
 						bool flag = this.failuresFlags.Count > 0;
 						bool flag2 = false;
-						for (int j = 0; j < itemDefinition.Descriptors.Length; j++)
+						int j = 0;
+						while (j < itemDefinition.Descriptors.Length)
 						{
 							if (itemDefinition.Descriptors[j].Type == "ItemCategory")
 							{
@@ -94,8 +94,13 @@ public class ForgePanel : GuiPanel
 								if (!flag2 && (this.filter & ForgePanel.ItemCategory.Accessory) > ForgePanel.ItemCategory.Default)
 								{
 									flag2 = (itemDefinition.Descriptors[j].Name == "ItemCategory" + ForgePanel.ItemCategory.Accessory);
+									break;
 								}
 								break;
+							}
+							else
+							{
+								j++;
 							}
 						}
 						if (flag2 && !this.ShowMissingResourceToggle.State)
@@ -135,15 +140,21 @@ public class ForgePanel : GuiPanel
 									text = itemDefinition.Descriptors[l].Name;
 								}
 							}
-							for (int m = 0; m < this.HighestItemTiers.Count; m++)
+							int m = 0;
+							while (m < this.HighestItemTiers.Count)
 							{
 								if (this.HighestItemTiers[m].MatchesTypeAndRessource(itemType, text))
 								{
 									if (string.Compare(strA, this.HighestItemTiers[m].Tier) < 0)
 									{
 										flag2 = false;
+										break;
 									}
 									break;
+								}
+								else
+								{
+									m++;
 								}
 							}
 						}
@@ -262,45 +273,45 @@ public class ForgePanel : GuiPanel
 		this.HighestItemTiers.Clear();
 		string itemType = string.Empty;
 		string text = string.Empty;
-		string text2 = string.Empty;
+		StaticString x = StaticString.Empty;
 		foreach (ItemDefinition itemDefinition in this.allItems)
 		{
-			if (!itemDefinition.Hidden)
+			if (!itemDefinition.Hidden && DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.editableUnitDesign.GetSimulationObject(), itemDefinition, new string[]
 			{
-				if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.editableUnitDesign.GetSimulationObject(), itemDefinition, new string[]
+				"Discard"
+			}))
+			{
+				itemType = itemDefinition.SubCategory;
+				for (int i = 0; i < itemDefinition.Descriptors.Length; i++)
 				{
-					"Discard"
-				}))
-				{
-					itemType = itemDefinition.SubCategory;
-					for (int i = 0; i < itemDefinition.Descriptors.Length; i++)
+					if (itemDefinition.Descriptors[i].Type == "ItemTier")
 					{
-						if (itemDefinition.Descriptors[i].Type == "ItemTier")
-						{
-							text2 = itemDefinition.Descriptors[i].Name;
-						}
-						if (itemDefinition.Descriptors[i].Type == "ItemMaterial")
-						{
-							text = itemDefinition.Descriptors[i].Name;
-						}
+						x = itemDefinition.Descriptors[i].Name;
 					}
-					bool flag = false;
+					if (itemDefinition.Descriptors[i].Type == "ItemMaterial")
+					{
+						text = itemDefinition.Descriptors[i].Name;
+					}
+				}
+				bool flag = false;
+				if (x != ForgePanel.ItemTier4)
+				{
 					for (int j = 0; j < this.HighestItemTiers.Count; j++)
 					{
 						if (this.HighestItemTiers[j].MatchesTypeAndRessource(itemType, text))
 						{
-							if (string.Compare(text2, this.HighestItemTiers[j].Tier) > 0)
+							if (string.Compare(x, this.HighestItemTiers[j].Tier) > 0)
 							{
-								this.HighestItemTiers[j].Tier = text2;
+								this.HighestItemTiers[j].Tier = x;
 							}
 							flag = true;
 							break;
 						}
 					}
-					if (!flag)
-					{
-						this.HighestItemTiers.Add(new ForgePanel.ObsolescenceGroup(itemType, text, text2));
-					}
+				}
+				if (!flag)
+				{
+					this.HighestItemTiers.Add(new ForgePanel.ObsolescenceGroup(itemType, text, x));
 				}
 			}
 		}
@@ -429,6 +440,10 @@ public class ForgePanel : GuiPanel
 	private IEnumerable<ItemDefinition> allItems;
 
 	private List<StaticString> failuresFlags = new List<StaticString>();
+
+	private static StaticString ItemTier3 = "ItemTier3";
+
+	private static StaticString ItemTier4 = "ItemTier4";
 
 	[Flags]
 	public enum ItemCategory

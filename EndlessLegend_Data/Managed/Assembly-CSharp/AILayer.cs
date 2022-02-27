@@ -72,7 +72,7 @@ public abstract class AILayer : IXmlSerializable
 					boostFactor,
 					1f - boostFactor
 				});
-				return 1f - boostFactor;
+				return 1f - Math.Abs(boostFactor);
 			}
 			return normalizedScore - normalizedScore * -boostFactor;
 		}

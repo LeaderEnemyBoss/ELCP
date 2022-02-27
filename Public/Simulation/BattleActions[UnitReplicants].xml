@@ -76,6 +76,7 @@
     <BattleEffectsArea TargetsFilter="Target Alive" Type="Chain" AvoidCastingUnit="true" Parameter1="2" RealizationVisualEffectName="BattleEffect_AOE_FasterThanShadowsSmall" RealizationApplicationMethod="OnHit">
       <BattleEffects TargetsFilter="Target Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
+		<InterpreterPrerequisite Inverted="false">$Property(ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
         <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectHitInfo" PropertyName="AttackingHitInfo" Operation="Affectation" InterpreterFormula="$Link(Initiator|Property|ClassUnit:HitInfo)" />
         <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_FasterThanShadows" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * $Link(Initiator|Property|ClassUnit:DamageMultiplier)" RealizationApplicationMethod="OnHit"  />
       </BattleEffects>

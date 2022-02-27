@@ -47,7 +47,6 @@ public class BattleEncounter : IDisposable
 		this.ReinforcementNextRankingID = 0;
 	}
 
-	// Note: this type is marked as 'beforefieldinit'.
 	static BattleEncounter()
 	{
 		BattleEncounter.deploymentPriority = "DeploymentPriority";
@@ -137,86 +136,115 @@ public class BattleEncounter : IDisposable
 
 	protected virtual void FilterDeploymentPosition(BattleContender battleContender, DeploymentArea deploymentArea, BattleZone battleZone)
 	{
-		BattleEncounter.<FilterDeploymentPosition>c__AnonStorey8A3 <FilterDeploymentPosition>c__AnonStorey8A = new BattleEncounter.<FilterDeploymentPosition>c__AnonStorey8A3();
-		<FilterDeploymentPosition>c__AnonStorey8A.battleContender = battleContender;
 		bool flag = false;
-		Region region = this.worldPositionningService.GetRegion(<FilterDeploymentPosition>c__AnonStorey8A.battleContender.WorldPosition);
-		if (region.City != null && region.City.Districts.Any((District match) => match.Type != DistrictType.Exploitation && match.WorldPosition == <FilterDeploymentPosition>c__AnonStorey8A.battleContender.WorldPosition))
+		Region region = this.worldPositionningService.GetRegion(battleContender.WorldPosition);
+		List<City> list = null;
+		if (!ELCPUtilities.UseELCPFortificationPointRuleset)
 		{
-			flag = true;
-		}
-		global::Empire contenderEnemyEmpire = this.GetContenderEnemyEmpire(<FilterDeploymentPosition>c__AnonStorey8A.battleContender);
-		<FilterDeploymentPosition>c__AnonStorey8A.overallPositions = new List<WorldPosition>(battleZone.GetWorldPositions());
-		List<City> list = new List<City>();
-		PathfindingWorldContext worldContext = new PathfindingWorldContext(battleZone, null);
-		bool flag2 = <FilterDeploymentPosition>c__AnonStorey8A.battleContender.Garrison is Fortress;
-		int index;
-		for (index = 0; index < <FilterDeploymentPosition>c__AnonStorey8A.overallPositions.Count; index++)
-		{
-			if (<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index].IsValid)
+			if (region.City != null && region.City.Districts.Any((District match) => match.Type != DistrictType.Exploitation && match.WorldPosition == battleContender.WorldPosition))
 			{
-				bool flag3 = this.worldPositionningService.IsWaterTile(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]) && !this.worldPositionningService.IsFrozenWaterTile(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
-				if (<FilterDeploymentPosition>c__AnonStorey8A.battleContender.Garrison is Army)
+				flag = true;
+			}
+		}
+		else if (region.City != null)
+		{
+			List<IGarrison> list2 = new List<IGarrison>();
+			IGameEntityRepositoryService service = this.game.Services.GetService<IGameEntityRepositoryService>();
+			foreach (GameEntityGUID guid in this.OrderCreateEncounter.ContenderGUIDs)
+			{
+				IGameEntity gameEntity;
+				service.TryGetValue(guid, out gameEntity);
+				list2.Add(gameEntity as IGarrison);
+			}
+			if (list2.Count == 2)
+			{
+				ELCPUtilities.IsELCPCityBattle(this.worldPositionningService, list2, out list);
+			}
+		}
+		global::Empire contenderEnemyEmpire = this.GetContenderEnemyEmpire(battleContender);
+		List<WorldPosition> overallPositions = new List<WorldPosition>(battleZone.GetWorldPositions());
+		List<City> list3 = new List<City>();
+		PathfindingWorldContext worldContext = new PathfindingWorldContext(battleZone, null);
+		bool flag2 = battleContender.Garrison is Fortress;
+		int index;
+		Func<District, bool> <>9__1;
+		int index2;
+		for (index = 0; index < overallPositions.Count; index = index2 + 1)
+		{
+			if (overallPositions[index].IsValid)
+			{
+				bool flag3 = this.worldPositionningService.IsWaterTile(overallPositions[index]) && !this.worldPositionningService.IsFrozenWaterTile(overallPositions[index]);
+				if (battleContender.Garrison is Army)
 				{
-					flag2 = (<FilterDeploymentPosition>c__AnonStorey8A.battleContender.Garrison as Army).IsNaval;
-					if (flag2 && battleZone.CenterWorldPosition != <FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index] && this.pathFindingService.FindPath(<FilterDeploymentPosition>c__AnonStorey8A.battleContender.Garrison as Army, battleZone.CenterWorldPosition, <FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index], PathfindingManager.RequestMode.Default, worldContext, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null) == null)
+					flag2 = (battleContender.Garrison as Army).IsNaval;
+					if (flag2 && battleZone.CenterWorldPosition != overallPositions[index] && this.pathFindingService.FindPath(battleContender.Garrison as Army, battleZone.CenterWorldPosition, overallPositions[index], PathfindingManager.RequestMode.Default, worldContext, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null) == null)
 					{
-						battleZone.RemoveWorldPosition(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
-						deploymentArea.RemoveWorldPosition(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
-						goto IL_398;
+						battleZone.RemoveWorldPosition(overallPositions[index]);
+						deploymentArea.RemoveWorldPosition(overallPositions[index]);
+						goto IL_42B;
 					}
 				}
 				if (flag2 && !flag3)
 				{
-					battleZone.RemoveWorldPosition(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
-					deploymentArea.RemoveWorldPosition(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
+					battleZone.RemoveWorldPosition(overallPositions[index]);
+					deploymentArea.RemoveWorldPosition(overallPositions[index]);
 				}
 				else
 				{
 					if (!flag2 && flag3)
 					{
-						deploymentArea.RemoveWorldPosition(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
+						deploymentArea.RemoveWorldPosition(overallPositions[index]);
 					}
-					Region region2 = this.worldPositionningService.GetRegion(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
-					if (region2.City != null && region2.City.Districts.Any((District match) => match.Type != DistrictType.Exploitation && match.WorldPosition == <FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]))
+					Region region2 = this.worldPositionningService.GetRegion(overallPositions[index]);
+					if (region2.City != null)
 					{
-						bool flag4 = region2.City.Empire == <FilterDeploymentPosition>c__AnonStorey8A.battleContender.Garrison.Empire;
-						bool flag5 = region2.City.BesiegingEmpire == contenderEnemyEmpire;
-						if (region2.City.BesiegingEmpire != null && !flag && (!flag4 || !flag5))
+						IEnumerable<District> districts = region2.City.Districts;
+						Func<District, bool> predicate;
+						if ((predicate = <>9__1) == null)
 						{
-							battleZone.RemoveWorldPosition(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
-							deploymentArea.RemoveWorldPosition(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
+							predicate = (<>9__1 = ((District match) => match.Type != DistrictType.Exploitation && match.WorldPosition == overallPositions[index]));
 						}
-						if (region2.City.Empire != <FilterDeploymentPosition>c__AnonStorey8A.battleContender.Garrison.Empire)
+						if (districts.Any(predicate))
 						{
-							deploymentArea.RemoveWorldPosition(<FilterDeploymentPosition>c__AnonStorey8A.overallPositions[index]);
-						}
-						else if (!list.Contains(region2.City))
-						{
-							list.Add(region2.City);
+							bool flag4 = region2.City.Empire == battleContender.Garrison.Empire;
+							bool flag5 = region2.City.BesiegingEmpire == contenderEnemyEmpire;
+							if (region2.City.BesiegingEmpire != null && !flag && (!flag4 || !flag5) && (list == null || !list.Exists((City C) => C.GUID == region2.City.GUID)))
+							{
+								battleZone.RemoveWorldPosition(overallPositions[index]);
+								deploymentArea.RemoveWorldPosition(overallPositions[index]);
+							}
+							if (region2.City.Empire != battleContender.Garrison.Empire)
+							{
+								deploymentArea.RemoveWorldPosition(overallPositions[index]);
+							}
+							else if (!list3.Contains(region2.City))
+							{
+								list3.Add(region2.City);
+							}
 						}
 					}
 				}
 			}
-			IL_398:;
+			IL_42B:
+			index2 = index;
 		}
-		for (int i = 0; i < list.Count; i++)
+		for (int j = 0; j < list3.Count; j++)
 		{
-			for (int j = 0; j < list[i].Districts.Count; j++)
+			for (int k = 0; k < list3[j].Districts.Count; k++)
 			{
-				if (list[i].Districts[j].Type != DistrictType.Exploitation)
+				if (list3[j].Districts[k].Type != DistrictType.Exploitation)
 				{
-					WorldPosition worldPosition = list[i].Districts[j].WorldPosition;
+					WorldPosition worldPosition = list3[j].Districts[k].WorldPosition;
 					bool flag6 = this.worldPositionningService.IsWaterTile(worldPosition) && !this.worldPositionningService.IsFrozenWaterTile(worldPosition);
 					if (!flag2 || flag6)
 					{
-						if (!deploymentArea.Contains(list[i].Districts[j].WorldPosition))
+						if (!deploymentArea.Contains(list3[j].Districts[k].WorldPosition))
 						{
-							deploymentArea.AddWorldPosition(list[i].Districts[j].WorldPosition);
+							deploymentArea.AddWorldPosition(list3[j].Districts[k].WorldPosition);
 						}
-						if (!battleZone.Contains(list[i].Districts[j].WorldPosition))
+						if (!battleZone.Contains(list3[j].Districts[k].WorldPosition))
 						{
-							battleZone.AddWorldPosition(list[i].Districts[j].WorldPosition);
+							battleZone.AddWorldPosition(list3[j].Districts[k].WorldPosition);
 						}
 					}
 				}
@@ -488,89 +516,86 @@ public class BattleEncounter : IDisposable
 		{
 			BattleContender battleContender = this.BattleContenders[j];
 			IBattleZone battleZone = battleContender.Deployment.BattleZone;
-			Army army;
-			IEnumerable<Army> enumerable = from army in list
-			where battleZone.Contains(army.WorldPosition) && !this.BattleContenders.Exists((BattleContender match) => match.GUID == army.GUID) && !this.incommingReinforcement.Exists((GameEntityGUID match) => match == army.GUID)
-			select army;
-			City city;
+			IEnumerable<Army> enumerable = from army2 in list
+			where battleZone.Contains(army2.WorldPosition) && !this.BattleContenders.Exists((BattleContender match) => match.GUID == army2.GUID) && !this.incommingReinforcement.Exists((GameEntityGUID match) => match == army2.GUID)
+			select army2;
 			IEnumerable<City> enumerable2 = from city in list2
 			where battleZone.Contains(city.WorldPosition) && !this.BattleContenders.Exists((BattleContender match) => match.GUID == city.GUID) && !this.incommingReinforcement.Exists((GameEntityGUID match) => match == city.GUID)
 			select city;
-			Fortress fortress;
 			IEnumerable<Fortress> enumerable3 = from fortress in list3
 			where battleZone.Contains(fortress.WorldPosition) && !this.BattleContenders.Exists((BattleContender match) => match.GUID == fortress.GUID) && !this.incommingReinforcement.Exists((GameEntityGUID match) => match == fortress.GUID)
 			select fortress;
-			Camp camp;
 			IEnumerable<Camp> enumerable4 = from camp in list4
 			where battleZone.Contains(camp.WorldPosition) && !this.BattleContenders.Exists((BattleContender match) => match.GUID == camp.GUID) && !this.incommingReinforcement.Exists((GameEntityGUID match) => match == camp.GUID)
 			select camp;
-			Village village;
 			IEnumerable<Village> enumerable5 = from village in list5
 			where battleZone.Contains(village.WorldPosition) && !this.BattleContenders.Exists((BattleContender match) => match.GUID == village.GUID) && !this.incommingReinforcement.Exists((GameEntityGUID match) => match == village.GUID)
 			select village;
-			KaijuGarrison garrison;
 			IEnumerable<KaijuGarrison> enumerable6 = from garrison in list6
 			where battleZone.Contains(garrison.WorldPosition) && !this.BattleContenders.Exists((BattleContender match) => match.GUID == garrison.GUID) && !this.incommingReinforcement.Exists((GameEntityGUID match) => match == garrison.GUID)
 			select garrison;
 			bool flag = this.worldPositionningService.IsWaterTile(battleZone.CenterWorldPosition) && !this.worldPositionningService.IsFrozenWaterTile(battleZone.CenterWorldPosition);
 			List<OrderJoinEncounter.ContenderInfo> list7 = new List<OrderJoinEncounter.ContenderInfo>();
-			foreach (Army army2 in enumerable)
+			using (IEnumerator<Army> enumerator = enumerable.GetEnumerator())
 			{
-				army = army2;
-				bool flag2 = false;
-				if (army.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6"))
+				while (enumerator.MoveNext())
 				{
-					flag2 = true;
-				}
-				else if (army.IsWildLiceArmy)
-				{
-					if (this.BattleContenders.Any((BattleContender iterator) => iterator is BattleContender_Village && iterator.IsMainContender && !iterator.IsAttacking))
+					Army army = enumerator.Current;
+					bool flag2 = false;
+					if (army.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6"))
 					{
 						flag2 = true;
 					}
-				}
-				else if (army.IsNaval != flag)
-				{
-					flag2 = true;
-				}
-				else if (army.Empire is LesserEmpire)
-				{
-					flag2 = true;
-				}
-				else if (army is KaijuArmy && ((army as KaijuArmy).UnitsCount == 0 || (army as KaijuArmy).Kaiju.OnGarrisonMode()))
-				{
-					flag2 = true;
-				}
-				else
-				{
-					BattleContender battleContender2 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == army.Empire.Index && contender.IsMainContender);
-					if (battleContender2 == null)
+					else if (army.IsWildLiceArmy)
 					{
-						battleContender2 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == army.Empire.Index);
+						if (this.BattleContenders.Any((BattleContender iterator) => iterator is BattleContender_Village && iterator.IsMainContender && !iterator.IsAttacking))
+						{
+							flag2 = true;
+						}
 					}
-					if (battleContender2 != null)
+					else if (army.IsNaval != flag)
 					{
-						OrderJoinEncounter.ContenderInfo item = this.BuildContenderInfo(army.GUID, battleContender2);
-						list7.Add(item);
-						this.incommingReinforcement.Add(army.GUID);
-						num++;
+						flag2 = true;
+					}
+					else if (army.Empire is LesserEmpire)
+					{
+						flag2 = true;
+					}
+					else if (army is KaijuArmy && ((army as KaijuArmy).UnitsCount == 0 || (army as KaijuArmy).Kaiju.OnGarrisonMode()))
+					{
+						flag2 = true;
 					}
 					else
 					{
-						flag2 = true;
+						BattleContender battleContender2 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == army.Empire.Index && contender.IsMainContender);
+						if (battleContender2 == null)
+						{
+							battleContender2 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == army.Empire.Index);
+						}
+						if (battleContender2 != null)
+						{
+							OrderJoinEncounter.ContenderInfo item = this.BuildContenderInfo(army.GUID, battleContender2);
+							list7.Add(item);
+							this.incommingReinforcement.Add(army.GUID);
+							num++;
+						}
+						else
+						{
+							flag2 = true;
+						}
+					}
+					if (flag2 && !this.ExternalArmies.Contains(army.GUID))
+					{
+						this.ExternalArmies.Add(army.GUID);
 					}
 				}
-				if (flag2 && !this.ExternalArmies.Contains(army.GUID))
-				{
-					this.ExternalArmies.Add(army.GUID);
-				}
 			}
-			foreach (City city2 in enumerable2)
+			using (IEnumerator<City> enumerator2 = enumerable2.GetEnumerator())
 			{
-				city = city2;
-				if (!city.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6"))
+				while (enumerator2.MoveNext())
 				{
-					if (!flag)
+					City city = enumerator2.Current;
+					if (!city.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6") && !flag)
 					{
 						bool flag3 = city.Militia != null && city.Militia.UnitsCount > 0;
 						if (city.UnitsCount != 0 || flag3)
@@ -598,97 +623,88 @@ public class BattleEncounter : IDisposable
 					}
 				}
 			}
-			foreach (Camp camp2 in enumerable4)
+			using (IEnumerator<Camp> enumerator3 = enumerable4.GetEnumerator())
 			{
-				camp = camp2;
-				if (!camp.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6"))
+				while (enumerator3.MoveNext())
 				{
-					if (!flag)
+					Camp camp = enumerator3.Current;
+					if (!camp.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6") && !flag && camp.UnitsCount != 0)
 					{
-						if (camp.UnitsCount != 0)
+						BattleContender battleContender5 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == camp.Empire.Index && contender.IsMainContender);
+						if (battleContender5 != null)
 						{
-							BattleContender battleContender5 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == camp.Empire.Index && contender.IsMainContender);
-							if (battleContender5 != null)
+							if (camp.City.BesiegingEmpireIndex >= 0)
 							{
-								if (camp.City.BesiegingEmpireIndex >= 0)
+								BattleContender battleContender6 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index != camp.Empire.Index);
+								if (battleContender6 == null || battleContender6.Garrison.Empire.Index != camp.City.BesiegingEmpireIndex)
 								{
-									BattleContender battleContender6 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index != camp.Empire.Index);
-									if (battleContender6 == null || battleContender6.Garrison.Empire.Index != camp.City.BesiegingEmpireIndex)
-									{
-										continue;
-									}
-								}
-								if (!this.BattleContenders.Exists((BattleContender match) => match.GUID == camp.GUID))
-								{
-									OrderJoinEncounter.ContenderInfo item3 = this.BuildContenderInfo(camp.GUID, battleContender5);
-									list7.Add(item3);
-									this.incommingReinforcement.Add(camp.GUID);
-									num++;
+									continue;
 								}
 							}
-						}
-					}
-				}
-			}
-			foreach (Fortress fortress2 in enumerable3)
-			{
-				fortress = fortress2;
-				if (!fortress.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6"))
-				{
-					if (flag)
-					{
-						if (fortress != null && fortress.UnitsCount > 0)
-						{
-							BattleContender battleContender7 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == fortress.Empire.Index && contender.IsMainContender);
-							if (battleContender7 != null && !this.BattleContenders.Exists((BattleContender match) => match.GUID == fortress.GUID))
+							if (!this.BattleContenders.Exists((BattleContender match) => match.GUID == camp.GUID))
 							{
-								OrderJoinEncounter.ContenderInfo item4 = this.BuildContenderInfo(fortress.GUID, battleContender7);
-								list7.Add(item4);
-								this.incommingReinforcement.Add(fortress.GUID);
+								OrderJoinEncounter.ContenderInfo item3 = this.BuildContenderInfo(camp.GUID, battleContender5);
+								list7.Add(item3);
+								this.incommingReinforcement.Add(camp.GUID);
 								num++;
 							}
 						}
 					}
 				}
 			}
-			foreach (Village village2 in enumerable5)
+			using (IEnumerator<Fortress> enumerator4 = enumerable3.GetEnumerator())
 			{
-				village = village2;
-				if (!village.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6"))
+				while (enumerator4.MoveNext())
 				{
-					if (!flag)
+					Fortress fortress = enumerator4.Current;
+					if (!fortress.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6") && flag && fortress != null && fortress.UnitsCount > 0)
 					{
-						if (village.UnitsCount != 0)
+						BattleContender battleContender7 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == fortress.Empire.Index && contender.IsMainContender);
+						if (battleContender7 != null && !this.BattleContenders.Exists((BattleContender match) => match.GUID == fortress.GUID))
 						{
-							BattleContender battleContender8 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == village.Empire.Index && contender.IsMainContender);
-							if (battleContender8 != null)
+							OrderJoinEncounter.ContenderInfo item4 = this.BuildContenderInfo(fortress.GUID, battleContender7);
+							list7.Add(item4);
+							this.incommingReinforcement.Add(fortress.GUID);
+							num++;
+						}
+					}
+				}
+			}
+			using (IEnumerator<Village> enumerator5 = enumerable5.GetEnumerator())
+			{
+				while (enumerator5.MoveNext())
+				{
+					Village village = enumerator5.Current;
+					if (!village.Empire.SimulationObject.Tags.Contains("SeasonEffectBattleUnitAttributes6") && !flag && village.UnitsCount != 0)
+					{
+						BattleContender battleContender8 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == village.Empire.Index && contender.IsMainContender);
+						if (battleContender8 != null)
+						{
+							if (village.Region.City != null && village.Region.City.BesiegingEmpireIndex >= 0)
 							{
-								if (village.Region.City != null && village.Region.City.BesiegingEmpireIndex >= 0)
+								BattleContender battleContender9 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index != village.Empire.Index);
+								if (battleContender9 == null || battleContender9.Garrison.Empire.Index != village.Region.City.BesiegingEmpireIndex)
 								{
-									BattleContender battleContender9 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index != village.Empire.Index);
-									if (battleContender9 == null || battleContender9.Garrison.Empire.Index != village.Region.City.BesiegingEmpireIndex)
-									{
-										continue;
-									}
+									continue;
 								}
-								if (!this.BattleContenders.Exists((BattleContender match) => match.GUID == village.GUID))
-								{
-									OrderJoinEncounter.ContenderInfo item5 = this.BuildContenderInfo(village.GUID, battleContender8);
-									list7.Add(item5);
-									this.incommingReinforcement.Add(village.GUID);
-									num++;
-								}
+							}
+							if (!this.BattleContenders.Exists((BattleContender match) => match.GUID == village.GUID))
+							{
+								OrderJoinEncounter.ContenderInfo item5 = this.BuildContenderInfo(village.GUID, battleContender8);
+								list7.Add(item5);
+								this.incommingReinforcement.Add(village.GUID);
+								num++;
 							}
 						}
 					}
 				}
 			}
-			foreach (KaijuGarrison garrison2 in enumerable6)
+			using (IEnumerator<KaijuGarrison> enumerator6 = enumerable6.GetEnumerator())
 			{
-				garrison = garrison2;
-				if (!flag)
+				while (enumerator6.MoveNext())
 				{
-					if (garrison.UnitsCount != 0)
+					KaijuGarrison garrison = enumerator6.Current;
+					if (!flag && garrison.UnitsCount != 0)
 					{
 						BattleContender battleContender10 = this.BattleContenders.FirstOrDefault((BattleContender contender) => contender.Garrison.Empire.Index == garrison.Empire.Index && contender.IsMainContender);
 						if (battleContender10 != null && !this.BattleContenders.Exists((BattleContender match) => match.GUID == garrison.GUID))
@@ -703,7 +719,8 @@ public class BattleEncounter : IDisposable
 			}
 			if (list7.Count > 0)
 			{
-				this.IncommingJoinContendersCount++;
+				int i = this.IncommingJoinContendersCount;
+				this.IncommingJoinContendersCount = i + 1;
 				OrderJoinEncounter order = new OrderJoinEncounter(this.EncounterGUID, list7);
 				playerController.PostOrder(order);
 			}

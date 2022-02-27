@@ -38,7 +38,6 @@ public class GameServerState_Turn_CheckForGameEndingConditions : GameServerState
 			{
 				victoryManager.OnBeginTurn();
 			}
-			this.CheckForEliminations(service2);
 			this.CheckForVictoryConditions(service2, out flag);
 			if (flag)
 			{

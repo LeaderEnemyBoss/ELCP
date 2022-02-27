@@ -21,8 +21,7 @@ public class AICommanderMission_FrontierHarass : AICommanderMissionWithRequestAr
 		{
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			global::Game game = service.Game as global::Game;
-			World world = game.World;
+			World world = (service.Game as global::Game).World;
 			this.RegionTarget = world.Regions[attribute];
 			Diagnostics.Assert(this.RegionTarget != null);
 		}
@@ -102,12 +101,7 @@ public class AICommanderMission_FrontierHarass : AICommanderMissionWithRequestAr
 
 	protected override bool IsMissionCompleted()
 	{
-		if (this.RegionTarget == null || this.RegionTarget.City == null || this.RegionTarget.City.Empire == base.Commander.Empire)
-		{
-			return true;
-		}
-		AIData_City aidata = this.aiDataRepository.GetAIData<AIData_City>(this.RegionTarget.City.GUID);
-		return aidata == null;
+		return this.RegionTarget == null || this.RegionTarget.City == null || this.RegionTarget.City.Empire == base.Commander.Empire || this.aiDataRepository.GetAIData<AIData_City>(this.RegionTarget.City.GUID) == null;
 	}
 
 	protected override void Success()
@@ -135,9 +129,17 @@ public class AICommanderMission_FrontierHarass : AICommanderMissionWithRequestAr
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Fail;
 			return false;
 		}
+		if (this.RegionTarget.City != null && this.departmentOfForeignAffairs.IsAtWarWith(this.RegionTarget.City.Empire))
+		{
+			return base.TryCreateArmyMission("BesiegeCity", new List<object>
+			{
+				this.RegionTarget.City,
+				true
+			});
+		}
 		if (this.departmentOfScience.CanPillage() && this.departmentOfForeignAffairs.CanMoveOn(this.RegionTarget.Index, aidata.Army.IsPrivateers))
 		{
-			if (base.TryCreateArmyMission("ExploreAt", new List<object>
+			if (base.TryCreateArmyMission("MajorFactionRoaming", new List<object>
 			{
 				this.RegionTarget.Index
 			}))
@@ -195,35 +197,56 @@ public class AICommanderMission_FrontierHarass : AICommanderMissionWithRequestAr
 				return;
 			}
 		}
-		Region region = this.worldPositionningService.GetRegion(aidata.Army.WorldPosition);
-		if (region == this.RegionTarget)
+		if (this.worldPositionningService.GetRegion(aidata.Army.WorldPosition) == this.RegionTarget)
 		{
 			this.targetFrontierPosition = aidata.Army.WorldPosition;
 			return;
 		}
-		pathfindingResult = this.pathfindingService.FindPath(pathfindingContext, aidata.Army.WorldPosition, this.RegionTarget.City.WorldPosition, PathfindingManager.RequestMode.Default, null, PathfindingFlags.IgnoreFogOfWar, null);
+		IWorldAtlasAIHelper service = AIScheduler.Services.GetService<IWorldAtlasAIHelper>();
+		List<Region> list = new List<Region>();
+		service.ComputeNeighbourRegions(this.RegionTarget, ref list);
+		list.RemoveAll((Region match) => match.Owner != base.Commander.Empire || !match.IsLand);
+		int num = int.MaxValue;
+		bool flag = false;
+		foreach (Region region in list)
+		{
+			foreach (WorldPosition worldPosition in region.WorldPositions)
+			{
+				if (!this.worldPositionningService.IsWaterTile(worldPosition) && this.pathfindingService.IsTileStopableAndPassable(worldPosition, aidata.Army, PathfindingFlags.IgnoreFogOfWar, null))
+				{
+					int distance = this.worldPositionningService.GetDistance(worldPosition, this.RegionTarget.City.WorldPosition);
+					if (distance < num)
+					{
+						num = distance;
+						this.targetFrontierPosition = worldPosition;
+						flag = true;
+					}
+				}
+			}
+		}
+		if (flag)
+		{
+			return;
+		}
+		pathfindingResult = this.pathfindingService.FindPath(pathfindingContext, aidata.Army.WorldPosition, this.RegionTarget.City.WorldPosition, PathfindingManager.RequestMode.Default, null, PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnoreFogOfWar, null);
 		if (pathfindingResult == null)
 		{
 			this.targetFrontierPosition = aidata.Army.WorldPosition;
 			return;
 		}
-		WorldPosition worldPosition = aidata.Army.WorldPosition;
-		foreach (WorldPosition worldPosition2 in pathfindingResult.GetCompletePath())
+		WorldPosition worldPosition2 = aidata.Army.WorldPosition;
+		foreach (WorldPosition worldPosition3 in pathfindingResult.GetCompletePath())
 		{
-			if (!(worldPosition2 == pathfindingResult.Start) && !(worldPosition2 == pathfindingResult.Goal))
+			if (!(worldPosition3 == pathfindingResult.Start) && !(worldPosition3 == pathfindingResult.Goal) && this.pathfindingService.IsTileStopableAndPassable(worldPosition3, aidata.Army, PathfindingFlags.IgnoreFogOfWar, null))
 			{
-				if (this.pathfindingService.IsTileStopableAndPassable(worldPosition2, aidata.Army, PathfindingFlags.IgnoreFogOfWar, null))
+				if ((int)this.worldPositionningService.GetRegionIndex(worldPosition3) == this.RegionTarget.Index)
 				{
-					int regionIndex = (int)this.worldPositionningService.GetRegionIndex(worldPosition2);
-					if (regionIndex == this.RegionTarget.Index)
-					{
-						break;
-					}
-					worldPosition = worldPosition2;
+					break;
 				}
+				worldPosition2 = worldPosition3;
 			}
 		}
-		this.targetFrontierPosition = worldPosition;
+		this.targetFrontierPosition = worldPosition2;
 	}
 
 	private IPathfindingService pathfindingService;

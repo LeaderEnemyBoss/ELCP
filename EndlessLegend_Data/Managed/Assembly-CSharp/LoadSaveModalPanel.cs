@@ -14,8 +14,10 @@ using UnityEngine;
 
 public class LoadSaveModalPanel : global::GuiModalPanel
 {
-	private void StartProfanityFiltering()
+	public LoadSaveModalPanel()
 	{
+		this.profanityError = string.Empty;
+		this.invalidColor = new Color(0.7529412f, 0.2509804f, 0.2509804f);
 	}
 
 	public bool SaveMode { get; set; }
@@ -111,33 +113,32 @@ public class LoadSaveModalPanel : global::GuiModalPanel
 	private IEnumerator ListGamesAsync(int listingNumber)
 	{
 		this.LoadSaveContainer.DestroyAllChildren();
-		IGameSerializationService gameSerializationService = Services.GetService<IGameSerializationService>();
-		if (gameSerializationService != null)
+		IGameSerializationService service = Services.GetService<IGameSerializationService>();
+		if (service != null)
 		{
 			List<GameSaveDescriptor> gameSaveDescriptors = new List<GameSaveDescriptor>();
 			this.LoadSaveContainer.Height = 0f;
-			IEnumerable<GameSaveDescriptor> enumerable = gameSerializationService.GetListOfGameSaveDescritors(!this.SaveMode);
-			foreach (GameSaveDescriptor gameSaveDescriptor in enumerable)
+			IEnumerable<GameSaveDescriptor> listOfGameSaveDescritors = service.GetListOfGameSaveDescritors(!this.SaveMode);
+			foreach (GameSaveDescriptor gameSaveDescriptor in listOfGameSaveDescritors)
 			{
 				gameSaveDescriptors.Add(gameSaveDescriptor);
 				this.LoadSaveContainer.ReserveChildren(gameSaveDescriptors.Count, this.SaveLineSlotPrefab, "Item");
 				this.LoadSaveContainer.ArrangeChildren();
 				this.LoadSaveScrollView.OnPositionRecomputed();
 				int index = gameSaveDescriptors.Count - 1;
-				AgeTransform child = this.LoadSaveContainer.GetChildren()[index];
-				this.SetupSaveLineSlot(child, index, gameSaveDescriptor);
+				AgeTransform ageTransform = this.LoadSaveContainer.GetChildren()[index];
+				this.SetupSaveLineSlot(ageTransform, index, gameSaveDescriptor);
 				if (!Amplitude.Unity.Framework.Application.Preferences.EnableMultiplayer && gameSaveDescriptor.GameSaveSessionDescriptor.SessionMode != SessionMode.Single)
 				{
-					child.Enable = false;
+					ageTransform.Enable = false;
 				}
 				else
 				{
-					SaveLineSlot slot = child.GetComponent<SaveLineSlot>();
-					Diagnostics.Assert(slot != null);
-					RuntimeModuleConfigurationState gameSaveRuntimeConfigurationState = slot.GameSaveRuntimeConfigurationState;
-					if (gameSaveRuntimeConfigurationState == RuntimeModuleConfigurationState.Undefined)
+					SaveLineSlot component = ageTransform.GetComponent<SaveLineSlot>();
+					Diagnostics.Assert(component != null);
+					if (component.GameSaveRuntimeConfigurationState == RuntimeModuleConfigurationState.Undefined)
 					{
-						child.Enable = false;
+						ageTransform.Enable = false;
 					}
 				}
 				yield return null;
@@ -146,13 +147,16 @@ public class LoadSaveModalPanel : global::GuiModalPanel
 					yield break;
 				}
 			}
+			IEnumerator<GameSaveDescriptor> enumerator = null;
 			if (this.SortsContainer.SortButtons.Last<SortButton>() != null)
 			{
 				this.SortsContainer.SortButtons.Last<SortButton>().OnSortCB(null);
 				this.SortsContainer.SortButtons.Last<SortButton>().OnSortCB(null);
 			}
+			gameSaveDescriptors = null;
 		}
 		this.listing = null;
+		yield break;
 		yield break;
 	}
 
@@ -321,11 +325,6 @@ public class LoadSaveModalPanel : global::GuiModalPanel
 		}
 	}
 
-	private void OnTextChangeCB(GameObject obj)
-	{
-		this.StartProfanityFiltering();
-	}
-
 	private void OnSaveCB(GameObject obj)
 	{
 		if (string.IsNullOrEmpty(this.TextInputLabel.Text))
@@ -458,11 +457,14 @@ public class LoadSaveModalPanel : global::GuiModalPanel
 		}
 	}
 
-	private string profanityError = string.Empty;
+	private void StartProfanityFiltering()
+	{
+	}
 
-	private UnityEngine.Coroutine profanityFilterCoroutine;
-
-	private Color invalidColor = new Color(0.7529412f, 0.2509804f, 0.2509804f);
+	private void OnTextChangeCB(GameObject obj)
+	{
+		this.StartProfanityFiltering();
+	}
 
 	public AgePrimitiveLabel PanelTitle;
 
@@ -489,4 +491,10 @@ public class LoadSaveModalPanel : global::GuiModalPanel
 	private UnityCoroutine saving;
 
 	private UnityCoroutine listing;
+
+	private string profanityError;
+
+	private UnityEngine.Coroutine profanityFilterCoroutine;
+
+	private Color invalidColor;
 }

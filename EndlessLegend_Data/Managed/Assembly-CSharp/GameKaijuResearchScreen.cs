@@ -185,13 +185,11 @@ public class GameKaijuResearchScreen : GuiPlayerControllerScreen
 		{
 			component.AgeTransform.X = ((!AgeUtils.HighDefinition) ? component.KaijuGuiElement.X : (component.KaijuGuiElement.X * AgeUtils.HighDefinitionFactor));
 			component.AgeTransform.Y = ((!AgeUtils.HighDefinition) ? component.KaijuGuiElement.Y : (component.KaijuGuiElement.Y * AgeUtils.HighDefinitionFactor));
+			return;
 		}
-		else
-		{
-			Diagnostics.LogError("The Kaiju doesn't have a KaijuTechPortrait");
-			component.AgeTransform.X = 0f;
-			component.AgeTransform.Y = 0f;
-		}
+		Diagnostics.LogError("The Kaiju doesn't have a KaijuTechPortrait");
+		component.AgeTransform.X = 0f;
+		component.AgeTransform.Y = 0f;
 	}
 
 	private void RefreshUnlocksSection()

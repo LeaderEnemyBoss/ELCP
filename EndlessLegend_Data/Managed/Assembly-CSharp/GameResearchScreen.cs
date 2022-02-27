@@ -68,7 +68,7 @@ public class GameResearchScreen : GuiPlayerControllerScreen
 		string content;
 		if (buyOutTechnologyCost != 3.40282347E+38f)
 		{
-			if (agency.IsTransferOfResourcePossible(base.Empire, DepartmentOfTheTreasury.Resources.TechnologiesBuyOut, ref num))
+			if (agency.IsTransferOfResourcePossible(base.Empire, DepartmentOfTheTreasury.Resources.TechnologiesBuyOut, ref num) && this.interactionsAllowed)
 			{
 				buyoutButton.AgeTransform.Enable = true;
 				buyoutButton.AgeTransform.Alpha = 1f;
@@ -90,8 +90,7 @@ public class GameResearchScreen : GuiPlayerControllerScreen
 			this.ResearchBuyoutCostLabel.Text = "%ResearchVoidSymbol";
 			content = AgeLocalizer.Instance.LocalizeString("%ResearchBuyoutNoSelection");
 		}
-		AgeTooltip ageTooltip = buyoutButton.AgeTransform.AgeTooltip;
-		if (ageTooltip != null)
+		if (buyoutButton.AgeTransform.AgeTooltip != null)
 		{
 			buyoutButton.AgeTransform.AgeTooltip.Content = content;
 		}
@@ -208,13 +207,11 @@ public class GameResearchScreen : GuiPlayerControllerScreen
 			this.ResearchBuyoutButton.AgeTransform.Visible = true;
 			this.ResearchCompletionGroup.Visible = false;
 			this.RefreshBuyout(this.ResearchBuyoutButton);
+			return;
 		}
-		else
-		{
-			this.TechnologyStatsGroup.Visible = true;
-			this.ResearchBuyoutButton.AgeTransform.Visible = false;
-			this.ResearchCompletionGroup.Visible = true;
-		}
+		this.TechnologyStatsGroup.Visible = true;
+		this.ResearchBuyoutButton.AgeTransform.Visible = false;
+		this.ResearchCompletionGroup.Visible = true;
 	}
 
 	public override void Unbind()
@@ -269,7 +266,7 @@ public class GameResearchScreen : GuiPlayerControllerScreen
 	protected override IEnumerator OnShow(params object[] parameters)
 	{
 		yield return base.OnShow(parameters);
-		this.interactionsAllowed = base.PlayerController.CanSendOrders();
+		this.interactionsAllowed = (base.PlayerController.CanSendOrders() && base.Empire.Index == base.PlayerController.Empire.Index);
 		this.ResearchErasTable.Enable = this.interactionsAllowed;
 		this.LayoutGroup.Visible = false;
 		this.FocusCircle.Visible = false;
@@ -347,7 +344,8 @@ public class GameResearchScreen : GuiPlayerControllerScreen
 	{
 		if (base.IsVisible && base.PlayerController != null)
 		{
-			bool flag = base.PlayerController.CanSendOrders();
+			bool flag = base.PlayerController.CanSendOrders() && base.Empire.Index == base.PlayerController.Empire.Index;
+			this.ResearchErasTable.Enable = this.interactionsAllowed;
 			if (this.interactionsAllowed != flag)
 			{
 				this.interactionsAllowed = flag;

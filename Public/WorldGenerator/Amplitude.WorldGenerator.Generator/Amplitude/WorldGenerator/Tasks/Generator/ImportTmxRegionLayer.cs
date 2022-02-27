@@ -32,6 +32,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			this.DetermineRegionNeighbors();
 			base.ExecuteSubTask(new NameRegions());
 			this.CheckIfRegionMixOceanWithLands();
+			this.DetermineContinents();
 		}
 
 		private void DetermineRegions()
@@ -207,27 +208,45 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 						region.Districts[0].Content = District.Contents.Ocean;
 						region.Districts[0].CoastalSkeletonValue = -1;
 					}
-					foreach (HexPos hexPos in region.Districts[0])
+					int num = 0;
+					foreach (HexPos hex in region.Districts[0])
 					{
-						if (hexPos.Row == 0 || hexPos.Row == base.Context.Grid.Rows - 1)
+						if (hex.Row == 0 || hex.Row == base.Context.Grid.Rows - 1)
 						{
 							region.LandMassType = Region.LandMassTypes.WasteNS;
 							region.Districts[0].Content = District.Contents.WasteNS;
 							region.Districts[0].CoastalSkeletonValue = 99;
+							region.LandMassIndex = 255;
+							num = 0;
+							break;
 						}
-						if ((hexPos.Column == 0 || hexPos.Column == base.Context.Grid.Columns - 1) && !base.Context.Settings.WorldWrap)
+						if ((hex.Column == 0 || hex.Column == base.Context.Grid.Columns - 1) && !base.Context.Settings.WorldWrap)
 						{
 							region.LandMassType = Region.LandMassTypes.WasteEW;
 							region.Districts[0].Content = District.Contents.WasteEW;
 							region.Districts[0].CoastalSkeletonValue = -1;
+							region.LandMassIndex = 255;
+							num = 0;
+							break;
 						}
+						if (base.Context.GetTerrain(hex).Name == "RockyWasteland")
+						{
+							num++;
+						}
+					}
+					if ((float)num > 0.9f * (float)region.HexCount())
+					{
+						region.LandMassType = Region.LandMassTypes.WasteNS;
+						region.Districts[0].Content = District.Contents.WasteNS;
+						region.Districts[0].CoastalSkeletonValue = 99;
+						region.LandMassIndex = 255;
 					}
 					if (region.LandMassType == Region.LandMassTypes.WasteNS || region.LandMassType == Region.LandMassTypes.WasteEW)
 					{
 						TerrainTransformation transform = base.Context.Settings.Transformations.Find((TerrainTransformation t) => t.Name == "Wastelands");
-						foreach (HexPos hex in region.Districts[0])
+						foreach (HexPos hex2 in region.Districts[0])
 						{
-							base.Context.ApplyTransformation(transform, hex);
+							base.Context.ApplyTransformation(transform, hex2);
 						}
 					}
 				}
@@ -333,6 +352,38 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			}
 		}
 
+		public ImportTmxRegionLayer()
+		{
+			this.regionsGivenNames = new List<string>();
+			this.Checkedids = new List<short>();
+		}
+
+		private void DetermineContinents()
+		{
+			int num = 0;
+			foreach (Region region in base.Context.Regions.Values)
+			{
+				if ((region.LandMassType == Region.LandMassTypes.Continent || region.LandMassType == Region.LandMassTypes.Ocean) && !this.Checkedids.Contains(region.Id))
+				{
+					this.DetermineContinents_Recursive(region, num, region.LandMassType);
+					num++;
+				}
+			}
+		}
+
+		private void DetermineContinents_Recursive(Region region, int LastLandMassIndex, Region.LandMassTypes type)
+		{
+			if (!this.Checkedids.Contains(region.Id) && region.LandMassType == type)
+			{
+				region.LandMassIndex = LastLandMassIndex;
+				this.Checkedids.Add(region.Id);
+				foreach (Region region2 in region.Neighbours)
+				{
+					this.DetermineContinents_Recursive(region2, LastLandMassIndex, type);
+				}
+			}
+		}
+
 		private static short id = 0;
 
 		private static string regionNameProperty = "Name";
@@ -341,8 +392,10 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 
 		private bool[,] treatedHexes;
 
-		private List<string> regionsGivenNames = new List<string>();
+		private List<string> regionsGivenNames;
 
 		private bool anyErrorCatched;
+
+		private List<short> Checkedids;
 	}
 }

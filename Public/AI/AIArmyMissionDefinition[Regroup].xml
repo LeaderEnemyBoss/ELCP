@@ -1,78 +1,124 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-  <!-- Not In use-->
-  <AIArmyMissionDefinition Name="ReachTarget">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$Target"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="ReachTarget">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$Target"/>
+		</Parameters>
 
-    <Controller_Sequence>
+		<Controller_Sequence>
 
-      <!--IF Army in under control THEN Mission failed-->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Target"/>
 
-      <!-- Get the target position to compute the path or check whenever we are at destination.-->
-      <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$WorldPositionDestination"/>
-      <Controller_Selector>
-        <Controller_Sequence Debug="Regroup_DestinationReached">
-          <Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
-        </Controller_Sequence>
+			<!-- Get the target position to compute the path or check whenever we are at destination.-->
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$WorldPositionDestination"/>
+			<Controller_Selector>
+				<Controller_Sequence Debug="Regroup_DestinationReached">
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+				
+				<Include SubTreeName="ExploreNearbyRuin"/>
+				
+				<Include SubTreeName="TryOpportunityTerraform"/>
+				
+				<!--Move to Destination-->
+				<Controller_Sequence Debug="Regroup_MoveToRegroup">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"  TypeOfCheck="Regular"/>
+				</Controller_Sequence>
 
-        <!--Move to Destination-->
-        <Controller_Sequence Debug="Regroup_MoveToRegroup">
-          <Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"  TypeOfCheck="Regular"/>
-        </Controller_Sequence>
+			</Controller_Selector>
 
-      </Controller_Selector>
+		</Controller_Sequence>
 
-    </Controller_Sequence>
+	</AIArmyMissionDefinition>
 
-  </AIArmyMissionDefinition>
+	<AIArmyMissionDefinition Name="ReachPosition">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
+		</Parameters>
 
-  <!-- Not In use-->
-  <AIArmyMissionDefinition Name="ReachPosition">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
-    </Parameters>
+		<Controller_Sequence>
 
-    <Controller_Sequence>
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
 
-      <!--IF Army in under control THEN Mission failed-->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
-      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+			<Controller_Selector>
+				<Controller_Sequence Debug="Regroup_DestinationReached">
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+				
+				<Include SubTreeName="TryAttackNearbyEmptyFortresses"/>
 
-      <Controller_Selector>
-        <Controller_Sequence Debug="Regroup_DestinationReached">
-          <Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
-        </Controller_Sequence>
+				<!-- Explore ruins that are just like near me -->
+				<Include SubTreeName="ExploreNearbyRuin"/>
 
-        <!-- Explore ruins that are just like near me -->
-        <Include SubTreeName="OpportunitySearchRuin">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
-        </Include>
+				<!-- Gather orbs -->
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
+				</Include>
+				
+				<Include SubTreeName="TryOpportunityTerraform"/>
 
-        <!-- Gather orbs -->
-        <Include SubTreeName="OrbsOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
-        </Include>
+				<!--Move to Destination-->
+				<Controller_Sequence Debug="Regroup_MoveToRegroup">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"  TypeOfCheck="Regular"/>
+				</Controller_Sequence>
 
-        <!--Move to Destination-->
-        <Controller_Sequence Debug="Regroup_MoveToRegroup">
-          <Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"  TypeOfCheck="Regular"/>
-        </Controller_Sequence>
+			</Controller_Selector>
 
-      </Controller_Selector>
+		</Controller_Sequence>
 
-    </Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<AIArmyMissionDefinition Name="ReachPositionMykara">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
+		</Parameters>
 
-  </AIArmyMissionDefinition>
+		<Controller_Sequence>
 
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+			<Controller_Selector>
+				<Controller_Sequence Debug="Regroup_DestinationReached">
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+				
+				<Include SubTreeName="TryAttackNearbyEmptyFortresses"/>
+
+				<!-- Explore ruins that are just like near me -->
+				<Include SubTreeName="ExploreNearbyRuin"/>
+
+				<!-- Gather orbs -->
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
+				</Include>
+				
+				<Include SubTreeName="TryOpportunityTerraform"/>
+
+				<!--Move to Destination-->
+				<Controller_Sequence Debug="Regroup_MoveToRegroup">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"  TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+
+			</Controller_Selector>
+
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
 </Datatable>

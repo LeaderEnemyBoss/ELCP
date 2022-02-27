@@ -769,6 +769,108 @@
       <Terrain From="AshPrairie"                To="Volcano"/>
       <Terrain From="Badlands"                  To="Volcano"/>
     </Transformation>
+	
+	<!-- ELCP: Transofrmation used for transforming kapaku starting regions to ashlands --> 
+	<Transformation Name="ELCPAshlandsTrans">
+      <Terrain From="ArcticOcean"		  To="AshlandOcean"/>
+      <Terrain From="TundraOcean"		  To="AshlandOcean"/>
+      <Terrain From="ChillyOcean"		  To="AshlandOcean"/>
+      <Terrain From="Ocean"				    To="AshlandOcean"/>
+      <Terrain From="TropicalOcean"		To="AshlandOcean"/>
+      <Terrain From="DesertOcean"	  	To="AshlandOcean"/>
+
+      <Terrain From="DriftIce"		  	To="AshlandOcean"/>
+      <Terrain From="TundraDriftIce"	To="AshlandOcean"/>
+
+      <Terrain From="CoralReef"	  	  To="AshlandOcean"/>
+      <Terrain From="DesertCoralReef"	To="AshlandOcean"/>
+
+      <Terrain From="FrozenWaters"    To="AshlandWaters"/>
+      <Terrain From="TundraWaters"    To="AshlandWaters"/>
+      <Terrain From="ChillyWaters"    To="AshlandWaters"/>
+      <Terrain From="CoastalWaters"   To="AshlandWaters"/>
+      <Terrain From="TropicalWaters"  To="AshlandWaters"/>
+      <Terrain From="DesertWaters"    To="AshlandWaters"/>
+
+      <Terrain From="FrozenInlandWaters"        To="AshlandInlandWaters"/>
+      <Terrain From="TundraInlandWaters"        To="AshlandInlandWaters"/>
+      <Terrain From="ChillyInlandWaters"        To="AshlandInlandWaters"/>
+      <Terrain From="InlandWater"               To="AshlandInlandWaters"/>
+      <Terrain From="TropicalInlandWaters"      To="AshlandInlandWaters"/>
+      <Terrain From="DesertInlandWaters"        To="AshlandInlandWaters"/>
+
+      <Terrain From="CrystalIce"                To="LavaPlains"/>
+      <Terrain From="Snow"                      To="LavaPlains"/>
+      <Terrain From="FrozenGrass"               To="Badlands"/>
+      <Terrain From="FrozenSpikes"              To="CharredForest"/>
+      <Terrain From="CrystalForest"             To="CharredForest"/>
+      <Terrain From="CrystalField"              To="LavaPlains"/>
+
+      <Terrain From="Taiga"                     To="CharredForest"/>
+      <Terrain From="TundraRocks"               To="Badlands"/>
+      <Terrain From="TundraGrass"               To="AshPrairie"/>
+      <Terrain From="TundraDirtField"           To="LavaPlains"/>
+      <Terrain From="TundraRockyField"          To="AshPrairie"/>
+      <Terrain From="TundraHighMountainForest"  To="CharredForest"/>
+      <Terrain From="TundraSnowyRockyField"     To="AshPrairie"/>
+      <Terrain From="TundraSnowyField"          To="AshPrairie"/>
+
+      <Terrain From="SnowyField"                To="LavaSwirls"/>
+      <Terrain From="ColdDirtField"             To="Badlands"/>
+      <Terrain From="ColdGrassland"             To="LavaSwirls"/>
+      <Terrain From="RockyField"                To="Badlands"/>
+      <Terrain From="ColdForest"                To="CharredForest"/>
+      <Terrain From="HighSnowyField"  	        To="AshPrairie"/>
+      <Terrain From="HighMountainForest"        To="CharredForest"/>
+      <Terrain From="SnowyDirtField"            To="LavaSwirls"/>
+      <Terrain From="SnowyRockyField"           To="LavaSwirls"/>
+
+      <Terrain From="DirtField"                 To="LavaSwirls"/>
+
+      <Terrain From="EnchantedForest"           To="CharredForest"/>
+      <Terrain From="TemperateForest"           To="CharredForest"/>
+      <Terrain From="Wetland"                   To="LavaSwirls"/>
+      <Terrain From="Grassland"                 To="AshPrairie"/>
+      <Terrain From="Prairie"                   To="AshPrairie"/>
+
+      <Terrain From="HotPrairie"                To="LavaPlains"/>
+      <Terrain From="RedSoil"                   To="Badlands"/>
+      <Terrain From="RedRock"                   To="Badlands"/>
+      <Terrain From="TropicalWetland"           To="LavaSwirls"/>
+      <Terrain From="PalmTrees"                 To="CharredForest"/>
+      <Terrain From="TropicalDirtField"         To="LavaPlains"/>
+      <Terrain From="TropicalMountainRock"      To="Badlands"/>
+      <Terrain From="TropicalMountainForest"    To="CharredForest"/>
+
+      <Terrain From="Shrubland"                 To="ScorchedPrairie"/>
+      <Terrain From="Savanna"                   To="CharredForest"/>
+      <Terrain From="DrySoil"                   To="LavaSwirls"/>
+      <Terrain From="Sandstone"                 To="LavaSwirls"/>
+      <Terrain From="SandDunes"                 To="AshPrairie"/>
+      <Terrain From="SandstoneSwirls"           To="LavaSwirls"/>
+      
+      <Terrain From="LavaPlains"                To="LavaPlains"/>
+      <Terrain From="ScorchedPrairie"           To="ScorchedPrairie"/>
+      <Terrain From="CharredForest"             To="CharredForest"/>
+      <Terrain From="LavaSwirls"                To="LavaSwirls"/>
+      <Terrain From="AshPrairie"                To="AshPrairie"/>
+      <Terrain From="Badlands"                  To="Badlands"/>
+    </Transformation>
+	
+	<!-- ELCP Transformation to transfer volcanic terrain back to normal one when Inferno is not present -->
+	<!-- currently not used -->
+	<Transformation Name="ELCPAshtoArctic">
+      <Terrain From="AshlandOcean"		  To="ArcticOcean"/>
+      <Terrain From="AshlandWaters"    To="FrozenWaters"/>
+      <Terrain From="AshlandInlandWaters"    To="FrozenInlandWaters"/>
+	  
+	  <Terrain From="LavaPlains"                To="FrozenGrass"/>
+      <Terrain From="ScorchedPrairie"           To="CrystalIce"/>
+      <Terrain From="CharredForest"             To="CrystalForest"/>
+      <Terrain From="LavaSwirls"                To="FrozenSpikes"/>
+      <Terrain From="AshPrairie"                To="Snow"/>
+      <Terrain From="Badlands"                  To="CrystalForest"/>
+    </Transformation>
 
   </TerrainTransformations>
 
@@ -980,6 +1082,7 @@
         <Terrain Name="DrySoil"               Weight="15"/>
         <Terrain Name="Sandstone"             Weight="25"/>
         <Terrain Name="SandDunes"             Weight="25"/>
+		<Terrain Name="SandstoneSwirls"       Weight="1"/>
       </Land>
       <Coast>
         <Terrain Name="DesertWaters"          Weight="1"/>
@@ -1362,17 +1465,17 @@
     </Faction>
     
     <Faction Name="AffinityMadFairies">
-      <CrystalForest>           14</CrystalForest>
-      <Taiga>                   21</Taiga>
-      <TundraHighMountainForest>15</TundraHighMountainForest>
-      <ColdForest>              21</ColdForest>
-      <HighMountainForest>      21</HighMountainForest>
-      <EnchantedForest>         15</EnchantedForest>
-      <TemperateForest>         21</TemperateForest>
-      <TropicalWetland>         21</TropicalWetland>
-      <PalmTrees>               21</PalmTrees>
-      <TropicalMountainForest>  15</TropicalMountainForest>
-      <Savanna>                 14</Savanna>
+      <CrystalForest>           24</CrystalForest>
+      <Taiga>                   31</Taiga>
+      <TundraHighMountainForest>25</TundraHighMountainForest>
+      <ColdForest>              31</ColdForest>
+      <HighMountainForest>      31</HighMountainForest>
+      <EnchantedForest>         25</EnchantedForest>
+      <TemperateForest>         31</TemperateForest>
+      <TropicalWetland>         31</TropicalWetland>
+      <PalmTrees>               31</PalmTrees>
+      <TropicalMountainForest>  25</TropicalMountainForest>
+      <Savanna>                 24</Savanna>
     </Faction>
 
     <Faction Name="AffinityBrokenLords">
@@ -1544,21 +1647,21 @@
     <Faction Name="AffinitySeaDemons">
       <!-- Decreased weight on "dry" tiles -->
       <!-- Increased weight on "wet" tiles -->
-      <FrozenWaters>          900</FrozenWaters>
-      <TundraWaters>          900</TundraWaters>
-      <ChillyWaters>          900</ChillyWaters>
-      <CoastalWaters>         900</CoastalWaters>
-      <TropicalWaters>        900</TropicalWaters>
-      <DesertWaters>          900</DesertWaters>
-      <AshlandWaters>         900</AshlandWaters>
-      <InlandWater>           20</InlandWater>
-      <FrozenInlandWaters>    20</FrozenInlandWaters>
-      <TundraInlandWaters>    20</TundraInlandWaters>
-      <ChillyInlandWaters>    20</ChillyInlandWaters>
-      <TropicalInlandWaters>  20</TropicalInlandWaters>
-      <DesertInlandWaters>    20</DesertInlandWaters>
-      <AshlandInlandWaters>   20</AshlandInlandWaters>
-      <River>     100</River>
+      <FrozenWaters>          400</FrozenWaters>
+      <TundraWaters>          400</TundraWaters>
+      <ChillyWaters>          400</ChillyWaters>
+      <CoastalWaters>         400</CoastalWaters>
+      <TropicalWaters>        400</TropicalWaters>
+      <DesertWaters>          400</DesertWaters>
+      <AshlandWaters>         400</AshlandWaters>
+      <InlandWater>           100</InlandWater>
+      <FrozenInlandWaters>    100</FrozenInlandWaters>
+      <TundraInlandWaters>    100</TundraInlandWaters>
+      <ChillyInlandWaters>    100</ChillyInlandWaters>
+      <TropicalInlandWaters>  100</TropicalInlandWaters>
+      <DesertInlandWaters>    100</DesertInlandWaters>
+      <AshlandInlandWaters>   100</AshlandInlandWaters>
+      <River>     900</River>
       <Anomaly1>  6</Anomaly1>
       <Anomaly2>  6</Anomaly2>
       <Anomaly3>  1</Anomaly3>
@@ -1699,37 +1802,188 @@
       <SandstoneSwirls>         3</SandstoneSwirls>
     </Faction>
 
+    <Faction Name="AffinityCultists">
+      <!-- Decreased weight on "dry" tiles -->
+      <!-- Increased weight on "wet" tiles -->
+      <FrozenWaters>          -10</FrozenWaters>
+      <TundraWaters>          -10</TundraWaters>
+      <ChillyWaters>          -10</ChillyWaters>
+      <CoastalWaters>         -10</CoastalWaters>
+      <TropicalWaters>        -10</TropicalWaters>
+      <DesertWaters>          -10</DesertWaters>
+      <River>     7</River>
+      <Anomaly1>  35</Anomaly1>
+      <Anomaly2>  35</Anomaly2>
+      <Anomaly3>  35</Anomaly3>
+      <Anomaly5>  35</Anomaly5>
+      <Anomaly6>  35</Anomaly6>
+      <Anomaly7>  35</Anomaly7>
+      <Anomaly8>  35</Anomaly8>
+      <Anomaly9>  35</Anomaly9>
+      <Anomaly10> 35</Anomaly10>
+      <Anomaly11> 35</Anomaly11>
+      <Anomaly12> 35</Anomaly12>
+      <Anomaly13> 35</Anomaly13>
+      <Anomaly14> 35</Anomaly14>
+      <Anomaly15> 35</Anomaly15>
+      <Anomaly16> 35</Anomaly16>
+      <Anomaly17> 35</Anomaly17>
+      <Anomaly18> 35</Anomaly18>
+      <Anomaly20> 35</Anomaly20>
+      <Anomaly29> 35</Anomaly29>
+      <Anomaly52> 35</Anomaly52>
+      <Anomaly53> 35</Anomaly53>
+      <Anomaly54> 35</Anomaly54>
+      <Anomaly55> 35</Anomaly55>
+      <Anomaly56> 35</Anomaly56>
+      <Anomaly57> 35</Anomaly57>
+      <Anomaly19> 35</Anomaly19>
+      <Anomaly21> 35</Anomaly21>
+      <Anomaly22> 35</Anomaly22>
+      <Anomaly23> 35</Anomaly23>
+      <Anomaly24> 35</Anomaly24>
+      <Anomaly25> 35</Anomaly25>
+      <Anomaly26> 35</Anomaly26>
+      <Anomaly27> 35</Anomaly27>
+      <Anomaly28> 35</Anomaly28>
+      <Anomaly30> 35</Anomaly30>
+      <Anomaly34> 35</Anomaly34>
+      <Anomaly36> 35</Anomaly36>
+      <Anomaly39> 35</Anomaly39>
+      <Anomaly43> 5</Anomaly43>
+      <Strategic1>2</Strategic1>
+      <Strategic2>2</Strategic2>
+      <Strategic3>0</Strategic3>
+      <Strategic4>0</Strategic4>
+      <Strategic5>0</Strategic5>
+      <Strategic6>0</Strategic6>
+      <CrystalIce>              0</CrystalIce>
+      <Snow>                    5</Snow>
+      <FrozenGrass>             8</FrozenGrass>
+      <FrozenSpikes>            7</FrozenSpikes>
+      <CrystalForest>           -3</CrystalForest>
+      <CrystalField>            5</CrystalField>
+      <Taiga>                   11</Taiga>
+      <TundraRocks>             8</TundraRocks>
+      <TundraGrass>             9</TundraGrass>
+      <TundraDirtField>         6</TundraDirtField>
+      <TundraRockyField>        8</TundraRockyField>
+      <TundraHighMountainForest>-3</TundraHighMountainForest>
+      <TundraSnowyRockyField>   8</TundraSnowyRockyField>
+      <TundraSnowyField>        6</TundraSnowyField>
+      <SnowyField>              8</SnowyField>
+      <ColdDirtField>           6</ColdDirtField>
+      <ColdGrassland>           9</ColdGrassland>
+      <RockyField>              8</RockyField>
+      <ColdForest>              -3</ColdForest>
+      <HighSnowyField>          9</HighSnowyField>
+      <HighMountainForest>      -3</HighMountainForest>
+      <SnowyDirtField>          6</SnowyDirtField>
+      <SnowyRockyField>         8</SnowyRockyField>
+      <EnchantedForest>         -3</EnchantedForest>
+      <TemperateForest>         -3</TemperateForest>
+      <Wetland>                 11</Wetland>
+      <Grassland>               11</Grassland>
+      <Prairie>                 9</Prairie>
+      <HotPrairie>              9</HotPrairie>
+      <RedSoil>                 9</RedSoil>
+      <RedRock>                 8</RedRock>
+      <TropicalWetland>         11</TropicalWetland>
+      <PalmTrees>               11</PalmTrees>
+      <TropicalDirtField>       6</TropicalDirtField>
+      <TropicalMountainRock>    8</TropicalMountainRock>
+      <TropicalMountainForest>  -3</TropicalMountainForest>
+      <Shrubland>               6</Shrubland>
+      <Savanna>                 8</Savanna>
+      <DrySoil>                 0</DrySoil>
+      <Sandstone>               7</Sandstone>
+      <SandDunes>               5</SandDunes>
+      <SandstoneSwirls>         7</SandstoneSwirls>
+      <CharredForest>           -10</CharredForest>
+      <LavaPlains>              -10</LavaPlains>
+      <ScorchedPrairie>         -10</ScorchedPrairie>
+      <LavaSwirls>              -10</LavaSwirls>
+      <AshPrairie>              -10</AshPrairie>
+      <Badlands>                -10</Badlands>
+      <Volcano>                 -10</Volcano>
+    </Faction>
+    
     <Faction Name="AffinityMimics">
-      <CharredForest>           -800</CharredForest>
-      <LavaPlains>              -800</LavaPlains>
-      <ScorchedPrairie>         -800</ScorchedPrairie>
-      <LavaSwirls>              -800</LavaSwirls>
-      <AshPrairie>              -800</AshPrairie>
-      <Badlands>                -800</Badlands>
-      <Volcano>                 -1000</Volcano>
-      <CrystalIce>              -10</CrystalIce>
-      <Snow>                    -2</Snow>
-      <FrozenGrass>             -4</FrozenGrass>
-      <FrozenSpikes>            -5</FrozenSpikes>
-      <CrystalForest>           -4</CrystalForest>
-      <CrystalField>            -2</CrystalField>
-      <Taiga>                   -5</Taiga>
-      <TundraRocks>             -10</TundraRocks>
-      <TundraGrass>             -4</TundraGrass>
-      <TundraDirtField>         -5</TundraDirtField>
-      <TundraRockyField>        -10</TundraRockyField>
-      <TundraHighMountainForest>-2</TundraHighMountainForest>
-      <TundraSnowyRockyField>   -5</TundraSnowyRockyField>
-      <TundraSnowyField>        -10</TundraSnowyField>
-      <SnowyField>              -10</SnowyField>
-      <ColdDirtField>           -5</ColdDirtField>
-      <ColdGrassland>           10</ColdGrassland>
-      <RockyField>              -15</RockyField>
-      <ColdForest>              -5</ColdForest>
-      <HighSnowyField>          -4</HighSnowyField>
-      <HighMountainForest>      -5</HighMountainForest>
-      <SnowyDirtField>          -5</SnowyDirtField>
-      <SnowyRockyField>         -10</SnowyRockyField>
+      <FrozenWaters>          -15</FrozenWaters>
+      <TundraWaters>          -15</TundraWaters>
+      <ChillyWaters>          -15</ChillyWaters>
+      <CoastalWaters>         -15</CoastalWaters>
+      <TropicalWaters>        -15</TropicalWaters>
+      <DesertWaters>          -15</DesertWaters>
+      <River>     7</River>
+      <Anomaly1>  31</Anomaly1>
+      <Anomaly2>  31</Anomaly2>
+      <Anomaly3>  31</Anomaly3>
+      <Anomaly5>  31</Anomaly5>
+      <Anomaly6>  31</Anomaly6>
+      <Anomaly7>  31</Anomaly7>
+      <Anomaly8>  31</Anomaly8>
+      <Anomaly9>  31</Anomaly9>
+      <Anomaly10> 31</Anomaly10>
+      <Anomaly11> 31</Anomaly11>
+      <Anomaly12> 31</Anomaly12>
+      <Anomaly13> 31</Anomaly13>
+      <Anomaly14> 31</Anomaly14>
+      <Anomaly15> 31</Anomaly15>
+      <Anomaly16> 31</Anomaly16>
+      <Anomaly17> 31</Anomaly17>
+      <Anomaly18> 31</Anomaly18>
+      <Anomaly20> 31</Anomaly20>
+      <Anomaly29> 31</Anomaly29>
+      <Anomaly52> 31</Anomaly52>
+      <Anomaly53> 31</Anomaly53>
+      <Anomaly54> 31</Anomaly54>
+      <Anomaly55> 31</Anomaly55>
+      <Anomaly56> 31</Anomaly56>
+      <Anomaly57> 31</Anomaly57>
+      <Anomaly19> 31</Anomaly19>
+      <Anomaly21> 31</Anomaly21>
+      <Anomaly22> 31</Anomaly22>
+      <Anomaly23> 31</Anomaly23>
+      <Anomaly24> 31</Anomaly24>
+      <Anomaly25> 31</Anomaly25>
+      <Anomaly26> 31</Anomaly26>
+      <Anomaly27> 31</Anomaly27>
+      <Anomaly28> 31</Anomaly28>
+      <Anomaly30> 31</Anomaly30>
+      <Anomaly34> 31</Anomaly34>
+      <Anomaly36> 31</Anomaly36>
+      <Anomaly39> 31</Anomaly39>
+      <Anomaly43> 15</Anomaly43>
+      <Strategic1>2</Strategic1>
+      <Strategic2>2</Strategic2>
+      <Strategic3>0</Strategic3>
+      <Strategic4>0</Strategic4>
+      <Strategic5>0</Strategic5>
+      <Strategic6>0</Strategic6>
+      <CrystalIce>              2</CrystalIce>
+      <Snow>                    1</Snow>
+      <FrozenGrass>             2</FrozenGrass>
+      <FrozenSpikes>            1</FrozenSpikes>
+      <CrystalForest>           1</CrystalForest>
+      <CrystalField>            2</CrystalField>
+      <Taiga>                   1</Taiga>
+      <TundraRocks>             1</TundraRocks>
+      <TundraGrass>             2</TundraGrass>
+      <TundraDirtField>         2</TundraDirtField>
+      <TundraRockyField>        1</TundraRockyField>
+      <TundraHighMountainForest>1</TundraHighMountainForest>
+      <TundraSnowyRockyField>   3</TundraSnowyRockyField>
+      <TundraSnowyField>        1</TundraSnowyField>
+      <SnowyField>              2</SnowyField>
+      <ColdDirtField>           1</ColdDirtField>
+      <ColdGrassland>           4</ColdGrassland>
+      <RockyField>              1</RockyField>
+      <ColdForest>              2</ColdForest>
+      <HighSnowyField>          1</HighSnowyField>
+      <HighMountainForest>      3</HighMountainForest>
+      <SnowyDirtField>          1</SnowyDirtField>
+      <SnowyRockyField>         2</SnowyRockyField>
       <EnchantedForest>         5</EnchantedForest>
       <TemperateForest>         5</TemperateForest>
       <Wetland>                 15</Wetland>
@@ -1743,6 +1997,17 @@
       <TropicalMountainForest>  5</TropicalMountainForest>
       <Shrubland>               3</Shrubland>
       <Savanna>                 4</Savanna>
+	  <DrySoil>                 2</DrySoil>
+      <Sandstone>               -3</Sandstone>
+      <SandDunes>               -4</SandDunes>
+      <SandstoneSwirls>         -3</SandstoneSwirls>
+	  <CharredForest>           -10</CharredForest>
+      <LavaPlains>              -10</LavaPlains>
+      <ScorchedPrairie>         -10</ScorchedPrairie>
+      <LavaSwirls>              -10</LavaSwirls>
+      <AshPrairie>              -10</AshPrairie>
+      <Badlands>                -10</Badlands>
+      <Volcano>                 -50</Volcano>
     </Faction>
     
   </SpawnPreferences>
@@ -1841,17 +2106,19 @@
 
   <FactionMinimalFIDSList>
     <FactionFIDS Name="Default"                   Food="8" Industry="9"  Dust="4"  Science="4"/>
-    <FactionFIDS Name="AffinityBrokenLords"       Food="0" Industry="10" Dust="12" Science="1"/>
-    <FactionFIDS Name="AffinityVaulters"          Food="7" Industry="7"  Dust="3"  Science="9"/>
+    <FactionFIDS Name="AffinityBrokenLords"       Food="0" Industry="10" Dust="12" Science="3"/>
+    <FactionFIDS Name="AffinityVaulters"          Food="7" Industry="7"  Dust="3"  Science="15"/>
     <FactionFIDS Name="AffinityMadFairies"        Food="8" Industry="11" Dust="1"  Science="1"/>
-    <FactionFIDS Name="AffinityNecrophages"       Food="7" Industry="10" Dust="4"  Science="2"/>
-    <FactionFIDS Name="AffinityRovingClans"       Food="8" Industry="8"  Dust="8"  Science="3"/>
-    <FactionFIDS Name="AffinityRageWizards"       Food="8" Industry="7"  Dust="4"  Science="6"/>
-    <FactionFIDS Name="AffinityReplicants"        Food="6"  Industry="7"  Dust="11" Science="0"/>
+    <FactionFIDS Name="AffinityNecrophages"       Food="7" Industry="11" Dust="5"  Science="3"/>
+    <FactionFIDS Name="AffinityRovingClans"       Food="8" Industry="8"  Dust="10"  Science="3"/>
+    <FactionFIDS Name="AffinityRageWizards"       Food="8" Industry="7"  Dust="9"  Science="6"/>
+    <FactionFIDS Name="AffinityReplicants"        Food="6"  Industry="7"  Dust="16" Science="0"/>
     <FactionFIDS Name="AffinityWinterShifters"    Food="10" Industry="8"  Dust="3"  Science="3"/>
-    <FactionFIDS Name="AffinitySeaDemons"         Food="5"  Industry="3"  Dust="2"  Science="1"/>
-    <FactionFIDS Name="AffinityFlames"            Food="0"  Industry="10"  Dust="5"  Science="7"/>
-    <FactionFIDS Name="AffinityMimics"            Food="10"  Industry="7"  Dust="5"  Science="3"/>
+    <FactionFIDS Name="AffinitySeaDemons"         Food="8"  Industry="5"  Dust="3"  Science="2"/>
+    <FactionFIDS Name="AffinityFlames"            Food="4"  Industry="10"  Dust="6"  Science="8"/>
+    <FactionFIDS Name="AffinityMimics"            Food="14"  Industry="8"  Dust="7"  Science="12"/>
+    <FactionFIDS Name="AffinityCultists"          Food="10" Industry="12"  Dust="7"  Science="8"/>
+    <FactionFIDS Name="AffinityMezari"            Food="2" Industry="10"  Dust="5"  Science="15"/>
   </FactionMinimalFIDSList>
 
   <!-- Unique anomalies such as Anomaly 43 are voluntarily removed from this list -->
@@ -2069,6 +2336,7 @@
       <PrevalenceInTerrain Name="SandstoneSwirls"           Weight="4"/>
       <PrevalenceInTerrain Name="LavaPlains"                Weight="4"/>
       <PrevalenceInTerrain Name="ScorchedPrairie"           Weight="4"/>
+	  <PrevalenceInTerrain Name="DirtField"                 Weight="1"/>
     </Anomaly>
 
     <!-- MineralRich -->
@@ -2247,6 +2515,7 @@
       <PrevalenceInTerrain Name="SandDunes"         Weight="4"/>
       <PrevalenceInTerrain Name="SandstoneSwirls"   Weight="4"/>
       <PrevalenceInTerrain Name="LavaPlains"                Weight="4"/>
+	  <PrevalenceInTerrain Name="DirtField"                 Weight="1"/>
     </Anomaly>
 
     <!-- GeothermalPit -->
@@ -2667,6 +2936,7 @@
       <PrevalenceInTerrain Name="SandstoneSwirls"   Weight="2"/>
       <PrevalenceInTerrain Name="LavaPlains"                Weight="1"/>
       <PrevalenceInTerrain Name="ScorchedPrairie"           Weight="1"/>
+	  <PrevalenceInTerrain Name="DirtField"                 Weight="1"/>
     </Anomaly>
 
     <!-- Mychordia -->
@@ -2885,6 +3155,7 @@
     </Climate>
     <Climate Name="WarmArid" Temperature="5">
       <Biome Name="JungleTemperate"         Weight="25"/>
+	  <Biome Name="AshlandsHot"             Weight="1"/>
     </Climate>
     <Climate Name="Hot" Temperature="6">
       <Biome Name="DesertDry"               Weight="25"/>

@@ -44,8 +44,7 @@ public class AbstractDebugPatchRenderer : PatchRenderer
 	{
 		this.CreateDebugInstanciedMeshBlockIFN();
 		AgeFont ageFont = this.debugGraphicData.AgeFont;
-		Material material = this.debugGraphicData.Material;
-		int orCreateMeshIndex = AbstractDebugPatchRenderer.GetOrCreateMeshIndex(material, this.instanciedMeshHolders);
+		int orCreateMeshIndex = AbstractDebugPatchRenderer.GetOrCreateMeshIndex(this.debugGraphicData.Material, this.instanciedMeshHolders);
 		float d = textSizeMultiplier * this.debugGraphicData.TextSize;
 		float num = 0f;
 		float num2 = 0f;
@@ -91,19 +90,19 @@ public class AbstractDebugPatchRenderer : PatchRenderer
 			else
 			{
 				char nextCharCode2 = (j + 1 >= stringToWrite.Length) ? '\0' : stringToWrite[j];
-				Vector2 a;
 				Vector2 vector3;
+				Vector2 vector4;
 				Rect rect2;
 				float num12;
-				ageFont.GetCharInfo(c2, nextCharCode2, out a, out vector3, out rect2, out num12);
-				if (a.x > 0f && a.y > 0f)
+				ageFont.GetCharInfo(c2, nextCharCode2, out vector3, out vector4, out rect2, out num12);
+				if (vector3.x > 0f && vector3.y > 0f)
 				{
-					Vector3 a2 = new Vector3(num10, 0f, num11 + num8) + new Vector3(vector3.x, 0f, -vector3.y) - new Vector3(0f, 0f, a.y);
+					Vector3 a = new Vector3(num10, 0f, num11 + num8) + new Vector3(vector4.x, 0f, -vector4.y) - new Vector3(0f, 0f, vector3.y);
 					int minPixelIndexX = Mathf.RoundToInt(rect2.xMin * (float)this.debugGraphicData.FontTextureWidth);
 					int minPixelIndexY = Mathf.RoundToInt(rect2.yMin * (float)this.debugGraphicData.FontTextureHeight);
 					int pixelCountX = Mathf.RoundToInt(rect2.width * (float)this.debugGraphicData.FontTextureWidth);
 					int pixelCountY = Mathf.RoundToInt(rect2.height * (float)this.debugGraphicData.FontTextureHeight);
-					InstanciedMeshHelpers.AddLetterInstance(this.instanciedMeshHolders, this.debugTextInstanciedMeshBlock, absoluteWorldPosition + d * a2, minPixelIndexX, minPixelIndexY, pixelCountX, pixelCountY, a * d, orCreateMeshIndex, false);
+					InstanciedMeshHelpers.AddLetterInstance(this.instanciedMeshHolders, this.debugTextInstanciedMeshBlock, absoluteWorldPosition + d * a, minPixelIndexX, minPixelIndexY, pixelCountX, pixelCountY, vector3 * d, orCreateMeshIndex, false);
 				}
 				num10 += num12;
 			}

@@ -12,13 +12,9 @@ public class ArmyLine : SortedLine
 {
 	public ArmyLine()
 	{
+		this.temp = string.Empty;
 		this.profanityError = string.Empty;
 		this.invalidColor = new Color(0.7529412f, 0.2509804f, 0.2509804f);
-		base..ctor();
-	}
-
-	private void StartProfanityFiltering()
-	{
 	}
 
 	public Army Army { get; private set; }
@@ -594,7 +590,7 @@ public class ArmyLine : SortedLine
 
 	private void OnChangeNameCB(GameObject obj)
 	{
-		this.StartProfanityFiltering();
+		this.ValidateArmyName();
 	}
 
 	private void OnNameFocusLostCB(GameObject obj)
@@ -629,11 +625,6 @@ public class ArmyLine : SortedLine
 		{
 			flag = false;
 			this.ArmyNameTextField.AgeTransform.AgeTooltip.Content = "%ArmyNameAlreadyExistsDescription";
-		}
-		if (this.profanityError != string.Empty)
-		{
-			flag = false;
-			this.ArmyNameTextField.AgeTransform.AgeTooltip.Content = "%Failure" + this.profanityError + "Description";
 		}
 		if (flag)
 		{
@@ -682,11 +673,9 @@ public class ArmyLine : SortedLine
 		this.selectedHero = null;
 	}
 
-	private string profanityError;
-
-	private UnityEngine.Coroutine profanityFilterCoroutine;
-
-	private Color invalidColor;
+	private void StartProfanityFiltering()
+	{
+	}
 
 	public static Army CurrentArmy;
 
@@ -738,7 +727,13 @@ public class ArmyLine : SortedLine
 
 	private DepartmentOfDefense departmentOfDefense;
 
-	private string temp = string.Empty;
+	private string temp;
 
 	private Unit selectedHero;
+
+	private string profanityError;
+
+	private UnityEngine.Coroutine profanityFilterCoroutine;
+
+	private Color invalidColor;
 }

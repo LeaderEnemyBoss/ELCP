@@ -17,13 +17,13 @@ using UnityEngine;
 
 [Diagnostics.TagAttribute("Agency")]
 [Diagnostics.TagAttribute("Agency")]
+[OrderProcessor(typeof(OrderRoundUp), "RoundUp")]
 [OrderProcessor(typeof(OrderRevealInfiltratedSpiesByInfiltration), "RevealInfiltratedSpiesByInfiltration")]
 [OrderProcessor(typeof(OrderStartLeechByInfiltration), "StartLeechByInfiltration")]
-[OrderProcessor(typeof(OrderRoundUp), "RoundUp")]
+[OrderProcessor(typeof(OrderToggleInfiltration), "ToggleInfiltration")]
+[OrderProcessor(typeof(OrderDamageGovernorByInfiltration), "DamageGovernorByInfiltration")]
 [OrderProcessor(typeof(OrderAntiSpyCheck), "AntiSpyCheck")]
 [OrderProcessor(typeof(OrderDamageFortificationByInfiltration), "DamageFortificationByInfiltration")]
-[OrderProcessor(typeof(OrderDamageGovernorByInfiltration), "DamageGovernorByInfiltration")]
-[OrderProcessor(typeof(OrderToggleInfiltration), "ToggleInfiltration")]
 public class DepartmentOfIntelligence : Agency, IXmlSerializable
 {
 	public DepartmentOfIntelligence(global::Empire empire) : base(empire)
@@ -1522,18 +1522,22 @@ public class DepartmentOfIntelligence : Agency, IXmlSerializable
 		if (hero.Garrison != null && this.battleEncounterRepositoryService != null)
 		{
 			IEnumerable<BattleEncounter> enumerable = this.battleEncounterRepositoryService;
-			if (enumerable != null)
+			if (enumerable != null && enumerable.Any((BattleEncounter encounter) => encounter.IsGarrisonInEncounter(hero.Garrison.GUID)))
 			{
-				bool flag = enumerable.Any((BattleEncounter encounter) => encounter.IsGarrisonInEncounter(hero.Garrison.GUID));
-				if (flag)
-				{
-					Diagnostics.LogWarning("Order preprocessing failed because the hero is in combat ");
-					return false;
-				}
+				Diagnostics.LogWarning("Order preprocessing failed because the hero is in combat ");
+				return false;
 			}
 		}
 		float infiltrationCost = 0f;
-		bool result = this.CanInfiltrate(hero, garrison, order.IsAGroundInfiltration, out infiltrationCost, true);
+		bool result;
+		if (order.IgnoreVision)
+		{
+			result = this.CanInfiltrateIgnoreVision(hero, garrison, order.IsAGroundInfiltration, out infiltrationCost, true);
+		}
+		else
+		{
+			result = this.CanInfiltrate(hero, garrison, order.IsAGroundInfiltration, out infiltrationCost, true);
+		}
 		order.InfiltrationCost = infiltrationCost;
 		return result;
 	}
@@ -1604,22 +1608,6 @@ public class DepartmentOfIntelligence : Agency, IXmlSerializable
 		if (this.InfiltrationSeniorityChange != null)
 		{
 			this.InfiltrationSeniorityChange(this, new InfiltrationEventArgs(hero, garrison));
-		}
-	}
-
-	public void CheckStopInfiltrationAgainstGarrisonChange(GameEntityGUID garrisonGuid)
-	{
-		for (int i = 0; i < this.infiltrationProcesses.Count; i++)
-		{
-			if (this.infiltrationProcesses[i].GarrisonGuid == garrisonGuid)
-			{
-				IGameEntity gameEntity;
-				if (this.gameEntityRepositoryService.TryGetValue(this.infiltrationProcesses[i].HeroGuid, out gameEntity))
-				{
-					this.StopInfiltration(gameEntity as Unit, true, true);
-				}
-				break;
-			}
 		}
 	}
 
@@ -1726,48 +1714,70 @@ public class DepartmentOfIntelligence : Agency, IXmlSerializable
 	protected override IEnumerator OnLoadGame(Amplitude.Unity.Game.Game game)
 	{
 		yield return base.OnLoadGame(game);
-		for (int index = this.spiedGarrisons.Count - 1; index >= 0; index--)
+		int index;
+		Func<InfiltrationProcessus, bool> <>9__0;
+		Func<City, bool> <>9__1;
+		int index2;
+		for (index = this.spiedGarrisons.Count - 1; index >= 0; index = index2 - 1)
 		{
 			this.gameEntityRepositoryService.Register(this.spiedGarrisons[index].Hero);
-			InfiltrationProcessus infiltrationProcessus = this.infiltrationProcesses.FirstOrDefault((InfiltrationProcessus infiltrationProcess) => infiltrationProcess.GarrisonGuid == this.spiedGarrisons[index].GUID);
+			IEnumerable<InfiltrationProcessus> source = this.infiltrationProcesses;
+			Func<InfiltrationProcessus, bool> predicate;
+			if ((predicate = <>9__0) == null)
+			{
+				predicate = (<>9__0 = ((InfiltrationProcessus infiltrationProcess) => infiltrationProcess.GarrisonGuid == this.spiedGarrisons[index].GUID));
+			}
+			InfiltrationProcessus infiltrationProcessus = source.FirstOrDefault(predicate);
 			if (infiltrationProcessus != null && infiltrationProcessus.SpyState == InfiltrationProcessus.InfiltrationState.Infiltrated)
 			{
-				City infiltratedCity = null;
-				for (int otherEmpireIndex = 0; otherEmpireIndex < ((global::Game)game).Empires.Length; otherEmpireIndex++)
+				City city2 = null;
+				for (int i = 0; i < ((global::Game)game).Empires.Length; i++)
 				{
-					MajorEmpire otherEmpire = ((global::Game)game).Empires[otherEmpireIndex] as MajorEmpire;
-					if (otherEmpire == null)
+					MajorEmpire majorEmpire = ((global::Game)game).Empires[i] as MajorEmpire;
+					if (majorEmpire == null)
 					{
 						break;
 					}
-					DepartmentOfTheInterior departmentOfTheInterior = otherEmpire.GetAgency<DepartmentOfTheInterior>();
-					if (departmentOfTheInterior != null)
+					DepartmentOfTheInterior agency = majorEmpire.GetAgency<DepartmentOfTheInterior>();
+					if (agency != null)
 					{
-						infiltratedCity = departmentOfTheInterior.Cities.FirstOrDefault((City city) => city.GUID == this.spiedGarrisons[index].GUID);
-						if (infiltratedCity != null)
+						IEnumerable<City> cities = agency.Cities;
+						Func<City, bool> predicate2;
+						if ((predicate2 = <>9__1) == null)
 						{
-							infiltratedCity.EmpireInfiltrationBits |= 1 << base.Empire.Index;
+							predicate2 = (<>9__1 = ((City city) => city.GUID == this.spiedGarrisons[index].GUID));
+						}
+						city2 = cities.FirstOrDefault(predicate2);
+						if (city2 != null)
+						{
+							city2.EmpireInfiltrationBits |= 1 << base.Empire.Index;
 							break;
 						}
 					}
 				}
-				if (infiltratedCity == null || infiltratedCity.Empire == base.Empire)
+				if (city2 == null || city2.Empire == base.Empire)
 				{
 					this.StopInfiltration(this.spiedGarrisons[index].Hero, true, false);
 				}
 			}
+			index2 = index;
 		}
-		IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
-		if (downloadableContentService != null && downloadableContentService.IsShared(DownloadableContent11.ReadOnlyName))
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		if (service != null && service.IsShared(DownloadableContent11.ReadOnlyName))
 		{
 			this.EnableDetection = true;
-			DepartmentOfPlanificationAndDevelopment departmentOfPlanificationAndDevelopment = base.Empire.GetAgency<DepartmentOfPlanificationAndDevelopment>();
-			if (departmentOfPlanificationAndDevelopment != null)
+			DepartmentOfPlanificationAndDevelopment agency2 = base.Empire.GetAgency<DepartmentOfPlanificationAndDevelopment>();
+			if (agency2 != null)
 			{
-				departmentOfPlanificationAndDevelopment.BoosterCollectionChange += this.DepartmentOfPlanificationAndDevelopment_BoosterCollectionChange;
-				foreach (Booster booster in departmentOfPlanificationAndDevelopment.Boosters.Values)
+				agency2.BoosterCollectionChange += this.DepartmentOfPlanificationAndDevelopment_BoosterCollectionChange;
+				using (Dictionary<GameEntityGUID, Booster>.ValueCollection.Enumerator enumerator = agency2.Boosters.Values.GetEnumerator())
 				{
-					this.DepartmentOfPlanificationAndDevelopment_BoosterCollectionChange(this, new BoosterCollectionChangeEventArgs(BoosterCollectionChangeAction.Add, booster));
+					while (enumerator.MoveNext())
+					{
+						Booster booster = enumerator.Current;
+						this.DepartmentOfPlanificationAndDevelopment_BoosterCollectionChange(this, new BoosterCollectionChangeEventArgs(BoosterCollectionChangeAction.Add, booster));
+					}
+					yield break;
 				}
 			}
 		}
@@ -2163,6 +2173,22 @@ public class DepartmentOfIntelligence : Agency, IXmlSerializable
 		}
 	}
 
+	public void CheckStopInfiltrationAgainstGarrisonChange(GameEntityGUID garrisonGuid)
+	{
+		for (int i = 0; i < this.infiltrationProcesses.Count; i++)
+		{
+			if (this.infiltrationProcesses[i].GarrisonGuid == garrisonGuid)
+			{
+				IGameEntity gameEntity;
+				if (this.gameEntityRepositoryService.TryGetValue(this.infiltrationProcesses[i].HeroGuid, out gameEntity))
+				{
+					this.StopInfiltration(gameEntity as Unit, true, true);
+				}
+				break;
+			}
+		}
+	}
+
 	private bool StartInfiltration(IGarrison garrison, Unit hero, bool isGroundInfiltration)
 	{
 		if (this.InfiltrationProcesses.Exists((InfiltrationProcessus match) => match.GarrisonGuid == garrison.GUID))
@@ -2265,6 +2291,72 @@ public class DepartmentOfIntelligence : Agency, IXmlSerializable
 		{
 			this.InfiltrationProcessCollectionChange(this, new CollectionChangeEventArgs(action, processus));
 		}
+	}
+
+	public bool CanInfiltrateIgnoreVision(Unit hero, IGarrison target, bool fromGround, out float cost, bool silent = true)
+	{
+		cost = 0f;
+		if (!hero.CheckUnitAbility(UnitAbility.ReadonlySpy, -1))
+		{
+			return false;
+		}
+		if (DepartmentOfEducation.IsInjured(hero) || DepartmentOfEducation.IsLocked(hero) || DepartmentOfEducation.CheckGarrisonAgainstSiege(hero, hero.Garrison))
+		{
+			return false;
+		}
+		if (target.Empire == base.Empire)
+		{
+			return false;
+		}
+		if (target is City)
+		{
+			City city = target as City;
+			if (city.BesiegingEmpire != null && city.BesiegingEmpire != base.Empire)
+			{
+				return false;
+			}
+		}
+		if (hero.Garrison != null && hero.Garrison.IsInEncounter)
+		{
+			return false;
+		}
+		if (DepartmentOfIntelligence.IsGarrisonAlreadyUnderInfiltrationProcessus(target.GUID, base.Empire))
+		{
+			return false;
+		}
+		int i = 0;
+		while (i < this.InfiltrationProcesses.Count)
+		{
+			if (this.InfiltrationProcesses[i].HeroGuid == hero.GUID)
+			{
+				if (this.InfiltrationProcesses[i].SpyState == InfiltrationProcessus.InfiltrationState.OnGoing)
+				{
+					return false;
+				}
+				break;
+			}
+			else
+			{
+				i++;
+			}
+		}
+		if (fromGround)
+		{
+			if (!this.IsHeroNearGarrison(hero, target))
+			{
+				return false;
+			}
+		}
+		else
+		{
+			cost = DepartmentOfIntelligence.ComputeInfiltrationCost(base.Empire, target);
+			if (!this.departmentOfTheTreasury.CanAfford(cost, DepartmentOfTheTreasury.Resources.InfiltrationCost))
+			{
+				cost = -1f;
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static StaticString InfiltrationTargetFailureNotVisible = "InfiltrationTargetFailure_NotVisible";

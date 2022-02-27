@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using Amplitude;
+using Amplitude.Unity.Game.Orders;
 
-public class OrderTeleportArmyToCity : Order
+public class OrderTeleportArmyToCity : global::Order
 {
 	public OrderTeleportArmyToCity(int empireIndex, GameEntityGUID armyGUID, GameEntityGUID cityGUID) : base(empireIndex)
 	{
@@ -31,6 +32,7 @@ public class OrderTeleportArmyToCity : Order
 		writer.Write(this.CityGUID);
 		writer.Write(this.Destination.Row);
 		writer.Write(this.Destination.Column);
+		writer.Write(this.ArmyActionCooldownDuration);
 	}
 
 	public override string ToString()
@@ -46,7 +48,11 @@ public class OrderTeleportArmyToCity : Order
 		short row = reader.ReadInt16();
 		short column = reader.ReadInt16();
 		this.Destination = new WorldPosition(row, column);
+		this.ArmyActionCooldownDuration = reader.ReadSingle();
 	}
+
+	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
+	public float ArmyActionCooldownDuration { get; set; }
 
 	public static StaticString AuthenticationPath = "DepartmentOfTransportation/OrderTeleportArmyToCity";
 }

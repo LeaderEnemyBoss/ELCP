@@ -7,6 +7,7 @@ public class CityConstructibleActionDefinition : DepartmentOfIndustry.Constructi
 	public CityConstructibleActionDefinition()
 	{
 		this.Category = CityConstructibleActionDefinition.ReadOnlyCategory;
+		this.TechnologyToUnlock = string.Empty;
 	}
 
 	[XmlElement("Action")]
@@ -14,6 +15,12 @@ public class CityConstructibleActionDefinition : DepartmentOfIndustry.Constructi
 
 	[XmlElement("InfectedAffinityConstraint")]
 	public string InfectedAffinityConstraint { get; set; }
+
+	[XmlElement]
+	public string TechnologyToUnlock { get; set; }
+
+	[XmlElement]
+	public string[] TechnologiesToUnlock { get; set; }
 
 	public static readonly string ReadOnlyCategory = "CityConstructibleAction";
 }

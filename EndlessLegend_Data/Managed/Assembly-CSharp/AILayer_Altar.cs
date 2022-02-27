@@ -147,7 +147,21 @@ public class AILayer_Altar : AILayer, IAIEvaluationHelper<SeasonEffect, Interpre
 				list.Add(aiparameter.Instantiate());
 			}
 		}
-		this.aiParametersByElement.Add(seasonEffectDefinition.Name, list.ToArray());
+		if (this.orbUnlockDefinitions == null)
+		{
+			this.aiParametersByElement.Add(seasonEffectDefinition.Name, list.ToArray());
+			IEnumerable<DepartmentOfScience.ConstructibleElement> database = Databases.GetDatabase<DepartmentOfScience.ConstructibleElement>(false);
+			List<TechnologyDefinition> list2 = new List<TechnologyDefinition>();
+			foreach (DepartmentOfScience.ConstructibleElement constructibleElement in database)
+			{
+				TechnologyDefinition technologyDefinition = constructibleElement as TechnologyDefinition;
+				if (technologyDefinition != null && technologyDefinition.Visibility == TechnologyDefinitionVisibility.Visible && (technologyDefinition.TechnologyFlags & DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock) == DepartmentOfScience.ConstructibleElement.TechnologyFlag.OrbUnlock)
+				{
+					list2.Add(technologyDefinition);
+				}
+			}
+			this.orbUnlockDefinitions = list2.ToArray();
+		}
 	}
 
 	[UtilityFunction("AIEmpireGrowth")]
@@ -562,8 +576,7 @@ public class AILayer_Altar : AILayer, IAIEvaluationHelper<SeasonEffect, Interpre
 		{
 			return;
 		}
-		IGameService service = Services.GetService<IGameService>();
-		global::Game game = service.Game as global::Game;
+		global::Game game = Services.GetService<IGameService>().Game as global::Game;
 		List<SeasonEffect> candidateEffectsForSeasonType = this.seasonService.Target.GetCandidateEffectsForSeasonType(Season.ReadOnlyWinter);
 		Diagnostics.Assert(this.elementEvaluator != null);
 		this.decisions.Clear();
@@ -636,14 +649,51 @@ public class AILayer_Altar : AILayer, IAIEvaluationHelper<SeasonEffect, Interpre
 		}
 		float num4 = this.seasonService.Target.ComputePrayerOrbCost(base.AIEntity.Empire);
 		float num5 = 10f * base.AIEntity.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-		int exactSeasonStartTurn = this.seasonService.Target.GetExactSeasonStartTurn(winterSeason);
-		int num6 = exactSeasonStartTurn - game.Turn;
+		int num6 = this.seasonService.Target.GetExactSeasonStartTurn(winterSeason) - game.Turn;
 		float num7 = Mathf.Clamp01((num5 - (float)num6) / num5);
 		float num8 = num3 * (0.5f + num7 / 2f);
 		num8 = Mathf.Clamp01(num8);
 		int num9 = this.ComputeWantedNumberOfOrbs(neededVoteCount);
+		DepartmentOfScience agency = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
+		float num10 = 0f;
+		float num11 = 0f;
+		for (int j = 0; j < this.orbUnlockDefinitions.Length; j++)
+		{
+			TechnologyDefinition technologyDefinition = this.orbUnlockDefinitions[j];
+			if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(base.AIEntity.Empire, technologyDefinition, new string[]
+			{
+				ConstructionFlags.Prerequisite
+			}))
+			{
+				DepartmentOfScience.ConstructibleElement.State technologyState = agency.GetTechnologyState(technologyDefinition);
+				if (technologyState != DepartmentOfScience.ConstructibleElement.State.Researched && technologyState != DepartmentOfScience.ConstructibleElement.State.NotAvailable)
+				{
+					num11 += 1f;
+				}
+				else if (technologyState == DepartmentOfScience.ConstructibleElement.State.Researched)
+				{
+					num10 += 1f;
+				}
+			}
+		}
+		float num12 = num11 / (num11 + num10);
+		num12 = Mathf.Min(1f, Mathf.Max(0f, 2f * num12 - 0.6f));
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			Diagnostics.Log("[ELCP: AILayer_Altar] {0} has reasearched {1} of {2} Orb Techs", new object[]
+			{
+				base.AIEntity.Empire,
+				num10,
+				num11 + num10
+			});
+			Diagnostics.Log("... Season Effect Voting score altered from {0} to {1}", new object[]
+			{
+				num8,
+				num8 * num12
+			});
+		}
 		evaluableMessage_VoteForSeasonEffect.VoteCount = num9;
-		evaluableMessage_VoteForSeasonEffect.Refresh(0.5f, num8, (float)num9 * num4, int.MaxValue);
+		evaluableMessage_VoteForSeasonEffect.Refresh(0.5f, num8 * num12, (float)num9 * num4, int.MaxValue);
 	}
 
 	protected override void ExecuteNeeds(StaticString context, StaticString pass)
@@ -827,6 +877,8 @@ public class AILayer_Altar : AILayer, IAIEvaluationHelper<SeasonEffect, Interpre
 
 	[InfluencedByPersonality]
 	private float maximumGainFromXml = 20f;
+
+	private TechnologyDefinition[] orbUnlockDefinitions;
 
 	private static class OutputAIParameterNames
 	{

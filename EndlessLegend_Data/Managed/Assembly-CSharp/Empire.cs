@@ -5,6 +5,7 @@ using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Xml;
 using Amplitude.Xml;
@@ -49,9 +50,8 @@ public class Empire : Amplitude.Unity.Game.Empire, IXmlSerializable, IDescriptor
 	{
 		string attribute = reader.GetAttribute("FactionDescriptor");
 		this.Faction = Faction.Decode(attribute);
-		IDatabase<Faction> database = Databases.GetDatabase<Faction>(false);
 		Faction faction;
-		if (database.TryGetValue(this.Faction.Name, out faction))
+		if (Databases.GetDatabase<Faction>(false).TryGetValue(this.Faction.Name, out faction))
 		{
 			MinorFaction minorFaction = faction as MinorFaction;
 			if (minorFaction != null)
@@ -70,10 +70,41 @@ public class Empire : Amplitude.Unity.Game.Empire, IXmlSerializable, IDescriptor
 			}
 		}
 		this.ColorIndex = reader.GetAttribute<int>("ColorIndex");
+		if (!(this is MajorEmpire))
+		{
+			string value = Amplitude.Unity.Framework.Application.Registry.GetValue<string>("Settings/UI/EmpireColorPalette", "Standard");
+			IDatabase<Palette> database = Databases.GetDatabase<Palette>(false);
+			Palette palette = null;
+			if (database != null)
+			{
+				database.TryGetValue(value, out palette);
+			}
+			if (palette != null && palette.Colors != null)
+			{
+				XmlColorReference xmlColorReference = null;
+				if (this is MinorEmpire || this is KaijuEmpire)
+				{
+					xmlColorReference = palette.Colors.FirstOrDefault((XmlColorReference iterator) => iterator.Tags != null && iterator.Tags.Contains("MinorFaction"));
+				}
+				else if (this is NavalEmpire)
+				{
+					xmlColorReference = palette.Colors.FirstOrDefault((XmlColorReference iterator) => iterator.Tags != null && iterator.Tags.Contains("NavalEmpire"));
+				}
+				else if (this is LesserEmpire)
+				{
+					xmlColorReference = palette.Colors.FirstOrDefault((XmlColorReference iterator) => iterator.Tags != null && iterator.Tags.Contains("LesserEmpire"));
+				}
+				if (xmlColorReference != null)
+				{
+					this.ColorIndex = Array.IndexOf<XmlColorReference>(palette.Colors, xmlColorReference);
+				}
+			}
+		}
 		base.ReadXml(reader);
 		IDatabase<SimulationDescriptor> database2 = Databases.GetDatabase<SimulationDescriptor>(true);
 		List<FactionTrait> list = new List<FactionTrait>(Faction.EnumerableTraits(this.Faction));
 		SimulationDescriptor simulationDescriptor;
+		Predicate<SimulationDescriptorHolder> <>9__3;
 		for (int i = 0; i < list.Count; i++)
 		{
 			FactionTrait factionTrait = list[i];
@@ -81,9 +112,18 @@ public class Empire : Amplitude.Unity.Game.Empire, IXmlSerializable, IDescriptor
 			{
 				for (int j = 0; j < factionTrait.SimulationDescriptorReferences.Length; j++)
 				{
-					if (database2.TryGetValue(factionTrait.SimulationDescriptorReferences[j], out simulationDescriptor) && !base.SimulationObject.DescriptorHolders.Exists((SimulationDescriptorHolder match) => match.Descriptor.Name == simulationDescriptor.Name))
+					if (database2.TryGetValue(factionTrait.SimulationDescriptorReferences[j], out simulationDescriptor))
 					{
-						base.SimulationObject.AddDescriptor(simulationDescriptor);
+						List<SimulationDescriptorHolder> descriptorHolders = base.SimulationObject.DescriptorHolders;
+						Predicate<SimulationDescriptorHolder> match2;
+						if ((match2 = <>9__3) == null)
+						{
+							match2 = (<>9__3 = ((SimulationDescriptorHolder match) => match.Descriptor.Name == simulationDescriptor.Name));
+						}
+						if (!descriptorHolders.Exists(match2))
+						{
+							base.SimulationObject.AddDescriptor(simulationDescriptor);
+						}
 					}
 				}
 			}
@@ -254,6 +294,11 @@ public class Empire : Amplitude.Unity.Game.Empire, IXmlSerializable, IDescriptor
 		{
 			agency4.OnEmpireEliminated(empire, authorized);
 		}
+		DepartmentOfTheTreasury agency5 = base.GetAgency<DepartmentOfTheTreasury>();
+		if (agency5 != null)
+		{
+			agency5.OnEmpireEliminated(empire, authorized);
+		}
 	}
 
 	protected void ApplyGameModifier(StaticString gameModifierReference, PlayerType playerType)
@@ -348,6 +393,19 @@ public class Empire : Amplitude.Unity.Game.Empire, IXmlSerializable, IDescriptor
 		this.Refresh(true);
 		this.ApplyGameModifier(GameModifierDefinition.GetMinorFactionDifficultyReference(game.MinorFactionDifficulty), playerType);
 		this.Refresh(true);
+		this.ApplyGameModifier("ELCPEmpireProperties", playerType);
+		this.Refresh(true);
+		ISessionService service = Services.GetService<ISessionService>();
+		if (service != null && service.Session != null)
+		{
+			string x = string.Format("Handicap{0}", base.Index);
+			string lobbyData = service.Session.GetLobbyData<string>(x, "5");
+			if (lobbyData != "5")
+			{
+				this.ApplyGameModifier("Handicap" + lobbyData, playerType);
+				this.Refresh(true);
+			}
+		}
 		DepartmentOfHealth agency = base.GetAgency<DepartmentOfHealth>();
 		if (agency != null)
 		{

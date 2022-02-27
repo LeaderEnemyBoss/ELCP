@@ -224,22 +224,29 @@ public class ArmyAction_TransferToCity : ArmyAction, IArmyActionWithUnitSelectio
 		Region region = worldPositionningService.GetRegion(worldPosition);
 		if (region.City != null && region.City.Empire == army.Empire)
 		{
-			for (int i = 0; i < region.City.Districts.Count; i++)
+			int i = 0;
+			while (i < region.City.Districts.Count)
 			{
-				if (region.City.Districts[i].Type != DistrictType.Exploitation)
+				if (region.City.Districts[i].Type != DistrictType.Exploitation && region.City.Districts[i].Type != DistrictType.Improvement && worldPosition == region.City.Districts[i].WorldPosition)
 				{
-					if (region.City.Districts[i].Type != DistrictType.Improvement)
+					if (transferringUnitSlot + region.City.CurrentUnitSlot > region.City.MaximumUnitSlot)
 					{
-						if (worldPosition == region.City.Districts[i].WorldPosition)
-						{
-							if (transferringUnitSlot + region.City.CurrentUnitSlot <= region.City.MaximumUnitSlot)
-							{
-								return true;
-							}
-							atLeastOneNeighbourgCityWithNotEnoughSlotsLeft = true;
-							break;
-						}
+						atLeastOneNeighbourgCityWithNotEnoughSlotsLeft = true;
+						break;
 					}
+					if (army.WorldPosition == worldPosition)
+					{
+						return true;
+					}
+					if (region.City.BesiegingEmpireIndex < 0 || (army.Hero != null && army.Hero.CheckUnitAbility(UnitAbility.UnitAbilityAllowAssignationUnderSiege, -1)))
+					{
+						return true;
+					}
+					break;
+				}
+				else
+				{
+					i++;
 				}
 			}
 		}
@@ -259,19 +266,7 @@ public class ArmyAction_TransferToCity : ArmyAction, IArmyActionWithUnitSelectio
 				}
 			}
 		}
-		if (region != null && region.City != null && region.City.Camp != null && worldPosition == region.City.Camp.WorldPosition && region.City.Camp.Empire == army.Empire && transferringUnitSlot + region.City.Camp.CurrentUnitSlot <= region.City.Camp.MaximumUnitSlot)
-		{
-			return true;
-		}
-		if (region != null && region.Kaiju != null)
-		{
-			Kaiju kaiju = region.Kaiju;
-			if (kaiju.KaijuGarrison != null && worldPosition == region.Kaiju.KaijuGarrison.WorldPosition && region.Kaiju.Empire.Index == army.Empire.Index && DepartmentOfScience.IsTechnologyResearched(army.Empire, "TechnologyDefinitionMimics1") && transferringUnitSlot + region.Kaiju.KaijuGarrison.CurrentUnitSlot <= region.Kaiju.KaijuGarrison.MaximumUnitSlot)
-			{
-				return true;
-			}
-		}
-		return false;
+		return (region != null && region.City != null && region.City.Camp != null && worldPosition == region.City.Camp.WorldPosition && region.City.Camp.Empire == army.Empire && transferringUnitSlot + region.City.Camp.CurrentUnitSlot <= region.City.Camp.MaximumUnitSlot) || (region != null && region.Kaiju != null && region.Kaiju.KaijuGarrison != null && worldPosition == region.Kaiju.KaijuGarrison.WorldPosition && region.Kaiju.Empire.Index == army.Empire.Index && DepartmentOfScience.IsTechnologyResearched(army.Empire, "TechnologyDefinitionMimics1") && transferringUnitSlot + region.Kaiju.KaijuGarrison.CurrentUnitSlot <= region.Kaiju.KaijuGarrison.MaximumUnitSlot);
 	}
 
 	private bool TransferTo(Army army, WorldPosition worldPosition, List<GameEntityGUID> units, IWorldPositionningService worldPositionningService, global::PlayerController playerController, out Ticket ticket, EventHandler<TicketRaisedEventArgs> ticketRaisedEventHandler)
@@ -279,13 +274,16 @@ public class ArmyAction_TransferToCity : ArmyAction, IArmyActionWithUnitSelectio
 		Region region = worldPositionningService.GetRegion(worldPosition);
 		GameEntityGUID gameEntityGUID = GameEntityGUID.Zero;
 		ticket = null;
-		BarbarianCouncil agency = region.MinorEmpire.GetAgency<BarbarianCouncil>();
-		if (agency != null)
+		if (region.MinorEmpire != null)
 		{
-			Village villageAt = agency.GetVillageAt(worldPosition);
-			if (villageAt != null)
+			BarbarianCouncil agency = region.MinorEmpire.GetAgency<BarbarianCouncil>();
+			if (agency != null)
 			{
-				gameEntityGUID = villageAt.GUID;
+				Village villageAt = agency.GetVillageAt(worldPosition);
+				if (villageAt != null)
+				{
+					gameEntityGUID = villageAt.GUID;
+				}
 			}
 		}
 		if (region.City != null && region.City.Camp != null && gameEntityGUID == GameEntityGUID.Zero && region.City.Camp.WorldPosition == worldPosition)

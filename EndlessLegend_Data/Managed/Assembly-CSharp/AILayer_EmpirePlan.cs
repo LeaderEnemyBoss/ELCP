@@ -340,16 +340,23 @@ public class AILayer_EmpirePlan : AILayer
 		for (int i = 0; i < this.empirePlanMessages.Count; i++)
 		{
 			EvaluableMessage_EmpirePlan evaluableMessage_EmpirePlan = this.empirePlanMessages[i];
-			EmpirePlanDefinition empirePlanDefinition = this.departmentOfPlanification.GetEmpirePlanDefinition(evaluableMessage_EmpirePlan.EmpirePlanClass, evaluableMessage_EmpirePlan.EmpirePlanLevel);
-			if (empirePlanDefinition != null)
+			if (this.departmentOfPlanification.IsEmpirePlanChoiced)
 			{
-				float productionCostWithBonus = DepartmentOfTheTreasury.GetProductionCostWithBonus(base.AIEntity.Empire.SimulationObject, empirePlanDefinition, DepartmentOfTheTreasury.Resources.EmpirePoint);
-				if (num + productionCostWithBonus <= account.PromisedAmount)
+				evaluableMessage_EmpirePlan.SetObtained();
+			}
+			else
+			{
+				EmpirePlanDefinition empirePlanDefinition = this.departmentOfPlanification.GetEmpirePlanDefinition(evaluableMessage_EmpirePlan.EmpirePlanClass, evaluableMessage_EmpirePlan.EmpirePlanLevel);
+				if (empirePlanDefinition != null)
 				{
-					num += productionCostWithBonus;
-					OrderChangeEmpirePlan order = new OrderChangeEmpirePlan(base.AIEntity.Empire.Index, empirePlanDefinition.EmpirePlanClass, empirePlanDefinition.EmpirePlanLevel);
-					Ticket ticket;
-					base.AIEntity.Empire.PlayerControllers.Client.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderChangeEmpirePlan_TicketRaised));
+					float productionCostWithBonus = DepartmentOfTheTreasury.GetProductionCostWithBonus(base.AIEntity.Empire.SimulationObject, empirePlanDefinition, DepartmentOfTheTreasury.Resources.EmpirePoint);
+					if (num + productionCostWithBonus <= account.PromisedAmount)
+					{
+						num += productionCostWithBonus;
+						OrderChangeEmpirePlan order = new OrderChangeEmpirePlan(base.AIEntity.Empire.Index, empirePlanDefinition.EmpirePlanClass, empirePlanDefinition.EmpirePlanLevel);
+						Ticket ticket;
+						base.AIEntity.Empire.PlayerControllers.Client.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderChangeEmpirePlan_TicketRaised));
+					}
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using Amplitude;
+using Amplitude.Unity.Framework;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
@@ -105,9 +106,16 @@ public class AIData_Army : AIData_GameEntity, ICommanderMissionProvider
 				{
 					if (aidata_Unit.IsUnitLocked())
 					{
-						if (!aidata_Unit.IsUnitLockedByMe(commanderMissionOwner.InternalGUID))
+						if (!aidata_Unit.IsUnitLockedByMe(commanderMissionOwner.InternalGUID) && Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 						{
-							Diagnostics.LogWarning(string.Format("LOCKING: Error when assigning commander mission {0} Guid {1}, current infroamtion {2}", commanderMissionOwner.GetType().ToString(), commanderMissionOwner.InternalGUID, aidata_Unit.GetLockingStateString()));
+							Diagnostics.LogWarning(string.Format("{3} {4} LOCKING: Error when assigning commander mission {0} Guid {1}, current infroamtion {2}", new object[]
+							{
+								commanderMissionOwner.GetType().ToString(),
+								commanderMissionOwner.InternalGUID,
+								aidata_Unit.GetLockingStateString(),
+								this.Army.Empire,
+								this.Army.LocalizedName
+							}));
 						}
 						aidata_Unit.ClearLock();
 					}
@@ -182,7 +190,7 @@ public class AIData_Army : AIData_GameEntity, ICommanderMissionProvider
 		{
 			return false;
 		}
-		if (this.Army.HasOnlySeafaringUnits(false))
+		if (this.Army.HasSeafaringUnits())
 		{
 			return false;
 		}

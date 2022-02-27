@@ -71,6 +71,7 @@ public abstract class ArmyWithTask : ITickable
 				}
 				GUILayout.EndVertical();
 				GUILayout.EndHorizontal();
+				return;
 			}
 		}
 		else
@@ -145,13 +146,9 @@ public abstract class ArmyWithTask : ITickable
 		if (this.encounterRepositoryService != null)
 		{
 			IEnumerable<Encounter> enumerable = this.encounterRepositoryService;
-			if (enumerable != null)
+			if (enumerable != null && enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(this.Garrison.GUID, false)))
 			{
-				bool flag = enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(this.Garrison.GUID, false));
-				if (flag)
-				{
-					return;
-				}
+				return;
 			}
 		}
 		if (this.CurrentMainTask == null && this.ValidateMainTask())
@@ -163,24 +160,25 @@ public abstract class ArmyWithTask : ITickable
 		{
 			this.Unassign();
 			this.State = TickableState.NeedTick;
+			return;
 		}
-		else if (this.CurrentMainTask != null && !this.CurrentMainTask.CheckValidity())
+		if (this.CurrentMainTask != null && !this.CurrentMainTask.CheckValidity())
 		{
 			this.Unassign();
 			this.State = TickableState.NeedTick;
+			return;
 		}
-		else if (this.BehaviorState == ArmyWithTask.ArmyBehaviorState.NeedRun)
+		if (this.BehaviorState == ArmyWithTask.ArmyBehaviorState.NeedRun)
 		{
 			this.State = TickableState.NeedTick;
+			return;
 		}
-		else if (this.BehaviorState == ArmyWithTask.ArmyBehaviorState.Optional)
+		if (this.BehaviorState == ArmyWithTask.ArmyBehaviorState.Optional)
 		{
 			this.State = TickableState.Optional;
+			return;
 		}
-		else
-		{
-			this.State = TickableState.NoTick;
-		}
+		this.State = TickableState.NoTick;
 	}
 
 	public virtual void Unassign()
@@ -240,44 +238,43 @@ public abstract class ArmyWithTask : ITickable
 			if (this.CurrentMainTask.TargetGuid.IsValid && (this.MainAttackableTarget == null || this.MainAttackableTarget.GUID != this.CurrentMainTask.TargetGuid))
 			{
 				IGameEntity gameEntity = null;
-				if (this.gameEntityRepositoryService.TryGetValue(this.CurrentMainTask.TargetGuid, out gameEntity))
-				{
-				}
+				this.gameEntityRepositoryService.TryGetValue(this.CurrentMainTask.TargetGuid, out gameEntity);
 				this.MainAttackableTarget = (gameEntity as IGarrisonWithPosition);
 			}
-			BehaviorNodeReturnCode behaviorNodeReturnCode = this.CurrentMainTask.Behavior.Behave(this);
+			int num = (int)this.CurrentMainTask.Behavior.Behave(this);
 			if (this.DebugNode == null || !this.DebugNode.IsFoldout)
 			{
 				this.DebugNode = this.CurrentMainTask.Behavior.DumpDebug();
 			}
-			BehaviorNodeReturnCode behaviorNodeReturnCode2 = behaviorNodeReturnCode;
-			if (behaviorNodeReturnCode2 == BehaviorNodeReturnCode.Running)
+			if (num == 3)
 			{
 				this.State = TickableState.NeedTick;
 				return;
 			}
 			this.CurrentMainTask.Behavior.Reset();
+			return;
 		}
-		else if (this.defaultBehavior != null)
+		else
 		{
-			BehaviorNodeReturnCode behaviorNodeReturnCode3 = this.defaultBehavior.Behave(this);
+			if (this.defaultBehavior == null)
+			{
+				this.DebugNode = null;
+				this.State = TickableState.NoTick;
+				this.BehaviorState = ArmyWithTask.ArmyBehaviorState.Sleep;
+				return;
+			}
+			int num2 = (int)this.defaultBehavior.Behave(this);
 			if (this.DebugNode == null || !this.DebugNode.IsFoldout)
 			{
 				this.DebugNode = this.defaultBehavior.DumpDebug();
 			}
-			BehaviorNodeReturnCode behaviorNodeReturnCode2 = behaviorNodeReturnCode3;
-			if (behaviorNodeReturnCode2 == BehaviorNodeReturnCode.Running)
+			if (num2 == 3)
 			{
 				this.State = TickableState.NeedTick;
 				return;
 			}
 			this.defaultBehavior.Reset();
-		}
-		else
-		{
-			this.DebugNode = null;
-			this.State = TickableState.NoTick;
-			this.BehaviorState = ArmyWithTask.ArmyBehaviorState.Sleep;
+			return;
 		}
 	}
 

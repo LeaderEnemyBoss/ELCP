@@ -71,6 +71,17 @@ public class TermOptionLine : SortedLine
 			Diagnostics.LogError("No TermOption bound to the TermOptionLine");
 			return;
 		}
+		if (!this.IsOtherEmpire && this.GuiDiplomaticTerm.Term.EmpireWhichReceives.IsControlledByAI && this.GuiDiplomaticTerm.Term is DiplomaticTermTechnologyExchange)
+		{
+			if (Services.GetService<IGuiService>().GetGuiPanel<GameNegotiationScreen>().GetEvaluationForTerm(this.GuiDiplomaticTerm.Term) < 0f)
+			{
+				this.IconImage.TintColor = Color.red;
+				this.TitleLabel.TintColor = Color.red;
+				return;
+			}
+			this.IconImage.TintColor = Color.white;
+			this.TitleLabel.TintColor = Color.white;
+		}
 	}
 
 	private void OnClickLineCB(GameObject obj)

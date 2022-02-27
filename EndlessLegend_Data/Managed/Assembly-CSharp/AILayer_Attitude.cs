@@ -8,6 +8,7 @@ using Amplitude.Extensions;
 using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation.Advanced;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
@@ -17,9 +18,21 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 {
 	public AILayer_Attitude()
 	{
-		this.empireCache = new List<global::Empire>(8);
+		List<int> list = new List<int>();
+		this.LastWarHelpInquiry = new Dictionary<int, int>();
+		this.LastWarHelpTarget = new Dictionary<int, int>();
+		for (int i = 0; i < ELCPUtilities.NumberOfMajorEmpires; i++)
+		{
+			list.Add(-1);
+			this.LastWarHelpInquiry.Add(i, -10);
+			this.LastWarHelpTarget.Add(i, -1);
+		}
+		this.empireLastAggressorIndex = list.ToArray();
+		this.refreshedUnitGuidCache = new List<GameEntityGUID>();
+		this.refreshedRegionIndex = new List<int>();
+		this.scoresByNameBuffer = new Dictionary<StaticString, float>();
+		this.empireCache = new List<global::Empire>(ELCPUtilities.NumberOfMajorEmpires);
 		this.sameRegionFortresses = new List<Fortress>();
-		base..ctor();
 	}
 
 	private bool ShouldITakeEncounterIntoAccount(Encounter encounter)
@@ -119,7 +132,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 			}
 			attitude2.Score.RemoveModifiers((DiplomaticRelationScoreModifier match) => match.Definition.Name == AILayer_Attitude.AttitudeScoreDefinitionReferences.Peaceful);
 		}
-		if (city.Empire.Index != this.Empire.Index && city.BesiegingEmpireIndex == this.Empire.Index)
+		if (city.Empire.Index != this.Empire.Index && city.BesiegingEmpireIndex == this.Empire.Index && this.departmentOfForeignAffairs.IsAtWarWith(city.Empire))
 		{
 			AILayer_Attitude.Attitude attitude3 = this.attitudeScores[city.Empire.Index];
 			AILayer_Attitude.Attitude.CityModifiersInfo cityModifiersInfo3;
@@ -208,7 +221,10 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		{
 			AILayer_Attitude.Attitude attitude = this.attitudeScores[razingEmpireIndex];
 			Diagnostics.Assert(attitude != null && attitude.Score != null);
-			attitude.AddScoreModifier(this.myEmpireCitiesTakenDuringWarDefinition, 1f);
+			if (this.departmentOfForeignAffairs.IsAtWarWith(this.majorEmpires[razingEmpireIndex]))
+			{
+				attitude.AddScoreModifier(this.myEmpireCitiesTakenDuringWarDefinition, 1f);
+			}
 			attitude.Score.RemoveModifiers((DiplomaticRelationScoreModifier match) => match.Definition.Name == AILayer_Attitude.AttitudeScoreDefinitionReferences.Peaceful);
 		}
 	}
@@ -488,6 +504,17 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 						attitude.AddScoreModifier(this.peacefulModifierDefinition, 1f);
 					}
 				}
+				if (this.LastWarHelpInquiry[majorEmpire.Index] == this.game.Turn - 1 && this.LastWarHelpTarget[majorEmpire.Index] >= 0)
+				{
+					MajorEmpire majorEmpire2 = Array.Find<MajorEmpire>(this.majorEmpires, (MajorEmpire x) => x.Index == this.LastWarHelpTarget[majorEmpire.Index]);
+					if (majorEmpire2 != null && !majorEmpire2.IsEliminated && this.departmentOfForeignAffairs.IsAtWarWith(majorEmpire2) && !this.majorEmpires[i].GetAgency<DepartmentOfForeignAffairs>().IsAtWarWith(majorEmpire2))
+					{
+						AILayer_Attitude.Attitude attitude2 = this.attitudeScores[majorEmpire.Index];
+						Diagnostics.Assert(attitude2 != null);
+						attitude2.AddScoreModifier(this.negativeContractDefinition, 1.5f);
+						this.LastWarHelpInquiry[majorEmpire.Index] = -10;
+					}
+				}
 			}
 		}
 	}
@@ -745,6 +772,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 	{
 		Diagnostics.Assert(this.majorEmpires != null && this.attitudeScores != null);
 		Diagnostics.Assert(this.departmentOfForeignAffairs != null);
+		float propertyValue = this.Empire.GetPropertyValue(SimulationProperties.LandMilitaryPower);
 		for (int i = 0; i < this.majorEmpires.Length; i++)
 		{
 			MajorEmpire majorEmpire = this.majorEmpires[i];
@@ -774,8 +802,12 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 								}
 								if (attitude.CommonEnemiesModifierIds[majorEmpire2.Index] < 0)
 								{
-									int num = attitude.AddScoreModifier(this.attitudeScoreCommonEnemyModifier, 1f);
-									attitude.CommonEnemiesModifierIds[majorEmpire2.Index] = num;
+									float num = Mathf.Clamp01(majorEmpire2.GetPropertyValue(SimulationProperties.LandMilitaryPower) / propertyValue - 0.5f);
+									if (num > 0f)
+									{
+										int num2 = attitude.AddScoreModifier(this.attitudeScoreCommonEnemyModifier, num);
+										attitude.CommonEnemiesModifierIds[majorEmpire2.Index] = num2;
+									}
 								}
 							}
 							else if (attitude.CommonEnemiesModifierIds[majorEmpire2.Index] >= 0)
@@ -783,8 +815,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 								attitude.Score.RemoveModifier(attitude.CommonEnemiesModifierIds[majorEmpire2.Index]);
 							}
 							bool flag = attitude.Score.GetModifiers(new Predicate<DiplomaticRelationScoreModifier>(AILayer_Attitude.IsForcedStatus)).Any<DiplomaticRelationScoreModifier>();
-							bool flag2 = (diplomaticRelation2.State.Name == DiplomaticRelationState.Names.Peace && diplomaticRelation3.State.Name == DiplomaticRelationState.Names.Peace) || (diplomaticRelation2.State.Name == DiplomaticRelationState.Names.Peace && diplomaticRelation3.State.Name == DiplomaticRelationState.Names.Alliance) || (diplomaticRelation2.State.Name == DiplomaticRelationState.Names.Alliance && diplomaticRelation3.State.Name == DiplomaticRelationState.Names.Peace);
-							if (flag2 && !flag)
+							if (((diplomaticRelation2.State.Name == DiplomaticRelationState.Names.Peace && diplomaticRelation3.State.Name == DiplomaticRelationState.Names.Peace) || (diplomaticRelation2.State.Name == DiplomaticRelationState.Names.Peace && diplomaticRelation3.State.Name == DiplomaticRelationState.Names.Alliance) || (diplomaticRelation2.State.Name == DiplomaticRelationState.Names.Alliance && diplomaticRelation3.State.Name == DiplomaticRelationState.Names.Peace)) && !flag)
 							{
 								if (attitude.CommonFriendsModifierIds[majorEmpire2.Index] >= 0 && attitude.Score.GetModifier(attitude.CommonFriendsModifierIds[majorEmpire2.Index]) == null)
 								{
@@ -792,16 +823,15 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 								}
 								if (attitude.CommonFriendsModifierIds[majorEmpire2.Index] < 0)
 								{
-									int num2 = attitude.AddScoreModifier(this.attitudeScoreCommonFriendModifier, 1f);
-									attitude.CommonFriendsModifierIds[majorEmpire2.Index] = num2;
+									int num3 = attitude.AddScoreModifier(this.attitudeScoreCommonFriendModifier, 1f);
+									attitude.CommonFriendsModifierIds[majorEmpire2.Index] = num3;
 								}
 							}
 							else if (attitude.CommonFriendsModifierIds[majorEmpire2.Index] >= 0)
 							{
 								attitude.Score.RemoveModifier(attitude.CommonFriendsModifierIds[majorEmpire2.Index]);
 							}
-							bool flag3 = diplomaticRelation2.State.Name == DiplomaticRelationState.Names.Alliance && diplomaticRelation3.State.Name == DiplomaticRelationState.Names.Alliance;
-							if (flag3 && !flag)
+							if (diplomaticRelation2.State.Name == DiplomaticRelationState.Names.Alliance && diplomaticRelation3.State.Name == DiplomaticRelationState.Names.Alliance && !flag)
 							{
 								if (attitude.CommonAlliesModifierIds[majorEmpire2.Index] >= 0 && attitude.Score.GetModifier(attitude.CommonAlliesModifierIds[majorEmpire2.Index]) == null)
 								{
@@ -809,8 +839,8 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 								}
 								if (attitude.CommonAlliesModifierIds[majorEmpire2.Index] < 0)
 								{
-									int num3 = attitude.AddScoreModifier(this.attitudeScoreCommonAllyModifier, 1f);
-									attitude.CommonAlliesModifierIds[majorEmpire2.Index] = num3;
+									int num4 = attitude.AddScoreModifier(this.attitudeScoreCommonAllyModifier, 1f);
+									attitude.CommonAlliesModifierIds[majorEmpire2.Index] = num4;
 								}
 							}
 							else if (attitude.CommonAlliesModifierIds[majorEmpire2.Index] >= 0)
@@ -988,12 +1018,13 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 			return;
 		}
 		global::Empire empire = creepingNode.Empire;
-		if (empire == null || empire.Index == this.Empire.Index)
+		if (empire == null || empire.Index == this.Empire.Index || empire.IsControlledByAI)
 		{
 			return;
 		}
+		bool flag = this.worldPositioning.GetRegion(creepingNode.WorldPosition).BelongToEmpire(this.Empire);
 		DiplomaticRelation diplomaticRelation = this.departmentOfForeignAffairs.GetDiplomaticRelation(creepingNode.Empire);
-		if (diplomaticRelation == null || diplomaticRelation.State == null || diplomaticRelation.State.Name.Equals(DiplomaticRelationState.Names.War) || diplomaticRelation.State.Name.Equals(DiplomaticRelationState.Names.Dead))
+		if (diplomaticRelation == null || diplomaticRelation.State == null || diplomaticRelation.State.Name.Equals(DiplomaticRelationState.Names.War) || diplomaticRelation.State.Name.Equals(DiplomaticRelationState.Names.Dead) || ((this.diplomacyLayer.GetPeaceWish(empire.Index) || this.departmentOfForeignAffairs.IsFriend(empire)) && !flag))
 		{
 			return;
 		}
@@ -1002,12 +1033,11 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		{
 			return;
 		}
-		if (!this.visibilityService.IsWorldPositionVisibleFor(creepingNode.WorldPosition, this.Empire))
+		if (!this.visibilityService.IsWorldPositionExploredFor(creepingNode.WorldPosition, this.Empire) && !flag)
 		{
 			return;
 		}
-		Region region = this.worldPositioning.GetRegion(creepingNode.WorldPosition);
-		if (region.BelongToEmpire(empire))
+		if (this.worldPositioning.GetRegion(creepingNode.WorldPosition).BelongToEmpire(empire))
 		{
 			return;
 		}
@@ -1021,8 +1051,17 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		{
 			num = Math.Min(num, this.worldPositioning.GetDistance(agency.Cities[i].WorldPosition, creepingNode.WorldPosition));
 		}
-		float multiplier = 1f - Mathf.InverseLerp(0f, this.worldPositioning.World.Hypotenuse, (float)num);
-		attitude.AddScoreModifier(this.attitudeScoreCreepingNodeUpgradeComplete, multiplier);
+		if (num > 19)
+		{
+			return;
+		}
+		num = Math.Max(num - 5, 0);
+		float num2 = (float)((15 - num) / 15);
+		if (this.departmentOfForeignAffairs.IsFriend(empire))
+		{
+			num2 *= 0.6f;
+		}
+		attitude.AddScoreModifier(this.attitudeScoreCreepingNodeUpgradeComplete, num2);
 	}
 
 	public void RegisterContractBenefitForMyEmpire(DiplomaticContract contract, float benefitForMyEmpire)
@@ -1191,6 +1230,19 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 				if (diplomaticContract.Terms.Any(new Func<DiplomaticTerm, bool>(AILayer_Attitude.IsTermFreeStatus)))
 				{
 					attitude.Score.RemoveModifiers(new Predicate<DiplomaticRelationScoreModifier>(AILayer_Attitude.IsForcedStatus));
+				}
+			}
+			if (diplomaticContract.State == DiplomaticContractState.Proposed && diplomaticContract.Terms != null && diplomaticContract.EmpireWhichProposes.Index == this.Empire.Index)
+			{
+				global::Empire empire2 = diplomaticContract.EmpireWhichReceives;
+				if (this.departmentOfForeignAffairs.IsFriend(empire2))
+				{
+					DiplomaticTermProposal diplomaticTermProposal = diplomaticContract.Terms.FirstOrDefault((DiplomaticTerm term) => term.EmpireWhichProvides == empire2 && term is DiplomaticTermProposal) as DiplomaticTermProposal;
+					if (diplomaticTermProposal != null && this.departmentOfForeignAffairs.IsAtWarWith(diplomaticTermProposal.ChosenEmpire) && this.Empire.GetPropertyValue(SimulationProperties.MilitaryPower) < diplomaticTermProposal.ChosenEmpire.GetPropertyValue(SimulationProperties.MilitaryPower) * 1.25f)
+					{
+						this.LastWarHelpInquiry[empire2.Index] = this.game.Turn;
+						this.LastWarHelpTarget[empire2.Index] = diplomaticTermProposal.ChosenEmpireIndex;
+					}
 				}
 			}
 		}
@@ -1559,11 +1611,29 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		if (num >= 3)
 		{
 			reader.ReadStartElement("EmpireLastAggressorIndex");
-			for (int j = 0; j < this.empireLastAggressorIndex.Length; j++)
+			int num2 = 0;
+			List<int> list = new List<int>();
+			while (reader.Reader.Name.Substring(0, 7) == "Empire_")
 			{
-				Diagnostics.Assert(int.TryParse(reader.ReadElementString("Empire_" + j.ToString()), out this.empireLastAggressorIndex[j]));
+				int item;
+				Diagnostics.Assert(int.TryParse(reader.ReadElementString("Empire_" + num2.ToString()), out item));
+				list.Add(item);
+				num2++;
 			}
+			this.empireLastAggressorIndex = list.ToArray();
 			reader.ReadEndElement("EmpireLastAggressorIndex");
+			if (this.empireLastAggressorIndex.Length != this.LastWarHelpInquiry.Count)
+			{
+				this.LastWarHelpInquiry = new Dictionary<int, int>();
+				this.LastWarHelpTarget = new Dictionary<int, int>();
+				for (int j = 0; j < this.empireLastAggressorIndex.Length; j++)
+				{
+					this.LastWarHelpInquiry.Add(j, -10);
+					this.LastWarHelpTarget.Add(j, -1);
+				}
+			}
+			this.ReadDictionnary(reader, "LastWarHelpInquiry", this.LastWarHelpInquiry);
+			this.ReadDictionnary(reader, "LastWarHelpTarget", this.LastWarHelpTarget);
 		}
 	}
 
@@ -1590,6 +1660,8 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 				writer.WriteElementString("Empire_" + j.ToString(), this.empireLastAggressorIndex[j].ToString());
 			}
 			writer.WriteEndElement();
+			this.WriteDictionnary(writer, "LastWarHelpInquiry", this.LastWarHelpInquiry);
+			this.WriteDictionnary(writer, "LastWarHelpTarget", this.LastWarHelpTarget);
 		}
 	}
 
@@ -1700,8 +1772,9 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		if (diplomaticRelation.State.Name.Equals(DiplomaticRelationState.Names.Alliance))
 		{
 			attitude.AddScoreModifier(this.AttitudeScoreKaijuPlacedNearMyCityPositive, (float)num);
+			return;
 		}
-		else
+		if (diplomaticRelation.State.Name.Equals(DiplomaticRelationState.Names.ColdWar) || diplomaticRelation.State.Name.Equals(DiplomaticRelationState.Names.Truce))
 		{
 			attitude.AddScoreModifier(this.AttitudeScoreKaijuPlacedNearMyCityNegative, (float)num);
 		}
@@ -1734,7 +1807,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 			{
 				Region.Border border = city.Region.Borders[j];
 				Region region = this.worldPositioning.GetRegion(border.NeighbourRegionIndex);
-				if (region != null && region.IsLand && region.City == null)
+				if (region != null && region.IsLand && !region.IsRegionColonized())
 				{
 					flag = true;
 					break;
@@ -1753,8 +1826,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 			MajorEmpire majorEmpire = this.majorEmpires[k];
 			if (this.Empire.Index != majorEmpire.Index)
 			{
-				DiplomaticRelation diplomaticRelation = this.departmentOfForeignAffairs.GetDiplomaticRelation(majorEmpire);
-				Diagnostics.Assert(diplomaticRelation != null);
+				Diagnostics.Assert(this.departmentOfForeignAffairs.GetDiplomaticRelation(majorEmpire) != null);
 				AILayer_Attitude.Attitude attitude = this.GetAttitude(majorEmpire);
 				Diagnostics.Assert(attitude != null);
 				float commonBorderRatio = service.GetCommonBorderRatio(this.Empire, majorEmpire);
@@ -1765,13 +1837,11 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 				else
 				{
 					DiplomaticRelationScoreModifier diplomaticRelationScoreModifier = null;
-					IEnumerable<DiplomaticRelationScoreModifier> modifiers = attitude.Score.GetModifiers((DiplomaticRelationScoreModifier match) => match.Definition.Name == AILayer_Attitude.AttitudeScoreDefinitionReferences.LivingSpaceTense);
-					using (IEnumerator<DiplomaticRelationScoreModifier> enumerator = modifiers.GetEnumerator())
+					using (IEnumerator<DiplomaticRelationScoreModifier> enumerator = attitude.Score.GetModifiers((DiplomaticRelationScoreModifier match) => match.Definition.Name == AILayer_Attitude.AttitudeScoreDefinitionReferences.LivingSpaceTense).GetEnumerator())
 					{
 						if (enumerator.MoveNext())
 						{
-							DiplomaticRelationScoreModifier diplomaticRelationScoreModifier2 = enumerator.Current;
-							diplomaticRelationScoreModifier = diplomaticRelationScoreModifier2;
+							diplomaticRelationScoreModifier = enumerator.Current;
 						}
 					}
 					if (diplomaticRelationScoreModifier == null)
@@ -1935,6 +2005,15 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 			{
 				return;
 			}
+			float num = 1f;
+			if (!this.visibilityService.IsWorldPositionVisibleFor(eventOrbsCollected.WorldPosition, this.Empire))
+			{
+				if (!this.departmentOfForeignAffairs.CanSeeOrbWithOrbHunterTrait)
+				{
+					return;
+				}
+				num = 0.2f;
+			}
 			MajorEmpire majorEmpire = eventOrbsCollected.Empire as MajorEmpire;
 			if (majorEmpire == null)
 			{
@@ -1942,9 +2021,20 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 			}
 			IGameEntity gameEntity;
 			this.gameEntityRepositoryService.TryGetValue(eventOrbsCollected.CollectorEntityGUID, out gameEntity);
-			if (gameEntity != null && gameEntity is Army && (gameEntity as Army).IsPrivateers)
+			if (gameEntity != null)
 			{
-				return;
+				Army army = gameEntity as Army;
+				if (army != null)
+				{
+					if (army.IsPrivateers)
+					{
+						return;
+					}
+					if (army.IsCamouflaged && !this.visibilityService.IsWorldPositionDetectedFor(army.WorldPosition, this.Empire) && !this.visibilityService.IsWorldPositionDetectedFor(eventOrbsCollected.WorldPosition, this.Empire))
+					{
+						return;
+					}
+				}
 			}
 			Region region = this.worldPositioning.GetRegion(eventOrbsCollected.WorldPosition);
 			if (region == null)
@@ -1956,19 +2046,24 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 			{
 				AILayer_Attitude.Attitude attitude = this.GetAttitude(majorEmpire);
 				Diagnostics.Assert(attitude != null);
-				attitude.AddScoreModifier(this.attitudeScoreOrbsStollen, (float)eventOrbsCollected.OrbsQuantity);
+				attitude.AddScoreModifier(this.attitudeScoreOrbsStollen, (float)eventOrbsCollected.OrbsQuantity * num);
+				return;
 			}
-			else if (owner == null)
+			if (owner == null)
 			{
-				DepartmentOfDefense agency = this.Empire.GetAgency<DepartmentOfDefense>();
-				foreach (Army army in agency.Armies)
+				if (this.diplomacyLayer.GetPeaceWish(majorEmpire.Index))
 				{
-					float propertyValue = army.GetPropertyValue(SimulationProperties.MaximumMovement);
-					if ((float)this.worldPositioning.GetDistance(eventOrbsCollected.WorldPosition, army.WorldPosition) <= propertyValue)
+					return;
+				}
+				foreach (Army army2 in this.Empire.GetAgency<DepartmentOfDefense>().Armies)
+				{
+					float propertyValue = army2.GetPropertyValue(SimulationProperties.MaximumMovement);
+					if ((float)this.worldPositioning.GetDistance(eventOrbsCollected.WorldPosition, army2.WorldPosition) <= propertyValue)
 					{
 						AILayer_Attitude.Attitude attitude2 = this.GetAttitude(majorEmpire);
 						Diagnostics.Assert(attitude2 != null);
-						attitude2.AddScoreModifier(this.attitudeScoreOrbsStollen, (float)eventOrbsCollected.OrbsQuantity);
+						attitude2.AddScoreModifier(this.attitudeScoreOrbsStollen, (float)eventOrbsCollected.OrbsQuantity * num / 2f);
+						break;
 					}
 				}
 			}
@@ -2104,7 +2199,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		this.comparativeModifierRule = new AILayer_Attitude.ComparativeModifierRule[5];
 		this.comparativeModifierRule[0] = this.CreatRule(AILayer_Attitude.AttitudeScoreDefinitionReferences.MyEmpireLeadScore, AILayer_Attitude.AttitudeScoreDefinitionReferences.OtherEmpireLeadScore, new Func<MajorEmpire, float>(this.GetGlobalScore), 0.1f, 1f, 2f, null);
 		this.landMilitaryPowerRule = (this.comparativeModifierRule[1] = this.CreatRule(AILayer_Attitude.AttitudeScoreDefinitionReferences.MyEmpireLeadMilitaryPower, AILayer_Attitude.AttitudeScoreDefinitionReferences.OtherEmpireLeadMilitaryPower, new Func<MajorEmpire, float>(this.GetLandMilitaryPower), 0.5f, 1f, 4f, null));
-		this.comparativeModifierRule[2] = this.CreatRule(AILayer_Attitude.AttitudeScoreDefinitionReferences.MyEmpireLeadRegionCount, AILayer_Attitude.AttitudeScoreDefinitionReferences.OtherEmpireLeadRegionCount, new Func<MajorEmpire, float>(this.GetRegionCount), 0f, 1f, 4f, new PathPrerequisite("../ClassEmpire,FactionTraitCultists7,FactionTraitCultists9", true, new string[0]));
+		this.comparativeModifierRule[2] = this.CreateRule(AILayer_Attitude.AttitudeScoreDefinitionReferences.MyEmpireLeadRegionCount, AILayer_Attitude.AttitudeScoreDefinitionReferences.OtherEmpireLeadRegionCount, new Func<MajorEmpire, float>(this.GetRegionCount), 0f, 1f, 4f, new InterpreterPrerequisite("($Path(.../EmpireTypeMajor,FactionTraitCultists7) or $Path(.../EmpireTypeMajor,FactionTraitMimics1)) and ($Path(.../EmpireTypeMajor,FactionTraitCultists9) or $Path(.../EmpireTypeMajor,FactionTraitMimics3))", true, new string[0]));
 		this.navalMilitaryPowerRule = (this.comparativeModifierRule[3] = this.CreatRule(AILayer_Attitude.AttitudeScoreDefinitionReferences.MyEmpireLeadNavalMilitaryPower, AILayer_Attitude.AttitudeScoreDefinitionReferences.OtherEmpireLeadNavalMilitaryPower, new Func<MajorEmpire, float>(this.GetNavalMilitaryPower), 0.5f, 1f, 4f, null));
 		this.comparativeModifierRule[4] = this.CreatRule(AILayer_Attitude.AttitudeScoreDefinitionReferences.MyEmpireLeadNavalRegionCount, AILayer_Attitude.AttitudeScoreDefinitionReferences.OtherEmpireLeadNavalRegionCount, new Func<MajorEmpire, float>(this.GetNavalRegionCount), 0f, 1f, 4f, null);
 	}
@@ -2536,6 +2631,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 				if (!flag)
 				{
 					attitude.AddScoreModifier(this.attitudeScoreCityTakenFromAlly, 1f);
+					return;
 				}
 			}
 			else if (name == DiplomaticRelationState.Names.Peace)
@@ -2543,11 +2639,17 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 				if (!flag)
 				{
 					attitude.AddScoreModifier(this.attitudeScoreCityTakenFromFriend, 1f);
+					return;
 				}
 			}
 			else if (name == DiplomaticRelationState.Names.War)
 			{
-				attitude.AddScoreModifier(this.attitudeScoreCityTakenFromEnemy, 1f);
+				float propertyValue = this.Empire.GetPropertyValue(SimulationProperties.LandMilitaryPower);
+				float num = Mathf.Clamp01((victim.GetPropertyValue(SimulationProperties.LandMilitaryPower) / propertyValue - 0.5f) * 1.5f);
+				if (num > 0f)
+				{
+					attitude.AddScoreModifier(this.attitudeScoreCityTakenFromEnemy, num);
+				}
 			}
 		}
 	}
@@ -2798,6 +2900,10 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		{
 			flag = false;
 		}
+		if (this.diplomacyLayer.GetPeaceWish(majorEmpire.Index))
+		{
+			return;
+		}
 		DiplomaticRelation diplomaticRelation = this.departmentOfForeignAffairs.GetDiplomaticRelation(majorEmpire);
 		bool flag2 = diplomaticRelation.State != null && diplomaticRelation.State.Name == DiplomaticRelationState.Names.War;
 		foreach (Unit unit in army.Units)
@@ -2855,7 +2961,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		}
 		AILayer_Attitude.Attitude attitude = this.GetAttitude(eventVictoryConditionAlert.Empire);
 		Diagnostics.Assert(attitude != null);
-		if (attitude.Score.CountModifiers((DiplomaticRelationScoreModifier modifier) => modifier.Definition.Name == relationModifierDefinition.Name) <= 0)
+		if ((!this.SharedVictory || this.departmentOfForeignAffairs.DiplomaticRelations[eventVictoryConditionAlert.Empire.Index].State.Name != DiplomaticRelationState.Names.Alliance) && attitude.Score.CountModifiers((DiplomaticRelationScoreModifier modifier) => modifier.Definition.Name == relationModifierDefinition.Name) <= 0)
 		{
 			attitude.AddScoreModifier(relationModifierDefinition, 1f);
 		}
@@ -3013,10 +3119,12 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		Diagnostics.Assert(this.departmentOfForeignAffairs != null);
 		this.departmentOfForeignAffairs.DiplomaticRelationStateChange += this.DepartmentOfForeignAffairs_DiplomaticRelationStateChange;
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
-		this.game = (gameService.Game as global::Game);
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.game = (service.Game as global::Game);
 		Diagnostics.Assert(this.game != null && this.game.Empires != null);
+		ISessionService service2 = Services.GetService<ISessionService>();
+		this.SharedVictory = service2.Session.GetLobbyData<bool>("Shared", true);
 		this.majorEmpires = Array.ConvertAll<global::Empire, MajorEmpire>(Array.FindAll<global::Empire>(this.game.Empires, (global::Empire match) => match is MajorEmpire), (global::Empire empire) => empire as MajorEmpire);
 		this.worldPositioning = this.game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositioning != null);
@@ -3050,12 +3158,12 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		this.InitializeCreepingNodes();
 		this.InitializeKaijus();
 		this.attitudeScores = new AILayer_Attitude.Attitude[this.majorEmpires.Length];
-		for (int index = 0; index < this.majorEmpires.Length; index++)
+		for (int i = 0; i < this.majorEmpires.Length; i++)
 		{
-			MajorEmpire majorEmpire = this.majorEmpires[index];
+			MajorEmpire majorEmpire = this.majorEmpires[i];
 			if (majorEmpire.Index != this.Empire.Index)
 			{
-				this.attitudeScores[index] = new AILayer_Attitude.Attitude(this.Empire, majorEmpire, this.majorEmpires.Length);
+				this.attitudeScores[i] = new AILayer_Attitude.Attitude(this.Empire, majorEmpire, this.majorEmpires.Length);
 			}
 		}
 		base.AIEntity.RegisterPass(AIEntity.Passes.CreateLocalNeeds.ToString(), "AILayer_Attitude_UpdateCommonDiplomaticStatusModifiers", new AIEntity.AIAction(this.UpdateCommonDiplomaticStatusModifiers), this, new StaticString[0]);
@@ -3081,6 +3189,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		this.eventService = Services.GetService<IEventService>();
 		Diagnostics.Assert(this.eventService != null);
 		this.eventService.EventRaise += this.EventService_EventRaise;
+		this.diplomacyLayer = base.AIEntity.GetLayer<AILayer_Diplomacy>();
 		yield break;
 	}
 
@@ -3108,6 +3217,9 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		this.attitudeScoreLastWar = null;
 		this.diplomaticRelationScoreModifierDatabase = null;
 		this.scoresByNameBuffer.Clear();
+		this.LastWarHelpInquiry.Clear();
+		this.LastWarHelpTarget.Clear();
+		this.diplomacyLayer = null;
 	}
 
 	public bool TryGetMainAttitudeCategory(global::Empire targetedEmpire, ref StaticString mainAttitudeCategoryName, ref float mainAttitudeCategoryScore)
@@ -3218,6 +3330,72 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 		this.OnTerraformEventRaise(e.RaisedEvent);
 		this.OnCreepingNodeEventRaise(e.RaisedEvent);
 		this.OnKaijuEventRaise(e.RaisedEvent);
+	}
+
+	private void WriteDictionnary(XmlWriter writer, string name, Dictionary<int, int> dictionary)
+	{
+		writer.WriteStartElement(name);
+		writer.WriteAttributeString<int>("Count", dictionary.Count);
+		foreach (KeyValuePair<int, int> keyValuePair in dictionary)
+		{
+			writer.WriteStartElement("KeyValuePair");
+			writer.WriteAttributeString<int>("Key", keyValuePair.Key);
+			writer.WriteAttributeString<int>("Value", keyValuePair.Value);
+			writer.WriteEndElement();
+		}
+		writer.WriteEndElement();
+	}
+
+	private void ReadDictionnary(XmlReader reader, string name, Dictionary<int, int> dictionary)
+	{
+		if (reader.IsStartElement(name))
+		{
+			int attribute = reader.GetAttribute<int>("Count");
+			if (attribute > 0)
+			{
+				reader.ReadStartElement(name);
+				for (int i = 0; i < attribute; i++)
+				{
+					int attribute2 = reader.GetAttribute<int>("Key");
+					int attribute3 = reader.GetAttribute<int>("Value");
+					reader.Skip();
+					dictionary[attribute2] = attribute3;
+				}
+				reader.ReadEndElement(name);
+				return;
+			}
+			reader.Skip();
+		}
+	}
+
+	private AILayer_Attitude.ComparativeModifierRule CreateRule(StaticString myEmpire, StaticString otherEmpire, Func<MajorEmpire, float> func, float neutralIntervalPercent, float minimumMultiplierValue, float maximumMultiplierValue, InterpreterPrerequisite prerequisite)
+	{
+		DiplomaticRelationScoreModifierDefinition attitudeScoreMyEmpireLead;
+		if (!this.diplomaticRelationScoreModifierDatabase.TryGetValue(myEmpire, out attitudeScoreMyEmpireLead))
+		{
+			AILayer.LogError("Can't retrieve {0} modifier.", new object[]
+			{
+				myEmpire
+			});
+		}
+		DiplomaticRelationScoreModifierDefinition attitudeScoreOtherEmpireLead;
+		if (!this.diplomaticRelationScoreModifierDatabase.TryGetValue(otherEmpire, out attitudeScoreOtherEmpireLead))
+		{
+			AILayer.LogError("Can't retrieve {0} modifier.", new object[]
+			{
+				otherEmpire
+			});
+		}
+		return new AILayer_Attitude.ComparativeModifierRule
+		{
+			AttitudeScoreMyEmpireLead = attitudeScoreMyEmpireLead,
+			AttitudeScoreOtherEmpireLead = attitudeScoreOtherEmpireLead,
+			GetScoreAccessor = func,
+			NeutralIntervalPercent = neutralIntervalPercent,
+			Prerequisite = prerequisite,
+			MinimumMultiplierValue = minimumMultiplierValue,
+			MaximumMultiplierValue = maximumMultiplierValue
+		};
 	}
 
 	private DiplomaticRelationScoreModifierDefinition attitudeScoreArmyAggressionInNeutralRegionDuringColdWar;
@@ -3340,17 +3518,7 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 
 	private DiplomaticRelationScoreModifierDefinition attitudeScoreCityTakenFromFriend;
 
-	private int[] empireLastAggressorIndex = new int[]
-	{
-		-1,
-		-1,
-		-1,
-		-1,
-		-1,
-		-1,
-		-1,
-		-1
-	};
+	private int[] empireLastAggressorIndex;
 
 	private DiplomaticRelationScoreModifierDefinition attitudeScoreBetrayedYourFriend;
 
@@ -3358,9 +3526,9 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 
 	private DiplomaticRelationScoreModifierDefinition attitudeScoreUnitsInMyTerritory;
 
-	private List<GameEntityGUID> refreshedUnitGuidCache = new List<GameEntityGUID>();
+	private List<GameEntityGUID> refreshedUnitGuidCache;
 
-	private List<int> refreshedRegionIndex = new List<int>();
+	private List<int> refreshedRegionIndex;
 
 	private bool maySeeThroughCatspaw;
 
@@ -3382,13 +3550,21 @@ public class AILayer_Attitude : AILayer, IXmlSerializable
 
 	private MajorEmpire[] majorEmpires;
 
-	private Dictionary<StaticString, float> scoresByNameBuffer = new Dictionary<StaticString, float>();
+	private Dictionary<StaticString, float> scoresByNameBuffer;
 
 	private IVisibilityService visibilityService;
 
 	private IWorldPositionningService worldPositioning;
 
 	private IEventService eventService;
+
+	private Dictionary<int, int> LastWarHelpInquiry;
+
+	private Dictionary<int, int> LastWarHelpTarget;
+
+	private bool SharedVictory;
+
+	private AILayer_Diplomacy diplomacyLayer;
 
 	public class Attitude : IXmlSerializable
 	{

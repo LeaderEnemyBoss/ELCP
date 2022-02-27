@@ -25,8 +25,6 @@ public interface IQuestManagementService : IService
 
 	StaticString ForceTrigger(QuestDefinition questDefinition, Empire empire, bool stopIfError);
 
-	StaticString ForceSideQuestVillageTrigger(string sideQuestVillageName);
-
 	int GetGlobalQuestRank(Quest quest, ref int questHolderCount, string questStepName);
 
 	StaticString GetGlobalProgressionString(Quest quest, StaticString questStepName);
@@ -72,4 +70,6 @@ public interface IQuestManagementService : IService
 	void Unregister(QuestMarker questMarker);
 
 	void UnregisterQuestBehaviour(Quest quest);
+
+	StaticString ForceSideQuestVillageTrigger(string sideQuestVillageName);
 }

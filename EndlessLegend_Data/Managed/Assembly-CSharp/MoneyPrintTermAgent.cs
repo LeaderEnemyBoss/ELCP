@@ -33,11 +33,13 @@ public class MoneyPrintTermAgent : DiplomaticTermAgent
 	{
 		Diagnostics.Assert(base.AttitudeScore != null);
 		Diagnostics.Assert(base.DiplomaticRelation != null && base.DiplomaticRelation.State != null);
-		if (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Unknown)
+		if (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.War)
 		{
-			return 0f;
+			return 75f * this.multiplier / 100f;
 		}
-		float num = 75f;
-		return num / 100f;
+		return 0f;
 	}
+
+	[InfluencedByPersonality]
+	private float multiplier;
 }

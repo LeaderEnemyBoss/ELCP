@@ -41,16 +41,40 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 				num3 = Math.Min(value3, value2);
 				num4 = Math.Max(value3, value2);
 			}
-			List<Region> list = new List<Region>(from r in base.Context.Regions.Values
-			where r.LandMassType == Region.LandMassTypes.Continent
-			where !base.Context.SpawnRegions.Contains(r.Id)
-			orderby r.HexCount()
-			select r);
-			List<Region> list2 = new List<Region>(from i in base.Context.SpawnRegions
-			let r = base.Context.Regions[i]
-			where r.LandMassType == Region.LandMassTypes.Continent
-			orderby r.HexCount()
-			select r);
+			List<Region> list;
+			if (!base.Context.Settings.XephiWorldGeneratorBalance)
+			{
+				list = new List<Region>(from r in base.Context.Regions.Values
+				where r.LandMassType == Region.LandMassTypes.Continent
+				where !base.Context.SpawnRegions.Contains(r.Id)
+				orderby r.HexCount()
+				select r);
+			}
+			else
+			{
+				list = new List<Region>(from r in base.Context.Regions.Values
+				where r.LandMassType == Region.LandMassTypes.Continent
+				where !base.Context.SpawnRegions.Contains(r.Id)
+				orderby r.Resources.Count descending
+				select r);
+			}
+			List<Region> list2;
+			if (!base.Context.Settings.XephiWorldGeneratorBalance)
+			{
+				list2 = new List<Region>(from i in base.Context.SpawnRegions
+				let r = base.Context.Regions[i]
+				where r.LandMassType == Region.LandMassTypes.Continent
+				orderby r.HexCount()
+				select r);
+			}
+			else
+			{
+				list2 = new List<Region>(from i in base.Context.SpawnRegions
+				let r = base.Context.Regions[i]
+				where r.LandMassType == Region.LandMassTypes.Continent
+				orderby r.Resources.Count descending
+				select r);
+			}
 			this.ForbiddenContinents = new Dictionary<string, HashSet<int>>();
 			foreach (string key2 in this.MinorFactionNames)
 			{

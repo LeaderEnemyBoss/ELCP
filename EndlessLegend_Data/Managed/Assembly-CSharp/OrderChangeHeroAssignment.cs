@@ -30,6 +30,7 @@ public class OrderChangeHeroAssignment : global::Order
 		base.Pack(writer);
 		writer.Write(this.HeroGuid);
 		writer.Write(this.AssignmentGUID);
+		writer.Write(this.IgnoreCooldown);
 	}
 
 	public override void Unpack(BinaryReader reader)
@@ -37,7 +38,11 @@ public class OrderChangeHeroAssignment : global::Order
 		base.Unpack(reader);
 		this.HeroGuid = reader.ReadUInt64();
 		this.AssignmentGUID = reader.ReadUInt64();
+		this.IgnoreCooldown = reader.ReadBoolean();
 	}
+
+	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByServer)]
+	public bool IgnoreCooldown { get; set; }
 
 	public static StaticString AuthenticationPath = "DepartmentOfEducation/OrderChangeHeroAssignment";
 }

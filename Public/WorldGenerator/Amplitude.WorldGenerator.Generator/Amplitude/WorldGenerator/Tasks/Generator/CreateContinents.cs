@@ -16,6 +16,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			CreateContinents.Blob.CurrentId = 0;
 			CreateContinents.Continent.CurrentId = 0;
 			base.Execute(context);
+			this.RemoveELCPSpectatorEmpires();
 			this.CreateBlobs();
 			this.NeutralizeOceanEdgeBlobs();
 			this.UnifyBlobGraph();
@@ -605,6 +606,20 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 					d.CoastalSkeletonValue = coastalSkeletonValue - 1;
 				});
 			}
+		}
+
+		private void RemoveELCPSpectatorEmpires()
+		{
+			List<EmpireDefinition> list = base.Context.Configuration.Empires.ToList<EmpireDefinition>();
+			for (int i = 0; i < list.Count; i++)
+			{
+				if (list[i].Name == "AffinityELCPSpectator")
+				{
+					list.RemoveAt(i);
+					i--;
+				}
+			}
+			base.Context.Configuration.Empires = list.ToArray();
 		}
 
 		protected int CoreHexes;

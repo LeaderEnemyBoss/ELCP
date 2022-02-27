@@ -36,8 +36,7 @@ public class AbstractRegionPatchRenderer : PatchRenderer
 				HxTechniqueGraphicData.RegionNameGraphicData.RegionData regionData = this.regionNameGraphicData.RegionDatas[(int)value];
 				if (regionData.Center == worldPosition)
 				{
-					Map<Region> map2 = defaultWorldViewTechnique.WorldController.WorldAtlas.GetMap(WorldAtlas.Tables.Regions) as Map<Region>;
-					Region region = map2.Data[(int)value];
+					Region region = (defaultWorldViewTechnique.WorldController.WorldAtlas.GetMap(WorldAtlas.Tables.Regions) as Map<Region>).Data[(int)value];
 					if (!this.eventRegionNameChangeRegistered)
 					{
 						if (this.regionCovered == null)
@@ -47,8 +46,7 @@ public class AbstractRegionPatchRenderer : PatchRenderer
 						this.regionCovered.Add(region);
 						region.UserDefinedNameChange += this.OnRegionNameChange;
 					}
-					bool showName = regionData.ShowName;
-					if (showName)
+					if (regionData.ShowName)
 					{
 						this.AddRegionName(defaultWorldViewTechnique, regionData, region);
 					}
@@ -155,8 +153,7 @@ public class AbstractRegionPatchRenderer : PatchRenderer
 		absoluteWorldPosition2D.y = base.GlobalPositionningService.GetAltitudeFromAbsoluteWorldPosition(new Vector3(absoluteWorldPosition2D.x, 0f, absoluteWorldPosition2D.z));
 		string localizedName = region.LocalizedName;
 		AgeFont ageFont = this.regionNameGraphicData.AgeFont;
-		Material material = this.regionNameGraphicData.Material;
-		int orCreateMeshIndex = AbstractRegionPatchRenderer.GetOrCreateMeshIndex(material, defaultWorldViewTechnique.HxTechniqueGraphicData.InstanciedMeshHolders);
+		int orCreateMeshIndex = AbstractRegionPatchRenderer.GetOrCreateMeshIndex(this.regionNameGraphicData.Material, defaultWorldViewTechnique.HxTechniqueGraphicData.InstanciedMeshHolders);
 		float textSize = this.regionNameGraphicData.TextSize;
 		bool disableKerning = GameManager.Preferences.GameGraphicSettings.DisableKerning;
 		float num = 0f;
@@ -181,28 +178,27 @@ public class AbstractRegionPatchRenderer : PatchRenderer
 		}
 		float z = -(num4 + num5) * 0.5f;
 		float num7 = -(num2 + num3) * 0.5f;
-		float num8 = num7;
 		for (int j = 0; j < localizedName.Length; j++)
 		{
 			char charcode2 = localizedName[j];
 			char nextCharCode2 = (disableKerning || j + 1 >= localizedName.Length) ? '\0' : localizedName[j + 1];
-			Vector2 a;
 			Vector2 vector3;
+			Vector2 vector4;
 			Rect rect2;
-			float num9;
-			ageFont.GetCharInfo(charcode2, nextCharCode2, out a, out vector3, out rect2, out num9);
-			if (a.x > 0f && a.y > 0f)
+			float num8;
+			ageFont.GetCharInfo(charcode2, nextCharCode2, out vector3, out vector4, out rect2, out num8);
+			if (vector3.x > 0f && vector3.y > 0f)
 			{
-				float num10 = 128f;
-				bool flag = rect2.xMin >= num10;
+				float num9 = 128f;
+				bool flag = rect2.xMin >= num9;
 				int minPixelIndexX;
 				int minPixelIndexY;
 				int pixelCountX;
 				int pixelCountY;
 				if (flag)
 				{
-					minPixelIndexX = Mathf.RoundToInt(rect2.xMin - num10);
-					minPixelIndexY = Mathf.RoundToInt(rect2.yMin - num10);
+					minPixelIndexX = Mathf.RoundToInt(rect2.xMin - num9);
+					minPixelIndexY = Mathf.RoundToInt(rect2.yMin - num9);
 					pixelCountX = (int)rect2.width;
 					pixelCountY = (int)rect2.height;
 				}
@@ -213,10 +209,10 @@ public class AbstractRegionPatchRenderer : PatchRenderer
 					pixelCountX = Mathf.RoundToInt(rect2.width * (float)this.regionNameGraphicData.FontTextureWidth);
 					pixelCountY = Mathf.RoundToInt(rect2.height * (float)this.regionNameGraphicData.FontTextureHeight);
 				}
-				Vector3 a2 = new Vector3(num8, 0f, z) + new Vector3(vector3.x, 0f, -vector3.y) - new Vector3(0f, 0f, a.y);
-				InstanciedMeshHelpers.AddLetterInstance(instanciedMeshHolders, orCreateInstanciedMeshBlock, absoluteWorldPosition2D + textSize * a2, minPixelIndexX, minPixelIndexY, pixelCountX, pixelCountY, a * textSize, orCreateMeshIndex, flag);
+				Vector3 a = new Vector3(num7, 0f, z) + new Vector3(vector4.x, 0f, -vector4.y) - new Vector3(0f, 0f, vector3.y);
+				InstanciedMeshHelpers.AddLetterInstance(instanciedMeshHolders, orCreateInstanciedMeshBlock, absoluteWorldPosition2D + textSize * a, minPixelIndexX, minPixelIndexY, pixelCountX, pixelCountY, vector3 * textSize, orCreateMeshIndex, flag);
 			}
-			num8 += num9;
+			num7 += num8;
 		}
 		orCreateInstanciedMeshBlock.CloseAndSort();
 		if (this.regionNameInstanciedMeshBlocks == null)

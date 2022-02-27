@@ -14,23 +14,19 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 {
 	public VisibilityController()
 	{
+		this.gameEntities = new List<IGameEntityWithLineOfSight>();
+		this.sharedSightGameEntities = new List<IGameEntityWithSharedSight>();
+		this.visibilityProviders = new List<IVisibilityProvider>();
 		this.hexagonPointAnglesBuffer = new float[6];
 		this.hexagonPointsBuffer = new Vector2[6];
 		this.potentialPositions = new List<VisibilityController.Position>();
 		this.rectVirtualPositions = new List<WorldPosition>();
 		this.tempNewArcs = new Arc[3];
-		base..ctor();
-		this.stealVisionFromEmpireTags = new StaticString[]
+		this.stealVisionFromEmpireTags = new StaticString[15];
+		for (int i = 0; i < 15; i++)
 		{
-			new StaticString("StealVisionFromEmpire0"),
-			new StaticString("StealVisionFromEmpire1"),
-			new StaticString("StealVisionFromEmpire2"),
-			new StaticString("StealVisionFromEmpire3"),
-			new StaticString("StealVisionFromEmpire4"),
-			new StaticString("StealVisionFromEmpire5"),
-			new StaticString("StealVisionFromEmpire6"),
-			new StaticString("StealVisionFromEmpire7")
-		};
+			this.stealVisionFromEmpireTags[i] = new StaticString("StealVisionFromEmpire" + i);
+		}
 	}
 
 	public event VisibilityRefreshedEventHandler VisibilityRefreshed;
@@ -154,6 +150,10 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 		MajorEmpire majorEmpire = visibilityArea.Empire as MajorEmpire;
 		if (majorEmpire == null)
 		{
+			if (visibilityArea.VisibilityDirty && visibilityArea.Empire != null)
+			{
+				visibilityArea.VisibilityDirty = false;
+			}
 			return;
 		}
 		if ((needRefreshBits & majorEmpire.Bits) != majorEmpire.Bits)
@@ -163,11 +163,15 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 		visibilityArea.VisibilityDirty = false;
 		foreach (WorldPosition worldPosition in visibilityArea.VisibleWorldPositions)
 		{
-			if (worldPosition.IsValid)
+			if (worldPosition.IsValid && worldPosition.Row < this.world.WorldParameters.Rows && worldPosition.Column < this.world.WorldParameters.Columns)
 			{
-				if (worldPosition.Row < this.world.WorldParameters.Rows && worldPosition.Column < this.world.WorldParameters.Columns)
+				this.SetWorldPositionAsVisible(worldPosition, majorEmpire, 0, visibilityArea.VisibilityAccessibilityLevel);
+				if (ELCPUtilities.SpectatorMode)
 				{
-					this.SetWorldPositionAsVisible(worldPosition, majorEmpire, 0, visibilityArea.VisibilityAccessibilityLevel);
+					foreach (int num in ELCPUtilities.EliminatedEmpireIndices)
+					{
+						this.SetWorldPositionAsVisible(worldPosition, base.Game.Empires[num], 0, visibilityArea.VisibilityAccessibilityLevel);
+					}
 				}
 			}
 		}
@@ -595,6 +599,12 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 
 	public void Update()
 	{
+		this.tick += 1;
+		if (this.tick < ELCPUtilities.FOWUpdateFrames)
+		{
+			return;
+		}
+		this.tick = 0;
 		if (this.majorEmpires == null)
 		{
 			return;
@@ -702,19 +712,10 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 					}
 				}
 			}
-			for (int j = 0; j < this.visibilityProviders.Count; j++)
+			int j = 0;
+			while (j < this.visibilityProviders.Count)
 			{
-				if (this.visibilityProviders[j].VisibilityDirty)
-				{
-					foreach (Empire empire in this.visibilityProviders[j].VisibilityEmpires)
-					{
-						if (empire is MajorEmpire)
-						{
-							this.NeedRefreshBits |= empire.Bits;
-						}
-					}
-				}
-				else
+				if (!this.visibilityProviders[j].VisibilityDirty)
 				{
 					foreach (ILineOfSightEntity lineOfSightEntity in this.visibilityProviders[j].LineOfSightEntities)
 					{
@@ -728,22 +729,55 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 							}
 						}
 					}
-					foreach (IVisibilityArea visibilityArea in this.visibilityProviders[j].VisibleAreas)
+					using (IEnumerator<IVisibilityArea> enumerator2 = this.visibilityProviders[j].VisibleAreas.GetEnumerator())
 					{
-						if (visibilityArea.VisibilityDirty)
+						while (enumerator2.MoveNext())
 						{
-							MajorEmpire majorEmpire3 = visibilityArea.Empire as MajorEmpire;
-							if (majorEmpire3 != null)
+							IVisibilityArea visibilityArea = enumerator2.Current;
+							if (visibilityArea.VisibilityDirty)
 							{
-								this.NeedRefreshBits |= majorEmpire3.Bits;
+								MajorEmpire majorEmpire3 = visibilityArea.Empire as MajorEmpire;
+								if (majorEmpire3 != null)
+								{
+									this.NeedRefreshBits |= majorEmpire3.Bits;
+								}
+								if (ELCPUtilities.SpectatorMode)
+								{
+									foreach (int num in ELCPUtilities.EliminatedEmpireIndices)
+									{
+										this.NeedRefreshBits |= base.Game.Empires[num].Bits;
+									}
+								}
 							}
+						}
+						goto IL_295;
+					}
+					goto IL_1E3;
+				}
+				goto IL_1E3;
+				IL_295:
+				j++;
+				continue;
+				IL_1E3:
+				foreach (Empire empire in this.visibilityProviders[j].VisibilityEmpires)
+				{
+					if (empire is MajorEmpire)
+					{
+						this.NeedRefreshBits |= empire.Bits;
+					}
+					if (ELCPUtilities.SpectatorMode)
+					{
+						foreach (int num2 in ELCPUtilities.EliminatedEmpireIndices)
+						{
+							this.NeedRefreshBits |= base.Game.Empires[num2].Bits;
 						}
 					}
 				}
+				goto IL_295;
 			}
 		}
-		int num = (this.majorEmpires == null) ? 0 : ((int)Mathf.Pow(2f, (float)this.majorEmpires.Length) - 1);
-		this.NeedRefreshBits &= num;
+		int num3 = (this.majorEmpires == null) ? 0 : ((int)Mathf.Pow(2f, (float)this.majorEmpires.Length) - 1);
+		this.NeedRefreshBits &= num3;
 		return this.NeedRefreshBits != 0;
 	}
 
@@ -846,6 +880,7 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 					}
 					visibilityProvider.VisibilityDirty = true;
 					this.visibilityProviders.Add(visibilityProvider);
+					return;
 				}
 			}
 		}
@@ -885,6 +920,13 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 							}
 						}
 					}
+					if (ELCPUtilities.SpectatorMode)
+					{
+						foreach (int num in ELCPUtilities.EliminatedEmpireIndices)
+						{
+							this.NeedRefreshBits |= base.Game.Empires[num].Bits;
+						}
+					}
 				}
 			}
 		}
@@ -922,8 +964,7 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 			this.empireExplorationBits[i] = this.majorEmpires[i].Bits;
 			this.empireVibilityBits[i] = this.majorEmpires[i].Bits;
 			this.empireDetectionBits[i] = this.majorEmpires[i].Bits;
-			MajorEmpire majorEmpire = this.majorEmpires[i];
-			DepartmentOfForeignAffairs agency = majorEmpire.GetAgency<DepartmentOfForeignAffairs>();
+			DepartmentOfForeignAffairs agency = this.majorEmpires[i].GetAgency<DepartmentOfForeignAffairs>();
 			for (int j = 0; j < this.majorEmpires.Length; j++)
 			{
 				if (j != i)
@@ -947,7 +988,7 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 					DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(this.majorEmpires[j]);
 					if (diplomaticRelation != null)
 					{
-						flag |= diplomaticRelation.HasActiveAbility(DiplomaticAbilityDefinition.MapExchange);
+						flag |= (diplomaticRelation.HasActiveAbility(DiplomaticAbilityDefinition.MapExchange) || (ELCPUtilities.SpectatorMode && this.majorEmpires[j].ELCPIsEliminated));
 						flag2 |= diplomaticRelation.HasActiveAbility(DiplomaticAbilityDefinition.VisionExchange);
 					}
 					if (this.EnableDetection)
@@ -987,48 +1028,53 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 		}
 		for (int k = 0; k < this.majorEmpires.Length; k++)
 		{
-			MajorEmpire majorEmpire2 = this.majorEmpires[k];
+			MajorEmpire majorEmpire = this.majorEmpires[k];
 			Diagnostics.Assert(this.empireExplorationBits != null && this.lastEmpireExplorationBits != null);
 			if (this.lastEmpireExplorationBits[k] != this.empireExplorationBits[k])
 			{
 				Diagnostics.Assert(this.explorationMap != null && this.explorationMap.Data != null);
 				for (int l = 0; l < this.explorationMap.Data.Length; l++)
 				{
-					if ((this.explorationMap.Data[l] & (short)majorEmpire2.Bits) != 0)
+					if ((this.explorationMap.Data[l] & (short)majorEmpire.Bits) != 0)
 					{
 						short[] data = this.explorationMap.Data;
 						int num = l;
-						data[num] |= (short)this.empireExplorationBits[k];
+						int num2 = num;
+						data[num2] |= (short)this.empireExplorationBits[k];
 					}
 				}
 			}
 		}
-		short num2 = (short)(~(short)this.NeedRefreshBits);
+		short num3 = Convert.ToInt16(~this.NeedRefreshBits);
 		for (int m = 0; m < this.publicVisibilityMap.Data.Length; m++)
 		{
 			short[] data2 = this.publicVisibilityMap.Data;
-			int num3 = m;
-			data2[num3] &= num2;
-			short[] data3 = this.privateVisibilityMap.Data;
 			int num4 = m;
-			data3[num4] &= num2;
+			int num5 = num4;
+			data2[num5] &= num3;
+			short[] data3 = this.privateVisibilityMap.Data;
+			int num6 = m;
+			int num7 = num6;
+			data3[num7] &= num3;
 			if (this.EnableDetection)
 			{
 				short[] data4 = this.publicDetectionMap.Data;
-				int num5 = m;
-				data4[num5] &= num2;
+				int num8 = m;
+				int num9 = num8;
+				data4[num9] &= num3;
 				short[] data5 = this.privateDetectionMap.Data;
-				int num6 = m;
-				data5[num6] &= num2;
+				int num10 = m;
+				int num11 = num10;
+				data5[num11] &= num3;
 			}
 		}
 		for (int n = 0; n < this.gameEntities.Count; n++)
 		{
 			this.RefreshLineOfSight(this.gameEntities[n], this.NeedRefreshBits);
 		}
-		for (int num7 = 0; num7 < this.visibilityProviders.Count; num7++)
+		for (int num12 = 0; num12 < this.visibilityProviders.Count; num12++)
 		{
-			this.RefreshLineOfSight(this.visibilityProviders[num7], this.NeedRefreshBits);
+			this.RefreshLineOfSight(this.visibilityProviders[num12], this.NeedRefreshBits);
 		}
 		this.NeedRefreshBits = 0;
 	}
@@ -1045,11 +1091,11 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 
 	private Arc[] tempNewArcs;
 
-	private readonly List<IGameEntityWithLineOfSight> gameEntities = new List<IGameEntityWithLineOfSight>();
+	private readonly List<IGameEntityWithLineOfSight> gameEntities;
 
-	private readonly List<IGameEntityWithSharedSight> sharedSightGameEntities = new List<IGameEntityWithSharedSight>();
+	private readonly List<IGameEntityWithSharedSight> sharedSightGameEntities;
 
-	private readonly List<IVisibilityProvider> visibilityProviders = new List<IVisibilityProvider>();
+	private readonly List<IVisibilityProvider> visibilityProviders;
 
 	private readonly StaticString[] stealVisionFromEmpireTags;
 
@@ -1100,6 +1146,8 @@ public class VisibilityController : GameAncillary, IService, IVisibilityService
 	private sbyte ridgeHeight;
 
 	private sbyte wastelandHeight;
+
+	private ushort tick;
 
 	public struct Position
 	{

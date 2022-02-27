@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Xml.Serialization;
 using Amplitude;
 using Amplitude.Unity.AI.BehaviourTree;
@@ -42,28 +41,32 @@ public class QuestBehaviourTreeNode_Decorator_DistrictLevelUp : QuestBehaviourTr
 	protected override State Execute(QuestBehaviour questBehaviour, EventDistrictLevelUp e, params object[] parameters)
 	{
 		Diagnostics.Assert(e.District != null);
-		if (e.OldLevel < this.Level && e.NewLevel >= this.Level)
+		if (e.OldLevel >= this.Level || e.NewLevel < this.Level)
+		{
+			return State.Running;
+		}
+		if (e.City == null)
+		{
+			if (!(this.CityGUID == GameEntityGUID.Zero))
+			{
+				return State.Running;
+			}
+			return State.Success;
+		}
+		else
 		{
 			this.AddDistrictToQuestVariable(questBehaviour, e);
-			if (e.City != null)
+			if (this.CityGUID != GameEntityGUID.Zero && this.CityGUID != e.City.GUID)
 			{
-				City city;
-				if (this.TargetCityVarName != string.Empty && questBehaviour.TryGetQuestVariableValueByName<City>(this.TargetCityVarName, out city) && city.GUID != e.City.GUID)
-				{
-					return State.Running;
-				}
-				QuestVariable questVariable = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_CityVarName);
-				if (questVariable == null)
-				{
-					questVariable = new QuestVariable(this.Output_CityVarName);
-					questBehaviour.QuestVariables.Add(questVariable);
-				}
-				questVariable.Object = e.City;
+				return State.Running;
+			}
+			base.UpdateQuestVariable(questBehaviour, this.Output_CityVarName, e.City);
+			if (!string.IsNullOrEmpty(this.Output_CityVarName) && base.CheckConditions(questBehaviour, e, parameters) == State.Success)
+			{
 				this.CityGUID = e.City.GUID;
 			}
 			return State.Success;
 		}
-		return State.Running;
 	}
 
 	protected void AddDistrictToQuestVariable(QuestBehaviour questBehaviour, EventDistrictLevelUp e)
@@ -80,66 +83,33 @@ public class QuestBehaviourTreeNode_Decorator_DistrictLevelUp : QuestBehaviourTr
 		IGameService service = Services.GetService<IGameService>();
 		if (service == null)
 		{
-			Diagnostics.LogError("Failed to retrieve the game service.");
+			Diagnostics.LogError("Unable to retrieve the game service.");
 			return false;
 		}
 		this.GameEntityRepositoryService = service.Game.Services.GetService<IGameEntityRepositoryService>();
 		if (this.GameEntityRepositoryService == null)
 		{
-			Diagnostics.LogError("Failed to retrieve the game entity repository service.");
+			Diagnostics.LogError("Unable to retrieve the game entity repository service.");
 			return false;
 		}
-		if (!string.IsNullOrEmpty(this.Output_DistrictSimObjectVarName) && this.DistrictGUID != 0UL)
+		District @object;
+		if (this.DistrictGUID != GameEntityGUID.Zero && !string.IsNullOrEmpty(this.Output_DistrictSimObjectVarName) && !questBehaviour.QuestVariables.Exists((QuestVariable match) => match.Name == this.Output_DistrictSimObjectVarName) && this.GameEntityRepositoryService.TryGetValue<District>(this.DistrictGUID, out @object))
 		{
-			IGameEntity gameEntity;
-			if (!this.GameEntityRepositoryService.TryGetValue(this.DistrictGUID, out gameEntity))
-			{
-				Diagnostics.LogWarning("QuestBehaviourTreeNode_Decorator_DistrictLevelUp: district entity GUID is not valid (Variable name :'{0}')", new object[]
-				{
-					this.Output_DistrictSimObjectVarName
-				});
-				return false;
-			}
-			if (gameEntity != null)
-			{
-				QuestVariable questVariable = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_DistrictSimObjectVarName);
-				if (questVariable == null)
-				{
-					questVariable = new QuestVariable(this.Output_DistrictSimObjectVarName);
-					questBehaviour.QuestVariables.Add(questVariable);
-				}
-				questVariable.Object = gameEntity;
-			}
+			QuestVariable questVariable = new QuestVariable(this.Output_DistrictSimObjectVarName);
+			questVariable.Object = @object;
+			questBehaviour.QuestVariables.Add(questVariable);
 		}
-		if (this.CityGUID != GameEntityGUID.Zero && !questBehaviour.QuestVariables.Exists((QuestVariable match) => match.Name == this.Output_CityVarName))
+		City object2;
+		if (this.CityGUID != GameEntityGUID.Zero && !string.IsNullOrEmpty(this.Output_CityVarName) && !questBehaviour.QuestVariables.Exists((QuestVariable match) => match.Name == this.Output_CityVarName) && this.GameEntityRepositoryService.TryGetValue<City>(this.CityGUID, out object2))
 		{
-			IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
-			if (service2 == null)
-			{
-				Diagnostics.LogError("Unable to retrieve the game entity repository service.");
-				return false;
-			}
-			IGameEntity gameEntity2;
-			if (!service2.TryGetValue(this.CityGUID, out gameEntity2))
-			{
-				Diagnostics.LogError("Unable to retrieve the game entity (GUID='{0}') in the repository service.", new object[]
-				{
-					this.CityGUID
-				});
-				return false;
-			}
-			City city = gameEntity2 as City;
-			if (city == null)
-			{
-				Diagnostics.LogError("Unable to cast the game entity (GUID='{0}') to 'City'.", new object[]
-				{
-					this.CityGUID
-				});
-				return false;
-			}
 			QuestVariable questVariable2 = new QuestVariable(this.Output_CityVarName);
-			questVariable2.Object = city;
+			questVariable2.Object = object2;
 			questBehaviour.QuestVariables.Add(questVariable2);
+		}
+		City city = null;
+		if (this.CityGUID == GameEntityGUID.Zero && !string.IsNullOrEmpty(this.TargetCityVarName) && questBehaviour.TryGetQuestVariableValueByName<City>(this.TargetCityVarName, out city) && city != null)
+		{
+			this.CityGUID = city.GUID;
 		}
 		return base.Initialize(questBehaviour);
 	}

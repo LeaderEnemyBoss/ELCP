@@ -65,6 +65,7 @@ public class EconomyAccountNeedMoneyRatioAgent : SimulationAgent
 		{
 			return;
 		}
+		(base.ContextObject as AIPlayer_MajorEmpire).GetEntity<AIEntity_Empire>();
 	}
 
 	protected override void ComputeInitValue()

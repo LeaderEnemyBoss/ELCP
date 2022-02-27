@@ -8,6 +8,7 @@ using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
 using Amplitude.Unity.Game.Orders;
+using Amplitude.Unity.Runtime;
 using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Xml;
@@ -28,15 +29,14 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 
 	public override void ReadXml(XmlReader reader)
 	{
-		int num = reader.ReadVersionAttribute();
+		reader.ReadVersionAttribute();
 		base.ReadXml(reader);
 		int attribute = reader.GetAttribute<int>("Count");
 		reader.ReadStartElement("Nodes");
 		this.nodes.Clear();
 		for (int i = 0; i < attribute; i++)
 		{
-			ulong attribute2 = reader.GetAttribute<ulong>("GUID");
-			CreepingNode creepingNode = new CreepingNode(attribute2, base.Empire as global::Empire);
+			CreepingNode creepingNode = new CreepingNode(reader.GetAttribute<ulong>("GUID"), base.Empire as global::Empire);
 			reader.ReadElementSerializable<CreepingNode>(ref creepingNode);
 			if (creepingNode != null)
 			{
@@ -44,11 +44,12 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			}
 		}
 		reader.ReadEndElement("Nodes");
+		this.ReadDictionnary(reader, "POIsOnCooldown", this.POIsOnCooldown);
 	}
 
 	public override void WriteXml(XmlWriter writer)
 	{
-		int num = writer.WriteVersionAttribute(1);
+		writer.WriteVersionAttribute(1);
 		base.WriteXml(writer);
 		writer.WriteStartElement("Nodes");
 		writer.WriteAttributeString<int>("Count", this.nodes.Count);
@@ -58,6 +59,7 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			writer.WriteElementSerializable<IXmlSerializable>(ref xmlSerializable);
 		}
 		writer.WriteEndElement();
+		this.WriteDictionnary(writer, "POIsOnCooldown", this.POIsOnCooldown);
 	}
 
 	private bool BuyoutCreepingNodePreprocessor(OrderBuyoutCreepingNode order)
@@ -157,14 +159,13 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 
 	private IEnumerator DestroyCreepingNodeProcessor(OrderDestroyCreepingNode order)
 	{
-		IGameService gameService = Services.GetService<IGameService>();
-		if (gameService == null)
+		IGameService service = Services.GetService<IGameService>();
+		if (service == null)
 		{
 			Diagnostics.LogError("Order preprocessing failed because we cannot retrieve the game service.");
 			yield break;
 		}
-		global::Game game = gameService.Game as global::Game;
-		if (game == null)
+		if (service.Game as global::Game == null)
 		{
 			Diagnostics.LogError("gameService.Game isn't an instance of Game.");
 			yield break;
@@ -180,16 +181,32 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			Diagnostics.LogError("Order preprocessing failed because the target game entity is not a simulation object wrapper.");
 			yield break;
 		}
-		CreepingNode node = gameEntity as CreepingNode;
-		if (node == null)
+		CreepingNode creepingNode = gameEntity as CreepingNode;
+		if (creepingNode == null)
 		{
 			Diagnostics.LogError("Order GUID does not belong to a creeping node.");
 			yield break;
 		}
-		if (this.Nodes.Contains(node))
+		if (this.Nodes.Contains(creepingNode))
 		{
-			this.RemoveCreepingNode(node);
-			this.GameEntityRepositoryService.Unregister(node);
+			if (creepingNode.IsUnderConstruction && this.DepartmentOfTheInterior.MainCity != null)
+			{
+				foreach (KeyValuePair<string, float> keyValuePair in creepingNode.StoredConstructionCost)
+				{
+					if (!this.DepartmentOfTheTreasury.TryTransferResources(base.Empire, keyValuePair.Key, keyValuePair.Value))
+					{
+						Diagnostics.LogError("Order processing failed because the Node '{0}' ask for instant resource '{1}': {2} that can't be retrieve.", new object[]
+						{
+							creepingNode.WorldPosition,
+							keyValuePair.Key,
+							keyValuePair.Value
+						});
+					}
+				}
+			}
+			creepingNode.StoredConstructionCost.Clear();
+			this.RemoveCreepingNode(creepingNode);
+			this.GameEntityRepositoryService.Unregister(creepingNode);
 			yield break;
 		}
 		Diagnostics.LogError("Department does not contain the provided node.");
@@ -228,6 +245,14 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 		}
 		if (pointOfInterest.CreepingNodeImprovement != null || (pointOfInterest.PointOfInterestImprovement != null && pointOfInterest.Type != "Village"))
 		{
+			return false;
+		}
+		if (pointOfInterest.SimulationObject.Tags.Contains(Village.ConvertedVillage))
+		{
+			Diagnostics.LogWarning("Order preprocessing failed because the Target Village {0} is Converted.", new object[]
+			{
+				pointOfInterest.WorldPosition
+			});
 			return false;
 		}
 		Diagnostics.Assert(this.creepingNodeDefinitionDatabase != null);
@@ -272,13 +297,13 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 
 	private IEnumerator QueueCreepingNodeProcessor(OrderQueueCreepingNode order)
 	{
-		IGameService gameService = Services.GetService<IGameService>();
-		if (gameService == null)
+		IGameService service = Services.GetService<IGameService>();
+		if (service == null)
 		{
 			Diagnostics.LogError("Order preprocessing failed because we cannot retrieve the game service.");
 			yield break;
 		}
-		global::Game game = gameService.Game as global::Game;
+		global::Game game = service.Game as global::Game;
 		if (game == null)
 		{
 			Diagnostics.LogError("gameService.Game isn't an instance of Game.");
@@ -295,27 +320,26 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			Diagnostics.LogError("Order preprocessing failed because the target game entity is not a simulation object wrapper.");
 			yield break;
 		}
-		IGameEntity poiEntity;
-		if (!this.GameEntityRepositoryService.TryGetValue(order.PointOfInterestGUID, out poiEntity))
+		IGameEntity gameEntity2;
+		if (!this.GameEntityRepositoryService.TryGetValue(order.PointOfInterestGUID, out gameEntity2))
 		{
 			Diagnostics.LogError("Order preprocessing failed because the target game entity is not valid.");
 			yield break;
 		}
-		PointOfInterest pointOfInterest = poiEntity as PointOfInterest;
+		PointOfInterest pointOfInterest = gameEntity2 as PointOfInterest;
 		if (pointOfInterest == null)
 		{
 			Diagnostics.LogError("Provided poi entity is not a valid poi");
 			yield break;
 		}
-		IGameEntity context = gameEntity;
-		SimulationObjectWrapper simulationObjectWrapper = context as SimulationObjectWrapper;
+		SimulationObjectWrapper simulationObjectWrapper = gameEntity as SimulationObjectWrapper;
 		if (order.NodeEntityGUID == GameEntityGUID.Zero)
 		{
 			Diagnostics.LogError("Skipping queue construction process because the game entity guid is null.");
 			yield break;
 		}
-		CreepingNodeImprovementDefinition constructibleElement;
-		if (!this.creepingNodeDefinitionDatabase.TryGetValue(order.ConstructibleElementName, out constructibleElement))
+		CreepingNodeImprovementDefinition creepingNodeImprovementDefinition;
+		if (!this.creepingNodeDefinitionDatabase.TryGetValue(order.ConstructibleElementName, out creepingNodeImprovementDefinition))
 		{
 			Diagnostics.LogError("Skipping queue construction process because the constructible element {0} is not in the constructible element database.", new object[]
 			{
@@ -333,42 +357,46 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			Diagnostics.LogError("Order processor failed because empire index is invalid.");
 			yield break;
 		}
-		CreepingNode node = new CreepingNode(order.NodeEntityGUID, empire, pointOfInterest, constructibleElement);
+		CreepingNode creepingNode = new CreepingNode(order.NodeEntityGUID, empire, pointOfInterest, creepingNodeImprovementDefinition);
 		if (this.simulationDescriptorDatabase != null)
 		{
 			SimulationDescriptor descriptor = null;
 			if (this.simulationDescriptorDatabase.TryGetValue("ClassCreepingNode", out descriptor))
 			{
-				node.AddDescriptor(descriptor, false);
+				creepingNode.AddDescriptor(descriptor, false);
 			}
-			if (!string.IsNullOrEmpty(node.NodeDefinition.ConstructionCostDescriptor) && this.simulationDescriptorDatabase.TryGetValue(node.NodeDefinition.ConstructionCostDescriptor, out descriptor))
+			if (!string.IsNullOrEmpty(creepingNode.NodeDefinition.ConstructionCostDescriptor) && this.simulationDescriptorDatabase.TryGetValue(creepingNode.NodeDefinition.ConstructionCostDescriptor, out descriptor))
 			{
-				node.AddDescriptor(descriptor, false);
+				creepingNode.AddDescriptor(descriptor, false);
 			}
 		}
-		if (constructibleElement.Costs != null && constructibleElement.Costs.Length > 0)
+		if (creepingNodeImprovementDefinition.Costs != null && creepingNodeImprovementDefinition.Costs.Length != 0)
 		{
-			for (int index = 0; index < constructibleElement.Costs.Length; index++)
+			for (int i = 0; i < creepingNodeImprovementDefinition.Costs.Length; i++)
 			{
-				if (order.ResourceStocks[index].Stock > 0f && !this.DepartmentOfTheTreasury.TryTransferResources(simulationObjectWrapper.SimulationObject, constructibleElement.Costs[index].ResourceName, -order.ResourceStocks[index].Stock))
+				if (order.ResourceStocks[i].Stock > 0f)
 				{
-					Diagnostics.LogError("Order processing failed because the constructible element '{0}' ask for instant resource '{1}' that can't be retrieve.", new object[]
+					if (!this.DepartmentOfTheTreasury.TryTransferResources(simulationObjectWrapper.SimulationObject, creepingNodeImprovementDefinition.Costs[i].ResourceName, -order.ResourceStocks[i].Stock))
 					{
-						constructibleElement.Name,
-						constructibleElement.Costs[index].ResourceName
-					});
-					yield break;
+						Diagnostics.LogError("Order processing failed because the constructible element '{0}' ask for instant resource '{1}' that can't be retrieve.", new object[]
+						{
+							creepingNodeImprovementDefinition.Name,
+							creepingNodeImprovementDefinition.Costs[i].ResourceName
+						});
+						yield break;
+					}
+					creepingNode.StoredConstructionCost.Add(creepingNodeImprovementDefinition.Costs[i].ResourceName, order.ResourceStocks[i].Stock);
 				}
 			}
 		}
-		this.AddCreepingNode(node);
-		this.GameEntityRepositoryService.Register(node);
+		this.AddCreepingNode(creepingNode);
+		this.GameEntityRepositoryService.Register(creepingNode);
 		if (order.IsIstantConstruction)
 		{
-			node.CompleteUpgrade();
-			if (node.PointOfInterest.Type == "Village")
+			creepingNode.CompleteUpgrade();
+			if (creepingNode.PointOfInterest.Type == "Village")
 			{
-				this.SetupInfectedVillage(node);
+				this.SetupInfectedVillage(creepingNode);
 			}
 		}
 		yield break;
@@ -403,8 +431,7 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 		this.EventService = Services.GetService<IEventService>();
 		Diagnostics.Assert(this.EventService != null);
 		this.EventService.EventRaise += this.EventService_EventRaise;
-		ISessionService sessionService = Services.GetService<ISessionService>();
-		Diagnostics.Assert(sessionService != null);
+		Diagnostics.Assert(Services.GetService<ISessionService>() != null);
 		this.GameEntityRepositoryService = this.gameService.Game.Services.GetService<IGameEntityRepositoryService>();
 		if (this.GameEntityRepositoryService == null)
 		{
@@ -425,6 +452,8 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 		Diagnostics.Assert(this.DepartmentOfScience != null);
 		this.DepartmentOfScience.TechnologyUnlocked += this.DepartmentOfScience_TechnologyUnlocked;
 		base.Empire.RegisterPass("GameClientState_Turn_Begin", "TurnBegin", new Agency.Action(this.GameClientState_Turn_Begin), new string[0]);
+		this.nodeCooldown = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<int>("Gameplay/Agencies/DepartmentOfCreepingNodes/NodeCooldown", 0);
+		this.POIsOnCooldown = new Dictionary<GameEntityGUID, int>();
 		yield break;
 	}
 
@@ -444,17 +473,17 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 		City mainCity = this.DepartmentOfTheInterior.MainCity;
 		if (mainCity != null)
 		{
-			for (int index = 0; index < this.nodes.Count; index++)
+			for (int i = 0; i < this.nodes.Count; i++)
 			{
-				this.nodes[index].PointOfInterest.Empire = (base.Empire as global::Empire);
-				if (!this.nodes[index].IsUnderConstruction)
+				this.nodes[i].PointOfInterest.Empire = (base.Empire as global::Empire);
+				if (!this.nodes[i].IsUnderConstruction)
 				{
-					DepartmentOfTheInterior.GenerateFIMSEForCreepingNode(base.Empire, this.Nodes[index]);
-					this.nodes[index].ReApplyImprovementDescriptors();
-					this.nodes[index].Refresh(false);
+					DepartmentOfTheInterior.GenerateFIMSEForCreepingNode(base.Empire, this.Nodes[i]);
+					this.nodes[i].ReApplyImprovementDescriptors();
+					this.nodes[i].Refresh(false);
 				}
-				mainCity.AddChild(this.nodes[index]);
-				this.GameEntityRepositoryService.Register(this.nodes[index]);
+				mainCity.AddChild(this.nodes[i]);
+				this.GameEntityRepositoryService.Register(this.nodes[i]);
 			}
 			mainCity.Refresh(false);
 		}
@@ -463,6 +492,7 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			Diagnostics.LogError("Nodes were loaded but there is no MainCity to assign them.");
 		}
 		base.Empire.Refresh(false);
+		this.SeasonService = game.Services.GetService<ISeasonService>();
 		yield break;
 	}
 
@@ -487,6 +517,7 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			this.DepartmentOfScience.TechnologyUnlocked -= this.DepartmentOfScience_TechnologyUnlocked;
 			this.DepartmentOfScience = null;
 		}
+		this.SeasonService = null;
 		this.DepartmentOfTheInterior = null;
 		this.DepartmentOfTheTreasury = null;
 	}
@@ -516,7 +547,7 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 		{
 			node.SimulationObject.Parent.RemoveChild(node);
 		}
-		node.PointOfInterest.Empire = ((node.PointOfInterest.Region.City == null) ? null : node.PointOfInterest.Region.City.Empire);
+		node.PointOfInterest.Empire = null;
 		node.PointOfInterest.CreepingNodeImprovement = null;
 		node.PointOfInterest.CreepingNodeGUID = GameEntityGUID.Zero;
 		SimulationDescriptor descriptor;
@@ -527,6 +558,18 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 		if (node.PointOfInterest.Type == "Village")
 		{
 			this.RemoveInfectedVillage(node);
+		}
+		if (node.PointOfInterest.Region.City != null)
+		{
+			City city = node.PointOfInterest.Region.City;
+			string text;
+			if ((!node.PointOfInterest.PointOfInterestDefinition.TryGetValue("Type", out text) || !(text == "Village")) && (!node.PointOfInterest.PointOfInterestDefinition.TryGetValue("VisibilityTechnology", out text) || this.DepartmentOfScience.GetTechnologyState(text) == DepartmentOfScience.ConstructibleElement.State.Researched) && !city.SimulationObject.Children.Contains(node.PointOfInterest))
+			{
+				city.AddChild(node.PointOfInterest);
+				node.PointOfInterest.Refresh(true);
+				node.PointOfInterest.Empire = city.Empire;
+			}
+			city.Refresh(true);
 		}
 		Army dismantlingArmy = node.DismantlingArmy;
 		if (dismantlingArmy != null)
@@ -549,9 +592,24 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 
 	private IEnumerator GameClientState_Turn_Begin(string context, string name)
 	{
-		for (int index = 0; index < this.Nodes.Count; index++)
+		for (int i = 0; i < this.Nodes.Count; i++)
 		{
-			this.Nodes[index].OnBeginTurn();
+			this.Nodes[i].OnBeginTurn();
+		}
+		if (this.lastTurnChecked < (this.gameService.Game as global::Game).Turn)
+		{
+			foreach (GameEntityGUID gameEntityGUID in new List<GameEntityGUID>(this.POIsOnCooldown.Keys))
+			{
+				Dictionary<GameEntityGUID, int> poisOnCooldown = this.POIsOnCooldown;
+				GameEntityGUID key = gameEntityGUID;
+				int num = poisOnCooldown[key];
+				poisOnCooldown[key] = num - 1;
+				if (this.POIsOnCooldown[gameEntityGUID] <= 0)
+				{
+					this.POIsOnCooldown.Remove(gameEntityGUID);
+				}
+			}
+			this.lastTurnChecked = (this.gameService.Game as global::Game).Turn;
 		}
 		this.CheckCompletedNodes();
 		this.CheckNodesDismantling();
@@ -590,6 +648,10 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 		for (int j = 0; j < list.Count; j++)
 		{
 			CreepingNode creepingNode2 = list[j];
+			if (this.nodeCooldown > 0)
+			{
+				this.POIsOnCooldown.Add(creepingNode2.PointOfInterest.GUID, this.nodeCooldown);
+			}
 			if (playerControllerById != null)
 			{
 				OrderDismantleCreepingNodeSucceed order = new OrderDismantleCreepingNodeSucceed(creepingNode2.DismantlingArmy.Empire.Index, creepingNode2.DismantlingArmyGUID, creepingNode2.GUID, ArmyAction_ToggleDismantleCreepingNode.ReadOnlyName);
@@ -685,34 +747,7 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 	{
 		if (empire.Index == base.Empire.Index)
 		{
-			GameEntityGUID[] array = new GameEntityGUID[this.Nodes.Count];
-			for (int i = 0; i < this.Nodes.Count; i++)
-			{
-				array[i] = this.Nodes[i].GUID;
-			}
-			for (int j = 0; j < array.Length; j++)
-			{
-				global::PlayerController server = (base.Empire as global::Empire).PlayerControllers.Server;
-				if (server != null)
-				{
-					Ticket ticket = null;
-					PointOfInterest pointOfInterest = this.Nodes[j].PointOfInterest;
-					OrderDestroyCreepingNode order = new OrderDestroyCreepingNode(base.Empire.Index, array[j]);
-					server.PostOrder(order, out ticket, delegate(object sender, TicketRaisedEventArgs e)
-					{
-						if (pointOfInterest.Region.City != null)
-						{
-							global::Empire empire2 = pointOfInterest.Region.City.Empire;
-							OrderUpgradePointOfInterest order2 = new OrderUpgradePointOfInterest(empire2.Index, pointOfInterest.GUID);
-							global::PlayerController server2 = empire2.PlayerControllers.Server;
-							if (server2 != null)
-							{
-								server2.PostOrder(order2);
-							}
-						}
-					});
-				}
-			}
+			this.DestroyAllCreepingNodes();
 		}
 	}
 
@@ -738,69 +773,57 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 				}
 			}
 		}
-		if (list.Count > 0)
-		{
-			MajorEmpire majorEmpire = base.Empire as MajorEmpire;
-			if (majorEmpire != null && majorEmpire.TamedKaijus != null)
-			{
-				for (int j = 0; j < majorEmpire.TamedKaijus.Count; j++)
-				{
-					DepartmentOfTheInterior.GenerateResourcesLeechingForTamedKaijus(majorEmpire.TamedKaijus[j]);
-				}
-			}
-		}
 		City mainCity = this.DepartmentOfTheInterior.MainCity;
 		if (mainCity == null)
 		{
 			return;
 		}
 		List<StaticString> lastFailureFlags = new List<StaticString>();
-		for (int k = 0; k < this.Nodes.Count; k++)
+		for (int j = 0; j < this.Nodes.Count; j++)
 		{
-			PointOfInterest pointOfInterest = this.Nodes[k].PointOfInterest;
+			PointOfInterest pointOfInterest = this.Nodes[j].PointOfInterest;
 			if (list.Contains(pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName))
 			{
 				CreepingNodeImprovementDefinition bestCreepingNodeDefinition = this.GetBestCreepingNodeDefinition(mainCity, pointOfInterest, pointOfInterest.CreepingNodeImprovement as CreepingNodeImprovementDefinition, lastFailureFlags);
-				if (bestCreepingNodeDefinition != null)
+				if (bestCreepingNodeDefinition != null && bestCreepingNodeDefinition != pointOfInterest.CreepingNodeImprovement as CreepingNodeImprovementDefinition)
 				{
-					this.Nodes[k].UpgradeNode(bestCreepingNodeDefinition);
+					this.Nodes[j].UpgradeNode(bestCreepingNodeDefinition);
 				}
 			}
 		}
-		foreach (PointOfInterest pointOfInterest in mainCity.Region.PointOfInterests)
+		foreach (PointOfInterest pointOfInterest2 in mainCity.Region.PointOfInterests)
 		{
-			PointOfInterest pointOfInterest;
-			if (list.Contains(pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName))
+			if (list.Contains(pointOfInterest2.PointOfInterestDefinition.PointOfInterestTemplateName))
 			{
-				if (pointOfInterest.IsResourceDeposit())
+				if (pointOfInterest2.IsResourceDeposit())
 				{
-					for (int m = 0; m < mainCity.Districts.Count; m++)
+					for (int l = 0; l < mainCity.Districts.Count; l++)
 					{
-						District district = mainCity.Districts[m];
+						District district = mainCity.Districts[l];
 						SimulationDescriptor descriptor;
-						if (district.WorldPosition == pointOfInterest.WorldPosition && !district.SimulationObject.Tags.Contains("DistrictExploitableResource") && this.simulationDescriptorDatabase.TryGetValue("DistrictExploitableResource", out descriptor))
+						if (district.WorldPosition == pointOfInterest2.WorldPosition && !district.SimulationObject.Tags.Contains("DistrictExploitableResource") && this.simulationDescriptorDatabase.TryGetValue("DistrictExploitableResource", out descriptor))
 						{
 							district.AddDescriptor(descriptor, false);
 							break;
 						}
 					}
 				}
-				if (pointOfInterest.CreepingNodeImprovement == null && pointOfInterest.PointOfInterestImprovement == null)
+				if (pointOfInterest2.CreepingNodeImprovement == null && pointOfInterest2.PointOfInterestImprovement == null)
 				{
-					for (int n = 0; n < mainCity.Districts.Count; n++)
+					for (int m = 0; m < mainCity.Districts.Count; m++)
 					{
-						if (pointOfInterest.WorldPosition == mainCity.Districts[n].WorldPosition && mainCity.Districts[n].Type != DistrictType.Exploitation)
+						if (pointOfInterest2.WorldPosition == mainCity.Districts[m].WorldPosition && mainCity.Districts[m].Type != DistrictType.Exploitation)
 						{
-							this.BuildFreeCreepingNodeImprovement(mainCity, pointOfInterest);
+							this.BuildFreeCreepingNodeImprovement(mainCity, pointOfInterest2);
 						}
 					}
 					if (mainCity.Camp != null)
 					{
-						for (int num = 0; num < mainCity.Camp.Districts.Count; num++)
+						for (int n = 0; n < mainCity.Camp.Districts.Count; n++)
 						{
-							if (pointOfInterest.WorldPosition == mainCity.Camp.Districts[num].WorldPosition && mainCity.Camp.Districts[num].Type != DistrictType.Exploitation)
+							if (pointOfInterest2.WorldPosition == mainCity.Camp.Districts[n].WorldPosition && mainCity.Camp.Districts[n].Type != DistrictType.Exploitation)
 							{
-								this.BuildFreeCreepingNodeImprovement(mainCity, pointOfInterest);
+								this.BuildFreeCreepingNodeImprovement(mainCity, pointOfInterest2);
 							}
 						}
 					}
@@ -920,7 +943,7 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			{
 				ConstructionFlags.Prerequisite
 			});
-			if (!lastFailureFlags.Contains(ConstructionFlags.Discard))
+			if (!lastFailureFlags.Contains(ConstructionFlags.Technology))
 			{
 				bestCreepingNodeDefinition = creepingNodeImprovementDefinition;
 				num++;
@@ -946,7 +969,7 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 			if (pointOfInterests[i].CreepingNodeGUID != GameEntityGUID.Zero)
 			{
 				CreepingNode nodeByGUID = this.GetNodeByGUID(pointOfInterests[i].CreepingNodeGUID);
-				if (nodeByGUID != null)
+				if (nodeByGUID != null && !nodeByGUID.IsUnderConstruction)
 				{
 					nodeByGUID.ReApplyFIMSEOnCreepingNode();
 				}
@@ -1028,6 +1051,165 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 		}
 	}
 
+	public void RefreshCityNodesFIMSECheckForEmpire(City city)
+	{
+		PointOfInterest[] pointOfInterests = city.Region.PointOfInterests;
+		for (int i = 0; i < pointOfInterests.Length; i++)
+		{
+			if (pointOfInterests[i].CreepingNodeGUID != GameEntityGUID.Zero)
+			{
+				CreepingNode nodeByGUID = this.GetNodeByGUID(pointOfInterests[i].CreepingNodeGUID);
+				if (nodeByGUID != null && nodeByGUID.Empire.Index == city.Empire.Index)
+				{
+					nodeByGUID.ReApplyFIMSEOnCreepingNode();
+				}
+			}
+		}
+	}
+
+	public void RefreshCityNodesFIMSECheckForEmpire(Region region)
+	{
+		PointOfInterest[] pointOfInterests = region.PointOfInterests;
+		for (int i = 0; i < pointOfInterests.Length; i++)
+		{
+			if (pointOfInterests[i].CreepingNodeGUID != GameEntityGUID.Zero)
+			{
+				CreepingNode nodeByGUID = this.GetNodeByGUID(pointOfInterests[i].CreepingNodeGUID);
+				if (nodeByGUID != null && nodeByGUID.Empire.Index == base.Empire.Index)
+				{
+					nodeByGUID.ReApplyFIMSEOnCreepingNode();
+				}
+			}
+		}
+	}
+
+	public void RefreshCityNodesFIMSE(Region region)
+	{
+		PointOfInterest[] pointOfInterests = region.PointOfInterests;
+		for (int i = 0; i < pointOfInterests.Length; i++)
+		{
+			if (pointOfInterests[i].CreepingNodeGUID != GameEntityGUID.Zero)
+			{
+				CreepingNode nodeByGUID = this.GetNodeByGUID(pointOfInterests[i].CreepingNodeGUID);
+				if (nodeByGUID != null && !nodeByGUID.IsUnderConstruction)
+				{
+					nodeByGUID.ReApplyFIMSEOnCreepingNode();
+				}
+			}
+		}
+	}
+
+	private void SeasonService_SeasonChange(object sender, SeasonChangeEventArgs e)
+	{
+		if (ELCPUtilities.UseELCPCreepingNodeRuleset && e.OldSeason != null && (e.OldSeason.SeasonDefinition.SeasonType == Season.ReadOnlyWinter || e.NewSeason.SeasonDefinition.SeasonType == Season.ReadOnlyWinter) && this.DepartmentOfTheInterior.MainCity != null)
+		{
+			for (int i = 0; i < this.nodes.Count; i++)
+			{
+				this.nodes[i].PointOfInterest.Empire = (base.Empire as global::Empire);
+				if (!this.nodes[i].IsUnderConstruction)
+				{
+					DepartmentOfTheInterior.ClearFIMSEOnCreepingNode(base.Empire as global::Empire, this.Nodes[i]);
+					DepartmentOfTheInterior.GenerateFIMSEForCreepingNode(base.Empire, this.Nodes[i]);
+				}
+			}
+		}
+	}
+
+	private ISeasonService SeasonService
+	{
+		get
+		{
+			return this.seasonService;
+		}
+		set
+		{
+			if (this.seasonService != null)
+			{
+				this.seasonService.SeasonChange -= this.SeasonService_SeasonChange;
+			}
+			this.seasonService = value;
+			if (this.seasonService != null)
+			{
+				this.seasonService.SeasonChange += this.SeasonService_SeasonChange;
+			}
+		}
+	}
+
+	public bool POIIsOnCooldown(GameEntityGUID gUID)
+	{
+		return this.POIsOnCooldown.ContainsKey(gUID);
+	}
+
+	private void WriteDictionnary(XmlWriter writer, string name, Dictionary<GameEntityGUID, int> dictionary)
+	{
+		writer.WriteStartElement(name);
+		writer.WriteAttributeString<int>("lastTurnChecked", this.lastTurnChecked);
+		writer.WriteAttributeString<int>("Count", dictionary.Count);
+		foreach (KeyValuePair<GameEntityGUID, int> keyValuePair in dictionary)
+		{
+			writer.WriteStartElement("KeyValuePair");
+			writer.WriteAttributeString<ulong>("Key", keyValuePair.Key);
+			writer.WriteAttributeString<int>("Value", keyValuePair.Value);
+			writer.WriteEndElement();
+		}
+		writer.WriteEndElement();
+	}
+
+	private void ReadDictionnary(XmlReader reader, string name, Dictionary<GameEntityGUID, int> dictionary)
+	{
+		if (reader.IsStartElement(name))
+		{
+			this.lastTurnChecked = reader.GetAttribute<int>("lastTurnChecked");
+			int attribute = reader.GetAttribute<int>("Count");
+			if (attribute > 0)
+			{
+				reader.ReadStartElement(name);
+				for (int i = 0; i < attribute; i++)
+				{
+					ulong attribute2 = reader.GetAttribute<ulong>("Key");
+					int attribute3 = reader.GetAttribute<int>("Value");
+					reader.Skip();
+					dictionary[attribute2] = attribute3;
+				}
+				reader.ReadEndElement(name);
+				return;
+			}
+			reader.Skip();
+		}
+	}
+
+	public void DestroyAllCreepingNodes()
+	{
+		GameEntityGUID[] array = new GameEntityGUID[this.Nodes.Count];
+		for (int i = 0; i < this.Nodes.Count; i++)
+		{
+			array[i] = this.Nodes[i].GUID;
+		}
+		for (int j = 0; j < array.Length; j++)
+		{
+			global::PlayerController server = (base.Empire as global::Empire).PlayerControllers.Server;
+			if (server != null)
+			{
+				Ticket ticket = null;
+				PointOfInterest pointOfInterest = this.Nodes[j].PointOfInterest;
+				OrderDestroyCreepingNode order = new OrderDestroyCreepingNode(base.Empire.Index, array[j]);
+				server.PostOrder(order, out ticket, delegate(object sender, TicketRaisedEventArgs e)
+				{
+					if (pointOfInterest.Region.City != null)
+					{
+						global::Empire empire = pointOfInterest.Region.City.Empire;
+						OrderUpgradePointOfInterest order2 = new OrderUpgradePointOfInterest(empire.Index, pointOfInterest.GUID);
+						global::PlayerController server2 = empire.PlayerControllers.Server;
+						if (server2 != null)
+						{
+							server2.PostOrder(order2);
+						}
+					}
+				});
+			}
+		}
+	}
+
 	public static readonly StaticString InfectedPointOfInterest = "InfectedPointOfInterest";
 
 	public static readonly StaticString VillageInfectionComplete = "VillageInfectionComplete";
@@ -1043,6 +1225,14 @@ public class DepartmentOfCreepingNodes : Agency, IXmlSerializable
 	private IGameService gameService;
 
 	private Dictionary<StaticString, DepartmentOfCreepingNodes.EventHandler> eventHandlers;
+
+	private ISeasonService seasonService;
+
+	private int nodeCooldown;
+
+	private Dictionary<GameEntityGUID, int> POIsOnCooldown;
+
+	private int lastTurnChecked;
 
 	private delegate void EventHandler(Event raisedEvent);
 }

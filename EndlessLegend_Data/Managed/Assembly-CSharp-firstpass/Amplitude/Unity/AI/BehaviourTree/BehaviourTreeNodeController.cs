@@ -72,6 +72,9 @@ namespace Amplitude.Unity.AI.BehaviourTree
 			return (executionResult == State.Failure && this.ResetPolicy == BehaviourTreeNodeController.ResetPolicies.onFail) || (executionResult == State.Success && this.ResetPolicy == BehaviourTreeNodeController.ResetPolicies.onCompletion);
 		}
 
+		[XmlAttribute]
+		public string Debug { get; set; }
+
 		public enum ResetPolicies
 		{
 			none,

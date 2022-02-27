@@ -5,8 +5,9 @@ using Amplitude.Unity.Framework;
 using Amplitude.Unity.Gui;
 using Amplitude.Unity.Gui.SimulationEffect;
 using Amplitude.Unity.Simulation;
+using UnityEngine;
 
-public class MultipleConstructibleItem : Behaviour
+public class MultipleConstructibleItem : Amplitude.Unity.Framework.Behaviour
 {
 	public AgeTransform AgeTransform { get; private set; }
 
@@ -61,13 +62,19 @@ public class MultipleConstructibleItem : Behaviour
 					Diagnostics.LogError("Could not find the class creeping node descriptor");
 				}
 				float propertyBaseValue = simulationObject.GetPropertyBaseValue(creepingNodeImprovementDefinition.BaseCostPropertyName);
-				float propertyBaseValue2 = simulationObject.GetPropertyBaseValue(SimulationProperties.NodeCostIncrement);
-				float propertyValue = ((ICostFeatureProvider)constructibleData).Empire.GetPropertyValue(SimulationProperties.NumberOfCreepingNodes);
-				float propertyValue2 = ((ICostFeatureProvider)constructibleData).Empire.GetPropertyValue(SimulationProperties.NumberOfFinishedCreepingNodes);
-				int num2 = (int)(propertyBaseValue + propertyBaseValue2 * (2f * propertyValue - propertyValue2 + 1f));
-				float propertyValue3 = ((ICostFeatureProvider)constructibleData).Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-				int num3 = (int)Math.Max(0.0, Math.Ceiling((double)((float)creepingNodeImprovementDefinition.ConstructionTurns * propertyValue3)));
-				string str = string.Format(AgeLocalizer.Instance.LocalizeString("%FeaturePanelNodeCost"), num2.ToString(), num3.ToString());
+				float num2 = simulationObject.GetPropertyBaseValue(SimulationProperties.NodeCostIncrement);
+				float propertyValue = ((ICostFeatureProvider)constructibleData).Empire.GetPropertyValue(SimulationProperties.NodeCostIncrementModifier);
+				num2 *= propertyValue;
+				if (creepingNodeImprovementDefinition.SubCategory == "SubCategoryVillage")
+				{
+					num2 *= ((ICostFeatureProvider)constructibleData).Empire.GetPropertyValue(SimulationProperties.NodeOvergrownVillageCostModifier);
+				}
+				float propertyValue2 = ((ICostFeatureProvider)constructibleData).Empire.GetPropertyValue(SimulationProperties.NumberOfCreepingNodes);
+				float propertyValue3 = ((ICostFeatureProvider)constructibleData).Empire.GetPropertyValue(SimulationProperties.NumberOfFinishedCreepingNodes);
+				int num3 = Mathf.CeilToInt(propertyBaseValue + num2 * (2f * propertyValue2 - propertyValue3 + 1f));
+				float propertyValue4 = ((ICostFeatureProvider)constructibleData).Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+				int num4 = (int)Math.Max(0.0, Math.Ceiling((double)((float)creepingNodeImprovementDefinition.ConstructionTurns * propertyValue4)));
+				string str = string.Format(AgeLocalizer.Instance.LocalizeString("%FeaturePanelNodeCost"), num3.ToString(), num4.ToString());
 				text = text + " " + str;
 			}
 			if (!string.IsNullOrEmpty(text))
@@ -78,6 +85,7 @@ public class MultipleConstructibleItem : Behaviour
 					this.CostValue.AgeTransform.PixelMarginLeft = 2f * this.CostTitle.AgeTransform.PixelMarginLeft + this.CostTitle.Font.ComputeTextWidth(AgeLocalizer.Instance.LocalizeString(this.CostTitle.Text), this.CostTitle.ForceCaps, false);
 				}
 				this.AgeTransform.Height += this.CostTitle.AgeTransform.Height;
+				return;
 			}
 		}
 		else

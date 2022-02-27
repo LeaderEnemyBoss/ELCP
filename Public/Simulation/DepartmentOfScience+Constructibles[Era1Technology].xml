@@ -217,6 +217,12 @@
     <SimulationDescriptorReference Name="TechnologyWeaponCommonTier1" />
     <SimulationDescriptorReference Name="TechnologyUnlockWeaponCommonMaterial" />
     <SimulationDescriptorReference Name="TechnologyUnlockWeaponTier1" />
+	<SimulationDescriptorReference Name="TechnologyArmorCommonTier1" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorCommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockArmorTier1" />
+    <SimulationDescriptorReference Name="TechnologyAccessoryCommonTier1" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryCommonMaterial" />
+    <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier1" />
     <SimulationDescriptorReference Name="TechnologyMasteryCommonBonus1" />
     <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
     <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
@@ -224,7 +230,7 @@
   </TechnologyDefinition>
 
   <!-- Empire bonus: Armor Common Tier 1 -->
-  <TechnologyDefinition  Name="TechnologyDefinitionArmorCommonTier1">
+  <TechnologyDefinition  Name="TechnologyDefinitionArmorCommonTier1" Visibility="VisibleWhenUnlocked">
     <UnlockCategoryOverride Category="Item" SubCategory="SubCategoryArmor"/>
     <SimulationDescriptorReference Name="TechnologyArmorCommonTier1" />
     <SimulationDescriptorReference Name="TechnologyUnlockArmorCommonMaterial" />
@@ -233,7 +239,7 @@
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryCommonMaterial" />
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier1" />
     <SimulationDescriptorReference Name="TechnologyMasteryCommonBonus2" />
-    <SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />
+    <!--<SimulationDescriptorReference Name="TechnologyCountIncreaseEra1" />-->
     <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost) * $Property(EmpireTypeMajor/ClassResearch:Era1CostMultiplier)</CustomCost>
     <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra1</PathPrerequisite>
   </TechnologyDefinition>

@@ -28,7 +28,7 @@ public class AIBehaviorTreeNode_Decorator : BehaviourTreeNode
 		AIData_Army aidata_Army;
 		if (!service.TryGetAIData<AIData_Army>(army.GUID, out aidata_Army))
 		{
-			aiBehaviorTree.LogError("ArmyGUID {O} not found in AIDataRepository", new object[]
+			aiBehaviorTree.LogError("ArmyGUID {0} not found in AIDataRepository", new object[]
 			{
 				army.GUID
 			});

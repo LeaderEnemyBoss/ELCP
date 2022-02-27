@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Amplitude;
 using Amplitude.Unity.AI.Amas;
 using Amplitude.Unity.AI.Amas.Simulation;
+using Amplitude.Unity.Simulation;
 using UnityEngine;
 
 [PersonalityRegistryPath("AI/AgentDefinition/IndustryReferenceTurnCountAgent/", new object[]
@@ -113,14 +114,18 @@ public class IndustryReferenceTurnCountAgent : SimulationAgent
 	protected override void ComputeValue()
 	{
 		base.ComputeValue();
+		if (this.contextSimulationObject.Children.Exists((SimulationObject C) => C.Tags.Contains("BoosterDecreaseCityProduction4") || C.Tags.Contains("BoosterDecreaseCityProduction3") || C.Tags.Contains("BoosterDecreaseCityProduction2")))
+		{
+			base.Value = base.ValueMin;
+			return;
+		}
 		Diagnostics.Assert(this.industryPopulationAgent != null);
 		float unnormalizedValue = this.industryPopulationAgent.UnnormalizedValue;
 		float propertyValue = this.contextSimulationObject.GetPropertyValue(SimulationProperties.IndustryPopulation);
 		Diagnostics.Assert(this.contextSimulationObject != null);
 		float num = unnormalizedValue - propertyValue;
 		float propertyValue2 = this.contextSimulationObject.GetPropertyValue(SimulationProperties.BaseIndustryPerPopulation);
-		float propertyValue3 = this.contextSimulationObject.GetPropertyValue(SimulationProperties.NetCityProduction);
-		float num2 = propertyValue3 + num * propertyValue2;
+		float num2 = this.contextSimulationObject.GetPropertyValue(SimulationProperties.NetCityProduction) + num * propertyValue2;
 		float num3 = this.currentCostWithReduction * Mathf.Max(this.currentProductionStress, this.productionStressMinimumValue);
 		float num4 = (num2 <= 0f) ? this.maximumTurnCount : (num3 / num2);
 		base.Value = ((this.maximumTurnCount <= 0f) ? base.ValueMax : Mathf.Clamp(Mathf.Max(num4 - 1f, 0f) / Mathf.Max(1f, this.maximumTurnCount - 1f), base.ValueMin, base.ValueMax));

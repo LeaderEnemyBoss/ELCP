@@ -25,11 +25,9 @@ public class AIArmyMission : ITickable, Amplitude.Xml.Serialization.IXmlSerializ
 				this.aiBehaviorTree.Release();
 				this.aiBehaviorTree = null;
 				this.AIArmyMissionDefinition = null;
+				return;
 			}
-			else
-			{
-				this.aiBehaviorTree.AICommander = this.AICommander;
-			}
+			this.aiBehaviorTree.AICommander = this.AICommander;
 		}
 	}
 
@@ -152,15 +150,18 @@ public class AIArmyMission : ITickable, Amplitude.Xml.Serialization.IXmlSerializ
 				if (this.ErrorCode == AIArmyMission.AIArmyMissionErrorCode.MoveInProgress)
 				{
 					this.aiBehaviorTree.Reset();
+					return;
 				}
-			}
-			else if (state == Amplitude.Unity.AI.BehaviourTree.State.Failure)
-			{
-				this.Completion = AIArmyMission.AIArmyMissionCompletion.Fail;
 			}
 			else
 			{
+				if (state == Amplitude.Unity.AI.BehaviourTree.State.Failure)
+				{
+					this.Completion = AIArmyMission.AIArmyMissionCompletion.Fail;
+					return;
+				}
 				this.Completion = AIArmyMission.AIArmyMissionCompletion.Success;
+				return;
 			}
 		}
 		else
@@ -172,7 +173,7 @@ public class AIArmyMission : ITickable, Amplitude.Xml.Serialization.IXmlSerializ
 	public bool TrySetParameters(params object[] parameters)
 	{
 		Diagnostics.Assert(this.aiBehaviorTree != null);
-		if (parameters != null && this.AIArmyMissionDefinition.Parameters != null && this.AIArmyMissionDefinition.Parameters.Length > 0)
+		if (parameters != null && this.AIArmyMissionDefinition.Parameters != null && this.AIArmyMissionDefinition.Parameters.Length != 0)
 		{
 			for (int i = 0; i < this.AIArmyMissionDefinition.Parameters.Length; i++)
 			{
@@ -245,8 +246,8 @@ public class AIArmyMission : ITickable, Amplitude.Xml.Serialization.IXmlSerializ
 		OrderConvertToPrivateersFail,
 		OrderTerrafomFail,
 		CanNotAffordArmyAction,
-		EmpireControlledByAI,
-		EmpireControlledByHuman,
-		Undefined
+		Undefined = 41,
+		EmpireControlledByAI = 39,
+		EmpireControlledByHuman
 	}
 }

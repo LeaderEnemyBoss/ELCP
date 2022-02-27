@@ -253,6 +253,7 @@ public abstract class AICommander : IXmlSerializable
 
 	public virtual void RefreshObjective()
 	{
+		this.TargetPower = -1f;
 	}
 
 	public virtual void Release()
@@ -401,4 +402,6 @@ public abstract class AICommander : IXmlSerializable
 	private ISeasonService seasonService;
 
 	private IEndTurnService endTurnSerice;
+
+	public float TargetPower;
 }

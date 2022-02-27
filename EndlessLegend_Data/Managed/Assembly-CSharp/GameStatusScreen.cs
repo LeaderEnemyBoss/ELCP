@@ -110,24 +110,27 @@ public class GameStatusScreen : GuiPlayerControllerScreen
 	protected override IEnumerator OnShow(params object[] parameters)
 	{
 		yield return base.OnShow(parameters);
-		ISessionService sessionService = Services.GetService<ISessionService>();
-		int numberOfMajorFactions = sessionService.Session.GetLobbyData<int>("NumberOfMajorFactions", 0);
-		EmpireInfo[] empireInfo = new EmpireInfo[numberOfMajorFactions];
-		for (int empireIndex = 0; empireIndex < numberOfMajorFactions; empireIndex++)
-		{
-			empireInfo[empireIndex] = EmpireInfo.Read(sessionService.Session, empireIndex);
-		}
-		IEndTurnService endTurnService = Services.GetService<IEndTurnService>();
-		endTurnService.GameClientStateChange += this.EndTurnService_GameClientStateChange;
-		DepartmentOfForeignAffairs departmentOfForeignAffairs = base.PlayerController.Empire.GetAgency<DepartmentOfForeignAffairs>();
-		if (departmentOfForeignAffairs != null)
-		{
-			departmentOfForeignAffairs.DiplomaticRelationStateChange += this.DepartmentOfForeignAffairs_DiplomaticRelationStateChange;
-		}
+		ISessionService service = Services.GetService<ISessionService>();
+		int lobbyData = service.Session.GetLobbyData<int>("NumberOfMajorFactions", 0);
 		this.scoreGraphsPanel.HideUnknownEmpires = true;
+		EmpireInfo[] array = new EmpireInfo[lobbyData];
+		for (int i = 0; i < lobbyData; i++)
+		{
+			array[i] = EmpireInfo.Read(service.Session, i);
+			if (array[i].IsActiveOrLocalPlayer && array[i].EmpireEliminated)
+			{
+				this.scoreGraphsPanel.HideUnknownEmpires = false;
+			}
+		}
+		Services.GetService<IEndTurnService>().GameClientStateChange += this.EndTurnService_GameClientStateChange;
+		DepartmentOfForeignAffairs agency = base.PlayerController.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		if (agency != null)
+		{
+			agency.DiplomaticRelationStateChange += this.DepartmentOfForeignAffairs_DiplomaticRelationStateChange;
+		}
 		this.scoreGraphsPanel.Show(new object[]
 		{
-			empireInfo
+			array
 		});
 		this.RefreshContent();
 		yield break;

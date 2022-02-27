@@ -11,7 +11,18 @@
       <SimulationModifierDescriptor TargetProperty="NodeDistrictCityPoint" Operation ="Addition" Value="$(DistrictCityPoint)" Path="./ClassCreepingNode"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-
+  
+  <!-- ELCP: This Descriptor is added to Nodes when ELCP's creepingnode ruleset is deactivated, xml-based fisdi changes should check for this (currently inactive)-->  
+  <SimulationDescriptor Name="VanillaNode">
+	<SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  <!-- ELCP: This Descriptor is added in code to nodes/converted villages in the capitals region (for regional fisdi buildings) -->
+  <SimulationDescriptor Name="InCapitalRegion">
+	<SimulationModifierDescriptors>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
   <!-- This descriptor is manually added by code to points of intereset that are occupied by a creeping node -->
   <SimulationDescriptor Name="InfectedPointOfInterest">
     <SimulationModifierDescriptors>
@@ -446,6 +457,14 @@
   <!-- ##################################### -->
   <SimulationDescriptor Name="TowerExtraExploit"                         Type="CreepingNodeImprovement">
   </SimulationDescriptor>
+  
+  <!-- ELCP localization descriptors for additional hexes -->
+  <SimulationDescriptor Name="TowerExtraHex1"                         Type="CreepingNodeImprovement"/>
+  <SimulationDescriptor Name="TowerExtraHex2"                         Type="CreepingNodeImprovement"/>
+  <SimulationDescriptor Name="TowerExtraHex3"                         Type="CreepingNodeImprovement"/>
+  <SimulationDescriptor Name="TowerExtraHex4"                         Type="CreepingNodeImprovement"/>
+  <SimulationDescriptor Name="TowerExtraHex5"                         Type="CreepingNodeImprovement"/>
+  <SimulationDescriptor Name="TowerExtraHex6"                         Type="CreepingNodeImprovement"/>
 
   <SimulationDescriptor Name="CreepingNode_StrategicExtractor_Counter"        Type="CreepingNodeImprovement">
     <SimulationModifierDescriptors>

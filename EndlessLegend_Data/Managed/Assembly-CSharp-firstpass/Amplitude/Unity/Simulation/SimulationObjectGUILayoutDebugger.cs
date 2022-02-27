@@ -68,6 +68,13 @@ namespace Amplitude.Unity.Simulation
 				simulationObject.DebugInfo = new SimulationObjectDebugInfo(simulationObject);
 			}
 			Color color = GUI.color;
+			if (indent == 5f)
+			{
+				this.IndentedLabel(indent, "<b>Global Tags:</b>", " {0}", new object[]
+				{
+					SimulationGlobal.GetGlobalTags().ToString()
+				});
+			}
 			GUI.color = simulationObjectNameColor;
 			simulationObject.DebugInfo.DisplayContent = this.IndentedToggle(indent, simulationObject.DebugInfo.DisplayContent, "{0}", new object[]
 			{

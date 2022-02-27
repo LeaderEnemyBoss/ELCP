@@ -4,9 +4,15 @@ using Amplitude;
 using Amplitude.Unity.AI.BehaviourTree;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using UnityEngine;
 
 public class QuestBehaviourTreeNode_Decorator_TimerEnded : QuestBehaviourTreeNode_Decorator<EventBeginTurn>
 {
+	public QuestBehaviourTreeNode_Decorator_TimerEnded()
+	{
+		this.ScaleWithGameSpeed = false;
+	}
+
 	[XmlAttribute("TimerVarName")]
 	public string TimerVarName { get; set; }
 
@@ -27,10 +33,15 @@ public class QuestBehaviourTreeNode_Decorator_TimerEnded : QuestBehaviourTreeNod
 			});
 			return State.Success;
 		}
-		int num2 = this.TurnCountBeforeTimeOut - num;
+		int num2 = this.TurnCountBeforeTimeOut;
+		if (this.ScaleWithGameSpeed)
+		{
+			num2 = Mathf.CeilToInt((float)this.TurnCountBeforeTimeOut * questBehaviour.Initiator.GetPropertyValue(SimulationProperties.GameSpeedMultiplier));
+		}
+		int num3 = num2 - num;
 		if (!string.IsNullOrEmpty(this.TimerLocalizationKey))
 		{
-			QuestInstruction_UpdateLocalizationVariable questInstruction = new QuestInstruction_UpdateLocalizationVariable(this.TimerLocalizationKey, num2.ToString());
+			QuestInstruction_UpdateLocalizationVariable questInstruction = new QuestInstruction_UpdateLocalizationVariable(this.TimerLocalizationKey, num3.ToString());
 			questBehaviour.Push(questInstruction);
 		}
 		Diagnostics.Log("Quest '{0}', Timer '{1}' eleapsedTurn = {2}.", new object[]
@@ -39,7 +50,7 @@ public class QuestBehaviourTreeNode_Decorator_TimerEnded : QuestBehaviourTreeNod
 			this.TimerVarName,
 			num
 		});
-		if (num >= this.TurnCountBeforeTimeOut)
+		if (num >= num2)
 		{
 			return State.Success;
 		}
@@ -65,10 +76,15 @@ public class QuestBehaviourTreeNode_Decorator_TimerEnded : QuestBehaviourTreeNod
 			int num = this.ComputeEleapsedTurn(questBehaviour);
 			if (num != -1)
 			{
-				int num2 = this.TurnCountBeforeTimeOut - num;
-				if (num2 >= 0)
+				int num2 = this.TurnCountBeforeTimeOut;
+				if (this.ScaleWithGameSpeed)
 				{
-					QuestInstruction_UpdateLocalizationVariable questInstruction = new QuestInstruction_UpdateLocalizationVariable(this.TimerLocalizationKey, num2.ToString());
+					num2 = Mathf.CeilToInt((float)this.TurnCountBeforeTimeOut * questBehaviour.Initiator.GetPropertyValue(SimulationProperties.GameSpeedMultiplier));
+				}
+				int num3 = num2 - num;
+				if (num3 >= 0)
+				{
+					QuestInstruction_UpdateLocalizationVariable questInstruction = new QuestInstruction_UpdateLocalizationVariable(this.TimerLocalizationKey, num3.ToString());
 					questBehaviour.Push(questInstruction);
 				}
 			}
@@ -87,6 +103,9 @@ public class QuestBehaviourTreeNode_Decorator_TimerEnded : QuestBehaviourTreeNod
 		int turn = this.game.Turn;
 		return turn - num;
 	}
+
+	[XmlAttribute]
+	public bool ScaleWithGameSpeed { get; set; }
 
 	protected global::Game game;
 }

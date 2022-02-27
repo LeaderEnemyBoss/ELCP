@@ -47,8 +47,23 @@ public class QuestBehaviourTreeNode_Action_TransferResource : QuestBehaviourTree
 					return State.Success;
 				}
 			}
-			Order order = new OrderTransferResources(questBehaviour.Initiator.Index, this.ResourceName, (float)this.Amount, 0UL);
-			questBehaviour.Initiator.PlayerControllers.Server.PostOrder(order);
+			if (questBehaviour.Initiator is MajorEmpire && (questBehaviour.Initiator as MajorEmpire).ELCPIsEliminated)
+			{
+				return State.Success;
+			}
+			if (this.ResourceName.Contains("Booster"))
+			{
+				for (int i = 0; i < this.Amount; i++)
+				{
+					OrderBuyoutAndActivateBooster order = new OrderBuyoutAndActivateBooster(questBehaviour.Initiator.Index, this.ResourceName, 0UL, false);
+					questBehaviour.Initiator.PlayerControllers.Server.PostOrder(order);
+				}
+			}
+			else
+			{
+				Order order2 = new OrderTransferResources(questBehaviour.Initiator.Index, this.ResourceName, (float)this.Amount, 0UL);
+				questBehaviour.Initiator.PlayerControllers.Server.PostOrder(order2);
+			}
 		}
 		return State.Success;
 	}

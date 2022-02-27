@@ -103,9 +103,8 @@ public class ArmyActionButton : MonoBehaviour
 			if (!this.failure.Contains(ArmyAction.NoCanDoWhileHidden))
 			{
 				this.AgeTransform.AgeTooltip.Content = string.Empty;
-				IGuiPanelHelper guiPanelHelper = Services.GetService<Amplitude.Unity.Gui.IGuiService>().GuiPanelHelper;
 				GuiElement guiElement;
-				if (guiPanelHelper.TryGetGuiElement(this.ArmyAction.Name, out guiElement))
+				if (Services.GetService<Amplitude.Unity.Gui.IGuiService>().GuiPanelHelper.TryGetGuiElement(this.ArmyAction.Name, out guiElement))
 				{
 					if (this.failure.Count == 0)
 					{
@@ -201,20 +200,40 @@ public class ArmyActionButton : MonoBehaviour
 			}
 			for (int i = 0; i < this.ArmyAction.Costs.Length; i++)
 			{
-				IConstructionCost constructionCost = this.ArmyAction.Costs[i];
-				string text = constructionCost.ResourceName;
+				string text = this.ArmyAction.Costs[i].ResourceName;
+				bool flag3 = false;
+				if (ELCPUtilities.UseELCPSymbiosisBuffs && this.ArmyAction is ArmyAction_TameUnstunnedKaiju)
+				{
+					foreach (IGameEntity gameEntity in this.armyActionTargets)
+					{
+						Kaiju kaiju = gameEntity as Kaiju;
+						if (kaiju != null)
+						{
+							KaijuCouncil agency = kaiju.KaijuEmpire.GetAgency<KaijuCouncil>();
+							if (agency != null)
+							{
+								text = agency.ELCPResourceName;
+								flag3 = true;
+								break;
+							}
+						}
+					}
+				}
 				if (!string.IsNullOrEmpty(text) && !text.Equals(DepartmentOfTheTreasury.Resources.ActionPoint))
 				{
-					float costForResource = this.ArmyAction.GetCostForResource(text, this.Army.Empire);
-					if (costForResource != 0f)
+					float num3 = this.ArmyAction.GetCostForResource(text, this.Army.Empire);
+					if (flag3)
 					{
-						DepartmentOfTheTreasury agency = this.Army.Empire.GetAgency<DepartmentOfTheTreasury>();
+						num3 = KaijuCouncil.GetKaijuTameCost().GetValue(this.Army.Empire);
+					}
+					if (num3 != 0f)
+					{
+						DepartmentOfTheTreasury agency2 = this.Army.Empire.GetAgency<DepartmentOfTheTreasury>();
 						float f = 0f;
-						if (agency.TryGetResourceStockValue(this.Army.Empire.SimulationObject, text, out f, false))
+						if (agency2.TryGetResourceStockValue(this.Army.Empire.SimulationObject, text, out f, false))
 						{
-							IGuiPanelHelper guiPanelHelper2 = Services.GetService<global::IGuiService>().GuiPanelHelper;
 							GuiElement guiElement2;
-							if (guiPanelHelper2.TryGetGuiElement(text, out guiElement2) && guiElement2 is ExtendedGuiElement)
+							if (Services.GetService<global::IGuiService>().GuiPanelHelper.TryGetGuiElement(text, out guiElement2) && guiElement2 is ExtendedGuiElement)
 							{
 								ExtendedGuiElement extendedGuiElement = guiElement2 as ExtendedGuiElement;
 								if (extendedGuiElement == null)
@@ -225,7 +244,7 @@ public class ArmyActionButton : MonoBehaviour
 								string symbolString = extendedGuiElement.SymbolString;
 								string arg = string.Format(AgeLocalizer.Instance.LocalizeString("%ArmyActionResourceRequirementFormat"), new object[]
 								{
-									costForResource,
+									num3,
 									text2,
 									symbolString,
 									Mathf.Ceil(f)

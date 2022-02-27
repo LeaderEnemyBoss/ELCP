@@ -309,6 +309,10 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 				}
 			}
 		}
+		if (account.PromisedAmount > 0f && this.workingMessages.Count == 0)
+		{
+			account.PromisedAmount = 0f;
+		}
 	}
 
 	private int EnsureAccount(StaticString accountTag)
@@ -510,7 +514,7 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 					num -= account.GetAvailableAmount() * this.percentRetainWhenNotEnough;
 					if (num <= 0f)
 					{
-						break;
+						return;
 					}
 				}
 				else if (buyEvaluation2.BuyoutFinalScore > 0f)
@@ -593,40 +597,37 @@ public class AILayer_AccountManager : AILayer, IXmlSerializable
 				else
 				{
 					num -= evaluableMessage2.ChosenBuyEvaluation.DustCost;
-					Account account = this.accounts[this.EnsureAccount(evaluableMessage2.AccountTag)];
-					account.PromisedAmount += evaluableMessage2.ChosenBuyEvaluation.DustCost;
+					this.accounts[this.EnsureAccount(evaluableMessage2.AccountTag)].PromisedAmount += evaluableMessage2.ChosenBuyEvaluation.DustCost;
 				}
 			}
 		}
-		for (int n = 0; n < array2.Length; n++)
+		int num3 = 0;
+		while (num3 < array2.Length && num > 0f)
 		{
-			if (num <= 0f)
+			int num4 = array2[num3];
+			EvaluableMessage evaluableMessage3 = this.workingMessages[num4];
+			int num5 = bestEvaluationIndex[num4];
+			if (num5 >= 0 && num5 < evaluableMessage3.BuyEvaluations.Count)
 			{
-				break;
-			}
-			int num3 = array2[n];
-			EvaluableMessage evaluableMessage3 = this.workingMessages[num3];
-			int num4 = bestEvaluationIndex[num3];
-			if (num4 >= 0 && num4 < evaluableMessage3.BuyEvaluations.Count)
-			{
-				BuyEvaluation buyEvaluation2 = evaluableMessage3.BuyEvaluations[num4];
-				Account account2 = this.accounts[this.EnsureAccount(evaluableMessage3.AccountTag)];
+				BuyEvaluation buyEvaluation2 = evaluableMessage3.BuyEvaluations[num5];
+				Account account = this.accounts[this.EnsureAccount(evaluableMessage3.AccountTag)];
 				if (num < buyEvaluation2.DustCost)
 				{
-					if (n == 0)
+					if (num3 == 0)
 					{
-						account2.WantedAmount = buyEvaluation2.DustCost;
-						account2.WantedAmountPriority = buyEvaluation2.BuyoutFinalScore;
+						account.WantedAmount = buyEvaluation2.DustCost;
+						account.WantedAmountPriority = buyEvaluation2.BuyoutFinalScore;
 					}
-					num -= account2.GetAvailableAmount() * this.percentRetainWhenNotEnough;
+					num -= account.GetAvailableAmount() * this.percentRetainWhenNotEnough;
 				}
 				else if (buyEvaluation2.BuyoutFinalScore > 0f)
 				{
 					evaluableMessage3.ValidateBuyEvaluation(buyEvaluation2);
-					account2.PromisedAmount += buyEvaluation2.DustCost;
+					account.PromisedAmount += buyEvaluation2.DustCost;
 					num -= buyEvaluation2.DustCost;
 				}
 			}
+			num3++;
 		}
 	}
 

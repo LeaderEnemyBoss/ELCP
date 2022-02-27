@@ -26,6 +26,11 @@ public class ArmyAction_Convert : ArmyAction_BaseVillage, IArmyActionWithTargetS
 			num = village.GetPropertyValue(SimulationProperties.ConvertHostileCost);
 		}
 		num += num * (float)majorEmpire.ConvertedVillages.Count;
+		float propertyValue = majorEmpire.GetPropertyValue(SimulationProperties.ConvertVillageMultiplier);
+		if (propertyValue > 0f)
+		{
+			num *= propertyValue;
+		}
 		return new ConstructionCost[]
 		{
 			new ConstructionCost(DepartmentOfTheTreasury.Resources.EmpirePoint, (float)Math.Floor((double)num), true, false)

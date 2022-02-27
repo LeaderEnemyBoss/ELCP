@@ -33,6 +33,15 @@ public class QuestBehaviourPrerequisites : QuestPrerequisites
 
 	public SimulationObjectWrapper GetTargetSimulationObjectWrapper(QuestBehaviour questBehaviour)
 	{
+		if (global::GameManager.Preferences.QuestVerboseMode)
+		{
+			Diagnostics.Log("ELCP: {0} QuestBehaviourPrerequisites.GetTargetSimulationObjectWrapper {1} {2}", new object[]
+			{
+				questBehaviour.Initiator,
+				this.TargetGUID,
+				base.Target
+			});
+		}
 		if (base.XmlSerializableTarget == "$Empire")
 		{
 			this.targetSimulationObjectWrapper = questBehaviour.Initiator;

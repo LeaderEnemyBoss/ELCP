@@ -20,10 +20,10 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
+[OrderProcessor(typeof(OrderBuyoutConstruction), "BuyoutConstruction")]
 [OrderProcessor(typeof(OrderMoveConstruction), "MoveConstruction")]
 [OrderProcessor(typeof(OrderQueueConstruction), "QueueConstruction")]
 [OrderProcessor(typeof(OrderCancelConstruction), "CancelConstruction")]
-[OrderProcessor(typeof(OrderBuyoutConstruction), "BuyoutConstruction")]
 public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSerializable, IConstructibleElementDatabase
 {
 	public DepartmentOfIndustry(global::Empire empire) : base(empire)
@@ -1152,40 +1152,40 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 	protected override IEnumerator OnInitialize()
 	{
 		yield return base.OnInitialize();
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
 		this.EventService = Services.GetService<IEventService>();
 		Diagnostics.Assert(this.EventService != null);
 		this.EventService.EventRaise += this.EventService_EventRaise;
-		ISessionService sessionService = Services.GetService<ISessionService>();
-		Diagnostics.Assert(sessionService != null);
-		this.GameEntityRepositoryService = gameService.Game.Services.GetService<IGameEntityRepositoryService>();
+		ISessionService service2 = Services.GetService<ISessionService>();
+		Diagnostics.Assert(service2 != null);
+		this.GameEntityRepositoryService = service.Game.Services.GetService<IGameEntityRepositoryService>();
 		if (this.GameEntityRepositoryService == null)
 		{
 			Diagnostics.LogError("Failed to retrieve the game entity repository service.");
 		}
-		this.PlayerControllerRepositoryService = gameService.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		this.PlayerControllerRepositoryService = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
 		if (this.PlayerControllerRepositoryService == null)
 		{
 			Diagnostics.LogError("Failed to retrieve the player controller repository service.");
 		}
 		this.constructibleElementDatabase = Databases.GetDatabase<DepartmentOfIndustry.ConstructibleElement>(true);
 		this.simulationDescriptorDatabase = Databases.GetDatabase<SimulationDescriptor>(false);
-		DepartmentOfDefense departmentOfDefense = base.Empire.GetAgency<DepartmentOfDefense>();
-		if (departmentOfDefense != null)
+		DepartmentOfDefense agency = base.Empire.GetAgency<DepartmentOfDefense>();
+		if (agency != null)
 		{
-			this.UnitDesignDatabase = departmentOfDefense.UnitDesignDatabase;
+			this.UnitDesignDatabase = agency.UnitDesignDatabase;
 		}
 		this.DepartmentOfTheTreasury = base.Empire.GetAgency<DepartmentOfTheTreasury>();
 		Diagnostics.Assert(this.DepartmentOfTheTreasury != null);
 		this.DepartmentOfTheInterior = base.Empire.GetAgency<DepartmentOfTheInterior>();
-		IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
-		if (downloadableContentService != null && downloadableContentService.IsShared(DownloadableContent9.ReadOnlyName))
+		IDownloadableContentService service3 = Services.GetService<IDownloadableContentService>();
+		if (service3 != null && service3.IsShared(DownloadableContent9.ReadOnlyName))
 		{
-			DepartmentOfIndustry.ConstructibleElement[] technologies = this.constructibleElementDatabase.GetValues();
-			if (technologies != null)
+			DepartmentOfIndustry.ConstructibleElement[] values = this.constructibleElementDatabase.GetValues();
+			if (values != null)
 			{
-				this.OrderedWonders = (from definition in technologies
+				this.OrderedWonders = (from definition in values
 				where !(definition is FreeDistrictImprovementDefinition) && definition.SubCategory == DistrictImprovementDefinition.WonderSubCategory
 				orderby definition.Name
 				select definition).ToArray<DepartmentOfIndustry.ConstructibleElement>();
@@ -1194,7 +1194,7 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 		this.ConstructiblesWaitingToBeCanceled = new List<DepartmentOfIndustry.ConstructionToCancel>();
 		this.ForbiddenConstructiblesUniqueInWorld = new Dictionary<StaticString, int>();
 		this.NotifyFirstColossus = true;
-		if (downloadableContentService == null || !downloadableContentService.IsShared(DownloadableContent9.ReadOnlyName))
+		if (service3 == null || !service3.IsShared(DownloadableContent9.ReadOnlyName))
 		{
 			this.NotifyFirstColossus = false;
 		}
@@ -1212,7 +1212,7 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 		{
 			"ComputeProduction"
 		});
-		if (sessionService.Session != null && sessionService.Session.IsHosting)
+		if (service2.Session != null && service2.Session.IsHosting)
 		{
 			base.Empire.RegisterPass("GameClientState_Turn_Begin", "SendWaitingOrders", new Agency.Action(this.GameClientState_Turn_Begin_SendWaitingOrders), new string[0]);
 		}
@@ -1373,11 +1373,12 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 					float num4;
 					bool flag;
 					QueueGuiItem.GetConstructionTurnInfos(city, construction, new List<ConstructionResourceStock>(), out num2, out num3, out num4, out flag);
-					if (num2 <= 1)
+					if (num2 < 1)
 					{
 						constructionFinished = true;
 					}
-					for (int i = 0; i < construction.ConstructibleElement.Costs.Length; i++)
+					int i = 0;
+					while (i < construction.ConstructibleElement.Costs.Length)
 					{
 						IConstructionCost constructionCost = construction.ConstructibleElement.Costs[i];
 						if (!constructionCost.Instant && !constructionCost.InstantOnCompletion && !(constructionCost.ResourceName != DepartmentOfTheTreasury.Resources.Production))
@@ -1387,18 +1388,22 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 							{
 								num = DepartmentOfTheTreasury.ConvertCostsTo(DepartmentOfTheTreasury.Resources.Refund, constructionCost.ResourceName, constructionResourceStock.Stock, base.Empire);
 								num = DepartmentOfTheTreasury.ComputeCostWithReduction(base.Empire, num, DepartmentOfTheTreasury.Resources.Refund, CostReduction.ReductionType.Refund);
+								break;
 							}
 							break;
 						}
+						else
+						{
+							i++;
+						}
 					}
-					return new DepartmentOfIndustry.ConstructionToCancel
-					{
-						City = city,
-						ConstructionGUID = construction.GUID,
-						DustRefund = num,
-						QueueGUID = keyValuePair.Key,
-						ConstructionFinished = constructionFinished
-					};
+					DepartmentOfIndustry.ConstructionToCancel result = default(DepartmentOfIndustry.ConstructionToCancel);
+					result.City = city;
+					result.ConstructionGUID = construction.GUID;
+					result.DustRefund = num;
+					result.QueueGUID = keyValuePair.Key;
+					result.ConstructionFinished = constructionFinished;
+					return result;
 				}
 			}
 		}
@@ -1741,85 +1746,93 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 
 	private IEnumerator GameClientState_Turn_End_ComputeProduction(string context, string name)
 	{
-		foreach (KeyValuePair<GameEntityGUID, ConstructionQueue> keyValuePair in this.constructionQueues)
+		using (Dictionary<GameEntityGUID, ConstructionQueue>.Enumerator enumerator = this.constructionQueues.GetEnumerator())
 		{
-			IGameEntity gameEntity = null;
-			if (!this.GameEntityRepositoryService.TryGetValue(keyValuePair.Key, out gameEntity))
+			while (enumerator.MoveNext())
 			{
-				Diagnostics.LogError("The game entity repository service cannot return a reference for entity (guid: {0}).", new object[]
+				KeyValuePair<GameEntityGUID, ConstructionQueue> keyValuePair = enumerator.Current;
+				IGameEntity gameEntity = null;
+				if (!this.GameEntityRepositoryService.TryGetValue(keyValuePair.Key, out gameEntity))
 				{
-					keyValuePair.Key.ToString()
-				});
-			}
-			else
-			{
-				SimulationObjectWrapper wrapper = gameEntity as SimulationObjectWrapper;
-				ReadOnlyCollection<Construction> pendingConstructions = keyValuePair.Value.PendingConstructions;
-				for (int pendingConstructionIndex = 0; pendingConstructionIndex < pendingConstructions.Count; pendingConstructionIndex++)
-				{
-					Construction pendingConstruction = pendingConstructions[pendingConstructionIndex];
-					if (pendingConstruction.ConstructibleElement.Costs != null && pendingConstruction.ConstructibleElement.Costs.Length != 0)
+					Diagnostics.LogError("The game entity repository service cannot return a reference for entity (guid: {0}).", new object[]
 					{
-						Diagnostics.Assert(this.DepartmentOfTheTreasury != null);
-						if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(wrapper, pendingConstruction.ConstructibleElement, new string[]
+						keyValuePair.Key.ToString()
+					});
+				}
+				else
+				{
+					SimulationObjectWrapper simulationObjectWrapper = gameEntity as SimulationObjectWrapper;
+					ReadOnlyCollection<Construction> pendingConstructions = keyValuePair.Value.PendingConstructions;
+					for (int i = 0; i < pendingConstructions.Count; i++)
+					{
+						Construction construction = pendingConstructions[i];
+						if (construction.ConstructibleElement.Costs != null && construction.ConstructibleElement.Costs.Length != 0)
 						{
-							ConstructionFlags.Prerequisite
-						}))
-						{
-							bool constructionComplete = true;
-							for (int index = 0; index < pendingConstruction.ConstructibleElement.Costs.Length; index++)
+							Diagnostics.Assert(this.DepartmentOfTheTreasury != null);
+							if (DepartmentOfTheTreasury.CheckConstructiblePrerequisites(simulationObjectWrapper, construction.ConstructibleElement, new string[]
 							{
-								if (!pendingConstruction.ConstructibleElement.Costs[index].Instant && !pendingConstruction.ConstructibleElement.Costs[index].InstantOnCompletion)
+								ConstructionFlags.Prerequisite
+							}))
+							{
+								bool flag = true;
+								for (int j = 0; j < construction.ConstructibleElement.Costs.Length; j++)
 								{
-									ConstructionResourceStock constructionResourceStock = pendingConstruction.CurrentConstructionStock[index];
-									StaticString resourceName = pendingConstruction.ConstructibleElement.Costs[index].ResourceName;
-									float accumulatedStock = constructionResourceStock.Stock;
-									float constructibleCost = DepartmentOfTheTreasury.GetProductionCostWithBonus(wrapper.SimulationObject, pendingConstruction.ConstructibleElement, pendingConstruction.ConstructibleElement.Costs[index], false);
-									float remainingCost = constructibleCost - accumulatedStock;
-									if (remainingCost > 0f)
+									if (!construction.ConstructibleElement.Costs[j].Instant && !construction.ConstructibleElement.Costs[j].InstantOnCompletion)
 									{
-										float resourceStock;
-										if (!this.DepartmentOfTheTreasury.TryGetResourceStockValue(wrapper.SimulationObject, resourceName, out resourceStock, false))
+										ConstructionResourceStock constructionResourceStock = construction.CurrentConstructionStock[j];
+										StaticString resourceName = construction.ConstructibleElement.Costs[j].ResourceName;
+										if (!construction.IsBuyout || !(resourceName == DepartmentOfTheTreasury.Resources.Production))
 										{
-											Diagnostics.LogError("Can't get resource stock value {0} on simulation object {1}.", new object[]
+											float stock = constructionResourceStock.Stock;
+											float productionCostWithBonus = DepartmentOfTheTreasury.GetProductionCostWithBonus(simulationObjectWrapper.SimulationObject, construction.ConstructibleElement, construction.ConstructibleElement.Costs[j], false);
+											float num = productionCostWithBonus - stock;
+											if (num > 0f)
 											{
-												resourceName,
-												wrapper.SimulationObject.Name
-											});
-										}
-										else
-										{
-											float usedStock = Math.Min(remainingCost, resourceStock);
-											if (this.DepartmentOfTheTreasury.TryTransferResources(wrapper.SimulationObject, resourceName, -usedStock))
-											{
-												constructionResourceStock.Stock += usedStock;
-												if (resourceName == DepartmentOfTheTreasury.Resources.Production)
+												float val;
+												if (!this.DepartmentOfTheTreasury.TryGetResourceStockValue(simulationObjectWrapper.SimulationObject, resourceName, out val, false))
 												{
-													base.Empire.SetPropertyBaseValue("TotalIndustrySpent", base.Empire.GetPropertyValue("TotalIndustrySpent") + usedStock);
-													base.Empire.Refresh(false);
+													Diagnostics.LogError("Can't get resource stock value {0} on simulation object {1}.", new object[]
+													{
+														resourceName,
+														simulationObjectWrapper.SimulationObject.Name
+													});
+												}
+												else
+												{
+													float num2 = Math.Min(num, val);
+													if (this.DepartmentOfTheTreasury.TryTransferResources(simulationObjectWrapper.SimulationObject, resourceName, -num2))
+													{
+														constructionResourceStock.Stock += num2;
+														if (resourceName == DepartmentOfTheTreasury.Resources.Production)
+														{
+															base.Empire.SetPropertyBaseValue("TotalIndustrySpent", base.Empire.GetPropertyValue("TotalIndustrySpent") + num2);
+															base.Empire.Refresh(false);
+														}
+													}
+													else
+													{
+														Diagnostics.LogWarning("Transfer of resource '{0}' is not possible.", new object[]
+														{
+															construction.ConstructibleElement.Costs[j].ResourceName
+														});
+													}
+													num = productionCostWithBonus - constructionResourceStock.Stock;
+													flag &= (num <= 0f);
 												}
 											}
-											else
-											{
-												Diagnostics.LogWarning("Transfer of resource '{0}' is not possible.", new object[]
-												{
-													pendingConstruction.ConstructibleElement.Costs[index].ResourceName
-												});
-											}
-											remainingCost = constructibleCost - constructionResourceStock.Stock;
-											constructionComplete &= (remainingCost <= 0f);
 										}
 									}
 								}
-							}
-							if (!constructionComplete)
-							{
-								break;
+								if (!flag)
+								{
+									break;
+								}
 							}
 						}
 					}
 				}
 			}
+			yield break;
 		}
 		yield break;
 	}
@@ -2230,9 +2243,9 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 	public delegate void ConstructionChangeEventHandler(object sender, ConstructionChangeEventArgs e);
 
 	[CompilerGenerated]
-	private sealed class FillAvailableConstructibleElements>c__AnonStorey925
+	private sealed class FillAvailableConstructibleElements>c__AnonStorey920
 	{
-		internal bool <>m__3DC(DepartmentOfIndustry.ConstructibleElement contructibleElement)
+		internal bool <>m__3D8(DepartmentOfIndustry.ConstructibleElement contructibleElement)
 		{
 			return this.categories.Contains(contructibleElement.Category);
 		}
@@ -2241,9 +2254,9 @@ public class DepartmentOfIndustry : Agency, Amplitude.Xml.Serialization.IXmlSeri
 	}
 
 	[CompilerGenerated]
-	private sealed class GetAvailableConstructibleElements>c__AnonStorey926
+	private sealed class GetAvailableConstructibleElements>c__AnonStorey921
 	{
-		internal bool <>m__3DD(DepartmentOfIndustry.ConstructibleElement contructibleElement)
+		internal bool <>m__3D9(DepartmentOfIndustry.ConstructibleElement contructibleElement)
 		{
 			return this.categories.Contains(contructibleElement.Category);
 		}

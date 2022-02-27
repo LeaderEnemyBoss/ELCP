@@ -125,13 +125,11 @@ public class CreepingNodeWorldCursor : WorldCursor
 				{
 					int fidsiextractionRange = this.Node.NodeDefinition.FIDSIExtractionRange;
 					int index = this.Node.PointOfInterest.Region.Index;
-					WorldCircle worldCircle = new WorldCircle(this.Node.WorldPosition, fidsiextractionRange);
-					WorldPosition[] worldPositions = worldCircle.GetWorldPositions(this.WorldPositionningService.World.WorldParameters);
-					for (int i = 0; i < worldPositions.Length; i++)
+					for (int i = 0; i < this.Node.ExploitedTiles.Count; i++)
 					{
-						if (worldPositions[i].IsValid && (int)this.WorldPositionningService.GetRegionIndex(worldPositions[i]) == this.Node.PointOfInterest.Region.Index && this.WorldPositionningService.GetDistrict(worldPositions[i]) == null && !this.WorldPositionningService.HasRidge(worldPositions[i]))
+						if (this.Node.ExploitedTiles[i].IsValid && (int)this.WorldPositionningService.GetRegionIndex(this.Node.ExploitedTiles[i]) == this.Node.PointOfInterest.Region.Index && this.WorldPositionningService.GetDistrict(this.Node.ExploitedTiles[i]) == null && !this.WorldPositionningService.HasRidge(this.Node.ExploitedTiles[i]))
 						{
-							this.ResourceRendererService.Add(worldPositions[i]);
+							this.ResourceRendererService.Add(this.Node.ExploitedTiles[i]);
 						}
 					}
 					this.WorldArea = this.ResourceRendererService.FromPositionsToWorldArea();

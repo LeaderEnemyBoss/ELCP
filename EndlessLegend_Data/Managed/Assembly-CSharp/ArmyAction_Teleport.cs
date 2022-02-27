@@ -9,15 +9,14 @@ using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
 
 [ArmyActionWorldCursor(typeof(ArmyActionTeleportWorldCursor))]
-public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, IArmyActionWithUnitSelection
+public class ArmyAction_Teleport : ArmyActionWithCooldown, IArmyActionWithTargetSelection, IArmyActionWithUnitSelection
 {
 	[XmlAttribute]
 	public bool AllowTransferToHeroLedArmy
 	{
 		get
 		{
-			IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
-			return service.IsShared(DownloadableContent19.ReadOnlyName) && this.allowTransferToHeroLedArmy;
+			return Services.GetService<IDownloadableContentService>().IsShared(DownloadableContent19.ReadOnlyName) && this.allowTransferToHeroLedArmy;
 		}
 		set
 		{
@@ -37,8 +36,7 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 			failureFlags.Add(ArmyAction.NoCanDoWhileSystemError);
 			return false;
 		}
-		global::Game x = service.Game as global::Game;
-		if (x == null)
+		if (service.Game as global::Game == null)
 		{
 			failureFlags.Add(ArmyAction.NoCanDoWhileSystemError);
 			return false;
@@ -65,6 +63,11 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 				failureFlags.Add(ArmyAction.NoCanDoWhileHidden);
 				return false;
 			}
+		}
+		if (!this.CheckCooldownPrerequisites(army))
+		{
+			failureFlags.Add(ArmyActionWithCooldown.NoCanDoWhileCooldownInProgress);
+			return false;
 		}
 		if (army.IsInEncounter)
 		{
@@ -94,8 +97,7 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 		}
 		bool flag = false;
 		bool flag2 = false;
-		DepartmentOfTheInterior agency = army.Empire.GetAgency<DepartmentOfTheInterior>();
-		List<City> list = agency.Cities.ToList<City>();
+		List<City> list = army.Empire.GetAgency<DepartmentOfTheInterior>().Cities.ToList<City>();
 		list.Remove(region.City);
 		if (list.Count > 0)
 		{
@@ -103,8 +105,7 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 		}
 		if (this.AllowTransferToHeroLedArmy && army.StandardUnits.Count > 0)
 		{
-			DepartmentOfDefense agency2 = army.Empire.GetAgency<DepartmentOfDefense>();
-			List<Army> list2 = agency2.GetHeroLedArmies().ToList<Army>();
+			List<Army> list2 = army.Empire.GetAgency<DepartmentOfDefense>().GetHeroLedArmies().ToList<Army>();
 			list2.Remove(army);
 			if (list2.Count > 0)
 			{
@@ -141,7 +142,7 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 	public override void Execute(Army army, global::PlayerController playerController, out Ticket ticket, EventHandler<TicketRaisedEventArgs> ticketRaisedEventHandler, params object[] parameters)
 	{
 		ticket = null;
-		if (parameters.Length > 0)
+		if (parameters.Length != 0)
 		{
 			City city = parameters[0] as City;
 			if (city != null)
@@ -150,9 +151,10 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 				{
 					city.Name
 				});
-				OrderTeleportArmyToCity order = new OrderTeleportArmyToCity(army.Empire.Index, army.GUID, city.GUID);
+				OrderTeleportArmyToCity orderTeleportArmyToCity = new OrderTeleportArmyToCity(army.Empire.Index, army.GUID, city.GUID);
+				orderTeleportArmyToCity.ArmyActionCooldownDuration = base.ComputeCooldownDuration(army);
 				Diagnostics.Assert(playerController != null);
-				playerController.PostOrder(order, out ticket, ticketRaisedEventHandler);
+				playerController.PostOrder(orderTeleportArmyToCity, out ticket, ticketRaisedEventHandler);
 				return;
 			}
 			Army army2 = parameters[0] as Army;
@@ -165,9 +167,9 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 					{
 						army2.Name
 					});
-					OrderTransferUnits order2 = new OrderTransferUnits(army.Empire.Index, army.GUID, army2.GUID, array, true);
+					OrderTransferUnits order = new OrderTransferUnits(army.Empire.Index, army.GUID, army2.GUID, array, true);
 					Diagnostics.Assert(playerController != null);
-					playerController.PostOrder(order2, out ticket, ticketRaisedEventHandler);
+					playerController.PostOrder(order, out ticket, ticketRaisedEventHandler);
 					IEventService service = Services.GetService<IEventService>();
 					if (service != null)
 					{
@@ -182,8 +184,7 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 
 	public void FillTargets(Army army, List<IGameEntity> targets, ref List<StaticString> failureFlags)
 	{
-		DepartmentOfTheInterior agency = army.Empire.GetAgency<DepartmentOfTheInterior>();
-		List<City> list = agency.Cities.ToList<City>();
+		List<City> list = army.Empire.GetAgency<DepartmentOfTheInterior>().Cities.ToList<City>();
 		Region region = this.GetRegion(army);
 		list.Remove(region.City);
 		for (int i = 0; i < list.Count; i++)
@@ -195,8 +196,7 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 		}
 		if (this.AllowTransferToHeroLedArmy)
 		{
-			DepartmentOfDefense agency2 = army.Empire.GetAgency<DepartmentOfDefense>();
-			ReadOnlyCollection<Army> heroLedArmies = agency2.GetHeroLedArmies();
+			ReadOnlyCollection<Army> heroLedArmies = army.Empire.GetAgency<DepartmentOfDefense>().GetHeroLedArmies();
 			for (int j = 0; j < heroLedArmies.Count; j++)
 			{
 				Army army2 = heroLedArmies[j];
@@ -239,9 +239,7 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 
 	private Region GetRegion(Army army)
 	{
-		IGameService service = Services.GetService<IGameService>();
-		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
-		return service2.GetRegion(army.WorldPosition);
+		return Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>().GetRegion(army.WorldPosition);
 	}
 
 	private bool IsOnCityTile(Army army, Region originRegion)
@@ -291,9 +289,8 @@ public class ArmyAction_Teleport : ArmyAction, IArmyActionWithTargetSelection, I
 				return false;
 			}
 		}
-		DepartmentOfTransportation agency = army.Empire.GetAgency<DepartmentOfTransportation>();
 		WorldPosition worldPosition;
-		return agency.TryGetFirstCityTileAvailableForTeleport(city, out worldPosition) && worldPosition.IsValid;
+		return army.Empire.GetAgency<DepartmentOfTransportation>().TryGetFirstCityTileAvailableForTeleport(city, out worldPosition) && worldPosition.IsValid;
 	}
 
 	public static readonly StaticString NoBoosterForTeleport = "ArmyActionNoBoosterActivatedForTeleport";

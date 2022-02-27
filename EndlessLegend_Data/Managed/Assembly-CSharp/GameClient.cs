@@ -23,97 +23,97 @@ using Amplitude.Unity.Xml;
 using ICSharpCode.SharpZipLib.BZip2;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderGenerateNewWeather), "GenerateNewWeather")]
-[OrderProcessor(typeof(OrderCreateCityAssaultEncounter), "CreateCityAssaultEncounter")]
-[OrderProcessor(typeof(OrderDebugInfo), "DebugInfo")]
-[OrderProcessor(typeof(OrderAllocateEncounterDroppableTo), "AllocateEncounterDroppableTo")]
-[OrderProcessor(typeof(OrderCreateEncounter), "CreateEncounter")]
-[OrderProcessor(typeof(OrderCreateDiplomaticContract), "CreateDiplomaticContract")]
-[OrderProcessor(typeof(OrderReportEncounter), "ReportEncounter")]
-[OrderProcessor(typeof(OrderUpdateWinterImmunityBids), "UpdateWinterImmunityBids")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnits), "ReplicateMarketplaceUnits")]
-[OrderProcessor(typeof(OrderNotifyEmpireDiscovery), "NotifyEmpireDiscovery")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnitProfile), "ReplicateMarketplaceUnitProfile")]
-[OrderProcessor(typeof(OrderSetOrbSpawn), "SetOrbSpawn")]
-[OrderProcessor(typeof(OrderRefreshMarketplace), "RefreshMarketplace")]
-[OrderProcessor(typeof(OrderReadyForNextRound), "ReadyForNextRound")]
-[OrderProcessor(typeof(OrderChangeUnitStrategy), "ChangeUnitStrategy")]
-[OrderProcessor(typeof(OrderUpdateQuest), "UpdateQuest")]
-[OrderProcessor(typeof(OrderRemoveAffinityStrategicResource), "RemoveAffinityStrategicResource")]
-[OrderProcessor(typeof(OrderCompleteQuest), "CompleteQuest")]
-[OrderProcessor(typeof(OrderAnnounceFirstKaiju), "AnnounceKaiju")]
-[OrderProcessor(typeof(OrderEncounterDeploymentStart), "EncounterDeploymentStart")]
-[OrderProcessor(typeof(OrderJoinEncounter), "JoinEncounter")]
-[OrderProcessor(typeof(OrderEncounterRoundUpdate), "EncounterRoundUpdate")]
-[OrderProcessor(typeof(OrderReadyForNextPhase), "ReadyForNextPhase")]
-[OrderProcessor(typeof(OrderReadyForDeployment), "ReadyForDeployment")]
-[OrderProcessor(typeof(OrderInteractWith), "InteractWith")]
-[OrderProcessor(typeof(OrderIncludeContenderInEncounter), "IncludeContenderInEncounter")]
-[OrderProcessor(typeof(OrderChangeSeason), "ChangeSeason")]
-[OrderProcessor(typeof(OrderReadyForBattle), "ReadyForBattle")]
-[OrderProcessor(typeof(OrderChangeUnitsTargetingAndStrategy), "OrderChangeUnitsStrategies")]
-[OrderProcessor(typeof(OrderLockInteraction), "LockInteraction")]
-[OrderProcessor(typeof(OrderRemoveMapBoosts), "RemoveMapBoosts")]
-[OrderProcessor(typeof(OrderDestroyEncounter), "DestroyEncounter")]
-[OrderProcessor(typeof(OrderEncounterRoundEnd), "EncounterRoundEnd")]
-[OrderProcessor(typeof(OrderToggleRuinDustDeposits), "ToggleRuinDustDeposits")]
-[OrderProcessor(typeof(OrderEliminateEmpire), "EliminateEmpire")]
-[OrderProcessor(typeof(OrderBeginQuest), "BeginQuest")]
-[OrderProcessor(typeof(OrderBuyOutKaijuTechnology), "BuyOutKaijuTechnology")]
-[OrderProcessor(typeof(OrderBuyoutAndActivatePillar), "BuyoutAndActivatePillar")]
-[OrderProcessor(typeof(OrderReplicateMarketplaceUnitDesign), "ReplicateMarketplaceUnitDesign")]
-[OrderProcessor(typeof(OrderRazePointOfInterest), "RazePointOfInterest")]
-[OrderProcessor(typeof(OrderBuyoutAndActivatePillarThroughArmy), "BuyoutAndActivatePillarThroughArmy")]
-[OrderProcessor(typeof(OrderBuyoutAndPlaceTerraformationDevice), "BuyoutAndPlaceTerraformationDevice")]
-[OrderProcessor(typeof(OrderBuyoutSpellAndPlayBattleAction), "BuyoutSpellAndPlayBattleAction")]
-[OrderProcessor(typeof(OrderQueueKaijuResearch), "QueueKaijuResearch")]
-[OrderProcessor(typeof(OrderCancelKaijuResearch), "CancelKaijuResearch")]
-[OrderProcessor(typeof(OrderToggleEndlessDay), "ToggleEndlessDay")]
-[OrderProcessor(typeof(OrderResetPointOfInterestInteractionBits), "ResetPointOfInterestInteractionBits")]
-[OrderProcessor(typeof(OrderSwitchContendersReinforcementRanking), "SwitchContendersReinforcementRanking")]
-[OrderProcessor(typeof(OrderSwapUnitDeployment), "SwapUnitDeployment")]
-[OrderProcessor(typeof(OrderGetAIDiplomaticTermEvaluation), "GetAIDiplomaticTermEvaluation")]
-[OrderProcessor(typeof(OrderNotifyEncounter), "NotifyEncounter")]
-[OrderProcessor(typeof(OrderOrbsChange), "OrbsChange")]
-[OrderProcessor(typeof(OrderBeginEncounter), "BeginEncounter")]
-[OrderProcessor(typeof(OrderSpawnMapBoosts), "SpawnMapBoosts")]
-[OrderProcessor(typeof(OrderRunTerraformationForDevice), "RunTerraformationForDevice")]
-[OrderProcessor(typeof(OrderSelectAffinityStrategicResource), "SelectAffinityStrategicResource")]
 [OrderProcessor(typeof(OrderSendAIAttitudeFeedback), "SendAIAttitudeFeedback")]
 [OrderProcessor(typeof(OrderSetDeploymentFinished), "SetDeploymentFinished")]
-[OrderProcessor(typeof(OrderGetAIDiplomaticContractEvaluation), "GetAIDiplomaticContractEvaluation")]
-[OrderProcessor(typeof(OrderEncounterDeploymentUpdate), "EncounterDeploymentUpdate")]
-[OrderProcessor(typeof(OrderGetAIAttitude), "GetAIAttitude")]
-[OrderProcessor(typeof(OrderSpawnKaiju), "SpawnKaiju")]
-[OrderProcessor(typeof(OrderEncounterTargetingPhaseUpdate), "EncounterTargetingPhaseUpdate")]
-[OrderProcessor(typeof(OrderChangeUnitTargeting), "ChangeUnitTargeting")]
-[OrderProcessor(typeof(OrderChangeDiplomaticContractState), "ChangeDiplomaticContractState")]
 [OrderProcessor(typeof(OrderRelocateKaiju), "RelocateKaiju")]
 [OrderProcessor(typeof(OrderRegisterRegionalEffects), "RegisterRegionalEffects")]
-[OrderProcessor(typeof(OrderChangeDeployment), "ChangeDeployment")]
-[OrderProcessor(typeof(OrderEndEncounter), "EndEncounter")]
-[OrderProcessor(typeof(OrderChangeContenderReinforcementRanking), "ChangeContenderReinforcementRanking")]
-[OrderProcessor(typeof(OrderWinterImmunityBid), "WinterImmunityBid")]
-[OrderProcessor(typeof(OrderVoteForSeasonEffect), "VoteForSeasonEffect")]
-[OrderProcessor(typeof(OrderPacifyMinorFaction), "PacifyMinorFaction")]
+[OrderProcessor(typeof(OrderBuyOutKaijuTechnology), "BuyOutKaijuTechnology")]
+[OrderProcessor(typeof(OrderChangeUnitStrategy), "ChangeUnitStrategy")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnits), "ReplicateMarketplaceUnits")]
 [OrderProcessor(typeof(OrderSetEncounterDeployementEndTime), "SetEncounterDeployementEndTime")]
-[OrderProcessor(typeof(OrderChangeAdministrationSpeciality), "ChangeAdministrationSpeciality")]
-[OrderProcessor(typeof(OrderChangeContenderEncounterOption), "ChangeContenderEncounterOption")]
-[OrderProcessor(typeof(OrderPlaceTerraformDevice), "PlaceTerraformDevice")]
-[OrderProcessor(typeof(OrderPlayBattleAction), "PlayBattleAction")]
-[OrderProcessor(typeof(OrderPrepareForBattle), "PrepareForBattle")]
-[OrderProcessor(typeof(OrderChangeContenderState), "ChangeContenderState")]
-[OrderProcessor(typeof(OrderChangeStrategy), "ChangeStrategy")]
-[OrderProcessor(typeof(OrderChangeUnitDeployment), "ChangeUnitDeployment")]
-[OrderProcessor(typeof(OrderLockEncounterExternalArmies), "LockEncounterExternalArmies")]
-[OrderProcessor(typeof(OrderQuestWorldEffect), "QuestWorldEffect")]
-[OrderProcessor(typeof(OrderSetMapBoostSpawn), "SetMapBoostSpawn")]
-[OrderProcessor(typeof(OrderSetWindPreferences), "SetWindPreferences")]
-[OrderProcessor(typeof(OrderChangeDiplomaticContractTermsCollection), "ChangeDiplomaticContractTermsCollection")]
-[OrderProcessor(typeof(OrderChangeDiplomaticRelationState), "ChangeDiplomaticRelationState")]
-[OrderProcessor(typeof(OrderActivateWeatherControl), "ActivateWeatherControl")]
+[OrderProcessor(typeof(OrderInteractWith), "InteractWith")]
 [OrderProcessor(typeof(OrderChangeReinforcementPriority), "ChangeReinforcementPriority")]
+[OrderProcessor(typeof(OrderJoinEncounter), "JoinEncounter")]
+[OrderProcessor(typeof(OrderPacifyMinorFaction), "PacifyMinorFaction")]
+[OrderProcessor(typeof(OrderPlayBattleAction), "PlayBattleAction")]
+[OrderProcessor(typeof(OrderBuyoutAndPlaceTerraformationDevice), "BuyoutAndPlaceTerraformationDevice")]
+[OrderProcessor(typeof(OrderSelectAffinityStrategicResource), "SelectAffinityStrategicResource")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnitProfile), "ReplicateMarketplaceUnitProfile")]
+[OrderProcessor(typeof(OrderQueueKaijuResearch), "QueueKaijuResearch")]
+[OrderProcessor(typeof(OrderEncounterDeploymentStart), "EncounterDeploymentStart")]
+[OrderProcessor(typeof(OrderReplicateMarketplaceUnitDesign), "ReplicateMarketplaceUnitDesign")]
+[OrderProcessor(typeof(OrderPrepareForBattle), "PrepareForBattle")]
+[OrderProcessor(typeof(OrderRunTerraformationForDevice), "RunTerraformationForDevice")]
+[OrderProcessor(typeof(OrderEncounterRoundUpdate), "EncounterRoundUpdate")]
+[OrderProcessor(typeof(OrderLockInteraction), "LockInteraction")]
+[OrderProcessor(typeof(OrderChangeAdministrationSpeciality), "ChangeAdministrationSpeciality")]
+[OrderProcessor(typeof(OrderSetMapBoostSpawn), "SetMapBoostSpawn")]
+[OrderProcessor(typeof(OrderSetOrbSpawn), "SetOrbSpawn")]
+[OrderProcessor(typeof(OrderSetWindPreferences), "SetWindPreferences")]
+[OrderProcessor(typeof(OrderOrbsChange), "OrbsChange")]
+[OrderProcessor(typeof(OrderEndEncounter), "EndEncounter")]
+[OrderProcessor(typeof(OrderRemoveAffinityStrategicResource), "RemoveAffinityStrategicResource")]
+[OrderProcessor(typeof(OrderResetPointOfInterestInteractionBits), "ResetPointOfInterestInteractionBits")]
+[OrderProcessor(typeof(OrderActivateWeatherControl), "ActivateWeatherControl")]
+[OrderProcessor(typeof(OrderBuyoutAndActivatePillarThroughArmy), "BuyoutAndActivatePillarThroughArmy")]
+[OrderProcessor(typeof(OrderGenerateNewWeather), "GenerateNewWeather")]
+[OrderProcessor(typeof(OrderBuyoutSpellAndPlayBattleAction), "BuyoutSpellAndPlayBattleAction")]
+[OrderProcessor(typeof(OrderChangeUnitDeployment), "ChangeUnitDeployment")]
+[OrderProcessor(typeof(OrderEncounterDeploymentUpdate), "EncounterDeploymentUpdate")]
+[OrderProcessor(typeof(OrderEncounterRoundEnd), "EncounterRoundEnd")]
+[OrderProcessor(typeof(OrderBuyoutAndActivatePillar), "BuyoutAndActivatePillar")]
+[OrderProcessor(typeof(OrderRazePointOfInterest), "RazePointOfInterest")]
+[OrderProcessor(typeof(OrderReadyForBattle), "ReadyForBattle")]
+[OrderProcessor(typeof(OrderEncounterTargetingPhaseUpdate), "EncounterTargetingPhaseUpdate")]
+[OrderProcessor(typeof(OrderChangeStrategy), "ChangeStrategy")]
+[OrderProcessor(typeof(OrderGetAIAttitude), "GetAIAttitude")]
+[OrderProcessor(typeof(OrderEliminateEmpire), "EliminateEmpire")]
+[OrderProcessor(typeof(OrderChangeDiplomaticContractTermsCollection), "ChangeDiplomaticContractTermsCollection")]
+[OrderProcessor(typeof(OrderDestroyEncounter), "DestroyEncounter")]
+[OrderProcessor(typeof(OrderBeginEncounter), "BeginEncounter")]
+[OrderProcessor(typeof(OrderChangeDiplomaticContractState), "ChangeDiplomaticContractState")]
+[OrderProcessor(typeof(OrderChangeDeployment), "ChangeDeployment")]
+[OrderProcessor(typeof(OrderChangeContenderState), "ChangeContenderState")]
+[OrderProcessor(typeof(OrderAnnounceFirstKaiju), "AnnounceKaiju")]
+[OrderProcessor(typeof(OrderAllocateEncounterDroppableTo), "AllocateEncounterDroppableTo")]
+[OrderProcessor(typeof(OrderDebugInfo), "DebugInfo")]
+[OrderProcessor(typeof(OrderCreateCityAssaultEncounter), "CreateCityAssaultEncounter")]
+[OrderProcessor(typeof(OrderChangeUnitTargeting), "ChangeUnitTargeting")]
+[OrderProcessor(typeof(OrderCreateEncounter), "CreateEncounter")]
+[OrderProcessor(typeof(OrderGetAIDiplomaticContractEvaluation), "GetAIDiplomaticContractEvaluation")]
+[OrderProcessor(typeof(OrderNotifyEncounter), "NotifyEncounter")]
+[OrderProcessor(typeof(OrderGetAIDiplomaticTermEvaluation), "GetAIDiplomaticTermEvaluation")]
+[OrderProcessor(typeof(OrderNotifyEmpireDiscovery), "NotifyEmpireDiscovery")]
+[OrderProcessor(typeof(OrderReadyForDeployment), "ReadyForDeployment")]
+[OrderProcessor(typeof(OrderQuestWorldEffect), "QuestWorldEffect")]
+[OrderProcessor(typeof(OrderLockEncounterExternalArmies), "LockEncounterExternalArmies")]
+[OrderProcessor(typeof(OrderReportEncounter), "ReportEncounter")]
+[OrderProcessor(typeof(OrderChangeDiplomaticRelationState), "ChangeDiplomaticRelationState")]
+[OrderProcessor(typeof(OrderWinterImmunityBid), "WinterImmunityBid")]
+[OrderProcessor(typeof(OrderCreateDiplomaticContract), "CreateDiplomaticContract")]
+[OrderProcessor(typeof(OrderBeginQuest), "BeginQuest")]
+[OrderProcessor(typeof(OrderCancelKaijuResearch), "CancelKaijuResearch")]
+[OrderProcessor(typeof(OrderVoteForSeasonEffect), "VoteForSeasonEffect")]
+[OrderProcessor(typeof(OrderChangeContenderReinforcementRanking), "ChangeContenderReinforcementRanking")]
+[OrderProcessor(typeof(OrderCompleteQuest), "CompleteQuest")]
+[OrderProcessor(typeof(OrderSpawnKaiju), "SpawnKaiju")]
+[OrderProcessor(typeof(OrderChangeContenderEncounterOption), "ChangeContenderEncounterOption")]
+[OrderProcessor(typeof(OrderRemoveMapBoosts), "RemoveMapBoosts")]
+[OrderProcessor(typeof(OrderReadyForNextPhase), "ReadyForNextPhase")]
+[OrderProcessor(typeof(OrderReadyForNextRound), "ReadyForNextRound")]
+[OrderProcessor(typeof(OrderChangeUnitsTargetingAndStrategy), "OrderChangeUnitsStrategies")]
+[OrderProcessor(typeof(OrderUpdateWinterImmunityBids), "UpdateWinterImmunityBids")]
+[OrderProcessor(typeof(OrderChangeSeason), "ChangeSeason")]
+[OrderProcessor(typeof(OrderRefreshMarketplace), "RefreshMarketplace")]
+[OrderProcessor(typeof(OrderIncludeContenderInEncounter), "IncludeContenderInEncounter")]
+[OrderProcessor(typeof(OrderSpawnMapBoosts), "SpawnMapBoosts")]
+[OrderProcessor(typeof(OrderUpdateQuest), "UpdateQuest")]
+[OrderProcessor(typeof(OrderToggleRuinDustDeposits), "ToggleRuinDustDeposits")]
+[OrderProcessor(typeof(OrderToggleEndlessDay), "ToggleEndlessDay")]
+[OrderProcessor(typeof(OrderSwitchContendersReinforcementRanking), "SwitchContendersReinforcementRanking")]
 [OrderProcessor(typeof(OrderClaimDiplomacyPoints), "ClaimDiplomacyPoints")]
+[OrderProcessor(typeof(OrderSwapUnitDeployment), "SwapUnitDeployment")]
+[OrderProcessor(typeof(OrderPlaceTerraformDevice), "PlaceTerraformDevice")]
 public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface, IGameClient
 {
 	public GameClient(global::Session session) : base(session)
@@ -638,14 +638,14 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			Diagnostics.LogError("Encounter GUID is not valid.");
 			yield break;
 		}
-		IEncounterRepositoryService encounterRepositoryService = this.Game.GetService<IEncounterRepositoryService>();
-		if (encounterRepositoryService == null)
+		IEncounterRepositoryService service = base.Game.GetService<IEncounterRepositoryService>();
+		if (service == null)
 		{
 			Diagnostics.LogError("Can't found encounter repository service.");
 			yield break;
 		}
 		Encounter encounter = null;
-		if (!encounterRepositoryService.TryGetValue(order.EncounterGUID, out encounter))
+		if (!service.TryGetValue(order.EncounterGUID, out encounter))
 		{
 			Diagnostics.LogError("Can't found encounter.");
 			yield break;
@@ -655,20 +655,20 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			Diagnostics.LogError("Can't found encounter contenders.");
 			yield break;
 		}
-		Contender foundContender = encounter.Contenders.Find((Contender contender) => contender.GUID == order.ContenderGUID);
-		if (foundContender == null)
+		Contender contender2 = encounter.Contenders.Find((Contender contender) => contender.GUID == order.ContenderGUID);
+		if (contender2 == null)
 		{
 			Diagnostics.LogError("Can't found encounter contender.");
 			yield break;
 		}
-		IDatabase<SpellDefinition> spellDefinitions = Databases.GetDatabase<SpellDefinition>(false);
-		if (spellDefinitions == null)
+		IDatabase<SpellDefinition> database = Databases.GetDatabase<SpellDefinition>(false);
+		if (database == null)
 		{
 			Diagnostics.LogError("Can't retrieve the spellDefinition's database.");
 			yield break;
 		}
 		SpellDefinition spellDefinition;
-		if (!spellDefinitions.TryGetValue(order.SpellDefinitionName, out spellDefinition))
+		if (!database.TryGetValue(order.SpellDefinitionName, out spellDefinition))
 		{
 			Diagnostics.LogError("Can't retrieve the spellDefinition '{0}'.", new object[]
 			{
@@ -676,22 +676,20 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			});
 			yield break;
 		}
-		if (order.ConstructionResourceStocks != null && order.ConstructionResourceStocks.Length > 0)
+		ELCPUtilities.SpellUsage_Register(order.EncounterGUID, contender2.Garrison.Empire.Index, spellDefinition.Name);
+		if (order.ConstructionResourceStocks != null && order.ConstructionResourceStocks.Length != 0)
 		{
-			DepartmentOfTheTreasury departmentOfTheTreasury = foundContender.Garrison.Empire.GetAgency<DepartmentOfTheTreasury>();
-			if (departmentOfTheTreasury == null)
+			DepartmentOfTheTreasury agency = contender2.Garrison.Empire.GetAgency<DepartmentOfTheTreasury>();
+			if (agency == null)
 			{
 				Diagnostics.LogError("Can't retrieve the departmentOfTheTreasury.");
 				yield break;
 			}
-			for (int index = 0; index < order.ConstructionResourceStocks.Length; index++)
+			for (int i = 0; i < order.ConstructionResourceStocks.Length; i++)
 			{
-				if (order.ConstructionResourceStocks[index] != null && order.ConstructionResourceStocks[index].Stock != 0f)
+				if (order.ConstructionResourceStocks[i] != null && order.ConstructionResourceStocks[i].Stock != 0f && spellDefinition.Costs != null && i < spellDefinition.Costs.Length)
 				{
-					if (spellDefinition.Costs != null && index < spellDefinition.Costs.Length)
-					{
-						departmentOfTheTreasury.TryTransferResources(foundContender.Garrison.Empire, spellDefinition.Costs[index].ResourceName, -order.ConstructionResourceStocks[index].Stock);
-					}
+					agency.TryTransferResources(contender2.Garrison.Empire, spellDefinition.Costs[i].ResourceName, -order.ConstructionResourceStocks[i].Stock);
 				}
 			}
 		}
@@ -701,15 +699,15 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			Diagnostics.LogError("Can't retrieve the battle action database.");
 			yield break;
 		}
-		List<BattleActionUser> availableBattleActions = spellDefinition.GetAvailableBattleActionUser(foundContender.Garrison.Empire);
-		for (int battleActionIndex = 0; battleActionIndex < availableBattleActions.Count; battleActionIndex++)
+		List<BattleActionUser> availableBattleActionUser = spellDefinition.GetAvailableBattleActionUser(contender2.Garrison.Empire);
+		for (int j = 0; j < availableBattleActionUser.Count; j++)
 		{
-			BattleAction battleActionUser = availableBattleActions[battleActionIndex];
-			if (battleActionUser == null)
+			BattleAction battleAction = availableBattleActionUser[j];
+			if (battleAction == null)
 			{
 				yield break;
 			}
-			foundContender.ReportBattleAction(battleActionUser.Name, BattleAction.State.Selected);
+			contender2.ReportBattleAction(battleAction.Name, BattleAction.State.Selected);
 		}
 		yield break;
 	}
@@ -875,10 +873,10 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			Diagnostics.LogError("Contract GUID is not valid.");
 			yield break;
 		}
-		IDiplomaticContractRepositoryService diplomaticContractRepositoryService = this.Game.Services.GetService<IDiplomaticContractRepositoryService>();
-		Diagnostics.Assert(diplomaticContractRepositoryService != null);
+		IDiplomaticContractRepositoryService service = base.Game.Services.GetService<IDiplomaticContractRepositoryService>();
+		Diagnostics.Assert(service != null);
 		DiplomaticContract diplomaticContract;
-		if (!diplomaticContractRepositoryService.TryGetValue(order.ContractGUID, out diplomaticContract))
+		if (!service.TryGetValue(order.ContractGUID, out diplomaticContract))
 		{
 			Diagnostics.LogError("Can't retrieve the contract {0}.", new object[]
 			{
@@ -887,39 +885,57 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			yield break;
 		}
 		Diagnostics.Assert(diplomaticContract != null && diplomaticContract.EmpireWhichProposes != null && diplomaticContract.EmpireWhichReceives != null);
-		DepartmentOfTheTreasury departmentOfTheTreasury = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfTheTreasury>();
-		Diagnostics.Assert(departmentOfTheTreasury != null);
-		if (!departmentOfTheTreasury.TryTransferResources(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, -order.EmpireWhichProposesEmpirePointCost))
+		DepartmentOfTheTreasury agency = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfTheTreasury>();
+		Diagnostics.Assert(agency != null);
+		if (!agency.TryTransferResources(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, -order.EmpireWhichProposesEmpirePointCost))
 		{
 			Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
 			{
 				diplomaticContract.EmpireWhichProposes
 			});
 		}
-		float amount = order.EmpireWhichProposesPeacePoint * diplomaticContract.EmpireWhichProposes.GetPropertyValue(SimulationProperties.PeacePointGainMultiplier);
-		if (!departmentOfTheTreasury.TryTransferResources(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.PeacePoint, amount))
+		if (!ELCPUtilities.UseELCPPeacePointRulseset)
 		{
-			Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
+			float amount = order.EmpireWhichProposesPeacePoint * diplomaticContract.EmpireWhichProposes.GetPropertyValue(SimulationProperties.PeacePointGainMultiplier);
+			if (!agency.TryTransferResources(diplomaticContract.EmpireWhichProposes.SimulationObject, DepartmentOfTheTreasury.Resources.PeacePoint, amount))
 			{
-				diplomaticContract.EmpireWhichProposes
-			});
+				Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
+				{
+					diplomaticContract.EmpireWhichProposes
+				});
+			}
 		}
-		departmentOfTheTreasury = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
-		Diagnostics.Assert(departmentOfTheTreasury != null);
-		if (!departmentOfTheTreasury.TryTransferResources(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, -order.EmpireWhichReceivesEmpirePointCost))
+		else
+		{
+			float empireWhichProposesPeacePoint = order.EmpireWhichProposesPeacePoint;
+			float propertyValue = diplomaticContract.EmpireWhichProposes.GetPropertyValue("PeacePointBucketStock");
+			diplomaticContract.EmpireWhichProposes.SetPropertyBaseValue("PeacePointBucketStock", propertyValue + empireWhichProposesPeacePoint);
+		}
+		DepartmentOfTheTreasury agency2 = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
+		Diagnostics.Assert(agency2 != null);
+		if (!agency2.TryTransferResources(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, -order.EmpireWhichReceivesEmpirePointCost))
 		{
 			Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
 			{
 				diplomaticContract.EmpireWhichReceives
 			});
 		}
-		amount = order.EmpireWhichReceivesPeacePoint * diplomaticContract.EmpireWhichReceives.GetPropertyValue(SimulationProperties.PeacePointGainMultiplier);
-		if (!departmentOfTheTreasury.TryTransferResources(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.PeacePoint, amount))
+		if (!ELCPUtilities.UseELCPPeacePointRulseset)
 		{
-			Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
+			float amount2 = order.EmpireWhichReceivesPeacePoint * diplomaticContract.EmpireWhichReceives.GetPropertyValue(SimulationProperties.PeacePointGainMultiplier);
+			if (!agency2.TryTransferResources(diplomaticContract.EmpireWhichReceives.SimulationObject, DepartmentOfTheTreasury.Resources.PeacePoint, amount2))
 			{
-				diplomaticContract.EmpireWhichReceives
-			});
+				Diagnostics.LogError("Transfer resources failed for empire {0}.", new object[]
+				{
+					diplomaticContract.EmpireWhichReceives
+				});
+			}
+		}
+		else
+		{
+			float empireWhichReceivesPeacePoint = order.EmpireWhichReceivesPeacePoint;
+			float propertyValue2 = diplomaticContract.EmpireWhichReceives.GetPropertyValue("PeacePointBucketStock");
+			diplomaticContract.EmpireWhichReceives.SetPropertyBaseValue("PeacePointBucketStock", propertyValue2 + empireWhichReceivesPeacePoint);
 		}
 		if (order.EmpireWhichProposesPeacePoint != 0f)
 		{
@@ -929,29 +945,29 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 		{
 			diplomaticContract.EmpireWhichReceives.SetPropertyBaseValue(SimulationProperties.EmpirePointSpentInSignificantDiplomacy, order.EmpireWhichReceivesEmpirePointCost + diplomaticContract.EmpireWhichReceives.GetPropertyBaseValue(SimulationProperties.EmpirePointSpentInSignificantDiplomacy));
 		}
-		IDiplomacyControl diplomacyControl = this.Game.Services.GetService<IDiplomacyService>() as IDiplomacyControl;
+		IDiplomacyControl diplomacyControl = base.Game.Services.GetService<IDiplomacyService>() as IDiplomacyControl;
 		Diagnostics.Assert(diplomacyControl != null);
 		diplomacyControl.SetDiplomaticContractState(diplomaticContract, order.DiplomaticContractNewState);
 		if (diplomaticContract.State == DiplomaticContractState.Signed)
 		{
 			this.NotifyIfMarketBan(diplomaticContract);
 		}
-		DepartmentOfForeignAffairs departmentOfForeignAffairs = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfForeignAffairs>();
+		DepartmentOfForeignAffairs agency3 = diplomaticContract.EmpireWhichProposes.GetAgency<DepartmentOfForeignAffairs>();
 		DiplomaticRelation diplomaticRelation;
-		if (departmentOfForeignAffairs != null)
+		if (agency3 != null)
 		{
-			diplomaticRelation = departmentOfForeignAffairs.GetDiplomaticRelation(diplomaticContract.EmpireWhichReceives);
+			diplomaticRelation = agency3.GetDiplomaticRelation(diplomaticContract.EmpireWhichReceives);
 			if (diplomaticRelation != null)
 			{
 				diplomaticRelation.RefreshDiplomaticAbilities();
 			}
 		}
-		departmentOfForeignAffairs = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfForeignAffairs>();
-		if (departmentOfForeignAffairs == null)
+		agency3 = diplomaticContract.EmpireWhichReceives.GetAgency<DepartmentOfForeignAffairs>();
+		if (agency3 == null)
 		{
 			yield break;
 		}
-		diplomaticRelation = departmentOfForeignAffairs.GetDiplomaticRelation(diplomaticContract.EmpireWhichProposes);
+		diplomaticRelation = agency3.GetDiplomaticRelation(diplomaticContract.EmpireWhichProposes);
 		if (diplomaticRelation != null)
 		{
 			diplomaticRelation.RefreshDiplomaticAbilities();
@@ -1524,21 +1540,22 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 
 	private IEnumerator EliminateEmpireProcessor(OrderEliminateEmpire order)
 	{
-		if (order.EmpireIndex >= 0 && order.EmpireIndex < this.Game.Empires.Length)
+		if (order.EmpireIndex >= 0 && order.EmpireIndex < base.Game.Empires.Length)
 		{
-			global::Empire empire = this.Game.Empires[order.EmpireIndex];
+			global::Empire empire = base.Game.Empires[order.EmpireIndex];
+			bool flag = empire is MajorEmpire && (empire as MajorEmpire).IsSpectator;
 			Diagnostics.Assert(empire.SimulationObject != null);
 			if (!empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
 			{
-				SimulationDescriptor descriptor = null;
-				IDatabase<SimulationDescriptor> simulationDescriptors = Databases.GetDatabase<SimulationDescriptor>(false);
-				if (simulationDescriptors != null)
+				SimulationDescriptor simulationDescriptor = null;
+				IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
+				if (database != null)
 				{
-					simulationDescriptors.TryGetValue(global::Empire.TagEmpireEliminated, out descriptor);
+					database.TryGetValue(global::Empire.TagEmpireEliminated, out simulationDescriptor);
 				}
-				if (descriptor != null)
+				if (simulationDescriptor != null)
 				{
-					empire.AddDescriptor(descriptor, false);
+					empire.AddDescriptor(simulationDescriptor, false);
 					empire.Refresh(true);
 				}
 				else
@@ -1546,43 +1563,51 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 					empire.SimulationObject.Tags.AddTag(global::Empire.TagEmpireEliminated);
 				}
 			}
-			empire.SetPropertyBaseValue(global::Empire.TagEmpireEliminated, (float)this.Game.Turn);
-			foreach (global::Empire other in this.Game.Empires)
+			empire.SetPropertyBaseValue(global::Empire.TagEmpireEliminated, (float)base.Game.Turn);
+			global::Empire[] empires = base.Game.Empires;
+			for (int i = 0; i < empires.Length; i++)
 			{
-				other.OnEmpireEliminated(empire, false);
+				empires[i].OnEmpireEliminated(empire, false);
 			}
-			IEventService eventService = Services.GetService<IEventService>();
-			if (eventService != null)
+			IEventService service = Services.GetService<IEventService>();
+			if (!flag)
 			{
-				IPlayerControllerRepositoryService playerControllerRepositoryService = this.Game.Services.GetService<IPlayerControllerRepositoryService>();
-				if (playerControllerRepositoryService != null && playerControllerRepositoryService.ActivePlayerController != null && playerControllerRepositoryService.ActivePlayerController.Empire != null && playerControllerRepositoryService.ActivePlayerController.Empire.Index == order.EmpireIndex)
+				if (service != null)
 				{
-					IGameSerializationService gameSerializationService = Services.GetService<IGameSerializationService>();
-					if (gameSerializationService != null)
+					IPlayerControllerRepositoryService service2 = base.Game.Services.GetService<IPlayerControllerRepositoryService>();
+					if (service2 != null && service2.ActivePlayerController != null && service2.ActivePlayerController.Empire != null && service2.ActivePlayerController.Empire.Index == order.EmpireIndex)
 					{
-						string directory = global::Application.GameSaveDirectory;
-						string extension = ".sav";
-						string fileNameWithoutExtension = "%EliminationSaveFileName";
-						ILocalizationService localizationService = Services.GetService<ILocalizationService>();
-						if (localizationService != null && fileNameWithoutExtension.StartsWith("%"))
+						IGameSerializationService service3 = Services.GetService<IGameSerializationService>();
+						if (service3 != null)
 						{
-							fileNameWithoutExtension = localizationService.Localize(fileNameWithoutExtension, "Game Finished by Elimination - Turn $Turn");
+							string gameSaveDirectory = global::Application.GameSaveDirectory;
+							string str = ".sav";
+							string text = "%EliminationSaveFileName";
+							ILocalizationService service4 = Services.GetService<ILocalizationService>();
+							if (service4 != null && text.StartsWith("%"))
+							{
+								text = service4.Localize(text, "Game Finished by Elimination - Turn $Turn");
+							}
+							text = text.Replace("$Turn", base.Game.Turn.ToString());
+							string outputFilePath = System.IO.Path.Combine(gameSaveDirectory, text) + str;
+							Amplitude.Coroutine coroutine = Amplitude.Coroutine.StartCoroutine(service3.SaveGameAsync(text, outputFilePath, GameSaveOptions.Closed), null);
+							coroutine.RunUntilIsFinished();
+							if (coroutine.LastException != null)
+							{
+								Diagnostics.LogWarning("Exception caught while saving the game after elimination: " + coroutine.LastException.ToString());
+							}
 						}
-						fileNameWithoutExtension = fileNameWithoutExtension.Replace("$Turn", this.Game.Turn.ToString());
-						string outputFileName = System.IO.Path.Combine(directory, fileNameWithoutExtension) + extension;
-						Amplitude.Coroutine coroutine = Amplitude.Coroutine.StartCoroutine(gameSerializationService.SaveGameAsync(fileNameWithoutExtension, outputFileName, GameSaveOptions.Closed), null);
-						coroutine.RunUntilIsFinished();
-						if (coroutine.LastException != null)
-						{
-							Diagnostics.LogWarning("Exception caught while saving the game after elimination: " + coroutine.LastException.ToString());
-						}
+						EventGameEnded eventToNotify = new EventGameEnded();
+						service.Notify(eventToNotify);
+						yield break;
 					}
-					EventGameEnded eventGameEnded = new EventGameEnded();
-					eventService.Notify(eventGameEnded);
-					yield break;
+					EventEmpireEliminated eventToNotify2 = new EventEmpireEliminated(empire);
+					service.Notify(eventToNotify2);
 				}
-				EventEmpireEliminated eventEmpireEliminated = new EventEmpireEliminated(empire);
-				eventService.Notify(eventEmpireEliminated);
+			}
+			else
+			{
+				service.Notify(new EventELCPSpectator());
 			}
 		}
 		yield break;
@@ -1692,10 +1717,10 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 		{
 			yield break;
 		}
-		IEncounterRepositoryService encounterRepositoryService = this.Game.GetService<IEncounterRepositoryService>();
-		Diagnostics.Assert(encounterRepositoryService != null);
+		IEncounterRepositoryService service = base.Game.GetService<IEncounterRepositoryService>();
+		Diagnostics.Assert(service != null);
 		Encounter encounter = null;
-		if (!encounterRepositoryService.TryGetValue(order.EncounterGUID, out encounter))
+		if (!service.TryGetValue(order.EncounterGUID, out encounter))
 		{
 			Diagnostics.LogError("Can't retrieve encounter {0}.", new object[]
 			{
@@ -1703,156 +1728,154 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			});
 			yield break;
 		}
-		IGameService gameService = Services.GetService<IGameService>();
-		global::Game game = gameService.Game as global::Game;
-		global::Empire[] majorEmpires = Array.FindAll<global::Empire>(game.Empires, (global::Empire match) => match is MajorEmpire);
-		float siegePointsDone = 0f;
-		this.ApplyFortificationLoss(encounter, out siegePointsDone);
-		Dictionary<byte, GameClient.EndEncounterContenderInformations> contenderInformationsByGroup = new Dictionary<byte, GameClient.EndEncounterContenderInformations>();
-		for (int index = 0; index < encounter.Contenders.Count; index++)
+		global::Empire[] array = Array.FindAll<global::Empire>((Services.GetService<IGameService>().Game as global::Game).Empires, (global::Empire match) => match is MajorEmpire);
+		float siegeDamage = 0f;
+		this.ApplyFortificationLoss(encounter, out siegeDamage, order);
+		Dictionary<byte, GameClient.EndEncounterContenderInformations> dictionary = new Dictionary<byte, GameClient.EndEncounterContenderInformations>();
+		for (int i = 0; i < encounter.Contenders.Count; i++)
 		{
-			Contender contender4 = encounter.Contenders[index];
-			this.SetContenderInformation(contender4, contenderInformationsByGroup);
-			for (int jndex = 0; jndex < contender4.EncounterUnits.Count; jndex++)
+			Contender contender5 = encounter.Contenders[i];
+			this.SetContenderInformation(contender5, dictionary);
+			for (int j = 0; j < contender5.EncounterUnits.Count; j++)
 			{
-				contender4.EncounterUnits[jndex].Unit.PathfindingContextMode = PathfindingContextMode.Default;
+				contender5.EncounterUnits[j].Unit.PathfindingContextMode = PathfindingContextMode.Default;
 			}
 			if (!order.HasBeenCanceled)
 			{
 				if (!order.DoNotSubtractActionPoints)
 				{
-					contender4.UpdateActionPoints();
+					contender5.UpdateActionPoints();
 				}
-				if (contender4.IsTakingPartInBattle && contender4.Garrison.Hero != null)
+				if (contender5.IsTakingPartInBattle && contender5.Garrison.Hero != null)
 				{
-					DepartmentOfIntelligence departmentOfIntelligence = contender4.Empire.GetAgency<DepartmentOfIntelligence>();
-					if (departmentOfIntelligence != null)
+					DepartmentOfIntelligence agency = contender5.Empire.GetAgency<DepartmentOfIntelligence>();
+					if (agency != null)
 					{
-						departmentOfIntelligence.StopInfiltration(contender4.Garrison.Hero, true, true);
+						agency.StopInfiltration(contender5.Garrison.Hero, true, true);
 					}
 				}
 			}
-			if (contender4.DeadParasitesCount > 0)
+			if (contender5.DeadParasitesCount > 0)
 			{
-				Contender enemyContender = encounter.GetEnemyContenderWithAbilityFromContender(contender4, UnitAbility.ReadonlyParasite);
-				enemyContender.UndeadUnitsToCreateCount += contender4.DeadParasitesCount;
+				encounter.GetEnemyContenderWithAbilityFromContender(contender5, UnitAbility.ReadonlyParasite).UndeadUnitsToCreateCount += contender5.DeadParasitesCount;
 			}
 		}
-		int deadUnitsCount = this.ApplyKills(encounter, contenderInformationsByGroup);
+		int deadUnitsCount = this.ApplyKills(encounter, dictionary);
 		List<int> empiresWhichAlreadyReceivedCadavers = new List<int>();
 		List<int> empiresWhichAlreadyReceivedSiegePoints = new List<int>();
-		int remainingCadaverRecyclersCount = (from contender in encounter.Contenders
+		int cadaverRecyclerContenderAliveCount = (from contender in encounter.Contenders
 		where contender.ContenderState != ContenderState.Defeated && DepartmentOfTheInterior.CanRecycleCadavers(contender.Empire)
 		select contender.Empire).Distinct<global::Empire>().Count<global::Empire>();
-		int empireAlreadyRewardedInEmpirePoint = 0;
-		for (int index2 = 0; index2 < encounter.Contenders.Count; index2++)
+		int num = 0;
+		for (int k = 0; k < encounter.Contenders.Count; k++)
 		{
-			Contender contender2 = encounter.Contenders[index2];
+			Contender contender2 = encounter.Contenders[k];
 			Diagnostics.Assert(contender2 != null);
 			Diagnostics.Assert(contender2.Garrison != null);
-			Diagnostics.Assert(contenderInformationsByGroup.ContainsKey(contender2.Group));
-			Diagnostics.Assert(contenderInformationsByGroup[contender2.Group] != null);
-			if (contender2 != null && contender2.Garrison != null && contender2.Garrison.GUID.IsValid && !contender2.Garrison.IsEmpty)
+			Diagnostics.Assert(dictionary.ContainsKey(contender2.Group));
+			Diagnostics.Assert(dictionary[contender2.Group] != null);
+			if (contender2 != null && contender2.Garrison != null && contender2.Garrison.GUID.IsValid && !contender2.Garrison.IsEmpty && contender2.IsTakingPartInBattle)
 			{
-				if (contender2.IsTakingPartInBattle)
+				float num2 = 0f;
+				int num3 = 0;
+				float num4 = 0f;
+				using (Dictionary<byte, GameClient.EndEncounterContenderInformations>.Enumerator enumerator = dictionary.GetEnumerator())
 				{
-					float overallExperienceRewards = 0f;
-					int overallEnemyPrestigeKills = 0;
-					float overallEnemyKillsBountyReward = 0f;
-					foreach (KeyValuePair<byte, GameClient.EndEncounterContenderInformations> otherContenderInformations in contenderInformationsByGroup)
+					while (enumerator.MoveNext())
 					{
+						KeyValuePair<byte, GameClient.EndEncounterContenderInformations> otherContenderInformations = enumerator.Current;
 						if (otherContenderInformations.Key != contender2.Group)
 						{
-							overallExperienceRewards += otherContenderInformations.Value.ExperienceRewardOnKillPoint;
-							if ((contender2.Empire.Bits & empireAlreadyRewardedInEmpirePoint) == 0)
+							num2 += otherContenderInformations.Value.ExperienceRewardOnKillPoint;
+							if ((contender2.Empire.Bits & num) == 0)
 							{
-								Contender otherContender = encounter.Contenders.Find((Contender match) => match.Group == otherContenderInformations.Key);
-								Diagnostics.Assert(otherContender != null);
-								if (contender2.Empire is MajorEmpire && otherContender.Empire is MajorEmpire && !otherContender.IsPrivateers)
+								Contender contender3 = encounter.Contenders.Find((Contender match) => match.Group == otherContenderInformations.Key);
+								Diagnostics.Assert(contender3 != null);
+								if (contender2.Empire is MajorEmpire && contender3.Empire is MajorEmpire && !contender3.IsPrivateers)
 								{
-									overallEnemyKillsBountyReward += this.CountBountyKillsReward(otherContender.Empire, otherContenderInformations.Value);
-									foreach (global::Empire thirdEmpire in majorEmpires)
+									num4 += this.CountBountyKillsReward(contender3.Empire, otherContenderInformations.Value);
+									foreach (global::Empire thirdEmpire in array)
 									{
-										overallEnemyPrestigeKills += this.CountPrestigeKillsForThirdEmpire(contender2.Empire, otherContender.Empire, otherContenderInformations.Value, thirdEmpire);
+										num3 += this.CountPrestigeKillsForThirdEmpire(contender2.Empire, contender3.Empire, otherContenderInformations.Value, thirdEmpire);
 									}
-									empireAlreadyRewardedInEmpirePoint |= contender2.Empire.Bits;
+									num |= contender2.Empire.Bits;
 								}
 							}
 						}
 					}
-					if (contenderInformationsByGroup.Count == 2)
-					{
-						foreach (KeyValuePair<byte, GameClient.EndEncounterContenderInformations> otherContenderInformations2 in contenderInformationsByGroup)
-						{
-							if (otherContenderInformations2.Value.UnitsKilledInAction.Count != 0)
-							{
-								IEventService eventService = Services.GetService<IEventService>();
-								Diagnostics.Assert(eventService != null);
-								if (eventService != null)
-								{
-									global::Empire addressee = (otherContenderInformations2.Key != encounter.Contenders[0].Group) ? encounter.Contenders[0].Empire : encounter.Contenders[1].Empire;
-									eventService.Notify(new EventUnitsKilledInAction(addressee, encounter, otherContenderInformations2.Value.UnitsKilledInAction));
-								}
-							}
-						}
-					}
-					this.ApplyBountyDustGain(contender2.Empire, overallEnemyKillsBountyReward);
-					float empirePointsGained = this.ApplyEmpirePointsGain(contender2.Empire, overallEnemyPrestigeKills);
-					float dustGained = this.ApplyDustGain(contender2.Empire, overallExperienceRewards);
-					int cadaverCountBefore = Mathf.RoundToInt(contender2.Empire.GetPropertyValue(SimulationProperties.CadaverStock));
-					int cadaversGained = Mathf.RoundToInt(this.ApplyCadaversGain(contender2.Empire, deadUnitsCount, remainingCadaverRecyclersCount, empiresWhichAlreadyReceivedCadavers));
-					int cadaversPerBooster = Mathf.RoundToInt(contender2.Empire.GetPropertyValue(SimulationProperties.CadaverCountNeededToObtainBooster));
-					int cadaverBoostersGained = (cadaversPerBooster == 0) ? 0 : ((cadaverCountBefore + cadaversGained) / cadaversPerBooster);
-					int siegePointsCountBefore = Mathf.RoundToInt(contender2.Empire.GetPropertyValue(SimulationProperties.SiegeDamageStock));
-					int siegePointsGained = Mathf.RoundToInt(this.ApplySiegePointsGain(contender2.Empire, siegePointsDone, empiresWhichAlreadyReceivedSiegePoints));
-					int siegePointsPerBooster = Mathf.RoundToInt(contender2.Empire.GetPropertyValue(SimulationProperties.SiegeDamageNeededToObtainBooster));
-					int industryStockpilesGained = (siegePointsPerBooster == 0) ? 0 : ((siegePointsCountBefore + siegePointsGained) / siegePointsPerBooster);
-					int undeadUnitsGained = contender2.UndeadUnitsToCreateCount;
-					int unitCountBeforeBattle = contenderInformationsByGroup[contender2.Group].UnitCountBeforeBattle;
-					float experiencePerUnitGained = (unitCountBeforeBattle != 0) ? (overallExperienceRewards / (float)unitCountBeforeBattle) : 0f;
-					foreach (Unit unit in contender2.Garrison.Units)
-					{
-						if (unit.GetPropertyValue(SimulationProperties.Health) > 0f)
-						{
-							unit.GainXp(experiencePerUnitGained, false, true);
-						}
-					}
-					contender2.Empire.Refresh(false);
-					contender2.Gains = new Contender.ContenderGains(experiencePerUnitGained, empirePointsGained, dustGained + overallEnemyKillsBountyReward, (float)cadaversGained, undeadUnitsGained, cadaverBoostersGained, (float)siegePointsGained, industryStockpilesGained);
 				}
+				if (dictionary.Count == 2)
+				{
+					foreach (KeyValuePair<byte, GameClient.EndEncounterContenderInformations> keyValuePair in dictionary)
+					{
+						if (keyValuePair.Value.UnitsKilledInAction.Count != 0)
+						{
+							IEventService service2 = Services.GetService<IEventService>();
+							Diagnostics.Assert(service2 != null);
+							if (service2 != null)
+							{
+								global::Empire empire = (keyValuePair.Key != encounter.Contenders[0].Group) ? encounter.Contenders[0].Empire : encounter.Contenders[1].Empire;
+								service2.Notify(new EventUnitsKilledInAction(empire, encounter, keyValuePair.Value.UnitsKilledInAction));
+							}
+						}
+					}
+				}
+				this.ApplyBountyDustGain(contender2.Empire, num4);
+				float empirePoints = this.ApplyEmpirePointsGain(contender2.Empire, num3);
+				float num5 = this.ApplyDustGain(contender2.Empire, num2);
+				int num6 = Mathf.RoundToInt(contender2.Empire.GetPropertyValue(SimulationProperties.CadaverStock));
+				int num7 = Mathf.RoundToInt(this.ApplyCadaversGainELCP(contender2.Empire, deadUnitsCount, cadaverRecyclerContenderAliveCount, empiresWhichAlreadyReceivedCadavers, encounter));
+				int num8 = Mathf.RoundToInt(contender2.Empire.GetPropertyValue(SimulationProperties.CadaverCountNeededToObtainBooster));
+				int cadaverBoostersGained = (num8 == 0) ? 0 : ((num6 + num7) / num8);
+				int num9 = Mathf.RoundToInt(contender2.Empire.GetPropertyValue(SimulationProperties.SiegeDamageStock));
+				int num10 = Mathf.RoundToInt(this.ApplySiegePointsGain(contender2.Empire, siegeDamage, empiresWhichAlreadyReceivedSiegePoints));
+				int num11 = Mathf.RoundToInt(contender2.Empire.GetPropertyValue(SimulationProperties.SiegeDamageNeededToObtainBooster));
+				int industryStockpilesGained = (num11 == 0) ? 0 : ((num9 + num10) / num11);
+				int undeadUnitsToCreateCount = contender2.UndeadUnitsToCreateCount;
+				int unitCountBeforeBattle = dictionary[contender2.Group].UnitCountBeforeBattle;
+				float num12 = (unitCountBeforeBattle != 0) ? (num2 / (float)unitCountBeforeBattle) : 0f;
+				foreach (Unit unit in contender2.Garrison.Units)
+				{
+					if (unit.GetPropertyValue(SimulationProperties.Health) > 0f)
+					{
+						unit.GainXp(num12, false, true);
+					}
+				}
+				contender2.Empire.Refresh(false);
+				contender2.Gains = new Contender.ContenderGains(num12, empirePoints, num5 + num4, (float)num7, undeadUnitsToCreateCount, cadaverBoostersGained, (float)num10, industryStockpilesGained);
 			}
 		}
 		encounter.EncounterState = EncounterState.BattleHasEnded;
-		for (int index3 = 0; index3 < encounter.Contenders.Count; index3++)
+		for (int m = 0; m < encounter.Contenders.Count; m++)
 		{
-			this.CleanAndHealContender(encounter, encounter.Contenders[index3]);
+			this.CleanAndHealContender(encounter, encounter.Contenders[m]);
 		}
 		if (!order.HasBeenCanceled)
 		{
-			for (int index4 = 0; index4 < encounter.Empires.Count; index4++)
+			for (int n = 0; n < encounter.Empires.Count; n++)
 			{
-				EncounterResult empireResult = encounter.GetEncounterResultForEmpire(encounter.Empires[index4]);
-				global::PlayerController serverPlayerController = encounter.Empires[index4].PlayerControllers.Server;
-				if (empireResult == EncounterResult.Defeat && serverPlayerController != null)
+				int encounterResultForEmpire = (int)encounter.GetEncounterResultForEmpire(encounter.Empires[n]);
+				global::PlayerController server = encounter.Empires[n].PlayerControllers.Server;
+				if (encounterResultForEmpire == 1 && server != null)
 				{
-					foreach (Contender contender3 in encounter.GetAlliedContendersFromEmpire(encounter.Empires[index4]))
+					foreach (Contender contender4 in encounter.GetAlliedContendersFromEmpire(encounter.Empires[n]))
 					{
-						if (contender3.Garrison is Camp && contender3.IsMainContender)
+						if (contender4.Garrison is Camp && contender4.IsMainContender)
 						{
-							OrderDestroyCamp destroyCampOrder = new OrderDestroyCamp(encounter.Empires[index4].Index, (contender3.Garrison as Camp).GUID);
-							serverPlayerController.PostOrder(destroyCampOrder);
-							index4 += encounter.Empires.Count;
+							OrderDestroyCamp order2 = new OrderDestroyCamp(encounter.Empires[n].Index, (contender4.Garrison as Camp).GUID);
+							server.PostOrder(order2);
+							n += encounter.Empires.Count;
 							break;
 						}
 					}
 				}
 			}
 		}
-		IGameEntityRepositoryService gameEntityRepositoryService = this.Game.GetService<IGameEntityRepositoryService>();
-		Diagnostics.Assert(gameEntityRepositoryService != null);
-		if (gameEntityRepositoryService != null)
+		IGameEntityRepositoryService service3 = base.Game.GetService<IGameEntityRepositoryService>();
+		Diagnostics.Assert(service3 != null);
+		if (service3 != null)
 		{
-			gameEntityRepositoryService.Unregister(encounter);
+			service3.Unregister(encounter);
 			yield break;
 		}
 		yield break;
@@ -1913,8 +1936,9 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 				contenderInformationsByGroup[contender.Group].UnitsKilledInAction.AddRange(collection);
 				contender.Garrison.UpdateLifeAfterEncounter(encounter);
 				GameClient.EndEncounterContenderInformations endEncounterContenderInformations = contenderInformationsByGroup[contender.Group];
-				endEncounterContenderInformations.UnitCountAfterBattle += contender.Garrison.Units.Count((Unit match) => match.GetPropertyValue(SimulationProperties.Health) > 0f);
-				num += contender.Garrison.Units.Count((Unit match) => match.GetPropertyValue(SimulationProperties.Health) <= 0f);
+				int num2 = contender.Garrison.Units.Count((Unit match) => match.GetPropertyValue(SimulationProperties.Health) > 0f);
+				endEncounterContenderInformations.UnitCountAfterBattle += num2;
+				num += contender.Garrison.Units.Count((Unit match) => match.GetPropertyValue(SimulationProperties.Health) <= 0f && !match.UnitDesign.Tags.Contains(DepartmentOfDefense.TagMilitia));
 			}
 		}
 		return num;
@@ -1923,13 +1947,17 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 	private void ApplyFortificationLoss(Encounter encounter, out float siegePoints)
 	{
 		siegePoints = 0f;
-		for (int i = 0; i < encounter.Contenders.Count; i++)
+		if (encounter.Retreat)
 		{
-			Contender contender = encounter.Contenders[i];
-			Diagnostics.Assert(contender != null && contender.Garrison != null && contender.Garrison.Empire != null);
-			if (contender != null && contender.Garrison != null && contender.Garrison.Empire != null)
+			return;
+		}
+		if (!ELCPUtilities.UseELCPFortificationPointRuleset)
+		{
+			for (int i = 0; i < encounter.Contenders.Count; i++)
 			{
-				if (contender.Garrison is EncounterCityGarrison && contender.Garrison.UnitsCount >= 1 && !contender.IsAttacking && contender.IsMainContender)
+				Contender contender = encounter.Contenders[i];
+				Diagnostics.Assert(contender != null && contender.Garrison != null && contender.Garrison.Empire != null);
+				if (contender != null && contender.Garrison != null && contender.Garrison.Empire != null && contender.Garrison is EncounterCityGarrison && contender.Garrison.UnitsCount >= 1 && !contender.IsAttacking && contender.IsMainContender)
 				{
 					float num = 0f;
 					if (contender.Garrison is EncounterCityGarrison)
@@ -1953,8 +1981,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 						float num4 = num / (float)contender.Garrison.UnitsCount;
 						if (propertyValue > 0f)
 						{
-							float num5 = propertyValue - num4;
-							if (num5 > 0f)
+							if (propertyValue - num4 > 0f)
 							{
 								siegePoints = Mathf.Round(num4 * 100f / num2);
 							}
@@ -1964,10 +1991,103 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 							}
 						}
 					}
-					float propertyBaseValue = (contender.Garrison as EncounterCityGarrison).City.GetPropertyBaseValue(SimulationProperties.CityDefensePoint);
-					float value = propertyBaseValue - num / (float)contender.Garrison.UnitsCount;
+					float value = (contender.Garrison as EncounterCityGarrison).City.GetPropertyBaseValue(SimulationProperties.CityDefensePoint) - num / (float)contender.Garrison.UnitsCount;
 					(contender.Garrison as EncounterCityGarrison).City.SetPropertyBaseValue(SimulationProperties.CityDefensePoint, value);
 				}
+			}
+			return;
+		}
+		List<Contender> list = encounter.Contenders.FindAll((Contender X) => X.IsMainContender);
+		bool flag = false;
+		City city2 = null;
+		if (list.Count == 2)
+		{
+			flag = true;
+		}
+		if (flag)
+		{
+			float propertyValue3 = city2.GetPropertyValue(SimulationProperties.CityDefensePoint);
+			float num5 = 1f;
+			if (DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve != null)
+			{
+				num5 = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(city2.Ownership[city2.Empire.Index]);
+			}
+			float num6 = propertyValue3 * num5;
+			int num7 = 0;
+			float num8 = 0f;
+			if (num6 > 0f)
+			{
+				float num9 = city2.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
+				if (num9 <= 0f)
+				{
+					num9 = propertyValue3;
+				}
+				for (int j = 0; j < encounter.Contenders.Count; j++)
+				{
+					Contender contender2 = encounter.Contenders[j];
+					Diagnostics.Assert(contender2 != null && contender2.Garrison != null && contender2.Garrison.Empire != null);
+					if (flag)
+					{
+						if (!contender2.IsTakingPartInBattle)
+						{
+							num8 += (float)contender2.EncounterUnits.Count * num6;
+							num7 += contender2.EncounterUnits.Count;
+						}
+						else
+						{
+							foreach (EncounterUnit encounterUnit2 in contender2.EncounterUnits)
+							{
+								if (encounterUnit2 != null && encounterUnit2.UnitDuplicatedSimulationObject != null)
+								{
+									if (encounterUnit2.IsOnBattlefield)
+									{
+										num8 += encounterUnit2.UnitDuplicatedSimulationObject.GetPropertyValue(SimulationProperties.Armor);
+									}
+									else
+									{
+										num8 += num6;
+									}
+									num7++;
+									if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+									{
+										Diagnostics.Log("ELCP ApplyFortificationLoss, total armorafter battle {0}, totalunits {1} {2} {3} {4} {5} {6} {7}", new object[]
+										{
+											num8,
+											num7,
+											encounterUnit2.LastActiveBattleActions.Count,
+											encounterUnit2.ActiveBattleActions.Count,
+											encounterUnit2.LineOfSightActive,
+											encounterUnit2.CanPlayBattleRound,
+											encounterUnit2.IsOnBattlefield,
+											encounterUnit2.Unit.GUID
+										});
+									}
+								}
+							}
+						}
+					}
+				}
+				if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+				{
+					Diagnostics.Log("ELCP ApplyFortificationLoss, total armor {0} with toal units {1}", new object[]
+					{
+						num8,
+						num7
+					});
+				}
+				float num10 = num6;
+				if (num7 > 0)
+				{
+					num10 = num8 / (float)num7;
+				}
+				float num11 = num6 - num10;
+				float num12 = 1f;
+				if (num11 > 0f)
+				{
+					siegePoints = Mathf.Round(num11 * 100f / num9);
+					num12 = 1f - num11 / num6;
+				}
+				city2.SetPropertyBaseValue(SimulationProperties.CityDefensePoint, propertyValue3 * num12);
 			}
 		}
 	}
@@ -2060,12 +2180,11 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			num = (float)deadUnitsCount / (float)cadaverRecyclerContenderAliveCount;
 			DepartmentOfScience agency2 = empire.GetAgency<DepartmentOfScience>();
 			Diagnostics.Assert(agency2 != null);
-			ISeasonService service = this.Game.Services.GetService<ISeasonService>();
+			ISeasonService service = base.Game.Services.GetService<ISeasonService>();
 			Diagnostics.Assert(service != null);
 			if (service.GetCurrentSeason().SeasonDefinition.Name.ToString().Contains(Season.ReadOnlyWinter))
 			{
-				DepartmentOfScience.ConstructibleElement.State technologyState = agency2.GetTechnologyState("TechnologyDefinitionNecrophages11");
-				if (technologyState == DepartmentOfScience.ConstructibleElement.State.Researched)
+				if (agency2.GetTechnologyState("TechnologyDefinitionNecrophages11") == DepartmentOfScience.ConstructibleElement.State.Researched)
 				{
 					num *= 2f;
 				}
@@ -2540,57 +2659,18 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 
 	private IEnumerator PacifyMinorFactionProcessor(OrderPacifyMinorFaction order)
 	{
-		global::Empire targetEmpire = this.Game.Empires[order.MinorEmpireIndex];
-		global::Empire empire = this.Game.Empires[order.EmpireIndex];
-		if (targetEmpire is MinorEmpire)
+		global::Empire empire = base.Game.Empires[order.MinorEmpireIndex];
+		global::Empire empire2 = base.Game.Empires[order.EmpireIndex];
+		if (empire is MinorEmpire)
 		{
-			BarbarianCouncil council = targetEmpire.GetAgency<BarbarianCouncil>();
-			council.PacifyRemainingVillages(new global::Empire[]
+			empire.GetAgency<BarbarianCouncil>().PacifyRemainingVillages(new global::Empire[]
 			{
-				empire
+				empire2
 			}, order.IgnoreIfConverted);
-			MinorEmpire minorEmpire = targetEmpire as MinorEmpire;
+			MinorEmpire minorEmpire = empire as MinorEmpire;
 			if (minorEmpire.Region.City != null)
 			{
 				minorEmpire.Region.City.Refresh(false);
-			}
-		}
-		yield break;
-	}
-
-	private IEnumerator PlaceTerraformDeviceProcessor(OrderPlaceTerraformDevice order)
-	{
-		if (order == null)
-		{
-			throw new ArgumentNullException("order");
-		}
-		if (this.Game.Services.GetService<IGameEntityRepositoryService>() == null)
-		{
-			Diagnostics.LogError("Cannot retreive the gameEntityRepositoryService.");
-			yield break;
-		}
-		IEventService eventService = Services.GetService<IEventService>();
-		Diagnostics.Assert(eventService != null);
-		global::Empire empire = null;
-		try
-		{
-			empire = this.Game.Empires[order.EmpireIndex];
-		}
-		catch
-		{
-			Diagnostics.LogError("Order processor failed because empire index is invalid.");
-			yield break;
-		}
-		IDatabase<TerraformDeviceDefinition> terraformDeviceDatabase = Databases.GetDatabase<TerraformDeviceDefinition>(false);
-		TerraformDeviceDefinition terraformDeviceDefinition;
-		if (terraformDeviceDatabase.TryGetValue(order.TerraformDeviceDefinitionName, out terraformDeviceDefinition))
-		{
-			ITerraformDeviceService terraformDeviceService = this.Game.Services.GetService<ITerraformDeviceService>();
-			if (terraformDeviceService.GetDeviceAtPosition(order.Position) == null)
-			{
-				TerraformDevice terraformDevice = terraformDeviceService.AddDevice(order.TerraformDeviceGameEntityGUID, terraformDeviceDefinition, order.Position, empire, false);
-				yield return new WaitForSeconds(2f);
-				eventService.Notify(new EventTerraformDeviceEntityCreated(terraformDevice));
 			}
 		}
 		yield break;
@@ -3144,28 +3224,28 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 
 	private IEnumerator RunTerraformationForDeviceProcessor(OrderRunTerraformationForDevice order)
 	{
-		ITerraformDeviceService terraformDeviceService = this.Game.Services.GetService<ITerraformDeviceService>();
-		Diagnostics.Assert(terraformDeviceService != null);
-		TerraformDeviceManager terraformDeviceManager = terraformDeviceService as TerraformDeviceManager;
+		ITerraformDeviceService service = base.Game.Services.GetService<ITerraformDeviceService>();
+		Diagnostics.Assert(service != null);
+		TerraformDeviceManager terraformDeviceManager = service as TerraformDeviceManager;
 		Diagnostics.Assert(terraformDeviceManager != null);
 		TerraformDevice terraformDevice = terraformDeviceManager[order.DeviceGUID] as TerraformDevice;
-		if (terraformDeviceService == null)
+		if (service == null)
 		{
 			Diagnostics.LogError("Terraform device is 'null'.");
 			yield break;
 		}
 		terraformDevice.OnActivation();
-		WorldPosition[] terraformedTiles = this.Game.World.PerformTerraformation(terraformDevice.GetTilesInRange(), false);
-		if (terraformedTiles.Length > 0)
+		WorldPosition[] array = base.Game.World.PerformTerraformation(terraformDevice.GetTilesInRange(), false);
+		if (array.Length != 0)
 		{
-			this.Game.World.UpdateTerraformStateMap(true);
-			global::Empire terraformingEmpire = terraformDevice.Empire;
-			float tilesTerraformedCount = terraformingEmpire.GetPropertyValue(SimulationProperties.TilesTerraformed);
-			terraformingEmpire.SetPropertyBaseValue(SimulationProperties.TilesTerraformed, tilesTerraformedCount + (float)terraformedTiles.Length);
-			terraformingEmpire.Refresh(false);
-			IEventService eventService = Services.GetService<IEventService>();
-			eventService.Notify(new EventEmpireWorldTerraformed(terraformDevice.Empire, terraformedTiles));
-			eventService.Notify(new EventTerraformationDeviceActivated(terraformingEmpire, terraformDevice.WorldPosition));
+			base.Game.World.UpdateTerraformStateMap(true);
+			global::Empire empire = terraformDevice.Empire;
+			float propertyValue = empire.GetPropertyValue(SimulationProperties.TilesTerraformed);
+			empire.SetPropertyBaseValue(SimulationProperties.TilesTerraformed, propertyValue + (float)array.Length);
+			empire.Refresh(false);
+			IEventService service2 = Services.GetService<IEventService>();
+			service2.Notify(new EventEmpireWorldTerraformed(terraformDevice.Empire, array));
+			service2.Notify(new EventTerraformationDeviceActivated(empire, terraformDevice.WorldPosition));
 		}
 		terraformDeviceManager.DestroyDevice(terraformDevice);
 		yield break;
@@ -3280,11 +3360,11 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 
 	private IEnumerator SetWindPreferencesProcessor(OrderSetWindPreferences order)
 	{
-		IWeatherService weatherService = this.Game.GetService<IWeatherService>();
-		if (weatherService != null)
+		IWeatherService service = base.Game.GetService<IWeatherService>();
+		if (service != null)
 		{
-			weatherService.ControlledWind = new Wind(0, order.WindStrength);
-			weatherService.OnWindChange();
+			service.ControlledWind = new Wind(0, order.WindStrength);
+			service.OnWindChange();
 		}
 		yield break;
 	}
@@ -3742,6 +3822,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 		{
 			this.SteamIDServer = base.Session.SteamIDServer;
 		}
+		Diagnostics.Log(string.Format("ELCP GameClient sending connection message {0}", this.GameClientConnectionState));
 		switch (this.GameClientConnectionState)
 		{
 		case GameClientConnectionState.ConnectedToServer:
@@ -3759,7 +3840,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 		{
 			if (base.Session.IsHosting)
 			{
-				this.SteamIDServer = this.SteamIDUser;
+				this.SteamIDServer = base.SteamIDUser;
 				GameServer gameServer = base.Session.GameServer as GameServer;
 				if (gameServer == null)
 				{
@@ -3772,7 +3853,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 					this.GameClientConnectionState = GameClientConnectionState.ConnectingToServerRetry;
 					return;
 				}
-				base.MessageBox.Connect(this.SteamIDUser, gameServer.MessageBox.MessagePipe);
+				base.MessageBox.Connect(base.SteamIDUser, gameServer.MessageBox.MessagePipe);
 			}
 			Message message2 = new GameClientInitiateConnectionMessage();
 			this.SendMessageToServer(ref message2);
@@ -3832,7 +3913,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 
 	protected override void ProcessMessage(ref IMessage message, ref Steamworks.SteamID steamIDRemote)
 	{
-		if (steamIDRemote != this.SteamIDServer && steamIDRemote != this.SteamIDUser)
+		if (steamIDRemote != this.SteamIDServer && steamIDRemote != base.SteamIDUser)
 		{
 			Diagnostics.LogWarning("Skipping processing of message from unknown origin (message id: {0}, remote steam id:{1}).", new object[]
 			{
@@ -3858,10 +3939,9 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			{
 				message.GetType()
 			});
-			GameServerPostOrderMessage gameServerPostOrderMessage = message as GameServerPostOrderMessage;
-			Amplitude.Unity.Game.Orders.Order order = gameServerPostOrderMessage.Order;
+			Amplitude.Unity.Game.Orders.Order order = (message as GameServerPostOrderMessage).Order;
 			this.orderQueue.Enqueue(order);
-			break;
+			return;
 		}
 		case 1102:
 		{
@@ -3876,7 +3956,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			Diagnostics.Assert(message is GameServerPostOrderResponseMessage, "Invalid message type");
 			GameServerPostOrderResponseMessage gameServerPostOrderResponseMessage = message as GameServerPostOrderResponseMessage;
 			base.OnTicketRaised(gameServerPostOrderResponseMessage.Order.TicketNumber, gameServerPostOrderResponseMessage.Response, gameServerPostOrderResponseMessage.Order);
-			break;
+			return;
 		}
 		case 1103:
 		{
@@ -3886,8 +3966,9 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 				Type type = Type.GetType(gameServerPostStateChangeMessage.AssemblyQualifiedName);
 				if (type.Name != base.FiniteStateMachine.CurrentState.GetType().Name)
 				{
-					this.PostStateChange(type, new object[0]);
+					base.PostStateChange(type, new object[0]);
 				}
+				return;
 			}
 			catch
 			{
@@ -3896,219 +3977,197 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			break;
 		}
 		case 1104:
-		{
-			GameServerPlayerUpdateMessage gameServerPlayerUpdateMessage = message as GameServerPlayerUpdateMessage;
-			if (gameServerPlayerUpdateMessage != null)
-			{
-				int num = -1;
-				if (this.Game != null && this.Game.HasBeenInitialized)
-				{
-					this.ProcessPlayerUpdateMessage(gameServerPlayerUpdateMessage);
-					IPlayerRepositoryService service = this.Game.GetService<IPlayerRepositoryService>();
-					Diagnostics.Assert(service != null);
-					Player playerBySteamID = service.GetPlayerBySteamID(gameServerPlayerUpdateMessage.SteamIDUser);
-					num = ((playerBySteamID == null) ? -1 : playerBySteamID.Empire.Index);
-				}
-				if (num == -1)
-				{
-					int num2 = 0;
-					for (;;)
-					{
-						string x = string.Format("Empire{0}", num2);
-						string lobbyData = base.Session.GetLobbyData<string>(x, null);
-						if (string.IsNullOrEmpty(lobbyData))
-						{
-							break;
-						}
-						if (lobbyData.Contains(gameServerPlayerUpdateMessage.SteamIDUser.ToString()))
-						{
-							goto Block_25;
-						}
-						num2++;
-					}
-					goto IL_41C;
-					Block_25:
-					num = num2;
-				}
-				IL_41C:
-				Diagnostics.MultiplayerProgress.SetProgress(gameServerPlayerUpdateMessage.SteamIDUser, num, gameServerPlayerUpdateMessage.AssemblyQualifiedName.TypeNameFromAssemblyQualifiedName());
-			}
 			break;
-		}
 		case 1105:
 		{
 			GameServerEndTurnTimerMessage gameServerEndTurnTimerMessage = message as GameServerEndTurnTimerMessage;
 			if (gameServerEndTurnTimerMessage != null)
 			{
-				IEndTurnService service2 = Services.GetService<IEndTurnService>();
-				Diagnostics.Assert(service2 != null);
-				service2.ChangeEndTurnTime(gameServerEndTurnTimerMessage.EndTurnTime, gameServerEndTurnTimerMessage.Duration);
+				IEndTurnService service = Services.GetService<IEndTurnService>();
+				Diagnostics.Assert(service != null);
+				service.ChangeEndTurnTime(gameServerEndTurnTimerMessage.EndTurnTime, gameServerEndTurnTimerMessage.Duration);
+				return;
 			}
-			break;
+			return;
 		}
 		default:
 			if (id != 1001)
 			{
-				if (id != 1002)
+				if (id == 1002)
 				{
-					if (id != 1990)
+					return;
+				}
+				if (id != 1990)
+				{
+					if (id != 1991)
 					{
-						if (id != 1991)
+						if (id != 1010)
 						{
-							if (id != 1010)
+							if (id != 1201)
 							{
-								if (id != 1201)
+								if (id != 1301)
 								{
-									if (id != 1301)
+									if (id != 1901)
 									{
-										if (id == 1901)
-										{
-											GameServerDownloadDumpRequestMessage gameServerDownloadDumpRequestMessage = message as GameServerDownloadDumpRequestMessage;
-											if (gameServerDownloadDumpRequestMessage != null)
-											{
-												this.SendDumpFileToServer(gameServerDownloadDumpRequestMessage.Turn, gameServerDownloadDumpRequestMessage.Tag);
-											}
-										}
+										return;
 									}
-									else
+									GameServerDownloadDumpRequestMessage gameServerDownloadDumpRequestMessage = message as GameServerDownloadDumpRequestMessage;
+									if (gameServerDownloadDumpRequestMessage != null)
 									{
-										if (base.Session.IsHosting)
-										{
-											return;
-										}
-										IGameSerializationService service3 = Services.GetService<IGameSerializationService>();
-										if (service3 != null)
-										{
-											Diagnostics.Log("Download game message has been acknowledged by server.");
-											GameServerDownloadGameResponseMessage gameServerDownloadGameResponseMessage = message as GameServerDownloadGameResponseMessage;
-											if (gameServerDownloadGameResponseMessage != null && gameServerDownloadGameResponseMessage.Binary != null)
-											{
-												Diagnostics.Log("Download game message has been responded to by server.");
-												string text = string.Empty;
-												string str = ".sav";
-												string text2 = string.Empty;
-												ILocalizationService service4 = Services.GetService<ILocalizationService>();
-												switch (gameServerDownloadGameResponseMessage.RequestedSaveType)
-												{
-												case SaveType.InitialGameState:
-													text = Amplitude.Unity.Framework.Application.TempDirectory;
-													text2 = "%DownloadSaveFileName";
-													break;
-												case SaveType.LastAutoSave:
-												{
-													text = global::Application.GameSaveDirectory;
-													text2 = "AutoSave";
-													int num3 = service3.ProcessIncremental(text, text2);
-													text2 = string.Format("{0} {1}", text2, num3);
-													break;
-												}
-												case SaveType.OnUserRequest:
-													text = global::Application.GameSaveDirectory;
-													text2 = gameServerDownloadGameResponseMessage.Title;
-													break;
-												case SaveType.Victory:
-													text = global::Application.GameSaveDirectory;
-													text2 = gameServerDownloadGameResponseMessage.Title;
-													if (service4 != null && text2.StartsWith("%"))
-													{
-														text2 = service4.Localize(text2, "Game ended at turn $Turn");
-													}
-													text2 = text2.Replace("$Turn", this.Game.Turn.ToString());
-													break;
-												default:
-													throw new ArgumentOutOfRangeException();
-												}
-												if (service4 != null && text2.StartsWith("%"))
-												{
-													text2 = service4.Localize(text2, "QuickSave");
-												}
-												string text3 = System.IO.Path.Combine(text, text2) + str;
-												File.WriteAllBytes(text3, gameServerDownloadGameResponseMessage.Binary);
-												Diagnostics.Log("Game saved @ '{0}'", new object[]
-												{
-													text3
-												});
-												GameSaveDescriptor gameSaveDescriptor;
-												service3.TryExtractGameSaveDescriptorFromFile(text3, out gameSaveDescriptor, true);
-											}
-										}
+										this.SendDumpFileToServer(gameServerDownloadDumpRequestMessage.Turn, gameServerDownloadDumpRequestMessage.Tag);
+										return;
 									}
+									return;
 								}
 								else
 								{
-									if (this.PendingConnection)
+									if (base.Session.IsHosting)
 									{
-										Diagnostics.Log("[Net][Gameclient] PendingConnection. Dropping message {0}", new object[]
-										{
-											(GameServerMessageID)message.ID
-										});
 										return;
 									}
-									GameServerChatMessage gameServerChatMessage = message as GameServerChatMessage;
-									if (gameServerChatMessage != null && this.OnChatMessageReceived != null)
+									IGameSerializationService service2 = Services.GetService<IGameSerializationService>();
+									if (service2 == null)
 									{
-										this.OnChatMessageReceived(this, gameServerChatMessage.Message);
+										return;
 									}
+									Diagnostics.Log("Download game message has been acknowledged by server.");
+									GameServerDownloadGameResponseMessage gameServerDownloadGameResponseMessage = message as GameServerDownloadGameResponseMessage;
+									if (gameServerDownloadGameResponseMessage != null && gameServerDownloadGameResponseMessage.Binary != null)
+									{
+										Diagnostics.Log("Download game message has been responded to by server.");
+										string text = string.Empty;
+										string str = ".sav";
+										string text2 = string.Empty;
+										ILocalizationService service3 = Services.GetService<ILocalizationService>();
+										switch (gameServerDownloadGameResponseMessage.RequestedSaveType)
+										{
+										case SaveType.InitialGameState:
+											text = Amplitude.Unity.Framework.Application.TempDirectory;
+											text2 = "%DownloadSaveFileName";
+											break;
+										case SaveType.LastAutoSave:
+										{
+											text = global::Application.GameSaveDirectory;
+											text2 = "AutoSave";
+											int num = service2.ProcessIncremental(text, text2);
+											text2 = string.Format("{0} {1}", text2, num);
+											break;
+										}
+										case SaveType.OnUserRequest:
+											text = global::Application.GameSaveDirectory;
+											text2 = gameServerDownloadGameResponseMessage.Title;
+											break;
+										case SaveType.Victory:
+											text = global::Application.GameSaveDirectory;
+											text2 = gameServerDownloadGameResponseMessage.Title;
+											if (service3 != null && text2.StartsWith("%"))
+											{
+												text2 = service3.Localize(text2, "Game ended at turn $Turn");
+											}
+											text2 = text2.Replace("$Turn", base.Game.Turn.ToString());
+											break;
+										default:
+											throw new ArgumentOutOfRangeException();
+										}
+										if (service3 != null && text2.StartsWith("%"))
+										{
+											text2 = service3.Localize(text2, "QuickSave");
+										}
+										string text3 = System.IO.Path.Combine(text, text2) + str;
+										File.WriteAllBytes(text3, gameServerDownloadGameResponseMessage.Binary);
+										Diagnostics.Log("Game saved @ '{0}'", new object[]
+										{
+											text3
+										});
+										GameSaveDescriptor gameSaveDescriptor;
+										service2.TryExtractGameSaveDescriptorFromFile(text3, out gameSaveDescriptor, true);
+										return;
+									}
+									return;
 								}
 							}
 							else
 							{
-								GameServerAuthTicketResponseMessage gameServerAuthTicketResponseMessage = message as GameServerAuthTicketResponseMessage;
-								Diagnostics.Assert(gameServerAuthTicketResponseMessage != null, "Invalid message type. Expected GameServerAuthTicketResponseMessage.");
-								switch (gameServerAuthTicketResponseMessage.Response)
+								if (this.PendingConnection)
 								{
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseOK:
-									Diagnostics.Log("[Net] [GameClient,Auth] Received an auth ticket response from server, we're good to go.");
-									this.GameClientConnectionState = GameClientConnectionState.AuthenticatedToServer;
-									break;
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseUserNotConnectedToSteam:
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseNoLicenseOrExpired:
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseVACBanned:
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseLoggedInElseWhere:
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseVACCheckTimedOut:
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseAuthTicketCanceled:
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseAuthTicketInvalidAlreadyUsed:
-								case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseAuthTicketInvalid:
-									Diagnostics.LogWarning("[Net] [GameClient,Auth] Received an auth ticket response from server, it's failed (error: 0x{0:x4}).", new object[]
+									Diagnostics.Log("[Net][Gameclient] PendingConnection. Dropping message {0}", new object[]
 									{
-										(int)gameServerAuthTicketResponseMessage.Response
+										(GameServerMessageID)message.ID
 									});
-									this.Disconnect(GameDisconnectionReason.AuthFailure, 0);
-									break;
-								default:
-									throw new ArgumentOutOfRangeException();
+									return;
 								}
+								GameServerChatMessage gameServerChatMessage = message as GameServerChatMessage;
+								if (gameServerChatMessage != null && this.OnChatMessageReceived != null)
+								{
+									this.OnChatMessageReceived(this, gameServerChatMessage.Message);
+									return;
+								}
+								return;
 							}
 						}
 						else
 						{
-							GameServerClearOrderHistoryMessage gameServerClearOrderHistoryMessage = message as GameServerClearOrderHistoryMessage;
-							if (gameServerClearOrderHistoryMessage != null)
+							GameServerAuthTicketResponseMessage gameServerAuthTicketResponseMessage = message as GameServerAuthTicketResponseMessage;
+							Diagnostics.Assert(gameServerAuthTicketResponseMessage != null, "Invalid message type. Expected GameServerAuthTicketResponseMessage.");
+							switch (gameServerAuthTicketResponseMessage.Response)
 							{
-								this.ClearOrderHistory();
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseOK:
+								Diagnostics.Log("[Net] [GameClient,Auth] Received an auth ticket response from server, we're good to go.");
+								this.GameClientConnectionState = GameClientConnectionState.AuthenticatedToServer;
+								return;
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseUserNotConnectedToSteam:
+								Diagnostics.LogWarning("[Net] [GameClient,Auth] Received an auth ticket response from server, UserNotConnectedToSteam.");
+								this.GameClientConnectionState = GameClientConnectionState.AuthenticatedToServer;
+								return;
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseNoLicenseOrExpired:
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseVACBanned:
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseLoggedInElseWhere:
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseVACCheckTimedOut:
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseAuthTicketCanceled:
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseAuthTicketInvalidAlreadyUsed:
+							case Steamworks.EAuthSessionResponse.k_EAuthSessionResponseAuthTicketInvalid:
+								Diagnostics.LogWarning("[Net] [GameClient,Auth] Received an auth ticket response from server, it's failed (error: 0x{0:x4}).", new object[]
+								{
+									(int)gameServerAuthTicketResponseMessage.Response
+								});
+								this.Disconnect(GameDisconnectionReason.AuthFailure, 0);
+								return;
+							default:
+								throw new ArgumentOutOfRangeException();
 							}
 						}
 					}
 					else
 					{
-						GameServerPingMessage gameServerPingMessage = message as GameServerPingMessage;
-						if (gameServerPingMessage != null)
+						if (message is GameServerClearOrderHistoryMessage)
 						{
-							IPingServiceManager service5 = this.Game.GetService<IPingServiceManager>();
-							Diagnostics.Assert(service5 != null);
-							service5.ProcessPingResponse(gameServerPingMessage);
-							IPlayerRepositoryService service6 = this.Game.GetService<IPlayerRepositoryService>();
-							Diagnostics.Assert(service6 != null);
-							for (int i = 0; i < gameServerPingMessage.PlayersSteamIDs.Count; i++)
+							this.ClearOrderHistory();
+							return;
+						}
+						return;
+					}
+				}
+				else
+				{
+					GameServerPingMessage gameServerPingMessage = message as GameServerPingMessage;
+					if (gameServerPingMessage != null)
+					{
+						IPingServiceManager service4 = base.Game.GetService<IPingServiceManager>();
+						Diagnostics.Assert(service4 != null);
+						service4.ProcessPingResponse(gameServerPingMessage);
+						IPlayerRepositoryService service5 = base.Game.GetService<IPlayerRepositoryService>();
+						Diagnostics.Assert(service5 != null);
+						for (int i = 0; i < gameServerPingMessage.PlayersSteamIDs.Count; i++)
+						{
+							Player playerBySteamID = service5.GetPlayerBySteamID(gameServerPingMessage.PlayersSteamIDs[i]);
+							if (playerBySteamID != null)
 							{
-								Player playerBySteamID2 = service6.GetPlayerBySteamID(gameServerPingMessage.PlayersSteamIDs[i]);
-								if (playerBySteamID2 != null)
-								{
-									playerBySteamID2.Latency = gameServerPingMessage.PlayersLatencies[i];
-								}
+								playerBySteamID.Latency = gameServerPingMessage.PlayersLatencies[i];
 							}
 						}
+						return;
 					}
+					return;
 				}
 			}
 			else
@@ -4116,16 +4175,54 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 				Diagnostics.Log("[Net] [GameClient] Got initiate connection response from server.");
 				this.GameClientConnectionState = GameClientConnectionState.ConnectedToServer;
 				GameServerInitiateConnectionResponseMessage gameServerInitiateConnectionResponseMessage = message as GameServerInitiateConnectionResponseMessage;
-				if (gameServerInitiateConnectionResponseMessage != null)
+				if (gameServerInitiateConnectionResponseMessage == null)
 				{
-					this.PendingConnection = gameServerInitiateConnectionResponseMessage.PendingConnection;
-					if (this.PendingConnection)
-					{
-						Diagnostics.Log("[Net][Gameclient] Flagged as Pendingconnection.");
-					}
+					return;
 				}
+				this.PendingConnection = gameServerInitiateConnectionResponseMessage.PendingConnection;
+				if (this.PendingConnection)
+				{
+					Diagnostics.Log("[Net][Gameclient] Flagged as Pendingconnection.");
+					return;
+				}
+				return;
 			}
 			break;
+		}
+		GameServerPlayerUpdateMessage gameServerPlayerUpdateMessage = message as GameServerPlayerUpdateMessage;
+		if (gameServerPlayerUpdateMessage != null)
+		{
+			int num2 = -1;
+			if (base.Game != null && base.Game.HasBeenInitialized)
+			{
+				this.ProcessPlayerUpdateMessage(gameServerPlayerUpdateMessage);
+				IPlayerRepositoryService service6 = base.Game.GetService<IPlayerRepositoryService>();
+				Diagnostics.Assert(service6 != null);
+				Player playerBySteamID2 = service6.GetPlayerBySteamID(gameServerPlayerUpdateMessage.SteamIDUser);
+				num2 = ((playerBySteamID2 == null) ? -1 : playerBySteamID2.Empire.Index);
+			}
+			if (num2 == -1)
+			{
+				int num3 = 0;
+				for (;;)
+				{
+					string x = string.Format("Empire{0}", num3);
+					string lobbyData = base.Session.GetLobbyData<string>(x, null);
+					if (string.IsNullOrEmpty(lobbyData))
+					{
+						goto IL_252;
+					}
+					if (lobbyData.Contains(gameServerPlayerUpdateMessage.SteamIDUser.ToString()))
+					{
+						break;
+					}
+					num3++;
+				}
+				num2 = num3;
+			}
+			IL_252:
+			Diagnostics.MultiplayerProgress.SetProgress(gameServerPlayerUpdateMessage.SteamIDUser, num2, gameServerPlayerUpdateMessage.AssemblyQualifiedName.TypeNameFromAssemblyQualifiedName());
+			return;
 		}
 	}
 
@@ -4300,13 +4397,13 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 
 	private void ProcessPlayerUpdateMessage(GameServerPlayerUpdateMessage message)
 	{
-		IPlayerRepositoryService service = this.Game.GetService<IPlayerRepositoryService>();
+		IPlayerRepositoryService service = base.Game.GetService<IPlayerRepositoryService>();
 		Diagnostics.Assert(service != null);
 		switch (message.Action)
 		{
 		case GameServerPlayerUpdateMessage.PlayerAction.None:
 			Diagnostics.LogError("[GameClient] ProcessPlayerUpdateMessage: PlayerAction is unset.");
-			break;
+			return;
 		case GameServerPlayerUpdateMessage.PlayerAction.StateUpdate:
 		{
 			Player playerBySteamID = service.GetPlayerBySteamID(message.SteamIDUser);
@@ -4321,12 +4418,13 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 					playerBySteamID.LocalizedName = message.Name;
 				}
 				service.NotifyChange(PlayerRepositoryChangeAction.Change, playerBySteamID);
+				return;
 			}
 			break;
 		}
 		case GameServerPlayerUpdateMessage.PlayerAction.Joined:
 		{
-			if (message.SteamIDUser == this.SteamIDUser)
+			if (message.SteamIDUser == base.SteamIDUser)
 			{
 				return;
 			}
@@ -4335,7 +4433,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 				Diagnostics.LogError("[Net] Player is already registered in this game.");
 				return;
 			}
-			MajorEmpire majorEmpire = this.Game.Empires[message.EmpireIndex] as MajorEmpire;
+			MajorEmpire majorEmpire = base.Game.Empires[message.EmpireIndex] as MajorEmpire;
 			string localizedName = "%DefaultPlayerName";
 			if (!string.IsNullOrEmpty(message.Name))
 			{
@@ -4357,7 +4455,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 				SteamID = message.SteamIDUser
 			};
 			majorEmpire.BindPlayer(player);
-			break;
+			return;
 		}
 		case GameServerPlayerUpdateMessage.PlayerAction.Left:
 		{
@@ -4368,6 +4466,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 				if (majorEmpire2 != null)
 				{
 					majorEmpire2.UnbindPlayer(playerBySteamID2);
+					this.ELCPOnPlayerLeft(message.SteamIDUser);
 				}
 				if (majorEmpire2.Players.Count == 0)
 				{
@@ -4378,6 +4477,7 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 						Location = ((base.Session.GameServer == null) ? PlayerLocation.Remote : PlayerLocation.Local),
 						LocalizedName = MajorEmpire.GenerateBasicAIName(majorEmpire2.Index)
 					});
+					return;
 				}
 			}
 			break;
@@ -4465,6 +4565,510 @@ public class GameClient : GameInterface, IDisposable, IDumpable, IGameInterface,
 			return playerControllerById.Empire as global::Empire;
 		}
 		return null;
+	}
+
+	private void ApplyFortificationLoss(Encounter encounter, out float siegePoints, OrderEndEncounter orderEndEncounter)
+	{
+		siegePoints = 0f;
+		if (encounter.Retreat)
+		{
+			return;
+		}
+		if (!ELCPUtilities.UseELCPFortificationPointRuleset)
+		{
+			for (int i = 0; i < encounter.Contenders.Count; i++)
+			{
+				Contender contender = encounter.Contenders[i];
+				Diagnostics.Assert(contender != null && contender.Garrison != null && contender.Garrison.Empire != null);
+				if (contender != null && contender.Garrison != null && contender.Garrison.Empire != null && contender.Garrison is EncounterCityGarrison && contender.Garrison.UnitsCount >= 1 && !contender.IsAttacking && contender.IsMainContender)
+				{
+					float num = 0f;
+					if (contender.Garrison is EncounterCityGarrison)
+					{
+						City city = (contender.Garrison as EncounterCityGarrison).City;
+						float propertyValue = city.GetPropertyValue(SimulationProperties.CityDefensePoint);
+						float num2 = city.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
+						float num3 = propertyValue * DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(city.Ownership[city.Empire.Index]);
+						if (num2 <= 0f)
+						{
+							num2 = propertyValue;
+						}
+						foreach (EncounterUnit encounterUnit in contender.EncounterUnits)
+						{
+							if (encounterUnit != null && encounterUnit.UnitDuplicatedSimulationObject != null)
+							{
+								float propertyValue2 = encounterUnit.UnitDuplicatedSimulationObject.GetPropertyValue(SimulationProperties.Armor);
+								num += num3 - propertyValue2;
+							}
+						}
+						float num4 = num / (float)contender.Garrison.UnitsCount;
+						if (propertyValue > 0f)
+						{
+							if (propertyValue - num4 > 0f)
+							{
+								siegePoints = Mathf.Round(num4 * 100f / num2);
+							}
+							else
+							{
+								siegePoints = Mathf.Round(propertyValue * 100f / num2);
+							}
+						}
+					}
+					float value = (contender.Garrison as EncounterCityGarrison).City.GetPropertyBaseValue(SimulationProperties.CityDefensePoint) - num / (float)contender.Garrison.UnitsCount;
+					(contender.Garrison as EncounterCityGarrison).City.SetPropertyBaseValue(SimulationProperties.CityDefensePoint, value);
+				}
+			}
+			return;
+		}
+		List<Contender> list = encounter.Contenders.FindAll((Contender X) => X.IsMainContender);
+		bool flag = false;
+		List<City> list2 = null;
+		IWorldPositionningService service = base.Game.Services.GetService<IWorldPositionningService>();
+		if (list.Count == 2)
+		{
+			flag = ELCPUtilities.IsELCPCityBattle(service, new List<IGarrison>
+			{
+				list[0].Garrison,
+				list[1].Garrison
+			}, out list2);
+		}
+		if (flag)
+		{
+			float propertyValue3 = list2[0].GetPropertyValue(SimulationProperties.CityDefensePoint);
+			float num5 = (list2.Count > 1) ? list2[1].GetPropertyValue(SimulationProperties.CityDefensePoint) : 0f;
+			float num6 = 1f;
+			float num7 = 1f;
+			if (DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve != null)
+			{
+				num6 = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(list2[0].Ownership[list2[0].Empire.Index]);
+				if (list2.Count > 1)
+				{
+					num7 = DepartmentOfTheInterior.FortificationRecoverByOwnershipCurve.Evaluate(list2[1].Ownership[list2[1].Empire.Index]);
+				}
+			}
+			float num8 = propertyValue3 * num6;
+			float num9 = num5 * num7;
+			int num10 = 0;
+			int num11 = 0;
+			float num12 = 0f;
+			float num13 = 0f;
+			if (num8 > 0f || num9 > 0f)
+			{
+				float num14 = list2[0].GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
+				if (num14 <= 0f)
+				{
+					num14 = propertyValue3;
+				}
+				float num15 = 0f;
+				if (list2.Count > 1)
+				{
+					num15 = list2[1].GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
+					if (num15 <= 0f)
+					{
+						num15 = num5;
+					}
+				}
+				for (int j = 0; j < encounter.Contenders.Count; j++)
+				{
+					Contender contender2 = encounter.Contenders[j];
+					Diagnostics.Assert(contender2 != null && contender2.Garrison != null && contender2.Garrison.Empire != null);
+					bool flag2 = false;
+					bool flag3 = false;
+					int k = 0;
+					while (k < list2.Count)
+					{
+						if (ELCPUtilities.GetsFortificationBonus(service, contender2.Garrison, list2[k]))
+						{
+							flag2 = true;
+							if (k == 1)
+							{
+								flag3 = true;
+								break;
+							}
+							break;
+						}
+						else
+						{
+							k++;
+						}
+					}
+					if (flag2)
+					{
+						if (!contender2.IsTakingPartInBattle)
+						{
+							if (!flag3)
+							{
+								num12 += (float)contender2.EncounterUnits.Count * num8;
+								num10 += contender2.EncounterUnits.Count;
+							}
+							else
+							{
+								num13 += (float)contender2.EncounterUnits.Count * num9;
+								num11 += contender2.EncounterUnits.Count;
+							}
+						}
+						else
+						{
+							foreach (EncounterUnit encounterUnit2 in contender2.EncounterUnits)
+							{
+								if (encounterUnit2 != null && encounterUnit2.UnitDuplicatedSimulationObject != null)
+								{
+									if (encounterUnit2.IsOnBattlefield || orderEndEncounter.GUIDsOnBattlefield.Contains(encounterUnit2.Unit.GUID))
+									{
+										encounterUnit2.IsOnBattlefield = true;
+										if (!flag3)
+										{
+											num12 += encounterUnit2.UnitDuplicatedSimulationObject.GetPropertyValue(SimulationProperties.Armor);
+										}
+										else
+										{
+											num13 += encounterUnit2.UnitDuplicatedSimulationObject.GetPropertyValue(SimulationProperties.Armor);
+										}
+									}
+									else if (!flag3)
+									{
+										num12 += num8;
+									}
+									else
+									{
+										num13 += num9;
+									}
+									if (!flag3)
+									{
+										num10++;
+									}
+									else
+									{
+										num11++;
+									}
+									if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+									{
+										Diagnostics.Log("ELCP ApplyFortificationLoss, unit {0}/{1} affects city {2} total armorafter battle {3}, totalunits {4}", new object[]
+										{
+											encounterUnit2.Unit.GUID,
+											encounterUnit2.Unit.Garrison.LocalizedName,
+											flag3 ? list2[1].LocalizedName : list2[0].LocalizedName,
+											flag3 ? num13 : num12,
+											flag3 ? num11 : num10
+										});
+									}
+								}
+							}
+						}
+					}
+				}
+				float num16 = num8;
+				float num17 = num9;
+				if (num10 > 0)
+				{
+					num16 = num12 / (float)num10;
+				}
+				if (num11 > 0)
+				{
+					num17 = num13 / (float)num11;
+				}
+				float num18 = num8 - num16;
+				float num19 = num9 - num17;
+				float num20 = 1f;
+				float num21 = 1f;
+				if (num18 > 0f)
+				{
+					siegePoints = Mathf.Round(num18 * 100f / num14);
+					num20 = 1f - num18 / num8;
+				}
+				if (list2.Count > 1 && num19 > 0f)
+				{
+					siegePoints += Mathf.Round(num19 * 100f / num15);
+					num21 = 1f - num19 / num9;
+				}
+				list2[0].SetPropertyBaseValue(SimulationProperties.CityDefensePoint, propertyValue3 * num20);
+				if (list2.Count > 1)
+				{
+					list2[1].SetPropertyBaseValue(SimulationProperties.CityDefensePoint, num5 * num21);
+				}
+				if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+				{
+					Diagnostics.Log("ELCP ApplyFortificationLoss, city {0} total armor {1} with total units {2}, mean armor {3}, Differenz {4}, Endmulti {5}", new object[]
+					{
+						list2[0],
+						num12,
+						num10,
+						num16,
+						num18,
+						num20
+					});
+					if (list2.Count > 1)
+					{
+						Diagnostics.Log("ELCP ApplyFortificationLoss, city {0} total armor {1} with total units {2}, mean armor {3}, Differenz {4}, Endmulti {5}", new object[]
+						{
+							list2[1],
+							num13,
+							num11,
+							num17,
+							num19,
+							num21
+						});
+					}
+				}
+			}
+		}
+	}
+
+	private void ELCPOnPlayerLeft(Steamworks.SteamID steamID)
+	{
+		Faction faction = Databases.GetDatabase<Faction>(false).FirstOrDefault((Faction iterator) => iterator.IsStandard && !iterator.IsHidden);
+		string friendPersonaName = Steamworks.SteamAPI.SteamFriends.GetFriendPersonaName(steamID);
+		Diagnostics.Log("[Lobby] ELCP: Player '{0}' has left the lobby.", new object[]
+		{
+			friendPersonaName
+		});
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		if (base.Session.IsHosting)
+		{
+			bool flag = false;
+			int num = 0;
+			string text;
+			string text2;
+			for (;;)
+			{
+				text = string.Format("Empire{0}", num);
+				text2 = base.Session.GetLobbyData<string>(text, null);
+				if (string.IsNullOrEmpty(text2))
+				{
+					goto IL_216;
+				}
+				if (text2.Contains(steamID.ToString()))
+				{
+					break;
+				}
+				num++;
+			}
+			List<string> list = new List<string>(text2.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries));
+			list.Remove(steamID.ToString());
+			if (list.Count == 0)
+			{
+				text2 = "AI0";
+				string x = string.Format("Faction{0}", num);
+				string text3 = base.Session.GetLobbyData<string>(x, null);
+				Faction faction2 = Faction.Decode(text3);
+				if (service != null)
+				{
+					Faction faction3 = null;
+					string empty = string.Empty;
+					bool flag2;
+					if (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.Faction, faction2.Name, out flag2, out empty) || !flag2)
+					{
+						if (!string.IsNullOrEmpty(empty))
+						{
+							if (!Databases.GetDatabase<Faction>(true).TryGetValue(empty, out faction3))
+							{
+								faction3 = faction;
+							}
+						}
+						else
+						{
+							faction3 = faction;
+						}
+					}
+					else if (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.FactionAffinity, faction2.Affinity, out flag2) || !flag2)
+					{
+						faction3 = faction;
+					}
+					else
+					{
+						foreach (FactionTrait factionTrait in Faction.EnumerableTraits(faction2))
+						{
+							if (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.FactionTrait, factionTrait.Name, out flag2) || !flag2)
+							{
+								faction3 = faction;
+								break;
+							}
+						}
+					}
+					if (faction3 != null)
+					{
+						text3 = Faction.Encode(faction3);
+						base.Session.SetLobbyData(x, text3, true);
+					}
+				}
+			}
+			else
+			{
+				text2 = string.Join(";", list.ToArray());
+			}
+			flag = true;
+			IL_216:
+			if (flag)
+			{
+				base.Session.SetLobbyData(text, text2, true);
+				Diagnostics.Log("[Lobby] Player '{0}' has been removed from slot '{1}'.", new object[]
+				{
+					friendPersonaName,
+					text
+				});
+				this.ELCPUpdateSlotCount();
+				return;
+			}
+			Diagnostics.LogWarning("[Lobby] Player '{0}' wasn't affected to any empire.", new object[]
+			{
+				friendPersonaName
+			});
+		}
+	}
+
+	private void ELCPUpdateSlotCount()
+	{
+		RuntimeState_Lobby.SlotCount slotCount = default(RuntimeState_Lobby.SlotCount);
+		int num = 0;
+		for (;;)
+		{
+			string x = string.Format("Empire{0}", num);
+			string lobbyData = base.Session.GetLobbyData<string>(x, null);
+			if (string.IsNullOrEmpty(lobbyData))
+			{
+				break;
+			}
+			int num2 = slotCount.Total;
+			slotCount.Total = num2 + 1;
+			string x2 = string.Format("LockEmpire{0}", num);
+			bool lobbyData2 = base.Session.GetLobbyData<bool>(x2, false);
+			string x3 = string.Format("Empire{0}Eliminated", num);
+			bool lobbyData3 = base.Session.GetLobbyData<bool>(x3, false);
+			if (lobbyData.StartsWith("AI"))
+			{
+				if (!lobbyData2 && !lobbyData3)
+				{
+					num2 = slotCount.Free;
+					slotCount.Free = num2 + 1;
+				}
+			}
+			else
+			{
+				string[] array = lobbyData.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
+				slotCount.Occupied += array.Length;
+				if (!lobbyData2 && !lobbyData3)
+				{
+					slotCount.Free += 1 - array.Length;
+				}
+			}
+			num++;
+		}
+		base.Session.SetLobbyData("OccupiedSlots", slotCount.Occupied, true);
+		base.Session.SetLobbyData("FreeSlots", slotCount.Free, true);
+		Diagnostics.Log(slotCount.ToString());
+	}
+
+	private float ApplyCadaversGainELCP(global::Empire empire, int deadUnitsCount, int cadaverRecyclerContenderAliveCount, List<int> empiresWhichAlreadyReceivedCadavers, Encounter encounter)
+	{
+		DepartmentOfTheTreasury agency = empire.GetAgency<DepartmentOfTheTreasury>();
+		Diagnostics.Assert(agency != null);
+		float num = 0f;
+		if (cadaverRecyclerContenderAliveCount > 0 && DepartmentOfTheInterior.CanRecycleCadavers(empire) && !empiresWhichAlreadyReceivedCadavers.Contains(empire.Index))
+		{
+			int num2 = (int)empire.GetPropertyValue(SimulationProperties.ELCPCadaversPerVillage);
+			int num3 = 0;
+			if (num2 > 0)
+			{
+				for (int i = 0; i < encounter.Contenders.Count; i++)
+				{
+					Contender contender = encounter.Contenders[i];
+					if (contender != null && contender.Garrison != null && contender.Garrison.Empire != null && contender.Garrison is Village)
+					{
+						int num4 = contender.Garrison.Units.Count((Unit match) => match.GetPropertyValue(SimulationProperties.Health) > 0f);
+						Village village = contender.Garrison as Village;
+						if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+						{
+							Diagnostics.Log("ELCP Determining whether village {0} should yield bonus cadavers, units alive {1}", new object[]
+							{
+								village.WorldPosition,
+								num4
+							});
+						}
+						if (num4 == 0)
+						{
+							bool flag = true;
+							foreach (Contender contender2 in encounter.GetAlliedContendersFromEmpire(village.Empire))
+							{
+								if (contender.IsTakingPartInBattle && contender.ContenderState != ContenderState.Defeated)
+								{
+									flag = false;
+									break;
+								}
+							}
+							if (flag)
+							{
+								num3 += num2;
+								if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+								{
+									Diagnostics.Log("ELCP Village defeated, bonus is now {0}", new object[]
+									{
+										num3
+									});
+								}
+							}
+						}
+					}
+				}
+			}
+			num = (float)deadUnitsCount / (float)cadaverRecyclerContenderAliveCount;
+			DepartmentOfScience agency2 = empire.GetAgency<DepartmentOfScience>();
+			Diagnostics.Assert(agency2 != null);
+			ISeasonService service = base.Game.Services.GetService<ISeasonService>();
+			Diagnostics.Assert(service != null);
+			if (service.GetCurrentSeason().SeasonDefinition.Name.ToString().Contains(Season.ReadOnlyWinter))
+			{
+				if (agency2.GetTechnologyState("TechnologyDefinitionNecrophages11") == DepartmentOfScience.ConstructibleElement.State.Researched)
+				{
+					num *= 2f;
+				}
+			}
+			else if (service.GetCurrentSeason().SeasonDefinition.Name.ToString().Contains(Season.ReadOnlyHeatWave) && empire.SimulationObject.Tags.Contains("FactionTraitNecrophagesHeatWave"))
+			{
+				num *= 2f;
+			}
+			num += (float)num3 / (float)cadaverRecyclerContenderAliveCount;
+			agency.TryTransferResources(empire, DepartmentOfTheTreasury.Resources.Cadaver, num);
+			empiresWhichAlreadyReceivedCadavers.Add(empire.Index);
+		}
+		return num;
+	}
+
+	private IEnumerator PlaceTerraformDeviceProcessor(OrderPlaceTerraformDevice order)
+	{
+		if (order == null)
+		{
+			throw new ArgumentNullException("order");
+		}
+		if (base.Game.Services.GetService<IGameEntityRepositoryService>() == null)
+		{
+			Diagnostics.LogError("Cannot retreive the gameEntityRepositoryService.");
+			yield break;
+		}
+		IEventService eventService = Services.GetService<IEventService>();
+		Diagnostics.Assert(eventService != null);
+		global::Empire empire = null;
+		try
+		{
+			empire = base.Game.Empires[order.EmpireIndex];
+		}
+		catch
+		{
+			Diagnostics.LogError("Order processor failed because empire index is invalid.");
+			yield break;
+		}
+		TerraformDeviceDefinition terraformDeviceDefinition;
+		if (Databases.GetDatabase<TerraformDeviceDefinition>(false).TryGetValue(order.TerraformDeviceDefinitionName, out terraformDeviceDefinition))
+		{
+			ITerraformDeviceService service = base.Game.Services.GetService<ITerraformDeviceService>();
+			if (service.GetDeviceAtPosition(order.Position) == null)
+			{
+				TerraformDevice terraformDevice = service.AddDevice(order.TerraformDeviceGameEntityGUID, terraformDeviceDefinition, order.Position, empire, false);
+				yield return new WaitForSeconds(2f);
+				eventService.Notify(new EventTerraformDeviceEntityCreated(terraformDevice));
+				terraformDevice = null;
+			}
+		}
+		yield break;
 	}
 
 	private const int MaxOrderProcessingTicksPerFrame = 10;

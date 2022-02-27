@@ -25,7 +25,10 @@
   <!-- #################################################### -->
 
   <AIParameterConverter Name="EmpireUnlockWatchTowers">
+	<!-- Not working! Using a valid parameter instead.
     <ToAIParameter AIParameter ="AIEmpireVision">$(Input) * 0.3 * $Property(EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
+	-->
+	<ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * 30 * $Count(ClassEmpire/ClassCity/WatchTower,!ExploitedPointOfInterest) / $Count(ClassEmpire/ClassCity/ClassPointOfInterest)</ToAIParameter>
   </AIParameterConverter>
 
   <AIParameterConverter Name="CityWatchTower">
@@ -33,9 +36,12 @@
   </AIParameterConverter>
   
   <AIParameterConverter Name="EmpireWatchTowerUpgrade">
+	<!-- Not working! Using a valid parameter instead.
     <ToAIParameter AIParameter="AIEmpireVision">$(Input) * 0.3 * (2 - $Count(ClassEmpire/ClassResearch,TechnologyRoad)) * $Property(EmpireTypeMajor:EmpireScaleFactor)</ToAIParameter>
-    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * 10 * $Count(ClassEmpire/ClassCity/WatchTower,ExploitedPointOfInterest)</ToAIParameter>
-    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * 10 * $Count(ClassCity/WatchTower,ExploitedPointOfInterest)</ToAIParameter>
+	-->
+	<ToAIParameter AIParameter="AIEmpireCityDefense">$(Input) * 0.6 * $SumProperty(ClassEmpire/ClassCity:CityDefensePoint)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">15 max ($(Input) * $Count(ClassEmpire/ClassCity/WatchTower,ExploitedPointOfInterest))</ToAIParameter>
+    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * 5 * $Count(ClassCity/WatchTower,ExploitedPointOfInterest)</ToAIParameter>
   </AIParameterConverter>
 
   <!-- ######################################################################################## -->
@@ -43,17 +49,17 @@
   <!-- ######################################################################################## -->
 
   <AIParameterConverter Name="EmpirePillageDefense">
-    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest) / $Count(ClassEmpire/ClassCity/ClassPointOfInterest)</ToAIParameter>
   </AIParameterConverter>
 
   <AIParameterConverter Name="CityPillageDefense">
-    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * $Count(ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
-    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * $Count(ClassCity/ClassPointOfInterest,ExploitedPointOfInterest) / $Count(ClassCity/ClassPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest) / $Count(ClassEmpire/ClassCity/ClassPointOfInterest)</ToAIParameter>
   </AIParameterConverter>
 
   <AIParameterConverter Name="CityPillageDefenseRecovery">
-    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * 8 * $Count(ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
-    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * 8 * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AICityPillageDefense">$(Input) * 8 * $Count(ClassCity/ClassPointOfInterest,ExploitedPointOfInterest) / $Count(ClassCity/ClassPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * 8 * $Count(ClassEmpire/ClassCity/ClassPointOfInterest,ExploitedPointOfInterest) / $Count(ClassEmpire/ClassCity/ClassPointOfInterest)</ToAIParameter>
   </AIParameterConverter>
   
   <!-- ################################################ -->
@@ -61,7 +67,11 @@
   <!-- ################################################ -->
   
   <AIParameterConverter Name="EmpireUnlockDefensiveTowers">
+	<!-- Not working! Using a valid parameter instead.
     <ToAIParameter AIParameter="AIEmpireVision">$(Input) *  ($Count(ClassEmpire/ClassCity) - (0.3*$Count(ClassEmpire/ClassCity/WatchTower,ExploitedPointOfInterest)))</ToAIParameter>
+	-->
+  	<ToAIParameter AIParameter="AIEmpireCityDefense">$(Input) * 50 * $Count(ClassEmpire/ClassCity/WatchTower,!ExploitedPointOfInterest)</ToAIParameter>
+    <ToAIParameter AIParameter="AIEmpirePillageDefense">$(Input) * 30 * $Count(ClassEmpire/ClassCity/WatchTower, !ExploitedPointOfInterest) / (1 max $Count(ClassEmpire/ClassCity/WatchTower))</ToAIParameter>	
   </AIParameterConverter>
   
 </Datatable>

@@ -16,9 +16,8 @@ public class CreepingNodeContructionCompletedLine : MonoBehaviour
 			this.DestroyedArmyIcon.Visible = false;
 			this.title.AgeTransform.PixelMarginLeft = this.DestroyedArmyIcon.PixelMarginRight;
 			string text = creepingNode.PointOfInterest.CreepingNodeImprovement.Name;
-			global::IGuiService service = Services.GetService<global::IGuiService>();
 			GuiElement guiElement;
-			if (service.GuiPanelHelper.TryGetGuiElement(creepingNode.PointOfInterest.CreepingNodeImprovement.Name, out guiElement))
+			if (Services.GetService<global::IGuiService>().GuiPanelHelper.TryGetGuiElement(creepingNode.PointOfInterest.CreepingNodeImprovement.Name, out guiElement))
 			{
 				text = guiElement.Title;
 				if (guiElement is ExtendedGuiElement)

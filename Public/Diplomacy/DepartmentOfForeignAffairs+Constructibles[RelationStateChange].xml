@@ -39,7 +39,9 @@
     <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
       <PathPrerequisite>EmpireTypeMajor,AffinityDrakkens</PathPrerequisite>
     </DiplomaticRelationStateEmpirePrerequisite>
-
+	<!--ELCP: added new CooldownPrerequisite, 5 turn cooldown after this empire started war-->
+	<DiplomaticCooldownPrerequisite Inverted="false" Flags="Prerequisite,Discard" Cooldown="5" OnlyWhenProposer="true">PeaceToWar,TruceToWar,ColdWarToWar,AllianceToWar</DiplomaticCooldownPrerequisite>
+	
     <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">34 * (($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra) + $(RelationStateChaosScore) + $(ForceRelationStateChaosScore)) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(ClassEmpire:DiplomaticDeclarationFactor)</DiplomaticCustomCost>
 
     <DiplomaticRelationStateReference>DiplomaticRelationStateTruce</DiplomaticRelationStateReference>
@@ -146,7 +148,7 @@
       <PathPrerequisite Inverted="true">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
     </DiplomaticRelationStateEmpirePrerequisite>
    
-    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">6 * ((($Property(EmpireTypeMajor:EmpireScaleFactor) + ($Property(ClassEmpire:CurrentEra) - $(AffinityRelationScore)) + $(RelationStateChaosScore)) max 1) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">6 * ((($Property(EmpireTypeMajor:EmpireScaleFactor) + ($Property(ClassEmpire:CurrentEra) - $(AffinityRelationScore)) + $(RelationStateChaosScore)) max 1) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
 
     <DiplomaticRelationStateReference>DiplomaticRelationStatePeace</DiplomaticRelationStateReference>
   </DiplomaticTermDiplomaticRelationStateDefinition>
@@ -195,7 +197,7 @@
     <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard">DiplomaticRelationStateColdWar</DiplomaticRelationStatePrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyDiplomacyAlliance</TechnologyPrerequisite>
 
-    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">10 * ((($Property(EmpireTypeMajor:EmpireScaleFactor) + ($Property(ClassEmpire:CurrentEra) - $(AffinityRelationScore)) + $(RelationStateChaosScore)) max 1) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">10 * ((($Property(EmpireTypeMajor:EmpireScaleFactor) + ($Property(ClassEmpire:CurrentEra) - $(AffinityRelationScore)) + $(RelationStateChaosScore)) max 1) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
 
     <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
       <PathPrerequisite Inverted="true">EmpireTypeMajor,FactionTraitNecrophages5</PathPrerequisite>
@@ -213,7 +215,7 @@
     <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard">DiplomaticRelationStatePeace</DiplomaticRelationStatePrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology">TechnologyDiplomacyAlliance</TechnologyPrerequisite>
 
-    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">8 * ((($Property(EmpireTypeMajor:EmpireScaleFactor) + ($Property(ClassEmpire:CurrentEra) - $(AffinityRelationScore)) + $(RelationStateChaosScore)) max 1) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">8 * ((($Property(EmpireTypeMajor:EmpireScaleFactor) + ($Property(ClassEmpire:CurrentEra) - $(AffinityRelationScore)) + $(RelationStateChaosScore)) max 1) / 1.5) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ClassEmpire:DiplomaticTermsFactor) * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)</DiplomaticCustomCost>
 
     <DiplomaticRelationStateReference>DiplomaticRelationStateAlliance</DiplomaticRelationStateReference>
   </DiplomaticTermDiplomaticRelationStateDefinition>

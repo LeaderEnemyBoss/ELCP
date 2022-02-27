@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- ========================================
+       ======== DROPLIST LORE QUESTS ==========
+       ======================================== -->
+
+  <!-- ITEM REWARDS -->
+	
+  <!-- Item Reward: Delvers' Mask -->
+  <Droplist Name="DroplistLoreQuestHeadItemReward" Fallback="DroplistDust">
+    <Blueprint Name="TechnologyDefinitionItemHeadStrategic3LoreQuest1" ConstructibleName="ItemHeadStrategic3LoreQuest1"/>
+  </Droplist>
+	
+  <!-- Item Reward: Delver's Stein -->
+  <Droplist Name="DroplistLoreQuestDelverSteinReward" Fallback="DroplistMadFairiesMainQuestRewards">
+    <Blueprint Name="TechnologyDefinitionItemRingDustLoreQuest2" ConstructibleName="ItemRingDustLoreQuest2"/>
+  </Droplist>	
+
+  <!-- Item Reward: Urces'Sheep -->
+  <Droplist Name="DroplistLoreQuestSheepItemReward" Fallback="DroplistDust">
+    <Blueprint Name="TechnologyDefinitionItemPetDustLoreQuest4" ConstructibleName="ItemPetDustLoreQuest4"/>
+  </Droplist>
+
+  <!-- Item Reward: Blade of Mercy -->
+  <Droplist Name="DroplistLoreQuestMercyBladeReward" Fallback="DroplistDust">
+    <Blueprint Name="TechnologyDefinitionItemSword1Strategic4LoreQuest6" ConstructibleName="ItemSword1Strategic4LoreQuest6"/>
+  </Droplist>
+	
+  <!-- Item Reward: Disharmony Shield -->
+  <Droplist Name="DroplistLoreQuestDisharmonyShieldReward" Fallback="DroplistDust">
+    <Blueprint Name="TechnologyDefinitionItemShield1Strategic1LoreQuest9" ConstructibleName="ItemShield1Strategic1LoreQuest9"/>
+  </Droplist>
+	
+  <!-- Item Reward: Dorgeshi's Spear -->
+  <Droplist Name="DroplistLoreQuestDorgeshiSpearReward" Fallback="DroplistDust">
+    <Blueprint Name="TechnologyDefinitionItemSpear2Strategic2LoreQuest10" ConstructibleName="ItemSpear2Strategic2LoreQuest10"/>
+  </Droplist>
+	
+  <!-- Item Reward: Tetike's Torso -->
+  <Droplist Name="DroplistLoreQuestTetikeTorsoReward" Fallback="DroplistDust">
+    <Blueprint Name="TechnologyDefinitionItemTorsoDustLoreQuest12" ConstructibleName="ItemTorsoDustLoreQuest12"/>
+  </Droplist>
+	
+  <!-- Item Reward: Hurna's Head -->
+  <Droplist Name="DroplistLoreQuestHurnaHeadTalismanReward" Fallback="DroplistDust">
+    <Blueprint Name="TechnologyDefinitionItemTalismanDustLoreQuest12" ConstructibleName="ItemTalismanDustLoreQuest12"/>
+  </Droplist>
+	
+  <!-- Item Reward: Mother's Protection -->
+  <Droplist Name="DroplistLoreQuestMotherProtectionShieldReward" Fallback="DroplistDust">
+    <Blueprint Name="TechnologyDefinitionItemShield1Strategic2LoreQuest14" ConstructibleName="ItemShield1Strategic2LoreQuest14"/>
+  </Droplist>
+
+  <!-- SPECIAL DROPLISTS -->
+  
+  <!-- 7 - SISTERS OF MERCY - The Thawing of Relations -->
+  <Droplist Name="DroplistLoreQuest0007UnitsReward"> <!-- Units Rewards -->
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignSistersOfMercyJusticere#1</UnitDesign>
+      <UnitDesign>UnitDesignSistersOfMercyJusticere#1</UnitDesign>
+      <UnitDesign>UnitDesignSistersOfMercyJusticere#1</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  
+  <!-- 7 - SISTERS OF MERCY - The Thawing of Relations -->
+  <Droplist Name="DroplistLoreQuest0007HeroReward"> <!-- Hero Reward -->
+    <Hero Name="UnitProfileSistersOfMercyHero1QuestReward"/>
+  </Droplist>
+
+  <!-- 8 - SILICS - Crystalline Caverns -->
+  <Droplist Name="DroplistLoreQuest0008-Step1" Selector="TechnologyEraNumber"> <!-- Reward: strategic resources from current era -->
+    <List Name="DroplistStrategicResourcesEra1"/>
+    <List Name="DroplistStrategicResourcesEra2"/>
+    <List Name="DroplistStrategicResourcesEra3"/>
+    <List Name="DroplistStrategicResourcesEra4"/>
+    <List Name="DroplistStrategicResourcesEra5"/>
+    <List Name="DroplistStrategicResourcesEra6"/>
+  </Droplist>
+
+  <Droplist Name="DroplistStrategicResourcesEra1">
+    <Resource Name="Strategic1"     Quantity="15" Weight="6"/>
+    <Resource Name="Strategic2"     Quantity="15" Weight="6"/>
+  </Droplist>
+  <Droplist Name="DroplistStrategicResourcesEra2">
+    <Resource Name="Strategic1"     Quantity="25"   Weight="3"/>
+    <Resource Name="Strategic2"     Quantity="25"   Weight="3"/>
+    <Resource Name="Strategic3"     Quantity="20"   Weight="3"/>
+    <Resource Name="Strategic4"     Quantity="20"   Weight="3"/>
+  </Droplist>
+  <Droplist Name="DroplistStrategicResourcesEra3">
+    <Resource Name="Strategic1"     Quantity="30"   Weight="2"/>
+    <Resource Name="Strategic2"     Quantity="30"   Weight="2"/>
+    <Resource Name="Strategic3"     Quantity="25"   Weight="4"/>
+    <Resource Name="Strategic4"     Quantity="25"   Weight="4"/>
+    <Resource Name="Strategic5"     Quantity="15"   Weight="2"/>
+    <Resource Name="Strategic6"     Quantity="15"   Weight="2"/>
+  </Droplist>
+  <Droplist Name="DroplistStrategicResourcesEra4">
+    <Resource Name="Strategic3"     Quantity="40"  Weight="3"/>
+    <Resource Name="Strategic4"     Quantity="40"  Weight="3"/>
+    <Resource Name="Strategic5"     Quantity="30"  Weight="4"/>
+    <Resource Name="Strategic6"     Quantity="30"  Weight="4"/>
+  </Droplist>
+  <Droplist Name="DroplistStrategicResourcesEra5">
+    <Resource Name="Strategic3"     Quantity="50"  Weight="5"/>
+    <Resource Name="Strategic4"     Quantity="50"  Weight="5"/>
+    <Resource Name="Strategic5"     Quantity="40"  Weight="4"/>
+    <Resource Name="Strategic6"     Quantity="40"  Weight="4"/>
+ </Droplist>
+  <Droplist Name="DroplistStrategicResourcesEra6">
+    <Resource Name="Strategic3"     Quantity="60"  Weight="4"/>
+    <Resource Name="Strategic4"     Quantity="60"  Weight="4"/>
+    <Resource Name="Strategic5"     Quantity="50"  Weight="5"/>
+    <Resource Name="Strategic6"     Quantity="50"  Weight="5"/>
+ </Droplist>
+
+  <!-- 9 - SILICS - The Lost Explorers -->
+  <Droplist Name="DroplistLoreQuest0009-Step2"> <!-- Army spawn: Haunts army from the Current Era -->
+    <List Name="DroplistArmyEra1" Weight="1"/>
+    <List Name="DroplistArmyEra2" Weight="1"/>
+    <List Name="DroplistArmyEra3" Weight="1"/>
+    <List Name="DroplistArmyEra4" Weight="1"/>
+    <List Name="DroplistArmyEra5" Weight="1"/>
+    <List Name="DroplistArmyEra6" Weight="1"/>
+  </Droplist>
+
+  <Droplist Name="DroplistArmyEra1">
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra1</UnitDesign>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra1</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  <Droplist Name="DroplistArmyEra2">
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra2</UnitDesign>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra2</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  <Droplist Name="DroplistArmyEra3">
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra3</UnitDesign>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra3</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  <Droplist Name="DroplistArmyEra4">
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra4</UnitDesign>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra4</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  <Droplist Name="DroplistArmyEra5">
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra5</UnitDesign>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra5</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+  <Droplist Name="DroplistArmyEra6">
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra6</UnitDesign>
+      <UnitDesign>UnitDesignHauntsSpecter#MinorEmpireEra6</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <!-- 12 - HURNAS - Who are the Hurnas? -->
+  <Droplist Name="DroplistArmyDefinition_Hurnas">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#SideQuestLore0012</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#SideQuestLore0012</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <!-- 12 - TETIKE - Who are the Jotus? -->
+  <Droplist Name="DroplistArmyDefinition_Jotus">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignJotusEttin#SideQuestLore0012</UnitDesign>
+        <UnitDesign>UnitDesignJotusEttin#SideQuestLore0012</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <!-- 13 - GAURAN - The Gauran Games -->
+  <Droplist Name="DroplistArmyDefinitionLoreQuest0013">
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignGauranMinotaur#MinorEmpireEra6</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <!-- 15 - BIRDHIVE - Dust Gives, Dust Takes -->
+  <Droplist Name="DroplistLoreQuest0015-Step1" Selector="TechnologyEraNumber"> <!-- Reward: EconomyTechnology from the Current Era -->
+    <List Name="DroplistTechnologiesEra1Economy"/>
+    <List Name="DroplistTechnologiesEra2Economy"/>
+    <List Name="DroplistTechnologiesEra3Economy"/>
+    <List Name="DroplistTechnologiesEra4Economy"/>
+    <List Name="DroplistTechnologiesEra5Economy"/>
+    <List Name="DroplistTechnologiesEra6Economy"/>
+  </Droplist>
+	
+  <Droplist Name="DroplistTechnologiesEra1Economy" Fallback="DroplistDustEra1"> <!-- Creation of a set of droplists accordingly to era and economy technologies -->
+    <Technology Name="TechnologyDefinitionIndustry0" />
+    <Technology Name="TechnologyDefinitionDust0" />
+    <Technology Name="TechnologyDefinitionDust1" />
+  </Droplist>
+  <Droplist Name="DroplistTechnologiesEra2Economy" Fallback="DroplistDustEra2">
+    <Technology Name="TechnologyDefinitionIndustry1" />
+    <Technology Name="TechnologyDefinitionIndustry2" />
+  </Droplist>
+  <Droplist Name="DroplistTechnologiesEra3Economy" Fallback="DroplistDustEra3">
+    <Technology Name="TechnologyDefinitionDust2" />
+    <Technology Name="TechnologyDefinitionDust3" />
+  </Droplist>
+  <Droplist Name="DroplistTechnologiesEra4Economy" Fallback="DroplistDustEra4">
+    <Technology Name="TechnologyDefinitionIndustry3" />
+    <Technology Name="TechnologyDefinitionIndustry4" />
+  </Droplist>
+  <Droplist Name="DroplistTechnologiesEra5Economy" Fallback="DroplistDustEra5">
+    <Technology Name="TechnologyDefinitionDust4" />
+    <Technology Name="TechnologyDefinitionDust5" />
+  </Droplist>
+  <Droplist Name="DroplistTechnologiesEra6Economy" Fallback="DroplistDustEra6"> 
+    <!-- Era 6 rewards are too powerful to be given as reward -->
+  </Droplist>
+
+  <Droplist Name="DroplistArmyDefinitionLoreQuest0015-Step2"> <!-- Reward: 2 Arpuja Units -->
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignBirdhiveHarpy#SideQuestLore0015</UnitDesign>
+      <UnitDesign>UnitDesignBirdhiveHarpy#SideQuestLore0015</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <!-- 17 - ERYCIS - The Land of Godheads -->
+  <Droplist Name="DroplistArmyDefinitionLoreQuest0017EndReward">
+    <ArmyDefinition>
+    <UnitDesigns>
+      <UnitDesign>UnitDesignErycisHydra#MinorEmpireEra3</UnitDesign>
+      <UnitDesign>UnitDesignErycisHydra#MinorEmpireEra3</UnitDesign>
+    </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+  <!-- 19 - HURNAS - Running with the Hunt -->
+  <Droplist Name="DroplistArmyDefinitionLoreQuest0019EndReward">
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignHurnasOrc#SideQuestLore0019</UnitDesign>
+        <UnitDesign>UnitDesignHurnasOrc#SideQuestLore0019</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+	
+  <!-- 20 - BOS - Marathon -->
+  <Droplist Name="DroplistArmyDefinitionLoreQuest0020InitialReward"> <!-- Reward given at the very beginning of the quest -->
+    <ArmyDefinition>
+      <UnitDesigns>
+        <UnitDesign>UnitDesignBosCentaur#SideQuestLore0020</UnitDesign>
+      </UnitDesigns>
+    </ArmyDefinition>
+  </Droplist>
+
+</Datatable>

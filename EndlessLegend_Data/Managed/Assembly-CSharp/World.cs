@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using Amplitude;
+using Amplitude.Extensions;
 using Amplitude.IO;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -16,6 +17,11 @@ using UnityEngine;
 
 public class World : IXmlSerializable
 {
+	public World()
+	{
+		this.TemporaryTerraformations = new List<World.TemporaryTerraformation>();
+	}
+
 	public virtual void ReadXml(Amplitude.Xml.XmlReader reader)
 	{
 		reader.ReadStartElement("World");
@@ -116,7 +122,7 @@ public class World : IXmlSerializable
 		return false;
 	}
 
-	public WorldPosition[] PerformTerraformation(WorldPosition[] positions, bool updateTerraformMap = true)
+	public WorldPosition[] PerformTerraformation(WorldPosition[] positions, bool ReverseTerraform = false)
 	{
 		if (positions == null)
 		{
@@ -124,12 +130,26 @@ public class World : IXmlSerializable
 			return new WorldPosition[0];
 		}
 		List<KeyValuePair<WorldPosition, TerrainTypeMapping>> list = new List<KeyValuePair<WorldPosition, TerrainTypeMapping>>();
-		foreach (WorldPosition worldPosition in positions)
+		List<int> list2 = new List<int>();
+		for (int i = 0; i < positions.Length; i++)
 		{
+			WorldPosition worldPosition = positions[i];
 			if (worldPosition.IsValid)
 			{
 				TerrainTypeMapping value = null;
-				if (this.TryGetTerraformMapping(worldPosition, out value))
+				if (!ReverseTerraform)
+				{
+					if (this.TemporaryTerraformations.Exists((World.TemporaryTerraformation tt) => tt.worldPosition == worldPosition))
+					{
+						this.TemporaryTerraformations.RemoveAll((World.TemporaryTerraformation tt) => tt.worldPosition == worldPosition);
+						list2.Add(i);
+					}
+					if (this.TryGetTerraformMapping(worldPosition, out value))
+					{
+						list.Add(new KeyValuePair<WorldPosition, TerrainTypeMapping>(worldPosition, value));
+					}
+				}
+				else if (ReverseTerraform && this.TryGetOriginalTerrainTypMapping(worldPosition, out value))
 				{
 					list.Add(new KeyValuePair<WorldPosition, TerrainTypeMapping>(worldPosition, value));
 				}
@@ -137,12 +157,22 @@ public class World : IXmlSerializable
 		}
 		if (list.Count > 0)
 		{
-			return this.PerformTerraformation(list.ToArray(), updateTerraformMap);
+			WorldPosition[] array = this.PerformTerraformation(list.ToArray(), ReverseTerraform);
+			if (list2.Count > 0)
+			{
+				List<WorldPosition> list3 = array.ToList<WorldPosition>();
+				foreach (int num in list2)
+				{
+					list3.AddOnce(positions[num]);
+				}
+				array = list3.ToArray();
+			}
+			return array;
 		}
 		return new WorldPosition[0];
 	}
 
-	public WorldPosition[] PerformTerraformation(KeyValuePair<WorldPosition, TerrainTypeMapping>[] terraformPairs, bool updateTerraformMap = true)
+	public WorldPosition[] PerformTerraformation(KeyValuePair<WorldPosition, TerrainTypeMapping>[] terraformPairs, bool ReverseTerraform = false)
 	{
 		if (terraformPairs == null)
 		{
@@ -152,19 +182,15 @@ public class World : IXmlSerializable
 		List<WorldPosition> list = new List<WorldPosition>();
 		for (int i = 0; i < terraformPairs.Length; i++)
 		{
-			if (terraformPairs[i].Key.IsValid && terraformPairs[i].Value != null)
+			if (terraformPairs[i].Key.IsValid && terraformPairs[i].Value != null && this.PerformTerraformation(terraformPairs[i], ReverseTerraform))
 			{
-				bool flag = this.PerformTerraformation(terraformPairs[i], updateTerraformMap);
-				if (flag)
-				{
-					list.Add(terraformPairs[i].Key);
-				}
+				list.Add(terraformPairs[i].Key);
 			}
 		}
 		return list.ToArray();
 	}
 
-	public bool PerformTerraformation(KeyValuePair<WorldPosition, TerrainTypeMapping> terraformPair, bool updateTerraformMap = true)
+	public bool PerformTerraformation(KeyValuePair<WorldPosition, TerrainTypeMapping> terraformPair, bool ReverseTerraform = false)
 	{
 		if (!terraformPair.Key.IsValid || terraformPair.Value == null)
 		{
@@ -181,12 +207,17 @@ public class World : IXmlSerializable
 			{
 				this.TerrainMap.SetValue(key, b);
 				GridMap<byte> gridMap = this.Atlas.GetMap(WorldAtlas.Maps.TerraformState) as GridMap<byte>;
-				gridMap.SetValue((int)key.Row, (int)key.Column, 2);
-				this.TerrainMap.Version++;
-				if (updateTerraformMap)
+				if (!ReverseTerraform)
 				{
-					this.UpdateTerraformStateMap(true);
+					gridMap.SetValue((int)key.Row, (int)key.Column, 2);
 				}
+				else
+				{
+					gridMap.SetValue((int)key.Row, (int)key.Column, 0);
+				}
+				GridMap<byte> gridMap2 = this.TerrainMap;
+				int version = gridMap2.Version;
+				gridMap2.Version = version + 1;
 				return true;
 			}
 		}
@@ -479,8 +510,6 @@ public class World : IXmlSerializable
 		}
 	}
 
-	public string MinorFactionDifficulty { get; private set; }
-
 	public Region[] Regions { get; private set; }
 
 	public WorldParameters WorldParameters { get; private set; }
@@ -560,47 +589,57 @@ public class World : IXmlSerializable
 		yield return this.LoadRegionData(archive);
 		yield return this.LoadRidgeData(archive);
 		yield return this.LoadRiverData(archive);
-		MemoryStream stream = null;
-		if (archive.TryGet(global::GameManager.GameFileName, out stream))
+		MemoryStream memoryStream = null;
+		if (archive.TryGet(global::GameManager.GameFileName, out memoryStream))
 		{
-			using (stream)
+			using (memoryStream)
 			{
-				using (Amplitude.Xml.XmlReader reader = Amplitude.Xml.XmlReader.Create(stream))
+				using (Amplitude.Xml.XmlReader xmlReader = Amplitude.Xml.XmlReader.Create(memoryStream))
 				{
-					reader.Reader.ReadToDescendant("World");
-					this.ReadXml(reader);
-					reader.ReadEndElement("World");
+					xmlReader.Reader.ReadToDescendant("World");
+					this.ReadXml(xmlReader);
+					xmlReader.ReadEndElement("World");
+					goto IL_1CC;
 				}
 			}
 		}
-		else
+		yield return this.LoadPointOfInterestData(archive);
+		IL_1CC:
+		try
 		{
-			yield return this.LoadPointOfInterestData(archive);
-		}
-		this.InitializeContinentData();
-		this.InitializePointOfInterestMap();
-		this.InitializeArmiesMap();
-		this.InitializeDistrictsMap();
-		this.InitializeEncountersMap();
-		this.InitializeWaterMap();
-		this.InitializeTerraformStateMap();
-		World.Seed = 0;
-		if (archive.TryGet("WorldGeneratorReport.xml", out stream))
-		{
-			using (stream)
+			this.InitializeContinentData();
+			this.InitializePointOfInterestMap();
+			this.InitializeArmiesMap();
+			this.InitializeDistrictsMap();
+			this.InitializeEncountersMap();
+			this.InitializeWaterMap();
+			this.InitializeTerraformStateMap();
+			World.Seed = 0;
+			if (archive.TryGet("WorldGeneratorReport.xml", out memoryStream))
 			{
-				XmlDocument document = new XmlDocument();
-				document.Load(stream);
-				XmlNode seed = document.DocumentElement.SelectSingleNode("//Seed");
-				if (seed != null)
+				using (memoryStream)
 				{
-					int mapSeed = 0;
-					if (int.TryParse(seed.InnerText, out mapSeed))
+					XmlDocument xmlDocument = new XmlDocument();
+					xmlDocument.Load(memoryStream);
+					XmlNode xmlNode = xmlDocument.DocumentElement.SelectSingleNode("//Seed");
+					if (xmlNode != null)
 					{
-						World.Seed = mapSeed;
+						int seed = 0;
+						if (int.TryParse(xmlNode.InnerText, out seed))
+						{
+							World.Seed = seed;
+						}
 					}
 				}
 			}
+		}
+		catch (Exception ex)
+		{
+			Diagnostics.LogError("An exception has been raised. Exception = {0}.", new object[]
+			{
+				ex.ToString()
+			});
+			yield break;
 		}
 		this.HasBeenLoaded = true;
 		yield break;
@@ -634,6 +673,7 @@ public class World : IXmlSerializable
 		this.Continents = new Continent[0];
 		this.HasBeenLoaded = false;
 		this.HasBeenIgnited = false;
+		this.TemporaryTerraformations.Clear();
 	}
 
 	public PointOfInterest CreatePointOfInterest(PointOfInterestDefinition pointOfInterestDefinition)
@@ -687,12 +727,9 @@ public class World : IXmlSerializable
 		{
 			Region region = this.Regions[i];
 			this.AverageRegionSize += (float)region.WorldPositions.Length;
-			if (region.ContinentID != 255)
+			if (region.ContinentID != 255 && region.ContinentID >= num)
 			{
-				if (region.ContinentID >= num)
-				{
-					num = region.ContinentID + 1;
-				}
+				num = region.ContinentID + 1;
 			}
 		}
 		Diagnostics.Assert(num < 255);
@@ -710,23 +747,41 @@ public class World : IXmlSerializable
 				if (j == this.Continents.Length - 1 && this.Regions[k].ContinentID == 255)
 				{
 					this.Regions[k].ConvertContinentID(j);
-					goto IL_113;
+					goto IL_F9;
 				}
 				if (j == this.Regions[k].ContinentID)
 				{
-					goto IL_113;
+					goto IL_F9;
 				}
-				IL_156:
+				IL_F1:
 				k++;
 				continue;
-				IL_113:
+				IL_F9:
 				list.Add(k);
 				flag2 = (flag2 || this.Regions[k].IsWasteland);
 				flag = (flag || this.Regions[k].IsOcean);
-				goto IL_156;
+				goto IL_F1;
 			}
 			this.Continents[j] = new Continent(j, flag, flag2);
 			this.Continents[j].RegionList = list.ToArray();
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				string text = "Land";
+				if (flag)
+				{
+					text = "Ocean";
+				}
+				if (flag2)
+				{
+					text = "Wasteland";
+				}
+				Diagnostics.Log("ELCP InitializeContinentData, Continent {0}, {1}, Number of Regions {2}", new object[]
+				{
+					j,
+					text,
+					this.Continents[j].RegionList.Length
+				});
+			}
 		}
 		for (int l = 0; l < this.Continents.Length; l++)
 		{
@@ -1271,35 +1326,34 @@ public class World : IXmlSerializable
 		this.WorldWrap = false;
 		try
 		{
-			MemoryStream stream;
-			if (archive.TryGet("WorldGeneratorConfiguration.xml", out stream))
+			MemoryStream memoryStream;
+			if (archive.TryGet("WorldGeneratorConfiguration.xml", out memoryStream))
 			{
-				XmlDocument document = new XmlDocument();
-				document.Load(stream);
-				XmlNode worldWrap = document.DocumentElement.SelectSingleNode("Properties/Wraps");
-				if (worldWrap != null)
+				XmlDocument xmlDocument = new XmlDocument();
+				xmlDocument.Load(memoryStream);
+				XmlNode xmlNode = xmlDocument.DocumentElement.SelectSingleNode("Properties/Wraps");
+				if (xmlNode != null)
 				{
-					this.WorldWrap = bool.Parse(worldWrap.InnerText);
+					this.WorldWrap = bool.Parse(xmlNode.InnerText);
 				}
-				XmlNode minorFactionDifficulty = document.DocumentElement.SelectSingleNode("Properties/MinorFactionDifficulty");
-				if (minorFactionDifficulty != null)
+				XmlNode xmlNode2 = xmlDocument.DocumentElement.SelectSingleNode("Properties/MinorFactionDifficulty");
+				if (xmlNode2 != null)
 				{
-					this.MinorFactionDifficulty = minorFactionDifficulty.InnerText;
+					this.MinorFactionDifficulty = xmlNode2.InnerText;
 				}
 				else
 				{
 					this.MinorFactionDifficulty = "Normal";
 				}
-				stream.Close();
-				stream.Dispose();
+				memoryStream.Close();
+				memoryStream.Dispose();
 			}
 		}
 		catch (Exception ex)
 		{
-			Exception exception = ex;
 			Diagnostics.LogError("An exception has been raised while loading the world generator settings; exception = {0}.", new object[]
 			{
-				exception.ToString()
+				ex.ToString()
 			});
 		}
 		yield return null;
@@ -1380,6 +1434,142 @@ public class World : IXmlSerializable
 		return false;
 	}
 
+	private bool TryGetOriginalTerrainTypMapping(WorldPosition worldPosition, out TerrainTypeMapping mappedTerrain)
+	{
+		mappedTerrain = null;
+		if (!worldPosition.IsValid)
+		{
+			return false;
+		}
+		World.TemporaryTerraformation temporaryTerraformation = this.TemporaryTerraformations.Find((World.TemporaryTerraformation t) => t.worldPosition == worldPosition);
+		if (temporaryTerraformation == null)
+		{
+			Diagnostics.LogError("ELCP couldnt find temporaryTerraformation at {0}", new object[]
+			{
+				worldPosition
+			});
+			return false;
+		}
+		IDatabase<TerrainTypeMapping> database = Databases.GetDatabase<TerrainTypeMapping>(false);
+		Diagnostics.Assert(database != null, "Terrain Type Mapping database can't be 'null'.");
+		if (!database.TryGetValue(temporaryTerraformation.terrainName, out mappedTerrain))
+		{
+			Diagnostics.LogError("ELCP couldnt find {0}", new object[]
+			{
+				temporaryTerraformation.terrainName
+			});
+			return false;
+		}
+		return true;
+	}
+
+	public WorldPosition[] PerformReversibleTerraformation(WorldPosition[] positions, bool ReverseTerraform = false, int duration = 0)
+	{
+		if (positions == null)
+		{
+			Diagnostics.LogError("World.PerformTerraformation has received some invalid parameter(s).");
+			return new WorldPosition[0];
+		}
+		List<KeyValuePair<WorldPosition, TerrainTypeMapping>> list = new List<KeyValuePair<WorldPosition, TerrainTypeMapping>>();
+		Dictionary<WorldPosition, StaticString> dictionary = new Dictionary<WorldPosition, StaticString>();
+		for (int i = 0; i < positions.Length; i++)
+		{
+			WorldPosition worldPosition = positions[i];
+			if (worldPosition.IsValid)
+			{
+				TerrainTypeMapping value = null;
+				StaticString value2 = null;
+				if (!ReverseTerraform)
+				{
+					World.TemporaryTerraformation temporaryTerraformation = this.TemporaryTerraformations.Find((World.TemporaryTerraformation tt) => tt.worldPosition == worldPosition);
+					if (temporaryTerraformation != null)
+					{
+						temporaryTerraformation.turnsRemaing = ((duration > temporaryTerraformation.turnsRemaing) ? duration : temporaryTerraformation.turnsRemaing);
+						if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+						{
+							Diagnostics.Log("ELCP Altering TemporaryTerraformation {0}", new object[]
+							{
+								temporaryTerraformation
+							});
+						}
+					}
+					else if (this.TryGetReversibleTerraformMapping(worldPosition, out value, out value2))
+					{
+						list.Add(new KeyValuePair<WorldPosition, TerrainTypeMapping>(worldPosition, value));
+						dictionary.Add(worldPosition, value2);
+					}
+				}
+				else if (ReverseTerraform && this.TryGetOriginalTerrainTypMapping(worldPosition, out value))
+				{
+					list.Add(new KeyValuePair<WorldPosition, TerrainTypeMapping>(worldPosition, value));
+				}
+			}
+		}
+		if (list.Count > 0)
+		{
+			WorldPosition[] array = this.PerformTerraformation(list.ToArray(), ReverseTerraform);
+			if (!ReverseTerraform)
+			{
+				foreach (WorldPosition worldPosition2 in array)
+				{
+					World.TemporaryTerraformation temporaryTerraformation2 = new World.TemporaryTerraformation(worldPosition2, dictionary[worldPosition2], duration);
+					this.TemporaryTerraformations.Add(temporaryTerraformation2);
+					if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+					{
+						Diagnostics.Log("ELCP Adding TemporaryTerraformation {0}", new object[]
+						{
+							temporaryTerraformation2
+						});
+					}
+				}
+			}
+			else
+			{
+				for (int k = 0; k < positions.Length; k++)
+				{
+					WorldPosition pos = positions[k];
+					this.TemporaryTerraformations.RemoveAll((World.TemporaryTerraformation tt) => tt.worldPosition == pos);
+				}
+				if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+				{
+					Diagnostics.Log("ELCP {0} TemporaryTerraformations left", new object[]
+					{
+						this.TemporaryTerraformations.Count
+					});
+				}
+			}
+			return array;
+		}
+		return new WorldPosition[0];
+	}
+
+	public bool TryGetReversibleTerraformMapping(WorldPosition worldPosition, out TerrainTypeMapping mappedTerrain, out StaticString OriginalName)
+	{
+		OriginalName = null;
+		mappedTerrain = null;
+		if (!worldPosition.IsValid)
+		{
+			return false;
+		}
+		byte value = this.TerrainMap.GetValue(worldPosition);
+		StaticString empty = StaticString.Empty;
+		if (!this.TerrainTypeNameMap.Data.TryGetValue((int)value, ref empty))
+		{
+			return false;
+		}
+		IDatabase<TerrainTypeMapping> database = Databases.GetDatabase<TerrainTypeMapping>(false);
+		Diagnostics.Assert(database != null, "Terrain Type Mapping database can't be 'null'.");
+		TerrainTypeMapping terrainTypeMapping = null;
+		if (!database.TryGetValue(empty, out terrainTypeMapping))
+		{
+			return false;
+		}
+		OriginalName = terrainTypeMapping.Name;
+		return this.TryGetTerraformMapping(terrainTypeMapping, worldPosition, out mappedTerrain);
+	}
+
+	public string MinorFactionDifficulty { get; private set; }
+
 	private static readonly StaticString TerraformationLayerName = new StaticString("Terraformation");
 
 	private GridMap<byte> terrainMap;
@@ -1387,6 +1577,8 @@ public class World : IXmlSerializable
 	private Map<TerrainTypeName> terrainTypeNameMap;
 
 	private Dictionary<StaticString, short> terrainTypeValuesByName;
+
+	public List<World.TemporaryTerraformation> TemporaryTerraformations;
 
 	public static class TerraformState
 	{
@@ -1412,5 +1604,46 @@ public class World : IXmlSerializable
 		Ocean,
 		CoastalWaters,
 		InlandWater
+	}
+
+	public class TemporaryTerraformation : IXmlSerializable
+	{
+		public TemporaryTerraformation(WorldPosition worldposition, StaticString terrainname, int duration)
+		{
+			this.worldPosition = worldposition;
+			this.terrainName = terrainname;
+			this.turnsRemaing = duration;
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}:{1},{2}", this.worldPosition, this.terrainName, this.turnsRemaing);
+		}
+
+		public void WriteXml(Amplitude.Xml.XmlWriter writer)
+		{
+			writer.WriteVersionAttribute(1);
+			writer.WriteAttributeString<short>("worldPositionRow", this.worldPosition.Row);
+			writer.WriteAttributeString<short>("worldPositionCol", this.worldPosition.Column);
+			writer.WriteAttributeString<StaticString>("terrainName", this.terrainName);
+			writer.WriteAttributeString<int>("turnsRemaing", this.turnsRemaing);
+		}
+
+		public void ReadXml(Amplitude.Xml.XmlReader reader)
+		{
+			reader.ReadVersionAttribute();
+			short attribute = reader.GetAttribute<short>("worldPositionRow", -1);
+			short attribute2 = reader.GetAttribute<short>("worldPositionCol", -1);
+			this.worldPosition = new WorldPosition(attribute, attribute2);
+			this.terrainName = reader.GetAttribute<string>("terrainName", string.Empty);
+			this.turnsRemaing = reader.GetAttribute<int>("turnsRemaing", 1);
+			reader.ReadStartElement();
+		}
+
+		public WorldPosition worldPosition;
+
+		public StaticString terrainName;
+
+		public int turnsRemaing;
 	}
 }

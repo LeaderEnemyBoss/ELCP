@@ -5,9 +5,31 @@
     <Multipliers>
       <!-- AI Registry -->
       <AI>
+		<AgentDefinition>
+		  
+		  <MoneyPrintTermAgent>
+            <Multiplier>0</Multiplier>
+		  </MoneyPrintTermAgent>
+
+		  <CommercialAgreementTermAgent>
+			<Multiplier>1.2</Multiplier>
+		  </CommercialAgreementTermAgent>
+		  <ResearchAgreementTermAgent>
+		    <Multiplier>1.2</Multiplier>
+		  </ResearchAgreementTermAgent>
+
+        </AgentDefinition>
+	  
+	  
+	  
         <MajorEmpire>
           <AIEntity_Empire>
-
+			<AILayer_Victory>
+				<VictoryFocusMilitary>1.8</VictoryFocusMilitary>
+				<VictoryFocusDiplomacy>1.7</VictoryFocusDiplomacy>
+				<VictoryFocusEconomy>1.1</VictoryFocusEconomy>
+				<VictoryFocusTechnology>1.2</VictoryFocusTechnology>
+			</AILayer_Victory>
             <!-- The degree to which various attitude modifiers are taken into account -->
             <AILayer_Attitude>
               <!-- ##### -->
@@ -106,7 +128,9 @@
               <AttitudeScoreOtherEmpireHasUniqueFacility>0.9</AttitudeScoreOtherEmpireHasUniqueFacility>
               <AttitudeScoreOtherEmpireLeadNavalRegionCount>0.9</AttitudeScoreOtherEmpireLeadNavalRegionCount>
           </AILayer_Attitude>
-            
+            <AILayer_Diplomacy>
+			  <SweetenDealThreshold>1.1</SweetenDealThreshold>
+			</AILayer_Diplomacy>
             <AILayer_Strategy>
 
               <ResearchScoreFactor>1.1</ResearchScoreFactor>
@@ -197,7 +221,7 @@
                 <AIEmpireUnlockMarketUnit>1.1</AIEmpireUnlockMarketUnit>
                 <AIEmpireUnlockMarketResource>1</AIEmpireUnlockMarketResource>
                 <AIEmpireUnlockBooster>1</AIEmpireUnlockBooster>
-                <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
+                <AIEmpireUnlockBoosterCultist>1</AIEmpireUnlockBoosterCultist>
                 <AIEmpireUnlockDiplomacyPositive>2</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>

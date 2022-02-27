@@ -138,12 +138,11 @@ public class CityInfoPanel : global::GuiPanel
 		{
 			populationSacrificeButton.AgeTransform.Enable = CityInfoPanel.interactionsAllowed;
 			populationSacrificeButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%CityPopulationSacrificeDescription");
+			populationSacrificeButton.AgeTransform.AgeTooltip.Content = populationSacrificeButton.AgeTransform.AgeTooltip.Content.Replace("1 \\7708\\", ((int)(city.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier) * 2f)).ToString() + " \\7708\\");
+			return;
 		}
-		else
-		{
-			populationSacrificeButton.AgeTransform.Enable = false;
-			populationSacrificeButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%CityCannotSacrificePopulationDescription");
-		}
+		populationSacrificeButton.AgeTransform.Enable = false;
+		populationSacrificeButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%CityCannotSacrificePopulationDescription");
 	}
 
 	public static void ShowHidePopulationBuyoutButton(Amplitude.Unity.Game.Empire observer, City city, AgeTransform populationBuyoutButton, AgeTransform populationGaugeBackground, AgeTransform nextPopulationTurns, AgeTransform nextPopulationHourglass, AgeTransform gaugePopulationTooltip)

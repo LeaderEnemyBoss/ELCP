@@ -61,7 +61,7 @@
     <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/TerrainTagSeafaringUnitCreation,!DistrictProxyCampExploitation</PathPrerequisite>
     <!-- Match="Any" ... improvement is accepted if anyone of the tags does math -->
     <!-- Match="All" ... improvement is accepted if all the tags do math -->
-    <WorldPlacementTags Match="Any">TerrainTypeCoastalWaters;TerrainTypeInlandWater;TerrainTypeOcean</WorldPlacementTags>
+    <WorldPlacementTags Match="Any">TerrainTypeCoastalWaters;TerrainTypeOcean</WorldPlacementTags>
   </CoastalDistrictImprovementDefinition>
   <!--
   !!! This should be replaced with FreeCoastalDistrictImprovementDefinition when it has been implemented
@@ -104,7 +104,7 @@
     <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyOrbUnlock6</TechnologyPrerequisite>
     <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
     <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Discard">ClassCity/DistrictImprovementOrbUnlock6</PathPrerequisite>
-    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/DistrictTypeExploitation,TerrainTagAnomaly</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite">ClassCity/DistrictTypeExploitation,!DistrictProxyCampExploitation,TerrainTagAnomaly</PathPrerequisite>
     <WorldPlacementTags Match="All">TerrainTagAnomaly</WorldPlacementTags>
   </DistrictImprovementDefinition>
   <FreeDistrictImprovementDefinition    Name="FreeDistrictOrbUnlock6"                       SubCategory="SubCategoryDistrictOrbUnlock" DistrictDescriptorSuffix="OrbUnlock6" ResourceOnMigration="FreeOrbUnlock6">

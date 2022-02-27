@@ -55,6 +55,7 @@ public abstract class CatspawBehavior : ArmyBehavior
 		army.PathToRoamingPosition = base.ComputePathToPosition(army, army.RoamingPosition, army.PathToRoamingPosition);
 		if (army.PathToRoamingPosition == null)
 		{
+			army.RoamingPosition = WorldPosition.Invalid;
 			return BehaviorNodeReturnCode.Failure;
 		}
 		return BehaviorNodeReturnCode.Success;
@@ -85,11 +86,15 @@ public abstract class CatspawBehavior : ArmyBehavior
 		{
 			return BehaviorNodeReturnCode.Failure;
 		}
-		WorldPosition worldPosition = mainAttackableTarget.WorldPosition;
-		WorldOrientation orientation = this.worldPositionService.GetOrientation(worldPosition, army.Garrison.WorldPosition);
-		int num = (int)army.Garrison.GetPropertyValue(SimulationProperties.Movement);
-		WorldPosition neighbourTile = this.worldPositionService.GetNeighbourTile(army.Garrison.WorldPosition, orientation, num + 1);
-		army.RoamingPosition = neighbourTile;
+		army.RoamingPosition = mainAttackableTarget.WorldPosition;
+		if (this.worldPositionService.GetDistance(army.RoamingPosition, army.Garrison.WorldPosition) < 2)
+		{
+			WorldPosition validTileToAttack = base.GetValidTileToAttack(army, army.Garrison);
+			if (validTileToAttack.IsValid)
+			{
+				army.RoamingPosition = validTileToAttack;
+			}
+		}
 		return BehaviorNodeReturnCode.Success;
 	}
 

@@ -176,12 +176,29 @@
 
   <!-- BarkSkin level 1 -->
   <GuiElement Name="BattleEffect_BarkSkin1">
-    <Title>%UnitAbilityBarkSkinTitle</Title>
+    <Title>%UnitAbilityBarkSkin1Title</Title>
+    <Description>%UnitAbilityBarkSkin2Description</Description>
     <Icons>
       <Icon Size="Small" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateDefenseUpSmall" />
     </Icons>
   </GuiElement>
 
+  <GuiElement Name="BattleEffect_BarkSkin2">
+    <Title>%UnitAbilityBarkSkin2Title</Title>
+    <Description>%UnitAbilityBarkSkin2Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateDefenseUpSmall" />
+    </Icons>
+  </GuiElement>
+
+  <GuiElement Name="BattleEffect_BarkSkin3">
+    <Title>%UnitAbilityBarkSkin3Title</Title>
+    <Description>%UnitAbilityBarkSkin3Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateDefenseUpSmall" />
+    </Icons>
+  </GuiElement>
+  
   <!-- Exhaustion level 1 -->
   <GuiElement Name="BattleEffect_Exhaustion1">
     <Title>%BattleEffect_Exhaustion1Title</Title>
@@ -415,13 +432,13 @@
     </Icons>
   </GuiElement>
 
-  <!-- Add Parasite Action level 1 -->
+  <!-- This is the actual effect caused by the Vaccination capacity, despite the name. -->
   <GuiElement Name="BattleEffect_DiseaseImmunity1">
-    <Title>%BattleEffect_Parasite1Title</Title>
-    <Description>%BattleEffect_Parasite1Description</Description>
+    <Title>%BattleEffect_Vaccination1Title</Title>
+    <Description>%BattleEffect_Vaccination1Description</Description>
     <Icons>
-      <Icon Size="Small" Path="GUI/DynamicBitmaps/BattleEffect/BattleStatePoisoned1Small" />
-      <Icon Size="Large" Path="GUI/DynamicBitmaps/BattleEffect/BattleStatePoisoned1Large" />
+      <Icon Size="Small" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateImmuneToDebuff1Small" />
+      <Icon Size="Large" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateImmuneToDebuff1Large" />
     </Icons>
   </GuiElement>
 
@@ -441,7 +458,7 @@
     <Description>%BattleEffect_Stun1Description</Description>
     <Icons>
       <Icon Size="Small" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateStun1Small" />
-      <Icon Size="Large" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateStun1Large" />
+<!--      <Icon Size="Large" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateStun1Large" /> -->
     </Icons>
   </GuiElement>
 
@@ -522,6 +539,22 @@
     </Icons>
   </GuiElement>
 
+  <GuiElement Name="BattleEffect_IncreasedFire2">
+    <Title>%BattleEffect_IncreasedFire2Title</Title>
+    <Description>%BattleEffect_IncreasedFire2Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateAttackUpSmall" />
+    </Icons>
+  </GuiElement>
+
+  <GuiElement Name="BattleEffect_IncreasedFire3">
+    <Title>%BattleEffect_IncreasedFire3Title</Title>
+    <Description>%BattleEffect_IncreasedFire3Description</Description>
+    <Icons>
+      <Icon Size="Small" Path="GUI/DynamicBitmaps/BattleEffect/BattleStateAttackUpSmall" />
+    </Icons>
+  </GuiElement>
+
   <!-- Content: EternalFire -->
   <GuiElement Name="BattleEffectAddEternalFireAction1">
     <Title>%BattleEffectAddEternalFireAction1Title</Title>
@@ -559,7 +592,7 @@
   </GuiElement>
 
   <!-- Mark of the Predator -->
-  <GuiElement Name="BattleEffect_AddMarkOfThePredatorLevel1">
+  <GuiElement Name="BattleEffect_AddMarkOfThePredatorLevel01">
     <Title>%BattleEffect_AddMarkOfThePredatorLevel1Title</Title>
     <Description>%BattleEffect_AddMarkOfThePredatorLevel1Description</Description>
     <Icons>
@@ -567,7 +600,7 @@
     </Icons>
   </GuiElement>
 
-  <GuiElement Name="BattleEffect_AddMarkOfThePredatorLevel2">
+  <GuiElement Name="BattleEffect_AddMarkOfThePredatorLevel11">
     <Title>%BattleEffect_AddMarkOfThePredatorLevel2Title</Title>
     <Description>%BattleEffect_AddMarkOfThePredatorLevel2Description</Description>
     <Icons>
@@ -575,7 +608,7 @@
     </Icons>
   </GuiElement>
 
-  <GuiElement Name="BattleEffect_AddMarkOfThePredatorLevel3">
+  <GuiElement Name="BattleEffect_AddMarkOfThePredatorLevel21">
     <Title>%BattleEffect_AddMarkOfThePredatorLevel3Title</Title>
     <Description>%BattleEffect_AddMarkOfThePredatorLevel3Description</Description>
     <Icons>

@@ -13,15 +13,28 @@
           Money-grubbing
           -->
           <MoneyReferenceRatioAgent>
-            <MoneyStockToMaintainUpkeepTurnCount>1.2</MoneyStockToMaintainUpkeepTurnCount>
-            <MoneyIncomeGrowthPercent>1.5</MoneyIncomeGrowthPercent>
+            <MoneyStockToMaintainUpkeepTurnCount>3</MoneyStockToMaintainUpkeepTurnCount>
+            <MoneyIncomeGrowthPercent>3</MoneyIncomeGrowthPercent>
           </MoneyReferenceRatioAgent>
+		  
+		  <CommercialAgreementTermAgent>
+			<Multiplier>1.4</Multiplier>
+		  </CommercialAgreementTermAgent>
 
+			<MoneyPrintTermAgent>
+				<Multiplier>0</Multiplier>
+			</MoneyPrintTermAgent>
         </AgentDefinition>
 
         <MajorEmpire>
           <AIEntity_Empire>
-
+			
+			<AILayer_Victory>
+				<VictoryFocusMilitary>1.7</VictoryFocusMilitary>
+				<VictoryFocusDiplomacy>1.1</VictoryFocusDiplomacy>
+				<VictoryFocusEconomy>2.5</VictoryFocusEconomy>
+				<VictoryFocusTechnology>0.9</VictoryFocusTechnology>
+			</AILayer_Victory>
             <!-- The degree to which various attitude modifiers are taken into account -->
             <AILayer_Attitude>
               <!-- ##### -->
@@ -151,8 +164,8 @@
                   <WarUnitNeedOffset>0.8</WarUnitNeedOffset>
                   <WarUnitNeedStartTurn>0.8</WarUnitNeedStartTurn>
                   <WarUnitNeedTurnRatio>0.8</WarUnitNeedTurnRatio>
-                  <MinimumNumberOfWarUnit>1.2</MinimumNumberOfWarUnit>
-                  <MaximumNumberOfWarUnit>1.2</MaximumNumberOfWarUnit>
+                  <MinimumNumberOfWarUnit>2</MinimumNumberOfWarUnit>
+                  <MaximumNumberOfWarUnit>1</MaximumNumberOfWarUnit>
 
                   <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
                 </MilitaryEmpireNeedAgent>
@@ -192,7 +205,7 @@
                 <AIEmpireGrowth>0.8</AIEmpireGrowth>
                 <AIEmpireProduction>1.2</AIEmpireProduction>
                 <AIEmpireResearch>0.9</AIEmpireResearch>
-                <AIEmpireMoney>2</AIEmpireMoney>
+                <AIEmpireMoney>4</AIEmpireMoney>
                 <AIEmpireEmpirePoint>0.8</AIEmpireEmpirePoint>
                 <AIEmpirePillageDefense>1.2</AIEmpirePillageDefense>
                 <AIEmpireAntiSpy>1.4</AIEmpireAntiSpy>
@@ -212,10 +225,38 @@
                 <AIEmpireUnlockMarketUnit>1.2</AIEmpireUnlockMarketUnit>
                 <AIEmpireUnlockMarketResource>0.8</AIEmpireUnlockMarketResource>
                 <AIEmpireUnlockBooster>0.9</AIEmpireUnlockBooster>
-                <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
+                <AIEmpireUnlockBoosterCultist>1</AIEmpireUnlockBoosterCultist>
                 <AIEmpireUnlockDiplomacyPositive>0.5</AIEmpireUnlockDiplomacyPositive>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>
+			
+			<!-- ELCP: reworked Assimilation, base scores per village -->
+			<AILayer_Assimilation>
+				<Bos>0.4</Bos>
+				<Ceratan>1.2</Ceratan>
+				<Delvers>1.2</Delvers>
+				<Erycis>1</Erycis>
+				<Haunts>1</Haunts>
+				<Kazanji>1</Kazanji>
+				<Silics>1</Silics>
+				<SistersOfMercy>0.7</SistersOfMercy>
+				<Urces>1</Urces>
+				<Jotus>1</Jotus>
+				<Hurnas>1</Hurnas>
+				<Gauran>1</Gauran>
+				<Birdhive>1</Birdhive>
+				<Geldirus>1</Geldirus>
+				<EyelessOnes>1.4</EyelessOnes>
+				<Dorgeshi>1</Dorgeshi>	
+				<DawnShua>1.1</DawnShua>
+			</AILayer_Assimilation>
+			
+			<!--ELCP BL are less trade happy -->
+			<AILayer_Diplomacy>
+			  <SweetenDealThreshold>0.8</SweetenDealThreshold>
+			  <MinimumNumberOfTurnsBetweenPropositions>1.4</MinimumNumberOfTurnsBetweenPropositions>
+			  <MaximumNumberOfTurnsBetweenPropositions>1.4</MaximumNumberOfTurnsBetweenPropositions>
+			</AILayer_Diplomacy>
           </AIEntity_Empire>
 
           <AIEntity_City>

@@ -73,6 +73,7 @@ public class GeoConstructibleLabelLayerPanel : LabelLayerPanel<GeoConstructibleL
 			DepartmentOfTheInterior agency2 = this.City.Empire.GetAgency<DepartmentOfTheInterior>();
 			DepartmentOfTheTreasury agency3 = this.City.Empire.GetAgency<DepartmentOfTheTreasury>();
 			ConstructibleElement[] availableConstructibleElements = agency.ConstructibleElementDatabase.GetAvailableConstructibleElements(new StaticString[0]);
+			ConstructibleElement[] array = availableConstructibleElements;
 			List<StaticString> list = new List<StaticString>();
 			for (int i = 0; i < this.City.Region.PointOfInterests.Length; i++)
 			{
@@ -81,11 +82,11 @@ public class GeoConstructibleLabelLayerPanel : LabelLayerPanel<GeoConstructibleL
 				{
 					List<PointOfInterestImprovementDefinition> list2 = new List<PointOfInterestImprovementDefinition>();
 					List<ConstructibleDistrictDefinition> list3 = new List<ConstructibleDistrictDefinition>();
-					for (int j = 0; j < availableConstructibleElements.Length; j++)
+					for (int j = 0; j < array.Length; j++)
 					{
-						if (availableConstructibleElements[j] is PointOfInterestImprovementDefinition)
+						if (array[j] is PointOfInterestImprovementDefinition)
 						{
-							PointOfInterestImprovementDefinition pointOfInterestImprovementDefinition = availableConstructibleElements[j] as PointOfInterestImprovementDefinition;
+							PointOfInterestImprovementDefinition pointOfInterestImprovementDefinition = array[j] as PointOfInterestImprovementDefinition;
 							if (pointOfInterestImprovementDefinition.PointOfInterestTemplateName == pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName)
 							{
 								list.Clear();
@@ -99,9 +100,9 @@ public class GeoConstructibleLabelLayerPanel : LabelLayerPanel<GeoConstructibleL
 								}
 							}
 						}
-						else if (availableConstructibleElements[j] is ConstructibleDistrictDefinition)
+						else if (array[j] is ConstructibleDistrictDefinition)
 						{
-							ConstructibleDistrictDefinition constructibleDistrictDefinition = availableConstructibleElements[j] as ConstructibleDistrictDefinition;
+							ConstructibleDistrictDefinition constructibleDistrictDefinition = array[j] as ConstructibleDistrictDefinition;
 							if (constructibleDistrictDefinition != null)
 							{
 								list3.Add(constructibleDistrictDefinition);

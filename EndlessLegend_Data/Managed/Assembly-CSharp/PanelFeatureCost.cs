@@ -52,11 +52,9 @@ public class PanelFeatureCost : GuiPanelFeature
 					if (buyOutTechnologyCost != 3.40282347E+38f)
 					{
 						costString = GuiFormater.FormatInstantCost(empire, buyOutTechnologyCost, DepartmentOfTheTreasury.Resources.EmpireMoney, true, 0);
+						return;
 					}
-					else
-					{
-						costString = "-";
-					}
+					costString = "-";
 					return;
 				}
 				else
@@ -105,11 +103,9 @@ public class PanelFeatureCost : GuiPanelFeature
 				if (buyOutTechnologyCost != 3.40282347E+38f)
 				{
 					costString = GuiFormater.FormatInstantCost(empire, buyOutTechnologyCost, DepartmentOfTheTreasury.Resources.EmpireMoney, true, 0);
+					return;
 				}
-				else
-				{
-					costString = "-";
-				}
+				costString = "-";
 				return;
 			}
 			else

@@ -16,17 +16,19 @@ using UnityEngine;
 {
 
 })]
-public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncounterStrategyDefinition>, IAIEvaluationHelper<AIEncounterStrategyDefinition, InterpreterContext>
+public class AILayer_Encounter : AILayer, IUpdatable, ISimulationAIEvaluationHelper<AIEncounterStrategyDefinition>, IAIEvaluationHelper<AIEncounterStrategyDefinition, InterpreterContext>
 {
 	public AILayer_Encounter()
 	{
+		this.myEncounters = new List<Encounter>();
+		this.aIDebugSpellScoring = new List<AILayer_Encounter.DebugSpellScoring>();
 		this.DecisionMakerEvaluationDataHistoric = new FixedSizedList<DecisionMakerEvaluationData<AIEncounterStrategyDefinition, InterpreterContext>>(global::Application.FantasyPreferences.AIDebugHistoricSize);
 		this.decisionResults = new List<DecisionResult>();
 		this.lastEncounterAnalysis = new List<AILayer_Encounter.AIEncounterBattleGroundAnalysis>();
 		this.fearfulness = 0.2f;
 		this.balanceOfPowerDecreaseFactor = 0.25f;
 		this.balanceOfPowerIncreaseFactor = 0.5f;
-		base..ctor();
+		this.phaseOrderCoroutines = new List<Amplitude.Coroutine>();
 	}
 
 	public event EventHandler<RoundUpdateEventArgs> EncounterRoundUpdate;
@@ -69,6 +71,20 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 				this.ResetSpellScoringGrid(this.spellAffinityDefinitions[j]);
 			}
 		}
+		List<SpellDefinition> list = new List<SpellDefinition>();
+		for (int k = 0; k < this.spellAffinityDefinitions.Count; k++)
+		{
+			SpellDefinition item;
+			if (!this.spellDefinitionDatabase.TryGetValue(this.spellAffinityDefinitions[k].Name, out item))
+			{
+				AILayer.LogError("Can't retrieve the spellDefinition '{0}'.", new object[]
+				{
+					this.spellAffinityDefinitions[k].Name
+				});
+			}
+			list.Add(item);
+		}
+		Contender firstAlliedContenderFromEmpire = encounter.GetFirstAlliedContenderFromEmpire(base.AIEntity.Empire);
 		foreach (Contender contender in encounter.Contenders)
 		{
 			bool flag = contender.Empire == base.AIEntity.Empire;
@@ -85,70 +101,81 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 				foreach (EncounterUnit encounterUnit in contender.EncounterUnits)
 				{
 					Diagnostics.Assert(encounterUnit.Unit != null);
-					float propertyValue = encounterUnit.GetPropertyValue(SimulationProperties.Health);
-					if (propertyValue > 0f)
+					if (encounterUnit.GetPropertyValue(SimulationProperties.Health) > 0f && (!analyseContenders || encounterUnit.WorldPosition.IsValid))
 					{
-						if (!analyseContenders || encounterUnit.WorldPosition.IsValid)
+						if (this.battleZone != null)
 						{
-							if (this.battleZone != null)
+							for (int l = 0; l < this.spellAffinityDefinitions.Count; l++)
 							{
-								for (int k = 0; k < this.spellAffinityDefinitions.Count; k++)
+								AIEncounterSpellAffinityDefinition aiencounterSpellAffinityDefinition = this.spellAffinityDefinitions[l];
+								List<WorldPosition> affectedPosition = list[l].GetAffectedPosition(firstAlliedContenderFromEmpire, encounterUnit.WorldPosition, firstAlliedContenderFromEmpire.WorldOrientation.Rotate(3), this.worldPositionningService.World.WorldParameters);
+								if (aiencounterSpellAffinityDefinition.Target == "Ally")
 								{
-									AIEncounterSpellAffinityDefinition aiencounterSpellAffinityDefinition = this.spellAffinityDefinitions[k];
-									if (flag && aiencounterSpellAffinityDefinition.Target == "Ally")
-									{
-										this.UpdateSpellScoringGrid(aiencounterSpellAffinityDefinition, encounterUnit);
-									}
-									else if (!flag && aiencounterSpellAffinityDefinition.Target == "Enemy")
-									{
-										this.UpdateSpellScoringGrid(aiencounterSpellAffinityDefinition, encounterUnit);
-									}
+									this.UpdateSpellScoringGrid_ELCP(aiencounterSpellAffinityDefinition, encounterUnit, affectedPosition, true);
+								}
+								else if (aiencounterSpellAffinityDefinition.Target == "Enemy")
+								{
+									this.UpdateSpellScoringGrid_ELCP(aiencounterSpellAffinityDefinition, encounterUnit, affectedPosition, false);
 								}
 							}
-							this.decisionResults.Clear();
-							this.unitPatternHelper.ComputeAllEncounterUnitPatternAffinities(encounterUnit, ref this.decisionResults);
-							AIUnitPatternDefinition aiunitPatternDefinition = this.decisionResults[0].Element as AIUnitPatternDefinition;
-							if (analyseContenders && flag)
+						}
+						this.decisionResults.Clear();
+						this.unitPatternHelper.ComputeAllEncounterUnitPatternAffinities(encounterUnit, ref this.decisionResults);
+						AIUnitPatternDefinition aiunitPatternDefinition = this.decisionResults[0].Element as AIUnitPatternDefinition;
+						if (analyseContenders && flag)
+						{
+							if (this.lastEncounterAnalysis.Count == 0 || this.lastEncounterAnalysis[this.lastEncounterAnalysis.Count - 1].ContenderGUID != contender.GUID)
 							{
-								if (this.lastEncounterAnalysis.Count == 0 || this.lastEncounterAnalysis[this.lastEncounterAnalysis.Count - 1].ContenderGUID != contender.GUID)
-								{
-									this.lastEncounterAnalysis.Add(new AILayer_Encounter.AIEncounterBattleGroundAnalysis(contender.GUID));
-								}
-								if (encounterUnit.CanPlayBattleRound)
-								{
-									this.lastEncounterAnalysis[this.lastEncounterAnalysis.Count - 1].AllyUnitPlayingNextBattleRound.Add(new AILayer_Encounter.AIEncounterUnitAnalysis(encounterUnit.Unit.GUID, aiunitPatternDefinition.Name, aiunitPatternDefinition.Category));
-								}
+								this.lastEncounterAnalysis.Add(new AILayer_Encounter.AIEncounterBattleGroundAnalysis(contender.GUID));
 							}
-							if (flag)
+							if (encounterUnit.CanPlayBattleRound)
 							{
-								if (encounterUnit.Unit.IsHero())
-								{
-									battleFeedback.AllyHeroCount++;
-								}
-								else
-								{
-									battleFeedback.AllyUnitCount++;
-								}
-								battleFeedback.UnitPatternStats[aiunitPatternDefinition.Category].AllyCount++;
-								battleFeedback.UnitPatternStats[aiunitPatternDefinition.Category].AllyPower += this.decisionResults[0].Score;
-								battleFeedback.AllyUnitPatternPower += this.decisionResults[0].Score;
-								battleFeedback.AllyMilitaryPower += encounterUnit.Unit.GetPropertyValue(SimulationProperties.MilitaryPower);
+								this.lastEncounterAnalysis[this.lastEncounterAnalysis.Count - 1].AllyUnitPlayingNextBattleRound.Add(new AILayer_Encounter.AIEncounterUnitAnalysis(encounterUnit.Unit.GUID, aiunitPatternDefinition.Name, aiunitPatternDefinition.Category));
+							}
+						}
+						if (flag)
+						{
+							int num;
+							if (encounterUnit.Unit.IsHero())
+							{
+								FeedbackMessage_Battle feedbackMessage_Battle = battleFeedback;
+								num = feedbackMessage_Battle.AllyHeroCount;
+								feedbackMessage_Battle.AllyHeroCount = num + 1;
 							}
 							else
 							{
-								if (encounterUnit.Unit.IsHero())
-								{
-									battleFeedback.OpponentHeroCount++;
-								}
-								else
-								{
-									battleFeedback.OpponentUnitCount++;
-								}
-								battleFeedback.UnitPatternStats[aiunitPatternDefinition.Category].OpponentCount++;
-								battleFeedback.UnitPatternStats[aiunitPatternDefinition.Category].OpponentPower += this.decisionResults[0].Score;
-								battleFeedback.OpponentUnitPatternPower += this.decisionResults[0].Score;
-								battleFeedback.OpponentMilitaryPower += encounterUnit.Unit.GetPropertyValue(SimulationProperties.MilitaryPower);
+								FeedbackMessage_Battle feedbackMessage_Battle2 = battleFeedback;
+								num = feedbackMessage_Battle2.AllyUnitCount;
+								feedbackMessage_Battle2.AllyUnitCount = num + 1;
 							}
+							FeedbackMessage_Battle.UnitPatternStatistics unitPatternStatistics = battleFeedback.UnitPatternStats[aiunitPatternDefinition.Category];
+							num = unitPatternStatistics.AllyCount;
+							unitPatternStatistics.AllyCount = num + 1;
+							battleFeedback.UnitPatternStats[aiunitPatternDefinition.Category].AllyPower += this.decisionResults[0].Score;
+							battleFeedback.AllyUnitPatternPower += this.decisionResults[0].Score;
+							battleFeedback.AllyMilitaryPower += encounterUnit.Unit.GetPropertyValue(SimulationProperties.MilitaryPower);
+						}
+						else
+						{
+							int num2;
+							if (encounterUnit.Unit.IsHero())
+							{
+								FeedbackMessage_Battle feedbackMessage_Battle3 = battleFeedback;
+								num2 = feedbackMessage_Battle3.OpponentHeroCount;
+								feedbackMessage_Battle3.OpponentHeroCount = num2 + 1;
+							}
+							else
+							{
+								FeedbackMessage_Battle feedbackMessage_Battle4 = battleFeedback;
+								num2 = feedbackMessage_Battle4.OpponentUnitCount;
+								feedbackMessage_Battle4.OpponentUnitCount = num2 + 1;
+							}
+							FeedbackMessage_Battle.UnitPatternStatistics unitPatternStatistics2 = battleFeedback.UnitPatternStats[aiunitPatternDefinition.Category];
+							num2 = unitPatternStatistics2.OpponentCount;
+							unitPatternStatistics2.OpponentCount = num2 + 1;
+							battleFeedback.UnitPatternStats[aiunitPatternDefinition.Category].OpponentPower += this.decisionResults[0].Score;
+							battleFeedback.OpponentUnitPatternPower += this.decisionResults[0].Score;
+							battleFeedback.OpponentMilitaryPower += encounterUnit.Unit.GetPropertyValue(SimulationProperties.MilitaryPower);
 						}
 					}
 				}
@@ -202,7 +229,7 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 
 	private void ChooseAndApplyStrategy(Encounter encounter, Contender contender)
 	{
-		bool flag = encounter.BattlePhaseIndex == 0 && DepartmentOfTheInterior.CanInvokePillarsAndSpells(base.AIEntity.Empire);
+		bool flag = !this.IsAnySpellActive(encounter) && DepartmentOfTheInterior.CanInvokePillarsAndSpells(base.AIEntity.Empire);
 		FeedbackMessage_Battle feedbackMessage_Battle = new FeedbackMessage_Battle();
 		IEnumerable<AILayer_Encounter.AIEncounterBattleGroundAnalysis> enumerable = this.AnalyseContenders(encounter, ref feedbackMessage_Battle, true, flag);
 		feedbackMessage_Battle.BattleState = FeedbackMessage_Battle.BattleStateType.Targeting;
@@ -211,6 +238,7 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		strategyDecisionResults.Clear();
 		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 		{
+			this.aIDebugSpellScoring.Clear();
 			DecisionMakerEvaluationData<AIEncounterStrategyDefinition, InterpreterContext> decisionMakerEvaluationData;
 			this.strategyDecisionMaker.EvaluateDecisions(this.encounterStrategyDatabase, ref strategyDecisionResults, out decisionMakerEvaluationData);
 			IGameService service = Services.GetService<IGameService>();
@@ -229,85 +257,26 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		base.AIEntity.AIPlayer.Blackboard.AddMessage(feedbackMessage_Battle);
 		if (flag)
 		{
-			this.ChooseAndCastSpell(encounter, contender);
-		}
-	}
-
-	private void ChooseAndCastSpell(Encounter encounter, Contender contender)
-	{
-		WorldPosition targetPosition = WorldPosition.Invalid;
-		SpellDefinition spellDefinition = null;
-		float num = 0f;
-		foreach (AIEncounterSpellAffinityDefinition aiencounterSpellAffinityDefinition in this.spellAffinityDefinitions)
-		{
-			IDatabase<SpellDefinition> database = Databases.GetDatabase<SpellDefinition>(false);
-			SpellDefinition spellDefinition2;
-			if (database == null)
+			Contender contender2 = contender;
+			if (contender2.Garrison.UnitsCount == 0)
 			{
-				AILayer.LogError("Can't retrieve the spellDefinition's database.");
+				contender2 = encounter.GetFirstAlliedContenderFromEmpireWithUnits(base.AIEntity.Empire);
 			}
-			else if (!database.TryGetValue(aiencounterSpellAffinityDefinition.Name, out spellDefinition2))
-			{
-				AILayer.LogError("Can't retrieve the spellDefinition '{0}'.", new object[]
-				{
-					spellDefinition.Name
-				});
-			}
-			else
-			{
-				bool flag = false;
-				foreach (Prerequisite prerequisite in spellDefinition2.Prerequisites)
-				{
-					if (!prerequisite.Check(base.AIEntity.Empire))
-					{
-						flag = true;
-						break;
-					}
-				}
-				if (!flag)
-				{
-					GridMap<float> gridMap = this.spellAffinityGridMaps[aiencounterSpellAffinityDefinition.Name];
-					for (int j = 0; j < gridMap.Height; j++)
-					{
-						for (int k = 0; k < gridMap.Width; k++)
-						{
-							WorldPosition worldPosition = new WorldPosition(j, k);
-							float value = gridMap.GetValue(worldPosition);
-							if (value >= num)
-							{
-								targetPosition = this.battleZone.ConvertFromGridToWorldPosition(worldPosition);
-								spellDefinition = spellDefinition2;
-								num = value;
-							}
-						}
-					}
-				}
-			}
-		}
-		if (num > 0f && base.AIEntity.GetLayer<AILayer_AccountManager>().TryMakeUnexpectedImmediateExpense(AILayer_AccountManager.MilitaryAccountName, this.GetSpellDustCost(spellDefinition), 0f))
-		{
-			OrderBuyoutSpellAndPlayBattleAction order = new OrderBuyoutSpellAndPlayBattleAction(encounter.GUID, contender.GUID, targetPosition, spellDefinition);
-			base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
+			this.ChooseAndCastSpell(encounter, contender2, feedbackMessage_Battle);
 		}
 	}
 
 	private bool ContenderContainsSettler(Contender contender)
 	{
-		if (contender.EncounterUnits.Count > 3)
-		{
-			return false;
-		}
-		bool result = false;
+		int num = 0;
 		for (int i = 0; i < contender.EncounterUnits.Count; i++)
 		{
-			EncounterUnit encounterUnit = contender.EncounterUnits[i];
-			if (encounterUnit.Unit.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
+			if (contender.EncounterUnits[i].Unit.IsSettler)
 			{
-				result = true;
-				break;
+				num++;
 			}
 		}
-		return result;
+		return contender.EncounterUnits.Count <= 3 * num && num > 0;
 	}
 
 	private float DecisionParameterContextModifierDelegate(AIEncounterStrategyDefinition aiEvaluableElement, StaticString aiParameterName)
@@ -344,9 +313,8 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 
 	private float GetSpellDustCost(SpellDefinition spellDefinition)
 	{
-		DepartmentOfTheTreasury agency = base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>();
 		ConstructionResourceStock[] array;
-		agency.GetInstantConstructionResourceCostForBuyout(base.AIEntity.Empire, spellDefinition, out array);
+		base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>().GetInstantConstructionResourceCostForBuyout(base.AIEntity.Empire, spellDefinition, out array);
 		float result = 0f;
 		if (array != null)
 		{
@@ -368,19 +336,9 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		IDatabase<AIEncounterSpellAffinityDefinition> database = Databases.GetDatabase<AIEncounterSpellAffinityDefinition>(false);
 		Diagnostics.Assert(database != null);
 		this.spellAffinityDefinitions = new List<AIEncounterSpellAffinityDefinition>();
-		foreach (AIEncounterSpellAffinityDefinition aiencounterSpellAffinityDefinition in database)
+		foreach (AIEncounterSpellAffinityDefinition item in database)
 		{
-			if (aiencounterSpellAffinityDefinition.CheckProportions())
-			{
-				this.spellAffinityDefinitions.Add(aiencounterSpellAffinityDefinition);
-			}
-			else
-			{
-				AILayer.LogWarning("[SCORING] Spell Affinity Definition {0} has been ignored because the sum of its proportions is not 100", new object[]
-				{
-					aiencounterSpellAffinityDefinition.Name
-				});
-			}
+			this.spellAffinityDefinitions.Add(item);
 		}
 		this.spellAffinityGridMaps = new Dictionary<StaticString, GridMap<float>>();
 	}
@@ -425,9 +383,9 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		{
 			return;
 		}
-		if (contender.Empire != base.AIEntity.Empire || !contender.IsMainContender)
+		if (contender.Empire == base.AIEntity.Empire)
 		{
-			return;
+			bool isMainContender = contender.IsMainContender;
 		}
 	}
 
@@ -466,31 +424,11 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		{
 			this.spellAffinityGridMaps.Remove(spellAffinityDefinition.Name);
 			this.spellAffinityGridMaps.Add(spellAffinityDefinition.Name, new GridMap<float>(spellAffinityDefinition.Name, this.battleZone.Width, this.battleZone.Height, null));
+			return;
 		}
-		else
+		for (int i = 0; i < gridMap.Data.Length; i++)
 		{
-			for (int i = 0; i < gridMap.Data.Length; i++)
-			{
-				gridMap.Data[i] = 0f;
-			}
-		}
-	}
-
-	private void UpdateSpellScoringGrid(AIEncounterSpellAffinityDefinition spellAffinityDefinition, EncounterUnit encounterUnit)
-	{
-		GridMap<float> gridMap = this.spellAffinityGridMaps[spellAffinityDefinition.Name];
-		this.spellAffinityGridMaps.TryGetValue(spellAffinityDefinition.Name, out gridMap);
-		float num = this.unitPatternHelper.ComputeEncounterUnitAffinity(encounterUnit, spellAffinityDefinition);
-		if (num > 0f)
-		{
-			foreach (WorldPosition worldPosition in WorldPosition.ParseTilesInRange(encounterUnit.WorldPosition, spellAffinityDefinition.Range, this.worldPositionningService.World.WorldParameters))
-			{
-				WorldPosition worldPosition2 = this.battleZone.ConvertFromWorldToGridPosition(worldPosition);
-				if (worldPosition2.IsValid && gridMap.Height > (int)worldPosition2.Row && gridMap.Width > (int)worldPosition2.Column)
-				{
-					gridMap.SetValue(worldPosition2, gridMap.GetValue(worldPosition2) + num);
-				}
-			}
+			gridMap.Data[i] = 0f;
 		}
 	}
 
@@ -585,9 +523,11 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		{
 			yield break;
 		}
-		for (int index = 0; index < aiParameterConverter.ToAIParameters.Length; index++)
+		int num;
+		for (int index = 0; index < aiParameterConverter.ToAIParameters.Length; index = num + 1)
 		{
 			yield return aiParameterConverter.ToAIParameters[index];
+			num = index;
 		}
 		yield break;
 	}
@@ -595,9 +535,11 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 	public IEnumerable<IAIParameter<InterpreterContext>> GetAIParameters(AIEncounterStrategyDefinition strategyElement)
 	{
 		Diagnostics.Assert(this.encounterStrategyAiParameters != null);
-		for (int index = 0; index < this.encounterStrategyAiParameters.Length; index++)
+		int num;
+		for (int index = 0; index < this.encounterStrategyAiParameters.Length; index = num + 1)
 		{
 			yield return this.encounterStrategyAiParameters[index];
+			num = index;
 		}
 		yield break;
 	}
@@ -614,40 +556,40 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		Diagnostics.Assert(database != null);
 		this.aiParameterConverterDatabase = Databases.GetDatabase<AIParameterConverter>(false);
 		AIParameterDatatableElement aiparameterDatatableElement;
-		if (database.TryGetValue("EncounterStrategyEvaluation", out aiparameterDatatableElement))
-		{
-			Diagnostics.Assert(aiparameterDatatableElement != null);
-			if (aiparameterDatatableElement.AIParameters != null)
-			{
-				this.encounterStrategyAiParameters = new IAIParameter<InterpreterContext>[aiparameterDatatableElement.AIParameters.Length];
-				for (int i = 0; i < aiparameterDatatableElement.AIParameters.Length; i++)
-				{
-					AIParameterDatatableElement.AIParameter aiparameter = aiparameterDatatableElement.AIParameters[i];
-					Diagnostics.Assert(aiparameter != null);
-					this.encounterStrategyAiParameters[i] = aiparameter.Instantiate();
-				}
-			}
-			else
-			{
-				AILayer.LogWarning("[DATA] EncounterStrategyEvaluation has no AI Parameters.");
-			}
-		}
-		else
+		if (!database.TryGetValue("EncounterStrategyEvaluation", out aiparameterDatatableElement))
 		{
 			AILayer.LogWarning("[DATA] EncounterStrategyEvaluation has no AI Parameters.");
+			return;
 		}
+		Diagnostics.Assert(aiparameterDatatableElement != null);
+		if (aiparameterDatatableElement.AIParameters != null)
+		{
+			this.encounterStrategyAiParameters = new IAIParameter<InterpreterContext>[aiparameterDatatableElement.AIParameters.Length];
+			for (int i = 0; i < aiparameterDatatableElement.AIParameters.Length; i++)
+			{
+				AIParameterDatatableElement.AIParameter aiparameter = aiparameterDatatableElement.AIParameters[i];
+				Diagnostics.Assert(aiparameter != null);
+				this.encounterStrategyAiParameters[i] = aiparameter.Instantiate();
+			}
+			return;
+		}
+		AILayer.LogWarning("[DATA] EncounterStrategyEvaluation has no AI Parameters.");
 	}
 
 	public override IEnumerator Initialize(AIEntity aiEntity)
 	{
 		yield return base.Initialize(aiEntity);
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
-		this.encounterRepositoryService = gameService.Game.Services.GetService<IEncounterRepositoryService>();
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.encounterRepositoryService = service.Game.Services.GetService<IEncounterRepositoryService>();
 		Diagnostics.Assert(this.encounterRepositoryService != null);
-		this.weatherService = gameService.Game.Services.GetService<IWeatherService>();
+		this.weatherService = service.Game.Services.GetService<IWeatherService>();
 		this.encounterRepositoryService.EncounterRepositoryChange += this.EncounterRepositoryService_EncounterRepositoryChange;
 		aiEntity.AIPlayer.AIPlayerStateChange += this.AIPlayer_AIPlayerStateChange;
+		this.spellDefinitionDatabase = Databases.GetDatabase<SpellDefinition>(false);
+		this.departmentOfTheTreasury = base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>();
+		this.tickableRepositoryAIHelper = AIScheduler.Services.GetService<ITickableRepositoryAIHelper>();
+		this.accountManager = base.AIEntity.GetLayer<AILayer_AccountManager>();
 		this.InitializeStrategies();
 		yield break;
 	}
@@ -662,12 +604,18 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		this.ReleaseStrategies();
 		base.AIEntity.AIPlayer.AIPlayerStateChange -= this.AIPlayer_AIPlayerStateChange;
 		base.Release();
+		this.aIDebugSpellScoring.Clear();
 		this.weatherService = null;
+		this.spellDefinitionDatabase = null;
+		this.departmentOfTheTreasury = null;
+		this.phaseOrderCoroutines.Clear();
+		this.tickableRepositoryAIHelper = null;
 		if (this.encounterRepositoryService != null)
 		{
 			this.encounterRepositoryService.EncounterRepositoryChange -= this.EncounterRepositoryService_EncounterRepositoryChange;
 			this.encounterRepositoryService = null;
 		}
+		this.accountManager = null;
 	}
 
 	private void AIPlayer_AIPlayerStateChange(object sender, EventArgs eventArgs)
@@ -808,20 +756,12 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 			return false;
 		}
 		District district = this.worldPositionningService.GetDistrict(contender.WorldPosition);
-		bool flag = district != null && district.Empire == contender.Empire && district.City.BesiegingEmpire != null;
-		if (flag)
-		{
-			return false;
-		}
-		bool flag2 = district != null && district.City.BesiegingEmpire == contender.Empire;
-		return !flag2 && this.ContenderContainsSettler(contender) && contender.HasEnoughActionPoint(1f);
+		return (district == null || district.Empire != contender.Empire || district.City.BesiegingEmpire == null) && (district == null || district.City.BesiegingEmpire != contender.Empire) && this.ContenderContainsSettler(contender) && contender.HasEnoughActionPoint(1f);
 	}
 
 	private void Encounter_ContenderCollectionChange(object sender, ContenderCollectionChangeEventArgs eventArgs)
 	{
-		switch (eventArgs.Action)
-		{
-		}
+		ContenderCollectionChangeAction action = eventArgs.Action;
 	}
 
 	private void DefineContenderStateAtSetup(Encounter encounter)
@@ -851,6 +791,7 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		Contender contender4 = null;
 		bool flag = false;
 		bool flag2 = false;
+		GameEntityGUID y = GameEntityGUID.Zero;
 		for (int j = 0; j < encounter.Contenders.Count; j++)
 		{
 			Contender contender = encounter.Contenders[j];
@@ -868,8 +809,16 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 				{
 					contender3 = contender;
 					deploymentArea2 = contender.Deployment.DeploymentArea;
+					if (!contender.IsAttacking)
+					{
+						District district = this.worldPositionningService.GetDistrict(contender.WorldPosition);
+						if (district != null && District.IsACityTile(district) && district.City.BesiegingEmpireIndex >= 0)
+						{
+							y = district.City.GUID;
+						}
+					}
 				}
-				else if (this.DoIWantToIncludeContenderInEncounter(encounter, contender) && contender.IsTakingPartInBattle)
+				else if ((this.DoIWantToIncludeContenderInEncounter(encounter, contender) || contender.Garrison.GUID == y) && contender.IsTakingPartInBattle)
 				{
 					list2.Add(contender.Garrison);
 				}
@@ -889,8 +838,16 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 				{
 					contender2 = contender;
 					deploymentArea = contender.Deployment.DeploymentArea;
+					if (!contender.IsAttacking)
+					{
+						District district2 = this.worldPositionningService.GetDistrict(contender.WorldPosition);
+						if (district2 != null && District.IsACityTile(district2) && district2.City.BesiegingEmpireIndex >= 0)
+						{
+							y = district2.City.GUID;
+						}
+					}
 				}
-				else if (!this.DoIWantToIncludeContenderInEncounter(encounter, contender))
+				else if (!this.DoIWantToIncludeContenderInEncounter(encounter, contender) && contender.Garrison.GUID != y)
 				{
 					this.PostIncludeContenderInEncounterOrder(encounter, contender, false);
 				}
@@ -903,6 +860,21 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		if (contender2 == null)
 		{
 			flag = true;
+		}
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			string str = (contender2 == null) ? "NULL" : ((contender2.Garrison is KaijuGarrison) ? (contender2.Garrison as KaijuGarrison).KaijuEmpire.KaijuFaction.LocalizedName : contender2.Garrison.LocalizedName);
+			string str2 = (contender3 == null) ? "NULL" : ((contender3.Garrison is KaijuGarrison) ? (contender3.Garrison as KaijuGarrison).KaijuEmpire.KaijuFaction.LocalizedName : contender3.Garrison.LocalizedName);
+			Diagnostics.Log("ELCP: Empire {0} DefineContenderStateAtSetup, Contenders: {5} vs {6} MyList {1} TheirList {2} flags {3} {4}", new object[]
+			{
+				base.AIEntity.Empire.Index,
+				list.Count,
+				list2.Count,
+				flag,
+				flag2,
+				(contender2 == null) ? "NULL" : (str + (contender2.IsAttacking ? "(Attacker)" : "")),
+				(contender3 == null) ? "NULL" : (str2 + (contender3.IsAttacking ? "(Attacker)" : ""))
+			});
 		}
 		if (flag || flag2)
 		{
@@ -933,74 +905,192 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		int num4 = (int)contender3.Garrison.GetPropertyValue(SimulationProperties.ReinforcementPointCount);
 		int num5 = Mathf.Min(num3 * this.intelligenceAIHelper.NumberOfBattleRound + contender2.Garrison.UnitsCount, deploymentArea.Count);
 		int availableTile = Mathf.Min(num4 * this.intelligenceAIHelper.NumberOfBattleRound + contender3.Garrison.UnitsCount, deploymentArea2.Count);
-		this.intelligenceAIHelper.ComputeMPBasedOnBattleArea(contender2.Garrison, list, num5, ref num);
-		this.intelligenceAIHelper.ComputeMPBasedOnBattleArea(contender3.Garrison, list2, availableTile, ref num2);
+		if (ELCPUtilities.UseELCPFortificationPointRuleset)
+		{
+			List<City> cities;
+			if (ELCPUtilities.IsELCPCityBattle(this.worldPositionningService, new List<IGarrison>
+			{
+				contender2.Garrison,
+				contender3.Garrison
+			}, out cities))
+			{
+				(this.intelligenceAIHelper as Intelligence).ComputeMPBasedOnBattleAreaELCP(contender2.Garrison, list, num5, ref num, cities);
+				(this.intelligenceAIHelper as Intelligence).ComputeMPBasedOnBattleAreaELCP(contender3.Garrison, list2, availableTile, ref num2, cities);
+			}
+			else
+			{
+				(this.intelligenceAIHelper as Intelligence).ComputeMPBasedOnBattleArea(contender2.Garrison, list, num5, ref num, false);
+				(this.intelligenceAIHelper as Intelligence).ComputeMPBasedOnBattleArea(contender3.Garrison, list2, availableTile, ref num2, false);
+			}
+		}
+		else
+		{
+			(this.intelligenceAIHelper as Intelligence).ComputeMPBasedOnBattleArea(contender2.Garrison, list, num5, ref num, !contender2.IsAttacking);
+			(this.intelligenceAIHelper as Intelligence).ComputeMPBasedOnBattleArea(contender3.Garrison, list2, availableTile, ref num2, !contender3.IsAttacking);
+		}
 		float num6 = 2f;
 		if (num2 > 0f)
 		{
 			num6 = num / num2;
 		}
-		if ((double)num6 < 0.8)
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 		{
-			District district = this.worldPositionningService.GetDistrict(contender2.WorldPosition);
-			bool flag3 = false;
-			bool flag4 = false;
-			if (district != null && district.City.BesiegingEmpire != null)
+			Diagnostics.Log("ELCP: Empire {0} vs Empire {1} DefineContenderStateAtSetup, Mystrength {2} / Theirstrength {3} = {4} ... {5}", new object[]
 			{
-				if (district.City.Empire == base.AIEntity.Empire)
-				{
-					flag3 = true;
-				}
-				else
+				base.AIEntity.Empire.Index,
+				(contender3 == null) ? -99 : contender3.Garrison.Empire.Index,
+				num,
+				num2,
+				num6,
+				num5
+			});
+		}
+		if (!contender2.IsAttacking && (contender2.Garrison is Village || contender2.Garrison is Camp) && contender2.Garrison.UnitsCount < 4 && num6 < 1.5f)
+		{
+			this.AskForNoReinforcement(encounter, false);
+			return;
+		}
+		bool flag3 = false;
+		if (!contender2.IsAttacking && num6 < 0.7f)
+		{
+			flag3 = true;
+		}
+		if (contender2.IsAttacking && num6 < 0.55f)
+		{
+			flag3 = true;
+		}
+		if (contender2.IsAttacking && num6 > 0.4f && list.Count - list2.Count > 1)
+		{
+			flag3 = false;
+		}
+		if (flag3)
+		{
+			District district3 = this.worldPositionningService.GetDistrict(contender2.WorldPosition);
+			Region region = this.worldPositionningService.GetRegion(contender3.WorldPosition);
+			City city = null;
+			if (district3 != null)
+			{
+				city = district3.City;
+			}
+			else if (region != null && region.City != null)
+			{
+				city = region.City;
+			}
+			bool flag4 = false;
+			bool flag5 = false;
+			if (city != null && (city.BesiegingEmpire != null || contender2 is Contender_City))
+			{
+				if (city.Empire == base.AIEntity.Empire)
 				{
 					flag4 = true;
 				}
+				else
+				{
+					flag5 = true;
+				}
 			}
-			if (!flag3 || !(contender2.Garrison is Army))
+			bool flag6 = false;
+			if ((contender2.Garrison is KaijuArmy || contender2.Garrison is KaijuGarrison) && num6 > 0.3f)
+			{
+				flag6 = true;
+			}
+			bool flag7 = num6 < 0.1f && !contender2.IsAttacking && contender2 is Contender_City;
+			bool flag8 = contender3.Empire is MinorEmpire && list.Count > 0;
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				Diagnostics.Log("ELCP: flags: {0} {1} {2} {3}, urkan: {4}", new object[]
+				{
+					!flag4,
+					!(contender2.Garrison is Army),
+					flag7,
+					!flag8,
+					flag6
+				});
+			}
+			if (!flag6 && (!flag4 || flag7) && (!(contender2.Garrison is Army) || (contender2.Garrison is Army && (contender2.Garrison as Army).IsNaval) || contender2.Garrison.StandardUnits.Count <= 4) && !flag8)
 			{
 				flag = false;
-				if (!contender2.IsAttacking && !(contender4 is Contender_City) && !flag4 && contender2.HasEnoughActionPoint(1f))
+				if (!contender2.IsAttacking && !(contender4 is Contender_City) && !flag5 && contender2.HasEnoughActionPoint(1f))
 				{
 					float num7 = Mathf.Clamp01(contender2.Garrison.GetPropertyValue(SimulationProperties.Health) / contender2.Garrison.GetPropertyValue(SimulationProperties.MaximumHealth));
-					flag = (num7 > 0.6f);
-					num7 -= 0.5f;
-					if (contender2.Garrison.HasTag(WeatherManager.LightningTarget))
+					flag = (num7 > 0.7f);
+					num7 -= 0.6f;
+					if (contender2.Garrison.HasTag(WeatherManager.LightningTarget) && contender2.Garrison.GetPropertyValue(SimulationProperties.Movement) <= 0f && num7 <= this.weatherService.LightningDamageInPercent)
 					{
-						float propertyValue = contender2.Garrison.GetPropertyValue(SimulationProperties.Movement);
-						if (propertyValue <= 0f && num7 <= this.weatherService.LightningDamageInPercent)
-						{
-							flag = false;
-						}
+						flag = false;
 					}
+				}
+				if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+				{
+					Diagnostics.Log("ELCP: Asking for no Reinforcements {0}", new object[]
+					{
+						flag
+					});
 				}
 				this.AskForNoReinforcement(encounter, flag);
 				return;
 			}
-			num6 = 2f;
 		}
-		if (num6 <= 1f)
+		if (num6 <= 2f)
 		{
 			list.Sort(delegate(IGarrison left, IGarrison right)
 			{
 				if (left.UnitsCount == 0)
 				{
-					return -1;
+					return 1;
 				}
 				if (right.UnitsCount == 0)
 				{
-					return 1;
-				}
-				if (left is City && !(right is City))
-				{
 					return -1;
 				}
-				if (!(left is City) && right is City)
+				bool flag10 = left is City || left is EncounterCityGarrison;
+				bool flag11 = right is City || right is EncounterCityGarrison;
+				if (flag10 && !flag11)
 				{
+					if (base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>().IsInWarWithSomeone())
+					{
+						return 1;
+					}
+					return -1;
+				}
+				else if (!flag10 && flag11)
+				{
+					if (base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>().IsInWarWithSomeone())
+					{
+						return -1;
+					}
 					return 1;
 				}
-				float num9 = left.GetPropertyValue(SimulationProperties.MilitaryPower) / (float)left.UnitsCount;
-				float value = right.GetPropertyValue(SimulationProperties.MilitaryPower) / (float)right.UnitsCount;
-				return -1 * num9.CompareTo(value);
+				else
+				{
+					bool flag12 = false;
+					for (int n = 0; n < left.StandardUnits.Count; n++)
+					{
+						if (left.StandardUnits[n].UnitDesign.Tags.Contains(DownloadableContent9.TagColossus) || left.StandardUnits[n].UnitDesign.Tags.Contains(DownloadableContent13.UnitTypeManta))
+						{
+							flag12 = true;
+						}
+					}
+					bool flag13 = false;
+					for (int num9 = 0; num9 < right.StandardUnits.Count; num9++)
+					{
+						if (right.StandardUnits[num9].UnitDesign.Tags.Contains(DownloadableContent9.TagColossus) || right.StandardUnits[num9].UnitDesign.Tags.Contains(DownloadableContent13.UnitTypeManta))
+						{
+							flag13 = true;
+						}
+					}
+					if (flag12 && !flag13)
+					{
+						return -1;
+					}
+					if (!flag12 && flag13)
+					{
+						return 1;
+					}
+					float num10 = left.GetPropertyValue(SimulationProperties.MilitaryPower) / (float)left.UnitsCount;
+					float value = right.GetPropertyValue(SimulationProperties.MilitaryPower) / (float)right.UnitsCount;
+					return -1 * num10.CompareTo(value);
+				}
 			});
 		}
 		if (list.Count > 1)
@@ -1017,21 +1107,47 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		}
 		float num8 = contender2.Garrison.GetPropertyValue(SimulationProperties.MilitaryPower);
 		num5 -= contender2.Garrison.UnitsCount;
+		num5 += this.intelligenceAIHelper.NumberOfBattleRound;
 		for (int l = 0; l < list.Count; l++)
 		{
-			bool include = true;
-			if (num5 <= 0)
+			bool flag9 = true;
+			if (list[l].GUID != y)
 			{
-				include = false;
+				if (num5 <= -2)
+				{
+					flag9 = false;
+				}
+				else if (num8 > num2 * 10f)
+				{
+					flag9 = false;
+				}
 			}
-			else if (num8 > num2 * 2f)
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 			{
-				include = false;
+				Diagnostics.Log("ELCP: Empire {0} vs Empire {1}, {5} listitem {2}: {3}, nums : {4}", new object[]
+				{
+					base.AIEntity.Empire.Index,
+					contender3.Garrison.Empire.Index,
+					l,
+					(list[l] is KaijuGarrison) ? (list[l] as KaijuGarrison).KaijuEmpire.KaijuFaction.LocalizedName : list[l].LocalizedName,
+					string.Concat(new object[]
+					{
+						num5,
+						"/",
+						num8,
+						"/",
+						num2
+					}),
+					flag9 ? "including" : "not including"
+				});
 			}
-			OrderIncludeContenderInEncounter order2 = new OrderIncludeContenderInEncounter(encounter.GUID, list[l].GUID, include);
+			OrderIncludeContenderInEncounter order2 = new OrderIncludeContenderInEncounter(encounter.GUID, list[l].GUID, flag9);
 			base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order2);
-			num5 -= list[l].UnitsCount;
-			num8 += list[l].GetPropertyValue(SimulationProperties.MilitaryPower);
+			if (flag9)
+			{
+				num5 -= list[l].UnitsCount;
+				num8 += list[l].GetPropertyValue(SimulationProperties.MilitaryPower);
+			}
 		}
 		for (int m = 0; m < encounter.Contenders.Count; m++)
 		{
@@ -1147,12 +1263,14 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 			encounter.EncounterStateChange += this.Encounter_EncounterStateChange;
 			encounter.RoundUpdate += this.Encounter_RoundUpdate;
 			encounter.TargetingPhaseUpdate += this.Encounter_TargetingPhaseUpdate;
+			return;
 		}
-		else if (eventArgs.Action == EncounterRepositoryChangeAction.Remove)
+		if (eventArgs.Action == EncounterRepositoryChangeAction.Remove)
 		{
 			this.RemoveEncounter(encounter);
+			return;
 		}
-		else if (eventArgs.Action == EncounterRepositoryChangeAction.Clear)
+		if (eventArgs.Action == EncounterRepositoryChangeAction.Clear)
 		{
 			this.ClearMyEncounters();
 		}
@@ -1224,6 +1342,17 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		{
 			this.ChooseAndApplyStrategy(encounter, contender);
 		}
+		if (base.AIEntity.AIPlayer.AIState == AIPlayer.PlayerState.EmpireControlledByHuman && contender.ContenderEncounterOptionChoice == EncounterOptionChoice.Spectator)
+		{
+			Amplitude.Coroutine coroutine = Amplitude.Coroutine.StartCoroutine(this.PostDelayedReadyForNextPhaseOrder(encounter, contender, 10u), null);
+			coroutine.Run();
+			if (!coroutine.IsFinished)
+			{
+				this.phaseOrderCoroutines.Add(coroutine);
+			}
+			this.tickableRepositoryAIHelper.RegisterUpdate(this);
+			return;
+		}
 		OrderReadyForNextPhase order = new OrderReadyForNextPhase(encounter.GUID, contender.GUID);
 		base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
 	}
@@ -1246,6 +1375,250 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 			encounter.EncounterStateChange -= this.Encounter_EncounterStateChange;
 			encounter.RoundUpdate -= this.Encounter_RoundUpdate;
 			encounter.TargetingPhaseUpdate -= this.Encounter_TargetingPhaseUpdate;
+		}
+	}
+
+	private bool IsAnySpellActive(Encounter encounter)
+	{
+		Contender firstAlliedContenderFromEmpireWithUnits = encounter.GetFirstAlliedContenderFromEmpireWithUnits(base.AIEntity.Empire);
+		foreach (SpellDefinition spellDefinition in this.spellDefinitionDatabase)
+		{
+			for (int i = 0; i < spellDefinition.SpellBattleActions.Length; i++)
+			{
+				StaticString name = spellDefinition.SpellBattleActions[i].BattleActionUserDefinitionReference.Name;
+				BattleAction.State state;
+				if (firstAlliedContenderFromEmpireWithUnits.TryGetBattleActionUserState(name, out state) && state != BattleAction.State.Available)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public List<AILayer_Encounter.DebugSpellScoring> AIDebugSpellScoring
+	{
+		get
+		{
+			return this.aIDebugSpellScoring;
+		}
+	}
+
+	private void ChooseAndCastSpell(Encounter encounter, Contender contender, FeedbackMessage_Battle battleFeedback)
+	{
+		if (battleFeedback.AllyMilitaryPower > 2f * battleFeedback.OpponentMilitaryPower)
+		{
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				this.aIDebugSpellScoring.Add(new AILayer_Encounter.DebugSpellScoring("EnemyTooWeak", battleFeedback.AllyMilitaryPower / battleFeedback.OpponentMilitaryPower));
+			}
+			return;
+		}
+		if (battleFeedback.AllyMilitaryPower * 2f < battleFeedback.OpponentMilitaryPower)
+		{
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				this.aIDebugSpellScoring.Add(new AILayer_Encounter.DebugSpellScoring("EnemyTooStrong", battleFeedback.AllyMilitaryPower / battleFeedback.OpponentMilitaryPower));
+			}
+			return;
+		}
+		bool[] array = new bool[2];
+		foreach (Contender contender2 in encounter.Contenders)
+		{
+			if (contender2.IsTakingPartInBattle)
+			{
+				int num = (contender2.Empire.Index == base.AIEntity.Empire.Index) ? 0 : 1;
+				if (!array[num])
+				{
+					using (List<EncounterUnit>.Enumerator enumerator2 = contender2.EncounterUnits.GetEnumerator())
+					{
+						while (enumerator2.MoveNext())
+						{
+							if (enumerator2.Current.Unit.IsSeafaring)
+							{
+								array[num] = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		if (array[0] != array[1])
+		{
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				this.aIDebugSpellScoring.Add(new AILayer_Encounter.DebugSpellScoring("ShipsVsTransports", 0f));
+			}
+			return;
+		}
+		WorldPosition targetPosition = WorldPosition.Invalid;
+		SpellDefinition spellDefinition = null;
+		float num2 = 0f;
+		foreach (AIEncounterSpellAffinityDefinition aiencounterSpellAffinityDefinition in this.spellAffinityDefinitions)
+		{
+			SpellDefinition spellDefinition2;
+			if (!this.spellDefinitionDatabase.TryGetValue(aiencounterSpellAffinityDefinition.Name, out spellDefinition2))
+			{
+				AILayer.LogError("Can't retrieve the spellDefinition '{0}'.", new object[]
+				{
+					aiencounterSpellAffinityDefinition.Name
+				});
+			}
+			else
+			{
+				bool flag = false;
+				if (ELCPUtilities.SpellUsage_HasSpellBeenUsed(encounter.GUID, base.AIEntity.Empire.Index, spellDefinition2.Name))
+				{
+					flag = true;
+				}
+				else
+				{
+					Prerequisite[] prerequisites = spellDefinition2.Prerequisites;
+					for (int i = 0; i < prerequisites.Length; i++)
+					{
+						if (!prerequisites[i].Check(base.AIEntity.Empire))
+						{
+							flag = true;
+							break;
+						}
+					}
+				}
+				if (!flag)
+				{
+					if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+					{
+						this.aIDebugSpellScoring.Add(new AILayer_Encounter.DebugSpellScoring(spellDefinition2.Name, 0f));
+					}
+					float num3 = 0f;
+					GridMap<float> gridMap = this.spellAffinityGridMaps[aiencounterSpellAffinityDefinition.Name];
+					for (int j = 0; j < gridMap.Height; j++)
+					{
+						for (int k = 0; k < gridMap.Width; k++)
+						{
+							WorldPosition worldPosition = new WorldPosition(j, k);
+							float value = gridMap.GetValue(worldPosition);
+							if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && ELCPUtilities.ELCPVerboseMode)
+							{
+								Diagnostics.Log("ELCP {0} Spellscore for {1} at {2} is {3}", new object[]
+								{
+									base.AIEntity.Empire,
+									spellDefinition2.Name,
+									worldPosition,
+									value
+								});
+							}
+							if (value > num2)
+							{
+								targetPosition = this.battleZone.ConvertFromGridToWorldPosition(worldPosition);
+								spellDefinition = spellDefinition2;
+								num2 = value;
+							}
+							if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && value > num3)
+							{
+								num3 = value;
+								this.aIDebugSpellScoring[this.aIDebugSpellScoring.Count - 1].SpellScore = num3;
+								this.aIDebugSpellScoring[this.aIDebugSpellScoring.Count - 1].SpellPosition = worldPosition;
+							}
+						}
+					}
+				}
+			}
+		}
+		if (num2 == 0f)
+		{
+			return;
+		}
+		float spellDustCost = this.GetSpellDustCost(spellDefinition);
+		float num4 = 0f;
+		this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num4, false);
+		if ((battleFeedback.AllyMilitaryPower > 1.35f * battleFeedback.OpponentMilitaryPower || battleFeedback.AllyMilitaryPower * 1.5f < battleFeedback.OpponentMilitaryPower) && spellDustCost > num4 / 3f)
+		{
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				this.aIDebugSpellScoring.Clear();
+				this.aIDebugSpellScoring.Add(new AILayer_Encounter.DebugSpellScoring("SavingMoney", battleFeedback.AllyMilitaryPower / battleFeedback.OpponentMilitaryPower));
+			}
+			return;
+		}
+		if (this.accountManager.TryMakeUnexpectedImmediateExpense(AILayer_AccountManager.MilitaryAccountName, spellDustCost, 0f) || spellDustCost <= num4 / 3f)
+		{
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				Diagnostics.Log("ELCP {0} casting spell {1}, {2}/{3} vs {4}/{5}", new object[]
+				{
+					base.AIEntity.Empire,
+					spellDefinition.Name,
+					battleFeedback.AllyMilitaryPower,
+					battleFeedback.AllyUnitCount,
+					battleFeedback.OpponentMilitaryPower,
+					battleFeedback.OpponentUnitCount
+				});
+			}
+			OrderBuyoutSpellAndPlayBattleAction order = new OrderBuyoutSpellAndPlayBattleAction(encounter.GUID, contender.GUID, targetPosition, spellDefinition);
+			base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
+		}
+	}
+
+	private IEnumerator PostDelayedReadyForNextPhaseOrder(Encounter encounter, Contender contender, uint frames)
+	{
+		yield return Amplitude.Coroutine.WaitForNumberOfFrames(frames);
+		OrderReadyForNextPhase order = new OrderReadyForNextPhase(encounter.GUID, contender.GUID);
+		base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
+		yield break;
+	}
+
+	public bool Update()
+	{
+		for (int i = 0; i < this.phaseOrderCoroutines.Count; i++)
+		{
+			this.phaseOrderCoroutines[i].Run();
+			if (this.phaseOrderCoroutines[i].IsFinished)
+			{
+				this.phaseOrderCoroutines.RemoveAt(i);
+				i--;
+			}
+		}
+		return this.phaseOrderCoroutines.Count > 0;
+	}
+
+	public override bool CanEndTurn()
+	{
+		return this.phaseOrderCoroutines.Count == 0;
+	}
+
+	private void UpdateSpellScoringGrid_ELCP(AIEncounterSpellAffinityDefinition spellAffinityDefinition, EncounterUnit encounterUnit, List<WorldPosition> AoE, bool TargetAllies)
+	{
+		bool flag;
+		if (TargetAllies)
+		{
+			flag = (encounterUnit.Empire.Index != base.AIEntity.Empire.Index);
+		}
+		else
+		{
+			flag = (encounterUnit.Empire.Index == base.AIEntity.Empire.Index);
+		}
+		GridMap<float> gridMap = this.spellAffinityGridMaps[spellAffinityDefinition.Name];
+		this.spellAffinityGridMaps.TryGetValue(spellAffinityDefinition.Name, out gridMap);
+		float num;
+		if (flag)
+		{
+			num = -0.2f;
+		}
+		else
+		{
+			num = this.unitPatternHelper.ComputeEncounterUnitAffinity(encounterUnit, spellAffinityDefinition);
+		}
+		if (num != 0f)
+		{
+			foreach (WorldPosition worldPosition in AoE)
+			{
+				WorldPosition worldPosition2 = this.battleZone.ConvertFromWorldToGridPosition(worldPosition);
+				if (worldPosition2.IsValid && gridMap.Height > (int)worldPosition2.Row && gridMap.Width > (int)worldPosition2.Column)
+				{
+					gridMap.SetValue(worldPosition2, gridMap.GetValue(worldPosition2) + num);
+				}
+			}
 		}
 	}
 
@@ -1290,7 +1663,21 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 
 	private IWeatherService weatherService;
 
-	private List<Encounter> myEncounters = new List<Encounter>();
+	private List<Encounter> myEncounters;
+
+	private List<AILayer_Encounter.ReadyOrders> phaseOrders;
+
+	private IDatabase<SpellDefinition> spellDefinitionDatabase;
+
+	private List<AILayer_Encounter.DebugSpellScoring> aIDebugSpellScoring;
+
+	private DepartmentOfTheTreasury departmentOfTheTreasury;
+
+	private ITickableRepositoryAIHelper tickableRepositoryAIHelper;
+
+	private List<Amplitude.Coroutine> phaseOrderCoroutines;
+
+	private AILayer_AccountManager accountManager;
 
 	public class AIEncounterBattleGroundAnalysis
 	{
@@ -1319,5 +1706,34 @@ public class AILayer_Encounter : AILayer, ISimulationAIEvaluationHelper<AIEncoun
 		public StaticString UnitPattern { get; set; }
 
 		public StaticString UnitPatternCategory { get; set; }
+	}
+
+	private class ReadyOrders
+	{
+		public ReadyOrders(Encounter encounter, Contender contender)
+		{
+			this.encounter = encounter;
+			this.contender = contender;
+		}
+
+		public Encounter encounter;
+
+		public Contender contender;
+	}
+
+	public class DebugSpellScoring
+	{
+		public DebugSpellScoring(StaticString spellname, float score)
+		{
+			this.SpellName = spellname;
+			this.SpellScore = score;
+			this.SpellPosition = WorldPosition.Invalid;
+		}
+
+		public StaticString SpellName { get; set; }
+
+		public WorldPosition SpellPosition { get; set; }
+
+		public float SpellScore { get; set; }
 	}
 }

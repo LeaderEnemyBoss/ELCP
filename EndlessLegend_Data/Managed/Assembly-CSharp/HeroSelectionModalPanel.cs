@@ -67,7 +67,18 @@ public class HeroSelectionModalPanel : GuiModalPanel
 			this.HeroesTable.GetChildren()[i].GetComponent<HeroCard>().Unbind();
 		}
 		List<Unit> list = new List<Unit>(this.departmentOfEducation.Heroes);
-		list.Sort((Unit hero1, Unit hero2) => hero1.GUID.CompareTo(hero2.GUID));
+		list.Sort(delegate(Unit hero1, Unit hero2)
+		{
+			if (hero1.Garrison == null && hero2.Garrison != null)
+			{
+				return -1;
+			}
+			if (hero1.Garrison != null && hero2.Garrison == null)
+			{
+				return 1;
+			}
+			return hero1.GUID.CompareTo(hero2.GUID);
+		});
 		this.HeroesTable.Width = 0f;
 		this.HeroesTable.ReserveChildren(list.Count, this.HeroCardPrefab, "HeroCard");
 		this.HeroesTable.RefreshChildrenIList<Unit>(list, this.heroRefreshDelegate, true, false);

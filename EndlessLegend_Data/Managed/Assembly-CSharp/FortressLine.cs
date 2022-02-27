@@ -296,6 +296,15 @@ public class FortressLine : SortedLine
 		}
 	}
 
+	public void DisableIfGarrisonIsInEncounter()
+	{
+		if (this.Fortress != null && this.Fortress.IsInEncounter)
+		{
+			this.AgeTransform.Enable = false;
+			this.FortressTitle.AgeTransform.AgeTooltip.Content = "%FortressLockedInBattleDescription";
+		}
+	}
+
 	public static Fortress CurrentFortress;
 
 	public AgePrimitiveLabel FortressTitle;

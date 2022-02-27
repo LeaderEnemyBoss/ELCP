@@ -3,7 +3,8 @@
 
   <!-- "Dust Bishop" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionBrokenLordsUnit3">
-    <AIParameter Name="EmpireUnlockUnitSupport" Value="1.25" />
+    <AIParameter Name="EmpireUnlockUnitSupport" Value="1.5" />
+	<AIParameter Name="EmpireUnlockUnitRanged" Value="1" />
   </AIParameterDatatableElement>
 
   <!-- "Tenei Walker" -->
@@ -13,17 +14,18 @@
 
   <!-- "Eneqa Wing" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRageWizardsUnit3">
-    <AIParameter Name="EmpireUnlockUnitFlying" Value="1" />
+    <AIParameter Name="EmpireUnlockUnitFlying" Value="1.5" />
   </AIParameterDatatableElement>
 
   <!-- "Proliferator" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionNecrophagesUnit3">
-    <AIParameter Name="EmpireUnlockUnitSupport" Value="2" />
+    <AIParameter Name="EmpireUnlockUnitSupport" Value="1.5" />
+	<AIParameter Name="AITechMustHave" Value="0.3 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))" />
   </AIParameterDatatableElement>
 
   <!-- "Titan" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionVaultersUnit3">
-    <AIParameter Name="EmpireUnlockUnitInfantry" Value="1" />
+    <AIParameter Name="EmpireUnlockUnitInfantry" Value="2" />
   </AIParameterDatatableElement>
 
   <!-- "Titan" (Mezari) -->
@@ -33,7 +35,7 @@
 
   <!-- "Yirmark" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRovingClansUnit3">
-    <AIParameter Name="EmpireUnlockUnitInfantry" Value="1" />
+    <AIParameter Name="EmpireUnlockUnitInfantry" Value="2.5" />
   </AIParameterDatatableElement>
 
   <!-- "Ancient" -->
@@ -43,25 +45,27 @@
 
   <!-- "Nameless Guard" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionCultistsUnit3">
-    <AIParameter Name="EmpireUnlockUnitRanged" Value="1.25" />
+    <AIParameter Name="EmpireUnlockUnitRanged" Value="2" />
   </AIParameterDatatableElement>
 
   <!-- "Myst" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionReplicantsUnit3">
-    <AIParameter Name="EmpireUnlockUnitFlying" Value="1" />
+    <AIParameter Name="EmpireUnlockUnitFlying" Value="1.5" />
   </AIParameterDatatableElement>
 
   <!-- "Dark Angels" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionWinterShiftersUnit3">
     <AIParameter Name="EmpireUnlockUnitFlying" Value="1.5" />
+	<AIParameter Name="AITechMustHave" Value="0.3 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))" />
   </AIParameterDatatableElement>
   
   <!-- "Gorilla" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionFlamesUnit3">
     <AIParameter Name="EmpireUnlockUnitCavalry" Value="1.75" />
+	<AIParameter Name="AITechMustHave" Value="0.3 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))" />
   </AIParameterDatatableElement>
-
-  <!-- "Shambler" -->
+  
+    <!-- "Shambler" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMimicsUnit3">
     <AIParameter Name="EmpireUnlockUnitInfantry" Value="1" />
   </AIParameterDatatableElement>
@@ -72,13 +76,14 @@
 
   <!-- "Cannon Fodder" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionNecrophages6">
+    <AIParameter Name="AITechMustHave" Value="0.6 * ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) gt 15)"/>
     <AIParameter Name="EmpireMilitaryUpkeepPercent"   Value="0.5"  />
     <AIParameter Name="EmpireHeroUpkeepPercent"       Value="0.2"  />
   </AIParameterDatatableElement>
   
   <!-- "Demanding Gods" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionNecrophages8">
-    <AIParameter Name="CityApproval"        Value="30"  />
+    <AIParameter Name="CityApproval"        Value="20"  />
   </AIParameterDatatableElement>
 
   <!-- "Deep Generator" -->
@@ -125,24 +130,27 @@
   <!-- "Arcana of Authority" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards9">
     <!-- Provides between +1 and +5 influence on up to 6 tiles... most of the time it will only affect about 3 though  -->
-    <AIParameter Name="CityCityPoint"       Value="3 * (1 + 4*$Property(ClassEmpire:PillarsLevel)) * $Count(ClassEmpire/ClassCity)"  />
+    <AIParameter Name="CityCityPoint"       Value="3 * (1 + 4*$Property(ClassEmpire:PillarsLevel))"  />
     <!-- Provides enemy defense reduction in combat -->
-    <AIParameter Name="EmpireBattleMagic" Value="1.5"  />
+    <AIParameter Name="EmpireBattleMagic" Value="1"/>
+	<AIParameter Name="AITechMustHave" Value="0.01 * (0 max ($Property(ClassEmpire:NetEmpireMoney) - 250))"/>
   </AIParameterDatatableElement>
 
   <!-- "Dust Purifier" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards12">
-    <AIParameter Name="EmpirePillarArcana"        Value="1"  />
+	<AIParameter Name="EmpireBattleMagicArcana"        Value="1"  />
+	<AIParameter Name="AITechMustHave" Value="0.01 * (0 max ($Property(ClassEmpire:NetEmpireMoney) - 400))"/>
   </AIParameterDatatableElement>
 
   <!-- "Freelance Guards" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionPrivateersRovingClans">
     <AIParameter Name="EmpireUnlockPrivateers"       Value="1"  />
+	<AIParameter Name="AITechMustHave" Value="0.6 * ($Property(../EmpireTypeMajor:UnlockedTechnologyCount) gt 15) * ($Property(ClassEmpire:WarCount) eq 0) * ($Count(ClassEmpire/ClassResearch,TechnologyPrivateers) eq 0)"/>
   </AIParameterDatatableElement>
 
   <!-- "We are Legion" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionCultists13">
-    <AIParameter Name="CityRecruitInitialExperience"       Value="40 * ($Property(ClassEmpire/ClassCity:NumberOfConvertedVillages) + 1)"  />
+    <AIParameter Name="AITechMustHave"       Value="0.07 * (0 max ($Property(ClassEmpire/ClassCity:NumberOfConvertedVillages)))"  />
   </AIParameterDatatableElement>
 
   <!-- "Destructive Analysis" -->
@@ -153,21 +161,24 @@
   <!-- "What's Mine is Mine" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionReplicants6">
     <AIParameter Name="EmpireAntiSpy" Value="10"  />
+	<AIParameter Name="AITechMustHave" Value="0.5 * ($Count(ClassEmpire/SpiedGarrison/UnitHero))"/>
   </AIParameterDatatableElement>
 
   <!-- "Caudata Sanctuary" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionReplicants12">
+    <AIParameter Name="AITechMustHave" Value="0.05 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))"/>
     <AIParameter Name="EmpireSpy" Value="1" />
   </AIParameterDatatableElement>
 
   <!-- "Luxury Alchemists" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionWinterShifters7">
-    <AIParameter Name="LuxuryBonusPerLuxury" Value="1" />
+	<AIParameter Name="AITechMustHave" Value="0.15 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))"/>
+	<AIParameter Name="LuxuryBonusPerLuxury" Value="1" />
   </AIParameterDatatableElement>
 
   <!-- "Leviathan" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionSeaDemonsUnit3">
-    <AIParameter Name="EmpireUnlockUnitSubmersible" Value="2"/>
+    <AIParameter Name="EmpireUnlockUnitSubmersible" Value="2.5"/>
   </AIParameterDatatableElement>
 
   <!-- "Cargo Docks" (Sea Demons early version) -->
@@ -204,11 +215,12 @@
       * (0.4 max (1 min (($Property(ClassEmpire:Strategic2Stock) + ($Property(ClassEmpire:NetStrategic2)*8)) / 5)))"/>
     <AIParameter Name="CityCityPoint"         Value="15 
       * (0.4 max (1 min (($Property(ClassEmpire:Strategic1Stock) + ($Property(ClassEmpire:NetStrategic1)*8)) / 5)))"/>
+	<AIParameter Name="AITechMustHave" Value="0.6 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 1))"/>
   </AIParameterDatatableElement>
   
    <!-- "Kaiju Garrison" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMimics1">
-    <AIParameter Name="EmpireArmySize" Value="2 * $Property(EmpireTypeMajor:NumberOfTamedKaijus)"/>
+    <AIParameter Name="EmpireArmySize" Value="1.5 * $Property(EmpireTypeMajor:NumberOfTamedKaijus)"/>
   </AIParameterDatatableElement>
   
 </Datatable>

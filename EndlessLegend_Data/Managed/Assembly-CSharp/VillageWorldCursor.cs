@@ -39,6 +39,10 @@ public class VillageWorldCursor : WorldCursor
 			{
 				return true;
 			}
+			if (village.HasBeenInfected)
+			{
+				return village.Empire == null || village.Empire.Index == empire.Index;
+			}
 			if (village.HasBeenPacified && empire.SimulationObject.Tags.Contains(DownloadableContent16.FactionTraitDissent))
 			{
 				return true;

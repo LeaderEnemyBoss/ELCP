@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    
 
   <!--=====================================
    ========================================
@@ -230,6 +231,8 @@
   </QuestDefinition>
 
 
+
+
   <!-- ============ TITLE: Master of Luxury ============-->
   <QuestDefinition Name="SideQuestPOI#0002" Category="SideQuest" SubCategory="Ruins"
              Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
@@ -337,6 +340,8 @@
     </Steps>
 
   </QuestDefinition>
+
+
 
 
   <!-- ============ TITLE: Which treasure army? ============-->
@@ -455,6 +460,8 @@
   </QuestDefinition>
 
 
+
+
   <!-- ============ TITLE: The Accidental Desecrator ============-->
   <QuestDefinition Name="SideQuestPOI#0004" Category="SideQuest" SubCategory="Ruins"
                    Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
@@ -525,6 +532,8 @@
     </Steps>
 
   </QuestDefinition>
+
+
 
 
   <!-- ============ TITLE: A Relic of the Past ============-->
@@ -604,6 +613,7 @@
   </QuestDefinition>
 
 
+
   <!-- ============ TITLE: Manifestations of Destiny ============-->
   <QuestDefinition Name="SideQuestPOI#0006" Category="SideQuest" SubCategory="Ruins"
                    Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
@@ -651,6 +661,7 @@
     </Steps>
 
   </QuestDefinition>
+
 
 
   <!-- ============ TITLE: Legend of the Three ============-->
@@ -794,6 +805,7 @@
   </QuestDefinition>
 
 
+
   <!-- ============ TITLE: Premonition ============-->
   <QuestDefinition Name="SideQuestPOI#0008" Category="SideQuest" SubCategory="Ruins"
                    Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
@@ -855,6 +867,7 @@
     </Steps>
 
   </QuestDefinition>
+
 
 
   <!--============ TITLE: To Feed the Hungry ============-->
@@ -1019,6 +1032,7 @@
   </QuestDefinition>
 
 
+
   <!-- ============ TITLE: Intellectual Jealousy ============-->
   <QuestDefinition Name="SideQuestPOI#0012" Category="SideQuest" SubCategory="Ruins"
                    Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
@@ -1065,6 +1079,7 @@
   </QuestDefinition>
 
 
+
   <!-- ============ TITLE: Body and Blood (Early Game) ============-->
   <QuestDefinition Name="SideQuestPOI#0013" Category="SideQuest" SubCategory="Ruins"
                    Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
@@ -1075,24 +1090,40 @@
 
     <!--============ PREREQUISITES ============-->
     <Prerequisites Target="$(Empire)">
-      <PathPrerequisite Inverted="true" Flags="Prerequisite">.../ClassEmpire,AffinityBrokenLords</PathPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 6</InterpreterPrerequisite>
-      <InterpreterPrerequisite Inverted="true" Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 8</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 5</InterpreterPrerequisite>
     </Prerequisites>
+	
+	<!--============ VARIABLES============-->
+
+    <Vars>
+      <InterpretedVar VarName="CurrentMaxPopulation" Target="$(Empire)">
+        <Expression>$MaxProperty(EmpireTypeMajor/ClassCity:Population)</Expression>
+      </InterpretedVar>
+	  
+      <InterpretedVar VarName="PopulationToReachObjective" Target="$(Empire)">
+        <Expression>$(CurrentMaxPopulation) + 1 + ($(CurrentMaxPopulation) le 10) + ($(CurrentMaxPopulation) le 18)</Expression>
+      </InterpretedVar>
+	  
+	  <LocalizationVar LocalizationKey="$PopulationToReach" Source="PopulationToReachObjective"/>
+	</Vars>
 
     <!--============ SEQUENCE ============-->
 
     <Controller_Sequence>
       <Action_UpdateStep StepName="SideQuestPOI#0013-Step1" State="InProgress" />
       <Action_StartTimer Output_TimerVarName="$TimeBeforeFailure"/>
-      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeFailure"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeFailure" ScaleWithGameSpeed="true"/>
       <Controller_Parallel CompletionPolicy="Any">
 
         <Controller_Sequence>
           <Decorator_BeginTurn Initiator="Empire">
+			<InterpretedVarsToUpdate>
+				<Var>CurrentMaxPopulation</Var>
+			</InterpretedVarsToUpdate>
+			<!--<ConditionCheck_IsStepProgressionComplete InterpretedValue="$(CurrentMaxPopulation)" StepName="SideQuestPOI#0013-Step1" />-->
             <ConditionCheck_Prerequisite>
               <Prerequisites Target="$Empire">
-                <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge 8</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$MaxProperty(EmpireTypeMajor/ClassCity:Population) ge $(PopulationToReachObjective)</InterpreterPrerequisite>
               </Prerequisites>
             </ConditionCheck_Prerequisite>
           </Decorator_BeginTurn>
@@ -1102,7 +1133,7 @@
 
         <!--Fail Condition-->
         <Controller_Sequence>
-          <Decorator_TimerEnded TimerVarName="$TimeBeforeFailure" TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeFailure" TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true"/>
           <Action_UpdateStep StepName="SideQuestPOI#0013-Step1" State="Failed"/>
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
@@ -1116,10 +1147,12 @@
     <Steps>
       <Step Name="SideQuestPOI#0013-Step1">
         <Reward Droplist="DroplistPrestige" Picks="1"/>
+		<ProgressionRange StartValue="0" EndValueVarName="PopulationToReachObjective"/>
       </Step>
     </Steps>
 
   </QuestDefinition>
+
 
 
   <!-- ============ TITLE: Body and Blood (Mid Game) ============-->
@@ -1176,6 +1209,7 @@
     </Steps>
 
   </QuestDefinition>
+
 
 
   <!-- ============ TITLE: Body and Blood (End Game) ============-->
@@ -1347,6 +1381,7 @@
   </QuestDefinition>
 
 
+
   <!--============ TITLE: Manual Labor  ===-->
   <QuestDefinition Name="SideQuestPOI#0017" Category="SideQuest" SubCategory="Ruins"
                    Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
@@ -1417,15 +1452,15 @@
         <From Source="$StrategicResourceToGather2.$ResourceName"/>
       </Var>
 
-      <DropListVar VarName="$StrategicResourceAmount1" DropList="DroplistStrategicResourceAmount"/>
+      <!--<DropListVar VarName="$StrategicResourceAmount1" DropList="DroplistStrategicResourceAmount"/>
       <DropListVar VarName="$StrategicResourceTransfertAmount1" DropList="DroplistStrategicResourceTransfertAmount"/>
       <DropListVar VarName="$StrategicResourceAmount2" DropList="DroplistStrategicResourceAmount"/>
-      <DropListVar VarName="$StrategicResourceTransfertAmount2" DropList="DroplistStrategicResourceTransfertAmount"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount2" DropList="DroplistStrategicResourceTransfertAmount"/>-->
 
-      <!--<Var VarName="$StrategicResourceAmount1" Value="10"/>
-      <Var VarName="$StrategicResourceTransfertAmount1" Value="-10"/>
-      <Var VarName="$StrategicResourceAmount2" Value="8"/>
-      <Var VarName="$StrategicResourceTransfertAmount2" Value="-8"/>-->
+      <Var VarName="$StrategicResourceAmount1" Value="2"/>
+      <Var VarName="$StrategicResourceTransfertAmount1" Value="-2"/>
+      <Var VarName="$StrategicResourceAmount2" Value="1"/>
+      <Var VarName="$StrategicResourceTransfertAmount2" Value="-1"/>
 
       <LocalizationVar LocalizationKey="$StrategicResource1" Source="$StrategicResourceToGather1"/>
       <LocalizationVar LocalizationKey="$ResourceCounter1" Source="$StrategicResourceAmount1"/>
@@ -1470,6 +1505,7 @@
   </QuestDefinition>
 
 
+
   <!--============ TITLE: A Princely Gift  ===-->
   <QuestDefinition Name="SideQuestPOI#0018" Category="SideQuest" SubCategory="Ruins"
                    Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
@@ -1492,7 +1528,7 @@
       <!--Step 1-->
       <Action_UpdateStep StepName="SideQuestPOI#0018-Step1" State="InProgress"/>
       <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
-      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete" ScaleWithGameSpeed="true"/>
       <Controller_Parallel CompletionPolicy="Any">
 
         <Controller_Sequence>
@@ -1509,7 +1545,7 @@
 
         <!--Fail Condition 1-->
         <Controller_Sequence>
-          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true"/>
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
 
@@ -1524,6 +1560,7 @@
     </Steps>
 
   </QuestDefinition>
+
 
 
   <!--============ TITLE: A History Lesson  ===-->
@@ -1548,7 +1585,7 @@
       <!--Step 1-->
       <Action_UpdateStep StepName="SideQuestPOI#0019-Step1" State="InProgress"/>
       <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
-      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete" ScaleWithGameSpeed="true"/>
       <Controller_Parallel CompletionPolicy="Any">
 
         <Controller_Sequence>
@@ -1565,7 +1602,7 @@
 
         <!--Fail Condition 1-->
         <Controller_Sequence>
-          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true"/>
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
 
@@ -1580,6 +1617,7 @@
     </Steps>
 
   </QuestDefinition>
+
 
 
   <!--============ TITLE: Concrete & Virtual  ===-->
@@ -1644,7 +1682,8 @@
 
   </QuestDefinition>
 
-  
+
+
   <!--============ TITLE: Halloween Quest  ===-->
   <QuestDefinition Name="SideQuestPOI#0021" Category="SideQuest" SubCategory="Ruins"
                    Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
@@ -1746,6 +1785,8 @@
     </Steps>
 
   </QuestDefinition>
+
+
 
 
   <!--========= TITLE: Colossus Teaser Quest  ======-->
@@ -1892,7 +1933,6 @@
       </Step>
     </Steps>
 
-  </QuestDefinition>
-
-  
+  </QuestDefinition>  
+    
 </Datatable>

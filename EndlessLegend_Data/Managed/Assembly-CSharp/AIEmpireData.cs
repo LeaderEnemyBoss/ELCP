@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Amplitude;
-using UnityEngine;
 
 public class AIEmpireData
 {
@@ -156,11 +155,9 @@ public class AIEmpireData
 		{
 			num2 = 0f;
 		}
-		float propertyValue = this.Empire.GetPropertyValue(SimulationProperties.ArmyUnitSlot);
-		float propertyValue2 = this.Empire.GetPropertyValue(SimulationProperties.NetCityProduction);
-		float num3 = propertyValue2 / this.AverageUnitDesignProductionCost;
+		float num3 = this.Empire.GetPropertyValue(SimulationProperties.NetCityProduction) / this.AverageUnitDesignProductionCost;
 		float num4 = num2 / (num3 * (float)this.departmentOfTheInterior.Cities.Count);
-		float num5 = Mathf.Min(num / propertyValue, propertyValue * num);
+		float num5 = num / 4f;
 		return num4 + num5;
 	}
 

@@ -122,32 +122,56 @@ public class DiplomaticTermCityExchange : DiplomaticTerm, IDiplomaticTermManagem
 				return false;
 			}
 		}
+		if (base.Definition.Name == DiplomaticTermCityExchange.MimicsCityDeal)
+		{
+			if (agency.MainCity == city)
+			{
+				return false;
+			}
+			if (base.EmpireWhichProvides.Faction.Affinity.Name == base.EmpireWhichReceives.Faction.Affinity.Name)
+			{
+				return false;
+			}
+			if (city.IsInfected)
+			{
+				return false;
+			}
+			if (base.EmpireWhichReceives.GetAgency<DepartmentOfPlanificationAndDevelopment>().HasIntegratedFaction(base.EmpireWhichProvides.Faction))
+			{
+				return false;
+			}
+			if (agency2.InfectedCities.Any((City c) => c.LastNonInfectedOwner != null && (c.LastNonInfectedOwner == base.EmpireWhichProvides || c.LastNonInfectedOwner.Faction == base.EmpireWhichProvides.Faction)))
+			{
+				return false;
+			}
+		}
 		int num = agency.Cities.Count;
 		int num2 = agency2.Cities.Count;
 		for (int i = 0; i < diplomaticContract.Terms.Count; i++)
 		{
 			DiplomaticTermCityExchange diplomaticTermCityExchange = diplomaticContract.Terms[i] as DiplomaticTermCityExchange;
-			if (diplomaticTermCityExchange != null)
+			if (diplomaticTermCityExchange != null && !(diplomaticTermCityExchange.CityGUID == this.CityGUID))
 			{
-				if (!(diplomaticTermCityExchange.CityGUID == this.CityGUID))
+				if (base.Definition.Name == DiplomaticTermCityExchange.MimicsCityDeal)
 				{
-					if (diplomaticTermCityExchange.EmpireWhichProvides.Index == base.EmpireWhichProvides.Index)
+					return false;
+				}
+				if (diplomaticTermCityExchange.EmpireWhichProvides.Index == base.EmpireWhichProvides.Index)
+				{
+					num--;
+					num2++;
+				}
+				else if (diplomaticTermCityExchange.EmpireWhichProvides.Index == base.EmpireWhichReceives.Index)
+				{
+					num2--;
+					num++;
+				}
+				else
+				{
+					Diagnostics.LogError("Can't identify the empire which provides the term {0}.", new object[]
 					{
-						num--;
-						num2++;
-					}
-					else if (diplomaticTermCityExchange.EmpireWhichProvides.Index == base.EmpireWhichReceives.Index)
-					{
-						num2--;
-						num++;
-					}
-					else
-					{
-						Diagnostics.LogError("Can't identify the empire which provides the term {0}.", new object[]
-						{
-							diplomaticTermCityExchange
-						});
-					}
+						diplomaticTermCityExchange
+					});
 				}
 			}
 		}
@@ -190,4 +214,6 @@ public class DiplomaticTermCityExchange : DiplomaticTerm, IDiplomaticTermManagem
 		base.WriteXml(writer);
 		writer.WriteElementString<ulong>("CityGUID", this.CityGUID);
 	}
+
+	public static StaticString MimicsCityDeal = "MimicsCityDeal";
 }

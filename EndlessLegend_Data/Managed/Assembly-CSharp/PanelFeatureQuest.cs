@@ -37,7 +37,7 @@ public class PanelFeatureQuest : GuiPanelFeature
 			Diagnostics.LogError("Context must be a quest");
 			yield break;
 		}
-		int stepIndex = 0;
+		int num = 0;
 		GuiElement guiElement;
 		if (base.GuiService.GuiPanelHelper.TryGetGuiElement(quest.Name, out guiElement))
 		{
@@ -48,30 +48,30 @@ public class PanelFeatureQuest : GuiPanelFeature
 			{
 				this.ObjectiveBackground.TintColor = this.DescriptionColor;
 				AgePrimitiveLabel objectiveLabel = this.ObjectiveLabel;
-				objectiveLabel.Text += AgeLocalizer.Instance.LocalizeString(questGuiElement.Steps[stepIndex].Text);
+				objectiveLabel.Text += AgeLocalizer.Instance.LocalizeString(questGuiElement.Steps[num].Text);
 			}
 			if (!this.descriptionOnly)
 			{
 				this.ObjectiveBackground.TintColor = this.ProgressionColor;
 				AgePrimitiveLabel objectiveLabel2 = this.ObjectiveLabel;
-				objectiveLabel2.Text += quest.GetProgressionString(quest.QuestDefinition.Steps[stepIndex].Name);
+				objectiveLabel2.Text += quest.GetProgressionString(quest.QuestDefinition.Steps[num].Name);
 				if (this.constructibleProgression && quest.QuestState != QuestState.Failed && quest.QuestState != QuestState.Completed)
 				{
 					if (this.departmentOfIndustries == null)
 					{
-						IGameService gameService = Services.GetService<IGameService>();
-						Diagnostics.Assert(gameService != null && gameService.Game != null);
-						global::Game game = gameService.Game as global::Game;
+						IGameService service = Services.GetService<IGameService>();
+						Diagnostics.Assert(service != null && service.Game != null);
+						global::Game game = service.Game as global::Game;
 						this.departmentOfIndustries = new List<DepartmentOfIndustry>();
-						for (int index = 0; index < game.Empires.Length; index++)
+						for (int i = 0; i < game.Empires.Length; i++)
 						{
-							global::Empire empire = game.Empires[index];
+							global::Empire empire = game.Empires[i];
 							if (empire is MajorEmpire)
 							{
-								DepartmentOfIndustry departmentOfIndustry = empire.GetAgency<DepartmentOfIndustry>();
-								if (departmentOfIndustry != null)
+								DepartmentOfIndustry agency = empire.GetAgency<DepartmentOfIndustry>();
+								if (agency != null)
 								{
-									this.departmentOfIndustries.Add(departmentOfIndustry);
+									this.departmentOfIndustries.Add(agency);
 								}
 							}
 						}
@@ -86,46 +86,47 @@ public class PanelFeatureQuest : GuiPanelFeature
 					}
 					else
 					{
-						List<KeyValuePair<float, City>> constructionsInfo = new List<KeyValuePair<float, City>>();
-						KeyValuePair<float, City> ownConstruction = default(KeyValuePair<float, City>);
-						for (int index2 = 0; index2 < this.departmentOfIndustries.Count; index2++)
+						List<KeyValuePair<float, City>> list = new List<KeyValuePair<float, City>>();
+						KeyValuePair<float, City> item = default(KeyValuePair<float, City>);
+						for (int j = 0; j < this.departmentOfIndustries.Count; j++)
 						{
 							City city;
-							Construction construction = this.departmentOfIndustries[index2].GetConstruction(constructibleElement, out city);
+							Construction construction = this.departmentOfIndustries[j].GetConstruction(constructibleElement, out city);
 							if (construction != null && city != null)
 							{
-								int worstNumberOfTurn;
-								float worstStock;
-								float worstCost;
-								bool checkPrerequisites;
-								QueueGuiItem.GetConstructionTurnInfos(city, construction, QueueGuiItem.EmptyList, out worstNumberOfTurn, out worstStock, out worstCost, out checkPrerequisites);
-								KeyValuePair<float, City> constructionInfo = new KeyValuePair<float, City>(worstStock, city);
-								constructionsInfo.Add(constructionInfo);
+								int num2;
+								float key;
+								float num3;
+								bool flag;
+								QueueGuiItem.GetConstructionTurnInfos(city, construction, QueueGuiItem.EmptyList, out num2, out key, out num3, out flag);
+								KeyValuePair<float, City> keyValuePair = new KeyValuePair<float, City>(key, city);
+								list.Add(keyValuePair);
 								if (city.Empire.Bits == quest.EmpireBits)
 								{
-									ownConstruction = constructionInfo;
+									item = keyValuePair;
 								}
 							}
 						}
-						constructionsInfo.Sort(new Comparison<KeyValuePair<float, City>>(PanelFeatureQuest.ConstructionInProgressInverseSorter));
-						int ownIndex;
-						if (ownConstruction.Value != null)
+						list.Sort(new Comparison<KeyValuePair<float, City>>(PanelFeatureQuest.ConstructionInProgressInverseSorter));
+						int num4;
+						if (item.Value != null)
 						{
-							ownIndex = constructionsInfo.IndexOf(ownConstruction);
+							num4 = list.IndexOf(item);
 						}
 						else
 						{
-							ownIndex = constructionsInfo.Count;
+							num4 = list.Count;
 						}
 						if (this.ObjectiveLabel.Text != string.Empty)
 						{
-							this.ObjectiveLabel.Text + "\n";
+							AgePrimitiveLabel objectiveLabel3 = this.ObjectiveLabel;
+							objectiveLabel3.Text += "\n";
 						}
 						this.ObjectiveLabel.Text = string.Concat(new object[]
 						{
 							this.ObjectiveLabel.Text,
 							AgeLocalizer.Instance.LocalizeString("%QuestRank"),
-							ownIndex + 1,
+							num4 + 1,
 							"/",
 							this.departmentOfIndustries.Count
 						});
@@ -175,6 +176,12 @@ public class PanelFeatureQuest : GuiPanelFeature
 	private void OnApplyHighDefinition(float scale)
 	{
 		this.DefaultWidth = Mathf.Round(this.DefaultWidth * scale);
+	}
+
+	protected override void OnUnloadGame(IGame game)
+	{
+		this.departmentOfIndustries = null;
+		base.OnUnloadGame(game);
 	}
 
 	public AgeTransform ObjectiveBox;

@@ -290,18 +290,20 @@ public class WorldPositionEvaluation : AIHelper, IWorldPositionEvaluationAIHelpe
 						District district = this.WorldPositionningService.GetDistrict(neighbourTile);
 						if (district != null)
 						{
-							if (district.Type != DistrictType.Exploitation)
+							if (district.Type == DistrictType.Exploitation)
 							{
-								float propertyValue = district.GetPropertyValue(SimulationProperties.NumberOfExtensionAround);
-								if (propertyValue < (float)DepartmentOfTheInterior.MinimumNumberOfExtensionNeighbourForLevelUp)
-								{
-									num += (int)propertyValue;
-								}
+								goto IL_12B;
 							}
-							goto IL_14B;
+							float propertyValue = district.GetPropertyValue(SimulationProperties.NumberOfExtensionAround);
+							if (propertyValue < (float)DepartmentOfTheInterior.MinimumNumberOfExtensionNeighbourForLevelUp)
+							{
+								num += (int)propertyValue;
+								goto IL_12B;
+							}
+							goto IL_12B;
 						}
 					}
-					flag |= this.WorldPositionningService.IsWaterTile(neighbourTile);
+					flag |= this.WorldPositionningService.IsOceanTile(neighbourTile);
 					worldPositionScore.Add(this.GetWorldPositionScore(empire.Index, neighbourTile), 1f);
 					worldPositionScore.NewDistrictNeighbourgNumber++;
 					if (!this.WorldPositionningService.IsWaterTile(neighbourTile))
@@ -310,7 +312,7 @@ public class WorldPositionEvaluation : AIHelper, IWorldPositionEvaluationAIHelpe
 					}
 				}
 			}
-			IL_14B:;
+			IL_12B:;
 		}
 		worldPositionScore.SumOfNumberOfExtensionAround = num;
 		worldPositionScore.HasCostalTile = flag;
@@ -335,9 +337,13 @@ public class WorldPositionEvaluation : AIHelper, IWorldPositionEvaluationAIHelpe
 		WorldPositionScore worldPositionScore = new WorldPositionScore(worldPosition, this.fimse);
 		int regionIndex = (int)this.WorldPositionningService.GetRegionIndex(worldPosition);
 		int fidsiextractionRange = creepingNodeImprovementDefinition.FIDSIExtractionRange;
-		WorldCircle worldCircle = new WorldCircle(worldPosition, fidsiextractionRange);
-		WorldPosition[] worldPositions = worldCircle.GetWorldPositions(this.WorldPositionningService.World.WorldParameters);
-		int num = 0;
+		int num = fidsiextractionRange;
+		if (ELCPUtilities.UseELCPSymbiosisBuffs && num > 0)
+		{
+			num = ((fidsiextractionRange < 7) ? 1 : 2);
+		}
+		WorldPosition[] worldPositions = new WorldCircle(worldPosition, num).GetWorldPositions(this.WorldPositionningService.World.WorldParameters);
+		int num2 = 0;
 		bool flag = false;
 		foreach (WorldPosition worldPosition2 in worldPositions)
 		{
@@ -358,15 +364,17 @@ public class WorldPositionEvaluation : AIHelper, IWorldPositionEvaluationAIHelpe
 						District district = this.WorldPositionningService.GetDistrict(worldPosition2);
 						if (district != null)
 						{
-							if (district.Type != DistrictType.Exploitation)
+							if (district.Type == DistrictType.Exploitation)
 							{
-								float propertyValue = district.GetPropertyValue(SimulationProperties.NumberOfExtensionAround);
-								if (propertyValue < (float)DepartmentOfTheInterior.MinimumNumberOfExtensionNeighbourForLevelUp)
-								{
-									num += (int)propertyValue;
-								}
+								goto IL_17A;
 							}
-							goto IL_18F;
+							float propertyValue = district.GetPropertyValue(SimulationProperties.NumberOfExtensionAround);
+							if (propertyValue < (float)DepartmentOfTheInterior.MinimumNumberOfExtensionNeighbourForLevelUp)
+							{
+								num2 += (int)propertyValue;
+								goto IL_17A;
+							}
+							goto IL_17A;
 						}
 					}
 					flag |= this.WorldPositionningService.IsWaterTile(worldPosition2);
@@ -378,9 +386,9 @@ public class WorldPositionEvaluation : AIHelper, IWorldPositionEvaluationAIHelpe
 					}
 				}
 			}
-			IL_18F:;
+			IL_17A:;
 		}
-		worldPositionScore.SumOfNumberOfExtensionAround = num;
+		worldPositionScore.SumOfNumberOfExtensionAround = num2;
 		worldPositionScore.HasCostalTile = flag;
 		return worldPositionScore;
 	}

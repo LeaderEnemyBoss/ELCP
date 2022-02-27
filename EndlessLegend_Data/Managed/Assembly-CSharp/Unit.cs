@@ -706,17 +706,16 @@ public class Unit : SimulationObjectWrapper, IXmlSerializable, IPathfindingConte
 		SimulationDescriptor descriptor = null;
 		if (this.unitAbilityDatabase.TryGetValue(unitAbilityName, out unitAbility))
 		{
-			IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
-			if (service != null)
+			if (Services.GetService<IDownloadableContentService>() != null)
 			{
 				bool flag = true;
 				foreach (Prerequisite prerequisite in unitAbility.Prerequisites)
 				{
 					if (prerequisite is DownloadableContentPrerequisite)
 					{
-						DownloadableContentPrerequisite downloadableContentPrerequisite = prerequisite as DownloadableContentPrerequisite;
+						Prerequisite prerequisite2 = prerequisite as DownloadableContentPrerequisite;
 						InterpreterContext context = null;
-						flag = downloadableContentPrerequisite.Check(context);
+						flag = prerequisite2.Check(context);
 						break;
 					}
 				}
@@ -729,10 +728,10 @@ public class Unit : SimulationObjectWrapper, IXmlSerializable, IPathfindingConte
 			if (unitAbilityReferenceCount == null)
 			{
 				unitAbilityReferenceCount = new Unit.UnitAbilityReferenceCount(unitAbility, parameters);
-				unitAbilityReferenceCount.Disabled = this.Embarked;
+				unitAbilityReferenceCount.Disabled = (this.Embarked && !unitAbility.Persistent);
 				this.currentAbilities.Add(unitAbilityReferenceCount);
 			}
-			if (unitAbilityReferenceCount.ReferenceCountByLevel.Length > 0)
+			if (unitAbilityReferenceCount.ReferenceCountByLevel.Length != 0)
 			{
 				if (level >= unitAbilityReferenceCount.ReferenceCountByLevel.Length)
 				{
@@ -751,7 +750,7 @@ public class Unit : SimulationObjectWrapper, IXmlSerializable, IPathfindingConte
 							base.RemoveDescriptorByName(unitAbilityReferenceCount.UnitAbility.AbilityLevels[unitAbilityReferenceCount.CurrentLevel].SimulationDescriptorReferences[j]);
 						}
 					}
-					if (unitAbilityReferenceCount.UnitAbility.AbilityLevels[level].SimulationDescriptorReferences != null)
+					if (unitAbilityReferenceCount.UnitAbility.AbilityLevels[level].SimulationDescriptorReferences != null && !unitAbilityReferenceCount.Disabled)
 					{
 						for (int k = 0; k < unitAbilityReferenceCount.UnitAbility.AbilityLevels[level].SimulationDescriptorReferences.Length; k++)
 						{
@@ -765,7 +764,7 @@ public class Unit : SimulationObjectWrapper, IXmlSerializable, IPathfindingConte
 				}
 				unitAbilityReferenceCount.ReferenceCountByLevel[level]++;
 			}
-			if (unitAbilityReferenceCount.ReferenceCount == 0 && unitAbilityReferenceCount.UnitAbility.Descriptors != null)
+			if (unitAbilityReferenceCount.ReferenceCount == 0 && unitAbilityReferenceCount.UnitAbility.Descriptors != null && !unitAbilityReferenceCount.Disabled)
 			{
 				for (int l = 0; l < unitAbilityReferenceCount.UnitAbility.Descriptors.Length; l++)
 				{
@@ -775,7 +774,9 @@ public class Unit : SimulationObjectWrapper, IXmlSerializable, IPathfindingConte
 					}
 				}
 			}
-			unitAbilityReferenceCount.ReferenceCount++;
+			Unit.UnitAbilityReferenceCount unitAbilityReferenceCount2 = unitAbilityReferenceCount;
+			int i = unitAbilityReferenceCount2.ReferenceCount;
+			unitAbilityReferenceCount2.ReferenceCount = i + 1;
 			return unitAbilityReferenceCount;
 		}
 		Diagnostics.LogWarning("Cannot find the ability '{0}' in the database.", new object[]
@@ -1450,14 +1451,14 @@ public class Unit : SimulationObjectWrapper, IXmlSerializable, IPathfindingConte
 
 	public void CopyRanksFrom(Unit unit)
 	{
-		Unit.<CopyRanksFrom>c__AnonStorey91F <CopyRanksFrom>c__AnonStorey91F = new Unit.<CopyRanksFrom>c__AnonStorey91F();
-		<CopyRanksFrom>c__AnonStorey91F.unit = unit;
+		Unit.<CopyRanksFrom>c__AnonStorey91A <CopyRanksFrom>c__AnonStorey91A = new Unit.<CopyRanksFrom>c__AnonStorey91A();
+		<CopyRanksFrom>c__AnonStorey91A.unit = unit;
 		int index;
-		for (index = 0; index < <CopyRanksFrom>c__AnonStorey91F.unit.unitRanks.Count; index++)
+		for (index = 0; index < <CopyRanksFrom>c__AnonStorey91A.unit.unitRanks.Count; index++)
 		{
-			if (!this.unitRanks.Exists((UnitRank match) => match.Name == <CopyRanksFrom>c__AnonStorey91F.unit.unitRanks[index].Name))
+			if (!this.unitRanks.Exists((UnitRank match) => match.Name == <CopyRanksFrom>c__AnonStorey91A.unit.unitRanks[index].Name))
 			{
-				this.ForceRank(<CopyRanksFrom>c__AnonStorey91F.unit.unitRanks[index].Name, (int)<CopyRanksFrom>c__AnonStorey91F.unit.GetPropertyValue(<CopyRanksFrom>c__AnonStorey91F.unit.unitRanks[index].LevelPropertyName));
+				this.ForceRank(<CopyRanksFrom>c__AnonStorey91A.unit.unitRanks[index].Name, (int)<CopyRanksFrom>c__AnonStorey91A.unit.GetPropertyValue(<CopyRanksFrom>c__AnonStorey91A.unit.unitRanks[index].LevelPropertyName));
 			}
 		}
 	}
@@ -1783,6 +1784,14 @@ public class Unit : SimulationObjectWrapper, IXmlSerializable, IPathfindingConte
 		{
 			Army army = this.Garrison as Army;
 			army.CheckMapBoostOnUnits();
+		}
+	}
+
+	public bool IsSettler
+	{
+		get
+		{
+			return this.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) || this.CheckUnitAbility(UnitAbility.ReadonlyResettle, -1);
 		}
 	}
 

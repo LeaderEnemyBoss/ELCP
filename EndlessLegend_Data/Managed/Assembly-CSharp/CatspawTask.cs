@@ -14,7 +14,7 @@ public abstract class CatspawTask : ArmyTask
 
 	public virtual bool IsMinorArmyValid(Army minorArmy, float armyLifeTime)
 	{
-		return base.AssignedArmy == null && minorArmy.GetPropertyValue(SimulationProperties.ActionPointsSpent) <= 0f;
+		return base.AssignedArmy == null;
 	}
 
 	public virtual float GetLocalPriority()

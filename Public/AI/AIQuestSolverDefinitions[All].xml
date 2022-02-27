@@ -8,6 +8,7 @@
   <AIQuestSolverDefinition Name="DefaultQuestSolverDefinition-SideQuest-Village"        MinimalTurnDuration="5"  MaximalTurnDuration="25" ChanceOfSuccess="0.6"/>
 
   <!-- Faction quests -->
+  <!-- ELCP: reduced questsolver durations for some of the "weaker" factions, standard avg. turns: 200 -->
   <AIQuestSolverDefinition Name="MainQuestBrokenLords-Chapter1"               MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestBrokenLords-Chapter2"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestBrokenLords-Chapter3"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
@@ -21,13 +22,16 @@
   <AIQuestSolverDefinition Name="MainQuestBrokenLords-Chapter8"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
 
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter1"                  MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestCultists-Chapter1Alt"               MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter2"                  MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter3"                  MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter3Alt"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter4"                  MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestCultists-Chapter4Alt"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter5"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter6"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter6Alt"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestCultists-Chapter6Alt2"              MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter7"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestCultists-Chapter8"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
 
@@ -39,6 +43,7 @@
   <AIQuestSolverDefinition Name="MainQuestDrakkens-Chapter5"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestDrakkens-Chapter5Alt"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestDrakkens-Chapter6"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestDrakkens-Chapter6Alt"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestDrakkens-Chapter7"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestDrakkens-Chapter8"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
 
@@ -65,21 +70,23 @@
   <AIQuestSolverDefinition Name="MainQuestNecrophages-Chapter7Alt"            MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestNecrophages-Chapter8"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
 
-  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter1"               MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter2"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter3"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter4"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter5"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter5Alt"            MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter6"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter6Alt"            MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter1"               MinimalTurnDuration="25" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter1Alt"            MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter2"               MinimalTurnDuration="15" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter2Alt"            MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter3"               MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter4"               MinimalTurnDuration="15" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter5"               MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter5Alt"            MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter6"               MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter6Alt"            MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter7"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter8"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestRageWizards-Chapter8Alt"            MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
 
-  <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter1"                MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter2"                MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter3"                MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter1"                MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter2"                MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter3"                MinimalTurnDuration="10" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter4"                MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter5"                MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter6"                MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
@@ -88,9 +95,9 @@
   <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter7Alt"             MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestReplicants-Chapter8"                MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   
-  <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter1"               MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter2"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter2Alt"            MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter1"               MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter2"               MinimalTurnDuration="5" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter2Alt"            MinimalTurnDuration="5" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter3"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter4"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestRovingClans-Chapter4Alt"            MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
@@ -106,35 +113,37 @@
   <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter3"                  MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter4"                  MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter5"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter5Alt"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter6"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter6Alt"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter7"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter7Alt"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestVaulters-Chapter8"                  MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
 
-  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter1"            MinimalTurnDuration="15" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter1AI"          MinimalTurnDuration="15" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter2"            MinimalTurnDuration="20" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter3"            MinimalTurnDuration="30" MaximalTurnDuration="40" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter1"            MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter1AI"          MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter2"            MinimalTurnDuration="10" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter3"            MinimalTurnDuration="15" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter4"            MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter4Alt"         MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter5"            MinimalTurnDuration="20" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter5"            MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter6"            MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter6Alt"         MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter6Alt"         MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter7"            MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestWinterShifters-Chapter8"            MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
 
-  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter1"                 MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter2"                 MinimalTurnDuration="15" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter3"                 MinimalTurnDuration="20" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter4"                 MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter4Alt1"             MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter4Alt2"             MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter4AI"               MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter1"                 MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter2"                 MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter3"                 MinimalTurnDuration="10" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter4"                 MinimalTurnDuration="15" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter4Alt1"             MinimalTurnDuration="15" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter4Alt2"             MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter4AI"               MinimalTurnDuration="15" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter5"                 MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter5Alt"              MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter6"                 MinimalTurnDuration="25" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter7"                 MinimalTurnDuration="25" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter7Alt"              MinimalTurnDuration="25" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestSeaDemons-Chapter8"                 MinimalTurnDuration="20" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
 
   <AIQuestSolverDefinition Name="MainQuestFlames-Chapter1"                MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
@@ -150,13 +159,16 @@
   <AIQuestSolverDefinition Name="MainQuestFlames-Chapter8"                MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestFlames-Chapter8Alt"             MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
 
-  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter1"                MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter2"                MinimalTurnDuration="20" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter3"                MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter4"                MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter1"                MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter2"                MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter3"                MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter4"                MinimalTurnDuration="15" MaximalTurnDuration="25" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestMimics-Chapter5"                MinimalTurnDuration="30" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter5Alt"             MinimalTurnDuration="30" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestMimics-Chapter6"                MinimalTurnDuration="30" MaximalTurnDuration="40" ChanceOfSuccess="1"/>
-  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter7"                MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter6Alt"             MinimalTurnDuration="30" MaximalTurnDuration="40" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter7"                MinimalTurnDuration="30" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="MainQuestMimics-Chapter7Alt"             MinimalTurnDuration="30" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <AIQuestSolverDefinition Name="MainQuestMimics-Chapter8"                MinimalTurnDuration="25" MaximalTurnDuration="35" ChanceOfSuccess="1"/>
   <!-- Victory -->
   <!-- Should not be resolved automatically.
@@ -220,9 +232,9 @@
   <!--============ TITLE: Too many chiefs ============-->
   <AIQuestSolverDefinition Name="SideQuestVillage#0021"               MinimalTurnDuration="8"  MaximalTurnDuration="20" ChanceOfSuccess="0.7"/>
   <!--============ TITLE: The Other Side of the Seas ============-->
-  <AIQuestSolverDefinition Name="SideQuestVillage#0022"               MinimalTurnDuration="5"  MaximalTurnDuration="25" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="SideQuestVillage#0022"               MinimalTurnDuration="5"  MaximalTurnDuration="25" ChanceOfSuccess="0.9"/>
   <!--============ TITLE: Minor Faction, Major Trust ============-->
-  <AIQuestSolverDefinition Name="SideQuestVillage#0023"               MinimalTurnDuration="5"  MaximalTurnDuration="15" ChanceOfSuccess="0.9"/>
+  <AIQuestSolverDefinition Name="SideQuestVillage#0023"               MinimalTurnDuration="5"  MaximalTurnDuration="15" ChanceOfSuccess="0.8"/>
   <!--============ TITLE: Tutorial side quest ============-->
   <AIQuestSolverDefinition Name="SideQuestVillage#0024"               MinimalTurnDuration="8"  MaximalTurnDuration="20" ChanceOfSuccess="0.7"/>
   <!--============ TITLE: Too many chiefs ============-->
@@ -233,12 +245,13 @@
   <AIQuestSolverDefinition Name="SideQuestVillage#0027"               MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="0.6"/>
   <!-- DAWNSHUA -  "Rise of the Magtay": activate boosters -->
   <AIQuestSolverDefinition Name="SideQuestVillage#0028"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
-  
+
   <!-- From Interact -->
   <!--============ TITLE: Lust for Loot ============-->
-  <AIQuestSolverDefinition Name="SideQuestPOI#0001"               MinimalTurnDuration="15" MaximalTurnDuration="15" ChanceOfSuccess="0.7"/>
+  <AIQuestSolverDefinition Name="SideQuestPOI#0001"               MinimalTurnDuration="10" MaximalTurnDuration="14" ChanceOfSuccess="0.4"/>
   <!-- ============ TITLE: Master of Luxury ============-->
-  <AIQuestSolverDefinition Name="SideQuestPOI#0002"               MinimalTurnDuration="10" MaximalTurnDuration="40" ChanceOfSuccess="1"/>
+  <!-- ELCP: unnecessary, quest solves itself -->
+  <!--<AIQuestSolverDefinition Name="SideQuestPOI#0002"               MinimalTurnDuration="10" MaximalTurnDuration="40" ChanceOfSuccess="0.8"/>-->
   <!-- ============ TITLE: Which treasure army? ============-->
   <AIQuestSolverDefinition Name="SideQuestPOI#0003"               MinimalTurnDuration="5"  MaximalTurnDuration="20" ChanceOfSuccess="0.7"/>
   <!-- ============ TITLE: The Accidental Desecrator ============-->
@@ -268,7 +281,7 @@
   <!-- ============ TITLE: Within a Rock in a Hard Place ============-->
   <AIQuestSolverDefinition Name="SideQuestPOI#0016"               MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0.8"/>
   <!-- ============ TITLE: Manual Labor ============-->
-  <AIQuestSolverDefinition Name="SideQuestPOI#0017"               MinimalTurnDuration="5" MaximalTurnDuration="40" ChanceOfSuccess="0.6"/>
+  <AIQuestSolverDefinition Name="SideQuestPOI#0017"               MinimalTurnDuration="5" MaximalTurnDuration="10" ChanceOfSuccess="0.6"/>
   <!--============ TITLE: A Princely Gift  ===-->
   <AIQuestSolverDefinition Name="SideQuestPOI#0018"               MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0.9"/>
   <!--============ TITLE: History Lesson  ===-->
@@ -277,16 +290,32 @@
   <AIQuestSolverDefinition Name="SideQuestPOI#0020"               MinimalTurnDuration="10" MaximalTurnDuration="10" ChanceOfSuccess="1"/>
   <!--============ TITLE: Halloween quest  ===-->
   <AIQuestSolverDefinition Name="SideQuestPOI#0021"               MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0"/>
+  
+  <!-- Monstrous Tales Quests -->
+  
+  <!--ELCP commented out global quests as AIs can do these with ELCP -->
+  <!--added missing quest -->
+  <!--DLC_21_A Pacification:-->
+  <AIQuestSolverDefinition Name="DLC21_01CircusesAndBread"            MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0.5"/>
+  <AIQuestSolverDefinition Name="DLC21_02MakeDustNotWar"            MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="0.5"/>
+  
+  
+  
   <!--============ TITLE: Legends of Old  ===-->
-  <AIQuestSolverDefinition Name="DLC21_03LegendsOfOld"            MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0"/>
+  <AIQuestSolverDefinition Name="DLC21_03LegendsOfOld"            MinimalTurnDuration="15" MaximalTurnDuration="20" ChanceOfSuccess="0.6"/>
   <!--============ TITLE: Chapter 1: Who goes there?  ===-->
-  <AIQuestSolverDefinition Name="DLC21_07Chapter1WhoGoesThere"    MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0"/>
+  <AIQuestSolverDefinition Name="DLC21_07Chapter1WhoGoesThere"    MinimalTurnDuration="25" MaximalTurnDuration="45" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="DLC21_10Chapter4OldVoices"       MinimalTurnDuration="10" MaximalTurnDuration="20" ChanceOfSuccess="0.33"/>
+  
+  <!--============ TITLE: Of Priests and Pirates  ===-->
+  <AIQuestSolverDefinition Name="DLC21_20BunkersOfMadness"            MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="0.2"/>
+  
   <!--============ TITLE: Infestation!  ===-->
-  <AIQuestSolverDefinition Name="DLC21_04Infestation"             MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0.5"/>
+  <!--<AIQuestSolverDefinition Name="DLC21_04Infestation"             MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0.5"/>-->
   <!--============ TITLE: City Gone Rogue  ===-->
-  <AIQuestSolverDefinition Name="DLC21_05CityGoneRogue"           MinimalTurnDuration="1" MaximalTurnDuration="2" ChanceOfSuccess="1"/> -->
+  <!-- <AIQuestSolverDefinition Name="DLC21_05CityGoneRogue"           MinimalTurnDuration="1" MaximalTurnDuration="2" ChanceOfSuccess="1"/> -->
   <!--============ TITLE: Volcanoformers  ===-->
-  <AIQuestSolverDefinition Name="DLC21_06Volcanoformers"          MinimalTurnDuration="1" MaximalTurnDuration="2" ChanceOfSuccess="1"/> -->
+  <!-- <AIQuestSolverDefinition Name="DLC21_06Volcanoformers"          MinimalTurnDuration="1" MaximalTurnDuration="2" ChanceOfSuccess="1"/> -->
 
   <!--
   #############################################################################
@@ -325,7 +354,7 @@
   <AIQuestSolverDefinition Name="SideQuestLore#0001"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
 
   <!-- URCES - "Industrial Might": build a random improvement within a time limit  -->
-  <AIQuestSolverDefinition Name="SideQuestLore#0003"               MinimalTurnDuration="5"  MaximalTurnDuration="15" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="SideQuestLore#0003"               MinimalTurnDuration="5" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
 
   <!-- SISTERS OF MERCY - "A Diplomat in a Dangerous Land": parley with minor factions -->
   <AIQuestSolverDefinition Name="SideQuestLore#0005"               MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="1"/>
@@ -337,7 +366,7 @@
   <AIQuestSolverDefinition Name="SideQuestLore#0010"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="0.7"/>
 
   <!-- DORGESHI - "A Fragile Peace": study and then give dust -->
-  <AIQuestSolverDefinition Name="SideQuestLore#0010Alt"            MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="0.7"/>
+  <AIQuestSolverDefinition Name="SideQuestLore#0010Alt"               MinimalTurnDuration="15" MaximalTurnDuration="30" ChanceOfSuccess="0.7"/>
 
   <!-- HURNAS - "Running with the Hunt": lend 2 units to the village for 10 turns -->
   <AIQuestSolverDefinition Name="SideQuestLore#0019"               MinimalTurnDuration="10" MaximalTurnDuration="15" ChanceOfSuccess="1"/>
@@ -379,5 +408,5 @@
   <AIQuestSolverDefinition Name="SideQuestLore#0013"               MinimalTurnDuration="10" MaximalTurnDuration="30" ChanceOfSuccess="0.6"/>
 
   <!-- ERYCIS - "Hand of the Godheads": exploit 4 new ground types -->
-  <AIQuestSolverDefinition Name="SideQuestLore#0017"               MinimalTurnDuration="20" MaximalTurnDuration="45" ChanceOfSuccess="1"/>
+  <AIQuestSolverDefinition Name="SideQuestLore#0017"               MinimalTurnDuration="35" MaximalTurnDuration="45" ChanceOfSuccess="1"/>
 </Datatable>

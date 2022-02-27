@@ -35,14 +35,17 @@ public abstract class ArmyActionWithCooldown : ArmyAction
 		if (this.CooldownDuration > 0f)
 		{
 			float num = this.CooldownDuration;
-			float propertyValue = army.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-			num *= propertyValue;
-			if (army != null)
+			if (!this.DoNotScale)
 			{
-				float cooldownDurationReduction = this.GetCooldownDurationReduction(army);
-				num += cooldownDurationReduction;
+				float propertyValue = army.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+				num *= propertyValue;
+				if (army != null)
+				{
+					float cooldownDurationReduction = this.GetCooldownDurationReduction(army);
+					num += cooldownDurationReduction;
+				}
 			}
-			return Math.Max(0f, (float)Math.Floor((double)num));
+			return Math.Max(1f, (float)Math.Floor((double)num));
 		}
 		return 0f;
 	}
@@ -126,6 +129,9 @@ public abstract class ArmyActionWithCooldown : ArmyAction
 		}
 		return true;
 	}
+
+	[XmlElement]
+	public bool DoNotScale { get; set; }
 
 	public static readonly StaticString NoCanDoWhileCooldownInProgress = "ArmyActionCooldownInProgress";
 }

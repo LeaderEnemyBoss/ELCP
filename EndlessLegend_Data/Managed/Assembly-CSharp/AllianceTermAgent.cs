@@ -82,6 +82,10 @@ public class AllianceTermAgent : DiplomaticTermAgent
 		float num4 = this.globalWarAgent.Value - this.warAgent.Value;
 		num += num4 * this.bonusFromDesireForWarWithOthers;
 		num *= this.multiplier;
+		if (this.VictoryLayer.CurrentFocusEnum == AILayer_Victory.VictoryFocus.Diplomacy && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index] && (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.ColdWar || base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace || base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Alliance))
+		{
+			num = Mathf.Max(55f, num + 55f);
+		}
 		return num / 100f;
 	}
 

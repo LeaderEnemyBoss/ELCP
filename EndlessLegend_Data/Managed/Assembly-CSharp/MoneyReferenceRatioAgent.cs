@@ -50,6 +50,7 @@ public class MoneyReferenceRatioAgent : SimulationAgent
 		this.departmentOfTheInterior = null;
 		this.contextSimulationObject = null;
 		this.districtImprovement = null;
+		this.aILayer_Victory = null;
 		base.Release();
 	}
 
@@ -69,8 +70,7 @@ public class MoneyReferenceRatioAgent : SimulationAgent
 			base.Enable = false;
 			return;
 		}
-		AgentGroupPath agentGroupPath = new AgentGroupPath("ResourceEvaluationAmas/CityAgentGroup");
-		Agent[] validatedAgents = agentGroupPath.GetValidatedAgents(base.ParentGroup, "NetCityMoney");
+		Agent[] validatedAgents = new AgentGroupPath("ResourceEvaluationAmas/CityAgentGroup").GetValidatedAgents(base.ParentGroup, "NetCityMoney");
 		SimulationNormalizedAgent[] array;
 		if (validatedAgents != null)
 		{
@@ -82,6 +82,8 @@ public class MoneyReferenceRatioAgent : SimulationAgent
 		}
 		this.netCityMoneyAgents = array;
 		Diagnostics.Assert(this.netCityMoneyAgents != null);
+		AIEntity_Empire entity = (base.ContextObject as AIPlayer_MajorEmpire).GetEntity<AIEntity_Empire>();
+		this.aILayer_Victory = entity.GetLayer<AILayer_Victory>();
 	}
 
 	protected override void ComputeInitValue()
@@ -114,18 +116,20 @@ public class MoneyReferenceRatioAgent : SimulationAgent
 			float propertyValue = city.GetPropertyValue(SimulationProperties.NetCityMoney);
 			num += simulationNormalizedAgent.UnnormalizedValue - propertyValue;
 		}
-		float propertyValue2 = this.empire.GetPropertyValue(SimulationProperties.NetEmpireMoney);
-		float num2 = propertyValue2 + num;
-		float propertyValue3 = this.empire.GetPropertyValue(SimulationProperties.EmpireMoneyUpkeep);
-		float propertyValue4 = this.empire.GetPropertyValue(SimulationProperties.BankAccount);
-		float b = propertyValue3 * this.moneyStockToMaintainUpkeepTurnCount;
-		float a = (num2 >= 0f) ? 0f : (-num2 * this.moneyStockToMaintainUpkeepTurnCount);
-		float num3 = Mathf.Max(a, b);
-		float num4 = this.moneyIncomeGrowthPercent * propertyValue4;
-		float num5 = (propertyValue4 <= 0f) ? 0f : (propertyValue4 / num3);
+		float num2 = this.empire.GetPropertyValue(SimulationProperties.NetEmpireMoney) + num;
+		float propertyValue2 = this.empire.GetPropertyValue(SimulationProperties.EmpireMoneyUpkeep);
+		float propertyValue3 = this.empire.GetPropertyValue(SimulationProperties.BankAccount);
+		float b = propertyValue2 * this.moneyStockToMaintainUpkeepTurnCount;
+		float num3 = Mathf.Max((num2 >= 0f) ? 0f : (-num2 * this.moneyStockToMaintainUpkeepTurnCount), b);
+		float num4 = this.moneyIncomeGrowthPercent * propertyValue3;
+		float num5 = (propertyValue3 <= 0f) ? 0f : (propertyValue3 / num3);
 		float num6 = (num2 <= 0f) ? 0f : (num2 / num4);
-		float val = (num5 + num6) / 2f;
-		base.Value = Math.Max(base.ValueMin, Math.Min(val, base.ValueMax));
+		float num7 = (num5 + num6) / 2f;
+		if (this.aILayer_Victory.CurrentFocusEnum == AILayer_Victory.VictoryFocus.Economy)
+		{
+			num7 = Math.Max(0.5f, num7 * 1.5f);
+		}
+		base.Value = Math.Max(base.ValueMin, Math.Min(num7, base.ValueMax));
 	}
 
 	private DepartmentOfTheInterior departmentOfTheInterior;
@@ -143,4 +147,6 @@ public class MoneyReferenceRatioAgent : SimulationAgent
 
 	[InfluencedByPersonality]
 	private float moneyStockToMaintainUpkeepTurnCount = 10f;
+
+	private AILayer_Victory aILayer_Victory;
 }

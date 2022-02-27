@@ -6,6 +6,7 @@ using Amplitude;
 using Amplitude.Interop;
 using Amplitude.Unity.Achievement;
 using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 using Amplitude.Unity.Runtime;
 using Amplitude.Unity.Session;
 using Amplitude.Unity.Steam;
@@ -13,6 +14,11 @@ using Amplitude.Unity.View;
 
 public class RuntimeState_Lobby : RuntimeState
 {
+	public RuntimeState_Lobby()
+	{
+		this.PlayersToCheck = new List<uint>();
+	}
+
 	public object[] Parameters { get; private set; }
 
 	private AchievementManager AchievementManager { get; set; }
@@ -150,6 +156,7 @@ public class RuntimeState_Lobby : RuntimeState
 			this.SessionService.ReleaseSession();
 			this.SessionService = null;
 		}
+		this.PlayersToCheck.Clear();
 	}
 
 	protected override void OnGameLobbyJoinRequested(object sender, SteamGameLobbyJoinRequestedEventArgs e)
@@ -542,6 +549,10 @@ public class RuntimeState_Lobby : RuntimeState
 					string factionNameOrDescriptor = text.Substring(array[0].Length + 1);
 					flag = this.TryChangeFaction(array[0], array[1], factionNameOrDescriptor);
 				}
+				else if (array[0].StartsWith("Handicap"))
+				{
+					flag = this.TryChangeHandicap(array[0], array[1]);
+				}
 				else if (array[0].StartsWith("LockEmpire"))
 				{
 					string x = array[0];
@@ -660,7 +671,15 @@ public class RuntimeState_Lobby : RuntimeState
 	private void Session_LobbyEnter(object sender, LobbyEnterEventArgs e)
 	{
 		Diagnostics.Log("[RuntimeState_Lobby] Lobby Entered.");
+		this.Session.SetLobbyMemberData("Version", Amplitude.Unity.Framework.Application.Version.ToLong());
 		this.Session.SetLobbyMemberData("Ready", false);
+		IRuntimeService service = Services.GetService<IRuntimeService>();
+		Diagnostics.Assert(service != null);
+		Diagnostics.Assert(service.Runtime != null);
+		if (this.Session.IsHosting && service != null && service.Runtime != null && !string.IsNullOrEmpty(service.Runtime.HashKey) && this.Session.GetLobbyData<string>("runtimehash", "Invalid") != service.Runtime.HashKey)
+		{
+			this.Session.SetLobbyData("runtimehash", service.Runtime.HashKey, true);
+		}
 		if (this.AchievementManager != null)
 		{
 			uint questAchievementsCompletionBitfield = this.AchievementManager.GetQuestAchievementsCompletionBitfield();
@@ -698,6 +717,23 @@ public class RuntimeState_Lobby : RuntimeState
 		if (this.Session != null && this.Session.IsHosting)
 		{
 			this.RefreshDownlodableContentSharing(DownloadableContentSharing.SharedByServer, SessionChangeAction.LobbyMemberDataChange);
+			if (!this.PlayersToCheck.Contains(e.SteamIDMember.AccountID))
+			{
+				this.PlayersToCheck.Add(e.SteamIDMember.AccountID);
+				return;
+			}
+			long lobbyMemberData = this.Session.GetLobbyMemberData<long>(e.SteamIDMember, "Version", 0L);
+			if (lobbyMemberData != Amplitude.Unity.Framework.Application.Version.ToLong())
+			{
+				if (Amplitude.Unity.Framework.Application.Preferences.ELCPDevMode)
+				{
+					Amplitude.Unity.Framework.Version version = new Amplitude.Unity.Framework.Version(lobbyMemberData);
+					string str = string.Format(AgeLocalizer.Instance.LocalizeString("%JoinGameVersionMismatchDescription"), version.ToString(), Amplitude.Unity.Framework.Application.Version.ToString());
+					Diagnostics.LogError("ELCP Player Kicked: " + str);
+				}
+				string message = string.Format("k:/{0}/{1}", e.SteamIDMember, "%KickReasonVersionMismatch");
+				this.Session.SendLobbyChatMessage(message);
+			}
 		}
 	}
 
@@ -867,14 +903,14 @@ public class RuntimeState_Lobby : RuntimeState
 			{
 				foreach (string text in this.GameSaveDescriptor.GameSaveSessionDescriptor.GetLobbyDataKeys())
 				{
-					if (text != "name")
+					if (text != "name" && text.ToLower() != "owner")
 					{
 						string lobbyData = this.GameSaveDescriptor.GameSaveSessionDescriptor.GetLobbyData<string>(text, null);
 						this.Session.SetLobbyData(text, lobbyData, true);
 					}
 				}
-				this.Session.SetLobbyData("Owner", this.Session.SteamIDUser, true);
-				this.Session.SetLobbyData("owner", this.Session.SteamIDUser, true);
+				this.Session.SetLobbyData("Owner", this.Session.SteamIDUser.UInt64AccountID, true);
+				this.Session.SetLobbyData("owner", this.Session.SteamIDUser.UInt64AccountID, true);
 				this.Session.SetLobbyData("Version", Amplitude.Unity.Framework.Application.Version.ToLong(), true);
 				this.Session.SetLobbyData("version", Amplitude.Unity.Framework.Application.Version.ToLong(), true);
 				this.Session.SetLobbyData("_IsSavedGame", true, true);
@@ -894,19 +930,17 @@ public class RuntimeState_Lobby : RuntimeState
 							lobbyData2 = this.Session.GetLobbyData<string>(text4, null);
 							if (string.IsNullOrEmpty(lobbyData2))
 							{
-								break;
+								goto IL_25B;
 							}
 							if (!lobbyData2.StartsWith("AI"))
 							{
-								goto IL_25C;
+								break;
 							}
 							num++;
 						}
-						goto IL_273;
-						IL_25C:
 						text2 = text4;
 						text3 = lobbyData2;
-						IL_273:
+						IL_25B:
 						Diagnostics.LogWarning("Replacing steam id user {0} from '{1}' by current user's {2} in order to load the single player game.", new object[]
 						{
 							text3,
@@ -1055,15 +1089,13 @@ public class RuntimeState_Lobby : RuntimeState
 									faction = this.DefaultFaction;
 								}
 							}
-							Faction faction2 = faction;
-							string data2 = Faction.Encode(faction2);
+							string data2 = Faction.Encode(faction);
 							this.Session.SetLobbyData(x4, data2, true);
 						}
 						else
 						{
 							this.Session.SetLobbyData(x3, "AI0", true);
-							Faction defaultRandomFaction = this.DefaultRandomFaction;
-							string data3 = Faction.Encode(defaultRandomFaction);
+							string data3 = Faction.Encode(this.DefaultRandomFaction);
 							this.Session.SetLobbyData(x4, data3, true);
 						}
 						this.Session.SetLobbyData(x5, this.GetFirstAvailableColor(j), true);
@@ -1213,7 +1245,7 @@ public class RuntimeState_Lobby : RuntimeState
 				}
 				if (string.CompareOrdinal(lobbyData, steamID.ToString()) == 0)
 				{
-					goto Block_4;
+					goto IL_FF;
 				}
 				num++;
 			}
@@ -1233,7 +1265,7 @@ public class RuntimeState_Lobby : RuntimeState
 			string message2 = string.Format("k:/{0}/{1}", steamID, "%KickReasonLobbyFull");
 			this.Session.SendLobbyChatMessage(message2);
 			return;
-			Block_4:
+			IL_FF:
 			Diagnostics.LogWarning("[Lobby] Ignoring update; player '{0}' has already entered the lobby.", new object[]
 			{
 				friendPersonaName
@@ -1244,7 +1276,33 @@ public class RuntimeState_Lobby : RuntimeState
 
 	private void OnPlayerLeft(Steamworks.SteamID steamID)
 	{
+		if (this.PlayersToCheck.Contains(steamID.AccountID))
+		{
+			this.PlayersToCheck.Remove(steamID.AccountID);
+		}
 		string friendPersonaName = Steamworks.SteamAPI.SteamFriends.GetFriendPersonaName(steamID);
+		IGameService service = Services.GetService<IGameService>();
+		if (service != null && service.Game != null)
+		{
+			IPlayerRepositoryService service2 = service.Game.Services.GetService<IPlayerRepositoryService>();
+			if (service2 != null)
+			{
+				using (IEnumerator<Player> enumerator = service2.GetEnumerator())
+				{
+					while (enumerator.MoveNext())
+					{
+						if (enumerator.Current.SteamID == steamID)
+						{
+							Diagnostics.LogError("[Lobby] ELCP: Received invalid leave message for Player '{0}'", new object[]
+							{
+								friendPersonaName
+							});
+							return;
+						}
+					}
+				}
+			}
+		}
 		Diagnostics.Log("[Lobby] Player '{0}' has left the lobby.", new object[]
 		{
 			friendPersonaName
@@ -1261,18 +1319,15 @@ public class RuntimeState_Lobby : RuntimeState
 				text2 = this.Session.GetLobbyData<string>(text, null);
 				if (string.IsNullOrEmpty(text2))
 				{
-					break;
+					goto IL_2AB;
 				}
 				if (text2.Contains(steamID.ToString()))
 				{
-					goto Block_3;
+					break;
 				}
 				num++;
 			}
-			goto IL_25A;
-			Block_3:
-			string[] collection = text2.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
-			List<string> list = new List<string>(collection);
+			List<string> list = new List<string>(text2.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries));
 			list.Remove(steamID.ToString());
 			if (list.Count == 0)
 			{
@@ -1289,8 +1344,7 @@ public class RuntimeState_Lobby : RuntimeState
 					{
 						if (!string.IsNullOrEmpty(empty))
 						{
-							IDatabase<Faction> database = Databases.GetDatabase<Faction>(true);
-							if (!database.TryGetValue(empty, out faction2))
+							if (!Databases.GetDatabase<Faction>(true).TryGetValue(empty, out faction2))
 							{
 								faction2 = this.DefaultFaction;
 							}
@@ -1317,8 +1371,7 @@ public class RuntimeState_Lobby : RuntimeState
 					}
 					if (faction2 != null)
 					{
-						Faction faction3 = faction2;
-						text3 = Faction.Encode(faction3);
+						text3 = Faction.Encode(faction2);
 						this.Session.SetLobbyData(x, text3, true);
 					}
 				}
@@ -1328,7 +1381,7 @@ public class RuntimeState_Lobby : RuntimeState
 				text2 = string.Join(";", list.ToArray());
 			}
 			flag = true;
-			IL_25A:
+			IL_2AB:
 			if (flag)
 			{
 				this.Session.SetLobbyData(text, text2, true);
@@ -1338,14 +1391,12 @@ public class RuntimeState_Lobby : RuntimeState
 					text
 				});
 				this.UpdateSlotCount();
+				return;
 			}
-			else
+			Diagnostics.LogWarning("[Lobby] Player '{0}' wasn't affected to any empire.", new object[]
 			{
-				Diagnostics.LogWarning("[Lobby] Player '{0}' wasn't affected to any empire.", new object[]
-				{
-					friendPersonaName
-				});
-			}
+				friendPersonaName
+			});
 		}
 	}
 
@@ -1385,11 +1436,15 @@ public class RuntimeState_Lobby : RuntimeState
 		string x = string.Format("Lock{0}", askedEmpireKey);
 		bool lobbyData = this.Session.GetLobbyData<bool>(x, false);
 		string x2 = string.Format("{0}Eliminated", askedEmpireKey);
-		bool lobbyData2 = this.Session.GetLobbyData<bool>(x2, false);
-		bool flag = false;
+		bool flag = this.Session.GetLobbyData<bool>(x2, false);
+		if (this.Session.GetLobbyData<bool>("SpectatorMode", false))
+		{
+			flag = false;
+		}
+		bool flag2 = false;
 		if (text.StartsWith("AI"))
 		{
-			flag = true;
+			flag2 = true;
 			text = steamIDstring;
 		}
 		else
@@ -1400,16 +1455,16 @@ public class RuntimeState_Lobby : RuntimeState
 				if (string.CompareOrdinal(array[0], steamIDstring) == 0)
 				{
 					Diagnostics.LogWarning("[Lobby] User already affected to this slot.");
-					flag = false;
+					flag2 = false;
 				}
 				else
 				{
-					flag = true;
-					text += ";" + steamIDstring;
+					flag2 = true;
+					text = text + ";" + steamIDstring;
 				}
 			}
 		}
-		if (flag && !lobbyData && !lobbyData2)
+		if (flag2 && !lobbyData && !flag)
 		{
 			int num = 0;
 			string x3;
@@ -1508,6 +1563,7 @@ public class RuntimeState_Lobby : RuntimeState
 
 	private bool AttributeSlotToUser(Steamworks.SteamID steamIDUserChanged)
 	{
+		bool lobbyData = this.Session.GetLobbyData<bool>("SpectatorMode", false);
 		bool flag = false;
 		string x = string.Empty;
 		string text = string.Empty;
@@ -1519,43 +1575,37 @@ public class RuntimeState_Lobby : RuntimeState
 			text = this.Session.GetLobbyData<string>(x, null);
 			if (string.IsNullOrEmpty(text))
 			{
-				break;
+				goto IL_12A;
 			}
 			string x2 = string.Format("_EmpireReserved{0}", num);
-			string lobbyData = this.Session.GetLobbyData<string>(x2, null);
-			if (!string.IsNullOrEmpty(lobbyData) && !(lobbyData == "0"))
+			string lobbyData2 = this.Session.GetLobbyData<string>(x2, null);
+			if (!string.IsNullOrEmpty(lobbyData2) && !(lobbyData2 == "0") && lobbyData2.Contains(steamIDUserChanged.ToString()))
 			{
-				if (lobbyData.Contains(steamIDUserChanged.ToString()))
+				string x3 = string.Format("Empire{0}Eliminated", num);
+				if (this.Session.GetLobbyData<bool>(x3, false) && !lobbyData)
 				{
-					string x3 = string.Format("Empire{0}Eliminated", num);
-					bool lobbyData2 = this.Session.GetLobbyData<bool>(x3, false);
-					if (lobbyData2)
-					{
-						break;
-					}
-					if (text.StartsWith("AI"))
-					{
-						goto Block_5;
-					}
-					array = text.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
-					if (array.Length < 1)
-					{
-						goto Block_6;
-					}
+					goto IL_12A;
+				}
+				if (text.StartsWith("AI"))
+				{
+					break;
+				}
+				array = text.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
+				if (array.Length < 1)
+				{
+					goto IL_109;
 				}
 			}
 			num++;
 		}
-		goto IL_141;
-		Block_5:
 		text = steamIDUserChanged.ToString();
 		flag = true;
-		goto IL_141;
-		Block_6:
+		goto IL_12A;
+		IL_109:
 		text = string.Join(";", array);
 		text += string.Format(";{0}", steamIDUserChanged);
 		flag = true;
-		IL_141:
+		IL_12A:
 		if (!flag)
 		{
 			int num2 = 0;
@@ -1565,32 +1615,28 @@ public class RuntimeState_Lobby : RuntimeState
 				text = this.Session.GetLobbyData<string>(x, null);
 				if (string.IsNullOrEmpty(text))
 				{
-					break;
+					goto IL_218;
 				}
 				string x4 = string.Format("LockEmpire{0}", num2);
-				bool lobbyData3 = this.Session.GetLobbyData<bool>(x4, false);
-				if (!lobbyData3)
+				if (!this.Session.GetLobbyData<bool>(x4, false))
 				{
 					string x5 = string.Format("Empire{0}Eliminated", num2);
-					bool lobbyData4 = this.Session.GetLobbyData<bool>(x5, false);
-					if (!lobbyData4)
+					if (!this.Session.GetLobbyData<bool>(x5, false) || lobbyData)
 					{
 						string x6 = string.Format("_EmpireReserved{0}", num2);
-						string lobbyData5 = this.Session.GetLobbyData<string>(x6, null);
-						if ((string.IsNullOrEmpty(lobbyData5) || lobbyData5 == "0") && text.StartsWith("AI"))
+						string lobbyData3 = this.Session.GetLobbyData<string>(x6, null);
+						if ((string.IsNullOrEmpty(lobbyData3) || lobbyData3 == "0") && text.StartsWith("AI"))
 						{
-							goto Block_12;
+							break;
 						}
 					}
 				}
 				num2++;
 			}
-			goto IL_25A;
-			Block_12:
 			text = steamIDUserChanged.ToString();
 			flag = true;
 		}
-		IL_25A:
+		IL_218:
 		if (!flag)
 		{
 			int num3 = 0;
@@ -1600,30 +1646,23 @@ public class RuntimeState_Lobby : RuntimeState
 				text = this.Session.GetLobbyData<string>(x, null);
 				if (string.IsNullOrEmpty(text))
 				{
-					break;
+					goto IL_2C4;
 				}
 				string x7 = string.Format("LockEmpire{0}", num3);
-				bool lobbyData6 = this.Session.GetLobbyData<bool>(x7, false);
-				if (!lobbyData6)
+				if (!this.Session.GetLobbyData<bool>(x7, false))
 				{
 					string x8 = string.Format("Empire{0}Eliminated", num3);
-					bool lobbyData7 = this.Session.GetLobbyData<bool>(x8, false);
-					if (!lobbyData7)
+					if ((!this.Session.GetLobbyData<bool>(x8, false) || lobbyData) && text.StartsWith("AI"))
 					{
-						if (text.StartsWith("AI"))
-						{
-							goto Block_17;
-						}
+						break;
 					}
 				}
 				num3++;
 			}
-			goto IL_32E;
-			Block_17:
 			text = steamIDUserChanged.ToString();
 			flag = true;
 		}
-		IL_32E:
+		IL_2C4:
 		if (!flag)
 		{
 			int num4 = 0;
@@ -1634,32 +1673,28 @@ public class RuntimeState_Lobby : RuntimeState
 				text = this.Session.GetLobbyData<string>(x, null);
 				if (string.IsNullOrEmpty(text))
 				{
-					break;
+					goto IL_393;
 				}
 				string x9 = string.Format("LockEmpire{0}", num4);
-				bool lobbyData8 = this.Session.GetLobbyData<bool>(x9, false);
-				if (!lobbyData8)
+				if (!this.Session.GetLobbyData<bool>(x9, false))
 				{
 					string x10 = string.Format("Empire{0}Eliminated", num4);
-					bool lobbyData9 = this.Session.GetLobbyData<bool>(x10, false);
-					if (!lobbyData9)
+					if (!this.Session.GetLobbyData<bool>(x10, false) || lobbyData)
 					{
 						array2 = text.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
 						if (array2.Length < 1)
 						{
-							goto Block_22;
+							break;
 						}
 					}
 				}
 				num4++;
 			}
-			goto IL_422;
-			Block_22:
 			text = string.Join(";", array2);
 			text += string.Format(";{0}", steamIDUserChanged);
 			flag = true;
 		}
-		IL_422:
+		IL_393:
 		if (flag)
 		{
 			this.Session.SetLobbyData(x, text, true);
@@ -1740,7 +1775,15 @@ public class RuntimeState_Lobby : RuntimeState
 		}
 	}
 
+	private bool TryChangeHandicap(string HandicapKey, string HandicapValue)
+	{
+		this.Session.SetLobbyData(HandicapKey, HandicapValue, true);
+		return true;
+	}
+
 	private global::Session session;
+
+	private List<uint> PlayersToCheck;
 
 	[StructLayout(LayoutKind.Sequential, Size = 1)]
 	public struct SlotCount

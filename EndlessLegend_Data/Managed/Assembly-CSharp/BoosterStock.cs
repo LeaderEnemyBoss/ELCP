@@ -50,18 +50,21 @@ public class BoosterStock : MonoBehaviour
 
 	protected void OnActivateBooster(GameObject obj)
 	{
-		if (this.guiStackedBooster.BoosterDefinition == null)
+		if (this.guiStackedBooster.BoosterDefinition == null || this.guiStackedBooster.Quantity == 0)
 		{
+			return;
+		}
+		if (this.QuickActivation && this.Guid.IsValid)
+		{
+			this.PostOrderBuyoutAndActivateBooster((this.guiStackedBooster.BoosterDefinition.Target != BoosterDefinition.TargetType.City) ? GameEntityGUID.Zero : this.Guid);
 			return;
 		}
 		if (this.guiStackedBooster.BoosterDefinition.Target != BoosterDefinition.TargetType.City)
 		{
 			MessagePanel.Instance.Show("%ConfirmOrderBuyoutAndActivateStockpile", "%Confirmation", MessagePanelButtons.YesNo, new MessagePanel.EventHandler(this.OnPostOrderBuyoutAndActivateBooster), MessagePanelType.INFORMATIVE, new MessagePanelButton[0]);
+			return;
 		}
-		else
-		{
-			this.ShowCitySelectionPanel();
-		}
+		this.ShowCitySelectionPanel();
 	}
 
 	private void OnPostOrderBuyoutAndActivateBooster(object sender, MessagePanelResultEventArgs e)
@@ -100,12 +103,10 @@ public class BoosterStock : MonoBehaviour
 		{
 			this.Background.AgeTransform.Visible = true;
 			this.ActivateButton.AgeTransform.Visible = true;
+			return;
 		}
-		else
-		{
-			this.Background.AgeTransform.Visible = false;
-			this.ActivateButton.AgeTransform.Visible = false;
-		}
+		this.Background.AgeTransform.Visible = false;
+		this.ActivateButton.AgeTransform.Visible = false;
 	}
 
 	private void ValidateCityChoice(City city)
@@ -124,9 +125,16 @@ public class BoosterStock : MonoBehaviour
 				OrderBuyoutAndActivateBooster orderBuyoutAndActivateBooster = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, this.guiStackedBooster.BoosterDefinition.Name, this.guiStackedBooster.GetFirstAvailableVaultBooster().GUID, false);
 				orderBuyoutAndActivateBooster.TargetGUID = targetGUID;
 				service2.ActivePlayerController.PostOrder(orderBuyoutAndActivateBooster);
-				IAudioEventService service3 = Services.GetService<IAudioEventService>();
-				service3.Play2DEvent("Gui/Interface/BoosterStockPile");
+				Services.GetService<IAudioEventService>().Play2DEvent("Gui/Interface/BoosterStockPile");
 			}
+		}
+	}
+
+	public GuiStackedBooster GuiStackedBooster
+	{
+		get
+		{
+			return this.guiStackedBooster;
 		}
 	}
 
@@ -145,4 +153,8 @@ public class BoosterStock : MonoBehaviour
 	private GuiStackedBooster guiStackedBooster;
 
 	private global::Empire empire;
+
+	public bool QuickActivation;
+
+	public GameEntityGUID Guid;
 }

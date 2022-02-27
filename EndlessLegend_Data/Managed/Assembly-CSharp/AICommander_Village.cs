@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -23,8 +24,7 @@ public class AICommander_Village : AICommanderWithObjective, IXmlSerializable
 		{
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			global::Game game = service.Game as global::Game;
-			World world = game.World;
+			World world = (service.Game as global::Game).World;
 			this.RegionTarget = world.Regions[attribute];
 			Diagnostics.Assert(this.RegionTarget != null);
 		}
@@ -66,8 +66,19 @@ public class AICommander_Village : AICommanderWithObjective, IXmlSerializable
 			return true;
 		}
 		Village village = gameEntity as Village;
-		bool flag = base.Empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait);
-		if (flag)
+		if (!village.HasBeenConverted && this.villageLayer.SuspendPacification && (village.PointOfInterest.Interaction.Bits & base.Empire.Bits) != 0)
+		{
+			return true;
+		}
+		ReadOnlyCollection<Quest> readOnlyCollection = this.departmentOfInternalAffairs.QuestJournal.Read(QuestState.InProgress);
+		for (int i = 0; i < readOnlyCollection.Count; i++)
+		{
+			if (village.PointOfInterest.GUID == readOnlyCollection[i].QuestGiverGUID)
+			{
+				return true;
+			}
+		}
+		if (base.Empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait))
 		{
 			if (village.HasBeenConverted && village.Converter == base.Empire)
 			{
@@ -87,7 +98,7 @@ public class AICommander_Village : AICommanderWithObjective, IXmlSerializable
 			}
 		}
 		GlobalObjectiveMessage globalObjectiveMessage;
-		return base.GlobalObjectiveID == 0UL || base.AIPlayer == null || !base.AIPlayer.Blackboard.TryGetMessage<GlobalObjectiveMessage>(base.GlobalObjectiveID, out globalObjectiveMessage) || (globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Canceled || globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Failed);
+		return base.GlobalObjectiveID == 0UL || base.AIPlayer == null || !base.AIPlayer.Blackboard.TryGetMessage<GlobalObjectiveMessage>(base.GlobalObjectiveID, out globalObjectiveMessage) || globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Canceled || globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Failed;
 	}
 
 	public override void Load()
@@ -96,6 +107,9 @@ public class AICommander_Village : AICommanderWithObjective, IXmlSerializable
 		IGameService service = Services.GetService<IGameService>();
 		this.gameEntityRepositoryService = service.Game.Services.GetService<IGameEntityRepositoryService>();
 		this.departmentOfScience = base.Empire.GetAgency<DepartmentOfScience>();
+		this.departmentOfInternalAffairs = base.Empire.GetAgency<DepartmentOfInternalAffairs>();
+		AIEntity_Empire entity = base.AIPlayer.GetEntity<AIEntity_Empire>();
+		this.villageLayer = entity.GetLayer<AILayer_Village>();
 	}
 
 	public override void PopulateMission()
@@ -104,79 +118,91 @@ public class AICommander_Village : AICommanderWithObjective, IXmlSerializable
 		tags.AddTag(base.Category.ToString());
 		tags.AddTag("Village");
 		IGameEntity gameEntity;
-		if (!this.gameEntityRepositoryService.TryGetValue(base.SubObjectiveGuid, out gameEntity) || !(gameEntity is Village))
+		if (this.gameEntityRepositoryService.TryGetValue(base.SubObjectiveGuid, out gameEntity) && gameEntity is Village)
 		{
-			return;
-		}
-		Village village = gameEntity as Village;
-		bool flag = base.Empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait);
-		bool flag2 = this.departmentOfScience.CanBribe() && !village.HasBeenConverted && !village.HasBeenPacified;
-		if (flag)
-		{
-			this.SendConvertVillageAction(village);
-		}
-		if (flag2)
-		{
-			this.SendBribeVillageAction(village);
-		}
-		bool flag3 = false;
-		bool flag4 = false;
-		if (this.villageBribeActionMessageId != 0UL)
-		{
-			EvaluableMessage_VillageAction evaluableMessage_VillageAction = base.AIPlayer.Blackboard.GetMessage(this.villageBribeActionMessageId) as EvaluableMessage_VillageAction;
-			if (evaluableMessage_VillageAction != null && evaluableMessage_VillageAction.ChosenBuyEvaluation != null)
+			Village village = gameEntity as Village;
+			bool flag = base.Empire.SimulationObject.Tags.Contains(AILayer_Village.TagConversionTrait);
+			bool flag2 = this.departmentOfScience.CanBribe() && !village.HasBeenConverted && !village.HasBeenPacified;
+			if (flag)
+			{
+				this.SendConvertVillageAction(village);
+			}
+			if (flag2)
+			{
+				this.SendBribeVillageAction(village);
+			}
+			bool flag3 = false;
+			bool flag4 = false;
+			if (this.villageBribeActionMessageId > 0UL)
+			{
+				EvaluableMessage_VillageAction evaluableMessage_VillageAction = base.AIPlayer.Blackboard.GetMessage(this.villageBribeActionMessageId) as EvaluableMessage_VillageAction;
+				if (evaluableMessage_VillageAction != null && evaluableMessage_VillageAction.ChosenBuyEvaluation != null)
+				{
+					flag4 = true;
+				}
+			}
+			if (village.HasBeenPacified && flag2 && !flag4)
 			{
 				flag4 = true;
 			}
-		}
-		if (this.villageConvertActionMessageId != 0UL)
-		{
-			EvaluableMessage_VillageAction evaluableMessage_VillageAction2 = base.AIPlayer.Blackboard.GetMessage(this.villageConvertActionMessageId) as EvaluableMessage_VillageAction;
-			if (evaluableMessage_VillageAction2 != null && evaluableMessage_VillageAction2.ChosenBuyEvaluation != null)
+			if (this.villageConvertActionMessageId > 0UL)
 			{
-				flag3 = true;
+				EvaluableMessage_VillageAction evaluableMessage_VillageAction2 = base.AIPlayer.Blackboard.GetMessage(this.villageConvertActionMessageId) as EvaluableMessage_VillageAction;
+				if (evaluableMessage_VillageAction2 != null && evaluableMessage_VillageAction2.ChosenBuyEvaluation != null)
+				{
+					flag3 = true;
+				}
 			}
-		}
-		if (flag)
-		{
-			tags.AddTag("Convert");
-			if (village.HasBeenConverted)
+			if (flag && !flag3)
 			{
-				tags.AddTag("Hardway");
+				float num;
+				base.Empire.GetAgency<DepartmentOfTheTreasury>().TryGetResourceStockValue(base.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpirePoint, out num, false);
+				if (AILayer_Village.GetVillageConversionCost(base.Empire as MajorEmpire, village) * 2f < num)
+				{
+					flag3 = true;
+				}
 			}
-			else if (village.HasBeenPacified)
+			if (flag)
 			{
-				if (!flag3)
+				tags.AddTag("Convert");
+				if (village.HasBeenConverted)
+				{
+					tags.AddTag("Hardway");
+				}
+				else if (village.HasBeenPacified)
+				{
+					if (!flag3)
+					{
+						return;
+					}
+				}
+				else if (flag2)
+				{
+					if (!flag3 || !flag4)
+					{
+						return;
+					}
+					tags.AddTag("Bribe");
+				}
+				else
+				{
+					tags.AddTag("Hardway");
+				}
+			}
+			for (int i = base.Missions.Count - 1; i >= 0; i--)
+			{
+				if (base.Missions[i].MissionDefinition.Category.Contains(tags))
 				{
 					return;
 				}
+				this.CancelMission(base.Missions[i]);
 			}
-			else if (flag2)
+			base.PopulationFirstMissionFromCategory(tags, new object[]
 			{
-				if (!flag3 || !flag4)
-				{
-					return;
-				}
-				tags.AddTag("Bribe");
-			}
-			else
-			{
-				tags.AddTag("Hardway");
-			}
+				this.RegionTarget,
+				base.SubObjectiveGuid
+			});
 		}
-		for (int i = base.Missions.Count - 1; i >= 0; i--)
-		{
-			if (base.Missions[i].MissionDefinition.Category.Contains(tags))
-			{
-				return;
-			}
-			this.CancelMission(base.Missions[i]);
-		}
-		base.PopulationFirstMissionFromCategory(tags, new object[]
-		{
-			this.RegionTarget,
-			base.SubObjectiveGuid
-		});
 	}
 
 	public override void RefreshMission()
@@ -215,6 +241,8 @@ public class AICommander_Village : AICommanderWithObjective, IXmlSerializable
 		base.Release();
 		this.departmentOfScience = null;
 		this.gameEntityRepositoryService = null;
+		this.villageLayer = null;
+		this.departmentOfInternalAffairs = null;
 	}
 
 	private void SendBribeVillageAction(Village village)
@@ -260,4 +288,8 @@ public class AICommander_Village : AICommanderWithObjective, IXmlSerializable
 	private ulong villageBribeActionMessageId;
 
 	private ulong villageConvertActionMessageId;
+
+	private AILayer_Village villageLayer;
+
+	private DepartmentOfInternalAffairs departmentOfInternalAffairs;
 }

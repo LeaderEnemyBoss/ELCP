@@ -23,10 +23,10 @@ public class AIBehaviorTreeNode_Decorator_IsArmyDestroyingCreepingNode : AIBehav
 			aiBehaviorTree.ErrorCode = 10;
 			return State.Failure;
 		}
-		bool isValid = army.DismantlingCreepingNodeTarget.IsValid;
+		bool flag = army.DismantlingCreepingNodeTarget.IsValid || army.DismantlingDeviceTarget.IsValid;
 		if (this.Inverted)
 		{
-			if (!isValid)
+			if (!flag)
 			{
 				return State.Success;
 			}
@@ -34,7 +34,7 @@ public class AIBehaviorTreeNode_Decorator_IsArmyDestroyingCreepingNode : AIBehav
 		}
 		else
 		{
-			if (isValid)
+			if (flag)
 			{
 				return State.Success;
 			}

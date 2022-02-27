@@ -34,7 +34,14 @@ namespace Amplitude.WorldGenerator.Tmx
 			int num4 = 0;
 			while (reader.Name == "tile" && num3 >= 0)
 			{
-				this.Data[num3, num4] = int.Parse(reader.GetAttribute("gid"));
+				if (reader.GetAttribute("gid") != null)
+				{
+					this.Data[num3, num4] = int.Parse(reader.GetAttribute("gid"));
+				}
+				else
+				{
+					this.Data[num3, num4] = 0;
+				}
 				num4++;
 				if (num4 >= num)
 				{

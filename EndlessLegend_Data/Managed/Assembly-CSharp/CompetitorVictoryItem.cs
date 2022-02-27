@@ -10,78 +10,73 @@ public class CompetitorVictoryItem : MonoBehaviour
 	{
 		this.Comparable = 0f;
 		bool flag = true;
-		if (empire != playerController.Empire)
+		if (empire != playerController.Empire && !playerController.Empire.SimulationObject.Tags.Contains(Empire.TagEmpireEliminated))
 		{
 			flag = false;
 			Diagnostics.Assert(playerController.Empire != null);
-			switch (EmpireInfo.LastAccessibilityLevel)
+			EmpireInfo.Accessibility lastAccessibilityLevel = EmpireInfo.LastAccessibilityLevel;
+			if (lastAccessibilityLevel != EmpireInfo.Accessibility.Default)
 			{
-			case EmpireInfo.Accessibility.Default:
-			{
-				DepartmentOfForeignAffairs agency = playerController.Empire.GetAgency<DepartmentOfForeignAffairs>();
-				if (agency != null)
+				if (lastAccessibilityLevel == EmpireInfo.Accessibility.Partial)
 				{
-					DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(empire);
-					flag |= (diplomaticRelation != null && diplomaticRelation.State != null && diplomaticRelation.State.Name != DiplomaticRelationState.Names.Unknown);
-				}
-				if (!flag)
-				{
-					DepartmentOfIntelligence agency2 = playerController.Empire.GetAgency<DepartmentOfIntelligence>();
-					if (agency2 != null && agency2.IsEmpireInfiltrated(empire))
+					DepartmentOfIntelligence agency = playerController.Empire.GetAgency<DepartmentOfIntelligence>();
+					if (agency != null && agency.IsEmpireInfiltrated(empire))
 					{
 						flag = true;
 					}
 				}
-				break;
-			}
-			case EmpireInfo.Accessibility.Partial:
-			{
-				DepartmentOfIntelligence agency3 = playerController.Empire.GetAgency<DepartmentOfIntelligence>();
-				if (agency3 != null && agency3.IsEmpireInfiltrated(empire))
-				{
-					flag = true;
-				}
-				break;
-			}
-			}
-		}
-		if (empire.VictoryConditionStatuses.ContainsKey(victoryCondition.Name) && flag)
-		{
-			base.GetComponent<AgeTransform>().Visible = true;
-			this.format = AgeLocalizer.Instance.LocalizeString(victoryCondition.Progression.Format);
-			for (int i = 0; i < victoryCondition.Progression.Vars.Length; i++)
-			{
-				if (this.format.Contains(victoryCondition.Progression.Vars[i].Name))
-				{
-					this.varName = "$" + victoryCondition.Progression.Vars[i].Name;
-					this.format = this.format.Replace(this.varName, GuiFormater.FormatGui(empire.VictoryConditionStatuses[victoryCondition.Name].Variables[i], victoryCondition.Progression.Vars[i].Name == "Ratio", false, false, 0));
-				}
-				if (victoryCondition.Progression.Vars[i].Name == victoryCondition.Progression.SortVariable)
-				{
-					this.Comparable = empire.VictoryConditionStatuses[victoryCondition.Name].Variables[i];
-				}
-			}
-			this.Title.Text = empire.LocalizedName;
-			this.Value.Text = this.format;
-			this.Value.AgeTransform.Width = this.Value.Font.ComputeTextWidth(this.Value.Text, false, false);
-			this.Title.AgeTransform.PixelMarginRight = this.Value.AgeTransform.PixelMarginRight + this.Value.AgeTransform.PixelMarginLeft + this.Value.AgeTransform.Width;
-			this.Title.TintColor = empire.Color;
-			this.Value.TintColor = empire.Color;
-			if (empire == playerController.Empire)
-			{
-				this.TitleModifier.StartDelay = 0.3f * (float)victoryRank;
-				this.TitleModifier.StartAnimation();
 			}
 			else
 			{
-				this.TitleModifier.Reset();
-				this.Title.AgeTransform.Alpha = 1f;
+				DepartmentOfForeignAffairs agency2 = playerController.Empire.GetAgency<DepartmentOfForeignAffairs>();
+				if (agency2 != null)
+				{
+					DiplomaticRelation diplomaticRelation = agency2.GetDiplomaticRelation(empire);
+					flag |= (diplomaticRelation != null && diplomaticRelation.State != null && diplomaticRelation.State.Name != DiplomaticRelationState.Names.Unknown);
+				}
+				if (!flag)
+				{
+					DepartmentOfIntelligence agency3 = playerController.Empire.GetAgency<DepartmentOfIntelligence>();
+					if (agency3 != null && agency3.IsEmpireInfiltrated(empire))
+					{
+						flag = true;
+					}
+				}
 			}
 		}
-		else
+		if (!empire.VictoryConditionStatuses.ContainsKey(victoryCondition.Name) || !flag)
 		{
 			base.GetComponent<AgeTransform>().Visible = false;
+			return;
 		}
+		base.GetComponent<AgeTransform>().Visible = true;
+		this.format = AgeLocalizer.Instance.LocalizeString(victoryCondition.Progression.Format);
+		for (int i = 0; i < victoryCondition.Progression.Vars.Length; i++)
+		{
+			if (this.format.Contains(victoryCondition.Progression.Vars[i].Name))
+			{
+				this.varName = "$" + victoryCondition.Progression.Vars[i].Name;
+				this.format = this.format.Replace(this.varName, GuiFormater.FormatGui(empire.VictoryConditionStatuses[victoryCondition.Name].Variables[i], victoryCondition.Progression.Vars[i].Name == "Ratio", false, false, 0));
+			}
+			if (victoryCondition.Progression.Vars[i].Name == victoryCondition.Progression.SortVariable)
+			{
+				this.Comparable = empire.VictoryConditionStatuses[victoryCondition.Name].Variables[i];
+			}
+		}
+		this.Title.Text = empire.LocalizedName;
+		this.Value.Text = this.format;
+		this.Value.AgeTransform.Width = this.Value.Font.ComputeTextWidth(this.Value.Text, false, false);
+		this.Title.AgeTransform.PixelMarginRight = this.Value.AgeTransform.PixelMarginRight + this.Value.AgeTransform.PixelMarginLeft + this.Value.AgeTransform.Width;
+		this.Title.TintColor = empire.Color;
+		this.Value.TintColor = empire.Color;
+		if (empire == playerController.Empire)
+		{
+			this.TitleModifier.StartDelay = 0.3f * (float)victoryRank;
+			this.TitleModifier.StartAnimation();
+			return;
+		}
+		this.TitleModifier.Reset();
+		this.Title.AgeTransform.Alpha = 1f;
 	}
 
 	public const float BaseDelay = 0.3f;

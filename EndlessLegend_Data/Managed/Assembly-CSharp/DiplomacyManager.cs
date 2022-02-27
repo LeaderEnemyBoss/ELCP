@@ -12,7 +12,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
 [Diagnostics.TagAttribute("Diplomacy")]
-public class DiplomacyManager : GameAncillary, IXmlSerializable, IService, IEnumerable, IEnumerable<KeyValuePair<ulong, DiplomaticContract>>, IEnumerable<DiplomaticContract>, IDiplomacyControl, IDiplomacyService, IDiplomaticContractRepositoryControl, IDiplomaticContractRepositoryService, IRepositoryService<DiplomaticContract>
+public class DiplomacyManager : GameAncillary, IXmlSerializable, IService, IEnumerable, IEnumerable<KeyValuePair<ulong, DiplomaticContract>>, IEnumerable<DiplomaticContract>, IDiplomacyControl, IDiplomacyService, IDiplomaticContractRepositoryControl, IRepositoryService<DiplomaticContract>, IDiplomaticContractRepositoryService
 {
 	public event EventHandler<DiplomaticContractRepositoryChangeEventArgs> DiplomaticContractRepositoryChange;
 
@@ -45,19 +45,30 @@ public class DiplomacyManager : GameAncillary, IXmlSerializable, IService, IEnum
 		int turn = base.Game.Turn;
 		for (int i = 0; i < this.majorEmpires.Length; i++)
 		{
-			global::Empire empire = this.majorEmpires[i];
-			DepartmentOfForeignAffairs agency = empire.GetAgency<DepartmentOfForeignAffairs>();
+			MajorEmpire majorEmpire = this.majorEmpires[i] as MajorEmpire;
+			DepartmentOfForeignAffairs agency = majorEmpire.GetAgency<DepartmentOfForeignAffairs>();
 			Diagnostics.Assert(agency != null);
 			for (int j = i + 1; j < this.majorEmpires.Length; j++)
 			{
-				global::Empire empire2 = this.majorEmpires[j];
-				DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(empire2);
+				MajorEmpire majorEmpire2 = this.majorEmpires[j] as MajorEmpire;
+				DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(majorEmpire2);
 				Diagnostics.Assert(diplomaticRelation != null && diplomaticRelation.State != null);
-				DiplomaticRelationState.Transition automaticTransition = diplomaticRelation.State.AutomaticTransition;
-				if (automaticTransition != null && automaticTransition.GetRemainingTurns(diplomaticRelation) <= 0)
+				if (majorEmpire.IsSpectator || majorEmpire.ELCPIsEliminated || majorEmpire2.IsSpectator || majorEmpire2.ELCPIsEliminated)
 				{
-					OrderChangeDiplomaticRelationState order = new OrderChangeDiplomaticRelationState(i, j, automaticTransition.DestinationState);
-					this.PlayerController.PostOrder(order);
+					if (diplomaticRelation.State.Name != DiplomaticRelationState.Names.Dead)
+					{
+						OrderChangeDiplomaticRelationState order = new OrderChangeDiplomaticRelationState(this.majorEmpires[i].Index, majorEmpire2.Index, DiplomaticRelationState.Names.Dead);
+						this.PlayerController.PostOrder(order);
+					}
+				}
+				else
+				{
+					DiplomaticRelationState.Transition automaticTransition = diplomaticRelation.State.AutomaticTransition;
+					if (automaticTransition != null && automaticTransition.GetRemainingTurns(diplomaticRelation) <= 0)
+					{
+						OrderChangeDiplomaticRelationState order2 = new OrderChangeDiplomaticRelationState(i, j, automaticTransition.DestinationState);
+						this.PlayerController.PostOrder(order2);
+					}
 				}
 			}
 		}
@@ -71,22 +82,32 @@ public class DiplomacyManager : GameAncillary, IXmlSerializable, IService, IEnum
 		{
 			DiplomaticContract diplomaticContract = this.diplomaticContracts[l];
 			Diagnostics.Assert(diplomaticContract != null);
-			if (diplomaticContract.State == DiplomaticContractState.Proposed && turn > diplomaticContract.TurnAtTheBeginningOfTheState)
+			if (diplomaticContract.EmpireWhichInitiated.Index >= array.Length || diplomaticContract.EmpireWhichReceives.Index >= array[diplomaticContract.EmpireWhichInitiated.Index].Length)
 			{
-				OrderChangeDiplomaticContractState order2 = new OrderChangeDiplomaticContractState(diplomaticContract, DiplomaticContractState.Refused);
-				this.PlayerController.PostOrder(order2);
-			}
-			if (diplomaticContract.State == DiplomaticContractState.Negotiation && turn > diplomaticContract.TurnAtTheBeginningOfTheState)
-			{
-				if (diplomaticContract.EmpireWhichInitiated != diplomaticContract.EmpireWhichProposes || diplomaticContract.ContractRevisionNumber > 0 || array[diplomaticContract.EmpireWhichInitiated.Index][diplomaticContract.EmpireWhichReceives.Index])
+				Diagnostics.Assert(false, "ELCP: Unexpected EmpireIndex {0}", new object[]
 				{
-					DiplomaticContractState newState = DiplomaticContractState.Refused;
-					OrderChangeDiplomaticContractState order3 = new OrderChangeDiplomaticContractState(diplomaticContract, newState);
+					diplomaticContract.ToString()
+				});
+			}
+			else
+			{
+				if (diplomaticContract.State == DiplomaticContractState.Proposed && turn > diplomaticContract.TurnAtTheBeginningOfTheState)
+				{
+					OrderChangeDiplomaticContractState order3 = new OrderChangeDiplomaticContractState(diplomaticContract, DiplomaticContractState.Refused);
 					this.PlayerController.PostOrder(order3);
 				}
-				else
+				if (diplomaticContract.State == DiplomaticContractState.Negotiation && turn > diplomaticContract.TurnAtTheBeginningOfTheState)
 				{
-					array[diplomaticContract.EmpireWhichInitiated.Index][diplomaticContract.EmpireWhichReceives.Index] = true;
+					if (diplomaticContract.EmpireWhichInitiated != diplomaticContract.EmpireWhichProposes || diplomaticContract.ContractRevisionNumber > 0 || array[diplomaticContract.EmpireWhichInitiated.Index][diplomaticContract.EmpireWhichReceives.Index])
+					{
+						DiplomaticContractState newState = DiplomaticContractState.Refused;
+						OrderChangeDiplomaticContractState order4 = new OrderChangeDiplomaticContractState(diplomaticContract, newState);
+						this.PlayerController.PostOrder(order4);
+					}
+					else
+					{
+						array[diplomaticContract.EmpireWhichInitiated.Index][diplomaticContract.EmpireWhichReceives.Index] = true;
+					}
 				}
 			}
 		}

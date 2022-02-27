@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F663CAF6-2DAB-4885-ABA7-E9938FA948D8}</ProjectGuid>
+    <ProjectGuid>{96CD7E46-06FE-4BA5-8842-901D02F8C635}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Assembly-CSharp</RootNamespace>
@@ -112,41 +112,59 @@
     <Compile Include="AIBehaviorTreeNode_Action_GeneratePath.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_GotoAndAttack.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_GotoAndExecute.cs" />
+    <Compile Include="AIBehaviorTreeNode_Action_HealArmy.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_ImmolateUnits.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_LockTarget.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_Move.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_SearchInRuin.cs" />
+    <Compile Include="AIBehaviorTreeNode_Action_SettleKaiju.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_ShiftUnits.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_TameKaiju.cs" />
+    <Compile Include="AIBehaviorTreeNode_Action_TeleportToCity.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_Terraform.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_ToggleDismantleCreepingNode.cs" />
+    <Compile Include="AIBehaviorTreeNode_Action_ToggleDismantleDevice.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_TogglePillage.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_ToggleSiege.cs" />
     <Compile Include="AIBehaviorTreeNode_Action_TransferToGarrison.cs" />
+    <Compile Include="AIBehaviorTreeNode_Action_TryKaijuResourceTrade.cs" />
+    <Compile Include="AIBehaviorTreeNode_Action_Ward.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_AbilityCheck.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_ArmyGroupInRange.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_CanAffordArmyAction.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_CanBeHealedAtPosition.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_CanDefeatCity.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_CanDefeatTarget.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_CanReachPositionInTurn.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_CanTeleportToTarget.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_CheckPathLength.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_CheckPositionVisibility.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_CityInteractionCheck.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_CityIsValidTarget.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_CityNeedsImmediateHelp.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_ComputePanicColonizationPosition.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_ComputeSavingPosition.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_DestinationReached.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_EvaluateOpportunity.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_FindArmyToSupport.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_GetAllEmpireTargets.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_GetConvertToPrivateersTargetPosition.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_GetNextRegionBorderPosition.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_GetNextRoamingPosition.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_GetNextRoamingPositionAroundCity.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_GetOpportunityTerraform.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_GetSiegingArmiesInRange.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_GetTargetInRange.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_GetTargetPosition.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_HasTriedResourceTrade.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_IsArmyDestroyingCreepingNode.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_IsArmyPillaging.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_IsEmbarked.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_IsEmpireControlledByAI.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_IsFurthestFromTarget.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_IsInBesiegedCity.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_IsInOwnRegion.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_IsPrivateersArmy.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_IsRegionMine.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_IsTargetBesieging.cs" />
@@ -156,7 +174,10 @@
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectAspirateTarget.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectCityLookAtToInfiltrate.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectCityToFortify.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_SelectClosestBesiegedCity.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectCreepingNodeTarget.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_SelectDefenseCity.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_SelectHealingTarget.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectMantaTarget.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectMapBoostSpawnTarget.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectOrbSpawnTarget.cs" />
@@ -164,8 +185,11 @@
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectPointOfInterestToDestroy.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectSiegingArmyPosition.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_SelectTarget.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_Successor.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_TargetTypeCheck.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_UpdateSiegeBreakerAssignation.cs" />
     <Compile Include="AIBehaviortreeNode_Decorator_VariableCheck.cs" />
+    <Compile Include="AIBehaviorTreeNode_Decorator_WaitForAllies.cs" />
     <Compile Include="AIBehaviorTreeNode_Decorator_WaitForHealthRegen.cs" />
     <Compile Include="AIBehaviorTreeNode_Include.cs" />
     <Compile Include="AIBelief.cs" />
@@ -208,6 +232,8 @@
     <Compile Include="AICommanderMission_Garrison.cs" />
     <Compile Include="AICommanderMission_GarrisonBreakSiege.cs" />
     <Compile Include="AICommanderMission_GarrisonCamp.cs" />
+    <Compile Include="AICommanderMission_HuntRuin.cs" />
+    <Compile Include="AICommanderMission_KaijuSupport.cs" />
     <Compile Include="AICommanderMission_MantaExploration.cs" />
     <Compile Include="AICommanderMission_MantaResource.cs" />
     <Compile Include="AICommanderMission_MinorAttackArmy.cs" />
@@ -220,13 +246,18 @@
     <Compile Include="AICommanderMission_PacifyVillage.cs" />
     <Compile Include="AICommanderMission_PrivateersHarass.cs" />
     <Compile Include="AICommanderMission_QuestAttackCity.cs" />
+    <Compile Include="AICommanderMission_QuestBTOrder.cs" />
     <Compile Include="AICommanderMission_QuestDefense.cs" />
     <Compile Include="AICommanderMission_QuestRoaming.cs" />
+    <Compile Include="AICommanderMission_QuestSolverOrder.cs" />
+    <Compile Include="AICommanderMission_QuestsolverRuin.cs" />
     <Compile Include="AICommanderMission_RegroupArmyAt.cs" />
     <Compile Include="AICommanderMission_RoamingDefault.cs" />
     <Compile Include="AICommanderMission_ScoutDefault.cs" />
     <Compile Include="AICommanderMission_SiegeBreaker.cs" />
     <Compile Include="AICommanderMission_Terraform.cs" />
+    <Compile Include="AICommanderMission_VictoryRuin.cs" />
+    <Compile Include="AICommanderMission_VictoryRuinFinal.cs" />
     <Compile Include="AICommanderMission_Village.cs" />
     <Compile Include="AICommanderWithObjective.cs" />
     <Compile Include="AICommander_AutoAction.cs" />
@@ -236,15 +267,21 @@
     <Compile Include="AICommander_Defense.cs" />
     <Compile Include="AICommander_Exploration.cs" />
     <Compile Include="AICommander_KaijuAdquisition.cs" />
+    <Compile Include="AICommander_KaijuSupport.cs" />
     <Compile Include="AICommander_Manta.cs" />
     <Compile Include="AICommander_PacifyRegion.cs" />
     <Compile Include="AICommander_Patrol.cs" />
     <Compile Include="AICommander_Quest.cs" />
+    <Compile Include="AICommander_QuestBTCommander.cs" />
+    <Compile Include="AICommander_Questsolver.cs" />
+    <Compile Include="AICommander_QuestSolverOrder.cs" />
     <Compile Include="AICommander_RegroupArmies.cs" />
     <Compile Include="AICommander_Roaming.cs" />
+    <Compile Include="AICommander_RuinHunter.cs" />
     <Compile Include="AICommander_SettlerBail.cs" />
     <Compile Include="AICommander_SiegeBreaker.cs" />
     <Compile Include="AICommander_Terraformation.cs" />
+    <Compile Include="AICommander_Victory.cs" />
     <Compile Include="AICommander_Village.cs" />
     <Compile Include="AICommander_WarPatrol.cs" />
     <Compile Include="AICommander_WarWithObjective.cs" />
@@ -326,6 +363,7 @@
     <Compile Include="AILayer_Pillar.cs" />
     <Compile Include="AILayer_Population.cs" />
     <Compile Include="AILayer_Production.cs" />
+    <Compile Include="AILayer_QuestBTController.cs" />
     <Compile Include="AILayer_QuestManager.cs" />
     <Compile Include="AILayer_QuestSolver.cs" />
     <Compile Include="AILayer_Raiders.cs" />
@@ -341,6 +379,7 @@
     <Compile Include="AILayer_UnitDesigner.cs" />
     <Compile Include="AILayer_UnitProduction.cs" />
     <Compile Include="AILayer_UnitRecruitment.cs" />
+    <Compile Include="AILayer_Victory.cs" />
     <Compile Include="AILayer_Village.cs" />
     <Compile Include="AILayer_War.cs" />
     <Compile Include="AILayer_WeatherControl.cs" />
@@ -481,6 +520,7 @@
     <Compile Include="ArmyAction_DetachLeader.cs" />
     <Compile Include="ArmyAction_FastTravel.cs" />
     <Compile Include="ArmyAction_Fortify.cs" />
+    <Compile Include="ArmyAction_Geomance.cs" />
     <Compile Include="ArmyAction_Guard.cs" />
     <Compile Include="ArmyAction_Heal.cs" />
     <Compile Include="ArmyAction_Parley.cs" />
@@ -942,6 +982,7 @@
     <Compile Include="DiplomaticContractRepositoryChangeAction.cs" />
     <Compile Include="DiplomaticContractRepositoryChangeEventArgs.cs" />
     <Compile Include="DiplomaticContractState.cs" />
+    <Compile Include="DiplomaticCooldownPrerequisite.cs" />
     <Compile Include="DiplomaticCost.cs" />
     <Compile Include="DiplomaticCostProposal.cs" />
     <Compile Include="DiplomaticCostResponsible.cs" />
@@ -1060,6 +1101,7 @@
     <Compile Include="EditorGlobalPositionning.cs" />
     <Compile Include="EditorRegionPatchRenderer.cs" />
     <Compile Include="EditorTerrainPatchRenderer.cs" />
+    <Compile Include="ELCPUtilities.cs" />
     <Compile Include="Empire.cs" />
     <Compile Include="EmpireBannerPanel.cs" />
     <Compile Include="EmpireFilterToggle.cs" />
@@ -1200,6 +1242,7 @@
     <Compile Include="EventDustDepositSearched.cs" />
     <Compile Include="EventDustStolen.cs" />
     <Compile Include="EventDustStormAmbush.cs" />
+    <Compile Include="EventELCPSpectator.cs" />
     <Compile Include="EventEmpireEliminated.cs" />
     <Compile Include="EventEmpirePeaceRestored.cs" />
     <Compile Include="EventEmpirePlanImminent.cs" />
@@ -1952,6 +1995,7 @@
     <Compile Include="IUnitPatternAIHelper.cs" />
     <Compile Include="IUnitRankController.cs" />
     <Compile Include="IUnitReportInstruction.cs" />
+    <Compile Include="IUpdatable.cs" />
     <Compile Include="IVictoryManagementService.cs" />
     <Compile Include="IVideoSettingsService.cs" />
     <Compile Include="IViewService.cs" />
@@ -2498,6 +2542,7 @@
     <Compile Include="OrderUntameKaiju.cs" />
     <Compile Include="OrderUpdateArmyObjective.cs" />
     <Compile Include="OrderUpdateCadastralMap.cs" />
+    <Compile Include="OrderUpdateCadastralMapClient.cs" />
     <Compile Include="OrderUpdateMilitia.cs" />
     <Compile Include="OrderUpdateQuest.cs" />
     <Compile Include="OrderUpdateWinterImmunityBids.cs" />
@@ -2727,6 +2772,7 @@
     <Compile Include="QuestBehaviourTreeNode_Action_ResetStepProgression.cs" />
     <Compile Include="QuestBehaviourTreeNode_Action_SelectCity.cs" />
     <Compile Include="QuestBehaviourTreeNode_Action_SelectVictoryQuestLocations.cs" />
+    <Compile Include="QuestBehaviourTreeNode_Action_SendAICommand.cs" />
     <Compile Include="QuestBehaviourTreeNode_Action_SpawnArmies.cs" />
     <Compile Include="QuestBehaviourTreeNode_Action_SpawnArmy.cs" />
     <Compile Include="QuestBehaviourTreeNode_Action_StartTimer.cs" />

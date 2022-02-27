@@ -46,10 +46,10 @@
     Research agreement provide up to a 20% increase in research income from trade over 20 turns (+1% per turn).
     -->
 
-
+	<!-- ELCP: adjusted values if Forgottenare part of the deal -->
     <AIParameterDatatableElement Name="ResearchAgreement">
-      <AIParameter Name="DiplomacyUtilityProvider" Value="$(ResearchAgreementTermAgentCriticity) - 0.5"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="$(ResearchAgreementTermAgentCriticity) - 0.5"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(1 - $Link(Provider|Path|ClassEmpire,FactionTraitReplicants1)) * (($(ResearchAgreementTermAgentCriticity) - 0.5) + (1 * $Link(Receiver|Path|ClassEmpire,FactionTraitReplicants1)))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(1 - $Link(Receiver|Path|ClassEmpire,FactionTraitReplicants1)) * (($(ResearchAgreementTermAgentCriticity) - 0.5) + (1 * $Link(Provider|Path|ClassEmpire,FactionTraitReplicants1)))"/>
     </AIParameterDatatableElement>
 
     <!--
@@ -67,8 +67,9 @@
     -->
 
     <AIParameterDatatableElement Name="TechnologyDeal">
-        <AIParameter Name="DiplomacyTechnologyReceiver" Value="3 * ((0.2*$(TechnologyEra)) + (1 min (0.8*$(TechnologyEvaluationScore)))) * (1 max ($(TechnologyRemainingTurn) / 4))"/>
-        <AIParameter Name="DiplomacyTechnologyProvider" Value="3 * (0 - 1) * ((0.8*$(TechnologyEra)) + (1 min (0.2*$(TechnologyEvaluationScore))))"/>
+        <AIParameter Name="DiplomacyTechnologyReceiver" Value="(((0 - 3) * $(DoesNotWantTech)) + 1) * (3 * ((0.2*$(TechnologyEra)) + (1 min (0.8*$(TechnologyEvaluationScore)))) * (1 max ($(TechnologyRemainingTurn) / 8)))*(1 max (($(TechnologyEra) - 5) * 2))"/>
+        <AIParameter Name="DiplomacyTechnologyProvider" Value="(3 * (0 - 1) * ((0.8*$(TechnologyEra)) + (1 min (0.2*$(TechnologyEvaluationScore)))))*(1 max (($(TechnologyEra) - 5) * 10))"/>
+		<AIParameter Name="DiplomacyTechnologyProvider" Value="(0 - 100) * $Link(Provider|Path|#Multiplayer,#StingyAITrue)" />
     </AIParameterDatatableElement>
 
 </Datatable>

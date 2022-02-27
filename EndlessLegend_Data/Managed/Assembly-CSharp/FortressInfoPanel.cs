@@ -168,9 +168,8 @@ public class FortressInfoPanel : global::GuiPanel
 			if (facilities[i].SimulationObject.Tags.Contains(Fortress.UniqueFacilityNames.StockPile1) || facilities[i].SimulationObject.Tags.Contains(Fortress.UniqueFacilityNames.StockPile2) || facilities[i].SimulationObject.Tags.Contains(Fortress.UniqueFacilityNames.StockPile3))
 			{
 				this.NextStockpileLabel.AgeTransform.Visible = true;
-				PirateCouncil agency = this.Fortress.Region.NavalEmpire.GetAgency<PirateCouncil>();
 				int num;
-				if (agency.Stockpiles.TryGetValue(facilities[i].GUID, out num))
+				if (this.Fortress.Region.NavalEmpire.GetAgency<PirateCouncil>().Stockpiles.TryGetValue(facilities[i].GUID, out num))
 				{
 					if (num > 1)
 					{
@@ -315,9 +314,9 @@ public class FortressInfoPanel : global::GuiPanel
 		this.playerControllerRepositoryService = base.Game.Services.GetService<IPlayerControllerRepositoryService>();
 		Diagnostics.Assert(this.playerControllerRepositoryService != null);
 		this.EndTurnService = Services.GetService<IEndTurnService>();
-		IGameService gameServices = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameServices != null && gameServices.Game != null);
-		this.weatherService = gameServices.Game.Services.GetService<IWeatherService>();
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null && service.Game != null);
+		this.weatherService = service.Game.Services.GetService<IWeatherService>();
 		this.presetNames = new List<StaticString>();
 		this.weatherService.FillPresetNames(ref this.presetNames);
 		yield break;

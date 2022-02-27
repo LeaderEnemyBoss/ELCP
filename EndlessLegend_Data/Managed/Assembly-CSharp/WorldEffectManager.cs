@@ -41,7 +41,18 @@ public class WorldEffectManager : GameAncillary, IXmlSerializable, IService, IWo
 		{
 			worldEffect.Activate();
 		}
-		this.WorldPositionSimulationEvaluatorService.SetSomethingChangedOnRegion(this.WorldPositionningService.GetRegionIndex(position));
+		WorldCircle worldCircle = new WorldCircle(position, worldEffectDefinition.Range);
+		List<short> list2 = new List<short>();
+		WorldPosition[] worldPositions = worldCircle.GetWorldPositions(this.WorldPositionningService.World.WorldParameters);
+		for (int i = 0; i < worldPositions.Length; i++)
+		{
+			short regionIndex = this.WorldPositionningService.GetRegionIndex(worldPositions[i]);
+			if (!list2.Contains(regionIndex))
+			{
+				this.WorldPositionSimulationEvaluatorService.SetSomethingChangedOnRegion(regionIndex);
+				list2.Add(regionIndex);
+			}
+		}
 	}
 
 	void IWorldEffectService.RemoveWorldEffectFromPosition(WorldPosition position)
@@ -90,6 +101,7 @@ public class WorldEffectManager : GameAncillary, IXmlSerializable, IService, IWo
 			try
 			{
 				list3 = this.worldEffects[worldPosition];
+				goto IL_D3;
 			}
 			catch
 			{
@@ -97,20 +109,29 @@ public class WorldEffectManager : GameAncillary, IXmlSerializable, IService, IWo
 				{
 					worldPosition.ToString()
 				});
-				goto IL_11E;
 			}
-			goto IL_DC;
-			IL_11E:
+			IL_CA:
 			j++;
 			continue;
-			IL_DC:
+			IL_D3:
 			list3.Remove(list[j]);
 			if (list3.Count == 0)
 			{
 				this.worldEffects.Remove(worldPosition);
 			}
-			this.WorldPositionSimulationEvaluatorService.SetSomethingChangedOnRegion(this.WorldPositionningService.GetRegionIndex(worldPosition));
-			goto IL_11E;
+			WorldCircle worldCircle = new WorldCircle(worldPosition, list[j].WorldEffectDefinition.Range);
+			List<short> list4 = new List<short>();
+			WorldPosition[] worldPositions = worldCircle.GetWorldPositions(this.WorldPositionningService.World.WorldParameters);
+			for (int k = 0; k < worldPositions.Length; k++)
+			{
+				short regionIndex = this.WorldPositionningService.GetRegionIndex(worldPositions[k]);
+				if (!list4.Contains(regionIndex))
+				{
+					this.WorldPositionSimulationEvaluatorService.SetSomethingChangedOnRegion(regionIndex);
+					list4.Add(regionIndex);
+				}
+			}
+			goto IL_CA;
 		}
 	}
 

@@ -50,22 +50,24 @@
 
   <!-- Cultural Ambassador -->
   <UnitSkill Name="HeroSkillGovernor04"                   Category="UnitSkill" SubCategory="SubCategoryHeroSkillGovernor">
-    <UnitSkillPrerequisite>HeroSkillGovernor29 | HeroSkillGovernor29ReplicantsPack | HeroSkillLeaderMap07</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor05 | HeroSkillLeaderBattle14 | HeroSkillCommon04</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinityDrakkens</PathPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor04Level1" />
     </UnitSkillLevel>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor04Level2" />
+	  <SimulationDescriptorReference Name="HeroSkillGovernor04Level2ELCP" />
     </UnitSkillLevel>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor04Level3" />
+	  <SimulationDescriptorReference Name="HeroSkillGovernor04Level3ELCP" />
     </UnitSkillLevel>
   </UnitSkill>
 
   <!-- Narrative Master -->
   <UnitSkill Name="HeroSkillGovernor05"                   Category="UnitSkill" SubCategory="SubCategoryHeroSkillGovernor">
-    <UnitSkillPrerequisite>HeroSkillGovernor06</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor06 | HeroSkillLeaderMap09</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinityDrakkens</PathPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor05Level1" />
@@ -397,7 +399,7 @@
 
   <!-- Defender -->
   <UnitSkill Name="HeroSkillGovernor26"                   Category="UnitSkill" SubCategory="SubCategoryHeroSkillGovernor">
-    <UnitSkillPrerequisite>HeroSkillGovernor02 | HeroSkillGovernor27 | HeroSkillLeaderBattle02 | HeroSkillLeaderBattle12 | HeroSkillLeaderBattle12Cultists | HeroSkillLeaderMap01 | HeroSkillCommon01 | HeroSkillGovernor39 | HeroSkillGovernor40 | HeroSkillGovernor47 | HeroSkillGovernor48</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor02 | HeroSkillGovernor27 | HeroSkillLeaderBattle02 | HeroSkillLeaderBattle12 | HeroSkillLeaderBattle12Cultists | HeroSkillLeaderMap01 | HeroSkillCommon01 | HeroSkillGovernor39 | HeroSkillGovernor40 | HeroSkillGovernor47 | HeroSkillGovernor48 | HeroSkillLeaderMap09</UnitSkillPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor26Level1" />
     </UnitSkillLevel>
@@ -418,9 +420,11 @@
     </UnitSkillLevel>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor27Level2" />
+	  <SimulationDescriptorReference Name="HeroSkillGovernor27Level2ELCP" />
     </UnitSkillLevel>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor27Level3" />
+	  <SimulationDescriptorReference Name="HeroSkillGovernor27Level3ELCP" />
     </UnitSkillLevel>
   </UnitSkill>
 
@@ -436,7 +440,7 @@
   <!-- Inspirational Leader -->
   <UnitSkill Name="HeroSkillGovernor29"                   Category="UnitSkill" SubCategory="SubCategoryHeroSkillGovernor">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard" Inverted="true">ReplicantsPack</DownloadableContentPrerequisite>
-    <UnitSkillPrerequisite>HeroSkillGovernor17 | HeroSkillGovernor20 | HeroSkillGovernor23 | HeroSkillGovernor28 | HeroSkillGovernor30 | HeroSkillGovernor34 | HeroSkillGovernor29 | HeroSkillLeaderMap04 | HeroSkillGovernor26 | HeroSkillLeaderBattle13Replicants| HeroSkillGovernor38 | HeroSkillGovernor39 | HeroSkillGovernor41 | HeroSkillGovernor45</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor17 | HeroSkillGovernor20 | HeroSkillGovernor23 | HeroSkillGovernor28 | HeroSkillGovernor30 | HeroSkillGovernor34 | HeroSkillGovernor29 | HeroSkillLeaderMap04 | HeroSkillGovernor26 | HeroSkillLeaderBattle13Replicants| HeroSkillGovernor39 | HeroSkillGovernor41 | HeroSkillGovernor45 | HeroSkillGovernor37</UnitSkillPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor29Level1" />
     </UnitSkillLevel>
@@ -451,7 +455,7 @@
   <!-- Inspirational Leader [REPLICANT PACK ALTERNATIVE] -->
   <UnitSkill Name="HeroSkillGovernor29ReplicantsPack"     Category="UnitSkill" SubCategory="SubCategoryHeroSkillGovernor">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
-    <UnitSkillPrerequisite>HeroSkillGovernor17 | HeroSkillGovernor20 | HeroSkillGovernor23 | HeroSkillGovernor28 | HeroSkillGovernor30 | HeroSkillGovernor34 | HeroSkillGovernor29ReplicantsPack | HeroSkillGovernor26 | HeroSkillLeaderBattle13Replicants | HeroSkillGovernor38 | HeroSkillGovernor39 | HeroSkillGovernor41 | HeroSkillGovernor45</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor17 | HeroSkillGovernor20 | HeroSkillGovernor23 | HeroSkillGovernor28 | HeroSkillGovernor30 | HeroSkillGovernor34 | HeroSkillGovernor29ReplicantsPack | HeroSkillGovernor26 | HeroSkillLeaderBattle13Replicants | HeroSkillGovernor39 | HeroSkillGovernor41 | HeroSkillGovernor45 | HeroSkillGovernor37</UnitSkillPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor29Level1" />
     </UnitSkillLevel>
@@ -570,14 +574,14 @@
       <SimulationDescriptorReference Name="HeroSkillGovernor04SistersOfMercyLevel2" />
     </UnitSkillLevel>
     <UnitSkillLevel UnitSkillPointCost="1">
-      <SimulationDescriptorReference Name="HeroSkillGovernor04SistersOfMercyLevel3" />
+      <SimulationDescriptorReference Name="HeroSkillGovernor04SistersOfMercyLevel3ELCP" />
     </UnitSkillLevel>
   </UnitSkill>
 
   <!-- City garrison upkeep -->
   <UnitSkill Name="HeroSkillGovernor37"                   Category="UnitSkill" SubCategory="SubCategoryHeroSkillGovernor">
     <!--<DownloadableContentPrerequisite Flags="Prerequisite,Discard">Content12</DownloadableContentPrerequisite>-->
-    <UnitSkillPrerequisite>HeroSkillLeaderMap01SistersOfMercy | HeroSkillGovernor26 | HeroSkillLeaderBattle23SistersOfMercy</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor29 | HeroSkillGovernor29ReplicantsPack | HeroSkillLeaderMap01SistersOfMercy | HeroSkillGovernor26</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinitySistersOfMercy</PathPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor37Level1" />
@@ -590,7 +594,7 @@
   <!-- Food/dust malus immunity-->
   <UnitSkill Name="HeroSkillGovernor38"                   Category="UnitSkill" SubCategory="SubCategoryHeroSkillGovernor">
     <!--<DownloadableContentPrerequisite Flags="Prerequisite,Discard">Content12</DownloadableContentPrerequisite>-->
-    <UnitSkillPrerequisite>HeroSkillGovernor29 | HeroSkillGovernor29ReplicantsPack | HeroSkillGovernor37</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor37</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinitySistersOfMercy</PathPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor38Level1" />
@@ -624,6 +628,7 @@
     </UnitSkillLevel>
 	<UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor40Level3" />
+	  <SimulationDescriptorReference Name="HeroSkillGovernor40Level3ELCP" />
     </UnitSkillLevel>
   </UnitSkill>
 
@@ -675,6 +680,7 @@
     </UnitSkillLevel>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillGovernor44Level2" />
+	  <SimulationDescriptorReference Name="HeroSkillGovernor44Level2ELCP" />
     </UnitSkillLevel>
   </UnitSkill>
   
@@ -983,7 +989,7 @@
   <!-- Attack Boost (Replicants) -->
   <UnitSkill Name="HeroSkillLeaderBattle13Replicants"     Category="UnitSkill" SubCategory="SubCategoryHeroSkillLeaderBattle">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">ReplicantsPack</DownloadableContentPrerequisite>
-    <UnitSkillPrerequisite>HeroSkillCommon01 | HeroSkillEspionage02Replicants</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillCommon01 | HeroSkillEspionage02Replicants | HeroSkillGovernor35</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinityReplicants</PathPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillLeaderBattle13ReplicantsLevel1" />
@@ -998,7 +1004,7 @@
 
   <!-- Battlesaur -->
   <UnitSkill Name="HeroSkillLeaderBattle14"               Category="UnitSkill" SubCategory="SubCategoryHeroSkillLeaderBattle">
-    <UnitSkillPrerequisite>HeroSkillGovernor05 | HeroSkillLeaderMap07</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor05 | HeroSkillGovernor04</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinityDrakkens</PathPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillLeaderBattle14Level1" />
@@ -1345,7 +1351,7 @@
   </UnitSkill>
 
   <!-- HP Regen Sisters Of Mercy -->
-  <UnitSkill Name="HeroSkillLeaderMap01SistersOfMercy"    Category="UnitSkill" SubCategory="SubCategoryHeroSkillLeaderMap">
+  <UnitSkill Name="HeroSkillLeaderMap01SistersOfMercy"    Category="UnitSkill" SubCategory="SubCategoryHeroSkillAllAssignment">
     <!--<DownloadableContentPrerequisite Flags="Prerequisite,Discard">Content12</DownloadableContentPrerequisite>-->
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinitySistersOfMercy</PathPrerequisite>
     <UnitSkillPrerequisite>HeroSkillGovernor04SistersOfMercy | HeroSkillLeaderBattle26SistersOfMercy</UnitSkillPrerequisite>
@@ -1425,7 +1431,7 @@
 
   <!-- Friendly Banner -->
   <UnitSkill Name="HeroSkillLeaderMap07"                  Category="UnitSkill" SubCategory="SubCategoryHeroSkillLeaderMap">
-    <UnitSkillPrerequisite>HeroSkillGovernor05 | HeroSkillGovernor26 | HeroSkillLeaderMap09</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor06 | HeroSkillLeaderMap05</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinityDrakkens</PathPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillLeaderMap07Level1" />
@@ -1444,7 +1450,7 @@
 
   <!-- Raptor's Eye -->
   <UnitSkill Name="HeroSkillLeaderMap09"                  Category="UnitSkill" SubCategory="SubCategoryHeroSkillLeaderMap">
-    <UnitSkillPrerequisite>HeroSkillGovernor06 | HeroSkillLeaderMap05 | HeroSkillCommon01</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillLeaderMap07 | HeroSkillGovernor05 | HeroSkillGovernor26 </UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillAffinity">AffinityDrakkens</PathPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillLeaderMap09Level1" />
@@ -1550,7 +1556,7 @@
   </UnitSkill>
 
   <!-- Bribe cost reduction (Winter Shifters) -->
-  <UnitSkill Name="HeroSkillLeaderMap20"                  Category="UnitSkill" SubCategory="SubCategoryHeroSkillLeaderMap">
+  <UnitSkill Name="HeroSkillLeaderMap20"                  Category="UnitSkill" SubCategory="SubCategoryHeroSkillAllAssignment">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">WinterShiftersPack</DownloadableContentPrerequisite>
     <UnitSkillPrerequisite>HeroSkillLeaderMap05 | HeroSkillLeaderMap18</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillUnitClass">AffinityWinterShifters</PathPrerequisite>
@@ -1559,11 +1565,12 @@
     </UnitSkillLevel>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillLeaderMap20Level2" />
+	  <SimulationDescriptorReference Name="HeroSkillLeaderMap20Level2ELCP" />	  
     </UnitSkillLevel>
   </UnitSkill>
 
   <!-- Spy Glass (Sea Demons) -->
-  <UnitSkill Name="HeroSkillLeaderMap21"                  Category="UnitSkill" SubCategory="SubCategoryHeroSkillLeaderMap">
+  <UnitSkill Name="HeroSkillLeaderMap21"                  Category="UnitSkill" SubCategory="SubCategoryHeroSkillAllAssignment">
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard">NavalPack</DownloadableContentPrerequisite>
     <UnitSkillPrerequisite>HeroSkillGovernor41 | HeroSkillLeaderBattle30</UnitSkillPrerequisite>
     <PathPrerequisite Flags="Prerequisite,Discard,AIUnitSkillUnitClass">AffinitySeaDemons</PathPrerequisite>
@@ -1666,7 +1673,7 @@
 
   <!-- Fast Healer -->
   <UnitSkill Name="HeroSkillCommon01"                     Category="UnitSkill" SubCategory="SubCategoryHeroSkillAllAssignment">
-    <UnitSkillPrerequisite>HeroSkillGovernor19Necrophages | HeroSkillLeaderBattle12 | HeroSkillLeaderBattle13 | HeroSkillLeaderMap03 | HeroSkillLeaderMap09 | HeroSkillGovernor31 | HeroSkillGovernor32 | HeroSkillCommon02 | HeroSkillCommon03 | HeroSkillGovernor33 | HeroSkillLeaderMap05 | HeroSkillGovernor47 | HeroSkillCommon02Replicants</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor19Necrophages | HeroSkillLeaderBattle12 | HeroSkillLeaderBattle13 | HeroSkillLeaderMap03 | HeroSkillGovernor31 | HeroSkillGovernor32 | HeroSkillCommon02 | HeroSkillCommon03 | HeroSkillGovernor33 | HeroSkillLeaderMap05 | HeroSkillGovernor47 | HeroSkillCommon02Replicants</UnitSkillPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillCommon01Level1" />
     </UnitSkillLevel>
@@ -1710,7 +1717,7 @@
 
   <!-- Cold Operator -->
   <UnitSkill Name="HeroSkillCommon04"                     Category="UnitSkill" SubCategory="SubCategoryHeroSkillAllAssignment">
-    <UnitSkillPrerequisite>HeroSkillGovernor14 | HeroSkillGovernor15 | HeroSkillGovernor29 | HeroSkillLeaderBattle16Ranged | HeroSkillLeaderBattle17Support | HeroSkillLeaderBattle18 | HeroSkillLeaderMap02 | HeroSkillLeaderBattle25 | HeroSkillGovernor36 | HeroSkillLeaderMap04ReplicantsPack | HeroSkillLeaderMap04 | HeroSkillGovernor29ReplicantsPack | HeroSkillLeaderMap17 | HeroSkillLeaderBattle28 | HeroSkillLeaderMap22 | HeroSkillLeaderMap25</UnitSkillPrerequisite>
+    <UnitSkillPrerequisite>HeroSkillGovernor14 | HeroSkillGovernor15 | HeroSkillGovernor29 | HeroSkillLeaderBattle16Ranged | HeroSkillLeaderBattle17Support | HeroSkillLeaderBattle18 | HeroSkillLeaderMap02 | HeroSkillLeaderBattle25 | HeroSkillGovernor36 | HeroSkillLeaderMap04ReplicantsPack | HeroSkillLeaderMap04 | HeroSkillGovernor29ReplicantsPack | HeroSkillLeaderMap17 | HeroSkillLeaderBattle28 | HeroSkillLeaderMap22 | HeroSkillLeaderMap25 | HeroSkillGovernor04</UnitSkillPrerequisite>
     <UnitSkillLevel UnitSkillPointCost="1">
       <SimulationDescriptorReference Name="HeroSkillCommon04Level1" />
 

@@ -17,14 +17,17 @@ public class DiplomaticTermResourceExchange : DiplomaticTerm, IDiplomaticTermMan
 
 	void IDiplomaticTermManagement.ApplyEffects()
 	{
-		DiplomaticTermResourceExchangeDefinition diplomaticTermResourceExchangeDefinition = base.Definition as DiplomaticTermResourceExchangeDefinition;
-		Diagnostics.Assert(diplomaticTermResourceExchangeDefinition != null);
+		Diagnostics.Assert(base.Definition is DiplomaticTermResourceExchangeDefinition);
 		Diagnostics.Assert(base.EmpireWhichProvides != null && base.EmpireWhichReceives != null);
 		Diagnostics.Assert(base.EmpireWhichProvides.Index != base.EmpireWhichReceives.Index);
 		DepartmentOfTheTreasury agency = base.EmpireWhichProvides.GetAgency<DepartmentOfTheTreasury>();
 		DepartmentOfTheTreasury agency2 = base.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
 		Diagnostics.Assert(agency != null && agency2 != null);
-		if (!agency.TryTransferResources(base.EmpireWhichProvides, this.ResourceName, -this.Amount))
+		if (this.BufferedAmount > 0f && this.BufferedAmount >= this.Amount)
+		{
+			this.BufferedAmount = 0f;
+		}
+		else if (!agency.TryTransferResources(base.EmpireWhichProvides, this.ResourceName, -this.Amount))
 		{
 			Diagnostics.LogError("DiplomaticTermResourceExchange.ApplyEffect failed, can't debit the empire which provides the term (resource: {0} amount: {1})", new object[]
 			{
@@ -60,7 +63,7 @@ public class DiplomaticTermResourceExchange : DiplomaticTerm, IDiplomaticTermMan
 		DepartmentOfTheTreasury agency2 = base.EmpireWhichReceives.GetAgency<DepartmentOfTheTreasury>();
 		Diagnostics.Assert(agency != null && agency2 != null);
 		float num = -this.Amount;
-		if (!agency.IsTransferOfResourcePossible(base.EmpireWhichProvides, this.ResourceName, ref num))
+		if ((this.BufferedAmount != this.Amount || this.BufferedAmount == 0f) && !agency.IsTransferOfResourcePossible(base.EmpireWhichProvides, this.ResourceName, ref num))
 		{
 			return false;
 		}
@@ -87,6 +90,15 @@ public class DiplomaticTermResourceExchange : DiplomaticTerm, IDiplomaticTermMan
 		base.ReadXml(reader);
 		this.ResourceName = reader.ReadElementString<string>("ResourceName");
 		this.Amount = reader.ReadElementString<float>("Amount");
+		try
+		{
+			this.BufferedAmount = reader.ReadElementString<float>("BufferedAmount");
+		}
+		catch
+		{
+			Diagnostics.LogWarning("ELCP: Error reading BufferedAmount, setting to 0");
+			this.BufferedAmount = 0f;
+		}
 	}
 
 	public override string ToString()
@@ -106,5 +118,8 @@ public class DiplomaticTermResourceExchange : DiplomaticTerm, IDiplomaticTermMan
 		base.WriteXml(writer);
 		writer.WriteElementString<string>("ResourceName", this.ResourceName);
 		writer.WriteElementString<float>("Amount", this.Amount);
+		writer.WriteElementString<float>("BufferedAmount", this.BufferedAmount);
 	}
+
+	public float BufferedAmount { get; set; }
 }

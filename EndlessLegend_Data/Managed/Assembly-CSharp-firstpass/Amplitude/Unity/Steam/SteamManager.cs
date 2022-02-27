@@ -334,12 +334,12 @@ namespace Amplitude.Unity.Steam
 					this.SteamCallbacks.Bind(Steamworks.SteamAPI_RegisterValidateAuthTicketResponseDelegate(SteamManager.SteamServerCallback.ValidateAuthTicketResponse, true));
 					this.SteamCallbacks.Bind(Steamworks.SteamAPI_RegisterPersonaStateChangedDelegate(SteamManager.SteamServerCallback.PersonaStateChanged, true));
 					this.SteamShutdown = (EventHandler<SteamShutdownEventArgs>)Delegate.Combine(this.SteamShutdown, new EventHandler<SteamShutdownEventArgs>(this.SteamManager_SteamShutdown));
+					yield break;
 				}
 				catch (DllNotFoundException ex)
 				{
-					DllNotFoundException exception = ex;
 					base.SetLastError(-1, "Exception caught! check with the console log for details.");
-					throw exception;
+					throw ex;
 				}
 				catch
 				{

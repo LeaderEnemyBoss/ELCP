@@ -146,11 +146,18 @@ public class GameDiplomacyScreen : GuiPlayerControllerScreen
 		float num = 0f;
 		float num2 = 1f;
 		MajorEmpire majorEmpire = base.Empire as MajorEmpire;
-		if (majorEmpire.VictoryConditionStatuses.ContainsKey("Diplomacy"))
+		if (majorEmpire.VictoryConditionStatuses.ContainsKey("Diplomacy") && ELCPUtilities.UseELCPPeacePointRulseset)
 		{
-			this.DiplomaticScoreContainer.Visible = false;
+			this.DiplomaticScoreContainer.Visible = true;
 			num = base.Empire.GetPropertyValue("EmpirePeacePointStock");
-			this.DiplomaticScore.Text = AgeLocalizer.Instance.LocalizeString("%DiplomacyScreenDiplomaticScoreFormat").Replace("$Value", GuiFormater.FormatGui(num, false, false, false, 0));
+			float propertyValue = base.Empire.GetPropertyValue("PeacePointBucketStock");
+			float value = Mathf.Min(propertyValue, base.Empire.GetPropertyValue("TreatyPeacePointPerTurn"));
+			float propertyValue2 = base.Empire.GetPropertyValue("NetEmpirePeacePoint");
+			this.DiplomaticScore.Text = AgeLocalizer.Instance.LocalizeString("%ELCPDiplomacyScreenDiplomaticScoreFormat").Replace("$BucketValue", GuiFormater.FormatGui(propertyValue, false, false, false, 0));
+			this.DiplomaticScore.Text = this.DiplomaticScore.Text.Replace("$BucketNet", GuiFormater.FormatGui(value, false, false, false, 0));
+			this.DiplomaticScore.Text = this.DiplomaticScore.Text.Replace("$PPValue", GuiFormater.FormatGui(num, false, false, false, 0));
+			this.DiplomaticScore.Text = this.DiplomaticScore.Text.Replace("$PPNet", GuiFormater.FormatGui(propertyValue2, false, false, false, 0));
+			this.DiplomaticScore.Alignement = AgeTextAnchor.LowerCenter;
 			this.victoryService = base.Game.Services.GetService<IVictoryManagementService>();
 			foreach (VictoryCondition victoryCondition in this.victoryService.VictoryConditionsFilteredThisGame)
 			{
@@ -158,24 +165,23 @@ public class GameDiplomacyScreen : GuiPlayerControllerScreen
 				{
 					for (int i = 0; i < victoryCondition.Progression.Vars.Length; i++)
 					{
-						if (this.DiplomaticScore.Text.Contains(victoryCondition.Progression.Vars[i].Name))
+						if (victoryCondition.Progression.Vars[i].Name == "TargetValue")
 						{
 							num2 = majorEmpire.VictoryConditionStatuses["Diplomacy"].Variables[i];
 						}
 					}
-					this.DiplomaticScore.Text = this.DiplomaticScore.Text.Replace("$TargetValue", GuiFormater.FormatGui(num2, false, false, false, 0));
 					if (this.DiplomaticScoreContainer.AgeTooltip != null)
 					{
 						this.DiplomaticScoreContainer.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%VictoryConditionDiplomacyDescription").Replace("$TargetValue", GuiFormater.FormatGui(num2, false, false, false, 0));
 					}
 				}
 			}
+			this.DiplomaticGauge.Visible = false;
+			this.DiplomaticGauge.GetParent().Visible = false;
 			this.DiplomaticGauge.PercentRight = Mathf.Clamp(100f * (num / num2), 0f, 100f);
+			return;
 		}
-		else
-		{
-			this.DiplomaticScoreContainer.Visible = false;
-		}
+		this.DiplomaticScoreContainer.Visible = false;
 	}
 
 	public override void Unbind()
@@ -345,11 +351,16 @@ public class GameDiplomacyScreen : GuiPlayerControllerScreen
 	private void EventService_EventRaise(object sender, EventRaiseEventArgs e)
 	{
 		EventDiplomaticRelationStateChange eventDiplomaticRelationStateChange = e.RaisedEvent as EventDiplomaticRelationStateChange;
-		if (eventDiplomaticRelationStateChange == null)
+		EventDiplomaticContractStateChange eventDiplomaticContractStateChange = e.RaisedEvent as EventDiplomaticContractStateChange;
+		if (eventDiplomaticRelationStateChange != null)
 		{
-			return;
+			if (base.Empire == eventDiplomaticRelationStateChange.Empire || base.Empire == eventDiplomaticRelationStateChange.EmpireWithWhichTheStatusChange)
+			{
+				base.NeedRefresh = true;
+				return;
+			}
 		}
-		if (base.Empire == eventDiplomaticRelationStateChange.Empire || base.Empire == eventDiplomaticRelationStateChange.EmpireWithWhichTheStatusChange)
+		else if (eventDiplomaticContractStateChange != null && eventDiplomaticContractStateChange.DiplomaticContract != null && eventDiplomaticContractStateChange.DiplomaticContract.State == DiplomaticContractState.Signed && (eventDiplomaticContractStateChange.DiplomaticContract.EmpireWhichReceives.Index == base.Empire.Index || eventDiplomaticContractStateChange.DiplomaticContract.EmpireWhichProposes.Index == base.Empire.Index))
 		{
 			base.NeedRefresh = true;
 		}
@@ -456,27 +467,27 @@ public class GameDiplomacyScreen : GuiPlayerControllerScreen
 		{
 			return;
 		}
+		if (base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
+		{
+			return;
+		}
 		global::Empire empire = null;
 		global::Empire empire2 = null;
 		this.diplomaticRelationsViewport.GetCurrentHighlightedEmpire(ref empire, ref empire2);
 		if (empire != null && empire != base.Empire)
 		{
-			IAudioEventService service = Services.GetService<IAudioEventService>();
-			service.Play2DEvent("Gui/Interface/InGame/OpenPanelButton");
+			Services.GetService<IAudioEventService>().Play2DEvent("Gui/Interface/InGame/OpenPanelButton");
 			this.OnNegotiation(empire);
+			return;
 		}
-		else if (empire2 != null && empire2 != base.Empire)
+		if (empire2 != null && empire2 != base.Empire)
 		{
-			IAudioEventService service2 = Services.GetService<IAudioEventService>();
-			service2.Play2DEvent("Gui/Interface/InGame/OpenPanelButton");
+			Services.GetService<IAudioEventService>().Play2DEvent("Gui/Interface/InGame/OpenPanelButton");
 			this.OnNegotiation(empire2);
+			return;
 		}
-		else
-		{
-			IAudioEventService service3 = Services.GetService<IAudioEventService>();
-			service3.Play2DEvent("Gui/Interface/InGame/OpenPanelButton");
-			this.OnInspect(base.Empire);
-		}
+		Services.GetService<IAudioEventService>().Play2DEvent("Gui/Interface/InGame/OpenPanelButton");
+		this.OnInspect(base.Empire);
 	}
 
 	private void OnScreenMiddleClickCB(GameObject obj)

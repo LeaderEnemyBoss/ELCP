@@ -73,60 +73,75 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 
 		private void SmoothElevationImperfection()
 		{
-			for (int i = 0; i < base.Context.Grid.Columns; i++)
+			bool flag = true;
+			while (flag)
 			{
-				for (int j = 0; j < base.Context.Grid.Rows; j++)
+				flag = false;
+				for (int i = 0; i < base.Context.Grid.Columns; i++)
 				{
-					HexPos hexPos = new HexPos(i, j);
-					Terrain terrain = base.Context.GetTerrain(hexPos);
-					if (terrain != null)
+					for (int j = 0; j < base.Context.Grid.Rows; j++)
 					{
-						int num = (int)base.Context.HeightData[j, i];
-						if (!terrain.Name.Contains("Ocean") && !terrain.Name.Contains("Water"))
+						HexPos hexPos = new HexPos(i, j);
+						Terrain terrain = base.Context.GetTerrain(hexPos);
+						if (terrain != null)
 						{
-							if (num < 0)
+							int num = (int)base.Context.HeightData[j, i];
+							if (!terrain.IsWaterTile)
 							{
-								base.Context.HeightData[j, i] = 0;
-								base.ReportTmx(string.Concat(new object[]
+								if (num < 0)
 								{
-									"?NegativeLandElevation&$Coordinate=",
-									i,
-									",",
-									j - base.Context.Grid.Rows + 1
-								}));
+									base.Context.HeightData[j, i] = 0;
+									base.ReportTmx(string.Concat(new object[]
+									{
+										"?NegativeLandElevation&$Coordinate=",
+										i,
+										",",
+										j - base.Context.Grid.Rows + 1
+									}));
+									flag = true;
+								}
 							}
-						}
-						else
-						{
-							int num2 = num;
-							bool flag = true;
-							foreach (HexPos hex in base.Context.Grid.Adjacents(hexPos))
+							else if (num >= 0)
 							{
-								terrain = base.Context.GetTerrain(hex);
-								if (terrain != null)
+								base.Context.HeightData[j, i] = -1;
+								flag = true;
+							}
+							else
+							{
+								int num2 = num;
+								bool flag2 = true;
+								foreach (HexPos hex in base.Context.Grid.Adjacents(hexPos))
 								{
-									if (terrain.Name.Contains("Ocean") || terrain.Name.Contains("Water"))
+									terrain = base.Context.GetTerrain(hex);
+									if (terrain != null)
 									{
-										if (num2 > (int)base.Context.HeightData[hex.Row, hex.Column])
+										if (terrain.IsWaterTile)
 										{
-											num2 = (int)base.Context.HeightData[hex.Row, hex.Column];
+											if (num2 < (int)(base.Context.HeightData[hex.Row, hex.Column] - 1))
+											{
+												num2 = (int)(base.Context.HeightData[hex.Row, hex.Column] - 1);
+											}
 										}
-									}
-									else
-									{
-										flag = false;
-										if (num >= (int)base.Context.HeightData[hex.Row, hex.Column])
+										else
 										{
-											num = (int)(base.Context.HeightData[hex.Row, hex.Column] - 1);
+											flag2 = false;
+											if (num >= (int)base.Context.HeightData[hex.Row, hex.Column])
+											{
+												num = -1;
+											}
 										}
 									}
 								}
+								if (flag2)
+								{
+									num = num2;
+								}
+								if (base.Context.HeightData[j, i] != (sbyte)num)
+								{
+									flag = true;
+								}
+								base.Context.HeightData[j, i] = (sbyte)num;
 							}
-							if (flag)
-							{
-								num = num2;
-							}
-							base.Context.HeightData[j, i] = (sbyte)num;
 						}
 					}
 				}

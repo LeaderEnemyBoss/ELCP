@@ -6,12 +6,12 @@
   <SimulationDescriptor Name="ClassVictoryController" Type="Class">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LastTurn" BaseValue="299"/>
-      <SimulationPropertyDescriptor Name="ExpansionThreshold" BaseValue="0.8"/>
-      <SimulationPropertyDescriptor Name="EmpireMoneyThreshold" BaseValue="555500"/>
+      <SimulationPropertyDescriptor Name="ExpansionThreshold" BaseValue="0.6"/>
+      <SimulationPropertyDescriptor Name="EmpireMoneyThreshold" BaseValue="777000"/>
       <SimulationPropertyDescriptor Name="PeacePointThreshold" BaseValue="2500"/>
       <SimulationPropertyDescriptor Name="NumberOfTechnologiesThreshold" BaseValue="5"/>
-      <SimulationPropertyDescriptor Name="NumberOfTechnologiesThresholdAlert1" BaseValue="2"/>
-      <SimulationPropertyDescriptor Name="NumberOfTechnologiesThresholdAlert2" BaseValue="4"/>
+      <SimulationPropertyDescriptor Name="NumberOfTechnologiesThresholdAlert1" BaseValue="1"/>
+      <SimulationPropertyDescriptor Name="NumberOfTechnologiesThresholdAlert2" BaseValue="3"/>
 	  <SimulationPropertyDescriptor Name="VictoryQuestChapterThreshold" BaseValue="6"/>
     </SimulationPropertyDescriptors>
   </SimulationDescriptor>
@@ -42,8 +42,8 @@
   <SimulationDescriptor Name="VictoryModifierGameSpeedFast">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="LastTurn"             Operation="Subtraction"     Value="150"   Path="ClassVictoryController"/>
-      <SimulationModifierDescriptor TargetProperty="EmpireMoneyThreshold" Operation="Multiplication"  Value="0.45"  Path="ClassVictoryController"/>
-      <SimulationModifierDescriptor TargetProperty="PeacePointThreshold" Operation="Multiplication"  Value="0.45"  Path="ClassVictoryController"/>
+      <SimulationModifierDescriptor TargetProperty="EmpireMoneyThreshold" Operation="Multiplication"  Value="0.6"  Path="ClassVictoryController"/>
+      <SimulationModifierDescriptor TargetProperty="PeacePointThreshold" Operation="Multiplication"  Value="0.6"  Path="ClassVictoryController"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -67,15 +67,15 @@
   
   <SimulationDescriptor Name="VictoryModifierWorldSizeHuge">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="EmpireMoneyThreshold" Operation="Multiplication"  Value="1.8"   Path="ClassVictoryController"/>
-      <SimulationModifierDescriptor TargetProperty="PeacePointThreshold" Operation="Multiplication"  Value="1.8"   Path="ClassVictoryController"/>
+      <SimulationModifierDescriptor TargetProperty="EmpireMoneyThreshold" Operation="Multiplication"  Value="1.6"   Path="ClassVictoryController"/>
+      <SimulationModifierDescriptor TargetProperty="PeacePointThreshold" Operation="Multiplication"  Value="1.6"   Path="ClassVictoryController"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="VictoryModifierWorldSizeLarge">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="EmpireMoneyThreshold" Operation="Multiplication"  Value="1.4"   Path="ClassVictoryController"/>
-      <SimulationModifierDescriptor TargetProperty="PeacePointThreshold" Operation="Multiplication"  Value="1.4"   Path="ClassVictoryController"/>
+      <SimulationModifierDescriptor TargetProperty="EmpireMoneyThreshold" Operation="Multiplication"  Value="1.3"   Path="ClassVictoryController"/>
+      <SimulationModifierDescriptor TargetProperty="PeacePointThreshold" Operation="Multiplication"  Value="1.3"   Path="ClassVictoryController"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

@@ -23,13 +23,11 @@ public class QuestBehaviourTreeNode_Action_DestroyArmies : QuestBehaviourTreeNod
 			Diagnostics.LogError("Failed to retrieve the (lesser) quest empire.");
 			return State.Running;
 		}
-		IGameEntityRepositoryService service = this.Game.Services.GetService<IGameEntityRepositoryService>();
-		IEnumerator gameEntities = service.GameEntities;
+		IEnumerator gameEntities = this.Game.Services.GetService<IGameEntityRepositoryService>().GameEntities;
 		while (gameEntities.MoveNext())
 		{
 			object obj = gameEntities.Current;
-			IGameEntity gameEntity = obj as IGameEntity;
-			Army army = gameEntity as Army;
+			Army army = (obj as IGameEntity) as Army;
 			if (army != null && army.HasTag(this.ArmyTag))
 			{
 				OrderDestroyArmy orderDestroyArmy = new OrderDestroyArmy(army.Empire.Index, army.GUID);

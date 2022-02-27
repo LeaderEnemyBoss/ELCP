@@ -9,6 +9,7 @@ public class AIBehaviorTreeNode_Decorator_CanAffordArmyAction : AIBehaviorTreeNo
 	{
 		this.ArmyActionReadOnlyName = ArmyAction_TameKaiju.ReadOnlyName;
 		this.Inverted = false;
+		this.TargetVarName = string.Empty;
 	}
 
 	[XmlAttribute]
@@ -23,8 +24,7 @@ public class AIBehaviorTreeNode_Decorator_CanAffordArmyAction : AIBehaviorTreeNo
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -34,7 +34,20 @@ public class AIBehaviorTreeNode_Decorator_CanAffordArmyAction : AIBehaviorTreeNo
 		{
 			return State.Failure;
 		}
-		bool flag = armyAction.CanAfford(army.Empire);
+		bool flag = false;
+		ArmyAction_TameUnstunnedKaiju armyAction_TameUnstunnedKaiju = armyAction as ArmyAction_TameUnstunnedKaiju;
+		if (ELCPUtilities.UseELCPSymbiosisBuffs && armyAction_TameUnstunnedKaiju != null && this.TargetVarName != string.Empty)
+		{
+			Kaiju kaiju = (aiBehaviorTree.Variables[this.TargetVarName] as IGameEntity) as Kaiju;
+			if (kaiju != null)
+			{
+				flag = ELCPUtilities.CanELCPTameKaiju(kaiju, armyAction_TameUnstunnedKaiju.TameCost, army.Empire);
+			}
+		}
+		else
+		{
+			flag = armyAction.CanAfford(army.Empire);
+		}
 		if (flag)
 		{
 			if (aiBehaviorTree.Variables.ContainsKey(this.Output_ArmyActionVarName))
@@ -50,4 +63,7 @@ public class AIBehaviorTreeNode_Decorator_CanAffordArmyAction : AIBehaviorTreeNo
 		aiBehaviorTree.ErrorCode = 38;
 		return State.Failure;
 	}
+
+	[XmlAttribute]
+	public string TargetVarName { get; set; }
 }

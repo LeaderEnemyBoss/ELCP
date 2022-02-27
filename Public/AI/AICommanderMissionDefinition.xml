@@ -89,13 +89,13 @@
   <!-- Privateers War Missions-->
   <AICommanderMissionDefinition Name="PrivateersHarass" Type="AICommanderMission_PrivateersHarass, Assembly-CSharp" Category="War,PrivateersHarass">
     <AIArmyPattern>
-      <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
-      <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
-      <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
-      <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
-      <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
-      <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
-      <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+      <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+      <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+      <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
     </AIArmyPattern>
   </AICommanderMissionDefinition>
 
@@ -166,6 +166,10 @@
   <AICommanderMissionDefinition Name="ConvertAndPacifyVillage" Type="AICommanderMission_Village, Assembly-CSharp" Category="Convert,Village,Pacification,Hardway">
     <AIArmyPattern>
       <AIUnitDescription AIUnitPatternCategory="Killer" Tags="!UnitFactionTypeMinorFaction,!Mercenary" Priority="1" MinimalQuantity="1" Ratio="0.0"/>
+	  <AIUnitDescription AIUnitPatternCategory="Killer" Priority="2"  MinimalQuantity="2" Ratio="0.0"/>
+	  <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Priority="3"  MinimalQuantity="2" Ratio="0.0"/>
+	  <AIUnitDescription AIUnitPatternCategory="Artillery" Priority="4"  MinimalQuantity="0" Ratio="0.25"/>
+	  <AIUnitDescription AIUnitPatternCategory="Harasser" Priority="5"  MinimalQuantity="0" Ratio="0.25"/>
     </AIArmyPattern>
   </AICommanderMissionDefinition>
   
@@ -208,5 +212,45 @@
   <AICommanderMissionDefinition Name="QuestPacifistRoaming" Type="AICommanderMission_QuestRoaming, Assembly-CSharp" Category="Quest,PacifistRoaming" />
   
   <AICommanderMissionDefinition Name="QuestFleeRoaming" Type="AICommanderMission_QuestRoaming, Assembly-CSharp" Category="Quest,FleeRoaming" />
+  
+  <!--ELCP-->
+  <AICommanderMissionDefinition Name="KaijuSupport"   Type="AICommanderMission_KaijuSupport, Assembly-CSharp" Category="KaijuSupport" />
+  
+  <AICommanderMissionDefinition Name="Questsolver"   Type="AICommanderMission_QuestsolverRuin, Assembly-CSharp" Category="Questsolver" />
+  
+  <AICommanderMissionDefinition Name="RuinHunter"   Type="AICommanderMission_HuntRuin, Assembly-CSharp" Category="RuinHunter" />
+  
+  <AICommanderMissionDefinition Name="QuestBTOrder"   Type="AICommanderMission_QuestBTOrder, Assembly-CSharp" Category="QuestBTOrder" />
+  <AICommanderMissionDefinition Name="QuestSolverOrder"   Type="AICommanderMission_QuestSolverOrder, Assembly-CSharp" Category="QuestSolverOrder" />
+  
+  <AICommanderMissionDefinition Name="VictoryRuin" Type="AICommanderMission_VictoryRuin, Assembly-CSharp" Category="Victory,Ruin">
+  <AIArmyPattern>
+    <AIUnitDescription AIUnitPatternCategory="Healer"         Tags="!Mercenary" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+    <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="!Mercenary" Priority="2"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Artillery"      Tags="!Mercenary" Priority="3"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Buffer"         Tags="!Mercenary" Priority="4"  MinimalQuantity="1" Ratio="0"/>
+    <AIUnitDescription AIUnitPatternCategory="Harasser"       Tags="!Mercenary" Priority="5"  MinimalQuantity="1" Ratio="0.25"/>
+    <AIUnitDescription AIUnitPatternCategory="DefenseBreaker" Tags="!Mercenary" Priority="6"  MinimalQuantity="1" Ratio="0.5"/>
+    <AIUnitDescription AIUnitPatternCategory="Protector"      Tags="!Mercenary" Priority="7"  MinimalQuantity="1" Ratio="0.5"/>
+  </AIArmyPattern>
+  </AICommanderMissionDefinition>
+  
+  <AICommanderMissionDefinition Name="VictoryRuinFinalMykara" Type="AICommanderMission_VictoryRuinFinal, Assembly-CSharp" Category="Final,Ruin,Mykara">
+  <AIArmyPattern>
+    <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="UnitTypeMimicsUnit2" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+  </AIArmyPattern>  
+  </AICommanderMissionDefinition>
+  
+  <AICommanderMissionDefinition Name="VictoryRuinFinalCult" Type="AICommanderMission_VictoryRuinFinal, Assembly-CSharp" Category="Final,Ruin,Cult">
+  <AIArmyPattern>
+    <AIUnitDescription AIUnitPatternCategory="Killer"         Tags="UnitTypeCultistsPreacher" Priority="1"  MinimalQuantity="1" Ratio="0"/>
+  </AIArmyPattern>  
+  </AICommanderMissionDefinition>
+  
+  <AICommanderMissionDefinition Name="VictoryRuinFinal" Type="AICommanderMission_VictoryRuinFinal, Assembly-CSharp" Category="Final,Ruin,Settler">
+  <AIArmyPattern>
+    <AIUnitDescription AIUnitPatternCategory="Settler" Priority="1" MinimalQuantity="1" Ratio="0"/>
+  </AIArmyPattern>  
+  </AICommanderMissionDefinition>
   
 </Datatable>

@@ -1,11 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Amplitude;
 using UnityEngine;
 
 public class AgeUtils
 {
+	static AgeUtils()
+	{
+		string key = "--uiScale=";
+		string text = Environment.GetCommandLineArgs().FirstOrDefault((string a) => a != null && a.StartsWith(key));
+		float highDefinitionFactor;
+		if (text != null && float.TryParse(text.Substring(key.Length), out highDefinitionFactor))
+		{
+			AgeUtils.HighDefinitionFactor = highDefinitionFactor;
+		}
+	}
+
 	public static Rect ClipRectangle(Rect clipper, Rect clippee)
 	{
 		Rect result = Rect.MinMaxRect(-1f, -1f, -1f, -1f);

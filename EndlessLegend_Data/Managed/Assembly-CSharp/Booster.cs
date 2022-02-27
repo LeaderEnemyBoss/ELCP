@@ -114,19 +114,27 @@ public class Booster : SimulationObjectWrapper, IGameEntity, IDescriptorEffectPr
 
 	public IEnumerable<SimulationDescriptor> GetDescriptors()
 	{
-		for (int index = 0; index < this.BoosterDefinition.Descriptors.Length; index++)
+		int num;
+		for (int index = 0; index < this.BoosterDefinition.Descriptors.Length; index = num + 1)
 		{
 			yield return this.BoosterDefinition.Descriptors[index];
+			num = index;
 		}
 		if (this.BoosterDefinition.Effects != null)
 		{
-			for (int i = 0; i < this.BoosterDefinition.Effects.Length; i++)
+			for (int index = 0; index < this.BoosterDefinition.Effects.Length; index = num + 1)
 			{
-				BoosterEffect effect = this.BoosterDefinition.Effects[i];
-				for (int j = 0; j < effect.SimulationDescriptors.Length; j++)
+				BoosterEffect effect = this.BoosterDefinition.Effects[index];
+				if (Booster.CheckPrerequisites(effect, this.Context))
 				{
-					yield return effect.SimulationDescriptors[j];
+					for (int i = 0; i < effect.SimulationDescriptors.Length; i = num + 1)
+					{
+						yield return effect.SimulationDescriptors[i];
+						num = i;
+					}
 				}
+				effect = null;
+				num = index;
 			}
 		}
 		yield break;
@@ -164,6 +172,10 @@ public class Booster : SimulationObjectWrapper, IGameEntity, IDescriptorEffectPr
 		if (this.IsActive())
 		{
 			this.OnReactivation();
+			if (this.BoosterDefinition.BoosterType == BoosterDefinition.Type.ResettingTime)
+			{
+				return;
+			}
 		}
 		else
 		{

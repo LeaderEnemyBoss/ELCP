@@ -183,76 +183,51 @@ public class WorldPointOfInterest_QuestLocation : WorldPointOfInterest
 	private void RefreshVFXEffects(bool endlessDay, bool dustDeposits)
 	{
 		string text = base.PointOfInterest.Type;
-		if (text != null)
+		if (text != null && (text == "NavalQuestLocation" || text == "QuestLocation"))
 		{
-			if (WorldPointOfInterest_QuestLocation.<>f__switch$map25 == null)
+			bool flag = (base.PlayerControllerRepositoryService.ActivePlayerController.Empire.Bits & base.PointOfInterest.Interaction.Bits) != 0;
+			int num = this.NumberOfSetBits(base.PointOfInterest.Interaction.Bits);
+			string text2 = string.Empty;
+			if (flag)
 			{
-				WorldPointOfInterest_QuestLocation.<>f__switch$map25 = new Dictionary<string, int>(2)
-				{
-					{
-						"NavalQuestLocation",
-						0
-					},
-					{
-						"QuestLocation",
-						0
-					}
-				};
+				text2 = "Searched";
 			}
-			int num;
-			if (WorldPointOfInterest_QuestLocation.<>f__switch$map25.TryGetValue(text, out num))
+			else if (num == 0)
 			{
-				if (num == 0)
+				text2 = "Blank";
+			}
+			else
+			{
+				text2 = "Other";
+			}
+			if (base.PointOfInterest.UntappedDustDeposits && dustDeposits)
+			{
+				text2 += "_DustDeposit";
+			}
+			else if (this.sensibleToEndlessDay && endlessDay)
+			{
+				text2 += "_EndlessDay";
+			}
+			this.interpreterContext.Register("Interaction", text2);
+			this.DestroyPointOfInterestIcon();
+			this.CreatePointOfInterestIcon();
+			this.CreateOrRegeneratePointOfInterestFXTypeIFN();
+			if (flag && this.interactionBitsBound)
+			{
+				DepartmentOfScience agency = base.PlayerControllerRepositoryService.ActivePlayerController.Empire.GetAgency<DepartmentOfScience>();
+				Diagnostics.Assert(agency != null);
+				if (StaticString.IsNullOrEmpty(agency.ArcheologyTechnologyDefinitionName))
 				{
-					bool flag = (base.PlayerControllerRepositoryService.ActivePlayerController.Empire.Bits & base.PointOfInterest.Interaction.Bits) != 0;
-					int num2 = this.NumberOfSetBits(base.PointOfInterest.Interaction.Bits);
-					string text2 = string.Empty;
-					if (flag)
-					{
-						text2 = "Searched";
-					}
-					else if (num2 == 0)
-					{
-						text2 = "Blank";
-					}
-					else
-					{
-						text2 = "Other";
-					}
-					if (base.PointOfInterest.UntappedDustDeposits && dustDeposits)
-					{
-						text2 += "_DustDeposit";
-					}
-					else if (this.sensibleToEndlessDay && endlessDay)
-					{
-						text2 += "_EndlessDay";
-					}
-					this.interpreterContext.Register("Interaction", text2);
-					this.DestroyPointOfInterestIcon();
-					this.CreatePointOfInterestIcon();
-					this.CreateOrRegeneratePointOfInterestFXTypeIFN();
-					if (flag && this.interactionBitsBound)
-					{
-						DepartmentOfScience agency = base.PlayerControllerRepositoryService.ActivePlayerController.Empire.GetAgency<DepartmentOfScience>();
-						Diagnostics.Assert(agency != null);
-						if (StaticString.IsNullOrEmpty(agency.ArcheologyTechnologyDefinitionName))
-						{
-							base.PointOfInterest.Interaction.PointOfInterestInteractionChange -= this.Interaction_PointOfInterestInteractionChange;
-							this.interactionBitsBound = false;
-						}
-						else
-						{
-							DepartmentOfScience.ConstructibleElement.State technologyState = agency.GetTechnologyState(agency.ArcheologyTechnologyDefinitionName);
-							if (technologyState == DepartmentOfScience.ConstructibleElement.State.Researched)
-							{
-								base.PointOfInterest.Interaction.PointOfInterestInteractionChange -= this.Interaction_PointOfInterestInteractionChange;
-								this.interactionBitsBound = false;
-							}
-						}
-					}
-					base.UpdatePointOfInterestVisibility();
+					base.PointOfInterest.Interaction.PointOfInterestInteractionChange -= this.Interaction_PointOfInterestInteractionChange;
+					this.interactionBitsBound = false;
+				}
+				else if (agency.GetTechnologyState(agency.ArcheologyTechnologyDefinitionName) == DepartmentOfScience.ConstructibleElement.State.Researched)
+				{
+					base.PointOfInterest.Interaction.PointOfInterestInteractionChange -= this.Interaction_PointOfInterestInteractionChange;
+					this.interactionBitsBound = false;
 				}
 			}
+			base.UpdatePointOfInterestVisibility();
 		}
 	}
 

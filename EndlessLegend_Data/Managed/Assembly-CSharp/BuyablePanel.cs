@@ -541,7 +541,8 @@ public class BuyablePanel : GuiPlayerControllerPanel
 
 	private void UpdateFiltersAvailability()
 	{
-		if (this.DepartmentOfScience.CanTradeResourcesAndBoosters(false))
+		bool flag = base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated);
+		if (this.DepartmentOfScience.CanTradeResourcesAndBoosters(false) || flag)
 		{
 			this.FiltersContainer.EnableCategoryFilter("Strategic", true, string.Empty);
 			this.FiltersContainer.EnableCategoryFilter("Luxury", true, string.Empty);
@@ -560,7 +561,7 @@ public class BuyablePanel : GuiPlayerControllerPanel
 			this.FiltersContainer.EnableCategoryFilter("Luxury", false, tooltipIfDisabled);
 			this.FiltersContainer.EnableCategoryFilter("Booster", false, tooltipIfDisabled);
 		}
-		if (this.DepartmentOfScience.CanTradeUnits(false))
+		if (this.DepartmentOfScience.CanTradeUnits(false) || flag)
 		{
 			this.FiltersContainer.EnableCategoryFilter("Unit", true, string.Empty);
 		}
@@ -575,21 +576,19 @@ public class BuyablePanel : GuiPlayerControllerPanel
 			}
 			this.FiltersContainer.EnableCategoryFilter("Unit", false, tooltipIfDisabled2);
 		}
-		if (this.DepartmentOfScience.CanTradeHeroes(false))
+		if (this.DepartmentOfScience.CanTradeHeroes(false) || flag)
 		{
 			this.FiltersContainer.EnableCategoryFilter("Hero", true, string.Empty);
+			return;
 		}
-		else
+		string tooltipIfDisabled3 = string.Empty;
+		GuiElement guiElement3;
+		if (base.GuiService.GuiPanelHelper.TryGetGuiElement("TechnologyDefinitionMarketplaceMercenaries", out guiElement3))
 		{
-			string tooltipIfDisabled3 = string.Empty;
-			GuiElement guiElement3;
-			if (base.GuiService.GuiPanelHelper.TryGetGuiElement("TechnologyDefinitionMarketplaceMercenaries", out guiElement3))
-			{
-				string arg3 = AgeLocalizer.Instance.LocalizeString(guiElement3.Title);
-				tooltipIfDisabled3 = string.Format(AgeLocalizer.Instance.LocalizeString("%MarketplaceFilterLockedDescription"), arg3);
-			}
-			this.FiltersContainer.EnableCategoryFilter("Hero", false, tooltipIfDisabled3);
+			string arg3 = AgeLocalizer.Instance.LocalizeString(guiElement3.Title);
+			tooltipIfDisabled3 = string.Format(AgeLocalizer.Instance.LocalizeString("%MarketplaceFilterLockedDescription"), arg3);
 		}
+		this.FiltersContainer.EnableCategoryFilter("Hero", false, tooltipIfDisabled3);
 	}
 
 	private string GetFormattedPrice(Tradable tradable, int quantity)

@@ -7,8 +7,7 @@ public abstract class FactionRandomizer
 {
 	public FactionRandomizer(Session session)
 	{
-		IDatabase<Faction> database = Databases.GetDatabase<Faction>(true);
-		List<Faction> list = (from faction in database
+		List<Faction> list = (from faction in Databases.GetDatabase<Faction>(true)
 		where faction.IsStandard && !faction.IsHidden && !faction.HasToBeRandomized
 		select faction).ToList<Faction>();
 		IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
@@ -23,7 +22,7 @@ public abstract class FactionRandomizer
 			for (int i = list.Count - 1; i >= 0; i--)
 			{
 				Faction faction2 = list[i];
-				if (Faction.IsOptionDefinitionConstrained(faction2, session))
+				if (Faction.IsOptionDefinitionConstrained(faction2, session) || faction2.Name == "FactionELCPSpectator")
 				{
 					list.RemoveAt(i);
 				}

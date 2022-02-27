@@ -248,21 +248,73 @@ namespace Amplitude.Unity.Framework
 
 		internal bool LoadFile(string path, XmlAttributeOverride[] overrides = null, XmlExtraType[] extraTypes = null)
 		{
-			this.Overrides = overrides;
-			this.ExtraTypes = extraTypes;
-			int num = Databases.CurrentRevision + 1;
-			Datatable<T> datatable = null;
-			for (int i = 0; i < this.datatables.Count; i++)
+			if (this.Overrides == null)
 			{
-				if (this.datatables[i].Revision == num)
+				this.Overrides = overrides;
+			}
+			else
+			{
+				int num = 0;
+				foreach (XmlAttributeOverride xmlAttributeOverride in this.Overrides)
 				{
-					datatable = this.datatables[i];
+					if (xmlAttributeOverride.ExtraTypes != null)
+					{
+						num += xmlAttributeOverride.ExtraTypes.Length;
+					}
+				}
+				int num2 = 0;
+				if (overrides != null)
+				{
+					foreach (XmlAttributeOverride xmlAttributeOverride2 in overrides)
+					{
+						if (xmlAttributeOverride2.ExtraTypes != null)
+						{
+							num2 += xmlAttributeOverride2.ExtraTypes.Length;
+						}
+					}
+				}
+				if (num > num2)
+				{
+					overrides = this.Overrides;
+				}
+				else
+				{
+					this.Overrides = overrides;
+				}
+			}
+			if (this.ExtraTypes == null)
+			{
+				this.ExtraTypes = extraTypes;
+			}
+			else
+			{
+				int num3 = 0;
+				if (extraTypes != null)
+				{
+					num3 += extraTypes.Length;
+				}
+				if (this.ExtraTypes.Length > num3)
+				{
+					extraTypes = this.ExtraTypes;
+				}
+				else
+				{
+					this.ExtraTypes = extraTypes;
+				}
+			}
+			int num4 = Databases.CurrentRevision + 1;
+			Datatable<T> datatable = null;
+			for (int j = 0; j < this.datatables.Count; j++)
+			{
+				if (this.datatables[j].Revision == num4)
+				{
+					datatable = this.datatables[j];
 					break;
 				}
 			}
 			if (datatable == null)
 			{
-				datatable = new Datatable<T>(num);
+				datatable = new Datatable<T>(num4);
 				this.datatables.Add(datatable);
 			}
 			return datatable.LoadFromFile(path, overrides, extraTypes);

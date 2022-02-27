@@ -13,6 +13,7 @@ public class OrderQueueResearch : global::Order
 		}
 		this.ConstructionGameEntityGUID = GameEntityGUID.Zero;
 		this.ConstructibleElementName = constructibleElement.Name;
+		this.InsertAtFirstPlace = false;
 	}
 
 	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
@@ -44,23 +45,22 @@ public class OrderQueueResearch : global::Order
 			throw new ArgumentNullException("writer");
 		}
 		base.Pack(writer);
+		writer.Write(this.InsertAtFirstPlace);
 		Diagnostics.Assert(!StaticString.IsNullOrEmpty(this.ConstructibleElementName));
 		writer.Write(this.ConstructionGameEntityGUID);
 		writer.Write(this.ConstructibleElementName);
 		if (this.ResourceStocks == null)
 		{
 			writer.Write(0);
+			return;
 		}
-		else
+		writer.Write(this.ResourceStocks.Length);
+		for (int i = 0; i < this.ResourceStocks.Length; i++)
 		{
-			writer.Write(this.ResourceStocks.Length);
-			for (int i = 0; i < this.ResourceStocks.Length; i++)
-			{
-				Diagnostics.Assert(this.ResourceStocks[i] != null);
-				Diagnostics.Assert(!StaticString.IsNullOrEmpty(this.ResourceStocks[i].PropertyName));
-				writer.Write(this.ResourceStocks[i].PropertyName);
-				writer.Write(this.ResourceStocks[i].Stock);
-			}
+			Diagnostics.Assert(this.ResourceStocks[i] != null);
+			Diagnostics.Assert(!StaticString.IsNullOrEmpty(this.ResourceStocks[i].PropertyName));
+			writer.Write(this.ResourceStocks[i].PropertyName);
+			writer.Write(this.ResourceStocks[i].Stock);
 		}
 	}
 
@@ -71,6 +71,7 @@ public class OrderQueueResearch : global::Order
 			throw new ArgumentNullException("reader");
 		}
 		base.Unpack(reader);
+		this.InsertAtFirstPlace = reader.ReadBoolean();
 		this.ConstructionGameEntityGUID = reader.ReadUInt64();
 		this.ConstructibleElementName = reader.ReadString();
 		int num = reader.ReadInt32();
@@ -83,6 +84,20 @@ public class OrderQueueResearch : global::Order
 			};
 		}
 	}
+
+	public OrderQueueResearch(int empireIndex, DepartmentOfScience.ConstructibleElement constructibleElement, bool Insert = false) : base(empireIndex)
+	{
+		if (constructibleElement == null)
+		{
+			throw new ArgumentNullException("constructibleElement");
+		}
+		this.ConstructionGameEntityGUID = GameEntityGUID.Zero;
+		this.ConstructibleElementName = constructibleElement.Name;
+		this.InsertAtFirstPlace = Insert;
+	}
+
+	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
+	public bool InsertAtFirstPlace { get; set; }
 
 	public static readonly StaticString AuthenticationPath = "DepartmentOfScience/OrderQueueResearch";
 }

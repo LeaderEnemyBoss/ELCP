@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using Amplitude.Unity.Framework;
 using UnityEngine;
 
@@ -78,7 +79,8 @@ namespace Amplitude.Unity.Runtime
 			base.SetLastError(0, "Loading the default module databases...");
 			if (this.DefaultModuleFiles != null)
 			{
-				for (int index = 0; index < this.DefaultModuleFiles.Length; index++)
+				int num;
+				for (int index = 0; index < this.DefaultModuleFiles.Length; index = num + 1)
 				{
 					TextAsset textAsset = this.DefaultModuleFiles[index];
 					if (textAsset != null && !Databases.LoadDatabase<RuntimeModule>(textAsset, null, null))
@@ -86,7 +88,34 @@ namespace Amplitude.Unity.Runtime
 						base.SetLastError(1, string.Format("Error while loading the module asset file '{0}'.", textAsset.name));
 					}
 					yield return null;
+					num = index;
 				}
+			}
+			string text = System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, "Public//ELCP"), "Endless Legend.xml");
+			if (!new FileInfo(text).Exists)
+			{
+				text = System.IO.Path.Combine(System.IO.Path.Combine(Environment.CurrentDirectory, "EndlessLegend.app//Contents//Public//ELCP"), "Endless Legend.xml");
+			}
+			if (!new FileInfo(text).Exists)
+			{
+				Diagnostics.LogWarning("File Not Found: custom ELCP module override file, expected at '{0}'.", new object[]
+				{
+					text
+				});
+				base.SetLastError(1, string.Format("File Not Found: custom ELCP module override file, expected at '{0}'.", text));
+				yield break;
+			}
+			if (!Databases.LoadDatabase<RuntimeModule>(text, null, null))
+			{
+				Diagnostics.LogWarning("Error while loading the custom ELCP override module file '{0}'.", new object[]
+				{
+					text
+				});
+				base.SetLastError(1, string.Format("Error while loading the custom ELCP override module file '{0}'.", text));
+			}
+			else
+			{
+				Diagnostics.Log("ELCP: Successfully loaded custom ELCP module override file");
 			}
 			yield break;
 		}

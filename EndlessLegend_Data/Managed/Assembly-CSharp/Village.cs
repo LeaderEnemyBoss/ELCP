@@ -7,7 +7,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-public class Village : MinorEmpireGarrison, Amplitude.Xml.Serialization.IXmlSerializable, IGarrison, IGarrisonWithPosition, IGameEntity, IGameEntityWithWorldPosition, IWorldPositionable, ICategoryProvider
+public class Village : MinorEmpireGarrison, Amplitude.Xml.Serialization.IXmlSerializable, IGarrison, IGameEntity, IGarrisonWithPosition, IGameEntityWithWorldPosition, IWorldPositionable, ICategoryProvider
 {
 	public Village(GameEntityGUID guid) : base("Village#" + guid.ToString(), guid)
 	{
@@ -86,11 +86,36 @@ public class Village : MinorEmpireGarrison, Amplitude.Xml.Serialization.IXmlSeri
 			if (this.HasBeenConvertedBy != null)
 			{
 				this.HasBeenConvertedByIndex = this.HasBeenConvertedBy.Index;
+				if (ELCPUtilities.SpectatorMode && this.PointOfInterest != null)
+				{
+					IGameService service = Services.GetService<IGameService>();
+					if (service.Game != null)
+					{
+						global::Empire[] empires = (service.Game as global::Game).Empires;
+						for (int i = 0; i < empires.Length; i++)
+						{
+							MajorEmpire majorEmpire = empires[i] as MajorEmpire;
+							if (majorEmpire == null)
+							{
+								return;
+							}
+							if (majorEmpire.Index != this.Converter.Index && majorEmpire.ELCPIsEliminated)
+							{
+								this.PointOfInterest.InfiltrationBits |= 1 << majorEmpire.Index;
+							}
+						}
+					}
+					return;
+				}
 			}
 			else
 			{
 				this.HasBeenConvertedByIndex = -1;
-				foreach (Unit simulationObjectWrapper in this.Units)
+				if (ELCPUtilities.SpectatorMode && this.PointOfInterest != null)
+				{
+					this.PointOfInterest.InfiltrationBits = 0;
+				}
+				foreach (Unit simulationObjectWrapper in base.Units)
 				{
 					base.RemoveChild(simulationObjectWrapper);
 				}

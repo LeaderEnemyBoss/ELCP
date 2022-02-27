@@ -244,8 +244,11 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			if (base.Context.OceanicResourceCounts.ContainsKey(poiTemplate.GetPropertyValue("ResourceName")))
 			{
 				int num2 = base.Context.OceanicResourceCounts[poiTemplate.GetPropertyValue("ResourceName")];
-				base.Trace(string.Format("removing {0} sites already moved to oceans", num2));
-				num -= num2;
+				if (!base.Context.Settings.XephiStrategic)
+				{
+					base.Trace(string.Format("removing {0} sites already moved to oceans", num2));
+					num -= num2;
+				}
 			}
 			if (num < 1)
 			{
@@ -372,7 +375,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 
 		private int Sensitivity_EmpireCount;
 
-		private InfluenceMap Influence;
+		public static InfluenceMap Influence;
 
 		private List<Rule> ApplicableRules;
 
@@ -380,7 +383,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 
 		private Dictionary<string, Dictionary<int, int>> MaxSites;
 
-		private Dictionary<string, Dictionary<int, int>> CreatedSites;
+		public static Dictionary<string, Dictionary<int, int>> CreatedSites;
 
 		private Dictionary<string, int> ExtraneousSiteCount;
 	}

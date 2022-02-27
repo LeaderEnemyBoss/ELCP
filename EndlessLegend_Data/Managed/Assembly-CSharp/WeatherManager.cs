@@ -630,6 +630,15 @@ public class WeatherManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSer
 		DroppableInteger droppableInteger = droplist.Pick(null, out droplist3, new object[0]) as DroppableInteger;
 		DroppableInteger droppableInteger2 = droplist2.Pick(null, out droplist3, new object[0]) as DroppableInteger;
 		WorldOrientation worldOrientation = (WorldOrientation)this.Wind.Direction;
+		if (worldOrientation > WorldOrientation.SouthEast || worldOrientation < WorldOrientation.East)
+		{
+			Diagnostics.LogError("ELCP [Server]: Wind orientation {0} at turn {1} is invalid for some reason! Resetting to WorldOrientation.East", new object[]
+			{
+				worldOrientation,
+				this.game.Turn
+			});
+			worldOrientation = WorldOrientation.East;
+		}
 		worldOrientation = worldOrientation.Rotate(droppableInteger.Value);
 		return new Wind((int)worldOrientation, droppableInteger2.Value);
 	}
@@ -691,6 +700,33 @@ public class WeatherManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSer
 	{
 		this.UpdateWeatherOnArmies(false);
 		WorldOrientation worldOrientation = (WorldOrientation)this.Wind.Direction;
+		if (worldOrientation > WorldOrientation.SouthEast || worldOrientation < WorldOrientation.East)
+		{
+			Diagnostics.LogError("ELCP [Client]: Wind orientation {0} at turn {1} is invalid for some reason! Resetting to WorldOrientation.East", new object[]
+			{
+				worldOrientation,
+				this.game.Turn
+			});
+			worldOrientation = WorldOrientation.East;
+		}
+		if (this.Wind.Strength < 0)
+		{
+			Diagnostics.LogError("ELCP [Client]: Wind Strength {0} at turn {1} is invalid for some reason! Resetting to 0", new object[]
+			{
+				this.Wind.Strength,
+				this.game.Turn
+			});
+			this.Wind = new Wind((int)worldOrientation, 0);
+		}
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			Diagnostics.Log("ELCP: Applying new Wind {0} {1} at turn {2}", new object[]
+			{
+				worldOrientation,
+				this.Wind.Strength,
+				this.game.Turn
+			});
+		}
 		worldOrientation = worldOrientation.Rotate(3);
 		GridMap<byte> gridMap = new GridMap<byte>(string.Empty, this.weatherMap.Width, this.weatherMap.Height, null);
 		WorldPosition invalid = WorldPosition.Invalid;

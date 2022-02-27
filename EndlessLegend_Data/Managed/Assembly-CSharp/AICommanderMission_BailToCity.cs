@@ -90,7 +90,7 @@ public class AICommanderMission_BailToCity : AICommanderMissionWithRequestArmy
 			}
 			return false;
 		}
-		if (base.AIDataArmyGUID.IsValid && this.TargetCity != null && this.TargetCity.Empire.Index == base.Commander.Empire.Index && this.aiDataRepository.GetAIData<AIData_City>(this.TargetCity.GUID) != null)
+		if (base.AIDataArmyGUID.IsValid && this.TargetCity != null && this.TargetCity.Empire == base.Commander.Empire && this.aiDataRepository.GetAIData<AIData_City>(this.TargetCity.GUID) != null)
 		{
 			AIData_Army aidata = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID);
 			if (aidata != null)
@@ -106,7 +106,7 @@ public class AICommanderMission_BailToCity : AICommanderMissionWithRequestArmy
 					GameEntityGUID[] array = new GameEntityGUID[1];
 					for (int i = 0; i < aidata.Army.StandardUnits.Count; i++)
 					{
-						if (aidata.Army.StandardUnits[i].CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) && aidata.Army.StandardUnits[i].GetPropertyValue(SimulationProperties.Movement) > 0f)
+						if (aidata.Army.StandardUnits[i].IsSettler && aidata.Army.StandardUnits[i].GetPropertyValue(SimulationProperties.Movement) > 0f)
 						{
 							array[0] = aidata.Army.StandardUnits[i].GUID;
 							break;
@@ -122,6 +122,24 @@ public class AICommanderMission_BailToCity : AICommanderMissionWithRequestArmy
 				}
 				return base.TryCreateArmyMission("ReachTarget", list);
 			}
+		}
+		Diagnostics.Assert(AIScheduler.Services != null);
+		IIntelligenceAIHelper service = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
+		Diagnostics.Assert(service != null);
+		List<Region> list2 = new List<Region>();
+		if (service.TryGetListOfRegionToExplore(base.Commander.Empire, 0.95f, ref list2))
+		{
+			foreach (Region region in list2)
+			{
+				if (AILayer_Exploration.IsRegionValidForExploration(base.Commander.Empire, region))
+				{
+					return base.TryCreateArmyMission("ExploreAt", new List<object>
+					{
+						region.Index
+					});
+				}
+			}
+			return false;
 		}
 		return false;
 	}

@@ -1975,7 +1975,7 @@
         <!--Step 1-->
         <Action_UpdateStep StepName="SideQuestNavalTalk#0020-Step1" State="InProgress"/>
         <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
-        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+        <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset" ScaleWithGameSpeed="true"/>
         <Decorator_BeginTurn Initiator="Empire">
           <ConditionCheck_Prerequisite>
             <Prerequisites Target="$Empire">
@@ -1990,7 +1990,7 @@
 
       <!--Fail Condition 1-->
       <Controller_Sequence>
-        <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+        <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true"/>
         <Action_UpdateQuest State="Failed"/>
       </Controller_Sequence>
 
@@ -2689,7 +2689,8 @@
       <Var VarName="$RegionCity">
         <From Source="$PlayerRegionNearFortress.$City">
           <Where>
-            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityApproval) ge 60</InterpreterPrerequisite>
+		    <PathPrerequisite Flags="Prerequisite">ClassCity,!CityStatusInfected</PathPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityApproval) ge 40</InterpreterPrerequisite>
             <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassCity:NetCityApproval) le 85</InterpreterPrerequisite>
           </Where>
         </From>
@@ -2823,7 +2824,7 @@
 
         <Controller_Sequence>
           <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
-          <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+          <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete" ScaleWithGameSpeed="true"/>
           <Decorator_BeginTurn Initiator="Empire">
             <ConditionCheck_Prerequisite>
               <Prerequisites Target="$Empire">
@@ -2838,7 +2839,7 @@
 
         <!--Fail Condition 1-->
         <Controller_Sequence>
-          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire">
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire" ScaleWithGameSpeed="true">
             <ConditionCheck_Prerequisite>
               <Prerequisites Target="$Empire">
                 <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) eq 0</InterpreterPrerequisite>

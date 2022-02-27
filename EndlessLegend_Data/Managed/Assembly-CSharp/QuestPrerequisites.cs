@@ -8,13 +8,13 @@ public class QuestPrerequisites
 	[XmlIgnore]
 	public StaticString Target { get; set; }
 
-	[XmlElement(Type = typeof(InterpreterPrerequisite), ElementName = "InterpreterPrerequisite")]
+	[XmlElement(Type = typeof(DownloadableContentPrerequisite), ElementName = "DownloadableContentPrerequisite")]
 	[XmlElement(Type = typeof(TechnologyPrerequisite), ElementName = "TechnologyPrerequisite")]
+	[XmlElement(Type = typeof(QuestStatePrerequisite), ElementName = "QuestStatePrerequisite")]
+	[XmlElement(Type = typeof(PathPrerequisite), ElementName = "PathPrerequisite")]
+	[XmlElement(Type = typeof(InterpreterPrerequisite), ElementName = "InterpreterPrerequisite")]
 	[XmlElement(Type = typeof(AchievementPrerequisite), ElementName = "AchievementPrerequisite")]
 	[XmlElement(Type = typeof(GlobalEventPrerequisite), ElementName = "GlobalEventPrerequisite")]
-	[XmlElement(Type = typeof(PathPrerequisite), ElementName = "PathPrerequisite")]
-	[XmlElement(Type = typeof(QuestStatePrerequisite), ElementName = "QuestStatePrerequisite")]
-	[XmlElement(Type = typeof(DownloadableContentPrerequisite), ElementName = "DownloadableContentPrerequisite")]
 	public Prerequisite[] Prerequisites { get; set; }
 
 	[XmlAttribute("Target")]
@@ -35,4 +35,9 @@ public class QuestPrerequisites
 
 	[XmlAttribute("AnyPrerequisite")]
 	public bool AnyPrerequisite { get; set; }
+
+	public virtual object Clone()
+	{
+		return base.MemberwiseClone();
+	}
 }

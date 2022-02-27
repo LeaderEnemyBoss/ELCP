@@ -12,7 +12,7 @@
 
         <InfluencesReceived>
 
-            <SimulationInfluence Path="ResourceEvaluationAmas/CityAgentGroup" OriginAgentReference="NetCityResearch" Value="-40">
+            <SimulationInfluence Path="ResourceEvaluationAmas/CityAgentGroup" OriginAgentReference="NetCityResearch" Value="-50">
                 <OriginPrerequisites>
                     <PathPrerequisite Inverted="true">ClassCity,EnableAIOnPlayerCity</PathPrerequisite>
                 </OriginPrerequisites>
@@ -31,7 +31,7 @@
 
         <InfluencesReceived>
 
-            <ConstantInfluence Path="ResourceEvaluationAmas" OriginAgentReference="NetEmpireMoney" Value="80" />
+            <ConstantInfluence Path="ResourceEvaluationAmas" OriginAgentReference="NetEmpireMoney" Value="60" />
 
         </InfluencesReceived>
     </SimulationAgent>
@@ -181,8 +181,8 @@
         <ValueMin>-1</ValueMin>
         <ValueMax>1</ValueMax>
 
-        <!--<IdealNumberOfTurnToReachNextPopulation>(3 + ($Property(ClassCity:Population) * 1.8)) * (1+ ($Count(../ClassEmpire,#Winter) * 4) ) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>-->
-        <IdealNumberOfTurnToReachNextPopulation>(5 + ($Property(ClassCity:Population) * $Property(ClassCity:Population) * $Property(ClassCity:Population))) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>
+        <!--<IdealNumberOfTurnToReachNextPopulation>(5 + ($Property(ClassCity:Population) * $Property(ClassCity:Population) * $Property(ClassCity:Population))) * $Property(../ClassEmpire:GameSpeedMultiplier)</IdealNumberOfTurnToReachNextPopulation>-->
+		<IdealNumberOfTurnToReachNextPopulation>((4 max (4 + ($Property(ClassCity:Population) * (1 + (1 min ($Property(ClassEmpire:WarCount))))) - ($Property(../EmpireTypeMajor:CurrentTurn) / 20 ))) * $Property(../ClassEmpire:GameSpeedMultiplier)) * (1 - (0.7 * $Count(../ClassEmpire,FactionTraitMimics6)))</IdealNumberOfTurnToReachNextPopulation>
 
         <CurveReference Name="PopulationReferenceTurnCount_Default" />
 
