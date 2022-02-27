@@ -23,36 +23,50 @@ public class OrderEditHeroUnitDesign : OrderEditUnitDesign
 	public override void Pack(BinaryWriter writer)
 	{
 		base.Pack(writer);
+		writer.Write(this.ForceEdit);
 		if (this.RetrofitCosts == null)
 		{
 			writer.Write(0);
+			return;
 		}
-		else
+		writer.Write(this.RetrofitCosts.Length);
+		for (int i = 0; i < this.RetrofitCosts.Length; i++)
 		{
-			writer.Write(this.RetrofitCosts.Length);
-			for (int i = 0; i < this.RetrofitCosts.Length; i++)
-			{
-				IConstructionCost constructionCost = this.RetrofitCosts[i];
-				writer.Write(constructionCost.GetType().FullName);
-				constructionCost.Serialize(writer);
-			}
+			IConstructionCost constructionCost = this.RetrofitCosts[i];
+			writer.Write(constructionCost.GetType().FullName);
+			constructionCost.Serialize(writer);
 		}
 	}
 
 	public override void Unpack(BinaryReader reader)
 	{
 		base.Unpack(reader);
+		this.ForceEdit = reader.ReadBoolean();
 		int num = reader.ReadInt32();
 		this.RetrofitCosts = new IConstructionCost[num];
 		for (int i = 0; i < this.RetrofitCosts.Length; i++)
 		{
-			string typeName = reader.ReadString();
-			Type type = Type.GetType(typeName);
+			Type type = Type.GetType(reader.ReadString());
 			this.RetrofitCosts[i] = (Activator.CreateInstance(type) as IConstructionCost);
 			Diagnostics.Assert(this.RetrofitCosts[i] != null);
 			this.RetrofitCosts[i].Deserialize(reader);
 		}
 	}
 
+	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByServer)]
+	public bool ForceEdit
+	{
+		get
+		{
+			return this.forceEdit;
+		}
+		set
+		{
+			this.forceEdit = value;
+		}
+	}
+
 	public new static StaticString AuthenticationPath = "DepartmentOfDefense/OrderEditHeroUnitDesign";
+
+	private bool forceEdit;
 }

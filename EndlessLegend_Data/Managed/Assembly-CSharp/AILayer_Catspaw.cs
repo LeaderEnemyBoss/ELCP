@@ -22,7 +22,7 @@ public class AILayer_Catspaw : AILayer
 
 	private void GenerateDenyCitySiege()
 	{
-		AILayer_Catspaw.<GenerateDenyCitySiege>c__AnonStorey7E9 <GenerateDenyCitySiege>c__AnonStorey7E = new AILayer_Catspaw.<GenerateDenyCitySiege>c__AnonStorey7E9();
+		AILayer_Catspaw.<GenerateDenyCitySiege>c__AnonStorey7E5 <GenerateDenyCitySiege>c__AnonStorey7E = new AILayer_Catspaw.<GenerateDenyCitySiege>c__AnonStorey7E5();
 		<GenerateDenyCitySiege>c__AnonStorey7E.interior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		int index;
 		for (index = 0; index < <GenerateDenyCitySiege>c__AnonStorey7E.interior.Cities.Count; index++)
@@ -45,18 +45,18 @@ public class AILayer_Catspaw : AILayer
 
 	private void GenerateDenySettlerAttack()
 	{
-		AILayer_Catspaw.<GenerateDenySettlerAttack>c__AnonStorey7EB <GenerateDenySettlerAttack>c__AnonStorey7EB = new AILayer_Catspaw.<GenerateDenySettlerAttack>c__AnonStorey7EB();
-		<GenerateDenySettlerAttack>c__AnonStorey7EB.defense = base.AIEntity.Empire.GetAgency<DepartmentOfDefense>();
 		int index;
-		for (index = 0; index < <GenerateDenySettlerAttack>c__AnonStorey7EB.defense.Armies.Count; index++)
+		int index2;
+		for (index = 0; index < this.departmentOfDefense.Armies.Count; index = index2 + 1)
 		{
-			if (<GenerateDenySettlerAttack>c__AnonStorey7EB.defense.Armies[index].IsSettler && this.FindTask<CatspawTask_DenySettlerAttack>((CatspawTask_DenySettlerAttack match) => match.TargetGuid == <GenerateDenySettlerAttack>c__AnonStorey7EB.defense.Armies[index].GUID) == null)
+			if (this.departmentOfDefense.Armies[index].IsSettler && this.FindTask<CatspawTask_DenySettlerAttack>((CatspawTask_DenySettlerAttack match) => match.TargetGuid == this.departmentOfDefense.Armies[index].GUID) == null)
 			{
 				CatspawTask_DenySettlerAttack catspawTask_DenySettlerAttack = new CatspawTask_DenySettlerAttack();
 				catspawTask_DenySettlerAttack.Owner = base.AIEntity.Empire;
-				catspawTask_DenySettlerAttack.SettlerArmy = <GenerateDenySettlerAttack>c__AnonStorey7EB.defense.Armies[index];
+				catspawTask_DenySettlerAttack.SettlerArmy = this.departmentOfDefense.Armies[index];
 				this.catspawTasks.Add(catspawTask_DenySettlerAttack);
 			}
+			index2 = index;
 		}
 	}
 
@@ -243,35 +243,32 @@ public class AILayer_Catspaw : AILayer
 	{
 		for (int i = 0; i < this.game.Empires.Length; i++)
 		{
-			if (!(this.game.Empires[i] is MajorEmpire))
+			if (!(this.game.Empires[i] is MajorEmpire) && !(this.game.Empires[i] is LesserEmpire))
 			{
-				if (!(this.game.Empires[i] is LesserEmpire))
+				DepartmentOfDefense agency = this.game.Empires[i].GetAgency<DepartmentOfDefense>();
+				for (int j = 0; j < agency.Armies.Count; j++)
 				{
-					DepartmentOfDefense agency = this.game.Empires[i].GetAgency<DepartmentOfDefense>();
-					for (int j = 0; j < agency.Armies.Count; j++)
+					Army minorArmy = agency.Armies[j];
+					if (this.visibilityService.IsWorldPositionVisibleFor(minorArmy.WorldPosition, base.AIEntity.Empire) && !(minorArmy is KaijuArmy))
 					{
-						Army minorArmy = agency.Armies[j];
-						if (this.visibilityService.IsWorldPositionVisibleFor(minorArmy.WorldPosition, base.AIEntity.Empire))
+						float allowedTurn = 1f;
+						CatspawTask catspawTask = this.FindBestTaskFor(minorArmy, allowedTurn);
+						if (catspawTask != null)
 						{
-							float allowedTurn = 1f;
-							CatspawTask catspawTask = this.FindBestTaskFor(minorArmy, allowedTurn);
-							if (catspawTask != null)
+							CatspawRequest catspawRequest = this.catspawRequests.Find((CatspawRequest match) => match.ArmyGuid == minorArmy.GUID);
+							if (catspawRequest == null)
 							{
-								CatspawRequest catspawRequest = this.catspawRequests.Find((CatspawRequest match) => match.ArmyGuid == minorArmy.GUID);
-								if (catspawRequest == null)
-								{
-									catspawRequest = new CatspawRequest();
-									catspawRequest.ArmyGuid = minorArmy.GUID;
-									base.AIEntity.AIPlayer.Blackboard.AddMessage(catspawRequest);
-									this.catspawRequests.Add(catspawRequest);
-								}
-								HeuristicValue heuristicValue = new HeuristicValue(0f);
-								heuristicValue.Add(catspawTask.GetLocalPriority(), "Task local priority", new object[0]);
-								catspawRequest.SetInterest(this.GlobalPriority, heuristicValue);
-								catspawRequest.TimeOut = 1;
-								float catspawCost = this.GetCatspawCost(minorArmy);
-								catspawRequest.UpdateBuyEvaluation("CatspawArmy", 0UL, catspawCost, (int)BuyEvaluation.MaxTurnGain, 0f, 0UL);
+								catspawRequest = new CatspawRequest();
+								catspawRequest.ArmyGuid = minorArmy.GUID;
+								base.AIEntity.AIPlayer.Blackboard.AddMessage(catspawRequest);
+								this.catspawRequests.Add(catspawRequest);
 							}
+							HeuristicValue heuristicValue = new HeuristicValue(0f);
+							heuristicValue.Add(catspawTask.GetLocalPriority(), "Task local priority", new object[0]);
+							catspawRequest.SetInterest(this.GlobalPriority, heuristicValue);
+							catspawRequest.TimeOut = 1;
+							float catspawCost = this.GetCatspawCost(minorArmy);
+							catspawRequest.UpdateBuyEvaluation("CatspawArmy", 0UL, catspawCost, (int)BuyEvaluation.MaxTurnGain, 0f, 0UL);
 						}
 					}
 				}
@@ -384,15 +381,31 @@ public class AILayer_Catspaw : AILayer
 			}
 		}
 		int index;
-		for (index = 0; index < this.departmentOfDefense.Armies.Count; index++)
+		Predicate<CatspawArmy> <>9__0;
+		int index2;
+		for (index = 0; index < this.departmentOfDefense.Armies.Count; index = index2 + 1)
 		{
 			if (this.departmentOfDefense.Armies[index].HasCatspaw)
 			{
-				if (!this.catspawArmies.Exists((CatspawArmy match) => match.Garrison == this.departmentOfDefense.Armies[index]))
+				List<CatspawArmy> list = this.catspawArmies;
+				Predicate<CatspawArmy> match2;
+				if ((match2 = <>9__0) == null)
+				{
+					match2 = (<>9__0 = ((CatspawArmy match) => match.Garrison == this.departmentOfDefense.Armies[index]));
+				}
+				CatspawArmy catspawArmy = list.Find(match2);
+				if (catspawArmy == null)
 				{
 					this.CreateCatspawArmy(this.departmentOfDefense.Armies[index]);
 				}
+				else
+				{
+					catspawArmy.IsActive = this.IsActive();
+					catspawArmy.BehaviorState = ArmyWithTask.ArmyBehaviorState.NeedRun;
+					catspawArmy.State = TickableState.NeedTick;
+				}
 			}
+			index2 = index;
 		}
 	}
 
@@ -431,7 +444,6 @@ public class AILayer_Catspaw : AILayer
 		catspawArmy.BehaviorState = ArmyWithTask.ArmyBehaviorState.NeedRun;
 		catspawArmy.State = TickableState.NeedTick;
 		this.catspawArmies.Add(catspawArmy);
-		this.UpdateCatspawArmyPolicyRelease();
 	}
 
 	private CatspawTask FindBestTaskFor(Army minorArmy, float allowedTurn)

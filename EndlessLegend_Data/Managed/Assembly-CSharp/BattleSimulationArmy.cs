@@ -260,6 +260,11 @@ public class BattleSimulationArmy : SimulationObjectWrapper
 			int num = BattleSimulation.UnitStateNextID++;
 			BattleArmyAction battleArmyAction = this.WaitingArmyActions[i];
 			ContenderActionInstruction contenderActionInstruction = battleArmyAction.BuildContenderActionInstruction(this.ContenderGUID, num, battleSimulationUnit.UnitGUID);
+			WorldOrientation orientation = this.Contender.WorldOrientation;
+			if (contenderActionInstruction is ContenderActionSpellInstruction)
+			{
+				orientation = this.Contender.Deployment.DeploymentArea.Forward;
+			}
 			if (contenderActionInstruction != null)
 			{
 				contenderActionInstruction.AddEffectPosition(battleArmyAction.TargetPosition);
@@ -275,8 +280,7 @@ public class BattleSimulationArmy : SimulationObjectWrapper
 						BattleEffects battleEffects = battleAction.BattleEffects[k];
 						if (battleEffects is BattleEffectsArea)
 						{
-							BattleEffectsArea battleEffectsArea = battleEffects as BattleEffectsArea;
-							IPathfindingArea area = battleEffectsArea.GetArea(battleArmyAction.TargetPosition, this.Contender.WorldOrientation, null, battleSimulation.WorldParameters, battleSimulation.BattleZone, battleSimulationUnit);
+							IPathfindingArea area = (battleEffects as BattleEffectsArea).GetArea(battleArmyAction.TargetPosition, orientation, null, battleSimulation.WorldParameters, battleSimulation.BattleZone, battleSimulationUnit);
 							if (area != null)
 							{
 								WorldPosition[] worldPositions = area.GetWorldPositions(battleSimulation.WorldParameters);
@@ -287,10 +291,10 @@ public class BattleSimulationArmy : SimulationObjectWrapper
 							}
 						}
 					}
-					WorldOrientation orientation = battleSimulationUnit.Orientation;
-					battleSimulationUnit.Orientation = this.Contender.WorldOrientation;
-					battleSimulation.BattleActionController.ExecuteBattleAction(battleAction, battleAction.BattleEffects, battleSimulationUnit, currentTargets, true, list);
+					WorldOrientation orientation2 = battleSimulationUnit.Orientation;
 					battleSimulationUnit.Orientation = orientation;
+					battleSimulation.BattleActionController.ExecuteBattleAction(battleAction, battleAction.BattleEffects, battleSimulationUnit, currentTargets, true, list);
+					battleSimulationUnit.Orientation = orientation2;
 					battleSimulation.CheckUnitsDeath(num);
 				}
 				for (int l = 0; l < list.Count; l++)

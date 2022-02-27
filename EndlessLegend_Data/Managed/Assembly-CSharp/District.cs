@@ -9,7 +9,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-public class District : SimulationObjectWrapper, IXmlSerializable, ILineOfSightEntity, IGameEntity, IGameEntityWithLineOfSight, IGameEntityWithWorldPosition, IWorldPositionable, ICategoryProvider, IPropertyEffectFeatureProvider
+public class District : SimulationObjectWrapper, IXmlSerializable, ILineOfSightEntity, IWorldPositionable, IGameEntity, IGameEntityWithLineOfSight, IGameEntityWithWorldPosition, ICategoryProvider, IPropertyEffectFeatureProvider
 {
 	public District(GameEntityGUID guid) : base("District#" + guid)
 	{
@@ -205,23 +205,22 @@ public class District : SimulationObjectWrapper, IXmlSerializable, ILineOfSightE
 		{
 			return;
 		}
-		IGameService service = Services.GetService<IGameService>();
-		IWorldPositionningService service2 = ((global::Game)service.Game).GetService<IWorldPositionningService>();
+		IWorldPositionningService service = ((global::Game)Services.GetService<IGameService>().Game).GetService<IWorldPositionningService>();
 		DepartmentOfTheInterior.RemoveAnyTerrainTypeDescriptor(base.SimulationObject);
-		byte terrainType = service2.GetTerrainType(this.WorldPosition);
-		StaticString terrainTypeMappingName = service2.GetTerrainTypeMappingName(terrainType);
-		DepartmentOfTheInterior.ApplyTerrainTypeDescriptor(base.SimulationObject, terrainTypeMappingName);
 		DepartmentOfTheInterior.RemoveAnyBiomeTypeDescriptor(base.SimulationObject);
-		byte biomeType = service2.GetBiomeType(this.WorldPosition);
-		StaticString biomeTypeMappingName = service2.GetBiomeTypeMappingName(biomeType);
-		DepartmentOfTheInterior.ApplyBiomeTypeDescriptor(base.SimulationObject, biomeTypeMappingName);
 		DepartmentOfTheInterior.RemoveAnyAnomalyDescriptor(base.SimulationObject);
-		byte anomalyType = service2.GetAnomalyType(this.WorldPosition);
-		StaticString anomalyTypeMappingName = service2.GetAnomalyTypeMappingName(anomalyType);
-		DepartmentOfTheInterior.ApplyAnomalyDescriptor(base.SimulationObject, anomalyTypeMappingName);
 		DepartmentOfTheInterior.RemoveAnyRiverTypeDescriptor(base.SimulationObject);
-		short riverId = service2.GetRiverId(this.WorldPosition);
-		StaticString riverTypeMappingName = service2.GetRiverTypeMappingName(riverId);
+		byte terrainType = service.GetTerrainType(this.WorldPosition);
+		StaticString terrainTypeMappingName = service.GetTerrainTypeMappingName(terrainType);
+		DepartmentOfTheInterior.ApplyTerrainTypeDescriptor(base.SimulationObject, terrainTypeMappingName);
+		byte biomeType = service.GetBiomeType(this.WorldPosition);
+		StaticString biomeTypeMappingName = service.GetBiomeTypeMappingName(biomeType);
+		DepartmentOfTheInterior.ApplyBiomeTypeDescriptor(base.SimulationObject, biomeTypeMappingName);
+		byte anomalyType = service.GetAnomalyType(this.WorldPosition);
+		StaticString anomalyTypeMappingName = service.GetAnomalyTypeMappingName(anomalyType);
+		DepartmentOfTheInterior.ApplyAnomalyDescriptor(base.SimulationObject, anomalyTypeMappingName);
+		short riverId = service.GetRiverId(this.WorldPosition);
+		StaticString riverTypeMappingName = service.GetRiverTypeMappingName(riverId);
 		DepartmentOfTheInterior.ApplyRiverTypeDescriptor(base.SimulationObject, riverTypeMappingName);
 		this.Refresh(false);
 	}

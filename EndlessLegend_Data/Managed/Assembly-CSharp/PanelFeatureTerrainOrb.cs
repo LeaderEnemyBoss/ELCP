@@ -39,38 +39,22 @@ public class PanelFeatureTerrainOrb : GuiPanelFeature
 		{
 			worldPosition = (this.context as IWorldPositionable).WorldPosition;
 		}
-		global::Empire playerEmpire = this.playerControllerRepository.ActivePlayerController.Empire as global::Empire;
-		DepartmentOfForeignAffairs departmentOfForeignAffairs = playerEmpire.GetAgency<DepartmentOfForeignAffairs>();
-		bool orbIsVisible = false;
-		bool haveSharedOrbVisibility = false;
-		for (int index = 0; index < departmentOfForeignAffairs.DiplomaticRelations.Count; index++)
+		global::Empire empire = this.playerControllerRepository.ActivePlayerController.Empire as global::Empire;
+		bool flag;
+		if (empire.GetAgency<DepartmentOfForeignAffairs>().CanSeeOrbWithOrbHunterTrait)
 		{
-			if (departmentOfForeignAffairs.DiplomaticRelations[index] != null)
-			{
-				DiplomaticRelation diplomaticRelation = departmentOfForeignAffairs.DiplomaticRelations[index];
-				bool haveMapExchange = diplomaticRelation.HasActiveAbility(PanelFeatureTerrainOrb.MapExchangeDiplomaticAbilityName);
-				bool haveOrbHunterTrait = (base.Game as global::Game).Empires[diplomaticRelation.OtherEmpireIndex].SimulationObject.Tags.Contains(PanelFeatureTerrainOrb.OrbHunterFactionTrait);
-				if (haveMapExchange && haveOrbHunterTrait)
-				{
-					haveSharedOrbVisibility = true;
-					break;
-				}
-			}
-		}
-		if (playerEmpire.SimulationObject.Tags.Contains(PanelFeatureTerrainOrb.OrbHunterFactionTrait) || haveSharedOrbVisibility)
-		{
-			orbIsVisible = this.visibilityService.IsWorldPositionExploredFor(worldPosition, playerEmpire);
+			flag = this.visibilityService.IsWorldPositionExploredFor(worldPosition, empire);
 		}
 		else
 		{
-			orbIsVisible = this.visibilityService.IsWorldPositionVisibleFor(worldPosition, playerEmpire);
+			flag = this.visibilityService.IsWorldPositionVisibleFor(worldPosition, empire);
 		}
-		int orbValue = this.orbService.GetOrbValueAtPosition(worldPosition);
-		if (worldPosition.IsValid && orbValue > 0 && orbIsVisible)
+		int orbValueAtPosition = this.orbService.GetOrbValueAtPosition(worldPosition);
+		if (worldPosition.IsValid && orbValueAtPosition > 0 && flag)
 		{
 			isVisible = true;
 			this.Value.AgeTransform.PixelMarginLeft = this.Title.Font.ComputeTextWidth(AgeLocalizer.Instance.LocalizeString(this.Title.Text), false, false) + 3f * this.Title.AgeTransform.PixelMarginLeft;
-			this.Value.Text = GuiFormater.FormatStock((float)orbValue, DepartmentOfTheTreasury.Resources.Orb, 0, true);
+			this.Value.Text = GuiFormater.FormatStock((float)orbValueAtPosition, DepartmentOfTheTreasury.Resources.Orb, 0, true);
 			if (this.Value.AgeTransform.PixelMarginTop == this.Title.AgeTransform.PixelMarginTop)
 			{
 				this.Value.AgeTransform.PixelMarginLeft = 2f * this.Title.AgeTransform.PixelMarginLeft + this.Title.Font.ComputeTextWidth(AgeLocalizer.Instance.LocalizeString(this.Title.Text), this.Title.ForceCaps, false);

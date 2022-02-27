@@ -95,6 +95,55 @@ public class DiplomaticContract : IDisposable, IXmlSerializable, IDiplomaticCont
 		global::Game game = service.Game as global::Game;
 		Diagnostics.Assert(game != null);
 		this.TurnAtTheBeginningOfTheState = game.Turn;
+		if (destinationState == DiplomaticContractState.Proposed && this.EmpireWhichProposes.IsControlledByAI && !this.EmpireWhichReceives.IsControlledByAI)
+		{
+			for (int i = this.terms.Count - 1; i >= 0; i--)
+			{
+				DiplomaticTermResourceExchange diplomaticTermResourceExchange = this.terms[i] as DiplomaticTermResourceExchange;
+				if (diplomaticTermResourceExchange != null && diplomaticTermResourceExchange.EmpireWhichProvides.Index == this.EmpireWhichProposes.Index)
+				{
+					DepartmentOfTheTreasury agency = diplomaticTermResourceExchange.EmpireWhichProvides.GetAgency<DepartmentOfTheTreasury>();
+					if (agency.TryTransferResources(diplomaticTermResourceExchange.EmpireWhichProvides, diplomaticTermResourceExchange.ResourceName, -diplomaticTermResourceExchange.Amount))
+					{
+						float num;
+						agency.TryGetResourceStockValue(diplomaticTermResourceExchange.EmpireWhichProvides, diplomaticTermResourceExchange.ResourceName, out num, false);
+						Diagnostics.Log("ELCP {0} with {1} Buffering Resource {2} {3}, providerstock2: {4}", new object[]
+						{
+							diplomaticTermResourceExchange.EmpireWhichProvides,
+							diplomaticTermResourceExchange.EmpireWhichReceives,
+							diplomaticTermResourceExchange.ResourceName,
+							diplomaticTermResourceExchange.Amount,
+							num
+						});
+						diplomaticTermResourceExchange.BufferedAmount = diplomaticTermResourceExchange.Amount;
+					}
+				}
+			}
+		}
+		if (destinationState == DiplomaticContractState.Negotiation || destinationState == DiplomaticContractState.Refused || destinationState == DiplomaticContractState.Ignored)
+		{
+			for (int j = this.terms.Count - 1; j >= 0; j--)
+			{
+				DiplomaticTermResourceExchange diplomaticTermResourceExchange2 = this.terms[j] as DiplomaticTermResourceExchange;
+				if (diplomaticTermResourceExchange2 != null && diplomaticTermResourceExchange2.BufferedAmount > 0f)
+				{
+					DepartmentOfTheTreasury agency2 = diplomaticTermResourceExchange2.EmpireWhichProvides.GetAgency<DepartmentOfTheTreasury>();
+					agency2.TryTransferResources(diplomaticTermResourceExchange2.EmpireWhichProvides, diplomaticTermResourceExchange2.ResourceName, diplomaticTermResourceExchange2.BufferedAmount);
+					float num2;
+					agency2.TryGetResourceStockValue(diplomaticTermResourceExchange2.EmpireWhichProvides, diplomaticTermResourceExchange2.ResourceName, out num2, false);
+					Diagnostics.Log("ELCP {0} with {1} UnBuffering Resource {2} {3} {4}, providerstock2: {5}", new object[]
+					{
+						diplomaticTermResourceExchange2.EmpireWhichProvides,
+						diplomaticTermResourceExchange2.EmpireWhichReceives,
+						diplomaticTermResourceExchange2.ResourceName,
+						diplomaticTermResourceExchange2.BufferedAmount,
+						diplomaticTermResourceExchange2.Amount,
+						num2
+					});
+					diplomaticTermResourceExchange2.BufferedAmount = 0f;
+				}
+			}
+		}
 		if (state == DiplomaticContractState.Proposed && destinationState == DiplomaticContractState.Negotiation)
 		{
 			global::Empire empireWhichProposes = this.EmpireWhichProposes;
@@ -103,16 +152,17 @@ public class DiplomaticContract : IDisposable, IXmlSerializable, IDiplomaticCont
 			float empireWhichProposesEmpirePointInvestment = this.EmpireWhichProposesEmpirePointInvestment;
 			this.EmpireWhichProposesEmpirePointInvestment = this.EmpireWhichReceivesEmpirePointInvestment;
 			this.EmpireWhichReceivesEmpirePointInvestment = empireWhichProposesEmpirePointInvestment;
-			for (int i = this.terms.Count - 1; i >= 0; i--)
+			for (int k = this.terms.Count - 1; k >= 0; k--)
 			{
-				DiplomaticTerm diplomaticTerm = this.terms[i];
+				DiplomaticTerm diplomaticTerm = this.terms[k];
 				Diagnostics.Assert(diplomaticTerm != null);
 				if (!diplomaticTerm.CanApply(this, new string[0]))
 				{
-					this.terms.RemoveAt(i);
+					this.terms.RemoveAt(k);
 				}
 			}
-			this.ContractRevisionNumber++;
+			int contractRevisionNumber = this.ContractRevisionNumber;
+			this.ContractRevisionNumber = contractRevisionNumber + 1;
 		}
 		if (destinationState == DiplomaticContractState.Signed)
 		{
@@ -424,14 +474,14 @@ public class DiplomaticContract : IDisposable, IXmlSerializable, IDiplomaticCont
 	private List<DiplomaticTerm> terms;
 
 	[CompilerGenerated]
-	private sealed class ApplyDiplomaticTermChange>c__AnonStorey87F
+	private sealed class ApplyDiplomaticTermChange>c__AnonStorey87B
 	{
-		internal bool <>m__284(DiplomaticTerm term)
+		internal bool <>m__283(DiplomaticTerm term)
 		{
 			return term.Index == this.diplomaticTermChange.Index;
 		}
 
-		internal bool <>m__285(DiplomaticTerm term)
+		internal bool <>m__284(DiplomaticTerm term)
 		{
 			return term.Index == this.diplomaticTermChange.Index;
 		}

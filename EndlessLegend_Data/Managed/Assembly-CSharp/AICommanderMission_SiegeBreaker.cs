@@ -134,4 +134,13 @@ public class AICommanderMission_SiegeBreaker : AICommanderMissionWithRequestArmy
 			this.RegionWithCityToFree.City
 		});
 	}
+
+	protected override void Running()
+	{
+		base.Running();
+		if (this.IsMissionCompleted())
+		{
+			this.Success();
+		}
+	}
 }

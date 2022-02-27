@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
+  <!-- ELCP Detection for everyone -->
+  <SimulationDescriptor Name="ELCPNWEREEffect" Type="WorldEffect">
+    <SimulationModifierDescriptors>
+		<!--<SimulationModifierDescriptor TargetProperty="DetectionRange" Operation="Force"  Value="$(VisionRange)" Path="../EmpireTypeMajor/ClassArmy" IsBindOnSource="false" Priority="2"/>-->
+		<SimulationModifierDescriptor TargetProperty="DetectionRange" Operation="Addition"  Value="2" Path="../EmpireTypeMajor/ClassArmy" IsBindOnSource="false" Priority="1"/>
+    </SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
   <!-- -2 Dust on Dust tiles -->
   <SimulationDescriptor Name="QuestWorldEffect#0001" Type="WorldEffect">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/TerrainTagDust"/>
       <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagDust" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictDust"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagDust" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -29,6 +38,7 @@
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictFood"         Operation="Addition"    Value="3"  Path="../EmpireTypeMajor/ClassCity/TerrainTagWater"/>
       <SimulationModifierDescriptor TargetProperty="DistrictFood"         Operation="Addition"    Value="3"  Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagWater" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictFood"         Operation="Addition"    Value="3" Path="../EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagWater" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -37,6 +47,7 @@
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"    Operation="Addition"    Value="4"  Path="../EmpireTypeMajor/ClassCity/TerrainTagAnomaly"/>
       <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"    Operation="Addition"    Value="4" Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagAnomaly" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"    Operation="Addition"    Value="4" Path="../EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagAnomaly" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -61,13 +72,14 @@
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/TerrainTagForest"/>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagForest" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Subtraction"     Value="2"     Path="../EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagForest" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- +20% on Research Costs -->
   <SimulationDescriptor Name="QuestWorldEffect#0008" Type="WorldEffect">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="TechnologyCost" Operation="Percent"        Value="0.3"     Path="../EmpireTypeMajor/ClassResearch"/>
+      <SimulationModifierDescriptor TargetProperty="TechnologyCost"                         Operation="Percent"        Value="0.3"     Path="../EmpireTypeMajor/ClassResearch"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -88,7 +100,9 @@
   <!-- -1 Food on tiles -->
   <SimulationDescriptor Name="QuestWorldEffect#0011" Type="WorldEffect">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Subtraction"     Value="1" Path="../EmpireTypeMajor/ClassCity"  TooltipHidden="false" />
+      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Subtraction"     Value="1" Path="../EmpireTypeMajor/ClassCity/TerrainTagFood"  TooltipHidden="false" />
+      <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Subtraction"     Value="1" Path="../EmpireTypeMajor/ClassCity/ConvertedVillage/TerrainTagFood" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Subtraction"     Value="1" Path="../EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagFood" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

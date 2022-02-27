@@ -19,9 +19,6 @@ public class QuestBehaviourTreeNode_Decorator_DiplomaticContract : QuestBehaviou
 	[XmlAttribute]
 	public bool IsMutual { get; set; }
 
-	[XmlAttribute]
-	public QuestBehaviourTreeNode_Decorator_DiplomaticContract.QuestDiplomaticContractState State { get; set; }
-
 	public int TargetEmpireIndex { get; set; }
 
 	protected override State Execute(QuestBehaviour questBehaviour, EventDiplomaticContractStateChange e, params object[] parameters)
@@ -51,8 +48,7 @@ public class QuestBehaviourTreeNode_Decorator_DiplomaticContract : QuestBehaviou
 			}
 			for (int i = 0; i < e.DiplomaticContract.Terms.Count; i++)
 			{
-				DiplomaticTerm diplomaticTerm = e.DiplomaticContract.Terms[i];
-				if (diplomaticTerm.Definition.Name == this.DiplomaticTermDefinitionName)
+				if (e.DiplomaticContract.Terms[i].Definition.Name == this.DiplomaticTermDefinitionName)
 				{
 					return Amplitude.Unity.AI.BehaviourTree.State.Success;
 				}
@@ -74,6 +70,9 @@ public class QuestBehaviourTreeNode_Decorator_DiplomaticContract : QuestBehaviou
 		}
 		return base.Initialize(questBehaviour);
 	}
+
+	[XmlAttribute]
+	public QuestBehaviourTreeNode_Decorator_DiplomaticContract.QuestDiplomaticContractState State { get; set; }
 
 	public enum QuestDiplomaticContractState
 	{

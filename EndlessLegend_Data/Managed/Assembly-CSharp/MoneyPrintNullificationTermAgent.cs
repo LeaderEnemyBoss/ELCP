@@ -10,11 +10,9 @@ public class MoneyPrintNullificationTermAgent : DiplomaticTermAgent
 {
 	public override void Reset()
 	{
+		this.myDepartmentOfTheInterior = base.Empire.GetAgency<DepartmentOfTheInterior>();
 		base.Reset();
-		if (!base.Enable)
-		{
-			return;
-		}
+		bool enable = base.Enable;
 	}
 
 	protected override void ComputeInitValue()
@@ -33,11 +31,34 @@ public class MoneyPrintNullificationTermAgent : DiplomaticTermAgent
 	{
 		Diagnostics.Assert(base.AttitudeScore != null);
 		Diagnostics.Assert(base.DiplomaticRelation != null && base.DiplomaticRelation.State != null);
-		if (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Unknown)
+		if (base.DiplomaticRelation.State.Name != DiplomaticRelationState.Names.War)
 		{
 			return 0f;
 		}
-		float num = 75f;
-		return num / 100f;
+		return Math.Min(this.GetAllTradeDustIncomeShare() * 1.8f, 0.75f);
 	}
+
+	private float GetAllTradeDustIncomeShare()
+	{
+		float num = 0f;
+		foreach (City city in this.myDepartmentOfTheInterior.Cities)
+		{
+			if (city.HasProperty(MoneyPrintNullificationTermAgent.TradeRouteCityDustIncome))
+			{
+				num += city.GetPropertyValue(MoneyPrintNullificationTermAgent.TradeRouteCityDustIncome);
+			}
+		}
+		float num2 = Math.Max(1f, base.Empire.GetPropertyValue(SimulationProperties.EmpireMoney));
+		return num / num2;
+	}
+
+	public override void Release()
+	{
+		this.myDepartmentOfTheInterior = null;
+		base.Release();
+	}
+
+	private DepartmentOfTheInterior myDepartmentOfTheInterior;
+
+	public static StaticString TradeRouteCityDustIncome = "TradeRouteCityDustIncome";
 }

@@ -117,7 +117,7 @@ public class ArmyAction_TameUnstunnedKaiju : ArmyAction, IArmyActionWithKaijuTam
 			failureFlags.Add(ArmyAction.NoCanDoWhileNotEnoughActionPointsLeft);
 			return false;
 		}
-		if (!base.CanAfford(army))
+		if (!ELCPUtilities.UseELCPSymbiosisBuffs && !base.CanAfford(army))
 		{
 			failureFlags.Add(ArmyAction.NoCanDoWhileCannotAffordCosts);
 			return false;
@@ -219,6 +219,11 @@ public class ArmyAction_TameUnstunnedKaiju : ArmyAction, IArmyActionWithKaijuTam
 		if (kaiju.IsStunned())
 		{
 			failureFlags.Add(ArmyAction.NoCanDoWhileHidden);
+			return false;
+		}
+		if (ELCPUtilities.UseELCPSymbiosisBuffs && !ELCPUtilities.CanELCPTameKaiju(kaiju, this.TameCost, army.Empire))
+		{
+			failureFlags.Add(ArmyAction.NoCanDoWhileCannotAffordCosts);
 			return false;
 		}
 		return true;

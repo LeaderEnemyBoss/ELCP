@@ -13,27 +13,27 @@ public class PanelFeatureDeviceDuration : GuiPanelFeature
 		}
 		else
 		{
-			TerraformDevice device = this.context as TerraformDevice;
-			bool dismantling = device.DismantlingArmyGUID.IsValid;
-			int duration = (!dismantling) ? device.TurnsToActivate() : device.TurnsToDeactivate();
-			string format = "$(Input)";
-			if (duration == 1)
+			TerraformDevice terraformDevice = this.context as TerraformDevice;
+			bool isValid = terraformDevice.DismantlingArmyGUID.IsValid;
+			int num = (!isValid) ? terraformDevice.TurnsToActivate() : terraformDevice.TurnsToDeactivate();
+			string text;
+			if (num == 1)
 			{
-				format = AgeLocalizer.Instance.LocalizeString((!dismantling) ? "%FeatureDeviceChargingDurationSingle" : "%FeatureDeviceDismantlingDurationSingle");
+				text = AgeLocalizer.Instance.LocalizeString((!isValid) ? "%FeatureDeviceChargingDurationSingle" : "%FeatureDeviceDismantlingDurationSingle");
 			}
-			else if (duration % 10 == 0)
+			else if (num % 10 == 0)
 			{
-				format = AgeLocalizer.Instance.LocalizeString((!dismantling) ? "%FeatureDeviceChargingDurationTen" : "%FeatureDeviceDismantlingDurationTen");
+				text = AgeLocalizer.Instance.LocalizeString((!isValid) ? "%FeatureDeviceChargingDurationTen" : "%FeatureDeviceDismantlingDurationTen");
 			}
-			else if (duration > 1999)
+			else if (num > 1999)
 			{
-				format = AgeLocalizer.Instance.LocalizeString((!dismantling) ? "%FeatureDeviceChargingInfinite" : "%FeatureDeviceDismantlingDurationSingle");
+				text = AgeLocalizer.Instance.LocalizeString((!isValid) ? "%FeatureDeviceChargingInfinite" : "%FeatureDeviceDismantlingDurationSingle");
 			}
 			else
 			{
-				format = AgeLocalizer.Instance.LocalizeString((!dismantling) ? "%FeatureDeviceChargingDurationPlural" : "%FeatureDeviceDismantlingDurationPlural");
+				text = AgeLocalizer.Instance.LocalizeString((!isValid) ? "%FeatureDeviceChargingDurationPlural" : "%FeatureDeviceDismantlingDurationPlural");
 			}
-			this.Title.Text = format.Replace("$(Input)", duration.ToString());
+			this.Title.Text = text.Replace("$(Input)", num.ToString());
 			base.AgeTransform.Visible = true;
 		}
 		yield break;

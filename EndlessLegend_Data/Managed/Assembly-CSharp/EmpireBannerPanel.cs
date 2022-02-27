@@ -71,6 +71,7 @@ public class EmpireBannerPanel : GuiPlayerControllerPanel
 	public override void Bind(global::Empire empire)
 	{
 		base.Bind(empire);
+		this.ResourceEnumerator.Bind(empire);
 		this.DepartmentOfTheTreasury = base.Empire.GetAgency<DepartmentOfTheTreasury>();
 		this.DepartmentOfScience = base.Empire.GetAgency<DepartmentOfScience>();
 		base.Empire.Refreshed += this.Simulation_Refreshed;
@@ -85,21 +86,25 @@ public class EmpireBannerPanel : GuiPlayerControllerPanel
 		}
 		if (this.EmpirePointsPanel.AgeTooltip != null)
 		{
-			SimulationPropertyTooltipData simulationPropertyTooltipData = this.EmpirePointsPanel.AgeTooltip.ClientData as SimulationPropertyTooltipData;
-			if (simulationPropertyTooltipData != null)
+			SimulationPropertyTooltipData simulationPropertyTooltipData2 = this.EmpirePointsPanel.AgeTooltip.ClientData as SimulationPropertyTooltipData;
+			if (simulationPropertyTooltipData2 != null)
 			{
-				simulationPropertyTooltipData.Context = empire;
-				simulationPropertyTooltipData.StockName = SimulationProperties.EmpirePoint;
+				simulationPropertyTooltipData2.Context = empire;
+				simulationPropertyTooltipData2.StockName = SimulationProperties.EmpirePoint;
 			}
 		}
 		if (this.EmpireLavapoolStockPanel.AgeTooltip != null)
 		{
-			SimulationPropertyTooltipData simulationPropertyTooltipData = this.EmpireLavapoolStockPanel.AgeTooltip.ClientData as SimulationPropertyTooltipData;
-			if (simulationPropertyTooltipData != null)
+			SimulationPropertyTooltipData simulationPropertyTooltipData3 = this.EmpireLavapoolStockPanel.AgeTooltip.ClientData as SimulationPropertyTooltipData;
+			if (simulationPropertyTooltipData3 != null)
 			{
-				simulationPropertyTooltipData.Context = empire;
-				simulationPropertyTooltipData.StockName = SimulationProperties.LavapoolStock;
+				simulationPropertyTooltipData3.Context = empire;
+				simulationPropertyTooltipData3.StockName = SimulationProperties.LavapoolStock;
 			}
+		}
+		if (base.Empire.Index != base.PlayerController.Empire.Index)
+		{
+			this.interactionsAllowed = false;
 		}
 		base.NeedRefresh = true;
 	}
@@ -188,7 +193,7 @@ public class EmpireBannerPanel : GuiPlayerControllerPanel
 		{
 			yield return null;
 		}
-		this.interactionsAllowed = base.PlayerController.CanSendOrders();
+		this.interactionsAllowed = (base.PlayerController.CanSendOrders() && base.Empire.Index == base.PlayerController.Empire.Index);
 		if (parameters.Length == 1)
 		{
 			this.Configure(parameters[0] as StaticString);
@@ -299,7 +304,7 @@ public class EmpireBannerPanel : GuiPlayerControllerPanel
 	{
 		if (base.IsVisible && base.PlayerController != null)
 		{
-			bool flag = base.PlayerController.CanSendOrders();
+			bool flag = base.PlayerController.CanSendOrders() && base.Empire.Index == base.PlayerController.Empire.Index;
 			if (this.interactionsAllowed != flag)
 			{
 				this.interactionsAllowed = flag;
@@ -381,7 +386,7 @@ public class EmpireBannerPanel : GuiPlayerControllerPanel
 					AgeUtils.TruncateString(AgeLocalizer.Instance.LocalizeString(DepartmentOfScience.GetTechnologyTitle(technologyDefinition)), this.ResearchBuyoutLabel, out this.format, '.');
 					DepartmentOfScience.BuildTechnologyTooltip(technologyDefinition, base.Empire, this.ResearchBuyoutLabel.AgeTransform.AgeTooltip, MultipleConstructibleTooltipData.TechnologyState.Normal);
 				}
-				if (agency2.IsTransferOfResourcePossible(base.Empire, DepartmentOfTheTreasury.Resources.TechnologiesBuyOut, ref num))
+				if (agency2.IsTransferOfResourcePossible(base.Empire, DepartmentOfTheTreasury.Resources.TechnologiesBuyOut, ref num) && this.interactionsAllowed)
 				{
 					this.ResearchBuyoutButton.AgeTransform.Enable = true;
 					this.ResearchBuyoutButton.AgeTransform.Alpha = 1f;
@@ -407,10 +412,10 @@ public class EmpireBannerPanel : GuiPlayerControllerPanel
 				this.ResearchBuyoutLabel.AgeTransform.AgeTooltip.Content = "%ResearchNoneDescription";
 				this.ResearchBuyoutLabel.AgeTransform.AgeTooltip.ClientData = null;
 			}
-			AgeTooltip ageTooltip = this.ResearchBuyoutButton.AgeTransform.AgeTooltip;
-			if (ageTooltip != null)
+			if (this.ResearchBuyoutButton.AgeTransform.AgeTooltip != null)
 			{
 				this.ResearchBuyoutButton.AgeTransform.AgeTooltip.Content = content;
+				return;
 			}
 		}
 		else

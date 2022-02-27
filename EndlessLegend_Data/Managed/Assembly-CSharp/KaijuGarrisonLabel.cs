@@ -110,6 +110,7 @@ public class KaijuGarrisonLabel : MonoBehaviour
 		this.KaijuGarrison = null;
 		this.GuiService = null;
 		this.playerControllerRepository = null;
+		this.empire = null;
 	}
 
 	public void RefreshContent()
@@ -147,9 +148,9 @@ public class KaijuGarrisonLabel : MonoBehaviour
 			this.Frame.TintColor = this.KaijuGarrison.Empire.Color;
 			this.PinLine.TintColor = this.KaijuGarrison.Empire.Color;
 			this.KaijuIcon.TintColor = this.KaijuGarrison.Empire.Color;
+			KaijuCouncil agency = this.KaijuGarrison.KaijuEmpire.GetAgency<KaijuCouncil>();
 			if (this.KaijuGarrison.Kaiju.IsWild())
 			{
-				KaijuCouncil agency = this.KaijuGarrison.KaijuEmpire.GetAgency<KaijuCouncil>();
 				this.StatusTurns.Text = agency.RelocationETA.ToString();
 				this.StatusImage.Image = AgeManager.Instance.FindDynamicTexture("Gui/DynamicBitmaps/Icons/kaijuMoveIcon", false);
 				this.StatusPanel.AgeTooltip.Content = "%KaijuTurnsToMoveDescription";
@@ -162,7 +163,7 @@ public class KaijuGarrisonLabel : MonoBehaviour
 			}
 			KaijuTameCost kaijuTameCost = KaijuCouncil.GetKaijuTameCost();
 			this.TameCost.AgeTransform.Visible = true;
-			this.TameCost.Text = GuiFormater.FormatGui(kaijuTameCost.GetValue(), false, true, false, 0) + this.GuiService.FormatSymbol(kaijuTameCost.ResourceName);
+			this.TameCost.Text = GuiFormater.FormatGui(kaijuTameCost.GetValue(this.empire), false, true, false, 0) + this.GuiService.FormatSymbol((ELCPUtilities.UseELCPSymbiosisBuffs ? agency.ELCPResourceName.ToString() : kaijuTameCost.ResourceName.ToString()) + "Dark");
 		}
 		if (this.statusPanelTooltip != null)
 		{
@@ -200,12 +201,10 @@ public class KaijuGarrisonLabel : MonoBehaviour
 		if (this.GuiService.GetGuiPanel<KaijuResearchModalPanel>().IsVisible)
 		{
 			this.GuiService.GetGuiPanel<GameWorldScreen>().Show(new object[0]);
+			return;
 		}
-		else
-		{
-			this.GuiService.Hide(typeof(CurrentQuestPanel));
-			this.GuiService.GetGuiPanel<KaijuResearchModalPanel>().Show(new object[0]);
-		}
+		this.GuiService.Hide(typeof(CurrentQuestPanel));
+		this.GuiService.GetGuiPanel<KaijuResearchModalPanel>().Show(new object[0]);
 	}
 
 	private void OnMouseEnterCB()
@@ -220,6 +219,30 @@ public class KaijuGarrisonLabel : MonoBehaviour
 		IMouseCursorService service = Services.GetService<IMouseCursorService>();
 		Diagnostics.Assert(service != null);
 		service.RemoveKey(base.GetType().ToString());
+	}
+
+	public void Bind(KaijuGarrison garrison, Amplitude.Unity.Gui.IGuiService guiService, global::Empire empire)
+	{
+		this.Unbind();
+		this.KaijuGarrison = garrison;
+		this.GuiService = (guiService as global::IGuiService);
+		IGameService service = Services.GetService<IGameService>();
+		this.playerControllerRepository = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		Unit unit2 = (from unit in this.KaijuGarrison.Units
+		where unit.UnitDesign.Tags.Contains(Kaiju.MonsterUnitTag)
+		select unit).First<Unit>();
+		if (unit2 != null)
+		{
+			this.KaijuGuiUnit = new GuiUnit(unit2, null);
+		}
+		IGuiPanelHelper guiPanelHelper = Services.GetService<global::IGuiService>().GuiPanelHelper;
+		Diagnostics.Assert(guiPanelHelper != null, "Unable to access GuiPanelHelper");
+		Texture2D image = null;
+		if (guiPanelHelper.TryGetTextureFromIcon(this.KaijuGuiElement, global::GuiPanel.IconSize.Small, out image))
+		{
+			this.KaijuIcon.Image = image;
+		}
+		this.empire = empire;
 	}
 
 	private const string KaijuMoveIconPath = "Gui/DynamicBitmaps/Icons/kaijuMoveIcon";
@@ -259,4 +282,6 @@ public class KaijuGarrisonLabel : MonoBehaviour
 	private global::IGuiService GuiService;
 
 	private GuiUnit KaijuGuiUnit;
+
+	private global::Empire empire;
 }

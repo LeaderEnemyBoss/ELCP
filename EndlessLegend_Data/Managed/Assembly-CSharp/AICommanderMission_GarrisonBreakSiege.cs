@@ -234,12 +234,9 @@ public class AICommanderMission_GarrisonBreakSiege : AICommanderMission
 					List<GameEntityGUID> list = new List<GameEntityGUID>();
 					for (int j = 0; j < this.City.StandardUnits.Count; j++)
 					{
-						if (this.City.StandardUnits[j].GetPropertyValue(SimulationProperties.Movement) > 0f)
+						if (this.City.StandardUnits[j].GetPropertyValue(SimulationProperties.Movement) > 0f && !this.City.StandardUnits[j].IsSettler)
 						{
-							if (!this.City.StandardUnits[j].CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
-							{
-								list.Add(this.City.StandardUnits[j].GUID);
-							}
+							list.Add(this.City.StandardUnits[j].GUID);
 						}
 					}
 					if (list.Count == 0)

@@ -31,8 +31,8 @@ public class NotificationPanelCreepingNodeConstructionCompleted : NotificationPa
 					list.Add(creepingNode);
 				}
 			}
-			this.ItemTable.ReserveChildren(guiNotificationCreepingNodeConstructionCompleted.CreepingNodeList.Count, this.CreepingNodeConstructionCompletedLinePrefab, "Item");
-			this.ItemTable.RefreshChildrenIList<CreepingNode>(guiNotificationCreepingNodeConstructionCompleted.CreepingNodeList, this.refreshTableItemDelegate, true, false);
+			this.ItemTable.ReserveChildren(list.Count, this.CreepingNodeConstructionCompletedLinePrefab, "Item");
+			this.ItemTable.RefreshChildrenIList<CreepingNode>(list, this.refreshTableItemDelegate, true, false);
 			this.ItemTable.ArrangeChildren();
 			this.ContentScrollView.ResetUp();
 		}

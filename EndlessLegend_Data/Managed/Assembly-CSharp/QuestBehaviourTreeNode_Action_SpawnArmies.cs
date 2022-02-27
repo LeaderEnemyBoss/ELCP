@@ -110,6 +110,10 @@ public class QuestBehaviourTreeNode_Action_SpawnArmies : QuestBehaviourTreeNode_
 			{
 				this.EmpireArmyOwner = questBehaviour.Initiator;
 			}
+			if (this.EmpireArmyOwner is MajorEmpire && (this.EmpireArmyOwner as MajorEmpire).ELCPIsEliminated)
+			{
+				return;
+			}
 			Droplist droplist2;
 			DroppableArmyDefinition droppableArmyDefinition = droplist.Pick(empire, out droplist2, new object[0]) as DroppableArmyDefinition;
 			if (droppableArmyDefinition != null)
@@ -120,8 +124,7 @@ public class QuestBehaviourTreeNode_Action_SpawnArmies : QuestBehaviourTreeNode_
 				if (database2 != null && database2.TryGetValue(QuestBehaviourTreeNode_Action_SpawnArmies.questUnitLevelEvolution, out animationCurve))
 				{
 					float propertyValue = questBehaviour.Initiator.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-					float num2 = animationCurve.EvaluateWithScaledAxis((float)game.Turn, propertyValue, 1f);
-					num = (int)num2;
+					num = (int)animationCurve.EvaluateWithScaledAxis((float)game.Turn, propertyValue, 1f);
 					num = Math.Max(0, Math.Min(100, num));
 				}
 				StaticString[] unitDesignsNames = Array.ConvertAll<string, StaticString>(droppableArmyDefinition.UnitDesigns, (string input) => input);
@@ -133,6 +136,12 @@ public class QuestBehaviourTreeNode_Action_SpawnArmies : QuestBehaviourTreeNode_
 				{
 					this.ArmyUnitTag
 				};
+				int val = 1;
+				if (this.ScaleWithMaxEra)
+				{
+					val = DepartmentOfScience.GetMaxEraNumber() - 1;
+				}
+				num = Math.Max(num, val);
 				OrderSpawnArmies orderSpawnArmies = new OrderSpawnArmies(this.EmpireArmyOwner.Index, this.SpawnLocations.ToList<WorldPosition>().ToArray(), unitDesignsNames, 1, armyTags, unitsTags, num, QuestArmyObjective.QuestBehaviourType.Roaming);
 				Diagnostics.Log("Posting order: {0}.", new object[]
 				{
@@ -147,8 +156,7 @@ public class QuestBehaviourTreeNode_Action_SpawnArmies : QuestBehaviourTreeNode_
 	{
 		if (!string.IsNullOrEmpty(this.ForbiddenSpawnLocationVarName))
 		{
-			QuestVariable questVariable = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.ForbiddenSpawnLocationVarName);
-			List<WorldPosition> list = questVariable.Object as List<WorldPosition>;
+			List<WorldPosition> list = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.ForbiddenSpawnLocationVarName).Object as List<WorldPosition>;
 			if (!list.Contains(position))
 			{
 				list.Add(position);
@@ -229,6 +237,9 @@ public class QuestBehaviourTreeNode_Action_SpawnArmies : QuestBehaviourTreeNode_
 		}
 		return base.Initialize(questBehaviour);
 	}
+
+	[XmlAttribute]
+	public bool ScaleWithMaxEra { get; set; }
 
 	[XmlIgnore]
 	protected IGameEntityRepositoryService gameEntityRepositoryService;

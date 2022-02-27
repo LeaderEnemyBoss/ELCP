@@ -155,6 +155,11 @@ namespace Amplitude.Unity.Simulation
 			SimulationGlobal.roots.Remove(root);
 		}
 
+		public static Tags GetGlobalTags()
+		{
+			return SimulationGlobal.globalTags;
+		}
+
 		private static Tags globalTags = new Tags();
 
 		private static List<SimulationObject> roots = new List<SimulationObject>();

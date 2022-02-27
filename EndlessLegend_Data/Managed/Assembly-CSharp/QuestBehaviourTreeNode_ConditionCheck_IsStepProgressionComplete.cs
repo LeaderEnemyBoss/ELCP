@@ -4,6 +4,8 @@ using System.Xml.Serialization;
 using Amplitude;
 using Amplitude.Unity.AI.BehaviourTree;
 using Amplitude.Unity.Event;
+using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.Advanced;
 using UnityEngine;
@@ -13,6 +15,7 @@ public class QuestBehaviourTreeNode_ConditionCheck_IsStepProgressionComplete : Q
 	public QuestBehaviourTreeNode_ConditionCheck_IsStepProgressionComplete()
 	{
 		this.StepName = string.Empty;
+		this.EmpireIndex = -1;
 	}
 
 	[XmlAttribute("StepName")]
@@ -36,7 +39,11 @@ public class QuestBehaviourTreeNode_ConditionCheck_IsStepProgressionComplete : Q
 					this.compiledExpression = Interpreter.InfixTransform(this.InterpretedValue);
 				}
 				SimulationObject simulationObject;
-				if (gameEvent != null)
+				if (this.EmpireIndex >= 0)
+				{
+					simulationObject = (Services.GetService<IGameService>().Game as global::Game).Empires[this.EmpireIndex].SimulationObject;
+				}
+				else if (gameEvent != null)
 				{
 					simulationObject = gameEvent.Empire.SimulationObject;
 				}
@@ -62,7 +69,7 @@ public class QuestBehaviourTreeNode_ConditionCheck_IsStepProgressionComplete : Q
 					{
 						if (!(obj is int))
 						{
-							if (GameManager.Preferences.QuestVerboseMode)
+							if (global::GameManager.Preferences.QuestVerboseMode)
 							{
 								Diagnostics.LogWarning("[Quest] IsStepProgressionComplete expression or variable '{0}' returned {1} wich is not a number (in quest {2} of empire {3}).", new object[]
 								{
@@ -100,12 +107,11 @@ public class QuestBehaviourTreeNode_ConditionCheck_IsStepProgressionComplete : Q
 							}
 						}
 					}
+					goto IL_2DB;
 				}
 			}
-			else
-			{
-				num = questBehaviour.Quest.GetStepProgressionValueByName(this.StepName);
-			}
+			num = questBehaviour.Quest.GetStepProgressionValueByName(this.StepName);
+			IL_2DB:
 			QuestStepProgressionRange stepProgressionRangeByName = questBehaviour.Quest.GetStepProgressionRangeByName(this.StepName);
 			if (stepProgressionRangeByName == null)
 			{
@@ -135,8 +141,19 @@ public class QuestBehaviourTreeNode_ConditionCheck_IsStepProgressionComplete : Q
 		{
 			Diagnostics.LogError("InterpretedVarName is deprecated, use InterpretedValue instead");
 		}
+		global::Empire empire;
+		if (this.EmpireIndex == -1 && questBehaviour.TryGetQuestVariableValueByName<global::Empire>(this.EmpireVarName, out empire) && empire != null)
+		{
+			this.EmpireIndex = empire.Index;
+		}
 		return base.Initialize(questBehaviour);
 	}
+
+	[XmlAttribute("EmpireVarName")]
+	public string EmpireVarName { get; set; }
+
+	[XmlElement]
+	public int EmpireIndex { get; set; }
 
 	private object[] compiledExpression;
 }

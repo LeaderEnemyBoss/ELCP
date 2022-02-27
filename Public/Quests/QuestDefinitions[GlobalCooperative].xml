@@ -14,7 +14,7 @@
      ========= GLOBAL QUEST COOP 2 ==========
      ======================================== -->
 
-  <QuestDefinition Name="GlobalQuestCoop#0002" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
+  <QuestDefinition Name="GlobalQuestCoop#0002" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="12" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
 
 
     <!--============ TAGS ============-->
@@ -23,8 +23,8 @@
     <!--============ PREREQUISITES ============-->
     <Prerequisites Target="$(Empires)">
       <DownloadableContentPrerequisite Flags="Prerequisite">WondersAndColossiPack</DownloadableContentPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (12 * $(NumberOfEmpires))</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfHumanEmpires) ge ($(NumberOfAIEmpires) - 1)</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (16 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <!--<InterpreterPrerequisite Flags="Prerequisite">$(NumberOfHumanEmpires) ge ($(NumberOfAIEmpires) - 1)</InterpreterPrerequisite>-->
     </Prerequisites>
 
     <!--============ VARIABLES ============-->
@@ -158,9 +158,9 @@
      ========= GLOBAL QUEST COOP 3 ==========
      ======================================== -->
 
-  <QuestDefinition Name="GlobalQuestCoop#0003" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1" SingleCheckPerTurn="true">
+  <QuestDefinition Name="GlobalQuestCoop#0003" IsGlobal="true" ChanceOfTriggering="0.05" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="12" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1" SingleCheckPerTurn="true">
 
-    <!--============ TAGS ============-->-
+    <!--============ TAGS ============-->
     <Tags>BeginTurn</Tags>
 
     <!--============ PREREQUISITES ============-->
@@ -170,8 +170,8 @@
       
       <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTitanBonesActivated) ge 1</InterpreterPrerequisite>
       
-      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfCommonBoostersActivated) ge (2 * $(NumberOfEmpires))</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (23 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">($(NumberOfCommonBoostersActivated) + $(NumberOfUncommonBoostersActivated)) ge (2 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (18 * $(NumberOfEmpires))</InterpreterPrerequisite>
     </Prerequisites>
 
     <!--============ VARIABLES ============-->
@@ -184,14 +184,26 @@
       <InterpretedVar VarName="NumberOfCommonBoostersActivated" Target="$(Empires)" UsedInPrerequisites="true">
         <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/CommonLuxuryBooster)</Expression>
       </InterpretedVar>
+	  <InterpretedVar VarName="NumberOfUncommonBoostersActivated" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/UncommonLuxuryBooster)</Expression>
+      </InterpretedVar>
+	  <InterpretedVar VarName="NumberOfTitanBonesActivated" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/EmpireBoosterLuxury10)</Expression>
+      </InterpretedVar>
 
       <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
         <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
       </InterpretedVar>
 
-      <InterpretedVar VarName="NumberOfTitanBonesActivated" Target="$(Empires)" UsedInPrerequisites="true"> 
-        <Expression>$Count(EmpireTypeMajor,!EmpireEliminated/EmpireBoosterLuxury10)</Expression> 
-      </InterpretedVar> 
+      <!--<Var VarName="$LuxuryResourceDepositPointOfInterest">
+        <Limit LimitMin="1" LimitMax="7" Clamp="false">
+          <From Source="$Regions.$PointsOfInterest">
+            <Where>
+              <InterpreterPrerequisite Flags="Prerequisite">$Path(ResourceDepositTypeLuxury6) or $Path(ResourceDepositTypeLuxury7)</InterpreterPrerequisite>
+            </Where>
+          </From>
+        </Limit>
+      </Var>-->
 
       <DropListVar VarName="$DustRewardAmount" DropList="DroplistCoopQuestDust"/>
       <DropListVar VarName="$BestContributorRewardAmount" DropList="DroplistGlobalQuestLuxuryResource"/>
@@ -266,7 +278,7 @@
      ========= GLOBAL QUEST COOP 4 ==========
      ======================================== -->
 
-  <QuestDefinition Name="GlobalQuestCoop#0004" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
+  <QuestDefinition Name="GlobalQuestCoop#0004" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" SingleCheckPerTurn="true" Cooldown="0" GlobalCooldown="12" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
 
     <!--============ TAGS ============-->
     <Tags>BeginTurn</Tags>

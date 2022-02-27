@@ -132,6 +132,16 @@ public class QuestBehaviourTreeNode_Decorator_ArmyTransferred : QuestBehaviourTr
 			}
 			questVariable.Object = e.Destination.GUID;
 			this.StoredDestination = e.Destination.GUID;
+			if (!string.IsNullOrEmpty(this.Output_SourceGUID))
+			{
+				questVariable = questBehaviour.GetQuestVariableByName(this.Output_SourceGUID);
+				if (questVariable == null)
+				{
+					questVariable = new QuestVariable(this.Output_SourceGUID);
+					questBehaviour.QuestVariables.Add(questVariable);
+				}
+				questVariable.Object = obj;
+			}
 		}
 		return State.Success;
 	}
@@ -166,6 +176,9 @@ public class QuestBehaviourTreeNode_Decorator_ArmyTransferred : QuestBehaviourTr
 		}
 		return base.Initialize(questBehaviour);
 	}
+
+	[XmlAttribute]
+	public string Output_SourceGUID { get; set; }
 
 	[XmlIgnore]
 	protected IGameEntityRepositoryService gameEntityRepositoryService;

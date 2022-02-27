@@ -14,12 +14,13 @@ namespace Amplitude.WorldGenerator.World.Info
 
 		public override string ToString()
 		{
-			return string.Format("FIDS {0} {1} {2} {3}", new object[]
+			return string.Format("FIDS {0} {1} {2} {3} | {4}", new object[]
 			{
 				this.Food,
 				this.Industry,
 				this.Dust,
-				this.Science
+				this.Science,
+				this.GetTotalValue()
 			});
 		}
 
@@ -27,23 +28,24 @@ namespace Amplitude.WorldGenerator.World.Info
 		{
 			get
 			{
+				int num = 0;
 				if (this.Food < 0)
 				{
-					return -this.Food;
+					num -= this.Food;
 				}
 				if (this.Industry < 0)
 				{
-					return -this.Industry;
+					num -= this.Industry;
 				}
 				if (this.Dust < 0)
 				{
-					return -this.Dust;
+					num -= this.Dust;
 				}
-				if (this.Science >= 0)
+				if (this.Science < 0)
 				{
-					return 0;
+					num -= this.Science;
 				}
-				return -this.Science;
+				return num;
 			}
 		}
 
@@ -72,6 +74,19 @@ namespace Amplitude.WorldGenerator.World.Info
 		public static int operator *(FIDS a, FIDS b)
 		{
 			return 0 + a.Food * b.Food + a.Industry * b.Industry + a.Dust * b.Dust + a.Science * b.Science;
+		}
+
+		public void Minus(int i = 1)
+		{
+			this.Food -= i;
+			this.Industry -= i;
+			this.Dust -= i;
+			this.Science -= i;
+		}
+
+		public int GetTotalValue()
+		{
+			return this.Food + this.Industry + this.Dust + this.Science;
 		}
 
 		public int Food;

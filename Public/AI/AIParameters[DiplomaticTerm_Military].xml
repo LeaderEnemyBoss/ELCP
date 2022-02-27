@@ -43,14 +43,14 @@
     ###########
     -->
 
-    <AIParameterDatatableElement Name="WarToTruce">
-      <AIParameter Name="DiplomacyUtilityProvider" Value="8 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="8 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2"/>
-    </AIParameterDatatableElement>
+	<AIParameterDatatableElement Name="WarToTruce">
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="(($(UpperCap)) min ((8 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2) - ($(WarTermAgentCriticity) * 4 * $(NeedsVictoryReaction)) - (4 * $(NeedsVictoryReaction)) - $(PowerDifMalus)))"/>
+	  <AIParameter Name="DiplomacyUtilityReceiver" Value="(($(UpperCap)) min ((8 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2) - ($(WarTermAgentCriticity) * 4 * $(NeedsVictoryReaction)) - (4 * $(NeedsVictoryReaction)) - $(PowerDifMalus)))"/>
+	</AIParameterDatatableElement>
 
     <AIParameterDatatableElement Name="WarToTruceDeclaration">
-      <AIParameter Name="DiplomacyUtilityProvider" Value="4 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="4* ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 1.2"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(8 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2) - ($(WarTermAgentCriticity) * 4 * $(NeedsVictoryReaction)) - (4 * $(NeedsVictoryReaction))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(8 * ($(TruceTermAgentCriticity) - $(WarTermAgentCriticity)) - 0.2) - ($(WarTermAgentCriticity) * 4 * $(NeedsVictoryReaction)) - (4 * $(NeedsVictoryReaction))"/>
     </AIParameterDatatableElement>
 
     <!--
@@ -254,16 +254,20 @@
     <!-- Provider is always the Roving Clans empire in the case of a removal -->
 
     <AIParameterDatatableElement Name="MarketBanRemoval">
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - 1 - $(MarketBanTermAgentCriticity)"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries)"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources)"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 1) - $(MarketBanTermAgentCriticity)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries) + $(MarketBanNullificationTermAgentCriticity)"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources) + $(MarketBanNullificationTermAgentCriticity)"/>
     </AIParameterDatatableElement>
 
     <!-- Receiver is always the Roving Clans empire in the case of a nullification -->
 
     <AIParameterDatatableElement Name="MarketBanNullification">
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries)"/>
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 * $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources)"/>
+      <!-- 
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries)"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + $Link(Receiver|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources)"/> 
+	  -->
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + 2 * $Link(Provider|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceMercenaries) + $(MarketBanNullificationTermAgentCriticity)"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0.1 + 1.5 * $Link(Provider|Count|ClassEmpire/ClassResearch,TechnologyMarketplaceResources) + $(MarketBanNullificationTermAgentCriticity)"/> 
       <AIParameter Name="DiplomacyUtilityReceiver" Value="0 - 1 - $(MarketBanTermAgentCriticity)"/>
     </AIParameterDatatableElement>
 
@@ -296,13 +300,19 @@
     -->
 
     <AIParameterDatatableElement Name="CityExchange">
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (0 max (5 * (1 + (2*$(IsCapital))) / $Link(Provider|Count|ClassEmpire/ClassCity)))"/>
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 100) * $Link(Provider|Path|#Multiplayer,#StingyAITrue)" />
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 50) * $(NeverAgree) * ($(MimicsDeal) eq 0)"/>
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 35) * $(NeverAgree) * $(MimicsDeal)"/>
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 5) * $(MimicsDeal)"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - 2 - (0 max (5 * (1 + (2*$(IsCapital))) / $Link(Provider|Count|ClassEmpire/ClassCity)))"/>
       <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (0 max (5 * $Property(NetCityProduction) / (1 max $Link(Provider|MaxProperty|../ClassEmpire/ClassCity:NetCityProduction))))"/>
       <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (0 max (5 * $Property(NetCityMoney) / (1 max $Link(Provider|MaxProperty|../ClassEmpire/ClassCity:NetCityMoney))))"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="5 * (0 max (1 + (0.5*$(IsCapital))) / $Link(Receiver|Count|ClassEmpire/ClassCity))"/>
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(5 * (0 max (1 + (0.5*$(IsCapital))) / $Link(Receiver|Count|ClassEmpire/ClassCity)) + 2) * (0.5 max (1 - $(MimicsDeal)))"/>
       <AIParameter Name="DiplomacyUtilityReceiver" Value="5 * (0 max ($Property(NetCityProduction) / (1 max $Link(Receiver|MaxProperty|../ClassEmpire/ClassCity:NetCityProduction))))"/>
       <AIParameter Name="DiplomacyUtilityReceiver" Value="5 * (0 max $Property(NetCityMoney) / (1 max $Link(Provider|MaxProperty|../ClassEmpire/ClassCity:NetCityMoney)))"/>
-    </AIParameterDatatableElement>
+	  <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * (1 min $(BorderLengthCommonWithMyEmpire))"/>
+	  <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * $(MimicsDeal)"/>  
+	</AIParameterDatatableElement>
   
     <!--
     #####################################################
@@ -323,12 +333,19 @@
     <!--
     You want me to fight someone for you?
     $(WarTermAgentCriticity) gives the desire (between 0 and 1) of the AI to declare war on the third party.
+	ELCP: $(AtWarWithThirdParty) Am I at war with the third party (0 or 1)
+	      $(ReceiverAtWarWithThirdParty) Is the Reciever at war with the third party (0 or 1)
     -->
 
     <AIParameterDatatableElement Name="AskToDeclareWar">
-      <AIParameter Name="DiplomacyMilitarySupportProvider" Value="2 * (0 - 1) * (1.5 - $(WarTermAgentCriticity)) * (100 max $Link(ThirdParty|Property|MilitaryPower)) / (100 max $Link(Provider|Property|MilitaryPower))"/>
-      <AIParameter Name="DiplomacyMilitarySupportReceiver" Value="1.25 * (0.1 + $(WarTermAgentCriticity)) * (100 max $Link(ThirdParty|Property|MilitaryPower)) / (100 max $Link(Provider|Property|MilitaryPower))"/>
-    </AIParameterDatatableElement>
+      <AIParameter Name="DiplomacyMilitarySupportProvider" Value="((2 * (0 - 1) * (2 - $(WarTermAgentCriticity))* (1 + (($Link(Provider|Property|../ClassEmpire:WarCount))*0.5)) * (100 max $Link(ThirdParty|Property|MilitaryPower)) / (100 max $Link(Provider|Property|MilitaryPower))) - ($Link(Provider|Property|../ClassEmpire:WarCount) * 1.5 * (100 max $Link(ThirdParty|Property|MilitaryPower)) / (100 max $Link(Provider|Property|MilitaryPower)))) 
+	  * (1 + (2 * (1 - $(ReceiverAtWarWithThirdParty))))
+	  * (1 - (0.7 * $(ThirdPartyNearVictory)))"/>
+	  <AIParameter Name="DiplomacyMilitarySupportProvider" Value="(0 - 100) * $Link(Provider|Path|#Multiplayer,#StingyAITrue)" />
+	  <AIParameter Name="DiplomacyMilitarySupportReceiver" Value="((1.75 *$(AtWarWithThirdParty)* (100 max $Link(ThirdParty|Property|MilitaryPower)) / (100 max $Link(Receiver|Property|MilitaryPower))) + ((0.25 * (1 - $(AtWarWithThirdParty))) * (0.1 + $(WarTermAgentCriticity)) * (100 max $Link(ThirdParty|Property|MilitaryPower)) / (100 max $Link(Receiver|Property|MilitaryPower))))
+	  * (1 + (0.5 * $(ThirdPartyNearVictory)))"/>
+	  <!--<AIParameter Name="DiplomacyMilitarySupportReceiver" Value="(0.25*(1-$(AtWarWith))) * (0.1 + $(WarTermAgentCriticity))*(100 max $Link(ThirdParty|Property|MilitaryPower)) / (100 max $Link(Provider|Property|MilitaryPower))"/>-->
+	</AIParameterDatatableElement>
 
     <!--
     ###############################
@@ -386,8 +403,9 @@
     -->
 
     <AIParameterDatatableElement Name="AskToBlackSpot">
-      <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 1) * (8 - $(BlackSpotTermAgentCriticity))"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="7 * (0.1 + $(WarTermAgentCriticity))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 1) * (8 - (4 *$(BlackSpotTermAgentCriticity)))"/>
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 100) * $Link(Provider|Path|#Multiplayer,#StingyAITrue)" />
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="(3*$(AtWarWithThirdParty))* (1.1 + $(WarTermAgentCriticity))+ (1.5 - $(AtWarWithThirdParty)) * (1.1 + $(WarTermAgentCriticity))"/>
     </AIParameterDatatableElement>
 
     <!--
@@ -405,16 +423,21 @@
     * MyRegionScore is a heuristic calculated by the Navy - it is between 0 (don't care) and 1 (do want)
     * The interpreter context simulation object is the fortress
     -->
+	<!-- ELCP\LeaderenemyBoss New value: RegionCompletion, is set to 1, if a Fortress trade helps the Receiver to complete the region, is 0 otherwise
+							  Also: Heavily reduced value of Fortress trades for AI receivers without region completion (to prevent abuse) 
+	-->
+	
 
     <AIParameterDatatableElement Name="FortressExchange">
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - 0.5"/>
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (3 * $(IsRegionControlled))"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - 3"/>
+      <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (6 * $(IsRegionControlled) * (1 + (2 * (1 - $(IsTruceContract)))))"/>
       <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (5 * $(MyRegionScore))"/>
       <AIParameter Name="DiplomacyUtilityProvider" Value="0 - (3 * ($(ProviderNumberOfFortressesInRegion) / $(TotalNumberOfFortressesInRegion)))"/>
-      <AIParameter Name="DiplomacyUtilityProvider" Value="0.5"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="2 * $(IsRegionControlled)"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * $(MyRegionScore)"/>
-      <AIParameter Name="DiplomacyUtilityReceiver" Value="4 * ($(ReceiverNumberOfFortressesInRegion) / $(TotalNumberOfFortressesInRegion))"/>
+	  <AIParameter Name="DiplomacyUtilityProvider" Value="(0 - 100) * $Link(Provider|Path|#Multiplayer,#StingyAITrue)" />
+      <!--<AIParameter Name="DiplomacyUtilityReceiver" Value="2 * $(IsRegionControlled)"/>-->
+	  <AIParameter Name="DiplomacyUtilityReceiver" Value="5.5 * $(RegionCompletion) * $(MyRegionScore)"/> <!-- heavily boost utility when the trade allows to obtain a new region (dependant on region score) -->
+      <AIParameter Name="DiplomacyUtilityReceiver" Value="0.4 * $(MyRegionScore)"/> <!-- base value without region completion bonus -->
+      <!--<AIParameter Name="DiplomacyUtilityReceiver" Value="4 * ($(ReceiverNumberOfFortressesInRegion) / $(TotalNumberOfFortressesInRegion))"/>-->
     </AIParameterDatatableElement>
 
 </Datatable>

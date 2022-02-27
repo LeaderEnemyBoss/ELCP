@@ -75,7 +75,7 @@
         <ConditionCheck_Prerequisite>
           <Prerequisites Target="$InspectionInstigatorSimObject">
             <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitTypeBrokenLordsHero</PathPrerequisite>
-            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitClassInfantry,UnitRankStandard) ge 3</InterpreterPrerequisite>
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit,UnitClassInfantry,UnitRankStandard) ge 2</InterpreterPrerequisite>
           </Prerequisites>
         </ConditionCheck_Prerequisite>
       </Decorator_Inspect>
@@ -157,11 +157,11 @@
     <Steps>
       <Step Name="MainQuestBrokenLords-Chapter2-Step1">
         <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
-        <ProgressionRange StartValue="0" EndValue="8"/>
+        <ProgressionRange StartValue="0" EndValue="6"/>
       </Step>
       <Step Name="MainQuestBrokenLords-Chapter2-Step2">
         <Reward Droplist="DroplistMainQuestBrokenLordsChapter2Step2ItemReward" Picks="1"/>
-        <ProgressionRange StartValue="0" EndValue="12"/>
+        <ProgressionRange StartValue="0" EndValue="10"/>
       </Step>
     </Steps>
 

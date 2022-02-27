@@ -5,6 +5,36 @@ using Amplitude.Unity.Xml;
 
 public class UnitAbility : ConstructibleElement
 {
+	static UnitAbility()
+	{
+		UnitAbility.ReadonlyArmyUnique = "UnitAbilityArmyUnique";
+		UnitAbility.ReadonlyColonize = "UnitAbilityColonization";
+		UnitAbility.ReadonlyPreacher = "UnitAbilityPreacher";
+		UnitAbility.ReadonlyResettle = "UnitAbilityResettle";
+		UnitAbility.ReadonlyLastStand = "UnitAbilityLastStand";
+		UnitAbility.ReadonlyUnsalable = "UnitAbilityUnsalable";
+		UnitAbility.ReadonlyCannotRegen = "UnitAbilityCannotRegen";
+		UnitAbility.ReadonlyCanRegenWithVillage = "UnitAbilityCanRegenWithVillage";
+		UnitAbility.ReadonlySpy = "UnitAbilitySpy";
+		UnitAbility.ReadonlyParasite = "UnitAbilityParasite";
+		UnitAbility.ReadonlyElusive = "UnitAbilityElusive";
+		UnitAbility.ReadonlyDualWield = "UnitAbilityDualWield";
+		UnitAbility.ReadonlyShifterNature = "UnitAbilityShifterNature";
+		UnitAbility.ReadonlyHarbinger = "UnitAbilityHarbinger";
+		UnitAbility.ReadonlyTransportShip = "UnitAbilityTransportShip";
+		UnitAbility.ReadonlyRapidMutation = "UnitAbilityRapidMutation";
+		UnitAbility.ReadonlySubmersible = "UnitAbilitySubmersible";
+		UnitAbility.ReadonlyEssenceHarvest = "UnitAbilityEssenceHarvest";
+		UnitAbility.ReadonlyPortableForge = "UnitAbilityPortableForge";
+		UnitAbility.UnitAbilityAllowAssignationUnderSiege = "UnitAbilityAllowAssignationUnderSiege";
+		UnitAbility.UnitAbilityInstantHeal = "UnitAbilityInstantHeal";
+		UnitAbility.UnitAbilityImmolation = "UnitAbilityImmolation";
+		UnitAbility.UnitAbilityInnerFire = "UnitAbilityInnerFire";
+		UnitAbility.ReadonlyIndestructible = "UnitAbilityIndestructible";
+		UnitAbility.ReadonlyNodeRegeneration = "UnitAbilityNodeRegeneration";
+		UnitAbility.UnitAbilityGeomancy = "UnitAbilityGeomancy";
+	}
+
 	[XmlElement(Type = typeof(UnitAbility.UnitAbilityLevelDefinition), ElementName = "UnitAbilityLevelDefinition")]
 	public UnitAbility.UnitAbilityLevelDefinition[] AbilityLevels { get; set; }
 
@@ -20,55 +50,57 @@ public class UnitAbility : ConstructibleElement
 	[XmlAttribute]
 	public bool Persistent { get; set; }
 
-	public static readonly string ReadonlyArmyUnique = "UnitAbilityArmyUnique";
+	public static readonly string ReadonlyArmyUnique;
 
-	public static readonly string ReadonlyColonize = "UnitAbilityColonization";
+	public static readonly string ReadonlyColonize;
 
-	public static readonly string ReadonlyPreacher = "UnitAbilityPreacher";
+	public static readonly string ReadonlyPreacher;
 
-	public static readonly string ReadonlyResettle = "UnitAbilityResettle";
+	public static readonly string ReadonlyResettle;
 
-	public static readonly string ReadonlyLastStand = "UnitAbilityLastStand";
+	public static readonly string ReadonlyLastStand;
 
-	public static readonly string ReadonlyUnsalable = "UnitAbilityUnsalable";
+	public static readonly string ReadonlyUnsalable;
 
-	public static readonly string ReadonlyCannotRegen = "UnitAbilityCannotRegen";
+	public static readonly string ReadonlyCannotRegen;
 
-	public static readonly string ReadonlyCanRegenWithVillage = "UnitAbilityCanRegenWithVillage";
+	public static readonly string ReadonlyCanRegenWithVillage;
 
-	public static readonly string ReadonlySpy = "UnitAbilitySpy";
+	public static readonly string ReadonlySpy;
 
-	public static readonly string ReadonlyParasite = "UnitAbilityParasite";
+	public static readonly string ReadonlyParasite;
 
-	public static readonly string ReadonlyElusive = "UnitAbilityElusive";
+	public static readonly string ReadonlyElusive;
 
-	public static readonly string ReadonlyDualWield = "UnitAbilityDualWield";
+	public static readonly string ReadonlyDualWield;
 
-	public static readonly string ReadonlyShifterNature = "UnitAbilityShifterNature";
+	public static readonly string ReadonlyShifterNature;
 
-	public static readonly string ReadonlyHarbinger = "UnitAbilityHarbinger";
+	public static readonly string ReadonlyHarbinger;
 
-	public static readonly string ReadonlyTransportShip = "UnitAbilityTransportShip";
+	public static readonly string ReadonlyTransportShip;
 
-	public static readonly string ReadonlyRapidMutation = "UnitAbilityRapidMutation";
+	public static readonly string ReadonlyRapidMutation;
 
-	public static readonly string ReadonlySubmersible = "UnitAbilitySubmersible";
+	public static readonly string ReadonlySubmersible;
 
-	public static readonly string ReadonlyEssenceHarvest = "UnitAbilityEssenceHarvest";
+	public static readonly string ReadonlyEssenceHarvest;
 
-	public static readonly string ReadonlyPortableForge = "UnitAbilityPortableForge";
+	public static readonly string ReadonlyPortableForge;
 
-	public static readonly string UnitAbilityAllowAssignationUnderSiege = "UnitAbilityAllowAssignationUnderSiege";
+	public static readonly string UnitAbilityAllowAssignationUnderSiege;
 
-	public static readonly string UnitAbilityInstantHeal = "UnitAbilityInstantHeal";
+	public static readonly string UnitAbilityInstantHeal;
 
-	public static readonly string UnitAbilityImmolation = "UnitAbilityImmolation";
+	public static readonly string UnitAbilityImmolation;
 
-	public static readonly string UnitAbilityInnerFire = "UnitAbilityInnerFire";
+	public static readonly string UnitAbilityInnerFire;
 
-	public static readonly string ReadonlyIndestructible = "UnitAbilityIndestructible";
+	public static readonly string ReadonlyIndestructible;
 
-	public static readonly string ReadonlyNodeRegeneration = "UnitAbilityNodeRegeneration";
+	public static readonly string ReadonlyNodeRegeneration;
+
+	public static readonly string UnitAbilityGeomancy = "UnitAbilityGeomancy";
 
 	public class UnitAbilityLevelDefinition
 	{

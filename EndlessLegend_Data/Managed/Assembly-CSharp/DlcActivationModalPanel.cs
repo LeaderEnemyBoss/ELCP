@@ -58,13 +58,6 @@ public class DlcActivationModalPanel : GuiModalPanel
 		yield break;
 	}
 
-	protected override IEnumerator OnHide(bool instant)
-	{
-		yield return base.OnHide(instant);
-		base.GuiService.GetGuiPanel<MenuMainScreen>().RefreshContent();
-		yield break;
-	}
-
 	protected override IEnumerator OnShow(params object[] parameters)
 	{
 		yield return base.OnShow(parameters);
@@ -198,6 +191,13 @@ public class DlcActivationModalPanel : GuiModalPanel
 			tableitem.Y = this.currentY;
 			this.currentY += tableitem.Height + this.DlcContainer.VerticalSpacing;
 		}
+	}
+
+	protected override IEnumerator OnHide(bool instant)
+	{
+		yield return base.OnHide(instant);
+		base.GuiService.GetGuiPanel<MenuMainScreen>().RefreshContent();
+		yield break;
 	}
 
 	public AgePrimitiveLabel PanelTitle;

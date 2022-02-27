@@ -42,7 +42,7 @@ public class AchievementPrerequisite : Prerequisite
 				{
 					if (empire.IsControlledByAI)
 					{
-						return false;
+						return true;
 					}
 					if (this.sessionService == null)
 					{
@@ -67,13 +67,12 @@ public class AchievementPrerequisite : Prerequisite
 					uint num = 1u << (int)this.QuestAchievement;
 					foreach (Player player in playersByEmpireIndex)
 					{
-						uint lobbyMemberData = this.sessionService.Session.GetLobbyMemberData<uint>(player.SteamID, "QuestAchievementsCompletion", 0u);
-						if ((lobbyMemberData & num) == 0u)
+						if ((this.sessionService.Session.GetLobbyMemberData<uint>(player.SteamID, "QuestAchievementsCompletion", 0u) & num) == 0u)
 						{
 							return false;
 						}
 					}
-					if (playersByEmpireIndex.Length > 0)
+					if (playersByEmpireIndex.Length != 0)
 					{
 						return true;
 					}

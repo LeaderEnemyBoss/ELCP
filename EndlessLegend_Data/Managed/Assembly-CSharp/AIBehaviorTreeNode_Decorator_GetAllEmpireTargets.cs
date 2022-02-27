@@ -22,8 +22,7 @@ public class AIBehaviorTreeNode_Decorator_GetAllEmpireTargets : AIBehaviorTreeNo
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -59,6 +58,14 @@ public class AIBehaviorTreeNode_Decorator_GetAllEmpireTargets : AIBehaviorTreeNo
 			foreach (City city in agency2.Cities)
 			{
 				list.Add(city.GetValidDistrictToTarget(army));
+			}
+			foreach (Village item in agency2.ConvertedVillages)
+			{
+				list.Add(item);
+			}
+			foreach (Camp item2 in agency2.Camps)
+			{
+				list.Add(item2);
 			}
 		}
 		if (list.Count != 0)

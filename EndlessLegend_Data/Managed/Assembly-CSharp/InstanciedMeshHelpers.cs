@@ -107,33 +107,38 @@ public class InstanciedMeshHelpers
 		Diagnostics.Assert(meshBlock.MeshColors.Count % InstanciedMeshHelpers.PositionTexCoordWorldScaleTextureScalePixelsPerInstance == 0);
 	}
 
-	public static void AddLetterInstance(InstanciedMeshHolders instanciedMeshHolders, InstanciedMeshBlock meshBlock, UnityEngine.Vector3 position, int minPixelIndexX, int minPixelIndexY, int pixelCountX, int pixelCountY, UnityEngine.Vector2 worldScale, int meshIndex, bool useDynamicAtlas)
+	public static void AddLetterInstance(InstanciedMeshHolders instanciedMeshHolders, InstanciedMeshBlock meshBlock, UnityEngine.Vector3 position, UnityEngine.Vector2 minTexCoord, UnityEngine.Vector2 pixelCount, UnityEngine.Vector2 worldScale, int meshIndex)
 	{
 		Diagnostics.Assert(meshBlock.PixelsPerInstance == InstanciedMeshHelpers.LetterPixelsPerInstance);
 		Diagnostics.Assert(meshBlock.MeshColors.Count % InstanciedMeshHelpers.LetterPixelsPerInstance == 0);
 		Diagnostics.Assert(instanciedMeshHolders.GetPixelsPerInstance(meshIndex) == InstanciedMeshHelpers.LetterPixelsPerInstance);
 		Diagnostics.Assert(meshBlock != null);
 		Diagnostics.Assert(!meshBlock.Closed);
-		Diagnostics.Assert(minPixelIndexX >= 0);
-		Diagnostics.Assert(minPixelIndexY >= 0);
-		Diagnostics.Assert(pixelCountX >= 0);
-		Diagnostics.Assert((float)pixelCountX <= 255f);
-		Diagnostics.Assert(pixelCountY >= 0);
-		Diagnostics.Assert((float)pixelCountY <= 255f);
+		Diagnostics.Assert(minTexCoord.x >= 0f);
+		Diagnostics.Assert(minTexCoord.x <= 1f);
+		Diagnostics.Assert(minTexCoord.y >= 0f);
+		Diagnostics.Assert(minTexCoord.y <= 1f);
+		Diagnostics.Assert(pixelCount.x >= 0f);
+		Diagnostics.Assert(pixelCount.x <= 255f);
+		Diagnostics.Assert(pixelCount.y >= 0f);
+		Diagnostics.Assert(pixelCount.y <= 255f);
 		int val = 65535;
-		int num = Math.Max(0, Math.Min(val, (int)((position.x - instanciedMeshHolders.BBoxMin.x) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.x)));
-		int num2 = Math.Max(0, Math.Min(val, (int)((position.y - instanciedMeshHolders.BBoxMin.y) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.y)));
-		int num3 = Math.Max(0, Math.Min(val, (int)((position.z - instanciedMeshHolders.BBoxMin.z) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.z)));
-		int num4 = 4096;
-		int num5 = minPixelIndexX + ((!useDynamicAtlas) ? 0 : num4);
-		int num6 = Math.Max(0, Math.Min(val, (int)(worldScale.x * instanciedMeshHolders.Max16BitValueBBoxExtentScale)));
-		int num7 = Math.Max(0, Math.Min(val, (int)(worldScale.y * instanciedMeshHolders.Max16BitValueBBoxExtentScale)));
-		int num8 = 255;
-		int num9 = 65280;
-		meshBlock.MeshColors.Add(new Color32((byte)(num & num8), (byte)((num & num9) >> 8), (byte)(num2 & num8), (byte)((num2 & num9) >> 8)));
-		meshBlock.MeshColors.Add(new Color32((byte)(num3 & num8), (byte)((num3 & num9) >> 8), (byte)(num5 & num8), (byte)((num5 & num9) >> 8)));
-		meshBlock.MeshColors.Add(new Color32((byte)(num6 & num8), (byte)((num6 & num9) >> 8), (byte)(num7 & num8), (byte)((num7 & num9) >> 8)));
-		meshBlock.MeshColors.Add(new Color32((byte)(minPixelIndexY & num8), (byte)((minPixelIndexY & num9) >> 8), (byte)pixelCountX, (byte)pixelCountY));
+		float num = 65535f;
+		int num2 = Math.Max(0, Math.Min(val, (int)((position.x - instanciedMeshHolders.BBoxMin.x) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.x)));
+		int num3 = Math.Max(0, Math.Min(val, (int)((position.y - instanciedMeshHolders.BBoxMin.y) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.y)));
+		int num4 = Math.Max(0, Math.Min(val, (int)((position.z - instanciedMeshHolders.BBoxMin.z) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.z)));
+		int num5 = Math.Max(0, Math.Min(val, (int)(minTexCoord.x * num)));
+		int num6 = Math.Max(0, Math.Min(val, (int)(minTexCoord.y * num)));
+		int num7 = Math.Max(0, Math.Min(val, (int)(worldScale.x * instanciedMeshHolders.Max16BitValueBBoxExtentScale)));
+		int num8 = Math.Max(0, Math.Min(val, (int)(worldScale.y * instanciedMeshHolders.Max16BitValueBBoxExtentScale)));
+		int num9 = Math.Max(0, Math.Min(255, (int)pixelCount.x));
+		int num10 = Math.Max(0, Math.Min(255, (int)pixelCount.y));
+		int num11 = 255;
+		int num12 = 65280;
+		meshBlock.MeshColors.Add(new Color32((byte)(num2 & num11), (byte)((num2 & num12) >> 8), (byte)(num3 & num11), (byte)((num3 & num12) >> 8)));
+		meshBlock.MeshColors.Add(new Color32((byte)(num4 & num11), (byte)((num4 & num12) >> 8), (byte)(num5 & num11), (byte)((num5 & num12) >> 8)));
+		meshBlock.MeshColors.Add(new Color32((byte)(num7 & num11), (byte)((num7 & num12) >> 8), (byte)(num8 & num11), (byte)((num8 & num12) >> 8)));
+		meshBlock.MeshColors.Add(new Color32((byte)(num6 & num11), (byte)((num6 & num12) >> 8), (byte)num9, (byte)num10));
 		meshBlock.MeshIndices.Add(meshIndex);
 		Diagnostics.Assert(meshBlock.MeshColors.Count % InstanciedMeshHelpers.LetterPixelsPerInstance == 0);
 	}
@@ -163,6 +168,37 @@ public class InstanciedMeshHelpers
 	{
 		int val = 65535;
 		return Math.Max(0, Math.Min(val, (int)((y - instanciedMeshHolders.BBoxMin.y) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.y)));
+	}
+
+	public static void AddLetterInstance(InstanciedMeshHolders instanciedMeshHolders, InstanciedMeshBlock meshBlock, UnityEngine.Vector3 position, int minPixelIndexX, int minPixelIndexY, int pixelCountX, int pixelCountY, UnityEngine.Vector2 worldScale, int meshIndex, bool useDynamicAtlas)
+	{
+		Diagnostics.Assert(meshBlock.PixelsPerInstance == InstanciedMeshHelpers.LetterPixelsPerInstance);
+		Diagnostics.Assert(meshBlock.MeshColors.Count % InstanciedMeshHelpers.LetterPixelsPerInstance == 0);
+		Diagnostics.Assert(instanciedMeshHolders.GetPixelsPerInstance(meshIndex) == InstanciedMeshHelpers.LetterPixelsPerInstance);
+		Diagnostics.Assert(meshBlock != null);
+		Diagnostics.Assert(!meshBlock.Closed);
+		Diagnostics.Assert(minPixelIndexX >= 0);
+		Diagnostics.Assert(minPixelIndexY >= 0);
+		Diagnostics.Assert(pixelCountX >= 0);
+		Diagnostics.Assert((float)pixelCountX <= 255f);
+		Diagnostics.Assert(pixelCountY >= 0);
+		Diagnostics.Assert((float)pixelCountY <= 255f);
+		int val = 65535;
+		int num = Math.Max(0, Math.Min(val, (int)((position.x - instanciedMeshHolders.BBoxMin.x) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.x)));
+		int num2 = Math.Max(0, Math.Min(val, (int)((position.y - instanciedMeshHolders.BBoxMin.y) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.y)));
+		int num3 = Math.Max(0, Math.Min(val, (int)((position.z - instanciedMeshHolders.BBoxMin.z) * instanciedMeshHolders.Max16BitValueOverBBoxExtent.z)));
+		int num4 = 4096;
+		int num5 = minPixelIndexX + ((!useDynamicAtlas) ? 0 : num4);
+		int num6 = Math.Max(0, Math.Min(val, (int)(worldScale.x * instanciedMeshHolders.Max16BitValueBBoxExtentScale)));
+		int num7 = Math.Max(0, Math.Min(val, (int)(worldScale.y * instanciedMeshHolders.Max16BitValueBBoxExtentScale)));
+		int num8 = 255;
+		int num9 = 65280;
+		meshBlock.MeshColors.Add(new Color32((byte)(num & num8), (byte)((num & num9) >> 8), (byte)(num2 & num8), (byte)((num2 & num9) >> 8)));
+		meshBlock.MeshColors.Add(new Color32((byte)(num3 & num8), (byte)((num3 & num9) >> 8), (byte)(num5 & num8), (byte)((num5 & num9) >> 8)));
+		meshBlock.MeshColors.Add(new Color32((byte)(num6 & num8), (byte)((num6 & num9) >> 8), (byte)(num7 & num8), (byte)((num7 & num9) >> 8)));
+		meshBlock.MeshColors.Add(new Color32((byte)(minPixelIndexY & num8), (byte)((minPixelIndexY & num9) >> 8), (byte)pixelCountX, (byte)pixelCountY));
+		meshBlock.MeshIndices.Add(meshIndex);
+		Diagnostics.Assert(meshBlock.MeshColors.Count % InstanciedMeshHelpers.LetterPixelsPerInstance == 0);
 	}
 
 	public static readonly int PositionForwardScaleZPixelsPerInstance = 3;

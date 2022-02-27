@@ -146,7 +146,7 @@
   <FactionAffinity                  Name="AffinityMezari"                       SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
     <SimulationDescriptorReference  Name="AffinityMezari"/>
     <DefaultAffinityMapping         Name="AffinityMappingMezari"/>
-    <Personality                    Name="PersonalityAffinityVaulters"/>
+    <Personality                    Name="PersonalityAffinityMezari"/>
     <SubTrait                       Name="FactionTraitVaultersMainQuest"                                              Hidden="true"/>
     <SubTrait                       Name="FactionTraitMajorFaction"                                                   Hidden="true"/>
     <SubTrait                       Name="FactionTraitAffinityStrategic"/>        <!-- Affinity: Holy Resource -->
@@ -209,7 +209,7 @@
     <IntegrationDescriptor          Name="SeaDemonsIntegrationDescriptor1"/>
     <Command                        Name="CreateArmy"                           Arguments="UnitProfileSeaDemonsHero5,UnitDesignSeaDemonsSettler#1,UnitDesignSeaDemonsMastermind#1,UnitDesignSeaDemonsMastermind#1"/>
     <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
-    <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Conditional">
+    <!--<OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Conditional">
       <Key Name="30"/>
       <Key Name="40"/>
       <Key Name="50"/>
@@ -224,11 +224,11 @@
       <Key Name="LargeIslands"/>
       <Key Name="Islands"/>
       <Key Name="Custom"/>
-    </OptionDefinitionConstraint>
+    </OptionDefinitionConstraint>-->
   </FactionAffinity>
     
   <!-- Flames -->
-  <FactionAffinity                  Name="AffinityFlames"                       SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+  <FactionAffinity                  Name="AffinityFlames"                   SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
     <SimulationDescriptorReference  Name="AffinityFlames"/>
     <DefaultAffinityMapping         Name="AffinityMappingFlames"/>
     <Personality                    Name="PersonalityAffinityFlames"/>
@@ -242,14 +242,14 @@
     <IntegrationDescriptor          Name="FlamesIntegrationDescriptor1"/>
     <Command                        Name="CreateArmy"                           Arguments="UnitProfileFlamesHero1,UnitDesignFlamesSettler#1,UnitDesignFlamesGolem#1,UnitDesignFlamesGolem#1"/>
     <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
-    <OptionDefinitionConstraint OptionName="VolcanicActivity" Type="Conditional">
+    <!--<OptionDefinitionConstraint OptionName="VolcanicActivity" Type="Conditional">
       <Key Name="Some"/>
       <Key Name="Many"/>
-    </OptionDefinitionConstraint>
+    </OptionDefinitionConstraint>-->
   </FactionAffinity>
 
   <!-- Mimics -->
-  <FactionAffinity                  Name="AffinityMimics"                       SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
+  <FactionAffinity                  Name="AffinityMimics"                   SubCategory="MajorFactionAffinity"    Hidden="false" Cost="80">
     <SimulationDescriptorReference  Name="AffinityMimics"/>
     <DefaultAffinityMapping         Name="AffinityMappingMimics"/>
     <Personality                    Name="PersonalityAffinityMimics"/>
@@ -261,9 +261,16 @@
     <SubTrait                       Name="FactionTraitMimicsUnit2"/>
     <SubTrait                       Name="FactionTraitMimicsUnit3"/>
     <SubTrait                       Name="FactionTraitMimicsHeatWave"/>         <!-- Heat wave effect -->
-    <IntegrationDescriptor          Name="MimicsIntegrationDescriptor1"/>
+    <IntegrationDescriptor          Name="MimicsIntegrationDescriptor1"/>		<!-- LEB: Why was this commented out? -->
     <Command                        Name="CreateArmy"                           Arguments="UnitProfileMimicsHero1,UnitDesignMimicsSettler#1,UnitDesignMimicsUnit1#1,UnitDesignMimicsUnit1#1"/>
     <Command                        Name="TransferResources"                    Arguments="EmpireMoney,50"/>
+  </FactionAffinity>
+
+  <!-- Spectator -->
+  <FactionAffinity                  Name="AffinityELCPSpectator"                SubCategory="MajorFactionAffinity"   Hidden="true">
+    <SimulationDescriptorReference  Name="AffinityELCPSpectator"/>
+	<DefaultAffinityMapping         Name="AffinityMappingELCPSpectator"/>
+	<Personality                    Name="PersonalityAffinityMimics"/>
   </FactionAffinity>
 
   <!-- Faction Tutorial-->
@@ -421,15 +428,15 @@
 
   <!-- Kaijus -->
   
-  <FactionAffinity                  Name="AffinityKaijus1"                      SubCategory="KaijuFactionAffinity"    Hidden="true">
+  <FactionAffinity                  Name="AffinityKaijus1"                    SubCategory="KaijuFactionAffinity"    Hidden="true">
     <SimulationDescriptorReference  Name="AffinityKaijus1"/>
   </FactionAffinity>
   
-  <FactionAffinity                  Name="AffinityKaijus2"                      SubCategory="KaijuFactionAffinity"    Hidden="true">
+  <FactionAffinity                  Name="AffinityKaijus2"                    SubCategory="KaijuFactionAffinity"    Hidden="true">
     <SimulationDescriptorReference  Name="AffinityKaijus2"/>
   </FactionAffinity>
 
-  <FactionAffinity                  Name="AffinityKaijus3"                      SubCategory="KaijuFactionAffinity"    Hidden="true">
+  <FactionAffinity                  Name="AffinityKaijus3"                    SubCategory="KaijuFactionAffinity"    Hidden="true">
     <SimulationDescriptorReference  Name="AffinityKaijus3"/>
   </FactionAffinity>
 

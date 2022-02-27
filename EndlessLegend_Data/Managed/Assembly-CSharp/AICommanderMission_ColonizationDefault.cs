@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -90,6 +91,8 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 	public override void Initialize(AICommander aiCommander)
 	{
 		base.Initialize(aiCommander);
+		IGameService service = Services.GetService<IGameService>();
+		this.game = (service.Game as global::Game);
 	}
 
 	public bool IsRegionColonized()
@@ -101,6 +104,7 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 	{
 		base.Release();
 		this.RegionTarget = null;
+		this.game = null;
 	}
 
 	public override void SetParameters(AICommanderMissionDefinition missionDefinition, params object[] parameters)
@@ -134,9 +138,15 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 
 	protected override AICommanderMission.AICommanderMissionCompletion GetCompletionFor(AIArmyMission.AIArmyMissionErrorCode errorCode, out TickableState tickableState)
 	{
+		if (errorCode == AIArmyMission.AIArmyMissionErrorCode.NoTargetSelected && base.AIDataArmyGUID.IsValid && !this.IsMissionCompleted() && !this.IsRegionColonized())
+		{
+			tickableState = TickableState.Optional;
+			return AICommanderMission.AICommanderMissionCompletion.Running;
+		}
 		if (errorCode == AIArmyMission.AIArmyMissionErrorCode.InvalidDestination && this.PositionIndex + 1 < this.ListOfPosition.Length)
 		{
-			this.PositionIndex++;
+			int positionIndex = this.PositionIndex;
+			this.PositionIndex = positionIndex + 1;
 			tickableState = TickableState.NoTick;
 			return AICommanderMission.AICommanderMissionCompletion.Running;
 		}
@@ -146,7 +156,11 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 	protected override AICommanderMission.AICommanderMissionCompletion GetCompletionWhenSuccess(AIData_Army aiArmyData, out TickableState tickableState)
 	{
 		tickableState = TickableState.Optional;
-		return AICommanderMission.AICommanderMissionCompletion.Success;
+		if (this.IsMissionCompleted() || this.IsRegionColonized())
+		{
+			return AICommanderMission.AICommanderMissionCompletion.Success;
+		}
+		return AICommanderMission.AICommanderMissionCompletion.Running;
 	}
 
 	protected override void GetNeededArmyPower(out float minMilitaryPower, out bool isMaxPower, out bool perUnitTest)
@@ -163,7 +177,12 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 
 	protected override bool IsMissionCompleted()
 	{
-		return this.RegionTarget == null || this.RegionTarget.IsRegionColonized();
+		if (this.RegionTarget == null || base.AIDataArmyGUID == GameEntityGUID.Zero)
+		{
+			return true;
+		}
+		Army army = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID).Army;
+		return army == null || !army.GUID.IsValid || (army.GetPropertyValue(SimulationProperties.Movement) <= 0.01f && this.RegionTarget.IsRegionColonized());
 	}
 
 	protected override bool MissionCanAcceptHero()
@@ -191,19 +210,82 @@ public class AICommanderMission_ColonizationDefault : AICommanderMissionWithRequ
 	protected override void Success()
 	{
 		base.Success();
+		base.SetArmyFree();
 	}
 
 	protected override bool TryComputeArmyMissionParameter()
 	{
-		if (this.RegionTarget == null)
+		if (this.RegionTarget == null || base.AIDataArmyGUID == GameEntityGUID.Zero)
 		{
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Fail;
 			return false;
 		}
 		base.ArmyMissionParameters.Clear();
-		return !(base.AIDataArmyGUID == GameEntityGUID.Zero) && (this.PositionIndex < this.ListOfPosition.Length && base.TryCreateArmyMission("ColonizeAt", new List<object>
+		Army army = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID).Army;
+		if (army == null || !army.GUID.IsValid)
+		{
+			return false;
+		}
+		if (this.game.Turn == 0 && army.StandardUnits != null && army.StandardUnits.Count > 1 && army.GetPropertyValue(SimulationProperties.Movement) > 1f)
+		{
+			List<Unit> list = army.StandardUnits.ToList<Unit>().FindAll((Unit U) => !U.IsSettler);
+			if (list != null)
+			{
+				IGameService service = Services.GetService<IGameService>();
+				IPathfindingService service2 = service.Game.Services.GetService<IPathfindingService>();
+				IWorldPositionningService service3 = service.Game.Services.GetService<IWorldPositionningService>();
+				WorldPosition validArmySpawningPosition = AILayer_ArmyRecruitment.GetValidArmySpawningPosition(army, service3, service2);
+				if (validArmySpawningPosition.IsValid)
+				{
+					OrderTransferGarrisonToNewArmy order = new OrderTransferGarrisonToNewArmy(base.Commander.Empire.Index, army.GUID, list.ConvertAll<GameEntityGUID>((Unit unit) => unit.GUID).ToArray(), validArmySpawningPosition, StaticString.Empty, false, true, true);
+					Ticket ticket;
+					base.Commander.Empire.PlayerControllers.Server.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderSplitUnit));
+					return false;
+				}
+			}
+		}
+		if (this.RegionTarget == null || this.RegionTarget.IsRegionColonized() || !army.IsSettler)
+		{
+			return base.TryCreateArmyMission("MajorFactionRoaming", new List<object>
+			{
+				this.RegionTarget.Index,
+				false
+			});
+		}
+		if (base.AIDataArmyGUID == GameEntityGUID.Zero || this.PositionIndex >= this.ListOfPosition.Length)
+		{
+			return false;
+		}
+		if (base.Commander.Empire.GetAgency<DepartmentOfTheInterior>().Cities.Count == 0)
+		{
+			return base.TryCreateArmyMission("ColonizeAtImmediatly", new List<object>
+			{
+				this.ListOfPosition[this.PositionIndex]
+			});
+		}
+		return base.TryCreateArmyMission("ColonizeAt", new List<object>
 		{
 			this.ListOfPosition[this.PositionIndex]
-		}));
+		});
 	}
+
+	private void OrderSplitUnit(object sender, TicketRaisedEventArgs e)
+	{
+		if (e.Result == PostOrderResponse.Processed)
+		{
+			DepartmentOfEducation agency = base.Commander.Empire.GetAgency<DepartmentOfEducation>();
+			if (agency.Heroes.Count > 0)
+			{
+				OrderChangeHeroAssignment order = new OrderChangeHeroAssignment(base.Commander.Empire.Index, agency.Heroes[0].GUID, (e.Order as OrderTransferGarrisonToNewArmy).ArmyGuid);
+				base.Commander.Empire.PlayerControllers.AI.PostOrder(order);
+			}
+			AILayer_ArmyManagement layer = base.Commander.AIPlayer.GetEntity<AIEntity_Empire>().GetLayer<AILayer_ArmyManagement>();
+			if (layer != null)
+			{
+				layer.AssignJoblessArmies();
+			}
+		}
+	}
+
+	private global::Game game;
 }

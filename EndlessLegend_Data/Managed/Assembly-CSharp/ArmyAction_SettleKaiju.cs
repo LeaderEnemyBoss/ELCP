@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Amplitude;
+using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 
 public class ArmyAction_SettleKaiju : ArmyAction
 {
@@ -67,6 +69,11 @@ public class ArmyAction_SettleKaiju : ArmyAction
 			return false;
 		}
 		Kaiju kaiju = kaijuArmy.Kaiju;
+		if (Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>().IsWaterTile(kaijuArmy.WorldPosition))
+		{
+			failureFlags.Add(ArmyAction.NoCanDoWhileOnFrozenWaterTile);
+			return false;
+		}
 		if (kaiju.CanChangeToGarrisonMode())
 		{
 			return true;
@@ -75,7 +82,7 @@ public class ArmyAction_SettleKaiju : ArmyAction
 		return false;
 	}
 
-	public override void Execute(Army army, PlayerController playerController, out Ticket ticket, EventHandler<TicketRaisedEventArgs> ticketRaisedEventHandler, params object[] parameters)
+	public override void Execute(Army army, global::PlayerController playerController, out Ticket ticket, EventHandler<TicketRaisedEventArgs> ticketRaisedEventHandler, params object[] parameters)
 	{
 		ticket = null;
 		ArmyAction.FailureFlags.Clear();

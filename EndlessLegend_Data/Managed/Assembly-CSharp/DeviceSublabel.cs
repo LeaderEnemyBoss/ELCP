@@ -110,9 +110,9 @@ public class DeviceSublabel : MonoBehaviour
 		AgeModifierSector component = this.ChargesIncrement.GetComponent<AgeModifierSector>();
 		component.StartMaxAngle = this.ChargesIncrement.MinAngle;
 		component.EndMaxAngle = Mathf.Round((1f - Mathf.Clamp(num3 / num2, 0f, 1f)) * 360f);
-		component = this.ChargesGauge.GetComponent<AgeModifierSector>();
-		component.StartMinAngle = this.ChargesIncrement.MinAngle;
-		component.EndMinAngle = Mathf.Round((1f - Mathf.Clamp(num3 / num2, 0f, 1f)) * 360f);
+		AgeModifierSector component2 = this.ChargesGauge.GetComponent<AgeModifierSector>();
+		component2.StartMinAngle = this.ChargesIncrement.MinAngle;
+		component2.EndMinAngle = Mathf.Round((1f - Mathf.Clamp(num3 / num2, 0f, 1f)) * 360f);
 		if (this.AgeTransform.AgeTooltip != null)
 		{
 			this.AgeTransform.AgeTooltip.Content = this.tooltip;

@@ -4,150 +4,339 @@
   <!-- FIDS RESOURCES -->
   <BoosterDefinition Name="BoosterFood" RewardType="BoosterFood" Duration="1" BoosterType="DelayingTime" AutoActivation="false" TargetType="City" TargetPath="ClassCity,!CityStatusInfected">
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFood</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterFood"/>
     </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFood</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodFast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFood</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodSlow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFood</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodEndless"/>
+    </Effect>
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus1</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterFoodBonus1"/>
     </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodBonus1Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodBonus1Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodBonus1Endless"/>
+    </Effect>
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus2</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterFoodBonus2"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodBonus2Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodBonus2Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterFoodBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterFoodBonus2Endless"/>
     </Effect>
   </BoosterDefinition>
 
   <BoosterDefinition Name="BoosterIndustry" RewardType="BoosterIndustry" Duration="1" BoosterType="DelayingTime" AutoActivation="false" TargetType="City" TargetPath="ClassCity,!CityStatusInfected">
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustry</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterIndustry"/>
     </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustry</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustrySlow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustry</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryFast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustry</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryEndless"/>
+    </Effect>
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterIndustryBonus1"/>
     </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus1Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus1Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus1Endless"/>
+    </Effect>
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterIndustryBonus2"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus2Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus2Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus2Endless"/>
     </Effect>
   </BoosterDefinition>
 
   <BoosterDefinition Name="BoosterScience" RewardType="BoosterScience" Duration="1" BoosterType="DelayingTime" AutoActivation="false">
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScience</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterScience"/>
     </Effect>
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScience</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceFast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScience</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceSlow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScience</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceEndless"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus1</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterScienceBonus1"/>
     </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceBonus1Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceBonus1Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceBonus1Endless"/>
+    </Effect>
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus2</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterScienceBonus2"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceBonus2Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceBonus2Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterScienceBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterScienceBonus2Endless"/>
     </Effect>
   </BoosterDefinition>
 
   <BoosterDefinition Name="FlamesIndustryBooster" RewardType="FlamesIndustryBooster" Duration="1" BoosterType="DelayingTime" Unsalable="true" AutoActivation="false" TargetType="City" TargetPath="ClassCity,!CityStatusInfected">
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <SimulationDescriptorReference Name="BoosterIndustry"/>
     </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryFast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustrySlow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryEndless"/>
+    </Effect>
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterIndustryBonus1"/>
     </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus1Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus1Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus1</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus1Endless"/>
+    </Effect>
     <Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterIndustryBonus2"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus2Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus2Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyBoosterIndustryBonus2</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterIndustryBonus2Endless"/>
     </Effect>
     <CustomCost ResourceName="SiegeDamage" Instant="true">100</CustomCost>
   </BoosterDefinition>
 
   <!-- LUXURY RESOURCES -->
-  <BoosterDefinition Name="BoosterLuxury1" RewardType="BoosterLuxury1" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury1" RewardType="BoosterLuxury1" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury1" />
     <SimulationDescriptorReference Name="CommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury1" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury2" RewardType="BoosterLuxury2" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury2" RewardType="BoosterLuxury2" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury2" />
     <SimulationDescriptorReference Name="CommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury2" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury3" RewardType="BoosterLuxury3" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury3" RewardType="BoosterLuxury3" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury3" />
     <SimulationDescriptorReference Name="CommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury3" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury4" RewardType="BoosterLuxury4" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury4" RewardType="BoosterLuxury4" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury4" />
     <SimulationDescriptorReference Name="CommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury4" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury5" RewardType="BoosterLuxury5" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury5" RewardType="BoosterLuxury5" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury5" />
     <SimulationDescriptorReference Name="CommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury5" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury6" RewardType="BoosterLuxury6" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury6" RewardType="BoosterLuxury6" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury6" />
     <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury6" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury7" RewardType="BoosterLuxury7" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury7" RewardType="BoosterLuxury7" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury7" />
     <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury7" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury8" RewardType="BoosterLuxury8" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury8" RewardType="BoosterLuxury8" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury8" />
     <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury8" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury9" RewardType="BoosterLuxury9" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury9" RewardType="BoosterLuxury9" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury9" />
     <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury9" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury10" RewardType="BoosterLuxury10" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury10" RewardType="BoosterLuxury10" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury10" />
     <SimulationDescriptorReference Name="UncommonLuxuryBooster" />
     <CustomCost ResourceName="Luxury10" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury11" RewardType="BoosterLuxury11" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury11" RewardType="BoosterLuxury11" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury11" />
     <SimulationDescriptorReference Name="RareLuxuryBooster" />
     <CustomCost ResourceName="Luxury11" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury12" RewardType="BoosterLuxury12" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury12" RewardType="BoosterLuxury12" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury12" />
     <SimulationDescriptorReference Name="RareLuxuryBooster" />
     <CustomCost ResourceName="Luxury12" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury13" RewardType="BoosterLuxury13" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury13" RewardType="BoosterLuxury13" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury13" />
     <SimulationDescriptorReference Name="RareLuxuryBooster" />
     <CustomCost ResourceName="Luxury13" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury14" RewardType="BoosterLuxury14" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury14" RewardType="BoosterLuxury14" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury14" />
     <SimulationDescriptorReference Name="RareLuxuryBooster" />
     <CustomCost ResourceName="Luxury14" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
   </BoosterDefinition>
 
-  <BoosterDefinition Name="BoosterLuxury15" RewardType="BoosterLuxury15" Duration="10">
+  <BoosterDefinition Name="BoosterLuxury15" RewardType="BoosterLuxury15" Duration="10" BoosterType="ResettingTime">
     <SimulationDescriptorReference Name="EmpireBoosterLuxury15" />
     <SimulationDescriptorReference Name="RareLuxuryBooster" />
     <CustomCost ResourceName="Luxury15" Instant="true">(5 + ($Property(EmpireTypeMajor:EmpireScaleFactor) * 5)) * $Property(EmpireTypeMajor:BoosterCostFactor)</CustomCost>
@@ -230,14 +419,26 @@
   <!-- NECROPHAGES FOOD BOOSTER -->
   <BoosterDefinition Name="BoosterCadavers" RewardType="BoosterCadavers" Duration="1" BoosterType="DelayingTime" AutoActivation="false" Unsalable="true" TargetType="City" TargetPath="ClassCity">
     <Effect>
+	  <!--<PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>-->
       <SimulationDescriptorReference Name="BoosterCadaver"/>
     </Effect>
+	<!--<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterCadaverFast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterCadaverSlow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <SimulationDescriptorReference Name="BoosterCadaverEndless"/>
+    </Effect>-->
     <Effect>
       <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
       <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
       <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra2,TechnologyEra1</PathPrerequisite>
       <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
-      <Command        Name="CreateUnit"   AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra1"/>
       <Command        Name="CreateUnit"   AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra1"/>
     </Effect>
     <Effect>
@@ -246,14 +447,12 @@
       <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra3,TechnologyEra2</PathPrerequisite>
       <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
       <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra2"/>
-      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra2"/>
     </Effect>
     <Effect>
       <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
       <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
       <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra4,TechnologyEra3</PathPrerequisite>
       <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
-      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra3"/>
       <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra3"/>
     </Effect>
     <Effect>
@@ -262,14 +461,12 @@
       <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra5,TechnologyEra4</PathPrerequisite>
       <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
       <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra4"/>
-      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra4"/>
     </Effect>
     <Effect>
       <PathPrerequisite Flags="Prerequisite,Discard">.../ClassEmpire,FactionTraitNecrophagesHeatWave</PathPrerequisite>
       <PathPrerequisite Inverted ="false" Flags="Prerequisite">#HeatWave</PathPrerequisite>
       <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,!TechnologyEra6,TechnologyEra5</PathPrerequisite>
       <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
-      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra5"/>
       <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra5"/>
     </Effect>
     <Effect>
@@ -278,13 +475,28 @@
       <PathPrerequisite Flags="Prerequisite,TechnologyEra">../EmpireTypeMajor/ClassResearch,TechnologyEra6</PathPrerequisite>
       <SimulationDescriptorReference Name="BoosterBattlebornHeatWave"/>
       <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra6"/>
-      <Command        Name="CreateUnit"  AllowGarrisonOverflow="true"    Arguments="UnitDesignNecrophagesUndeadEra6"/>
     </Effect>
     <Effect>
+	  <!--<PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedNormal</PathPrerequisite>-->
       <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyNecrophages11</TechnologyPrerequisite>
       <SimulationDescriptorReference Name="BoosterCadaverBonus1"/>
     </Effect>
-    <CustomCost ResourceName="Cadaver" Instant="true">8</CustomCost>
+	<!--<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedFast</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyNecrophages11</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterCadaverBonus1Fast"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedSlow</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyNecrophages11</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterCadaverBonus1Slow"/>
+    </Effect>
+	<Effect>
+	  <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard">.../ClassEmpire,GameSpeedEndless</PathPrerequisite>
+      <TechnologyPrerequisite Inverted="false" Flags="Prerequisite,Discard,Technology">TechnologyNecrophages11</TechnologyPrerequisite>
+      <SimulationDescriptorReference Name="BoosterCadaverBonus1Endless"/>
+    </Effect>-->
+    <CustomCost ResourceName="Cadaver" Instant="true">2 * $Property(../ClassEmpire:GameSpeedMultiplier) + 6</CustomCost>
   </BoosterDefinition>
 
   <!-- EARTH COLOSSUS -->

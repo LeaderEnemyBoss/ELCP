@@ -6,6 +6,8 @@
   <SimulationDescriptor Name="UnitAbilityInstantHeal"                             Type="UnitAbilityDescriptor"/>
 
   <SimulationDescriptor Name="UnitAbilityDiseaseImmunity"                         Type="UnitAbilityDescriptor"/>
+  <!-- ELCP: Descriptor for temporary buffs, so they dont override natural immunities -->
+  <SimulationDescriptor Name="UnitAbilityDiseaseImmunityTemp"                         Type="UnitAbilityDescriptor"/>
 
   <SimulationDescriptor Name="UnitAbilitySharedWisdomDescriptor"                  Type="UnitAbilityDescriptor"/>
 
@@ -25,7 +27,7 @@
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="LifeSiphonHealAmount"                       BaseValue="0" IsSealed="true"/>
     </SimulationPropertyDescriptors>
-  </SimulationDescriptor>/>
+  </SimulationDescriptor>
   <SimulationDescriptor Name="WithUnitAbilityLowDamage"                           Type="UnitAbilityDescriptor"/>
   <SimulationDescriptor Name="WithUnitAbilityIncreasedFire"                       Type="UnitAbilityDescriptor"/>
   <SimulationDescriptor Name="WithUnitAbilityUnleashedPotential"                  Type="UnitAbilityDescriptor"/>
@@ -477,30 +479,32 @@
   <!-- Slavery: + 1 FI / Village -->
   <SimulationDescriptor Name="UnitAbilitySlaveryDescriptor1"                      Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <BinarySimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"            Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>
-      <BinarySimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"        Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>
+	<CountSimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation" Operation="Addition" Value="1" Path="../ClassCity" CountPath="ClassCity/!ConvertedVillage,!PointOfInterestStatusPillaged,RebuiltVillage,PacifiedVillage" IsBindOnSource="false"/>
+	<CountSimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation" Operation="Addition" Value="1" Path="../ClassCity" CountPath="ClassCity/!ConvertedVillage,!PointOfInterestStatusPillaged,RebuiltVillage,PacifiedVillage" IsBindOnSource="false"/>
+    <!--  <BinarySimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"            Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"        Operation="Addition" BinaryOperation="Multiplication" Left="1" Right="$(NumberOfRebuildPacifiedVillage)" Path="../ClassCity" IsBindOnSource="false"/>-->
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Buyout Bonus -->
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor1"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.1" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true"    Operation="Addition" Value="0.1" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true"    Operation="Addition" Value="0.1" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor2"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.2" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.2" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"         MultiplicativeStacking="true"   Operation="Addition" Value="0.2" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"     MultiplicativeStacking="true"   Operation="Addition" Value="0.2" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="UnitAbilityBuyoutBonusDescriptor3"                  Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"            Operation="Addition" Value="0.3" Path="../ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"        Operation="Addition" Value="0.3" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="UnitBuyoutReduction"        MultiplicativeStacking="true"   Operation="Addition" Value="0.3" Path="../ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="BuildingBuyoutReduction"    MultiplicativeStacking="true"    Operation="Addition" Value="0.3" Path="../ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1900,6 +1904,11 @@
   <SimulationDescriptor Name="UnitAbilityKaijuBrotherhoodDescriptor1"                 Type="UnitAbilityDescriptor">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="InitialAgainstKaijuEfficiency" Value="0.5" Operation="Subtraction" />
+	  <SimulationModifierDescriptor TargetProperty="AttributeAttack"            Operation="Percent"  Value="0.20" Path="../Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDefense"           Operation="Percent"  Value="0.20" Path="../Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeDamage"            Operation="Percent"  Value="0.20" Path="../Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="AttributeInitiative"        Operation="Percent"  Value="0.20" Path="../Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
+      <SimulationModifierDescriptor TargetProperty="MaximumHealth"              Operation="Percent"  Value="0.20" Path="../Garrison/ClassUnit,UnitTypeKaijusMilitia"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

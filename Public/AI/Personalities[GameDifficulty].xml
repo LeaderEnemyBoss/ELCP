@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
+<!-- ELCP\LeaderenemyBoss:
+	-Added <AIEntity_Empire> tags
+	-removed some attitude modifiers (they never worked anyway before because of missing AIEntity_Empire) to prevent overaggression in higher diffs
+	-high dif AI more likely to research boosters (since their cities are often idle)
+	-fixed blackmarket nullification multiplier not working (Multiplier not being a valid element, see sourcecode
+	-Make Roving clans more likely to remove market ban on higher diffs (for a price ..)
+	-Faster Tech Buyout on higher diffs
+	-made diplomatic actions a bit more common on higher difficulties
+	-raised hero limits on higher diffs
+	-raised warunit limits on higher diffs
+-->
     <AIPersonalityDefinition Name="PersonalityMajorFactionGameDifficultyNewbie">
         <Multipliers>
             <!-- AI Registry -->
@@ -9,6 +19,7 @@
                   <NumberOfTurnInBesiege>1.5</NumberOfTurnInBesiege>
                   
                   <!-- The degree to which various attitude modifiers are taken into account -->
+				  <AIEntity_Empire>
                   <AILayer_Attitude>
                     <AttitudeScorePeaceful>1.5</AttitudeScorePeaceful>
                     <AttitudeScorePositiveContract>1.5</AttitudeScorePositiveContract>
@@ -17,11 +28,11 @@
                     <AttitudeScoreTerraformedInMyTerritoryPositive>1.5</AttitudeScoreTerraformedInMyTerritoryPositive>
                     <AttitudeScoreTerraformedNearMyArmiesPositive>1.5</AttitudeScoreTerraformedNearMyArmiesPositive>
                     <AttitudeScoreKaijuPlacedNearMyCityPositive>1.5</AttitudeScoreKaijuPlacedNearMyCityPositive>
-                    <AttitudeScoreTerraformedInMyTerritoryNegative>1.5</AttitudeScoreTerraformedInMyTerritoryNegative>
-                    <AttitudeScoreTerraformedNearMyArmiesNegative>1.5</AttitudeScoreTerraformedNearMyArmiesNegative>
-                    <AttitudeScoreCreepingNodeUpgradeComplete>1.5</AttitudeScoreCreepingNodeUpgradeComplete>
-                    <AttitudeScoreKaijuAttacked>1.5</AttitudeScoreKaijuAttacked>
-                    <AttitudeScoreKaijuPlacedNearMyCityNegative>1.5</AttitudeScoreKaijuPlacedNearMyCityNegative>
+                    <AttitudeScoreTerraformedInMyTerritoryNegative>0.5</AttitudeScoreTerraformedInMyTerritoryNegative>
+                    <AttitudeScoreTerraformedNearMyArmiesNegative>0.5</AttitudeScoreTerraformedNearMyArmiesNegative>
+                    <AttitudeScoreCreepingNodeUpgradeComplete>0.5</AttitudeScoreCreepingNodeUpgradeComplete>
+                    <AttitudeScoreKaijuAttacked>0.5</AttitudeScoreKaijuAttacked>
+                    <AttitudeScoreKaijuPlacedNearMyCityNegative>0.5</AttitudeScoreKaijuPlacedNearMyCityNegative>
                     <AttitudeScoreLastWar>0.5</AttitudeScoreLastWar>
                     <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>0.5</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
                     <AttitudeScoreAggressiveColonization>0.5</AttitudeScoreAggressiveColonization>
@@ -51,9 +62,19 @@
                     <AttitudeScoreVictoryAlertSupremacy>0.5</AttitudeScoreVictoryAlertSupremacy>
                     <AttitudeScoreVictoryAlertQuest>0.5</AttitudeScoreVictoryAlertQuest>
                   </AILayer_Attitude>
+				  <AILayer_Research>
+						<IdealBuyoutPeriod>1.5</IdealBuyoutPeriod>
+				  </AILayer_Research>					
+				  <AILayer_HeroAssignation>
+						<MaximumTurnForHero>1.5</MaximumTurnForHero>
+				  </AILayer_HeroAssignation>
+				  <AILayer_Victory>
+					<EarliestVictoryEvaluationTurn>1.5</EarliestVictoryEvaluationTurn> 
+				  </AILayer_Victory>
+				  </AIEntity_Empire>
                 </MajorEmpire>
 
-                <AgentDefinition>
+                <AgentDefinition>					
                     <!-- Economic Agents -->
 
                     <TechnologyReferenceTurnCountAgent>
@@ -67,7 +88,7 @@
 
                     <EmpirePlanNeedPrestigeRatioAgent>
                         <!-- The AI will want to stock X% of the wanted empire plan cost. -->
-                        <WantedEmpirePlanCostRatio>1.5</WantedEmpirePlanCostRatio>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
                     </EmpirePlanNeedPrestigeRatioAgent>
 
                     <IndustryReferenceTurnCountAgent>
@@ -75,9 +96,9 @@
                     </IndustryReferenceTurnCountAgent>
 
                     <MoneyReferenceRatioAgent>
-                        <MoneyStockToMaintainUpkeepTurnCount>1.5</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyStockToMaintainUpkeepTurnCount>0.85</MoneyStockToMaintainUpkeepTurnCount>
                         <!-- We want a bank account at least greater than X turns upkeep. -->
-                        <MoneyIncomeGrowthPercent>1.5</MoneyIncomeGrowthPercent>
+                        <MoneyIncomeGrowthPercent>1.2</MoneyIncomeGrowthPercent>
                         <!-- We want an income greater than X% of the bank account (positive snowball effect). -->
                     </MoneyReferenceRatioAgent>
 
@@ -180,8 +201,8 @@
 
             <!-- AIQuestSolverDefinition -->
             <AIQuestSolverDefinition>
-                <MinimalTurnDuration>1</MinimalTurnDuration>
-                <MaximalTurnDuration>1</MaximalTurnDuration>
+                <MinimalTurnDuration>1.6</MinimalTurnDuration>
+                <MaximalTurnDuration>1.6</MaximalTurnDuration>
                 <ChanceOfSuccess>1</ChanceOfSuccess>
             </AIQuestSolverDefinition>
 
@@ -196,6 +217,7 @@
                     <NumberOfTurnInBesiege>1.25</NumberOfTurnInBesiege>
 
                     <!-- The degree to which various attitude modifiers are taken into account -->
+					<AIEntity_Empire>
                     <AILayer_Attitude>
                       <AttitudeScorePeaceful>1.2</AttitudeScorePeaceful>
                       <AttitudeScorePositiveContract>1.2</AttitudeScorePositiveContract>
@@ -204,11 +226,11 @@
                       <AttitudeScoreTerraformedInMyTerritoryPositive>1.2</AttitudeScoreTerraformedInMyTerritoryPositive>
                       <AttitudeScoreTerraformedNearMyArmiesPositive>1.2</AttitudeScoreTerraformedNearMyArmiesPositive>
                       <AttitudeScoreKaijuPlacedNearMyCityPositive>1.2</AttitudeScoreKaijuPlacedNearMyCityPositive>
-                      <AttitudeScoreTerraformedInMyTerritoryNegative>1.2</AttitudeScoreTerraformedInMyTerritoryNegative>
-                      <AttitudeScoreTerraformedNearMyArmiesNegative>1.2</AttitudeScoreTerraformedNearMyArmiesNegative>
-                      <AttitudeScoreCreepingNodeUpgradeComplete>1.2</AttitudeScoreCreepingNodeUpgradeComplete>
-                      <AttitudeScoreKaijuAttacked>1.2</AttitudeScoreKaijuAttacked>
-                      <AttitudeScoreKaijuPlacedNearMyCityNegative>1.2</AttitudeScoreKaijuPlacedNearMyCityNegative>
+                      <AttitudeScoreTerraformedInMyTerritoryNegative>0.8</AttitudeScoreTerraformedInMyTerritoryNegative>
+                      <AttitudeScoreTerraformedNearMyArmiesNegative>0.8</AttitudeScoreTerraformedNearMyArmiesNegative>
+                      <AttitudeScoreCreepingNodeUpgradeComplete>0.7</AttitudeScoreCreepingNodeUpgradeComplete>
+                      <AttitudeScoreKaijuAttacked>0.7</AttitudeScoreKaijuAttacked>
+                      <AttitudeScoreKaijuPlacedNearMyCityNegative>0.7</AttitudeScoreKaijuPlacedNearMyCityNegative>
                       <AttitudeScoreLastWar>0.8</AttitudeScoreLastWar>
                       <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>0.8</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
                       <AttitudeScoreAggressiveColonization>0.8</AttitudeScoreAggressiveColonization>
@@ -238,6 +260,16 @@
                       <AttitudeScoreVictoryAlertSupremacy>0.8</AttitudeScoreVictoryAlertSupremacy>
                       <AttitudeScoreVictoryAlertQuest>0.8</AttitudeScoreVictoryAlertQuest>
                     </AILayer_Attitude>
+					<AILayer_Research>
+						<IdealBuyoutPeriod>1.25</IdealBuyoutPeriod>
+					</AILayer_Research>					
+					<AILayer_HeroAssignation>
+						<MaximumTurnForHero>1.25</MaximumTurnForHero>
+					</AILayer_HeroAssignation>
+					<AILayer_Victory>
+						<EarliestVictoryEvaluationTurn>1.25</EarliestVictoryEvaluationTurn> 
+					</AILayer_Victory>
+					</AIEntity_Empire>
                 </MajorEmpire>
                 
                 <AgentDefinition>
@@ -245,20 +277,14 @@
                         <IdealTechnologyUnlockPeriod>1.25</IdealTechnologyUnlockPeriod>
                         <MaximumPeriodGap>1.25</MaximumPeriodGap>
                     </TechnologyReferenceTurnCountAgent>
-
-                    <!-- AIQuestSolverDefinition -->
-                    <AIQuestSolverDefinition>
-                        <MinimalTurnDuration>1</MinimalTurnDuration>
-                        <MaximalTurnDuration>1</MaximalTurnDuration>
-                        <ChanceOfSuccess>1</ChanceOfSuccess>
-                    </AIQuestSolverDefinition>
+					
                     <DiplomacyNeedPrestigeRatioAgent>
                         <NumberOfTurnToReachObjective>1.25</NumberOfTurnToReachObjective>
                     </DiplomacyNeedPrestigeRatioAgent>
 
                     <EmpirePlanNeedPrestigeRatioAgent>
                         <!-- The AI will want to stock X% of the wanted empire plan cost. -->
-                        <WantedEmpirePlanCostRatio>1.25</WantedEmpirePlanCostRatio>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
                     </EmpirePlanNeedPrestigeRatioAgent>
 
                     <IndustryReferenceTurnCountAgent>
@@ -266,9 +292,9 @@
                     </IndustryReferenceTurnCountAgent>
 
                     <MoneyReferenceRatioAgent>
-                        <MoneyStockToMaintainUpkeepTurnCount>1.25</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyStockToMaintainUpkeepTurnCount>0.9</MoneyStockToMaintainUpkeepTurnCount>
                         <!-- We want a bank account at least greater than X turns upkeep. -->
-                        <MoneyIncomeGrowthPercent>1.5</MoneyIncomeGrowthPercent>
+                        <MoneyIncomeGrowthPercent>1.1</MoneyIncomeGrowthPercent>
                         <!-- We want an income greater than X% of the bank account (positive snowball effect). -->
                     </MoneyReferenceRatioAgent>
 
@@ -352,7 +378,7 @@
                   </CloseBordersTermAgent>
 
                   <MarketBanNullificationTermAgent>
-                    <BonusPerMarketplaceTechnology>0.9</BonusPerMarketplaceTechnology>
+                    <BonusPerMarketplaceTechnology>1</BonusPerMarketplaceTechnology>
                   </MarketBanNullificationTermAgent>
 
                   <MarketBanTermAgent>
@@ -368,12 +394,25 @@
                   </MoneyPrintNullificationTermAgent>
                 </AgentDefinition>
             </AI>
-
+			
+			<!-- AIQuestSolverDefinition -->
+            <AIQuestSolverDefinition>
+                <MinimalTurnDuration>1.4</MinimalTurnDuration>
+                <MaximalTurnDuration>1.4</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
+			
         </Multipliers>
     </AIPersonalityDefinition>
 
     <AIPersonalityDefinition Name="PersonalityMajorFactionGameDifficultyNormal">
         <Multipliers>
+		    <!-- AIQuestSolverDefinition -->
+            <AIQuestSolverDefinition>
+                <MinimalTurnDuration>1.2</MinimalTurnDuration>
+                <MaximalTurnDuration>1.2</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
         </Multipliers>
     </AIPersonalityDefinition>
 
@@ -385,33 +424,23 @@
                   <NumberOfTurnInBesiege>1</NumberOfTurnInBesiege>
 
                   <!-- The degree to which various attitude modifiers are taken into account -->
+				  <AIEntity_Empire>
                   <AILayer_Attitude>
-                    <AttitudeScorePeaceful>0.9</AttitudeScorePeaceful>
-                    <AttitudeScorePositiveContract>0.9</AttitudeScorePositiveContract>
-                    <AttitudeScoreGift>0.9</AttitudeScoreGift>
-                    <AttitudeScoreMantaAspiratingInMyTerritory>0.9</AttitudeScoreMantaAspiratingInMyTerritory>
                     <AttitudeScoreTerraformedInMyTerritoryPositive>0.9</AttitudeScoreTerraformedInMyTerritoryPositive>
                     <AttitudeScoreTerraformedNearMyArmiesPositive>0.9</AttitudeScoreTerraformedNearMyArmiesPositive>
                     <AttitudeScoreKaijuPlacedNearMyCityPositive>0.9</AttitudeScoreKaijuPlacedNearMyCityPositive>
-                    <AttitudeScoreTerraformedInMyTerritoryNegative>0.9</AttitudeScoreTerraformedInMyTerritoryNegative>
-                    <AttitudeScoreTerraformedNearMyArmiesNegative>0.9</AttitudeScoreTerraformedNearMyArmiesNegative>
-                    <AttitudeScoreCreepingNodeUpgradeComplete>0.9</AttitudeScoreCreepingNodeUpgradeComplete>
-                    <AttitudeScoreKaijuAttacked>0.9</AttitudeScoreKaijuAttacked>
-                    <AttitudeScoreKaijuPlacedNearMyCityNegative>0.9</AttitudeScoreKaijuPlacedNearMyCityNegative>
+                    <AttitudeScoreCreepingNodeUpgradeComplete>1</AttitudeScoreCreepingNodeUpgradeComplete>
+                    <AttitudeScoreKaijuAttacked>1</AttitudeScoreKaijuAttacked>
+                    <AttitudeScoreKaijuPlacedNearMyCityNegative>1</AttitudeScoreKaijuPlacedNearMyCityNegative>
                     <AttitudeScoreLastWar>1.1</AttitudeScoreLastWar>
-                    <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1.1</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
-                    <AttitudeScoreAggressiveColonization>1.1</AttitudeScoreAggressiveColonization>
                     <AttitudeScoreNegativeContract>1.1</AttitudeScoreNegativeContract>
-                    <AttitudeScoreVillageConverted>1.1</AttitudeScoreVillageConverted>
                     <AttitudeScoreRegionalBuildingDestroyed>1.1</AttitudeScoreRegionalBuildingDestroyed>
                     <AttitudeScoreSpy>1.1</AttitudeScoreSpy>
                     <AttitudeScorePillaging>1.1</AttitudeScorePillaging>
                     <AttitudeScorePillageSucceed>1.1</AttitudeScorePillageSucceed>
                     <AttitudeScoreDismantleCreepingNodeSuffered>1.1</AttitudeScoreDismantleCreepingNodeSuffered>
                     <AttitudeScoreDismantleDeviceSuffered>1.1</AttitudeScoreDismantleDeviceSuffered>
-                    <AttitudeScoreOrbsStolen>1.1</AttitudeScoreOrbsStolen>
-                    <AttitudeScoreMyEmpireLeadScore>0.9</AttitudeScoreMyEmpireLeadScore>
-                    <AttitudeScoreMyEmpireLeadRegionCount>0.9</AttitudeScoreMyEmpireLeadRegionCount>
+                    
                     <AttitudeScoreCommonFrontier>1.1</AttitudeScoreCommonFrontier>
                     <AttitudeScoreOtherEmpireLeadScore>1.1</AttitudeScoreOtherEmpireLeadScore>
                     <AttitudeScoreLivingSpaceTense>1.1</AttitudeScoreLivingSpaceTense>
@@ -427,50 +456,72 @@
                     <AttitudeScoreVictoryAlertSupremacy>1.1</AttitudeScoreVictoryAlertSupremacy>
                     <AttitudeScoreVictoryAlertQuest>1.1</AttitudeScoreVictoryAlertQuest>
                   </AILayer_Attitude>
+				  <AILayer_Research>
+						<IdealBuyoutPeriod>0.85</IdealBuyoutPeriod>
+				  </AILayer_Research>
+				  <AILayer_Diplomacy>
+					  <MaximumNumberDiplomaticProposalsPerTurn>1.5</MaximumNumberDiplomaticProposalsPerTurn>
+					  <EmergencyGangupLimit>1.5</EmergencyGangupLimit>
+					  <SweetenDealThreshold>1.1</SweetenDealThreshold>
+					  <WantedDiplomaticRelationStateMessageRevaluationPeriod>0.9</WantedDiplomaticRelationStateMessageRevaluationPeriod>
+				  </AILayer_Diplomacy> 
+				  
+				  <AILayer_War>         
+					<HumanTargetBoost>1.05</HumanTargetBoost>
+				  </AILayer_War>
+				  <AILayer_Victory>
+					<EarliestVictoryEvaluationTurn>0.85</EarliestVictoryEvaluationTurn> 
+				  </AILayer_Victory>
+				  <AILayer_Trade>
+					<!-- [0,1] proportion of produced lux and strat AI will magically sell to market: AI's resources won't be ponctionned, and AI won't earn any money for it ! -->
+					<MagicResourceSellingProportion>0.8</MagicResourceSellingProportion>
+				  </AILayer_Trade>
+				  </AIEntity_Empire>
                 </MajorEmpire>
 
                 <AgentDefinition>
+					<ConversionNeedPrestigeRatioAgent>
+						<MinimumPriorityValue>1.3</MinimumPriorityValue>
+				    </ConversionNeedPrestigeRatioAgent>
+				
                     <TechnologyReferenceTurnCountAgent>
-                        <IdealTechnologyUnlockPeriod>0.75</IdealTechnologyUnlockPeriod>
-                        <MaximumPeriodGap>0.75</MaximumPeriodGap>
+                        <IdealTechnologyUnlockPeriod>0.85</IdealTechnologyUnlockPeriod>
+                        <MaximumPeriodGap>0.85</MaximumPeriodGap>
                     </TechnologyReferenceTurnCountAgent>
 
-                    <!-- AIQuestSolverDefinition -->
-                    <AIQuestSolverDefinition>
-                        <MinimalTurnDuration>1</MinimalTurnDuration>
-                        <MaximalTurnDuration>1</MaximalTurnDuration>
-                        <ChanceOfSuccess>1</ChanceOfSuccess>
-                    </AIQuestSolverDefinition>
-
                     <DiplomacyNeedPrestigeRatioAgent>
-                        <NumberOfTurnToReachObjective>0.75</NumberOfTurnToReachObjective>
+                        <NumberOfTurnToReachObjective>1</NumberOfTurnToReachObjective>
                     </DiplomacyNeedPrestigeRatioAgent>
 
                     <EmpirePlanNeedPrestigeRatioAgent>
                         <!-- The AI will want to stock X% of the wanted empire plan cost. -->
-                        <WantedEmpirePlanCostRatio>0.75</WantedEmpirePlanCostRatio>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
                     </EmpirePlanNeedPrestigeRatioAgent>
 
                     <IndustryReferenceTurnCountAgent>
-                        <MaximumTurnCount>0.75</MaximumTurnCount>
+                        <MaximumTurnCount>0.8</MaximumTurnCount>
                     </IndustryReferenceTurnCountAgent>
 
                     <MoneyReferenceRatioAgent>
-                        <MoneyStockToMaintainUpkeepTurnCount>0.75</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyStockToMaintainUpkeepTurnCount>1.15</MoneyStockToMaintainUpkeepTurnCount>
                         <!-- We want a bank account at least greater than X turns upkeep. -->
-                        <MoneyIncomeGrowthPercent>0.75</MoneyIncomeGrowthPercent>
+                        <MoneyIncomeGrowthPercent>1.1</MoneyIncomeGrowthPercent>
                         <!-- We want an income greater than X% of the bank account (positive snowball effect). -->
                     </MoneyReferenceRatioAgent>
 
                     <PopulationBuyoutReferenceRatioAgent>
-                        <MoneyIncomeBuyoutPercent>0.75</MoneyIncomeBuyoutPercent>
+                        <MoneyIncomeBuyoutPercent>0.8</MoneyIncomeBuyoutPercent>
                     </PopulationBuyoutReferenceRatioAgent>
 
                     <PopulationReferenceTurnCountAgent>
-                        <RangeRatio>0.75</RangeRatio>
+                        <RangeRatio>0.8</RangeRatio>
                         <!-- Define the maximum criticy point. MaximumNumberOfTurn = RangeRatio *  IdealNumberOfTurnToReachNextPopulation -->
                     </PopulationReferenceTurnCountAgent>
 
+					<TechnologyBuyoutReferenceRatioAgent>
+						<IdealTechnologyUnlockPeriod>0.85</IdealTechnologyUnlockPeriod>
+					</TechnologyBuyoutReferenceRatioAgent>
+					
                   <!-- Diplomatic Agents -->
 
                   <WarTermAgent>
@@ -501,20 +552,12 @@
                     <Multiplier>0.9</Multiplier>
                   </VisionAndMapExchangeTermAgent>
 
-                  <CommercialAgreementTermAgent>
-                    <Multiplier>0.9</Multiplier>
-                  </CommercialAgreementTermAgent>
-
-                  <ResearchAgreementTermAgent>
-                    <Multiplier>0.9</Multiplier>
-                  </ResearchAgreementTermAgent>
-
                   <OpenBordersTermAgent>
-                    <Multiplier>0.8</Multiplier>
+                    <Multiplier>0.9</Multiplier>
                   </OpenBordersTermAgent>
 
                   <MarketBanRemovalTermAgent>
-                    <Multiplier>0.9</Multiplier>
+                    <Multiplier>1</Multiplier>
                   </MarketBanRemovalTermAgent>
 
                   <MapEmbargoTermAgent>
@@ -542,7 +585,7 @@
                   </CloseBordersTermAgent>
 
                   <MarketBanNullificationTermAgent>
-                    <BonusPerMarketplaceTechnology>1.1</BonusPerMarketplaceTechnology>
+                    <BonusPerMarketplaceTechnology>1.3</BonusPerMarketplaceTechnology>
                   </MarketBanNullificationTermAgent>
 
                   <MarketBanTermAgent>
@@ -558,6 +601,13 @@
                   </MoneyPrintNullificationTermAgent>
                 </AgentDefinition>
             </AI>
+			
+			<!-- AIQuestSolverDefinition -->
+            <AIQuestSolverDefinition>
+                <MinimalTurnDuration>1.1</MinimalTurnDuration>
+                <MaximalTurnDuration>1.1</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
         </Multipliers>
     </AIPersonalityDefinition>
 
@@ -569,92 +619,136 @@
                   <NumberOfTurnInBesiege>1</NumberOfTurnInBesiege>
 
                   <!-- The degree to which various attitude modifiers are taken into account -->
-                  <AILayer_Attitude>
-                    <AttitudeScorePeaceful>0.8</AttitudeScorePeaceful>
-                    <AttitudeScorePositiveContract>0.8</AttitudeScorePositiveContract>
-                    <AttitudeScoreGift>0.8</AttitudeScoreGift>
-                    <AttitudeScoreMantaAspiratingInMyTerritory>0.8</AttitudeScoreMantaAspiratingInMyTerritory>
-                    <AttitudeScoreTerraformedInMyTerritoryPositive>0.8</AttitudeScoreTerraformedInMyTerritoryPositive>
-                    <AttitudeScoreTerraformedNearMyArmiesPositive>0.8</AttitudeScoreTerraformedNearMyArmiesPositive>
-                    <AttitudeScoreKaijuPlacedNearMyCityPositive>0.8</AttitudeScoreKaijuPlacedNearMyCityPositive>
-                    <AttitudeScoreTerraformedInMyTerritoryNegative>0.8</AttitudeScoreTerraformedInMyTerritoryNegative>
-                    <AttitudeScoreTerraformedNearMyArmiesNegative>0.8</AttitudeScoreTerraformedNearMyArmiesNegative>
-                    <AttitudeScoreCreepingNodeUpgradeComplete>0.8</AttitudeScoreCreepingNodeUpgradeComplete>
-                    <AttitudeScoreKaijuAttacked>0.8</AttitudeScoreKaijuAttacked>
-                    <AttitudeScoreKaijuPlacedNearMyCityNegative>0.8</AttitudeScoreKaijuPlacedNearMyCityNegative>
-                    <AttitudeScoreLastWar>1.2</AttitudeScoreLastWar>
-                    <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1.2</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
-                    <AttitudeScoreAggressiveColonization>1.2</AttitudeScoreAggressiveColonization>
-                    <AttitudeScoreNegativeContract>1.2</AttitudeScoreNegativeContract>
-                    <AttitudeScoreVillageConverted>1.2</AttitudeScoreVillageConverted>
-                    <AttitudeScoreRegionalBuildingDestroyed>1.2</AttitudeScoreRegionalBuildingDestroyed>
-                    <AttitudeScoreSpy>1.2</AttitudeScoreSpy>
-                    <AttitudeScorePillaging>1.2</AttitudeScorePillaging>
-                    <AttitudeScorePillageSucceed>1.2</AttitudeScorePillageSucceed>
-                    <AttitudeScoreDismantleCreepingNodeSuffered>1.2</AttitudeScoreDismantleCreepingNodeSuffered>
-                    <AttitudeScoreDismantleDeviceSuffered>1.2</AttitudeScoreDismantleDeviceSuffered>
-                    <AttitudeScoreOrbsStolen>1.2</AttitudeScoreOrbsStolen>
-                    <AttitudeScoreMyEmpireLeadScore>0.8</AttitudeScoreMyEmpireLeadScore>
-                    <AttitudeScoreMyEmpireLeadRegionCount>0.8</AttitudeScoreMyEmpireLeadRegionCount>
-                    <AttitudeScoreCommonFrontier>1.2</AttitudeScoreCommonFrontier>
-                    <AttitudeScoreOtherEmpireLeadScore>1.2</AttitudeScoreOtherEmpireLeadScore>
-                    <AttitudeScoreLivingSpaceTense>1.2</AttitudeScoreLivingSpaceTense>
-                    <AttitudeScoreOtherEmpireLeadRegionCount>1.2</AttitudeScoreOtherEmpireLeadRegionCount>
-                    <AttitudeScoreOtherEmpireLeadRegionCount>1.2</AttitudeScoreOtherEmpireLeadRegionCount>
-                    <AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1.2</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
-                    <AttitudeScoreVictoryAlertLastEmpireStanding>1.2</AttitudeScoreVictoryAlertLastEmpireStanding>
-                    <AttitudeScoreVictoryAlertExpansion>1.2</AttitudeScoreVictoryAlertExpansion>
-                    <AttitudeScoreVictoryAlertEconomy>1.2</AttitudeScoreVictoryAlertEconomy>
-                    <AttitudeScoreVictoryAlertDiplomacy>1.2</AttitudeScoreVictoryAlertDiplomacy>
-                    <AttitudeScoreVictoryAlertWonder>1.2</AttitudeScoreVictoryAlertWonder>
-                    <AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1.2</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
-                    <AttitudeScoreVictoryAlertSupremacy>1.2</AttitudeScoreVictoryAlertSupremacy>
-                    <AttitudeScoreVictoryAlertQuest>1.2</AttitudeScoreVictoryAlertQuest>
-                  </AILayer_Attitude>
+				  <AIEntity_Empire>
+					  <AILayer_Attitude>
+						<AttitudeScoreTerraformedInMyTerritoryPositive>0.8</AttitudeScoreTerraformedInMyTerritoryPositive>
+						<AttitudeScoreTerraformedNearMyArmiesPositive>0.8</AttitudeScoreTerraformedNearMyArmiesPositive>
+						<AttitudeScoreKaijuPlacedNearMyCityPositive>0.8</AttitudeScoreKaijuPlacedNearMyCityPositive>
+						<AttitudeScoreTerraformedInMyTerritoryNegative>1.1</AttitudeScoreTerraformedInMyTerritoryNegative>
+						<AttitudeScoreCreepingNodeUpgradeComplete>1.05</AttitudeScoreCreepingNodeUpgradeComplete>
+						<AttitudeScoreKaijuAttacked>1.1</AttitudeScoreKaijuAttacked>
+						<AttitudeScoreKaijuPlacedNearMyCityNegative>1.1</AttitudeScoreKaijuPlacedNearMyCityNegative>
+						<AttitudeScoreLastWar>1.2</AttitudeScoreLastWar>
+						<AttitudeScoreNegativeContract>1.2</AttitudeScoreNegativeContract>
+						<AttitudeScoreRegionalBuildingDestroyed>1.2</AttitudeScoreRegionalBuildingDestroyed>
+						<AttitudeScoreSpy>1.2</AttitudeScoreSpy>
+						<AttitudeScorePillaging>1.2</AttitudeScorePillaging>
+						<AttitudeScorePillageSucceed>1.2</AttitudeScorePillageSucceed>
+						<AttitudeScoreDismantleCreepingNodeSuffered>1.2</AttitudeScoreDismantleCreepingNodeSuffered>
+						<AttitudeScoreDismantleDeviceSuffered>1.2</AttitudeScoreDismantleDeviceSuffered>
+					   
+						<AttitudeScoreCommonFrontier>1.2</AttitudeScoreCommonFrontier>
+						<AttitudeScoreOtherEmpireLeadScore>1.2</AttitudeScoreOtherEmpireLeadScore>
+						<AttitudeScoreLivingSpaceTense>1.2</AttitudeScoreLivingSpaceTense>
+						<AttitudeScoreOtherEmpireLeadRegionCount>1.2</AttitudeScoreOtherEmpireLeadRegionCount>
+						<AttitudeScoreOtherEmpireLeadRegionCount>1.2</AttitudeScoreOtherEmpireLeadRegionCount>
+						<AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1.2</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
+						<AttitudeScoreVictoryAlertLastEmpireStanding>1.2</AttitudeScoreVictoryAlertLastEmpireStanding>
+						<AttitudeScoreVictoryAlertExpansion>1.2</AttitudeScoreVictoryAlertExpansion>
+						<AttitudeScoreVictoryAlertEconomy>1.2</AttitudeScoreVictoryAlertEconomy>
+						<AttitudeScoreVictoryAlertDiplomacy>1.2</AttitudeScoreVictoryAlertDiplomacy>
+						<AttitudeScoreVictoryAlertWonder>1.2</AttitudeScoreVictoryAlertWonder>
+						<AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1.2</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
+						<AttitudeScoreVictoryAlertSupremacy>1.2</AttitudeScoreVictoryAlertSupremacy>
+						<AttitudeScoreVictoryAlertQuest>1.2</AttitudeScoreVictoryAlertQuest>
+					  </AILayer_Attitude>
+					  <AILayer_Research>
+							<IdealBuyoutPeriod>0.8</IdealBuyoutPeriod>
+							<ElementEvaluatorContextMultiplier>
+							<AIEmpireUnlockBooster>1.3</AIEmpireUnlockBooster>
+							<AIEmpireUnlockBoosterCultist>1.3</AIEmpireUnlockBoosterCultist>
+							</ElementEvaluatorContextMultiplier>
+					  </AILayer_Research>
+					  <AILayer_Diplomacy>
+						  <MaximumNumberDiplomaticProposalsPerTurn>2</MaximumNumberDiplomaticProposalsPerTurn>
+						  <SweetenDealThreshold>1.2</SweetenDealThreshold>
+						  <EmergencyGangupLimit>2</EmergencyGangupLimit>
+						  <WantedDiplomaticRelationStateMessageRevaluationPeriod>0.8</WantedDiplomaticRelationStateMessageRevaluationPeriod>
+						  <MinimumNumberOfTurnsBetweenPropositions>0.8</MinimumNumberOfTurnsBetweenPropositions>
+						  <MaximumNumberOfTurnsBetweenPropositions>0.9</MaximumNumberOfTurnsBetweenPropositions>
+						  <MaximumNumberOfTurnsBetweenStatusAndForceStatus>1.1</MaximumNumberOfTurnsBetweenStatusAndForceStatus>
+					  </AILayer_Diplomacy> 
+					  <AILayer_HeroAssignation>
+						  <MinMoneyforRestore>1</MinMoneyforRestore> <!-- ELCP: Only restore hero, if dust amount is x times higher than cost for restoring -->
+					  </AILayer_HeroAssignation>
+					  <AILayer_Strategy>
+						  <Network>
+							<MilitaryEmpireNeedAgent>
+							  <GlobalUnitCountMultiplier>1.1</GlobalUnitCountMultiplier>
+							  <!-- War unit need: NumberOfWarUnit = CLAMP(WarUnitNeedOffset + (turn - WarUnitNeedStartTurn) / WarUnitNeedTurnRatio, MinimumNumberOfWarUnit, MaximumNumberOfWarUnit) -->
+							  <WarUnitNeedOffset>1.35</WarUnitNeedOffset>
+							  <WarUnitNeedStartTurn>1</WarUnitNeedStartTurn>
+							  <WarUnitNeedTurnRatio>0.9</WarUnitNeedTurnRatio>
+							  <MaximumNumberOfWarUnit>1.3</MaximumNumberOfWarUnit>
+							  <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
+							</MilitaryEmpireNeedAgent>
+						  </Network>
+					  </AILayer_Strategy>
+					  
+					  <AILayer_War>         
+						<HumanTargetBoost>1.1</HumanTargetBoost>
+					  </AILayer_War>
+					  <AILayer_Victory>
+						<EarliestVictoryEvaluationTurn>0.55</EarliestVictoryEvaluationTurn> 
+					  </AILayer_Victory>
+					  <AILayer_Trade>
+						<!-- [0,1] proportion of produced lux and strat AI will magically sell to market: AI's resources won't be ponctionned, and AI won't earn any money for it ! -->
+						<MagicResourceSellingProportion>0.55</MagicResourceSellingProportion>
+					  </AILayer_Trade>	
+					  <AILayer_ResourceManager>		    
+						<StrategicResourceMinimumStockPerCity>1.1</StrategicResourceMinimumStockPerCity>
+					  </AILayer_ResourceManager>				  
+				  </AIEntity_Empire>
+				  <AIEntity_City>
+                        <AILayer_Production>
+							<ArmyThresholdTurns>0.95</ArmyThresholdTurns>
+                        </AILayer_Production>
+                   </AIEntity_City>
                 </MajorEmpire>
 
                 <AgentDefinition>
+					<ConversionNeedPrestigeRatioAgent>
+						<NumberOfTurnToReachObjective>0.9</NumberOfTurnToReachObjective>
+						<MinimumPriorityValue>1.5</MinimumPriorityValue>
+				    </ConversionNeedPrestigeRatioAgent>
+					
                     <TechnologyReferenceTurnCountAgent>
-                        <IdealTechnologyUnlockPeriod>0.5</IdealTechnologyUnlockPeriod>
-                        <MaximumPeriodGap>0.5</MaximumPeriodGap>
+                        <IdealTechnologyUnlockPeriod>0.8</IdealTechnologyUnlockPeriod>
+                        <MaximumPeriodGap>0.8</MaximumPeriodGap>
                     </TechnologyReferenceTurnCountAgent>
 
-                    <!-- AIQuestSolverDefinition -->
-                    <AIQuestSolverDefinition>
-                        <MinimalTurnDuration>1</MinimalTurnDuration>
-                        <MaximalTurnDuration>1</MaximalTurnDuration>
-                        <ChanceOfSuccess>1</ChanceOfSuccess>
-                    </AIQuestSolverDefinition>
-
                     <DiplomacyNeedPrestigeRatioAgent>
-                        <NumberOfTurnToReachObjective>0.5</NumberOfTurnToReachObjective>
+                        <NumberOfTurnToReachObjective>1</NumberOfTurnToReachObjective>
                     </DiplomacyNeedPrestigeRatioAgent>
 
                     <EmpirePlanNeedPrestigeRatioAgent>
                         <!-- The AI will want to stock X% of the wanted empire plan cost. -->
-                        <WantedEmpirePlanCostRatio>0.5</WantedEmpirePlanCostRatio>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
                     </EmpirePlanNeedPrestigeRatioAgent>
 
                     <IndustryReferenceTurnCountAgent>
-                        <MaximumTurnCount>0.5</MaximumTurnCount>
+                        <MaximumTurnCount>0.65</MaximumTurnCount>
                     </IndustryReferenceTurnCountAgent>
 
                     <MoneyReferenceRatioAgent>
-                        <MoneyStockToMaintainUpkeepTurnCount>0.5</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyStockToMaintainUpkeepTurnCount>1.25</MoneyStockToMaintainUpkeepTurnCount>
                         <!-- We want a bank account at least greater than X turns upkeep. -->
-                        <MoneyIncomeGrowthPercent>0.5</MoneyIncomeGrowthPercent>
+                        <MoneyIncomeGrowthPercent>1.2</MoneyIncomeGrowthPercent>
                         <!-- We want an income greater than X% of the bank account (positive snowball effect). -->
                     </MoneyReferenceRatioAgent>
 
                     <PopulationBuyoutReferenceRatioAgent>
-                        <MoneyIncomeBuyoutPercent>0.5</MoneyIncomeBuyoutPercent>
+                        <MoneyIncomeBuyoutPercent>0.7</MoneyIncomeBuyoutPercent>
                     </PopulationBuyoutReferenceRatioAgent>
 
                     <PopulationReferenceTurnCountAgent>
-                        <RangeRatio>0.5</RangeRatio>
+                        <RangeRatio>0.65</RangeRatio>
                         <!-- Define the maximum criticy point. MaximumNumberOfTurn = RangeRatio *  IdealNumberOfTurnToReachNextPopulation -->
                     </PopulationReferenceTurnCountAgent>
-
+					
+					<TechnologyBuyoutReferenceRatioAgent>
+						<IdealTechnologyUnlockPeriod>0.7</IdealTechnologyUnlockPeriod>
+					</TechnologyBuyoutReferenceRatioAgent>
                   <!-- Diplomatic Agents -->
 
                   <WarTermAgent>
@@ -670,11 +764,11 @@
                   </ColdWarTermAgent>
 
                   <PeaceTermAgent>
-                    <Multiplier>1</Multiplier>
+                    <Multiplier>0.9</Multiplier>
                   </PeaceTermAgent>
 
                   <AllianceTermAgent>
-                    <Multiplier>1</Multiplier>
+                    <Multiplier>0.9</Multiplier>
                   </AllianceTermAgent>
 
                   <MapExchangeTermAgent>
@@ -685,20 +779,12 @@
                     <Multiplier>0.9</Multiplier>
                   </VisionAndMapExchangeTermAgent>
 
-                  <CommercialAgreementTermAgent>
-                    <Multiplier>0.9</Multiplier>
-                  </CommercialAgreementTermAgent>
-
-                  <ResearchAgreementTermAgent>
-                    <Multiplier>0.9</Multiplier>
-                  </ResearchAgreementTermAgent>
-
                   <OpenBordersTermAgent>
                     <Multiplier>0.8</Multiplier>
                   </OpenBordersTermAgent>
 
                   <MarketBanRemovalTermAgent>
-                    <Multiplier>0.9</Multiplier>
+                    <Multiplier>1</Multiplier>
                   </MarketBanRemovalTermAgent>
 
                   <MapEmbargoTermAgent>
@@ -726,7 +812,7 @@
                   </CloseBordersTermAgent>
 
                   <MarketBanNullificationTermAgent>
-                    <BonusPerMarketplaceTechnology>1.1</BonusPerMarketplaceTechnology>
+                    <BonusPerMarketplaceTechnology>1.5</BonusPerMarketplaceTechnology>
                   </MarketBanNullificationTermAgent>
 
                   <MarketBanTermAgent>
@@ -740,8 +826,16 @@
                   <MoneyPrintNullificationTermAgent>
                     <Multiplier>1.1</Multiplier>
                   </MoneyPrintNullificationTermAgent>
+		  
                 </AgentDefinition>
             </AI>
+			
+			<!-- AIQuestSolverDefinition -->
+            <AIQuestSolverDefinition>
+                <MinimalTurnDuration>0.95</MinimalTurnDuration>
+                <MaximalTurnDuration>0.95</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
 
         </Multipliers>
     </AIPersonalityDefinition>
@@ -754,93 +848,138 @@
                     <NumberOfTurnInBesiege>1</NumberOfTurnInBesiege>
 
                     <!-- The degree to which various attitude modifiers are taken into account -->
-                    <AILayer_Attitude>
-                      <AttitudeScorePeaceful>0.7</AttitudeScorePeaceful>
-                      <AttitudeScorePositiveContract>0.7</AttitudeScorePositiveContract>
-                      <AttitudeScoreGift>0.7</AttitudeScoreGift>
-                      <AttitudeScoreMantaAspiratingInMyTerritory>0.7</AttitudeScoreMantaAspiratingInMyTerritory>
-                      <AttitudeScoreTerraformedInMyTerritoryPositive>0.7</AttitudeScoreTerraformedInMyTerritoryPositive>
-                      <AttitudeScoreTerraformedNearMyArmiesPositive>0.7</AttitudeScoreTerraformedNearMyArmiesPositive>
-                      <AttitudeScoreKaijuPlacedNearMyCityPositive>0.7</AttitudeScoreKaijuPlacedNearMyCityPositive>
-                      <AttitudeScoreTerraformedInMyTerritoryNegative>0.7</AttitudeScoreTerraformedInMyTerritoryNegative>
-                      <AttitudeScoreTerraformedNearMyArmiesNegative>0.7</AttitudeScoreTerraformedNearMyArmiesNegative>
-                      <AttitudeScoreCreepingNodeUpgradeComplete>0.7</AttitudeScoreCreepingNodeUpgradeComplete>
-                      <AttitudeScoreKaijuAttacked>0.7</AttitudeScoreKaijuAttacked>
-                      <AttitudeScoreKaijuPlacedNearMyCityNegative>0.7</AttitudeScoreKaijuPlacedNearMyCityNegative>
-                      <AttitudeScoreLastWar>1.3</AttitudeScoreLastWar>
-                      <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1.3</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
-                      <AttitudeScoreAggressiveColonization>1.3</AttitudeScoreAggressiveColonization>
-                      <AttitudeScoreNegativeContract>1.3</AttitudeScoreNegativeContract>
-                      <AttitudeScoreVillageConverted>1.3</AttitudeScoreVillageConverted>
-                      <AttitudeScoreRegionalBuildingDestroyed>1.3</AttitudeScoreRegionalBuildingDestroyed>
-                      <AttitudeScoreSpy>1.3</AttitudeScoreSpy>
-                      <AttitudeScorePillaging>1.3</AttitudeScorePillaging>
-                      <AttitudeScorePillageSucceed>1.3</AttitudeScorePillageSucceed>
-                      <AttitudeScoreDismantleCreepingNodeSuffered>1.3</AttitudeScoreDismantleCreepingNodeSuffered>
-                      <AttitudeScoreDismantleDeviceSuffered>1.3</AttitudeScoreDismantleDeviceSuffered>
-                      <AttitudeScoreOrbsStolen>1.3</AttitudeScoreOrbsStolen>
-                      <AttitudeScoreMyEmpireLeadScore>0.7</AttitudeScoreMyEmpireLeadScore>
-                      <AttitudeScoreMyEmpireLeadRegionCount>0.7</AttitudeScoreMyEmpireLeadRegionCount>
-                      <AttitudeScoreCommonFrontier>1.3</AttitudeScoreCommonFrontier>
-                      <AttitudeScoreOtherEmpireLeadScore>1.3</AttitudeScoreOtherEmpireLeadScore>
-                      <AttitudeScoreLivingSpaceTense>1.3</AttitudeScoreLivingSpaceTense>
-                      <AttitudeScoreOtherEmpireLeadRegionCount>1.3</AttitudeScoreOtherEmpireLeadRegionCount>
-                      <AttitudeScoreOtherEmpireLeadRegionCount>1.3</AttitudeScoreOtherEmpireLeadRegionCount>
-                      <AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1.3</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
-                      <AttitudeScoreVictoryAlertLastEmpireStanding>1.3</AttitudeScoreVictoryAlertLastEmpireStanding>
-                      <AttitudeScoreVictoryAlertExpansion>1.3</AttitudeScoreVictoryAlertExpansion>
-                      <AttitudeScoreVictoryAlertEconomy>1.3</AttitudeScoreVictoryAlertEconomy>
-                      <AttitudeScoreVictoryAlertDiplomacy>1.3</AttitudeScoreVictoryAlertDiplomacy>
-                      <AttitudeScoreVictoryAlertWonder>1.3</AttitudeScoreVictoryAlertWonder>
-                      <AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1.3</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
-                      <AttitudeScoreVictoryAlertSupremacy>1.3</AttitudeScoreVictoryAlertSupremacy>
-                      <AttitudeScoreVictoryAlertQuest>1.3</AttitudeScoreVictoryAlertQuest>
-                    </AILayer_Attitude>
-                  
+					<AIEntity_Empire>
+						<AILayer_Attitude>
+						  <AttitudeScoreTerraformedInMyTerritoryPositive>0.7</AttitudeScoreTerraformedInMyTerritoryPositive>
+						  <AttitudeScoreTerraformedNearMyArmiesPositive>0.7</AttitudeScoreTerraformedNearMyArmiesPositive>
+						  <AttitudeScoreKaijuPlacedNearMyCityPositive>0.7</AttitudeScoreKaijuPlacedNearMyCityPositive>
+						  <AttitudeScoreTerraformedInMyTerritoryNegative>1.2</AttitudeScoreTerraformedInMyTerritoryNegative>
+						  <AttitudeScoreCreepingNodeUpgradeComplete>1.1</AttitudeScoreCreepingNodeUpgradeComplete>
+						  <AttitudeScoreKaijuAttacked>1.25</AttitudeScoreKaijuAttacked>
+						  <AttitudeScoreKaijuPlacedNearMyCityNegative>1.25</AttitudeScoreKaijuPlacedNearMyCityNegative>
+						  <AttitudeScoreLastWar>1.3</AttitudeScoreLastWar>
+						  <AttitudeScoreNegativeContract>1.3</AttitudeScoreNegativeContract>
+						  <AttitudeScoreRegionalBuildingDestroyed>1.3</AttitudeScoreRegionalBuildingDestroyed>
+						  <AttitudeScoreSpy>1.3</AttitudeScoreSpy>
+						  <AttitudeScorePillaging>1.3</AttitudeScorePillaging>
+						  <AttitudeScorePillageSucceed>1.3</AttitudeScorePillageSucceed>
+						  <AttitudeScoreDismantleCreepingNodeSuffered>1.3</AttitudeScoreDismantleCreepingNodeSuffered>
+						  <AttitudeScoreDismantleDeviceSuffered>1.3</AttitudeScoreDismantleDeviceSuffered>
+						 
+						  <AttitudeScoreCommonFrontier>1.3</AttitudeScoreCommonFrontier>
+						  <AttitudeScoreOtherEmpireLeadScore>1.3</AttitudeScoreOtherEmpireLeadScore>
+						  <AttitudeScoreLivingSpaceTense>1.3</AttitudeScoreLivingSpaceTense>
+						  <AttitudeScoreOtherEmpireLeadRegionCount>1.3</AttitudeScoreOtherEmpireLeadRegionCount>
+						  <AttitudeScoreOtherEmpireLeadRegionCount>1.3</AttitudeScoreOtherEmpireLeadRegionCount>
+						  <AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1.3</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
+						  <AttitudeScoreVictoryAlertLastEmpireStanding>1.3</AttitudeScoreVictoryAlertLastEmpireStanding>
+						  <AttitudeScoreVictoryAlertExpansion>1.3</AttitudeScoreVictoryAlertExpansion>
+						  <AttitudeScoreVictoryAlertEconomy>1.3</AttitudeScoreVictoryAlertEconomy>
+						  <AttitudeScoreVictoryAlertDiplomacy>1.3</AttitudeScoreVictoryAlertDiplomacy>
+						  <AttitudeScoreVictoryAlertWonder>1.3</AttitudeScoreVictoryAlertWonder>
+						  <AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1.3</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
+						  <AttitudeScoreVictoryAlertSupremacy>1.3</AttitudeScoreVictoryAlertSupremacy>
+						  <AttitudeScoreVictoryAlertQuest>1.3</AttitudeScoreVictoryAlertQuest>
+						</AILayer_Attitude>
+						<AILayer_Research>
+							<IdealBuyoutPeriod>0.6</IdealBuyoutPeriod>
+							<ElementEvaluatorContextMultiplier>
+							<AIEmpireUnlockBooster>1.7</AIEmpireUnlockBooster>
+							<AIEmpireUnlockBoosterCultist>1.7</AIEmpireUnlockBoosterCultist>
+							</ElementEvaluatorContextMultiplier>
+						</AILayer_Research>
+						<AILayer_Diplomacy>
+						  <MaximumNumberDiplomaticProposalsPerTurn>3</MaximumNumberDiplomaticProposalsPerTurn>
+						  <EmergencyGangupLimit>2.5</EmergencyGangupLimit>
+						  <SweetenDealThreshold>1.3</SweetenDealThreshold>
+						  <WantedDiplomaticRelationStateMessageRevaluationPeriod>0.7</WantedDiplomaticRelationStateMessageRevaluationPeriod>
+						  <MinimumNumberOfTurnsBetweenPropositions>0.6</MinimumNumberOfTurnsBetweenPropositions>
+						  <MaximumNumberOfTurnsBetweenPropositions>0.8</MaximumNumberOfTurnsBetweenPropositions>
+						  <MaximumNumberOfTurnsBetweenStatusAndForceStatus>1.2</MaximumNumberOfTurnsBetweenStatusAndForceStatus>
+						</AILayer_Diplomacy> 
+						<AILayer_HeroAssignation>
+						  <MaximumHeroCount>1.25</MaximumHeroCount>
+						  <MaximumTurnForHero>1</MaximumTurnForHero>
+						  <MinMoneyforRestore>1</MinMoneyforRestore> <!-- ELCP: Only restore hero, if dust amount is x times higher than cost for restoring -->
+						</AILayer_HeroAssignation>
+						<AILayer_Strategy>
+						  <Network>
+							<MilitaryEmpireNeedAgent>
+							  <GlobalUnitCountMultiplier>1.25</GlobalUnitCountMultiplier>
+							  <!-- War unit need: NumberOfWarUnit = CLAMP(WarUnitNeedOffset + (turn - WarUnitNeedStartTurn) / WarUnitNeedTurnRatio, MinimumNumberOfWarUnit, MaximumNumberOfWarUnit) -->
+							  <WarUnitNeedOffset>1.7</WarUnitNeedOffset>
+							  <WarUnitNeedStartTurn>0.9</WarUnitNeedStartTurn>
+							  <WarUnitNeedTurnRatio>0.9</WarUnitNeedTurnRatio>
+							  <MaximumNumberOfWarUnit>1.6</MaximumNumberOfWarUnit>
+							  <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
+							</MilitaryEmpireNeedAgent>
+						  </Network>
+						</AILayer_Strategy>
+						
+						<AILayer_War>         
+							<HumanTargetBoost>1.15</HumanTargetBoost>
+						</AILayer_War>
+						<AILayer_Victory>
+							<EarliestVictoryEvaluationTurn>0.40</EarliestVictoryEvaluationTurn> 
+						</AILayer_Victory>
+						<AILayer_Trade>
+							<!-- [0,1] proportion of produced lux and strat AI will magically sell to market: AI's resources won't be ponctionned, and AI won't earn any money for it ! -->
+							<MagicResourceSellingProportion>0.3</MagicResourceSellingProportion>
+						</AILayer_Trade>	
+						<AILayer_ResourceManager>		    
+							<StrategicResourceMinimumStockPerCity>1.2</StrategicResourceMinimumStockPerCity>
+						</AILayer_ResourceManager>						
+					</AIEntity_Empire>
+					<AIEntity_City>
+                        <AILayer_Production>
+							<ArmyThresholdTurns>0.90</ArmyThresholdTurns>
+                        </AILayer_Production>
+                    </AIEntity_City>
                 </MajorEmpire>
 
                 <AgentDefinition>
+					<ConversionNeedPrestigeRatioAgent>
+						<NumberOfTurnToReachObjective>0.8</NumberOfTurnToReachObjective>
+						<MinimumPriorityValue>1.8</MinimumPriorityValue>
+				    </ConversionNeedPrestigeRatioAgent>
+				
                     <TechnologyReferenceTurnCountAgent>
-                        <IdealTechnologyUnlockPeriod>0.25</IdealTechnologyUnlockPeriod>
-                        <MaximumPeriodGap>0.25</MaximumPeriodGap>
+                        <IdealTechnologyUnlockPeriod>0.6</IdealTechnologyUnlockPeriod>
+                        <MaximumPeriodGap>0.6</MaximumPeriodGap>
                     </TechnologyReferenceTurnCountAgent>
 
-                    <!-- AIQuestSolverDefinition -->
-                    <AIQuestSolverDefinition>
-                        <MinimalTurnDuration>1</MinimalTurnDuration>
-                        <MaximalTurnDuration>1</MaximalTurnDuration>
-                        <ChanceOfSuccess>1</ChanceOfSuccess>
-                    </AIQuestSolverDefinition>
-
                     <DiplomacyNeedPrestigeRatioAgent>
-                        <NumberOfTurnToReachObjective>0.25</NumberOfTurnToReachObjective>
+                        <NumberOfTurnToReachObjective>1</NumberOfTurnToReachObjective>
                     </DiplomacyNeedPrestigeRatioAgent>
 
                     <EmpirePlanNeedPrestigeRatioAgent>
                         <!-- The AI will want to stock X% of the wanted empire plan cost. -->
-                        <WantedEmpirePlanCostRatio>0.25</WantedEmpirePlanCostRatio>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
                     </EmpirePlanNeedPrestigeRatioAgent>
 
                     <IndustryReferenceTurnCountAgent>
-                        <MaximumTurnCount>0.25</MaximumTurnCount>
+                        <MaximumTurnCount>0.5</MaximumTurnCount>
                     </IndustryReferenceTurnCountAgent>
 
                     <MoneyReferenceRatioAgent>
-                        <MoneyStockToMaintainUpkeepTurnCount>0.25</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyStockToMaintainUpkeepTurnCount>1.33</MoneyStockToMaintainUpkeepTurnCount>
                         <!-- We want a bank account at least greater than X turns upkeep. -->
-                        <MoneyIncomeGrowthPercent>0.25</MoneyIncomeGrowthPercent>
+                        <MoneyIncomeGrowthPercent>1.35</MoneyIncomeGrowthPercent>
                         <!-- We want an income greater than X% of the bank account (positive snowball effect). -->
                     </MoneyReferenceRatioAgent>
 
                     <PopulationBuyoutReferenceRatioAgent>
-                        <MoneyIncomeBuyoutPercent>0.25</MoneyIncomeBuyoutPercent>
+                        <MoneyIncomeBuyoutPercent>0.6</MoneyIncomeBuyoutPercent>
                     </PopulationBuyoutReferenceRatioAgent>
 
                     <PopulationReferenceTurnCountAgent>
-                        <RangeRatio>0.25</RangeRatio>
+                        <RangeRatio>0.5</RangeRatio>
                         <!-- Define the maximum criticy point. MaximumNumberOfTurn = RangeRatio *  IdealNumberOfTurnToReachNextPopulation -->
                     </PopulationReferenceTurnCountAgent>
 
+					<TechnologyBuyoutReferenceRatioAgent>
+						<IdealTechnologyUnlockPeriod>0.6</IdealTechnologyUnlockPeriod>
+					</TechnologyBuyoutReferenceRatioAgent>
                   <!-- Diplomatic Agents -->
 
                   <WarTermAgent>
@@ -848,7 +987,7 @@
                   </WarTermAgent>
 
                   <TruceTermAgent>
-                    <Multiplier>0.9</Multiplier>
+                    <Multiplier>1.1</Multiplier>
                   </TruceTermAgent>
 
                   <ColdWarTermAgent>
@@ -856,11 +995,11 @@
                   </ColdWarTermAgent>
 
                   <PeaceTermAgent>
-                    <Multiplier>0.9</Multiplier>
+                    <Multiplier>0.8</Multiplier>
                   </PeaceTermAgent>
 
                   <AllianceTermAgent>
-                    <Multiplier>0.9</Multiplier>
+                    <Multiplier>0.8</Multiplier>
                   </AllianceTermAgent>
 
                   <MapExchangeTermAgent>
@@ -871,20 +1010,12 @@
                     <Multiplier>0.9</Multiplier>
                   </VisionAndMapExchangeTermAgent>
 
-                  <CommercialAgreementTermAgent>
-                    <Multiplier>0.9</Multiplier>
-                  </CommercialAgreementTermAgent>
-
-                  <ResearchAgreementTermAgent>
-                    <Multiplier>0.9</Multiplier>
-                  </ResearchAgreementTermAgent>
-
                   <OpenBordersTermAgent>
                     <Multiplier>0.8</Multiplier>
                   </OpenBordersTermAgent>
 
                   <MarketBanRemovalTermAgent>
-                    <Multiplier>0.9</Multiplier>
+                    <Multiplier>1</Multiplier>
                   </MarketBanRemovalTermAgent>
 
                   <MapEmbargoTermAgent>
@@ -912,7 +1043,7 @@
                   </CloseBordersTermAgent>
 
                   <MarketBanNullificationTermAgent>
-                    <BonusPerMarketplaceTechnology>1.1</BonusPerMarketplaceTechnology>
+                    <BonusPerMarketplaceTechnology>1.7</BonusPerMarketplaceTechnology>
                   </MarketBanNullificationTermAgent>
 
                   <MarketBanTermAgent>
@@ -928,7 +1059,13 @@
                   </MoneyPrintNullificationTermAgent>
                 </AgentDefinition>
             </AI>
-
+		
+			<AIQuestSolverDefinition>
+                <MinimalTurnDuration>0.88</MinimalTurnDuration>
+                <MaximalTurnDuration>0.88</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
+					
         </Multipliers>
     </AIPersonalityDefinition>
 
@@ -940,92 +1077,137 @@
                   <NumberOfTurnInBesiege>1</NumberOfTurnInBesiege>
 
                   <!-- The degree to which various attitude modifiers are taken into account -->
-                  <AILayer_Attitude>
-                    <AttitudeScorePeaceful>0.5</AttitudeScorePeaceful>
-                    <AttitudeScorePositiveContract>0.5</AttitudeScorePositiveContract>
-                    <AttitudeScoreGift>0.5</AttitudeScoreGift>
-                    <AttitudeScoreMantaAspiratingInMyTerritory>0.5</AttitudeScoreMantaAspiratingInMyTerritory>
-                    <AttitudeScoreTerraformedInMyTerritoryPositive>0.5</AttitudeScoreTerraformedInMyTerritoryPositive>
-                    <AttitudeScoreTerraformedNearMyArmiesPositive>0.5</AttitudeScoreTerraformedNearMyArmiesPositive>
-                    <AttitudeScoreKaijuPlacedNearMyCityPositive>0.5</AttitudeScoreKaijuPlacedNearMyCityPositive>
-                    <AttitudeScoreTerraformedInMyTerritoryNegative>0.5</AttitudeScoreTerraformedInMyTerritoryNegative>
-                    <AttitudeScoreTerraformedNearMyArmiesNegative>0.5</AttitudeScoreTerraformedNearMyArmiesNegative>
-                    <AttitudeScoreCreepingNodeUpgradeComplete>0.5</AttitudeScoreCreepingNodeUpgradeComplete>
-                    <AttitudeScoreKaijuAttacked>0.5</AttitudeScoreKaijuAttacked>
-                    <AttitudeScoreKaijuPlacedNearMyCityNegative>0.5</AttitudeScoreKaijuPlacedNearMyCityNegative>
-                    <AttitudeScoreLastWar>1.5</AttitudeScoreLastWar>
-                    <AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>1.5</AttitudeScoreArmyAggressionInNeutralRegionDuringColdWar>
-                    <AttitudeScoreAggressiveColonization>1.5</AttitudeScoreAggressiveColonization>
-                    <AttitudeScoreNegativeContract>1.5</AttitudeScoreNegativeContract>
-                    <AttitudeScoreVillageConverted>1.5</AttitudeScoreVillageConverted>
-                    <AttitudeScoreRegionalBuildingDestroyed>1.5</AttitudeScoreRegionalBuildingDestroyed>
-                    <AttitudeScoreSpy>1.5</AttitudeScoreSpy>
-                    <AttitudeScorePillaging>1.5</AttitudeScorePillaging>
-                    <AttitudeScorePillageSucceed>1.5</AttitudeScorePillageSucceed>
-                    <AttitudeScoreDismantleCreepingNodeSuffered>1.5</AttitudeScoreDismantleCreepingNodeSuffered>
-                    <AttitudeScoreDismantleDeviceSuffered>1.5</AttitudeScoreDismantleDeviceSuffered>
-                    <AttitudeScoreOrbsStolen>1.5</AttitudeScoreOrbsStolen>
-                    <AttitudeScoreMyEmpireLeadScore>0.5</AttitudeScoreMyEmpireLeadScore>
-                    <AttitudeScoreMyEmpireLeadRegionCount>0.5</AttitudeScoreMyEmpireLeadRegionCount>
-                    <AttitudeScoreCommonFrontier>1.5</AttitudeScoreCommonFrontier>
-                    <AttitudeScoreOtherEmpireLeadScore>1.5</AttitudeScoreOtherEmpireLeadScore>
-                    <AttitudeScoreLivingSpaceTense>1.5</AttitudeScoreLivingSpaceTense>
-                    <AttitudeScoreOtherEmpireLeadRegionCount>1.5</AttitudeScoreOtherEmpireLeadRegionCount>
-                    <AttitudeScoreOtherEmpireLeadRegionCount>1.5</AttitudeScoreOtherEmpireLeadRegionCount>
-                    <AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1.5</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
-                    <AttitudeScoreVictoryAlertLastEmpireStanding>1.5</AttitudeScoreVictoryAlertLastEmpireStanding>
-                    <AttitudeScoreVictoryAlertExpansion>1.5</AttitudeScoreVictoryAlertExpansion>
-                    <AttitudeScoreVictoryAlertEconomy>1.5</AttitudeScoreVictoryAlertEconomy>
-                    <AttitudeScoreVictoryAlertDiplomacy>1.5</AttitudeScoreVictoryAlertDiplomacy>
-                    <AttitudeScoreVictoryAlertWonder>1.5</AttitudeScoreVictoryAlertWonder>
-                    <AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1.5</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
-                    <AttitudeScoreVictoryAlertSupremacy>1.5</AttitudeScoreVictoryAlertSupremacy>
-                    <AttitudeScoreVictoryAlertQuest>1.5</AttitudeScoreVictoryAlertQuest>
-                  </AILayer_Attitude>
+				  <AIEntity_Empire>
+					  <AILayer_Attitude> 
+						<AttitudeScoreTerraformedInMyTerritoryPositive>0.5</AttitudeScoreTerraformedInMyTerritoryPositive>
+						<AttitudeScoreTerraformedNearMyArmiesPositive>0.5</AttitudeScoreTerraformedNearMyArmiesPositive>
+						<AttitudeScoreKaijuPlacedNearMyCityPositive>0.5</AttitudeScoreKaijuPlacedNearMyCityPositive>
+						<AttitudeScoreTerraformedInMyTerritoryNegative>1.3</AttitudeScoreTerraformedInMyTerritoryNegative>
+						<AttitudeScoreCreepingNodeUpgradeComplete>1.2</AttitudeScoreCreepingNodeUpgradeComplete>
+						<AttitudeScoreKaijuAttacked>1.4</AttitudeScoreKaijuAttacked>
+						<AttitudeScoreKaijuPlacedNearMyCityNegative>1.4</AttitudeScoreKaijuPlacedNearMyCityNegative>
+						<AttitudeScoreLastWar>1.5</AttitudeScoreLastWar>
+						<AttitudeScoreNegativeContract>1.5</AttitudeScoreNegativeContract>
+						<AttitudeScoreRegionalBuildingDestroyed>1.5</AttitudeScoreRegionalBuildingDestroyed>
+						<AttitudeScoreSpy>1.5</AttitudeScoreSpy>
+						<AttitudeScorePillaging>1.5</AttitudeScorePillaging>
+						<AttitudeScorePillageSucceed>1.5</AttitudeScorePillageSucceed>
+						<AttitudeScoreDismantleCreepingNodeSuffered>1.5</AttitudeScoreDismantleCreepingNodeSuffered>
+						<AttitudeScoreDismantleDeviceSuffered>1.5</AttitudeScoreDismantleDeviceSuffered>
+						<AttitudeScoreCommonFrontier>1.5</AttitudeScoreCommonFrontier>
+						<AttitudeScoreOtherEmpireLeadScore>1.5</AttitudeScoreOtherEmpireLeadScore>
+						<AttitudeScoreLivingSpaceTense>1.5</AttitudeScoreLivingSpaceTense>
+						<AttitudeScoreOtherEmpireLeadRegionCount>1.5</AttitudeScoreOtherEmpireLeadRegionCount>
+						<AttitudeScoreOtherEmpireLeadRegionCount>1.5</AttitudeScoreOtherEmpireLeadRegionCount>
+						<AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>1.5</AttitudeScoreVictoryAlertGlobalScoreWhenLastTurnReached>
+						<AttitudeScoreVictoryAlertLastEmpireStanding>1.5</AttitudeScoreVictoryAlertLastEmpireStanding>
+						<AttitudeScoreVictoryAlertExpansion>1.5</AttitudeScoreVictoryAlertExpansion>
+						<AttitudeScoreVictoryAlertEconomy>1.5</AttitudeScoreVictoryAlertEconomy>
+						<AttitudeScoreVictoryAlertDiplomacy>1.5</AttitudeScoreVictoryAlertDiplomacy>
+						<AttitudeScoreVictoryAlertWonder>1.5</AttitudeScoreVictoryAlertWonder>
+						<AttitudeScoreVictoryAlertMostTechnologiesDiscovered>1.5</AttitudeScoreVictoryAlertMostTechnologiesDiscovered>
+						<AttitudeScoreVictoryAlertSupremacy>1.5</AttitudeScoreVictoryAlertSupremacy>
+						<AttitudeScoreVictoryAlertQuest>1.5</AttitudeScoreVictoryAlertQuest>
+					  </AILayer_Attitude>
+					  <AILayer_Research> 
+						<IdealBuyoutPeriod>0.5</IdealBuyoutPeriod>
+						<ElementEvaluatorContextMultiplier>
+						<AIEmpireUnlockBooster>2</AIEmpireUnlockBooster>
+						<AIEmpireUnlockBoosterCultist>2</AIEmpireUnlockBoosterCultist>
+						</ElementEvaluatorContextMultiplier>
+					  </AILayer_Research>
+					  <AILayer_Diplomacy>
+						  <MaximumNumberDiplomaticProposalsPerTurn>4</MaximumNumberDiplomaticProposalsPerTurn>
+						  <EmergencyGangupLimit>2.5</EmergencyGangupLimit>
+						  <SweetenDealThreshold>1.4</SweetenDealThreshold>
+						  <WantedDiplomaticRelationStateMessageRevaluationPeriod>0.6</WantedDiplomaticRelationStateMessageRevaluationPeriod>
+						  <MinimumNumberOfTurnsBetweenPropositions>0.6</MinimumNumberOfTurnsBetweenPropositions>
+						  <MaximumNumberOfTurnsBetweenPropositions>0.8</MaximumNumberOfTurnsBetweenPropositions>
+						  <MaximumNumberOfTurnsBetweenStatusAndForceStatus>1.3</MaximumNumberOfTurnsBetweenStatusAndForceStatus>
+					  </AILayer_Diplomacy> 
+					  <AILayer_HeroAssignation>
+						  <MaximumHeroCount>1.5</MaximumHeroCount>
+						  <MaximumTurnForHero>1.1</MaximumTurnForHero>
+						  <MinMoneyforRestore>1</MinMoneyforRestore> 
+					  </AILayer_HeroAssignation>
+					  <AILayer_Strategy>
+						  <Network>
+							<MilitaryEmpireNeedAgent>
+							  <GlobalUnitCountMultiplier>1.5</GlobalUnitCountMultiplier>
+							  <!-- War unit need: NumberOfWarUnit = CLAMP(WarUnitNeedOffset + (turn - WarUnitNeedStartTurn) / WarUnitNeedTurnRatio, MinimumNumberOfWarUnit, MaximumNumberOfWarUnit) -->
+							  <WarUnitNeedOffset>2</WarUnitNeedOffset>
+							  <WarUnitNeedStartTurn>0.8</WarUnitNeedStartTurn>
+							  <WarUnitNeedTurnRatio>0.8</WarUnitNeedTurnRatio>
+							  <MaximumNumberOfWarUnit>1.9</MaximumNumberOfWarUnit>
+							  <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
+							</MilitaryEmpireNeedAgent>
+						  </Network>
+					  </AILayer_Strategy>
+					  
+					  <AILayer_War>         
+						<HumanTargetBoost>1.2</HumanTargetBoost>
+					  </AILayer_War>
+					  <AILayer_Victory>
+						<EarliestVictoryEvaluationTurn>0.30</EarliestVictoryEvaluationTurn> 
+					  </AILayer_Victory>
+					  <AILayer_Trade>
+						<!-- [0,1] proportion of produced lux and strat AI will magically sell to market: AI's resources won't be ponctionned, and AI won't earn any money for it ! -->
+						<MagicResourceSellingProportion>0</MagicResourceSellingProportion>
+					  </AILayer_Trade>
+					  <AILayer_ResourceManager>		    
+					  	<StrategicResourceMinimumStockPerCity>1.3</StrategicResourceMinimumStockPerCity>
+					  </AILayer_ResourceManager>				  
+				  </AIEntity_Empire>
+				  <AIEntity_City>
+                        <AILayer_Production>
+							<ArmyThresholdTurns>0.85</ArmyThresholdTurns>
+                        </AILayer_Production>
+                   </AIEntity_City>
                 </MajorEmpire>
 
                 <AgentDefinition>
+					<ConversionNeedPrestigeRatioAgent>
+						<NumberOfTurnToReachObjective>0.7</NumberOfTurnToReachObjective>
+						<MinimumPriorityValue>2</MinimumPriorityValue>
+				    </ConversionNeedPrestigeRatioAgent>
+
                     <TechnologyReferenceTurnCountAgent>
-                        <IdealTechnologyUnlockPeriod>0.1</IdealTechnologyUnlockPeriod>
-                        <MaximumPeriodGap>0.1</MaximumPeriodGap>
+                        <IdealTechnologyUnlockPeriod>0.4</IdealTechnologyUnlockPeriod>
+                        <MaximumPeriodGap>0.4</MaximumPeriodGap>
                     </TechnologyReferenceTurnCountAgent>
 
-                    <!-- AIQuestSolverDefinition -->
-                    <AIQuestSolverDefinition>
-                        <MinimalTurnDuration>1</MinimalTurnDuration>
-                        <MaximalTurnDuration>1</MaximalTurnDuration>
-                        <ChanceOfSuccess>1</ChanceOfSuccess>
-                    </AIQuestSolverDefinition>
-
                     <DiplomacyNeedPrestigeRatioAgent>
-                        <NumberOfTurnToReachObjective>0.1</NumberOfTurnToReachObjective>
+                        <NumberOfTurnToReachObjective>1</NumberOfTurnToReachObjective>
                     </DiplomacyNeedPrestigeRatioAgent>
 
                     <EmpirePlanNeedPrestigeRatioAgent>
                         <!-- The AI will want to stock X% of the wanted empire plan cost. -->
-                        <WantedEmpirePlanCostRatio>0.1</WantedEmpirePlanCostRatio>
+                        <WantedEmpirePlanCostRatio>1</WantedEmpirePlanCostRatio>
                     </EmpirePlanNeedPrestigeRatioAgent>
 
                     <IndustryReferenceTurnCountAgent>
-                        <MaximumTurnCount>0.1</MaximumTurnCount>
+                        <MaximumTurnCount>0.4</MaximumTurnCount>
                     </IndustryReferenceTurnCountAgent>
 
                     <MoneyReferenceRatioAgent>
-                        <MoneyStockToMaintainUpkeepTurnCount>0.1</MoneyStockToMaintainUpkeepTurnCount>
+                        <MoneyStockToMaintainUpkeepTurnCount>1.45</MoneyStockToMaintainUpkeepTurnCount>
                         <!-- We want a bank account at least greater than X turns upkeep. -->
-                        <MoneyIncomeGrowthPercent>0.1</MoneyIncomeGrowthPercent>
+                        <MoneyIncomeGrowthPercent>1.5</MoneyIncomeGrowthPercent>
                         <!-- We want an income greater than X% of the bank account (positive snowball effect). -->
                     </MoneyReferenceRatioAgent>
 
                     <PopulationBuyoutReferenceRatioAgent>
-                        <MoneyIncomeBuyoutPercent>0.1</MoneyIncomeBuyoutPercent>
+                        <MoneyIncomeBuyoutPercent>0.5</MoneyIncomeBuyoutPercent>
                     </PopulationBuyoutReferenceRatioAgent>
 
                     <PopulationReferenceTurnCountAgent>
-                        <RangeRatio>0.1</RangeRatio>
+                        <RangeRatio>0.4</RangeRatio>
                         <!-- Define the maximum criticy point. MaximumNumberOfTurn = RangeRatio *  IdealNumberOfTurnToReachNextPopulation -->
                     </PopulationReferenceTurnCountAgent>
 
+					<TechnologyBuyoutReferenceRatioAgent>
+						<IdealTechnologyUnlockPeriod>0.4</IdealTechnologyUnlockPeriod>
+					</TechnologyBuyoutReferenceRatioAgent>
                   <!-- Diplomatic Agents -->
 
                   <WarTermAgent>
@@ -1056,20 +1238,12 @@
                     <Multiplier>0.7</Multiplier>
                   </VisionAndMapExchangeTermAgent>
 
-                  <CommercialAgreementTermAgent>
-                    <Multiplier>0.7</Multiplier>
-                  </CommercialAgreementTermAgent>
-
-                  <ResearchAgreementTermAgent>
-                    <Multiplier>0.7</Multiplier>
-                  </ResearchAgreementTermAgent>
-
                   <OpenBordersTermAgent>
-                    <Multiplier>0.6</Multiplier>
+                    <Multiplier>0.7</Multiplier>
                   </OpenBordersTermAgent>
 
                   <MarketBanRemovalTermAgent>
-                    <Multiplier>0.6</Multiplier>
+                    <Multiplier>1</Multiplier>
                   </MarketBanRemovalTermAgent>
 
                   <MapEmbargoTermAgent>
@@ -1097,7 +1271,7 @@
                   </CloseBordersTermAgent>
 
                   <MarketBanNullificationTermAgent>
-                    <BonusPerMarketplaceTechnology>1.3</BonusPerMarketplaceTechnology>
+                    <BonusPerMarketplaceTechnology>2</BonusPerMarketplaceTechnology>
                   </MarketBanNullificationTermAgent>
 
                   <MarketBanTermAgent>
@@ -1113,6 +1287,13 @@
                   </MoneyPrintNullificationTermAgent>
                 </AgentDefinition>
             </AI>
+			
+			<!-- AIQuestSolverDefinition -->
+            <AIQuestSolverDefinition>
+                <MinimalTurnDuration>0.8</MinimalTurnDuration>
+                <MaximalTurnDuration>0.8</MaximalTurnDuration>
+                <ChanceOfSuccess>1</ChanceOfSuccess>
+            </AIQuestSolverDefinition>
 
         </Multipliers>
     </AIPersonalityDefinition>

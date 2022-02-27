@@ -166,7 +166,7 @@ public abstract class Garrison : SimulationObjectWrapper, Amplitude.Xml.Serializ
 			}
 			for (int i = 0; i < this.standardUnits.Count; i++)
 			{
-				if (this.standardUnits[i].CheckUnitAbility(UnitAbility.ReadonlyColonize, -1))
+				if (this.standardUnits[i].CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) || this.standardUnits[i].CheckUnitAbility(UnitAbility.ReadonlyResettle, -1))
 				{
 					return true;
 				}

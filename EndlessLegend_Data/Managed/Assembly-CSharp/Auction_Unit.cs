@@ -66,7 +66,7 @@ public class Auction_Unit : SimulationAuction<AuctionItem_GameEntity>
 
 	private bool CanSellUnit(Unit unit)
 	{
-		return !unit.CheckUnitAbility(UnitAbility.ReadonlyUnsalable, -1) && (this.AllowSettlerSale || !unit.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1));
+		return !unit.CheckUnitAbility(UnitAbility.ReadonlyUnsalable, -1) && (this.AllowSettlerSale || !unit.IsSettler);
 	}
 
 	private float ComputeUnitScore(Unit unit)

@@ -14,6 +14,10 @@ public class QuestFilterRegionIsNamed
 	{
 		Diagnostics.Assert(regionToCheck != null);
 		bool flag = this.Name.ToLower().Contains(regionToCheck.LocalizedName.ToLower());
-		return (!this.Inverted) ? flag : (!flag);
+		if (this.Inverted)
+		{
+			return !flag;
+		}
+		return flag;
 	}
 }

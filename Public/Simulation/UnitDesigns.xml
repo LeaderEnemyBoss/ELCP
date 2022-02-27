@@ -489,6 +489,35 @@
   <UnitDesign Name="UnitDesignRageWizardsWitch#1"                  Model="0030300">
     <UnitBodyDefinitionReference Name="UnitBodyRageWizardsWitch" />
   </UnitDesign>
+  <!-- ELCP Quest -->
+  <UnitDesign Name="UnitDesignRageWizardsWitchELCPEra4"    Model="0030301" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsWitch" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemStaff2DustTier1#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemStaff2DustTier1#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"/>
+	  <Slot Name="Head"                            ItemName="ItemHeadDustTier1" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignRageWizardsWitchELCPEra5"    Model="0030302" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsWitch" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemStaff2DustTier2#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemStaff2DustTier2#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"/>
+	  <Slot Name="Head"                            ItemName="ItemHeadDustTier2" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignRageWizardsWitchELCPEra6"    Model="0030303" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRageWizardsWitch" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemStaff2DustTier3#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemStaff2DustTier3#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"/>
+	  <Slot Name="Head"                            ItemName="ItemHeadDustTier3" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+ 
 
   <!-- RAGE WIZARDS SETTLER -->
   <UnitDesign Name="UnitDesignRageWizardsSettler#1"                Model="0030400">
@@ -1039,7 +1068,26 @@
       <Slot Name="Torso"                           ItemName="ItemTorsoStrategic2Tier1"/>
     </UnitEquipmentSet>
   </UnitDesign>
-
+  <!-- ELCP Quest -->
+  <UnitDesign Name="UnitDesignRovingClansKassaiELCPEra5"    Model="0050202" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansKassai" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemBow2DustTier2#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemBow2DustTier2#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"/>
+	  <Slot Name="Head"                            ItemName="ItemHeadDustTier2" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignRovingClansKassaiELCPEra6"    Model="0050203" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansKassai" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemBow2DustTier3#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemBow2DustTier3#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"/>
+	  <Slot Name="Head"                            ItemName="ItemHeadDustTier3" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  
   <!-- ROVING CLANS BERZERK -->
   <UnitDesign Name="UnitDesignRovingClansBerzerk#1"                Model="0050300">
     <UnitBodyDefinitionReference Name="UnitBodyRovingClansBerzerk" />
@@ -1178,6 +1226,62 @@
   <UnitDesign Name="UnitDesignRovingClansScarab#Hidden"            Model="0050601" Hidden="true">
     <UnitBodyDefinitionReference Name="UnitBodyRovingClansScarab" />
     <Tags>Scarab, MigrationUnit</Tags>
+  </UnitDesign>
+  <!-- ELCP Scarabs for  "City Gone Rogue" quest -->
+  <UnitDesign Name="ELCPScarab#HiddenEra3"            Model="0050602" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansScarab" />
+    <Tags>Scarab, MigrationUnit</Tags>
+	<SimulationDescriptorReference Name="ELCPScarabBonusEra3" />
+	<UnitEquipmentSet>
+	  <Slot Name="MainHand"                        ItemName="ItemClaw2IronTier2" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2IronTier2" />
+	  <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemTalismanMedalEra2MilitaryReward" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="ItemRingStrategic6Tier1" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="ItemTalismanStrategic1Tier1" />
+	  <Slot Name="Accessory3" SlotType="Accessory" ItemName="ItemRingIronTier1"/>
+	</UnitEquipmentSet>
+  </UnitDesign>
+  
+  <UnitDesign Name="ELCPScarab#HiddenEra4"            Model="0050603" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansScarab" />
+    <Tags>Scarab, MigrationUnit</Tags>
+	<SimulationDescriptorReference Name="ELCPScarabBonusEra4" />
+	<UnitEquipmentSet>
+	  <Slot Name="MainHand"                        ItemName="ItemClaw2IronTier3" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2IronTier3" />
+	  <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemTalismanMedalEra2MilitaryReward" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="ItemRingStrategic6Tier2" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="ItemTalismanStrategic1Tier2" />
+	  <Slot Name="Accessory3" SlotType="Accessory" ItemName="ItemRingIronTier2"/>
+	</UnitEquipmentSet>
+  </UnitDesign>
+  
+  <UnitDesign Name="ELCPScarab#HiddenEra5"            Model="0050604" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansScarab" />
+    <Tags>Scarab, MigrationUnit</Tags>
+	<SimulationDescriptorReference Name="ELCPScarabBonusEra5" />
+	<UnitEquipmentSet>
+	  <Slot Name="MainHand"                        ItemName="ItemClaw2DustTier1" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2DustTier1" />
+	  <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemTalismanMedalEra2MilitaryReward" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="ItemRingStrategic6Tier3" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="ItemTalismanStrategic1Tier3" />
+	  <Slot Name="Accessory3" SlotType="Accessory" ItemName="ItemRingIronTier3"/>
+	</UnitEquipmentSet>
+  </UnitDesign>
+  
+  <UnitDesign Name="ELCPScarab#HiddenEra6"            Model="0050605" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyRovingClansScarab" />
+    <Tags>Scarab, MigrationUnit</Tags>
+	<SimulationDescriptorReference Name="ELCPScarabBonusEra6" />
+	<UnitEquipmentSet>
+	  <Slot Name="MainHand"                        ItemName="ItemClaw2DustTier2" />
+      <Slot Name="OffHand"                         ItemName="ItemClaw2DustTier2" />
+	  <Slot Name="Accessory0" SlotType="Accessory" ItemName="ItemTalismanMedalEra2MilitaryReward" />
+      <Slot Name="Accessory1" SlotType="Accessory" ItemName="ItemRingStrategic6Tier3" />
+      <Slot Name="Accessory2" SlotType="Accessory" ItemName="ItemTalismanStrategic1Tier3" />
+	  <Slot Name="Accessory3" SlotType="Accessory" ItemName="ItemRingIronTier3"/>
+	</UnitEquipmentSet>
   </UnitDesign>
 
 
@@ -1360,6 +1464,37 @@
   <!-- CULTISTS NAMELESS GUARD -->
   <UnitDesign Name="UnitDesignCultistsNamelessGuard#1"             Model="0070300">
     <UnitBodyDefinitionReference Name="UnitBodyCultistsNamelessGuard" />
+  </UnitDesign>
+  <!-- ELCP Quest -->
+  <UnitDesign Name="UnitDesignCultistsNamelessGuardELCPEra4"    Model="0070301" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsNamelessGuard" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemBow2DustTier1#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemBow2DustTier1#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier1"/>
+	  <Slot Name="Head"                            ItemName="ItemHeadDustTier1" />
+	  <Slot Name="Legs"                            ItemName="ItemLegsDustTier1" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignCultistsNamelessGuardELCPEra5"    Model="0070302" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsNamelessGuard" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemBow2DustTier2#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemBow2DustTier2#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier2"/>
+	  <Slot Name="Head"                            ItemName="ItemHeadDustTier2" />
+	  <Slot Name="Legs"                            ItemName="ItemLegsDustTier2" />
+    </UnitEquipmentSet>
+  </UnitDesign>
+  <UnitDesign Name="UnitDesignCultistsNamelessGuardELCPEra6"    Model="0070303" Hidden="true">
+    <UnitBodyDefinitionReference Name="UnitBodyCultistsNamelessGuard" />
+    <UnitEquipmentSet>
+      <Slot Name="MainHand"                        ItemName="ItemBow2DustTier3#1"/>
+      <Slot Name="OffHand"                         ItemName="ItemBow2DustTier3#1"/>
+      <Slot Name="Torso"                           ItemName="ItemTorsoDustTier3"/>
+	  <Slot Name="Head"                            ItemName="ItemHeadDustTier3" />
+	  <Slot Name="Legs"                            ItemName="ItemLegsDustTier3" />
+    </UnitEquipmentSet>
   </UnitDesign>
 
   <!-- CULTISTS SETTLER -->

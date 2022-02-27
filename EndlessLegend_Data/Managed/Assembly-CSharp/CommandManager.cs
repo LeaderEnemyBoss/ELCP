@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,6 +8,7 @@ using System.Text;
 using Amplitude;
 using Amplitude.Interop;
 using Amplitude.Unity.Audio;
+using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
 using Amplitude.Unity.Input;
@@ -33,82 +33,91 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			localizationService = service;
 		});
 		Diagnostics.Assert(localizationService != null);
-		this.RegisterCommand(new Command("/?", "Displays a list of all available commands."), new Func<string[], string>(this.Command_Help));
-		this.RegisterCommand(new Command("/Quit", "Quits the application and returns to desktop."), new Func<string[], string>(this.Command_Quit));
-		this.RegisterCommand(new Command("/WhoAmI", "Displays information about the current user."), new Func<string[], string>(this.Command_WhoAmI));
-		this.RegisterCommand(new Command("/Ping", "Displays your latency with the server."), new Func<string[], string>(this.Command_Ping));
+		base.RegisterCommand(new Command("/?", "Displays a list of all available commands."), new Func<string[], string>(this.Command_Help));
+		base.RegisterCommand(new Command("/SetArmySpeed", "Sets the army speed to a selected multiplier (default: 1)."), new Func<string[], string>(this.Command_SetArmySpeed));
+		base.RegisterCommand(new Command("/Quit", "Quits the application and returns to desktop."), new Func<string[], string>(this.Command_Quit));
+		base.RegisterCommand(new Command("/WhoAmI", "Displays information about the current user."), new Func<string[], string>(this.Command_WhoAmI));
+		base.RegisterCommand(new Command("/Ping", "Displays your latency with the server."), new Func<string[], string>(this.Command_Ping));
 		base.RegisterAliasForCommand("/?", "/Help");
-		this.RegisterCommand(new Command("/Whisper", localizationService.Localize("%ChatWhisperCommandHelp")), new Func<string[], string>(this.Command_ChatWhisper));
-		this.RegisterCommand(new Command("/Empire", localizationService.Localize("%ChatEmpireCommandHelp")), new Func<string[], string>(this.Command_ChatToEmpire));
+		base.RegisterCommand(new Command("/Whisper", localizationService.Localize("%ChatWhisperCommandHelp")), new Func<string[], string>(this.Command_ChatWhisper));
+		base.RegisterCommand(new Command("/Empire", localizationService.Localize("%ChatEmpireCommandHelp")), new Func<string[], string>(this.Command_ChatToEmpire));
 		base.RegisterAliasForCommand("/Whisper", "/w");
 		base.RegisterAliasForCommand("/Empire", "/e");
 		if (Amplitude.Unity.Framework.Application.Version.Accessibility <= Accessibility.ProtectedInternal || Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 		{
-			this.RegisterCommand(new Command("/Bind", "Syntax : /Bind [KeyAction] [KeyCode] [bool]. Display bindings with no arguments, Call to bind function with arguments"), new Func<string[], string>(this.Command_Bind));
-			this.RegisterCommand(new Command("/BringThePain", "Force the health of selected army units at half the maximum value. (Network non supported)."), new Func<string[], string>(this.Command_BringThePain));
-			this.RegisterCommand(new Command("/ForceCurrentQuestsCompletion", "Will complete all the quests in progress (/ForceCurrentQuestsCompletion Failed to fail them all)."), new Func<string[], string>(this.Command_ForceCurrentQuestsCompletion));
-			this.RegisterCommand(new Command("/ForceQuestTriggering", "Force a quest to be triggered."), new Func<string[], string>(this.Command_ForceQuestTriggering));
-			this.RegisterCommand(new Command("/ForceUnlockTechnology", "Will unlock a technology without checking any prerequisite."), new Func<string[], string>(this.Command_ForceUnlockTechnology));
-			this.RegisterCommand(new Command("/GetRegistryValue", "Get a registry value."), new Func<string[], string>(this.Command_GetRegistryValue));
-			this.RegisterCommand(new Command("/IAmACheater", "Unlocks cheat items; 'NoMore' to get the real game back."), new Func<string[], string>(this.Command_IAmACheater));
-			this.RegisterCommand(new Command("/INeedAHero", "Orders one hero creation; The Unit profile name could be provided, otherwise, the hero profile will be random."), new Func<string[], string>(this.Command_INeedAHero));
-			this.RegisterCommand(new Command("/IPutASpellOnYou", "Capture the select army hero and push it to the second empire jail."), new Func<string[], string>(this.Command_IPutASpellOnYou));
-			this.RegisterCommand(new Command("/LetTheSunshineIn", "Change season to summer."), new Func<string[], string>(this.Command_LetTheSunshineIn));
-			this.RegisterCommand(new Command("/LightMeUp", "Disables the fog of war; 'NoMore' to get the fog of war back."), new Func<string[], string>(this.Command_LightMeUp));
-			this.RegisterCommand(new Command("/LookAt", "Center camera on a specific world position."), new Func<string[], string>(this.Command_LookAt));
-			this.RegisterCommand(new Command("/KnowledgeIsPower", "Unlock every technology. +\"all\" to include affinity & quest technologies."), new Func<string[], string>(this.Command_KnowledgeIsPower));
-			this.RegisterCommand(new Command("/PowerMeUp", "Give to all of your selected world army's units enough xp to level up."), new Func<string[], string>(this.Command_PowerMeUp));
-			this.RegisterCommand(new Command("/ShowMeTheMoney", "Orders the transfer of a specific amount of Dust."), new Func<string[], string>(this.Command_ShowMeTheMoney));
-			this.RegisterCommand(new Command("/ShowMeTheResources", "Orders the transfer of a specific amount of Dust, Influence, Science & Growth."), new Func<string[], string>(this.Command_ShowMeTheResources));
-			this.RegisterCommand(new Command("/ShowMeTheWay", "Orders the exploration of the whole world."), new Func<string[], string>(this.Command_ShowMeTheWay));
-			this.RegisterCommand(new Command("/Slap", "Deal damage (random or given as parameter) to all the units (including hero) in your selected army or city."), new Func<string[], string>(this.Command_Slap));
-			this.RegisterCommand(new Command("/TimeToDie", "Destroy the selected army."), new Func<string[], string>(this.Command_TimeToDie));
-			this.RegisterCommand(new Command("/TransferResources", "Orders the transfer of a specific amount of resources."), new Func<string[], string>(this.Command_TransferResources));
-			this.RegisterCommand(new Command("/WinterIsComing", "Change season to winter."), new Func<string[], string>(this.Command_WinterIsComming));
-			this.RegisterCommand(new Command("/WhatIsYoursIsMine", "Toggle Catspaw action on minor/naval armies."), new Func<string[], string>(this.Command_WhatIsYoursIsMine));
-			this.RegisterCommand(new Command("/SetWindPreferences", "Set the direction and strength of the wind."), new Func<string[], string>(this.Command_SetWindPreferences));
-			this.RegisterCommand(new Command("/SeasonEffect", "Handle season effects."), new Func<string[], string>(this.Command_SeasonEffect));
-			this.RegisterCommand(new Command("/Orb", "Give some data concerning orbs."), new Func<string[], string>(this.Command_Orb));
-			this.RegisterCommand(new Command("/WeatherControl", "Activate the weather control using a given preset."), new Func<string[], string>(this.Command_WeatherControl));
-			this.RegisterCommand(new Command("/BringTheHeat", "Change season to Heat Wave."), new Func<string[], string>(this.Command_BringTheHeat));
-			this.RegisterCommand(new Command("/Visions", "Generate season mirages."), new Func<string[], string>(this.Command_Visions));
-			this.RegisterCommand(new Command("/TameKaiju", "Tames Kaiju on Army region."), new Func<string[], string>(this.Command_TameKaiju));
-			this.RegisterCommand(new Command("/UntameKaiju", "Utames Kaiju on Army region."), new Func<string[], string>(this.Command_UntameKaiju));
-			this.RegisterCommand(new Command("/RelocateKaiju", "Triggers relocation of all kaiju in the world."), new Func<string[], string>(this.Command_RelocateKaijus));
-			this.RegisterCommand(new Command("/KaijuIChooseYou", "Convert selected Kaiju Garrison to Kaiju Army."), new Func<string[], string>(this.Command_KaijuIChooseYou));
-			this.RegisterCommand(new Command("/KaijuComeBack", "Come Back Kaiju Army to Kaiju Garrison."), new Func<string[], string>(this.Command_KaijuComeBack));
-			this.RegisterCommand(new Command("/SpawnKaiju", "Summoning the beast!!"), new Func<string[], string>(this.Command_SpawnKaiju));
-			this.RegisterCommand(new Command("/AIDebugMode", "Active the AI debug mode."), new Func<string[], string>(this.Command_AIDebugMode));
-			this.RegisterCommand(new Command("/SimulationDebugMode", "Active the Simulation debug mode."), new Func<string[], string>(this.Command_SimulationDebugMode));
+			base.RegisterCommand(new Command("/UpdateNodes", "Tries to bring all Fungal Blooms up to date."), new Func<string[], string>(this.Command_UpdateNodes));
+			base.RegisterCommand(new Command("/CheckDLCStatus", "Lists all DLC-Content and if it is active."), new Func<string[], string>(this.Command_CheckDLCStatus));
+			base.RegisterCommand(new Command("/ShowMeTheStockpiles", "Orders the transfer of a specific amount of Stockpiles."), new Func<string[], string>(this.Command_ShowMeTheStockpiles));
+			base.RegisterCommand(new Command("/Teleport", "Teleports the selected army to the issued coordinates."), new Func<string[], string>(this.Command_Teleport));
+			base.RegisterCommand(new Command("/Terraform", "Terraforms the issued coordinates."), new Func<string[], string>(this.Command_Terraform));
+			base.RegisterCommand(new Command("/AutoTurn", "Plays some number of turns automatically."), new Func<string[], string>(this.Command_AutoTurn));
+			base.RegisterCommand(new Command("/Skynet", "AI will take over for Empire 0 without automatically ending the turn."), new Func<string[], string>(this.Command_Skynet));
+			base.RegisterCommand(new Command("/Bind", "Syntax : /Bind [KeyAction] [KeyCode] [bool]. Display bindings with no arguments, Call to bind function with arguments"), new Func<string[], string>(this.Command_Bind));
+			base.RegisterCommand(new Command("/BringThePain", "Force the health of selected army units at half the maximum value. (Network non supported)."), new Func<string[], string>(this.Command_BringThePain));
+			base.RegisterCommand(new Command("/ForceCurrentQuestsCompletion", "Will complete all the quests in progress (/ForceCurrentQuestsCompletion Failed to fail them all)."), new Func<string[], string>(this.Command_ForceCurrentQuestsCompletion));
+			base.RegisterCommand(new Command("/CompleteQuest", "Will complete the currently active quest. (/CompleteQuest Failed to fail the active quest)"), new Func<string[], string>(this.Command_CompleteQuest));
+			base.RegisterCommand(new Command("/ForceQuestTriggering", "Force a quest to be triggered."), new Func<string[], string>(this.Command_ForceQuestTriggering));
+			base.RegisterCommand(new Command("/ForceUnlockTechnology", "Will unlock a technology without checking any prerequisite."), new Func<string[], string>(this.Command_ForceUnlockTechnology));
+			base.RegisterCommand(new Command("/GetRegistryValue", "Get a registry value."), new Func<string[], string>(this.Command_GetRegistryValue));
+			base.RegisterCommand(new Command("/IAmACheater", "Unlocks cheat items; 'NoMore' to get the real game back."), new Func<string[], string>(this.Command_IAmACheater));
+			base.RegisterCommand(new Command("/INeedAHero", "Orders one hero creation; The Unit profile name could be provided, otherwise, the hero profile will be random."), new Func<string[], string>(this.Command_INeedAHero));
+			base.RegisterCommand(new Command("/IPutASpellOnYou", "Capture the select army hero and push it to the second empire jail."), new Func<string[], string>(this.Command_IPutASpellOnYou));
+			base.RegisterCommand(new Command("/LetTheSunshineIn", "Change season to summer."), new Func<string[], string>(this.Command_LetTheSunshineIn));
+			base.RegisterCommand(new Command("/LightMeUp", "Disables the fog of war; 'NoMore' to get the fog of war back."), new Func<string[], string>(this.Command_LightMeUp));
+			base.RegisterCommand(new Command("/LookAt", "Center camera on a specific world position."), new Func<string[], string>(this.Command_LookAt));
+			base.RegisterCommand(new Command("/KnowledgeIsPower", "Unlock every technology. +\"all\" to include affinity & quest technologies."), new Func<string[], string>(this.Command_KnowledgeIsPower));
+			base.RegisterCommand(new Command("/PowerMeUp", "Give to all of your selected world army's units enough xp to level up."), new Func<string[], string>(this.Command_PowerMeUp));
+			base.RegisterCommand(new Command("/ShowMeTheMoney", "Orders the transfer of a specific amount of Dust."), new Func<string[], string>(this.Command_ShowMeTheMoney));
+			base.RegisterCommand(new Command("/ShowMeTheResources", "Orders the transfer of a specific amount of Dust, Influence, Science & Growth."), new Func<string[], string>(this.Command_ShowMeTheResources));
+			base.RegisterCommand(new Command("/ShowMeTheWay", "Orders the exploration of the whole world."), new Func<string[], string>(this.Command_ShowMeTheWay));
+			base.RegisterCommand(new Command("/Slap", "Deal damage (random or given as parameter) to all the units (including hero) in your selected army or city."), new Func<string[], string>(this.Command_Slap));
+			base.RegisterCommand(new Command("/TimeToDie", "Destroy the selected army."), new Func<string[], string>(this.Command_TimeToDie));
+			base.RegisterCommand(new Command("/TransferResources", "Orders the transfer of a specific amount of resources."), new Func<string[], string>(this.Command_TransferResources));
+			base.RegisterCommand(new Command("/WinterIsComing", "Change season to winter."), new Func<string[], string>(this.Command_WinterIsComming));
+			base.RegisterCommand(new Command("/WhatIsYoursIsMine", "Toggle Catspaw action on minor/naval armies."), new Func<string[], string>(this.Command_WhatIsYoursIsMine));
+			base.RegisterCommand(new Command("/SetWindPreferences", "Set the direction and strength of the wind."), new Func<string[], string>(this.Command_SetWindPreferences));
+			base.RegisterCommand(new Command("/SeasonEffect", "Handle season effects."), new Func<string[], string>(this.Command_SeasonEffect));
+			base.RegisterCommand(new Command("/Orb", "Give some data concerning orbs."), new Func<string[], string>(this.Command_Orb));
+			base.RegisterCommand(new Command("/WeatherControl", "Activate the weather control using a given preset."), new Func<string[], string>(this.Command_WeatherControl));
+			base.RegisterCommand(new Command("/BringTheHeat", "Change season to Heat Wave."), new Func<string[], string>(this.Command_BringTheHeat));
+			base.RegisterCommand(new Command("/Visions", "Generate season mirages."), new Func<string[], string>(this.Command_Visions));
+			base.RegisterCommand(new Command("/TameKaiju", "Tames Kaiju on Army region."), new Func<string[], string>(this.Command_TameKaiju));
+			base.RegisterCommand(new Command("/UntameKaiju", "Utames Kaiju on Army region."), new Func<string[], string>(this.Command_UntameKaiju));
+			base.RegisterCommand(new Command("/RelocateKaiju", "Triggers relocation of all kaiju in the world."), new Func<string[], string>(this.Command_RelocateKaijus));
+			base.RegisterCommand(new Command("/KaijuIChooseYou", "Convert selected Kaiju Garrison to Kaiju Army."), new Func<string[], string>(this.Command_KaijuIChooseYou));
+			base.RegisterCommand(new Command("/KaijuComeBack", "Come Back Kaiju Army to Kaiju Garrison."), new Func<string[], string>(this.Command_KaijuComeBack));
+			base.RegisterCommand(new Command("/SpawnKaiju", "Summoning the beast!!"), new Func<string[], string>(this.Command_SpawnKaiju));
+			base.RegisterCommand(new Command("/AIDebugMode", "Active the AI debug mode."), new Func<string[], string>(this.Command_AIDebugMode));
+			base.RegisterCommand(new Command("/SimulationDebugMode", "Active the Simulation debug mode."), new Func<string[], string>(this.Command_SimulationDebugMode));
+			base.RegisterCommand(new Command("/side", "Syntax: /side [quest number]. Force a side quest to be triggered in the next interaction / parley."), new Func<string[], string>(this.Command_ForceSideQuestVillageTriggering));
 			base.RegisterAliasForCommand("/ShowMeTheMoney", "/TransferMoney");
 			base.RegisterAliasForCommand("/TransferResources", "/Transfer");
-			this.RegisterCommand(new Command("/side", "Syntax: /side [quest number]. Force a side quest to be triggered in the next interaction / parley."), new Func<string[], string>(this.Command_ForceSideQuestVillageTriggering));
+			base.RegisterCommand(new Command("/ListPlayers", "List the players."), new Func<string[], string>(this.Command_ListPlayers));
+			base.RegisterAliasForCommand("/ListPlayers", "/lp");
 			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 			{
-				this.RegisterCommand(new Command("/UnitBodyInspector", "Activate the remapping tool."), new Func<string[], string>(this.CommandManager_UnitBodyInspector));
+				base.RegisterCommand(new Command("/UnitBodyInspector", "Activate the remapping tool."), new Func<string[], string>(this.CommandManager_UnitBodyInspector));
 				base.RegisterAliasForCommand("/UnitBodyInspector", "/ShowMeYourBody");
 			}
 		}
 		if (Amplitude.Unity.Framework.Application.Version.Accessibility <= Accessibility.ProtectedInternal)
 		{
-			this.RegisterCommand(new Command("/CutTheRope", "Disconnect the game client."), new Func<string[], string>(this.Command_DisconnectClient));
-			this.RegisterCommand(new Command("/Time", "Show the game time."), new Func<string[], string>(this.Command_GameTime));
-			this.RegisterCommand(new Command("/WorldViewStatistics", "Display the world view statistics."), new Func<string[], string>(this.Command_WorldViewStatistics));
-			this.RegisterCommand(new Command("/GetLobbyData", "Gets a lobby data value."), new Func<string[], string>(this.Command_GetLobbyData));
+			base.RegisterCommand(new Command("/CutTheRope", "Disconnect the game client."), new Func<string[], string>(this.Command_DisconnectClient));
+			base.RegisterCommand(new Command("/Time", "Show the game time."), new Func<string[], string>(this.Command_GameTime));
+			base.RegisterCommand(new Command("/WorldViewStatistics", "Display the world view statistics."), new Func<string[], string>(this.Command_WorldViewStatistics));
+			base.RegisterCommand(new Command("/GetLobbyData", "Gets a lobby data value."), new Func<string[], string>(this.Command_GetLobbyData));
 			base.RegisterAliasForCommand("/CutTheRope", "/Disc");
 		}
 		if (Amplitude.Unity.Framework.Application.Version.Accessibility <= Accessibility.Internal)
 		{
-			this.RegisterCommand(new Command("/Dump", "Dumps the game content."), new Func<string[], string>(this.Command_Dump));
-			this.RegisterCommand(new Command("/ListPlayers", "List the players."), new Func<string[], string>(this.Command_ListPlayers));
-			this.RegisterCommand(new Command("/ToggleVisibility", "Toggle visibility of render element."), new Func<string[], string>(this.Command_ToggleVisibility));
-			this.RegisterCommand(new Command("/LoadDynamicBitmaps", "Loads all dynamic available bitmaps."), new Func<string[], string>(this.Command_LoadDynamicBitmaps));
-			this.RegisterCommand(new Command("/EpicMusicTime", "Orders the lauch of a faction music."), new Func<string[], string>(this.Command_EpicMusicTime));
-			this.RegisterCommand(new Command("/EndlessDay", "Toggles the endless day status."), new Func<string[], string>(this.Command_ToggleEndlessDay));
-			base.RegisterAliasForCommand("/ListPlayers", "/lp");
-			this.RegisterCommand(new Command("/AutoTurn", "Plays some number of turns automatically."), new Func<string[], string>(this.Command_AutoTurn));
-			this.RegisterCommand(new Command("/GCCollect", "Forces a full garbage collection to free some memory."), new Func<string[], string>(this.CommandManager_GCCollect));
-			this.RegisterCommand(new Command("/UnloadUnusedAssets", "Unloads all unused assets in Unity."), new Func<string[], string>(this.CommandManager_UnloadUnusedAssets));
+			base.RegisterCommand(new Command("/Dump", "Dumps the game content."), new Func<string[], string>(this.Command_Dump));
+			base.RegisterCommand(new Command("/ToggleVisibility", "Toggle visibility of render element."), new Func<string[], string>(this.Command_ToggleVisibility));
+			base.RegisterCommand(new Command("/LoadDynamicBitmaps", "Loads all dynamic available bitmaps."), new Func<string[], string>(this.Command_LoadDynamicBitmaps));
+			base.RegisterCommand(new Command("/EpicMusicTime", "Orders the lauch of a faction music."), new Func<string[], string>(this.Command_EpicMusicTime));
+			base.RegisterCommand(new Command("/EndlessDay", "Toggles the endless day status."), new Func<string[], string>(this.Command_ToggleEndlessDay));
+			base.RegisterCommand(new Command("/AutoTurn", "Plays some number of turns automatically."), new Func<string[], string>(this.Command_AutoTurn));
+			base.RegisterCommand(new Command("/GCCollect", "Forces a full garbage collection to free some memory."), new Func<string[], string>(this.CommandManager_GCCollect));
+			base.RegisterCommand(new Command("/UnloadUnusedAssets", "Unloads all unused assets in Unity."), new Func<string[], string>(this.CommandManager_UnloadUnusedAssets));
 		}
 		yield break;
 	}
@@ -212,30 +221,37 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			{
 				int.TryParse(commandLineArgs[1], out num);
 			}
-			double delay = 10.0;
+			double num2 = 10.0;
 			if (commandLineArgs.Length > 2)
 			{
-				double.TryParse(commandLineArgs[2], out delay);
+				double.TryParse(commandLineArgs[2], out num2);
 			}
 			if (num <= 0)
 			{
 				return "Invalid number of turns.";
 			}
 			this.needToStop = false;
-			base.StartCoroutine(this.Command_AutoTurnAsync(num, delay));
-			return "Running for " + num + " turn(s).";
+			base.StartCoroutine(this.Command_AutoTurnAsync(num, num2));
+			return string.Concat(new object[]
+			{
+				"Running for ",
+				num,
+				" turn(s) with a delay of ",
+				num2,
+				" seconds."
+			});
 		}
 	}
 
 	private IEnumerator Command_AutoTurnAsync(int numberOfTurns = 10, double delay = 10.0)
 	{
-		ISessionService sessionService = Services.GetService<ISessionService>();
-		if (sessionService == null || sessionService.Session == null)
+		ISessionService service = Services.GetService<ISessionService>();
+		if (service == null || service.Session == null)
 		{
 			Diagnostics.LogError("Cannot find the running session.");
 			yield break;
 		}
-		global::Session session = sessionService.Session as global::Session;
+		global::Session session = service.Session as global::Session;
 		if (session == null)
 		{
 			Diagnostics.LogError("Invalid session.");
@@ -255,22 +271,23 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		}
 		MajorEmpire empire = session.GameServer.Game.Empires[0] as MajorEmpire;
 		Diagnostics.Assert(empire != null);
-		AIPlayer_MajorEmpire player;
-		if (!gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(empire, out player))
+		AIPlayer_MajorEmpire aiplayer_MajorEmpire;
+		if (!gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(empire, out aiplayer_MajorEmpire))
 		{
 			Diagnostics.LogError("Can't get the AI player state.");
 			yield break;
 		}
-		AIPlayer.PlayerState backupPlayerState = player.AIState;
+		AIPlayer.PlayerState backupPlayerState = aiplayer_MajorEmpire.AIState;
 		gameServer.AIScheduler.ChangeMajorEmpireAIState(empire, AIPlayer.PlayerState.EmpireControlledByAI);
 		StaticString keyLobbyDataEmpire = string.Format("Empire{0}", empire.Index);
 		string lobbyDataEmpire0 = session.GetLobbyData<string>(keyLobbyDataEmpire, null);
 		session.SetLobbyData(keyLobbyDataEmpire, "AI" + lobbyDataEmpire0, true);
+		aiplayer_MajorEmpire.Start();
 		int counter = 0;
 		DateTime timestamp = DateTime.Now;
 		Diagnostics.AssertionFailed += this.Diagnostics_AssertionFailed;
 		Diagnostics.MessageLogged += this.Diagnostics_MessageLogged;
-		while (counter <= numberOfTurns && !this.needToStop)
+		while (counter <= numberOfTurns)
 		{
 			yield return null;
 			if (endTurnControl.LastGameClientState is GameClientState_Turn_Main)
@@ -287,7 +304,8 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			}
 			if (endTurnControl.EndTurn())
 			{
-				counter++;
+				int num = counter;
+				counter = num + 1;
 				timestamp = DateTime.MaxValue;
 			}
 		}
@@ -606,8 +624,7 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 				Diagnostics.Assert(agency.QuestJournal != null, "Department has not quest journal.");
 				if (agency != null && agency.QuestJournal != null)
 				{
-					ReadOnlyCollection<Quest> readOnlyCollection = agency.QuestJournal.Read(QuestState.InProgress);
-					foreach (Quest quest in readOnlyCollection)
+					foreach (Quest quest in agency.QuestJournal.Read(QuestState.InProgress))
 					{
 						if (!quest.QuestDefinition.Tags.Contains("Hidden") && quest.QuestDefinition.GlobalWinner != GlobalQuestWinner.Participants)
 						{
@@ -618,34 +635,6 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 			}
 		}
 		return string.Empty;
-	}
-
-	private string Command_ForceSideQuestVillageTriggering(string[] commandLineArgs)
-	{
-		IGameService service = Services.GetService<IGameService>();
-		if (service == null || service.Game == null || !(service.Game is global::Game))
-		{
-			return "Failed to retrieve game service";
-		}
-		IPlayerControllerRepositoryService service2 = (service.Game as global::Game).Services.GetService<IPlayerControllerRepositoryService>();
-		IQuestManagementService service3 = service.Game.Services.GetService<IQuestManagementService>();
-		Diagnostics.Assert(service2 != null);
-		Diagnostics.Assert(service3 != null);
-		if (commandLineArgs.Length <= 1 || string.IsNullOrEmpty(commandLineArgs[1]))
-		{
-			return "You must specify a side quest village number";
-		}
-		int num;
-		if (!int.TryParse(commandLineArgs[1], out num))
-		{
-			return "You must specify a valid side quest village number (1..49)";
-		}
-		if (num > 0 && num < 50)
-		{
-			string sideQuestVillageName = "DLC21_" + string.Format("{0:00}", num);
-			return service3.ForceSideQuestVillageTrigger(sideQuestVillageName);
-		}
-		return "Invalid side quest village number (1..49)";
 	}
 
 	private string Command_ForceQuestTriggering(string[] commandLineArgs)
@@ -1966,7 +1955,7 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		{
 			Steamworks.SteamID steamID = steamUser.SteamID;
 			string friendPersonaName = Steamworks.SteamAPI.SteamFriends.GetFriendPersonaName(steamID);
-			text += string.Format(".. connected to Steam (id: {0}, account name: '{1}').", steamID, friendPersonaName);
+			text += string.Format(".. connected to steam (id: {0}, account name: '{1}').", steamID, friendPersonaName);
 			ISessionService service = Services.GetService<ISessionService>();
 			Diagnostics.Assert(service != null);
 		}
@@ -1988,10 +1977,10 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		ISessionService service3 = Services.GetService<ISessionService>();
 		if (service3 == null || service3.Session == null || !service3.Session.IsOpened || !service3.Session.IsHosting)
 		{
-			return "You need to host the session in order to let the winter come.";
+			int num = (service3 == null) ? 1 : ((service3.Session == null) ? 2 : ((!service3.Session.IsOpened) ? 3 : 4));
+			return string.Format("You need to host the session in order to let the winter come. Error code: {0}", num);
 		}
-		Season currentSeason = service2.GetCurrentSeason();
-		if (currentSeason.SeasonDefinition.SeasonType == Season.ReadOnlyWinter)
+		if (service2.GetCurrentSeason().SeasonDefinition.SeasonType == Season.ReadOnlyWinter)
 		{
 			return "Winter is already there.";
 		}
@@ -2063,6 +2052,369 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 		return text2;
 	}
 
+	private string Command_SetArmySpeed(string[] commandLineArgs)
+	{
+		double num = 1.0;
+		if (commandLineArgs.Length != 2 || !double.TryParse(commandLineArgs[1], out num) || num <= 0.0)
+		{
+			return "Error! Example: /SetArmySpeed 2";
+		}
+		ISessionService service = Services.GetService<ISessionService>();
+		if (service == null || service.Session == null || service.Session.SessionMode != SessionMode.Single)
+		{
+			return "Error! To be used in singleplayer only!";
+		}
+		string arg = string.Format("Army Speed was {0}\n", ELCPUtilities.ELCPArmySpeedScaleFactor);
+		service.Session.SetLobbyData("ArmySpeedScaleFactor", commandLineArgs[1], true);
+		ELCPUtilities.ELCPArmySpeedScaleFactor = num;
+		return string.Format("{0}Changing to {1}", arg, ELCPUtilities.ELCPArmySpeedScaleFactor);
+	}
+
+	private string Command_Teleport(string[] commandLineArgs)
+	{
+		if (commandLineArgs.Length < 3)
+		{
+			return "Error! Usage: Teleport X Y";
+		}
+		ICursorService service = Services.GetService<ICursorService>();
+		if (service != null && service.CurrentCursor is ArmyWorldCursor)
+		{
+			ArmyWorldCursor armyWorldCursor = service.CurrentCursor as ArmyWorldCursor;
+			if (armyWorldCursor.Army != null && armyWorldCursor.Army.Units != null && !armyWorldCursor.Army.IsInEncounter && !armyWorldCursor.Army.IsLocked)
+			{
+				int num = -1;
+				int num2 = -1;
+				int.TryParse(commandLineArgs[1], out num);
+				int.TryParse(commandLineArgs[2], out num2);
+				if (num >= 0 && num2 >= 0)
+				{
+					WorldPosition item = new WorldPosition(num, num2);
+					if (!item.IsValid)
+					{
+						return "Invalid Position";
+					}
+					IGameService service2 = Services.GetService<IGameService>();
+					IPathfindingService service3 = service2.Game.Services.GetService<IPathfindingService>();
+					PathfindingContext pathfindingContextProvider = armyWorldCursor.Army.GenerateContext();
+					global::Game game = service2.Game as global::Game;
+					List<WorldPosition> list = new List<WorldPosition>();
+					list.Add(item);
+					list.AddRange(item.GetNeighbours(game.World.WorldParameters));
+					foreach (WorldPosition worldPosition in list)
+					{
+						if (worldPosition.IsValid && service3.IsTilePassable(worldPosition, pathfindingContextProvider, PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnoreZoneOfControl, null) && service3.IsTileStopable(worldPosition, pathfindingContextProvider, PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnoreZoneOfControl, null))
+						{
+							OrderTeleportArmy order = new OrderTeleportArmy(armyWorldCursor.Army.Empire.Index, armyWorldCursor.Army.GUID, worldPosition);
+							armyWorldCursor.Army.Empire.PlayerControllers.Server.PostOrder(order);
+							return "Teleporting to " + worldPosition;
+						}
+					}
+				}
+				return "Invalid Position";
+			}
+		}
+		return "Error!";
+	}
+
+	private string Command_ShowMeTheStockpiles(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		if (service != null && service.Game != null)
+		{
+			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+			if (service2 != null && service2.ActivePlayerController != null)
+			{
+				int num = 10;
+				if (commandLineArgs.Length > 1)
+				{
+					int.TryParse(commandLineArgs[1], out num);
+				}
+				for (int i = 0; i < num; i++)
+				{
+					OrderBuyoutAndActivateBooster order = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, "BoosterIndustry", 0UL, false);
+					service2.ActivePlayerController.PostOrder(order);
+					OrderBuyoutAndActivateBooster order2 = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, "BoosterFood", 0UL, false);
+					service2.ActivePlayerController.PostOrder(order2);
+					OrderBuyoutAndActivateBooster order3 = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, "BoosterScience", 0UL, false);
+					service2.ActivePlayerController.PostOrder(order3);
+					OrderBuyoutAndActivateBooster orderBuyoutAndActivateBooster = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, "FlamesIndustryBooster", 0UL, false);
+					orderBuyoutAndActivateBooster.IgnoreCost = true;
+					service2.ActivePlayerController.PostOrder(orderBuyoutAndActivateBooster);
+					OrderBuyoutAndActivateBooster orderBuyoutAndActivateBooster2 = new OrderBuyoutAndActivateBooster(service2.ActivePlayerController.Empire.Index, "BoosterCadavers", 0UL, false);
+					orderBuyoutAndActivateBooster2.IgnoreCost = true;
+					service2.ActivePlayerController.PostOrder(orderBuyoutAndActivateBooster2);
+				}
+			}
+		}
+		return string.Empty;
+	}
+
+	private string Command_CheckDLCStatus(string[] commandLineArgs)
+	{
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		if (service != null)
+		{
+			string str = "";
+			DownloadableContentAccessibility accessibility = service.GetAccessibility(DownloadableContent1.ReadOnlyName);
+			string str2 = str + string.Format("{0}: {1}\n", DownloadableContent1.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent2.ReadOnlyName);
+			string str3 = str2 + string.Format("{0}: {1}\n", DownloadableContent2.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent3.ReadOnlyName);
+			string str4 = str3 + string.Format("{0}: {1}\n", DownloadableContent3.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent4.ReadOnlyName);
+			string str5 = str4 + string.Format("{0}: {1}\n", DownloadableContent4.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent5.ReadOnlyName);
+			string str6 = str5 + string.Format("{0}: {1}\n", DownloadableContent5.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent6.ReadOnlyName);
+			string str7 = str6 + string.Format("{0}: {1}\n", DownloadableContent6.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent7.ReadOnlyName);
+			string str8 = str7 + string.Format("{0}: {1}\n", DownloadableContent7.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent8.ReadOnlyName);
+			string str9 = str8 + string.Format("{0}: {1}\n", DownloadableContent8.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent9.ReadOnlyName);
+			string str10 = str9 + string.Format("{0}: {1}\n", DownloadableContent9.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent10.ReadOnlyName);
+			string str11 = str10 + string.Format("{0}: {1}\n", DownloadableContent10.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent11.ReadOnlyName);
+			string str12 = str11 + string.Format("{0}: {1}\n", DownloadableContent11.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent12.ReadOnlyName);
+			string str13 = str12 + string.Format("{0}: {1}\n", DownloadableContent12.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent13.ReadOnlyName);
+			string str14 = str13 + string.Format("{0}: {1}\n", DownloadableContent13.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent14.ReadOnlyName);
+			string str15 = str14 + string.Format("{0}: {1}\n", DownloadableContent14.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent15.ReadOnlyName);
+			string str16 = str15 + string.Format("{0}: {1}\n", DownloadableContent15.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent16.ReadOnlyName);
+			string str17 = str16 + string.Format("{0}: {1}\n", DownloadableContent16.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent17.ReadOnlyName);
+			string str18 = str17 + string.Format("{0}: {1}\n", DownloadableContent17.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent18.ReadOnlyName);
+			string str19 = str18 + string.Format("{0}: {1}\n", DownloadableContent18.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent19.ReadOnlyName);
+			string str20 = str19 + string.Format("{0}: {1}\n", DownloadableContent19.ReadOnlyName, accessibility);
+			accessibility = service.GetAccessibility(DownloadableContent20.ReadOnlyName);
+			return str20 + string.Format("{0}: {1}", DownloadableContent20.ReadOnlyName, accessibility);
+		}
+		return "Error: DLC-Service not found";
+	}
+
+	private string Command_UpdateNodes(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		string text = string.Empty;
+		if (service != null && service.Game != null)
+		{
+			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+			if (service2 != null && service2.ActivePlayerController != null)
+			{
+				DepartmentOfCreepingNodes agency = service2.ActivePlayerController.Empire.GetAgency<DepartmentOfCreepingNodes>();
+				if (agency == null)
+				{
+					return "Error: DepartmentOfCreepingNodes not found. Symbiosis DLC missing?";
+				}
+				DepartmentOfTheInterior agency2 = service2.ActivePlayerController.Empire.GetAgency<DepartmentOfTheInterior>();
+				if (agency2 == null || agency2.MainCity == null)
+				{
+					return "Error: No Capital found";
+				}
+				List<StaticString> lastFailureFlags = new List<StaticString>();
+				for (int i = 0; i < agency.Nodes.Count; i++)
+				{
+					PointOfInterest pointOfInterest = agency.Nodes[i].PointOfInterest;
+					CreepingNodeImprovementDefinition bestCreepingNodeDefinition = agency.GetBestCreepingNodeDefinition(agency2.MainCity, pointOfInterest, pointOfInterest.CreepingNodeImprovement as CreepingNodeImprovementDefinition, lastFailureFlags);
+					if (bestCreepingNodeDefinition != null && bestCreepingNodeDefinition != pointOfInterest.CreepingNodeImprovement as CreepingNodeImprovementDefinition)
+					{
+						text += string.Format("Upgrading Node {0} from {1} to {2}\n", pointOfInterest.WorldPosition, pointOfInterest.CreepingNodeImprovement.Name, bestCreepingNodeDefinition.Name);
+						agency.Nodes[i].UpgradeNode(bestCreepingNodeDefinition);
+					}
+				}
+			}
+		}
+		return text;
+	}
+
+	private string Command_Terraform(string[] commandLineArgs)
+	{
+		if (commandLineArgs.Length < 3)
+		{
+			return "Error! Usage: Terraform X Y (Range) (R for Reverse) (Duration)";
+		}
+		int num = -1;
+		int num2 = -1;
+		int.TryParse(commandLineArgs[1], out num);
+		int.TryParse(commandLineArgs[2], out num2);
+		if (num < 0 || num2 < 0)
+		{
+			return "Invalid Position";
+		}
+		WorldPosition worldPosition = new WorldPosition(num, num2);
+		if (!worldPosition.IsValid)
+		{
+			return "Invalid Position";
+		}
+		int num3 = 1;
+		if (commandLineArgs.Length > 3 && !int.TryParse(commandLineArgs[3], out num3))
+		{
+			num3 = 1;
+		}
+		bool flag = false;
+		if (commandLineArgs.Length > 4 && commandLineArgs[4].ToLower().Contains("r"))
+		{
+			flag = true;
+		}
+		int num4 = 0;
+		if (commandLineArgs.Length > 5 && !int.TryParse(commandLineArgs[5], out num4))
+		{
+			num4 = 0;
+		}
+		string text = string.Format("Trying to Terraform at {0} with radius {1}, Reverse? {2}, Duration {3}...", new object[]
+		{
+			worldPosition,
+			num3,
+			flag,
+			num4
+		});
+		WorldCircle worldCircle = new WorldCircle(worldPosition, num3);
+		IGameService service = Services.GetService<IGameService>();
+		IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		IWorldPositionningService service3 = service.Game.Services.GetService<IWorldPositionningService>();
+		global::Game game = service.Game as global::Game;
+		WorldPosition[] array = game.World.PerformReversibleTerraformation(worldCircle.GetWorldPositions(service3.World.WorldParameters), flag, num4);
+		if (array.Length != 0)
+		{
+			game.World.UpdateTerraformStateMap(true);
+			global::Empire empire = service2.ActivePlayerController.Empire as global::Empire;
+			float propertyValue = empire.GetPropertyValue(SimulationProperties.TilesTerraformed);
+			empire.SetPropertyBaseValue(SimulationProperties.TilesTerraformed, propertyValue + (float)array.Length);
+			empire.Refresh(false);
+			Services.GetService<IEventService>().Notify(new EventEmpireWorldTerraformed(empire, array));
+			text += string.Format("\nTerraformed {0} tiles!", array.Length);
+		}
+		else
+		{
+			text += "\nError!";
+		}
+		return text;
+	}
+
+	private string Command_Skynet(string[] commandLineArgs)
+	{
+		ISessionService service = Services.GetService<ISessionService>();
+		if (service == null || service.Session == null)
+		{
+			return "This command requires a game session to be running.";
+		}
+		if (service.Session.SessionMode != SessionMode.Single)
+		{
+			if (!(service.Session is global::Session))
+			{
+				return "Invalid session.";
+			}
+			return "This command requires the session to run in single player mode.";
+		}
+		else
+		{
+			bool flag = true;
+			if (commandLineArgs.Length > 1 && commandLineArgs[1] == "off")
+			{
+				flag = false;
+			}
+			global::Session session = service.Session as global::Session;
+			MajorEmpire majorEmpire = session.GameServer.Game.Empires[0] as MajorEmpire;
+			GameServer gameServer = session.GameServer as GameServer;
+			AIPlayer_MajorEmpire aiplayer_MajorEmpire;
+			if (!gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(majorEmpire, out aiplayer_MajorEmpire))
+			{
+				return "Can't get the AI player state.";
+			}
+			StaticString key = string.Format("Empire{0}", majorEmpire.Index);
+			string lobbyData = session.GetLobbyData<string>(key, null);
+			if (!flag)
+			{
+				if (aiplayer_MajorEmpire.AIState == AIPlayer.PlayerState.EmpireControlledByHuman)
+				{
+					return "Empire 0 already controlled by a human";
+				}
+				session.SetLobbyData(key, lobbyData.Replace("AI", ""), true);
+				gameServer.AIScheduler.ChangeMajorEmpireAIState(majorEmpire, AIPlayer.PlayerState.EmpireControlledByHuman);
+				return "Deactivating AI.";
+			}
+			else
+			{
+				if (aiplayer_MajorEmpire.AIState != AIPlayer.PlayerState.EmpireControlledByHuman)
+				{
+					return "Empire 0 not controlled by a human";
+				}
+				session.SetLobbyData(key, "AI" + lobbyData, true);
+				gameServer.AIScheduler.ChangeMajorEmpireAIState(majorEmpire, AIPlayer.PlayerState.EmpireControlledByAI);
+				aiplayer_MajorEmpire.Start();
+				return "Activating AI, type '/Skynet off' to deactivate.";
+			}
+		}
+	}
+
+	private string Command_ForceSideQuestVillageTriggering(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		if (service == null || service.Game == null || !(service.Game is global::Game))
+		{
+			return "Failed to retrieve game service";
+		}
+		object service2 = (service.Game as global::Game).Services.GetService<IPlayerControllerRepositoryService>();
+		IQuestManagementService service3 = service.Game.Services.GetService<IQuestManagementService>();
+		Diagnostics.Assert(service2 != null);
+		Diagnostics.Assert(service3 != null);
+		if (commandLineArgs.Length <= 1 || string.IsNullOrEmpty(commandLineArgs[1]))
+		{
+			return "You must specify a side quest village number";
+		}
+		int num;
+		if (!int.TryParse(commandLineArgs[1], out num))
+		{
+			return "You must specify a valid side quest village number (1..49)";
+		}
+		if (num > 0 && num < 50)
+		{
+			string sideQuestVillageName = "DLC21_" + string.Format("{0:00}", num);
+			return service3.ForceSideQuestVillageTrigger(sideQuestVillageName);
+		}
+		return "Invalid side quest village number (1..49)";
+	}
+
+	private string Command_CompleteQuest(string[] commandLineArgs)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		if (service != null && service.Game != null)
+		{
+			IQuestManagementService service2 = service.Game.Services.GetService<IQuestManagementService>();
+			IPlayerControllerRepositoryService service3 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+			if (service3 != null && service2 != null && service3.ActivePlayerController != null)
+			{
+				QuestState questState = QuestState.Completed;
+				if (commandLineArgs.Length == 2 && commandLineArgs[1] == QuestState.Failed.ToString())
+				{
+					questState = QuestState.Failed;
+				}
+				DepartmentOfInternalAffairs agency = service3.ActivePlayerController.Empire.GetAgency<DepartmentOfInternalAffairs>();
+				if (agency != null && agency.QuestJournal != null)
+				{
+					if (agency.QuestJournal.ActiveQuest == null)
+					{
+						return "Error: No active Quest found!";
+					}
+					if (agency.QuestJournal.ActiveQuest.QuestDefinition.GlobalWinner == GlobalQuestWinner.Participants)
+					{
+						return string.Format("Error: Cannot force complete quest \"{0}\"", agency.QuestJournal.ActiveQuest.Name);
+					}
+					service2.ForceQuestCompletion(agency.QuestJournal.ActiveQuest.GUID, questState);
+					return string.Format("Trying to complete \"{0}\"", agency.QuestJournal.ActiveQuest.Name);
+				}
+			}
+		}
+		return "Error!";
+	}
+
 	private const GameDisconnectionReason Flag = GameDisconnectionReason._Debug;
 
 	private GameObject debugModeObject;
@@ -2079,4 +2431,6 @@ public class CommandManager : Amplitude.Unity.Framework.CommandManager
 	};
 
 	private GameObject simulationDebugModeObject;
+
+	private string skynetbackuplobbydata;
 }

@@ -5,12 +5,19 @@
 
 	<TmxMapName>DLC21map.tmx</TmxMapName>
 	
+	<!--ELCP: This tells the game to forcibly set the number of Empires to 8 when selecting the scenario (other settings are still allowed though!)-->
     <WorldGeneratorOptionDefinition Name="WorldSize"                     Default="Huge"         Category="World" SubCategory="WorldSize"       GuiControlType="DropList">
       <ItemDefinition Name="Huge">
         <OptionDefinitionConstraint OptionName="NumberOfMajorFactions" Type="Control">
           <Key Name="8"/>
         </OptionDefinitionConstraint>
       </ItemDefinition>
+    </WorldGeneratorOptionDefinition>
+	
+	<!--ELCP: New hidden option to constraint number of factions available-->
+	<!-- this prevents the player from selecting empire numbers above 8 when the scenario is selected (Default AND ItemDefinition have to be set)-->
+	<WorldGeneratorOptionDefinition Name="MaxNumberOfMajorFactions"      Default="8"   Category="World" SubCategory="WorldSize"       GuiControlType="Hidden">
+      <ItemDefinition Name="8"/>
     </WorldGeneratorOptionDefinition>
 	
     <WorldGeneratorOptionDefinition Name="WorldWrap" Default="True" Category="World" SubCategory="WorldShape" GuiControlType="DropList">

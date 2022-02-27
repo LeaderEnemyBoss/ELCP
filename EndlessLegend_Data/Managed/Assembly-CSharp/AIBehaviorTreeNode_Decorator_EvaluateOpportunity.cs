@@ -52,6 +52,11 @@ public class AIBehaviorTreeNode_Decorator_EvaluateOpportunity : AIBehaviorTreeNo
 		int distance3 = worldPositionningService.GetDistance(opportunityPosition, mainTargetPosition);
 		float propertyValue = army.GetPropertyValue(SimulationProperties.MaximumMovement);
 		numberOfTurnsTillMainTarget = (int)((float)distance2 / propertyValue);
+		if (distance < 2)
+		{
+			numberOfTurnsAfterDetour = numberOfTurnsTillMainTarget;
+			return true;
+		}
 		numberOfTurnsAfterDetour = (int)((float)(distance + distance3) / propertyValue);
 		return true;
 	}
@@ -77,8 +82,7 @@ public class AIBehaviorTreeNode_Decorator_EvaluateOpportunity : AIBehaviorTreeNo
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}

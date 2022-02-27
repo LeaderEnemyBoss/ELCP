@@ -96,20 +96,18 @@ public class MantaZone
 			{
 				this.Resources.Remove(pointOfInterest);
 			}
-			else if (pointOfInterest.Type == "QuestLocation")
+			else if (pointOfInterest.Type == ELCPUtilities.QuestLocation)
 			{
 				this.Ruins.Remove(pointOfInterest);
 			}
 		}
-		IGameService service = Services.GetService<IGameService>();
-		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
-		IOrbAIHelper service3 = AIScheduler.Services.GetService<IOrbAIHelper>();
-		for (int j = 0; j < service3.OrbSpawns.Count; j++)
+		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
+		IOrbAIHelper service2 = AIScheduler.Services.GetService<IOrbAIHelper>();
+		for (int j = 0; j < service2.OrbSpawns.Count; j++)
 		{
-			int regionIndex = (int)service2.GetRegionIndex(service3.OrbSpawns[j].WorldPosition);
-			if (regionIndex == regionData.RegionIndex)
+			if ((int)service.GetRegionIndex(service2.OrbSpawns[j].WorldPosition) == regionData.RegionIndex)
 			{
-				this.Orbs.Remove(service3.OrbSpawns[j]);
+				this.Orbs.Remove(service2.OrbSpawns[j]);
 			}
 		}
 		this.Regions.Remove(regionData);
@@ -150,41 +148,24 @@ public class MantaZone
 			PointOfInterest pointOfInterest = regionData.Region.PointOfInterests[i];
 			if (pointOfInterest.Type == "ResourceDeposit")
 			{
-				if (pointOfInterest.PointOfInterestImprovement == null)
+				string technologyName;
+				if (pointOfInterest.PointOfInterestImprovement == null && pointOfInterest.PointOfInterestDefinition.TryGetValue("VisibilityTechnology", out technologyName) && this.departmentOfScience.GetTechnologyState(technologyName) == DepartmentOfScience.ConstructibleElement.State.Researched && this.CanStopThere(pointOfInterest.WorldPosition))
 				{
-					string technologyName;
-					if (pointOfInterest.PointOfInterestDefinition.TryGetValue("VisibilityTechnology", out technologyName))
-					{
-						if (this.departmentOfScience.GetTechnologyState(technologyName) == DepartmentOfScience.ConstructibleElement.State.Researched && this.CanStopThere(pointOfInterest.WorldPosition))
-						{
-							this.Resources.Add(pointOfInterest);
-						}
-					}
+					this.Resources.Add(pointOfInterest);
 				}
 			}
-			else if (pointOfInterest.Type == "QuestLocation")
+			else if (pointOfInterest.Type == ELCPUtilities.QuestLocation && (pointOfInterest.Interaction.Bits & this.owner.Bits) != this.owner.Bits && this.CanStopThere(pointOfInterest.WorldPosition))
 			{
-				if ((pointOfInterest.Interaction.Bits & this.owner.Bits) != this.owner.Bits)
-				{
-					if (this.CanStopThere(pointOfInterest.WorldPosition))
-					{
-						this.Ruins.Add(pointOfInterest);
-					}
-				}
+				this.Ruins.Add(pointOfInterest);
 			}
 		}
-		IGameService service = Services.GetService<IGameService>();
-		IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
-		IOrbAIHelper service3 = AIScheduler.Services.GetService<IOrbAIHelper>();
-		for (int j = 0; j < service3.OrbSpawns.Count; j++)
+		IWorldPositionningService service = Services.GetService<IGameService>().Game.Services.GetService<IWorldPositionningService>();
+		IOrbAIHelper service2 = AIScheduler.Services.GetService<IOrbAIHelper>();
+		for (int j = 0; j < service2.OrbSpawns.Count; j++)
 		{
-			if (service3.OrbSpawns[j].CurrentOrbCount != 0f)
+			if (service2.OrbSpawns[j].CurrentOrbCount != 0f && (int)service.GetRegionIndex(service2.OrbSpawns[j].WorldPosition) == regionData.RegionIndex && this.CanStopThere(service2.OrbSpawns[j].WorldPosition))
 			{
-				int regionIndex = (int)service2.GetRegionIndex(service3.OrbSpawns[j].WorldPosition);
-				if (regionIndex == regionData.RegionIndex && this.CanStopThere(service3.OrbSpawns[j].WorldPosition))
-				{
-					this.Orbs.Add(service3.OrbSpawns[j]);
-				}
+				this.Orbs.Add(service2.OrbSpawns[j]);
 			}
 		}
 	}

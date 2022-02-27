@@ -84,6 +84,7 @@ public class AICommanderMission_Garrison : AICommanderMission
 		this.unitRatioBoost = this.personalityAIHelper.GetRegistryValue<float>(base.Commander.Empire, string.Format("{0}/{1}", AILayer_Military.RegistryPath, "UnitRatioBoost"), this.unitRatioBoost);
 		AIEntity_Empire entity = commander.AIPlayer.GetEntity<AIEntity_Empire>();
 		this.militaryLayer = entity.GetLayer<AILayer_Military>();
+		this.ailayer_War = entity.GetLayer<AILayer_War>();
 	}
 
 	public override void Promote()
@@ -101,6 +102,14 @@ public class AICommanderMission_Garrison : AICommanderMission
 	public override void Refresh()
 	{
 		base.Refresh();
+		if (this.HighPriority)
+		{
+			base.Completion = AICommanderMission.AICommanderMissionCompletion.Initializing;
+			if (!base.AIDataArmyGUID.IsValid)
+			{
+				this.TryRecruitingExplorers();
+			}
+		}
 		if (!this.IsMissionValid())
 		{
 			this.requestGarrison = null;
@@ -149,6 +158,8 @@ public class AICommanderMission_Garrison : AICommanderMission
 		}
 		this.intelligenceAiHelper = null;
 		this.worldPositionningService = null;
+		this.militaryLayer = null;
+		this.ailayer_War = null;
 	}
 
 	public override void SetParameters(AICommanderMissionDefinition missionDefinition, params object[] parameters)
@@ -227,25 +238,33 @@ public class AICommanderMission_Garrison : AICommanderMission
 		{
 			return false;
 		}
-		if (this.City.BesiegingEmpire != null)
+		int num = this.City.StandardUnits.Count;
+		int num2 = 0;
+		if (base.AIDataArmyGUID.IsValid)
 		{
-		}
-		if (!flag)
-		{
-			int num = this.City.UnitsCount;
-			if (base.AIDataArmyGUID.IsValid)
+			AIData_Army aidata = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID);
+			if (aidata != null)
 			{
-				AIData_Army aidata = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID);
-				if (aidata != null)
-				{
-					num += aidata.Army.UnitsCount;
-				}
+				num += aidata.Army.UnitsCount;
+				num2 = aidata.Army.UnitsCount;
 			}
-			if ((float)num > (float)this.City.MaximumUnitSlot * 0.8f)
+		}
+		if (this.City.BesiegingEmpireIndex < 0)
+		{
+			if (this.HighPriority && (num2 == 0 || (this.City.StandardUnits.Count > 0 && num2 > 0 && num2 + this.City.StandardUnits.Count <= this.City.MaximumUnitSlot && num2 <= this.City.MaximumUnitSlot - 2)))
+			{
+				return this.DisbandArmy();
+			}
+			if ((float)num > (float)this.City.MaximumUnitSlot * 0.65f)
 			{
 				flag = true;
-				numberOfUnits = Mathf.CeilToInt((float)this.City.StandardUnits.Count * 0.3f);
+				float num3 = this.HighPriority ? 1f : 0.5f;
+				numberOfUnits = Mathf.CeilToInt((float)this.City.StandardUnits.Count * num3);
 			}
+		}
+		if (num > this.City.MaximumUnitSlot)
+		{
+			flag = true;
 		}
 		if (!flag)
 		{
@@ -254,6 +273,14 @@ public class AICommanderMission_Garrison : AICommanderMission
 		if (!base.AIDataArmyGUID.IsValid)
 		{
 			return this.AskForArmy(numberOfUnits);
+		}
+		if (base.Commander.Empire != null && base.Commander.Empire is MajorEmpire && base.AIDataArmyGUID.IsValid)
+		{
+			AIData_Army aidata2 = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID);
+			if (this.ailayer_War != null && aidata2 != null)
+			{
+				this.ailayer_War.AssignDefensiveArmyToCity(aidata2.Army);
+			}
 		}
 		return base.TryCreateArmyMission("MajorFactionRoaming", new List<object>
 		{
@@ -375,10 +402,18 @@ public class AICommanderMission_Garrison : AICommanderMission
 			if (this.armySpawnTicket.PostOrderResponse == PostOrderResponse.Processed)
 			{
 				OrderTransferGarrisonToNewArmy orderTransferGarrisonToNewArmy = this.armySpawnTicket.Order as OrderTransferGarrisonToNewArmy;
-				if (this.armySpawnTicket != null)
+				if (orderTransferGarrisonToNewArmy != null)
 				{
 					base.AIDataArmyGUID = orderTransferGarrisonToNewArmy.ArmyGuid;
+					if (this.HighPriority)
+					{
+						base.TryGetArmyData();
+					}
 				}
+			}
+			else if (this.armySpawnTicket.PostOrderResponse == PostOrderResponse.PreprocessHasFailed)
+			{
+				base.Success();
 			}
 			this.armySpawnTicket = null;
 		}
@@ -401,6 +436,46 @@ public class AICommanderMission_Garrison : AICommanderMission
 			}
 		}
 		return num;
+	}
+
+	private bool HighPriority
+	{
+		get
+		{
+			return base.Commander.GetPriority(this) > 0.9f;
+		}
+	}
+
+	private void TryRecruitingExplorers()
+	{
+		if (this.City == null)
+		{
+			return;
+		}
+		DepartmentOfDefense agency = base.Commander.Empire.GetAgency<DepartmentOfDefense>();
+		List<AIData_Army> list = new List<AIData_Army>();
+		for (int i = 0; i < agency.Armies.Count; i++)
+		{
+			Army army = agency.Armies[i];
+			if (army.StandardUnits.Count > army.MaximumUnitSlot / 4)
+			{
+				AIData_Army aidata = this.aiDataRepository.GetAIData<AIData_Army>(army.GUID);
+				if (aidata != null && !aidata.IsSolitary && !aidata.Army.IsSeafaring && !aidata.Army.HasCatspaw && !(aidata.Army is KaijuArmy) && (aidata.CommanderMission == null || (aidata.CommanderMission.Commander != null && aidata.CommanderMission.Commander.Category == AICommanderMissionDefinition.AICommanderCategory.Exploration)))
+				{
+					list.Add(aidata);
+				}
+			}
+		}
+		if (list.Count > 0)
+		{
+			list.Sort((AIData_Army left, AIData_Army right) => -1 * left.Army.GetPropertyValue(SimulationProperties.MilitaryPower).CompareTo(right.Army.GetPropertyValue(SimulationProperties.MilitaryPower)));
+			if (list[0].CommanderMission != null)
+			{
+				list[0].CommanderMission.Interrupt();
+			}
+			base.AIDataArmyGUID = list[0].Army.GUID;
+			base.TryGetArmyData();
+		}
 	}
 
 	public static int SimulatedUnitsCount;
@@ -430,4 +505,6 @@ public class AICommanderMission_Garrison : AICommanderMission
 	private IWorldPositionningService worldPositionningService;
 
 	private Army[] besiegers;
+
+	private AILayer_War ailayer_War;
 }

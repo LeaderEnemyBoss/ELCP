@@ -117,7 +117,13 @@ public class AICommanderMissionDefinition : IDatatableElement
 		SettlerBail,
 		MaximumNumber,
 		Terraformation,
-		KaijuAdquisition
+		KaijuAdquisition,
+		Victory,
+		KaijuSupport,
+		Questsolver,
+		RuinHunter,
+		QuestBTOrder,
+		QuestSolverOrder
 	}
 
 	public class StringObjectPair

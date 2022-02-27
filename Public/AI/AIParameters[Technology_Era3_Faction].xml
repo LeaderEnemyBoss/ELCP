@@ -26,6 +26,7 @@
 
   <!-- "Endless Recycling" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionVaulters4">
+	<AIParameter Name="AITechMustHave" Value="0.20 * (0 max ($Property(../EmpireTypeMajor:CurrentEra) - 2))"/>
     <!-- "Endless Recycling": 20 holy resource required -->
     <AIParameter Name="DistrictScienceLevelUpExtension" Value="14
         * (0.4 max (1 min ((   
@@ -48,21 +49,24 @@
   <!-- "Arcana of Materializing" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards10">
     <!-- Provides between +2 and +16 dust on up to 6 tiles... most of the time it will only affect about 3 though  -->
-    <AIParameter Name="CityMoney"       Value="3 * (2 + 14*$Property(ClassEmpire:PillarsLevel)) * $Count(ClassEmpire/ClassCity)"  />
+    <AIParameter Name="CityMoney"       Value="3 * (2 + 14*$Property(ClassEmpire:PillarsLevel))"  />
     <!-- Provides damage dealing spell in combat -->
     <AIParameter Name="EmpireBattleMagic" Value="1"  />
   </AIParameterDatatableElement>
     
   <!-- "Dust mechanics" (battle magic upgrade) -->
   <AIParameterDatatableElement Name="TechnologyDefinitionRageWizards14">
-    <AIParameter Name="EmpireBattleMagicArcana"        Value="1"  />
+    <AIParameter Name="EmpirePillarArcana"   Value="2"/>
+	<AIParameter Name="AITechMustHave" Value="0.15 * $Property(EmpireTypeMajor:PillarsCount)"/>
+	<AIParameter Name="AITechMustHave" Value="0.15 * $Property(EmpireTypeMajor:PillarsCount)"/>
   </AIParameterDatatableElement>
 
   <!-- "Learn from Others" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionReplicants5">
+	<AIParameter Name="AITechMustHave" Value="0.2 * (($Count(ClassEmpire/Garrison/UnitHero))+$Count(ClassEmpire/UnitHero))"/>
     <AIParameter Name="EmpireHeroExperienceGainPerTurn"        Value="5"  />
   </AIParameterDatatableElement>
-
+  
   <!-- "Cargo Docks" (Flames later version) -->
   <AIParameterDatatableElement Name="TechnologyFlamesDefinitionShip">
     <AIParameter Name="EmpireUnlockSeaTrade" Value="$Property(EmpireTypeMajor:AIHasAnyCoastalCity)"  />
@@ -70,17 +74,18 @@
 
   <!-- "Tribal Council" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionAssimilationLimitMax2Drakkens">
-    <AIParameter Name="EmpireUnlockAssimilation" Value="1"  />
+    <AIParameter Name="EmpireUnlockAssimilation" Value="1 + (0 max (($Count(ClassEmpire/ClassCity/PacifiedVillage) - 9)/2)) + (0 max (($Count(ClassEmpire/ClassCity/ConvertedVillage) - 9)/2)) + (0 max (($Count(ClassEmpire/ClassCity/CreepingNode_Village_Counter) - 9)/2))" />
+	<AIParameter Name="AITechMustHave" Value="0.2 * ((0 max ($Count(ClassEmpire/ClassCity/PacifiedVillage) - 9)) + (0 max ($Count(ClassEmpire/ClassCity/ConvertedVillage) - 9)) + (0 max ($Count(ClassEmpire/ClassCity/CreepingNode_Village_Counter) - 9))) * (0 max (1 - $Count(ClassEmpire/ClassResearch,TechnologyAssimilationLimitMax2)))"/>
   </AIParameterDatatableElement>
-
-  <!-- "Tribal Council" -->
+  
   <AIParameterDatatableElement Name="TechnologyDefinitionFlames9">
-    <AIParameter Name="CityIndustry"          Value="5"/>
+    <AIParameter Name="CityIndustry"          Value="10"/>
+	<AIParameter Name="AITechMustHave" Value="0.5 * ($Property(ClassEmpire:WarCount))"/>
   </AIParameterDatatableElement>
-
+  
   <!-- "Kaiju Diplomacy" -->
   <AIParameterDatatableElement Name="TechnologyDefinitionMimics2">
     <AIParameter Name="CityCityPointPercent" Value="1 * $Property(EmpireTypeMajor:NumberOfTamedKaijus)"/>
+	<AIParameter Name="AITechMustHave" Value="0.6 * ($(UntamedKaijuCount)) * (1 min ($Count(ClassEmpire/ClassResearch,TechnologyMarketplaceResources) + $Count(ClassEmpire/ClassResearch,TechnologyLuxuryExtractionUncommon)))"/>
   </AIParameterDatatableElement>
-  
 </Datatable>

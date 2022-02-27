@@ -49,6 +49,14 @@ public class ForcePeaceTermAgent : DiplomaticTermAgent
 		}
 		float num = base.GetValueFromAttitude();
 		num *= this.multiplier;
+		if (this.DiplomacyLayer.GetMilitaryPowerDif(false) < 0f && (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.ColdWar || base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace) && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index])
+		{
+			num = Mathf.Max(51f, num + 25f + Mathf.Abs(this.DiplomacyLayer.GetMilitaryPowerDif(false)) / base.Empire.GetPropertyValue(SimulationProperties.LandMilitaryPower) * 100f);
+		}
+		if (this.VictoryLayer.CurrentFocusEnum == AILayer_Victory.VictoryFocus.Diplomacy && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index] && (base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.ColdWar || base.DiplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace))
+		{
+			num = Mathf.Max(51f, num + 51f);
+		}
 		return num / 100f;
 	}
 

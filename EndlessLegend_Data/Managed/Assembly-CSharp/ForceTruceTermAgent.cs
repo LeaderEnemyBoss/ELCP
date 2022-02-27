@@ -48,6 +48,16 @@ public class ForceTruceTermAgent : DiplomaticTermAgent
 			return 0f;
 		}
 		float num = base.GetValueFromAttitude();
+		if (this.DiplomacyLayer.AnyVictoryreactionNeeded && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index])
+		{
+			num *= 1.5f;
+			num = Math.Max(num, 20f);
+		}
+		if (this.VictoryLayer.CurrentFocusEnum == AILayer_Victory.VictoryFocus.Diplomacy && !this.DiplomacyLayer.NeedsVictoryReaction[base.EmpireWhichReceives.Index])
+		{
+			num = Math.Max(num, 35f);
+			num *= 1.5f;
+		}
 		num *= this.multiplier;
 		return num / 100f;
 	}

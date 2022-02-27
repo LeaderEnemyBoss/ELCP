@@ -55,24 +55,23 @@ public class OrderBuyoutAndActivateBooster : global::Order
 		writer.Write(this.IsFree);
 		writer.Write(this.Duration);
 		writer.Write(this.InstigatorEmpireIndex);
+		writer.Write(this.IgnoreCost);
 		if (this.ConstructionResourceStocks == null)
 		{
 			writer.Write(0);
+			return;
 		}
-		else
+		writer.Write(this.ConstructionResourceStocks.Length);
+		for (int i = 0; i < this.ConstructionResourceStocks.Length; i++)
 		{
-			writer.Write(this.ConstructionResourceStocks.Length);
-			for (int i = 0; i < this.ConstructionResourceStocks.Length; i++)
+			if (this.ConstructionResourceStocks[i] == null)
 			{
-				if (this.ConstructionResourceStocks[i] == null)
-				{
-					writer.Write(0);
-				}
-				else
-				{
-					writer.Write(this.ConstructionResourceStocks[i].Stock);
-					writer.Write(this.ConstructionResourceStocks[i].PropertyName);
-				}
+				writer.Write(0);
+			}
+			else
+			{
+				writer.Write(this.ConstructionResourceStocks[i].Stock);
+				writer.Write(this.ConstructionResourceStocks[i].PropertyName);
 			}
 		}
 	}
@@ -86,6 +85,7 @@ public class OrderBuyoutAndActivateBooster : global::Order
 		this.IsFree = reader.ReadBoolean();
 		this.Duration = reader.ReadInt32();
 		this.InstigatorEmpireIndex = reader.ReadInt32();
+		this.IgnoreCost = reader.ReadBoolean();
 		int num = reader.ReadInt32();
 		if (num > 0)
 		{
@@ -102,12 +102,13 @@ public class OrderBuyoutAndActivateBooster : global::Order
 					};
 				}
 			}
+			return;
 		}
-		else
-		{
-			this.ConstructionResourceStocks = null;
-		}
+		this.ConstructionResourceStocks = null;
 	}
+
+	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
+	public bool IgnoreCost { get; set; }
 
 	public static StaticString AuthenticationPath = "DepartmentOfPlanificationAndDevelopment/OrderBuyoutAndActivateBooster";
 }

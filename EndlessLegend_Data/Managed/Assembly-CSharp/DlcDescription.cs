@@ -57,25 +57,20 @@ public class DlcDescription : MonoBehaviour
 			this.ActivationToggle.AgeTransform.Visible = false;
 			this.StoreButton.AgeTransform.Visible = false;
 			this.Background.TintColor = Color.white;
+			return;
 		}
-		else
+		if ((downloadableContent.Accessibility & DownloadableContentAccessibility.Subscribed) == DownloadableContentAccessibility.Subscribed)
 		{
-			bool flag = (downloadableContent.Accessibility & DownloadableContentAccessibility.Subscribed) == DownloadableContentAccessibility.Subscribed;
-			if (flag)
-			{
-				this.ActivationToggle.AgeTransform.Visible = true;
-				this.StoreButton.AgeTransform.Visible = false;
-				this.Background.TintColor = Color.white;
-				this.ActivationToggle.State = activated;
-				this.ActivationToggle.AgeTransform.Enable = downloadableContent.IsDynamicActivationEnabled;
-			}
-			else
-			{
-				this.StoreButton.AgeTransform.Visible = true;
-				this.ActivationToggle.AgeTransform.Visible = false;
-				this.Background.TintColor = Color.grey;
-			}
+			this.ActivationToggle.AgeTransform.Visible = true;
+			this.StoreButton.AgeTransform.Visible = false;
+			this.Background.TintColor = Color.white;
+			this.ActivationToggle.State = activated;
+			this.ActivationToggle.AgeTransform.Enable = downloadableContent.IsDynamicActivationEnabled;
+			return;
 		}
+		this.StoreButton.AgeTransform.Visible = true;
+		this.ActivationToggle.AgeTransform.Visible = false;
+		this.Background.TintColor = Color.grey;
 	}
 
 	public AgeTransform AgeTransform;

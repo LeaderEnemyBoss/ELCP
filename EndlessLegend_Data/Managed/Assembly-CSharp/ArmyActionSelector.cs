@@ -128,13 +128,15 @@ public class ArmyActionSelector : MonoBehaviour
 				IConstructionCost[] array2 = null;
 				if (armyAction_Bribe != null)
 				{
-					array2 = armyAction_Bribe.GetBribeCosts(this.Army, village);
+					IConstructionCost[] array3 = armyAction_Bribe.GetBribeCosts(this.Army, village);
+					array2 = array3;
 				}
 				else if (armyAction_Convert != null)
 				{
-					array2 = armyAction_Convert.GetConvertionCost(this.Army, village);
+					IConstructionCost[] array3 = armyAction_Convert.GetConvertionCost(this.Army, village);
+					array2 = array3;
 				}
-				if (array2 != null && array2.Length > 0)
+				if (array2 != null && array2.Length != 0)
 				{
 					if (array == null)
 					{
@@ -148,18 +150,32 @@ public class ArmyActionSelector : MonoBehaviour
 				}
 			}
 		}
-		if (this.Army != null && this.Army.Empire != null && array != null && array.Length > 0)
+		if (this.Army != null && this.Army.Empire != null && array != null && array.Length != 0)
 		{
 			this.ActionCostLabel.AgeTransform.Visible = true;
+			if (ELCPUtilities.UseELCPSymbiosisBuffs && this.ArmyAction is ArmyAction_TameUnstunnedKaiju)
+			{
+				KaijuGarrison kaijuGarrison = this.Target as KaijuGarrison;
+				if (kaijuGarrison != null)
+				{
+					KaijuCouncil agency = kaijuGarrison.KaijuEmpire.GetAgency<KaijuCouncil>();
+					if (agency != null)
+					{
+						ConstructionCost constructionCost = new ConstructionCost(agency.ELCPResourceName, KaijuCouncil.GetKaijuTameCost().GetValue(this.Army.Empire), true, true);
+						array = new IConstructionCost[]
+						{
+							constructionCost
+						};
+					}
+				}
+			}
 			this.ActionCostLabel.Text = GuiFormater.FormatCost(this.Army.Empire, array, false, 1, this.Army);
 			this.ActionDescription.AgeTransform.PixelMarginBottom = this.ActionCostLabel.AgeTransform.PixelMarginBottom + this.ActionCostLabel.AgeTransform.Height;
+			return;
 		}
-		else
-		{
-			this.ActionCostLabel.AgeTransform.Visible = false;
-			this.ActionCostLabel.Text = string.Empty;
-			this.ActionDescription.AgeTransform.PixelMarginBottom = this.ActionCostLabel.AgeTransform.PixelMarginBottom;
-		}
+		this.ActionCostLabel.AgeTransform.Visible = false;
+		this.ActionCostLabel.Text = string.Empty;
+		this.ActionDescription.AgeTransform.PixelMarginBottom = this.ActionCostLabel.AgeTransform.PixelMarginBottom;
 	}
 
 	public AgeTransform AgeTransform;

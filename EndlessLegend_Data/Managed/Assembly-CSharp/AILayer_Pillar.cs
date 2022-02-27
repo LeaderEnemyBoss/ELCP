@@ -128,6 +128,9 @@ public class AILayer_Pillar : AILayer, ISimulationAIEvaluationHelper<PillarDefin
 		this.pillarService = null;
 		this.worldPositioningService = null;
 		this.decisionMaker = null;
+		this.PillarDatabase = null;
+		this.departmentOfForeignAffairs = null;
+		this.departmentOfTheTreasury = null;
 	}
 
 	protected WorldPosition ComputeMostOverlappingPositionForRange(PillarDefinition pillarDefinition, ref float pillarScore)
@@ -177,58 +180,13 @@ public class AILayer_Pillar : AILayer, ISimulationAIEvaluationHelper<PillarDefin
 	protected override void CreateLocalNeeds(StaticString context, StaticString pass)
 	{
 		base.CreateLocalNeeds(context, pass);
-		this.validatedPillarNeed = null;
-		IDatabase<PillarDefinition> database = Databases.GetDatabase<PillarDefinition>(false);
-		this.decisionMaker.UnregisterAllOutput();
-		this.decisionMaker.ClearAIParametersOverrides();
-		base.AIEntity.Context.InitializeDecisionMaker<PillarDefinition>(AICityState.ProductionParameterModifier, this.decisionMaker);
-		EvaluableMessage_PillarNeed evaluableMessage_PillarNeed = null;
 		IEnumerable<EvaluableMessage_PillarNeed> messages = base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_PillarNeed>(BlackboardLayerID.Empire, (EvaluableMessage_PillarNeed match) => match.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending);
 		if (messages.Any<EvaluableMessage_PillarNeed>())
 		{
-			foreach (EvaluableMessage_PillarNeed evaluableMessage_PillarNeed2 in messages)
+			foreach (EvaluableMessage_PillarNeed evaluableMessage_PillarNeed in messages)
 			{
-				if (evaluableMessage_PillarNeed == null)
-				{
-					evaluableMessage_PillarNeed = evaluableMessage_PillarNeed2;
-				}
-				else
-				{
-					evaluableMessage_PillarNeed2.Cancel();
-				}
+				evaluableMessage_PillarNeed.Cancel();
 			}
-		}
-		List<PillarDefinition> elements = (from pillarDefinition in database.GetValues()
-		where DepartmentOfTheTreasury.CheckConstructiblePrerequisites(base.AIEntity.Empire, pillarDefinition, new string[]
-		{
-			ConstructionFlags.Prerequisite
-		})
-		select pillarDefinition).ToList<PillarDefinition>();
-		this.decisionResults.Clear();
-		this.decisionMaker.EvaluateDecisions(elements, ref this.decisionResults);
-		if (this.decisionResults != null && this.decisionResults.Count > 0 && this.decisionResults[0].Score > 0f)
-		{
-			PillarDefinition pillarDefinition2 = this.decisionResults[0].Element as PillarDefinition;
-			float score = this.decisionResults[0].Score;
-			WorldPosition position = this.ComputeMostOverlappingPositionForRange(pillarDefinition2, ref score);
-			float pillarDustCost = this.GetPillarDustCost(pillarDefinition2);
-			if (!float.IsPositiveInfinity(pillarDustCost) && position.IsValid)
-			{
-				float num = AILayer.Boost(score, 0.5f);
-				if (evaluableMessage_PillarNeed == null)
-				{
-					evaluableMessage_PillarNeed = new EvaluableMessage_PillarNeed(1f, num, pillarDefinition2, this.aiEntityCity.City.GUID, position, pillarDustCost, AILayer_AccountManager.EconomyAccountName);
-					base.AIEntity.AIPlayer.Blackboard.AddMessage(evaluableMessage_PillarNeed);
-				}
-				else if (evaluableMessage_PillarNeed.CityGuid == this.aiEntityCity.City.GUID || evaluableMessage_PillarNeed.Interest < num)
-				{
-					evaluableMessage_PillarNeed.Refresh(1f, num, pillarDefinition2, this.aiEntityCity.City.GUID, position, pillarDustCost);
-				}
-			}
-		}
-		else if (evaluableMessage_PillarNeed != null && evaluableMessage_PillarNeed.CityGuid == this.aiEntityCity.City.GUID)
-		{
-			evaluableMessage_PillarNeed.Cancel();
 		}
 	}
 
@@ -250,27 +208,22 @@ public class AILayer_Pillar : AILayer, ISimulationAIEvaluationHelper<PillarDefin
 	protected override void ExecuteNeeds(StaticString context, StaticString pass)
 	{
 		base.ExecuteNeeds(context, pass);
-		IEnumerable<EvaluableMessage_PillarNeed> messages = base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_PillarNeed>(BlackboardLayerID.Empire, (EvaluableMessage_PillarNeed match) => match.EvaluationState == EvaluableMessage.EvaluableMessageState.Validate && match.CityGuid == this.aiEntityCity.City.GUID);
-		if (messages.Any<EvaluableMessage_PillarNeed>())
+		if (!DepartmentOfTheInterior.CanInvokePillarsAndSpells(base.AIEntity.Empire))
 		{
-			using (IEnumerator<EvaluableMessage_PillarNeed> enumerator = messages.GetEnumerator())
-			{
-				if (enumerator.MoveNext())
-				{
-					EvaluableMessage_PillarNeed evaluableMessage_PillarNeed = enumerator.Current;
-					this.validatedPillarNeed = evaluableMessage_PillarNeed;
-					ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-					service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_StartValidatedBoosters));
-				}
-			}
+			return;
+		}
+		this.MoneyAtTurnBegin = 0f;
+		if (base.AIEntity.Empire.GetPropertyValue("PillarsCount") < 1f)
+		{
+			this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out this.MoneyAtTurnBegin, false);
+			AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>().RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_StartValidatedBoosters));
 		}
 	}
 
 	private float GetPillarDustCost(PillarDefinition pillarDefinition)
 	{
-		DepartmentOfTheTreasury agency = base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>();
 		ConstructionResourceStock[] array;
-		agency.GetInstantConstructionResourceCostForBuyout(base.AIEntity.Empire, pillarDefinition, out array);
+		this.departmentOfTheTreasury.GetInstantConstructionResourceCostForBuyout(base.AIEntity.Empire, pillarDefinition, out array);
 		float result = 0f;
 		if (array != null)
 		{
@@ -312,15 +265,116 @@ public class AILayer_Pillar : AILayer, ISimulationAIEvaluationHelper<PillarDefin
 
 	private SynchronousJobState SynchronousJob_StartValidatedBoosters()
 	{
-		if (this.validatedPillarNeed != null)
+		if (this.aiEntityCity.City == null || !this.aiEntityCity.City.GUID.IsValid || this.aiEntityCity.City.Empire.Index != base.AIEntity.Empire.Index || this.aiEntityCity.City.BesiegingEmpireIndex >= 0)
 		{
-			OrderBuyoutAndActivatePillar order = new OrderBuyoutAndActivatePillar(base.AIEntity.Empire.Index, this.validatedPillarNeed.PillarDefinition.Name, this.validatedPillarNeed.WorldPosition);
-			Ticket ticket;
-			base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.PillarOrder_TicketRaised));
-			this.validatedPillarNeed = null;
 			return SynchronousJobState.Success;
 		}
-		return SynchronousJobState.Failure;
+		float num = 0f;
+		this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num, false);
+		if (num <= this.MoneyAtTurnBegin * (this.departmentOfForeignAffairs.IsInWarWithSomeone() ? 0.5f : 0.25f))
+		{
+			return SynchronousJobState.Success;
+		}
+		this.decisionMaker.UnregisterAllOutput();
+		this.decisionMaker.ClearAIParametersOverrides();
+		base.AIEntity.Context.InitializeDecisionMaker<PillarDefinition>(AICityState.ProductionParameterModifier, this.decisionMaker);
+		List<PillarDefinition> elements = (from pillarDefinition in this.PillarDatabase.GetValues()
+		where DepartmentOfTheTreasury.CheckConstructiblePrerequisites(base.AIEntity.Empire, pillarDefinition, new string[]
+		{
+			ConstructionFlags.Prerequisite
+		})
+		select pillarDefinition).ToList<PillarDefinition>();
+		this.decisionResults.Clear();
+		this.decisionMaker.EvaluateDecisions(elements, ref this.decisionResults);
+		if (this.decisionResults != null && this.decisionResults.Count > 0 && this.decisionResults[0].Score > 0f)
+		{
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && ELCPUtilities.ELCPVerboseMode)
+			{
+				foreach (DecisionResult decisionResult in this.decisionResults)
+				{
+					PillarDefinition pillarDefinition3 = decisionResult.Element as PillarDefinition;
+					Diagnostics.Log("ELCP {0}/{1} AILayer_Pillar evaluations {2} {3}", new object[]
+					{
+						base.AIEntity.Empire,
+						this.aiEntityCity.City.LocalizedName,
+						pillarDefinition3.Name,
+						decisionResult.Score
+					});
+				}
+			}
+			PillarDefinition pillarDefinition2 = this.decisionResults[0].Element as PillarDefinition;
+			if (pillarDefinition2.Name == AILayer_Pillar.DustPillarName && pillarDefinition2.GetPillarCount(base.AIEntity.Empire) > 2f)
+			{
+				if (this.decisionResults.Count <= 1 || this.decisionResults[1].Score <= 0f)
+				{
+					return SynchronousJobState.Failure;
+				}
+				pillarDefinition2 = (this.decisionResults[1].Element as PillarDefinition);
+			}
+			int num2 = 0;
+			WorldPosition targetPosition = this.ComputeMostOverlappingPositionForRange(pillarDefinition2, out num2);
+			if (num2 < 5)
+			{
+				return SynchronousJobState.Success;
+			}
+			float pillarDustCost = this.GetPillarDustCost(pillarDefinition2);
+			if (!float.IsPositiveInfinity(pillarDustCost) && num >= pillarDustCost && targetPosition.IsValid)
+			{
+				OrderBuyoutAndActivatePillar order = new OrderBuyoutAndActivatePillar(base.AIEntity.Empire.Index, pillarDefinition2.Name, targetPosition);
+				base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
+				return SynchronousJobState.Running;
+			}
+		}
+		return SynchronousJobState.Success;
+	}
+
+	protected WorldPosition ComputeMostOverlappingPositionForRange(PillarDefinition pillarDefinition, out int NumberOfTiles)
+	{
+		int activeRange = this.pillarService.GetActiveRange(pillarDefinition.Name, base.AIEntity.Empire);
+		District district = null;
+		NumberOfTiles = 0;
+		for (int i = 0; i < this.aiEntityCity.City.Districts.Count; i++)
+		{
+			District district2 = this.aiEntityCity.City.Districts[i];
+			if (this.pillarService.IsPositionValidForPillar(base.AIEntity.Empire, district2.WorldPosition))
+			{
+				WorldArea worldArea = new WorldArea(new List<WorldPosition>
+				{
+					district2.WorldPosition
+				});
+				for (int j = 0; j < activeRange; j++)
+				{
+					worldArea = worldArea.Grow();
+				}
+				int num = 0;
+				for (int k = 0; k < worldArea.WorldPositions.Count; k++)
+				{
+					if (this.worldPositioningService.GetDistrict(WorldPosition.GetValidPosition(worldArea.WorldPositions[k], this.worldPositioningService.World.WorldParameters)) != null)
+					{
+						num++;
+					}
+				}
+				if (num > NumberOfTiles)
+				{
+					NumberOfTiles = num;
+					district = district2;
+				}
+			}
+		}
+		if (district == null)
+		{
+			return WorldPosition.Invalid;
+		}
+		return district.WorldPosition;
+	}
+
+	public override IEnumerator Load()
+	{
+		yield return base.Load();
+		this.PillarDatabase = Databases.GetDatabase<PillarDefinition>(false);
+		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		this.departmentOfTheTreasury = base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>();
+		yield break;
 	}
 
 	private IDatabase<AIParameterConverter> aiParameterConverterDatabase;
@@ -338,4 +392,14 @@ public class AILayer_Pillar : AILayer, ISimulationAIEvaluationHelper<PillarDefin
 	private EvaluableMessage_PillarNeed validatedPillarNeed;
 
 	private IWorldPositionningService worldPositioningService;
+
+	private DepartmentOfTheTreasury departmentOfTheTreasury;
+
+	private float MoneyAtTurnBegin;
+
+	private IDatabase<PillarDefinition> PillarDatabase;
+
+	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
+
+	private static StaticString DustPillarName = "Pillar4";
 }

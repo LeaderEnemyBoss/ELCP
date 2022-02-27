@@ -303,7 +303,7 @@ public class AICommanderMission_GarrisonCamp : AICommanderMission
 
 	private bool IsMissionValid()
 	{
-		return this.Camp != null && this.Camp.Empire == base.Commander.Empire;
+		return this.Camp != null && this.Camp.Empire == base.Commander.Empire && AILayer_Military.GetCampDefenseLocalPriority(this.Camp, this.unitRatioBoost, AICommanderMission_GarrisonCamp.SimulatedUnitsCount) > 0f;
 	}
 
 	private bool WaitingOnArmyTicket()

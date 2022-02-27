@@ -4,6 +4,8 @@ using System.Linq;
 using System.Xml.Serialization;
 using Amplitude;
 using Amplitude.Unity.AI.BehaviourTree;
+using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 
 public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_Decorator<EventEncounterStateChange>
 {
@@ -29,32 +31,14 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 	[XmlAttribute]
 	public string Output_LooserVarName { get; set; }
 
-	[XmlAttribute]
-	public string SelectLooserWithTag { get; set; }
-
 	[XmlAttribute("Output_WinnerVarName")]
 	public string Output_WinnerVarName { get; set; }
 
 	[XmlAttribute("FocusedEmpireVarName")]
 	public string FocusedEmpireVarName { get; set; }
 
-	[XmlAttribute("Output_WinnerEmpire")]
-	public string Output_WinnerEmpire { get; set; }
-
-	[XmlAttribute("Output_Position")]
-	public string Output_Position { get; set; }
-
-	[XmlAttribute("UpdateVarName")]
-	public bool UpdateVarName { get; set; }
-
 	[XmlElement]
 	public ulong WinnerArmyGUID { get; set; }
-
-	[XmlElement]
-	public int WinnerEmpireIndex { get; set; }
-
-	[XmlElement]
-	public WorldPosition BattlePosition { get; set; }
 
 	[XmlElement]
 	public ulong LooserArmyGUID { get; set; }
@@ -64,9 +48,6 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 
 	[XmlElement]
 	public int FocusedEmpireIndex { get; set; }
-
-	[XmlElement]
-	public bool UpdateVars { get; set; }
 
 	protected override State Execute(QuestBehaviour questBehaviour, EventEncounterStateChange e, params object[] parameters)
 	{
@@ -79,7 +60,7 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 		{
 			return State.Running;
 		}
-		IEnumerable<Contender> enemiesContenderFromEmpire = e.EventArgs.Encounter.GetEnemiesContenderFromEmpire(e.Empire as Empire);
+		IEnumerable<Contender> enemiesContenderFromEmpire = e.EventArgs.Encounter.GetEnemiesContenderFromEmpire(e.Empire as global::Empire);
 		if (enemiesContenderFromEmpire == null)
 		{
 			return State.Running;
@@ -162,6 +143,8 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 		{
 			this.UpdateVars = false;
 		}
+		IGameService service = Services.GetService<IGameService>();
+		this.gameEntityRepositoryService = service.Game.Services.GetService<IGameEntityRepositoryService>();
 		return base.Initialize(questBehaviour);
 	}
 
@@ -169,21 +152,47 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 	{
 		if (this.EnemyArmyGUIDs != null)
 		{
-			bool flag = true;
-			for (int i = 0; i < this.EnemyArmyGUIDs.Length; i++)
+			if (questBehaviour.Quest.QuestDefinition.Category != "GlobalQuest" && !this.IgnoreDisbandedArmies)
 			{
-				ulong enemyArmyGUID = this.EnemyArmyGUIDs[i];
+				for (int i = 0; i < this.EnemyArmyGUIDs.Length; i++)
+				{
+					IGameEntity gameEntity;
+					this.gameEntityRepositoryService.TryGetValue(this.EnemyArmyGUIDs[i], out gameEntity);
+					if (gameEntity != null)
+					{
+						break;
+					}
+					if (gameEntity == null && i == this.EnemyArmyGUIDs.Length - 1)
+					{
+						return true;
+					}
+				}
+			}
+			bool flag = true;
+			for (int j = 0; j < this.EnemyArmyGUIDs.Length; j++)
+			{
+				ulong enemyArmyGUID = this.EnemyArmyGUIDs[j];
 				if (enemyArmyGUID == 0UL)
 				{
 					Diagnostics.LogError("Enemy contender corresponding to quest variable (varname: '{0}') isn't valid in quest definition (name: '{1}')", new object[]
 					{
-						this.EnemyArmyGUIDs[i],
+						this.EnemyArmyGUIDs[j],
 						questBehaviour.Quest.QuestDefinition.Name
 					});
 				}
 				else
 				{
-					Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.ContenderSnapShots.Any((ContenderSnapShot snapshot) => snapshot.ContenderGUID == enemyArmyGUID));
+					Func<ContenderSnapShot, bool> <>9__2;
+					Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault(delegate(Contender match)
+					{
+						IEnumerable<ContenderSnapShot> contenderSnapShots = match.ContenderSnapShots;
+						Func<ContenderSnapShot, bool> predicate;
+						if ((predicate = <>9__2) == null)
+						{
+							predicate = (<>9__2 = ((ContenderSnapShot snapshot) => snapshot.ContenderGUID == enemyArmyGUID));
+						}
+						return contenderSnapShots.Any(predicate);
+					});
 					if (contender == null)
 					{
 						return false;
@@ -200,7 +209,7 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 			}
 			return !flag;
 		}
-		IEnumerable<Contender> enemiesContenderFromEmpire = e.EventArgs.Encounter.GetEnemiesContenderFromEmpire(e.Empire as Empire);
+		IEnumerable<Contender> enemiesContenderFromEmpire = e.EventArgs.Encounter.GetEnemiesContenderFromEmpire(e.Empire as global::Empire);
 		if (enemiesContenderFromEmpire == null)
 		{
 			return false;
@@ -212,9 +221,25 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 	{
 		if (this.EnemyArmyGUIDs != null)
 		{
-			for (int i = 0; i < this.EnemyArmyGUIDs.Length; i++)
+			if (questBehaviour.Quest.QuestDefinition.Category != "GlobalQuest" && !this.IgnoreDisbandedArmies)
 			{
-				ulong enemyArmyGUID = this.EnemyArmyGUIDs[i];
+				for (int i = 0; i < this.EnemyArmyGUIDs.Length; i++)
+				{
+					IGameEntity gameEntity;
+					this.gameEntityRepositoryService.TryGetValue(this.EnemyArmyGUIDs[i], out gameEntity);
+					if (gameEntity != null)
+					{
+						break;
+					}
+					if (gameEntity == null && i == this.EnemyArmyGUIDs.Length - 1)
+					{
+						return true;
+					}
+				}
+			}
+			for (int j = 0; j < this.EnemyArmyGUIDs.Length; j++)
+			{
+				ulong enemyArmyGUID = this.EnemyArmyGUIDs[j];
 				if (enemyArmyGUID == 0UL)
 				{
 					Diagnostics.LogError("Enemy contender corresponding to quest variable (varname: '{0}') isn't valid in quest definition (name: '{1}')", new object[]
@@ -225,22 +250,26 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 				}
 				else
 				{
-					Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.ContenderSnapShots.Any((ContenderSnapShot snapshot) => snapshot.ContenderGUID == enemyArmyGUID));
-					if (contender != null)
+					Func<ContenderSnapShot, bool> <>9__2;
+					Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault(delegate(Contender match)
 					{
-						if (contender.Empire != e.Empire)
+						IEnumerable<ContenderSnapShot> contenderSnapShots = match.ContenderSnapShots;
+						Func<ContenderSnapShot, bool> predicate;
+						if ((predicate = <>9__2) == null)
 						{
-							if (contender.ContenderState == ContenderState.Defeated)
-							{
-								return true;
-							}
+							predicate = (<>9__2 = ((ContenderSnapShot snapshot) => snapshot.ContenderGUID == enemyArmyGUID));
 						}
+						return contenderSnapShots.Any(predicate);
+					});
+					if (contender != null && contender.Empire != e.Empire && contender.ContenderState == ContenderState.Defeated)
+					{
+						return true;
 					}
 				}
 			}
 			return false;
 		}
-		IEnumerable<Contender> enemiesContenderFromEmpire = e.EventArgs.Encounter.GetEnemiesContenderFromEmpire(e.Empire as Empire);
+		IEnumerable<Contender> enemiesContenderFromEmpire = e.EventArgs.Encounter.GetEnemiesContenderFromEmpire(e.Empire as global::Empire);
 		if (enemiesContenderFromEmpire == null)
 		{
 			return false;
@@ -268,20 +297,115 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 			}
 			else
 			{
-				Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.ContenderSnapShots.Any((ContenderSnapShot snapshot) => snapshot.ContenderGUID == enemyArmyGUID));
-				if (contender != null)
+				Func<ContenderSnapShot, bool> <>9__1;
+				Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault(delegate(Contender match)
 				{
-					if (contender.Empire != e.Empire)
+					IEnumerable<ContenderSnapShot> contenderSnapShots = match.ContenderSnapShots;
+					Func<ContenderSnapShot, bool> predicate;
+					if ((predicate = <>9__1) == null)
 					{
-						if (contender.ContenderState == ContenderState.Defeated)
-						{
-							num++;
-						}
+						predicate = (<>9__1 = ((ContenderSnapShot snapshot) => snapshot.ContenderGUID == enemyArmyGUID));
 					}
+					return contenderSnapShots.Any(predicate);
+				});
+				if (contender != null && contender.Empire != e.Empire && contender.ContenderState == ContenderState.Defeated)
+				{
+					num++;
 				}
 			}
 		}
 		return num;
+	}
+
+	private void AddWinnerToQuestVariable(QuestBehaviour questBehaviour, EventEncounterStateChange e)
+	{
+		Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.Empire == questBehaviour.Initiator && match.ContenderState == ContenderState.Survived);
+		if (contender != null)
+		{
+			this.WinnerArmyGUID = contender.GUID;
+			QuestVariable questVariable = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_WinnerVarName);
+			if (questVariable == null)
+			{
+				questVariable = new QuestVariable(this.Output_WinnerVarName);
+				questBehaviour.QuestVariables.Add(questVariable);
+			}
+			DepartmentOfDefense agency = questBehaviour.Initiator.GetAgency<DepartmentOfDefense>();
+			Diagnostics.Assert(agency != null);
+			Army army = agency.Armies.FirstOrDefault((Army match) => match.GUID == this.WinnerArmyGUID);
+			if (army == null)
+			{
+				Diagnostics.LogError("Decorator_KillArmy: the army (GUID:'{0}') cannot be found in the empire (index:'{1}') armies", new object[]
+				{
+					this.WinnerArmyGUID,
+					questBehaviour.Initiator.Index
+				});
+			}
+			questVariable.Object = army;
+		}
+	}
+
+	private void AddLooserToQuestVariable(QuestBehaviour questBehaviour, EventEncounterStateChange e)
+	{
+		if (this.SelectLooserWithTag != string.Empty)
+		{
+			using (IEnumerator<Contender> enumerator = (from match in e.EventArgs.Encounter.Contenders
+			where match.ContenderState == ContenderState.Defeated
+			select match).GetEnumerator())
+			{
+				while (enumerator.MoveNext())
+				{
+					Contender contender = enumerator.Current;
+					if (contender.Garrison.HasTag(this.SelectLooserWithTag))
+					{
+						this.LooserArmyGUID = contender.GUID;
+						QuestVariable questVariable = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_LooserVarName);
+						if (questVariable == null)
+						{
+							questVariable = new QuestVariable(this.Output_LooserVarName);
+							questBehaviour.QuestVariables.Add(questVariable);
+						}
+						questVariable.Object = contender.Garrison;
+					}
+				}
+				return;
+			}
+		}
+		Contender contender2 = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.ContenderState == ContenderState.Defeated);
+		if (contender2 != null)
+		{
+			this.LooserArmyGUID = contender2.GUID;
+			QuestVariable questVariable2 = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_LooserVarName);
+			if (questVariable2 == null)
+			{
+				questVariable2 = new QuestVariable(this.Output_LooserVarName);
+				questBehaviour.QuestVariables.Add(questVariable2);
+			}
+			questVariable2.Object = contender2.Garrison;
+		}
+	}
+
+	private void SaveEnemyArmyGUIDs(QuestBehaviour questBehaviour)
+	{
+		if (this.EnemyArmyGUIDVarName != null && this.EnemyArmyGUIDs == null)
+		{
+			this.EnemyArmyGUIDs = new ulong[this.EnemyArmyGUIDVarName.Length];
+			for (int i = 0; i < this.EnemyArmyGUIDVarName.Length; i++)
+			{
+				ulong num = GameEntityGUID.Zero;
+				if (!questBehaviour.TryGetQuestVariableValueByName<ulong>(this.EnemyArmyGUIDVarName[i], out num))
+				{
+					this.EnemyArmyGUIDs = null;
+					return;
+				}
+				this.EnemyArmyGUIDs[i] = num;
+			}
+		}
+	}
+
+	private bool DoesKilledArmyBelongsToTargetedEmpire(QuestBehaviour questBehaviour, EventEncounterStateChange e)
+	{
+		Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.ContenderState == ContenderState.Defeated);
+		return !(this.FocusedEmpireVarName != string.Empty) || contender == null || contender.Empire.Index == this.FocusedEmpireIndex;
 	}
 
 	private void AddWinnerEmpireToQuestVariable(QuestBehaviour questBehaviour, EventEncounterStateChange e)
@@ -316,95 +440,37 @@ public class QuestBehaviourTreeNode_Decorator_KillArmy : QuestBehaviourTreeNode_
 		}
 	}
 
-	private void AddWinnerToQuestVariable(QuestBehaviour questBehaviour, EventEncounterStateChange e)
+	[XmlAttribute("Output_WinnerEmpire")]
+	public string Output_WinnerEmpire { get; set; }
+
+	[XmlAttribute("Output_Position")]
+	public string Output_Position { get; set; }
+
+	[XmlAttribute("UpdateVarName")]
+	public bool UpdateVarName { get; set; }
+
+	[XmlElement]
+	public int WinnerEmpireIndex { get; set; }
+
+	[XmlElement]
+	public WorldPosition BattlePosition { get; set; }
+
+	[XmlElement]
+	public bool UpdateVars { get; set; }
+
+	[XmlAttribute]
+	public string SelectLooserWithTag { get; set; }
+
+	public override void Release()
 	{
-		Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.Empire == questBehaviour.Initiator && match.ContenderState == ContenderState.Survived);
-		if (contender != null)
-		{
-			this.WinnerArmyGUID = contender.GUID;
-			QuestVariable questVariable = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_WinnerVarName);
-			if (questVariable == null)
-			{
-				questVariable = new QuestVariable(this.Output_WinnerVarName);
-				questBehaviour.QuestVariables.Add(questVariable);
-			}
-			DepartmentOfDefense agency = questBehaviour.Initiator.GetAgency<DepartmentOfDefense>();
-			Diagnostics.Assert(agency != null);
-			Army army = agency.Armies.FirstOrDefault((Army match) => match.GUID == this.WinnerArmyGUID);
-			if (army == null)
-			{
-				Diagnostics.LogError("Decorator_KillArmy: the army (GUID:'{0}') cannot be found in the empire (index:'{1}') armies", new object[]
-				{
-					this.WinnerArmyGUID,
-					questBehaviour.Initiator.Index
-				});
-			}
-			questVariable.Object = army;
-		}
+		base.Release();
+		this.gameEntityRepositoryService = null;
 	}
 
-	private void AddLooserToQuestVariable(QuestBehaviour questBehaviour, EventEncounterStateChange e)
-	{
-		if (this.SelectLooserWithTag != string.Empty)
-		{
-			IEnumerable<Contender> enumerable = from match in e.EventArgs.Encounter.Contenders
-			where match.ContenderState == ContenderState.Defeated
-			select match;
-			foreach (Contender contender in enumerable)
-			{
-				if (contender.Garrison.HasTag(this.SelectLooserWithTag))
-				{
-					this.LooserArmyGUID = contender.GUID;
-					QuestVariable questVariable = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_LooserVarName);
-					if (questVariable == null)
-					{
-						questVariable = new QuestVariable(this.Output_LooserVarName);
-						questBehaviour.QuestVariables.Add(questVariable);
-					}
-					questVariable.Object = contender.Garrison;
-				}
-			}
-		}
-		else
-		{
-			Contender contender2 = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.ContenderState == ContenderState.Defeated);
-			if (contender2 != null)
-			{
-				this.LooserArmyGUID = contender2.GUID;
-				QuestVariable questVariable2 = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_LooserVarName);
-				if (questVariable2 == null)
-				{
-					questVariable2 = new QuestVariable(this.Output_LooserVarName);
-					questBehaviour.QuestVariables.Add(questVariable2);
-				}
-				questVariable2.Object = contender2.Garrison;
-			}
-		}
-	}
+	[XmlAttribute]
+	public bool IgnoreDisbandedArmies { get; set; }
 
-	private void SaveEnemyArmyGUIDs(QuestBehaviour questBehaviour)
-	{
-		if (this.EnemyArmyGUIDVarName != null && this.EnemyArmyGUIDs == null)
-		{
-			this.EnemyArmyGUIDs = new ulong[this.EnemyArmyGUIDVarName.Length];
-			for (int i = 0; i < this.EnemyArmyGUIDVarName.Length; i++)
-			{
-				ulong num = GameEntityGUID.Zero;
-				if (!questBehaviour.TryGetQuestVariableValueByName<ulong>(this.EnemyArmyGUIDVarName[i], out num))
-				{
-					this.EnemyArmyGUIDs = null;
-					break;
-				}
-				this.EnemyArmyGUIDs[i] = num;
-			}
-		}
-	}
-
-	private bool DoesKilledArmyBelongsToTargetedEmpire(QuestBehaviour questBehaviour, EventEncounterStateChange e)
-	{
-		Contender contender = e.EventArgs.Encounter.Contenders.FirstOrDefault((Contender match) => match.ContenderState == ContenderState.Defeated);
-		return !(this.FocusedEmpireVarName != string.Empty) || contender == null || contender.Empire.Index == this.FocusedEmpireIndex;
-	}
+	private IGameEntityRepositoryService gameEntityRepositoryService;
 
 	[Flags]
 	public enum KillArmyTargetOption

@@ -80,8 +80,8 @@
 
     <BattleEffectsArea TargetsFilter="Target SameGroup Alive" Type="Chain" AvoidCastingUnit="false" Parameter1="-1" RealizationVisualEffectName="BattleEffect_AOE_ShiftingAwe_LightForm" RealizationApplicationMethod="OnHit">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
-        <BattleEffect_ChangeSealedPropertyValue Name="ShiftingAweEffect_LightFormAffectation" PropertyName="ShiftingAweEfficiency_LightForm" Operation="Addition" InterpreterFormula="1" />
-        <BattleEffect_UnitSimulation Name="BattleEffect_ShiftingAwe_LightForm" Duration="3" IsCumulable="false" RealizationApplicationMethod="OnHit" IsPermanentEffect="true">
+        <BattleEffect_ChangeSealedPropertyValue Name="ShiftingAweEffect_LightFormAffectation" PropertyName="ShiftingAweEfficiency_LightForm" Operation="Affectation" InterpreterFormula="1" />
+        <BattleEffect_UnitSimulation Name="BattleEffect_ShiftingAwe_LightForm" Duration="4" IsCumulable="true" RealizationApplicationMethod="OnHit" IsPermanentEffect="true">
           <SimulationDescriptorReference Name="UnitActionAbilityShiftingAwe_LightForm" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
@@ -95,8 +95,8 @@
     <BattleEffectsArea TargetsFilter="Target Alive" Type="Chain" AvoidCastingUnit="false" Parameter1="-1" RealizationVisualEffectName="BattleEffect_AOE_ShiftingAwe_DarkForm" RealizationApplicationMethod="OnHit">
       <BattleEffects TargetsFilter="Target Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
-        <BattleEffect_ChangeSealedPropertyValue Name="ShiftingAweEffect_DarkFormAffectation" PropertyName="ShiftingAweEfficiency_DarkForm" Operation="Addition" InterpreterFormula="1" />
-        <BattleEffect_UnitSimulation Name="BattleEffect_ShiftingAwe_DarkForm" Duration="3" IsCumulable="false" RealizationApplicationMethod="OnHit" IsPermanentEffect="true">
+        <BattleEffect_ChangeSealedPropertyValue Name="ShiftingAweEffect_DarkFormAffectation" PropertyName="ShiftingAweEfficiency_DarkForm" Operation="Affectation" InterpreterFormula="1" />
+        <BattleEffect_UnitSimulation Name="BattleEffect_ShiftingAwe_DarkForm" Duration="4" IsCumulable="true" RealizationApplicationMethod="OnHit" IsPermanentEffect="true">
           <SimulationDescriptorReference Name="UnitActionAbilityShiftingAwe_DarkForm" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
@@ -163,7 +163,7 @@
     <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
     <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
     <!-- Cone with a range of 2  -->
-    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" InitiatorAsCenter="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
       <!-- Damage to health -->
       <BattleEffects TargetsFilter="Target EnemyGroup Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
@@ -191,7 +191,7 @@
     <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
     <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
     <!-- Cone with a range of 1  -->
-    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" InitiatorAsCenter="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
       <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
       <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
       <!-- Damage to health -->
@@ -241,7 +241,7 @@
     <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
     <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
     <!-- Cone with a range of 2  -->
-    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" InitiatorAsCenter="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
       <!-- Damage to health -->
       <BattleEffects TargetsFilter="Target EnemyGroup Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
@@ -269,7 +269,7 @@
     <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
     <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
     <!-- Cone with a range of 1  -->
-    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" InitiatorAsCenter="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
       <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
       <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
       <!-- Damage to health -->
@@ -319,7 +319,7 @@
     <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
     <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
     <!-- Cone with a range of 2  -->
-    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" InitiatorAsCenter="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
       <!-- Damage to health -->
       <BattleEffects TargetsFilter="Target EnemyGroup Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
@@ -349,7 +349,7 @@
     <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
     <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
     <!-- Cone with a range of 1  -->
-    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+    <BattleEffectsArea TargetsFilter="Target Alive" Type="Cone" Parameter1="1" AvoidCastingUnit="true" InitiatorAsCenter="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
       <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_LightForm)</InterpreterPrerequisite>
       <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_LightForm)</InterpreterPrerequisite>
       <!-- Damage to health -->
@@ -399,7 +399,7 @@
     <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
     <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
     <!-- Cone with a range of 2  -->
-    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+    <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Cone" Parameter1="2" AvoidCastingUnit="true" InitiatorAsCenter="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
       <!-- Damage to health -->
       <BattleEffects TargetsFilter="Target EnemyGroup Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanTakePhysicalDamage) gt 0</InterpreterPrerequisite>
@@ -429,7 +429,7 @@
     <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
     <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
     <!-- Cone with a range of 1  -->
-    <BattleEffectsArea TargetsFilter="Target" Type="Cone" Parameter1="1" AvoidCastingUnit="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
+    <BattleEffectsArea TargetsFilter="Target" Type="Cone" Parameter1="1" AvoidCastingUnit="true" InitiatorAsCenter="true" RealizationVisualEffectName="BattleEffect_AOE_ShiftingCombo" RealizationApplicationMethod="OnHit">
       <InterpreterPrerequisite Inverted="false">$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel0_DarkForm)</InterpreterPrerequisite>
       <InterpreterPrerequisite Inverted="false">!$Path(ClassUnit,UnitAbilityDescriptorShiftingComboLevel1_DarkForm)</InterpreterPrerequisite>
       <!-- Damage to health -->

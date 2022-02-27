@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using Amplitude;
+using Amplitude.Unity.Game.Orders;
 
-public class OrderForceUnlockTechnology : Order
+public class OrderForceUnlockTechnology : global::Order
 {
 	public OrderForceUnlockTechnology(int empireIndex, string technologyDefinitionName) : base(empireIndex)
 	{
@@ -38,6 +39,7 @@ public class OrderForceUnlockTechnology : Order
 			throw new ArgumentNullException("writer");
 		}
 		base.Pack(writer);
+		writer.Write(this.Notify);
 		writer.Write(this.TechnologyDefinitionNames.Length);
 		for (int i = 0; i < this.TechnologyDefinitionNames.Length; i++)
 		{
@@ -52,6 +54,7 @@ public class OrderForceUnlockTechnology : Order
 			throw new ArgumentNullException("reader");
 		}
 		base.Unpack(reader);
+		this.Notify = reader.ReadBoolean();
 		int num = reader.ReadInt32();
 		this.TechnologyDefinitionNames = new StaticString[num];
 		for (int i = 0; i < num; i++)
@@ -59,6 +62,9 @@ public class OrderForceUnlockTechnology : Order
 			this.TechnologyDefinitionNames[i] = reader.ReadString();
 		}
 	}
+
+	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
+	public bool Notify { get; set; }
 
 	public static readonly StaticString AuthenticationPath = "DepartmentOfScience/OrderForceUnlockTechnology";
 }

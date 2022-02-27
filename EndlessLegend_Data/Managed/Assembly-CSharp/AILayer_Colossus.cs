@@ -646,13 +646,24 @@ public class AILayer_Colossus : AILayerCommanderController
 				else
 				{
 					float num = 0.5f;
-					float num2 = 0f;
-					if (aidata_Army.CommanderMission != null)
+					if (aidata_Army.Army is KaijuArmy)
 					{
-						num2 = aidata_Army.CommanderMission.Commander.GetPriority(aidata_Army.CommanderMission);
+						aidata_Army.SupportScore = 0.4f;
 					}
-					num = AILayer.Boost(num, 0.5f * num2);
-					aidata_Army.SupportScore = num;
+					else if (aidata_Army.CommanderMission == null || aidata_Army.CommanderMission is AICommanderMission_ExplorationDefault || aidata_Army.CommanderMission is AICommanderMission_MantaExploration || aidata_Army.CommanderMission is AICommanderMission_Terraform || aidata_Army.CommanderMission is AICommanderMission_ColonizationDefault || aidata_Army.CommanderMission is AICommanderMission_HuntRuin || aidata_Army.CommanderMission is AICommanderMission_QuestsolverRuin)
+					{
+						aidata_Army.SupportScore = 0f;
+					}
+					else if (aidata_Army.CommanderMission is AICommanderMission_DefenseRoaming || aidata_Army.CommanderMission is AICommanderMission_Garrison)
+					{
+						aidata_Army.SupportScore = aidata_Army.CommanderMission.Commander.GetPriority(aidata_Army.CommanderMission);
+					}
+					else
+					{
+						float priority = aidata_Army.CommanderMission.Commander.GetPriority(aidata_Army.CommanderMission);
+						num = AILayer.Boost(num, 0.5f * priority);
+						aidata_Army.SupportScore = num;
+					}
 				}
 			}
 		}

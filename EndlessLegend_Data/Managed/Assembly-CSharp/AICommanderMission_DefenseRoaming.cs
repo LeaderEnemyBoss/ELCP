@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
+using Amplitude.Unity.Session;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
@@ -21,8 +22,7 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 		{
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			global::Game game = service.Game as global::Game;
-			World world = game.World;
+			World world = (service.Game as global::Game).World;
 			this.RegionTarget = world.Regions[attribute];
 			Diagnostics.Assert(this.RegionTarget != null);
 		}
@@ -58,16 +58,16 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 
 	public override void Promote()
 	{
-		ITickableRepositoryAIHelper service = AIScheduler.Services.GetService<ITickableRepositoryAIHelper>();
-		service.Register(this);
+		AIScheduler.Services.GetService<ITickableRepositoryAIHelper>().Register(this);
 		base.IsActive = true;
-		this.State = TickableState.NeedTick;
+		base.State = TickableState.NeedTick;
 	}
 
 	public override void Release()
 	{
 		base.Release();
 		this.RegionTarget = null;
+		this.ailayer_War = null;
 	}
 
 	public override void SetParameters(AICommanderMissionDefinition missionDefinition, params object[] parameters)
@@ -91,7 +91,31 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 
 	protected override bool IsMissionCompleted()
 	{
-		return !AILayer_Patrol.IsPatrolValid(base.Commander.Empire, this.RegionTarget);
+		if (base.Commander.Empire != null && base.Commander.Empire is MajorEmpire && this.ailayer_QuestSolver == null)
+		{
+			GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
+			try
+			{
+				AIPlayer_MajorEmpire aiplayer_MajorEmpire;
+				if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(base.Commander.Empire as MajorEmpire, out aiplayer_MajorEmpire))
+				{
+					AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
+					if (entity != null)
+					{
+						this.ailayer_QuestSolver = entity.GetLayer<AILayer_QuestSolver>();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Diagnostics.LogError("Exceptions caught: {0}", new object[]
+				{
+					ex
+				});
+				return false;
+			}
+		}
+		return !(base.Commander is AICommander_Victory) && !AILayer_Patrol.IsPatrolValid(base.Commander.Empire, this.RegionTarget, this.ailayer_QuestSolver);
 	}
 
 	protected override void Running()
@@ -132,6 +156,26 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 		List<object> list = new List<object>();
 		list.Add(this.RegionTarget.Index);
 		list.Add(this.IsWarBased);
+		if (base.Commander.Empire != null && base.Commander.Empire is MajorEmpire)
+		{
+			if (this.ailayer_War == null)
+			{
+				GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
+				AIPlayer_MajorEmpire aiplayer_MajorEmpire;
+				if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(base.Commander.Empire as MajorEmpire, out aiplayer_MajorEmpire))
+				{
+					AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
+					if (entity != null)
+					{
+						this.ailayer_War = entity.GetLayer<AILayer_War>();
+					}
+				}
+			}
+			if (this.ailayer_War != null)
+			{
+				this.ailayer_War.AssignDefensiveArmyToCity(aidata.Army);
+			}
+		}
 		if (this.IsWarBased)
 		{
 			if (base.TryCreateArmyMission("MajorFactionWarRoaming", list))
@@ -145,4 +189,8 @@ public class AICommanderMission_DefenseRoaming : AICommanderMissionWithRequestAr
 		}
 		return false;
 	}
+
+	private AILayer_War ailayer_War;
+
+	private AILayer_QuestSolver ailayer_QuestSolver;
 }

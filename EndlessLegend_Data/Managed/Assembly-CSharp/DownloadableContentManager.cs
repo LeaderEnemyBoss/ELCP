@@ -133,10 +133,10 @@ public class DownloadableContentManager : Manager, IService, IEnumerable, IDownl
 		this.Register<DownloadableContent19>();
 		this.Register<DownloadableContent20>();
 		this.Register<DownloadableContent21>();
-		string[] descriptions = (from downloadableContent in this.DownloadableContents.Values
-		where (downloadableContent.Accessibility & DownloadableContentAccessibility.Subscribed) != DownloadableContentAccessibility.None
+		string[] array = (from downloadableContent in this.DownloadableContents.Values
+		where (downloadableContent.Accessibility & DownloadableContentAccessibility.Subscribed) > DownloadableContentAccessibility.None
 		select downloadableContent.Description).ToArray<string>();
-		if (descriptions.Length == 0)
+		if (array.Length == 0)
 		{
 			Diagnostics.Log("No downloadable content was found.");
 		}
@@ -144,24 +144,24 @@ public class DownloadableContentManager : Manager, IService, IEnumerable, IDownl
 		{
 			Diagnostics.Log("Playing with {0} downloadable content(s): {1}.", new object[]
 			{
-				descriptions.Length,
-				string.Join(", ", descriptions)
+				array.Length,
+				string.Join(", ", array)
 			});
 		}
 		this.GetCommandLineOverrides();
-		descriptions = (from downloadableContent in this.DownloadableContents.Values
-		where (downloadableContent.Accessibility & DownloadableContentAccessibility.Subscribed) != DownloadableContentAccessibility.None
+		array = (from downloadableContent in this.DownloadableContents.Values
+		where (downloadableContent.Accessibility & DownloadableContentAccessibility.Subscribed) > DownloadableContentAccessibility.None
 		where downloadableContent.IsDynamicActivationEnabled && (downloadableContent.Accessibility & DownloadableContentAccessibility.Activated) == DownloadableContentAccessibility.Activated
 		select downloadableContent.Description).ToArray<string>();
-		if (descriptions.Length != 0)
+		if (array.Length != 0)
 		{
 			Diagnostics.Log("Playing with {0} activated downloadable content(s): {1}.", new object[]
 			{
-				descriptions.Length,
-				string.Join(", ", descriptions)
+				array.Length,
+				string.Join(", ", array)
 			});
 		}
-		bool shallSupportOnLoadDynamicTexture = this.DownloadableContents.Values.Any(delegate(DownloadableContent downloadableContent)
+		if (this.DownloadableContents.Values.Any(delegate(DownloadableContent downloadableContent)
 		{
 			bool result;
 			if (downloadableContent.Restrictions != null)
@@ -173,8 +173,7 @@ public class DownloadableContentManager : Manager, IService, IEnumerable, IDownl
 				result = false;
 			}
 			return result;
-		});
-		if (shallSupportOnLoadDynamicTexture)
+		}))
 		{
 			Diagnostics.Log("Dynamic textures support required.");
 			yield return base.BindService<Amplitude.Unity.Gui.IGuiService>(delegate(Amplitude.Unity.Gui.IGuiService service)

@@ -45,8 +45,7 @@ public class AIBehaviorTreeNode_Action_ShiftUnits : AIBehaviorTreeNode_Action
 				return State.Success;
 			}
 			Army army;
-			AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-			if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+			if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 			{
 				return State.Failure;
 			}
@@ -84,6 +83,14 @@ public class AIBehaviorTreeNode_Action_ShiftUnits : AIBehaviorTreeNode_Action
 				return State.Failure;
 			}
 			Garrison garrison = gameEntity as Garrison;
+			if (gameEntity is Kaiju)
+			{
+				garrison = (gameEntity as Kaiju).GetActiveTroops();
+			}
+			if (garrison == null)
+			{
+				return State.Success;
+			}
 			if (garrison.IsInEncounter)
 			{
 				return State.Running;

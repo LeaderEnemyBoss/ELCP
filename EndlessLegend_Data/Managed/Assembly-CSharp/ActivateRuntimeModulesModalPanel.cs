@@ -348,46 +348,63 @@ public class ActivateRuntimeModulesModalPanel : GuiPlayerControllerModalPanel
 		List<GuiModule> list = new List<GuiModule>();
 		int i = 0;
 		int count = this.guiModules.Count;
-		while (i < count)
+		if (this.RuntimeModuleNames != null && this.RuntimeModuleNames.Length != 0)
 		{
-			if (this.guiModules[i].IsDownloading || this.guiModules[i].IsInvalid || this.guiModules[i].Module == null)
+			Diagnostics.Assert(count == this.RuntimeModuleNames.Length - 1, string.Format("ELCP: Module Length Mismatch: guiModules {0}, RuntimeModuleNames {1}", count, this.RuntimeModuleNames.Length - 1));
+			string[] runtimeModuleNames = this.RuntimeModuleNames;
+			for (int j = 0; j < runtimeModuleNames.Length; j++)
 			{
-				list.Add(this.guiModules[i]);
-				break;
+				string name = runtimeModuleNames[j];
+				GuiModule guiModule = this.guiModules.Find((GuiModule Module) => Module.Name == name);
+				if (guiModule != null)
+				{
+					list.Add(guiModule);
+				}
 			}
-			i++;
 		}
-		int j = 0;
-		int count2 = this.guiModules.Count;
-		while (j < count2)
+		else
 		{
-			if (!this.guiModules[j].IsDownloading && !this.guiModules[j].IsInvalid && this.guiModules[j].Module != null && this.guiModules[j].Module.Type == RuntimeModuleType.Standalone)
+			while (i < count)
 			{
-				list.Add(this.guiModules[j]);
-				break;
+				if (this.guiModules[i].IsDownloading || this.guiModules[i].IsInvalid || this.guiModules[i].Module == null)
+				{
+					list.Add(this.guiModules[i]);
+					break;
+				}
+				i++;
 			}
-			j++;
-		}
-		int k = 0;
-		int count3 = this.guiModules.Count;
-		while (k < count3)
-		{
-			if (!this.guiModules[k].IsDownloading && !this.guiModules[k].IsInvalid && this.guiModules[k].Module != null && this.guiModules[k].Module.Type == RuntimeModuleType.Conversion)
+			int k = 0;
+			int count2 = this.guiModules.Count;
+			while (k < count2)
 			{
-				list.Add(this.guiModules[k]);
-				break;
+				if (!this.guiModules[k].IsDownloading && !this.guiModules[k].IsInvalid && this.guiModules[k].Module != null && this.guiModules[k].Module.Type == RuntimeModuleType.Standalone)
+				{
+					list.Add(this.guiModules[k]);
+					break;
+				}
+				k++;
 			}
-			k++;
-		}
-		int l = 0;
-		int count4 = this.guiModules.Count;
-		while (l < count4)
-		{
-			if (!this.guiModules[l].IsDownloading && !this.guiModules[l].IsInvalid && this.guiModules[l].Module != null && this.guiModules[l].Module.Type == RuntimeModuleType.Extension)
+			int l = 0;
+			int count3 = this.guiModules.Count;
+			while (l < count3)
 			{
-				list.Add(this.guiModules[l]);
+				if (!this.guiModules[l].IsDownloading && !this.guiModules[l].IsInvalid && this.guiModules[l].Module != null && this.guiModules[l].Module.Type == RuntimeModuleType.Conversion)
+				{
+					list.Add(this.guiModules[l]);
+					break;
+				}
+				l++;
 			}
-			l++;
+			int m = 0;
+			int count4 = this.guiModules.Count;
+			while (m < count4)
+			{
+				if (!this.guiModules[m].IsDownloading && !this.guiModules[m].IsInvalid && this.guiModules[m].Module != null && this.guiModules[m].Module.Type == RuntimeModuleType.Extension)
+				{
+					list.Add(this.guiModules[m]);
+				}
+				m++;
+			}
 		}
 		this.guiModules = list;
 	}

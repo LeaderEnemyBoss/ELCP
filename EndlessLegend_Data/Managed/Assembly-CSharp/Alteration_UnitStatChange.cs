@@ -41,11 +41,10 @@ public class Alteration_UnitStatChange : Alteration
 			if (this.WorldBattleUnit.Unit.Garrison.Empire != null)
 			{
 				Color factionColor = this.WorldBattleUnit.Unit.Garrison.Empire.Color;
-				IGameService service = Services.GetService<IGameService>();
-				IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-				if (service2.ActivePlayerController != null && service2.ActivePlayerController.Empire != null)
+				IPlayerControllerRepositoryService service = Services.GetService<IGameService>().Game.Services.GetService<IPlayerControllerRepositoryService>();
+				if (service.ActivePlayerController != null && service.ActivePlayerController.Empire != null)
 				{
-					if (service2.ActivePlayerController.Empire.Index != this.WorldBattleUnit.Unit.Garrison.Empire.Index)
+					if (service.ActivePlayerController.Empire.Index != this.WorldBattleUnit.Unit.Garrison.Empire.Index)
 					{
 						Army army = this.WorldBattleUnit.Unit.Garrison as Army;
 						if (army != null && army.IsPrivateers)
@@ -82,9 +81,7 @@ public class Alteration_UnitStatChange : Alteration
 			}
 			StaticString x = (StaticString)parameters[0];
 			float num = (float)parameters[1];
-			if (Mathf.Abs(num) <= 1.401298E-45f)
-			{
-			}
+			Mathf.Abs(num);
 			bool critical = (bool)parameters[3];
 			if (x == SimulationProperties.Health)
 			{
@@ -92,6 +89,11 @@ public class Alteration_UnitStatChange : Alteration
 			}
 			else if (x == SimulationProperties.Armor)
 			{
+				if (num > 0f)
+				{
+					this.battleHealthStatus.SetMaxArmor(this.WorldBattleUnit.EncounterUnit.GetPropertyValue(SimulationProperties.MaximumArmor));
+					this.battleHealthStatus.SetCurrentArmor(this.WorldBattleUnit.EncounterUnit.GetPropertyValue(SimulationProperties.Armor));
+				}
 				this.battleHealthStatus.ChangeArmor(num, critical);
 			}
 			else if (x == SimulationProperties.AttackingHitInfo)
@@ -167,8 +169,7 @@ public class Alteration_UnitStatChange : Alteration
 			bool isCumulable = true;
 			if (unitReportInstruction != null && unitReportInstruction is BattleEffectUpdateInstruction)
 			{
-				BattleEffectUpdateInstruction battleEffectUpdateInstruction = unitReportInstruction as BattleEffectUpdateInstruction;
-				isCumulable = battleEffectUpdateInstruction.IsCumulable;
+				isCumulable = (unitReportInstruction as BattleEffectUpdateInstruction).IsCumulable;
 			}
 			this.battleHealthStatus.AddRemoveAlteration(alterationName, add, duration, isCumulable);
 		}

@@ -49,7 +49,7 @@ public class SpellButton : MonoBehaviour
 		{
 			DepartmentOfTheTreasury agency = this.Empire.GetAgency<DepartmentOfTheTreasury>();
 			ConstructionResourceStock[] array;
-			enable = agency.GetInstantConstructionResourceCostForBuyout(empire, spellDefinition, out array);
+			enable = (!ELCPUtilities.SpellUsage_HasSpellBeenUsed(encounter.GUID, empire.Index, spellDefinition.Name) && agency.GetInstantConstructionResourceCostForBuyout(empire, spellDefinition, out array));
 		}
 		this.AgeTransform.Enable = enable;
 	}

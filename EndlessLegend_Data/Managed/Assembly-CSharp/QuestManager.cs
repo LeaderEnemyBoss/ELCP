@@ -23,7 +23,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSerializable, IService, IEnumerable, IDumpable, IQuestManagementService, IQuestRepositoryService, IQuestRewardRepositoryService, IEnumerable<Quest>, IRepositoryService<Quest>, IEnumerable<KeyValuePair<ulong, Quest>>
+public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSerializable, IService, IEnumerable, IDumpable, IQuestManagementService, IQuestRepositoryService, IEnumerable<Quest>, IRepositoryService<Quest>, IEnumerable<KeyValuePair<ulong, Quest>>, IQuestRewardRepositoryService
 {
 	public event EventHandler<QuestRepositoryChangeEventArgs> QuestRepositoryChange;
 
@@ -255,6 +255,29 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 			{
 				OrderCompleteQuest order = new OrderCompleteQuest(questBehaviour.Quest);
 				this.PlayerController.PostOrder(order);
+			}
+			if (GameManager.Preferences.QuestVerboseMode)
+			{
+				Diagnostics.Log("ELCP: IQuestManagementService.ExecuteQuest {0} {1}", new object[]
+				{
+					questBehaviour.Quest.Name,
+					state
+				});
+			}
+			if (state == Amplitude.Unity.AI.BehaviourTree.State.Success && questBehaviour.Quest != null && questBehaviour.Quest.QuestDefinition != null && questBehaviour.Quest.QuestDefinition.Triggers != null && questBehaviour.Quest.QuestDefinition.Triggers.OnQuestCompleted != null && questBehaviour.Quest.QuestDefinition.Triggers.OnQuestCompleted.Tags != null)
+			{
+				this.questManagementService.InitState(questBehaviour.Quest.QuestDefinition.Triggers.OnQuestCompleted.Tags, questBehaviour.Initiator, WorldPosition.Invalid);
+				QuestDefinition questDefinition;
+				QuestVariable[] collection;
+				QuestInstruction[] pendingInstructions;
+				QuestReward[] questRewards;
+				Dictionary<Region, List<string>> regionQuestLocalizationVariableDefinitionLocalizationKey;
+				if (this.TryTrigger(out questDefinition, out collection, out pendingInstructions, out questRewards, out regionQuestLocalizationVariableDefinitionLocalizationKey))
+				{
+					List<QuestVariable> list = new List<QuestVariable>(collection);
+					list.AddRange(this.State.GlobalQuestVariablesCurrentEmpire);
+					this.Trigger(this.State.Empire, questDefinition, list.ToArray(), pendingInstructions, questRewards, regionQuestLocalizationVariableDefinitionLocalizationKey, null, true);
+				}
 			}
 		}
 	}
@@ -639,13 +662,6 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		}
 	}
 
-	StaticString IQuestManagementService.ForceSideQuestVillageTrigger(string sideQuestVillageName)
-	{
-		string x = "I'll try to trigger '" + sideQuestVillageName + "' in the next parley with a minor faction.";
-		QuestManager._GlobalVillageName = sideQuestVillageName;
-		return x;
-	}
-
 	StaticString IQuestManagementService.ForceTrigger(QuestDefinition questDefinition, Empire empire, bool stopIfError)
 	{
 		List<QuestVariable> list = new List<QuestVariable>();
@@ -976,8 +992,7 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 
 	public bool TryTrigger(out QuestDefinition questDefinition, out QuestVariable[] questVariables, out QuestInstruction[] pendingInstructions, out Dictionary<Region, List<string>> regionQuestLocalizationVariableDefinitionLocalizationKey)
 	{
-		IEnumerable<QuestDefinition> enumerable = this.QuestDefinitions.Shuffle();
-		foreach (QuestDefinition questDefinition2 in enumerable)
+		foreach (QuestDefinition questDefinition2 in this.QuestDefinitions.Shuffle())
 		{
 			if (questDefinition2.SingleCheckPerTurn)
 			{
@@ -991,29 +1006,22 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 			questDefinition = questDefinition2;
 			if (questDefinition.Root != null)
 			{
-				bool flag = this.CheckTags(questDefinition, this.State.Tags);
-				if (flag)
+				if (this.CheckTags(questDefinition, this.State.Tags))
 				{
-					bool flag2 = this.CheckRepetition(questDefinition);
-					if (flag2)
+					if (this.CheckRepetition(questDefinition))
 					{
-						bool flag3 = this.CheckRandom(questDefinition);
-						if (flag3)
+						if (this.CheckRandom(questDefinition))
 						{
 							List<QuestVariable> list = new List<QuestVariable>();
 							List<QuestInstruction> list2 = new List<QuestInstruction>();
 							regionQuestLocalizationVariableDefinitionLocalizationKey = new Dictionary<Region, List<string>>();
-							bool flag4 = this.CheckVariables(questDefinition.GetPrerequisiteVariables(), questDefinition, list, list2, regionQuestLocalizationVariableDefinitionLocalizationKey);
-							if (flag4)
+							if (this.CheckVariables(questDefinition.GetPrerequisiteVariables(), questDefinition, list, list2, regionQuestLocalizationVariableDefinitionLocalizationKey))
 							{
-								bool flag5 = this.CheckPrerequisites(questDefinition, this.State.Targets);
-								if (flag5)
+								if (this.CheckPrerequisites(questDefinition, this.State.Targets))
 								{
-									bool flag6 = this.CheckVariables(questDefinition.GetNonPrerequisiteVariables(), questDefinition, list, list2, regionQuestLocalizationVariableDefinitionLocalizationKey);
-									if (flag6)
+									if (this.CheckVariables(questDefinition.GetNonPrerequisiteVariables(), questDefinition, list, list2, regionQuestLocalizationVariableDefinitionLocalizationKey))
 									{
-										bool flag7 = this.CheckForcedByCheatCommand(questDefinition);
-										if (flag7)
+										if (this.CheckForcedByCheatCommand(questDefinition))
 										{
 											questVariables = list.ToArray();
 											pendingInstructions = list2.ToArray();
@@ -1117,14 +1125,6 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		this.State.AddTargets("$(Empires)", (from emp in base.Game.Empires
 		where emp is MajorEmpire && !(emp as MajorEmpire).IsEliminated
 		select emp).ToArray<Empire>());
-	}
-
-	private Empire RandomMinorEmpire()
-	{
-		Empire[] array = (from min in base.Game.Empires
-		where min is MinorEmpire
-		select min).ToArray<Empire>();
-		return array[0];
 	}
 
 	private bool RemoveQuestWorldEffect(Empire[] targetEmpires, OrderQuestWorldEffect order)
@@ -1623,8 +1623,7 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		{
 			writer.WriteStartElement("QuestOccurence");
 			writer.WriteAttributeString("QuestDefinitionName", keyValuePair2.Key.ToString());
-			Amplitude.Xml.Serialization.IXmlSerializable value2 = keyValuePair2.Value;
-			value2.WriteXml(writer);
+			((Amplitude.Xml.Serialization.IXmlSerializable)keyValuePair2.Value).WriteXml(writer);
 			writer.WriteEndElement();
 		}
 		writer.WriteEndElement();
@@ -1633,12 +1632,12 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		foreach (KeyValuePair<int, List<QuestTarget>> keyValuePair3 in this.questTargetsLocked)
 		{
 			writer.WriteStartElement("QuestTargetsLockedByEmpire");
-			List<QuestTarget> value3 = keyValuePair3.Value;
-			writer.WriteAttributeString<int>("Count", value3.Count);
-			for (int j = 0; j < value3.Count; j++)
+			List<QuestTarget> value2 = keyValuePair3.Value;
+			writer.WriteAttributeString<int>("Count", value2.Count);
+			for (int j = 0; j < value2.Count; j++)
 			{
 				writer.WriteStartElement("QuestTarget");
-				value3[j].WriteXml(writer);
+				value2[j].WriteXml(writer);
 				writer.WriteEndElement();
 			}
 			writer.WriteEndElement();
@@ -1649,12 +1648,12 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		foreach (KeyValuePair<int, List<QuestVariable>> keyValuePair4 in this.State.GlobalQuestVariables)
 		{
 			writer.WriteStartElement("GlobalVariables");
-			List<QuestVariable> value4 = keyValuePair4.Value;
+			List<QuestVariable> value3 = keyValuePair4.Value;
 			writer.WriteAttributeString<int>("EmpireIndex", keyValuePair4.Key);
-			writer.WriteAttributeString<int>("Count", value4.Count);
-			for (int k = 0; k < value4.Count; k++)
+			writer.WriteAttributeString<int>("Count", value3.Count);
+			for (int k = 0; k < value3.Count; k++)
 			{
-				QuestVariable questVariable = value4[k];
+				QuestVariable questVariable = value3[k];
 				IGameEntity gameEntity = questVariable.Object as IGameEntity;
 				GameEntityGUID guid;
 				if (gameEntity != null)
@@ -1670,9 +1669,9 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 					catch
 					{
 						guid = GameEntityGUID.Zero;
-						Diagnostics.LogError("[Quest] Global variable {0} of empire {1} needs a GUI to be serialized", new object[]
+						Diagnostics.LogWarning("[Quest] Global variable {0} of empire {1} needs a GUI to be serialized", new object[]
 						{
-							value4[k].Name,
+							value3[k].Name,
 							keyValuePair4.Key
 						});
 					}
@@ -1934,31 +1933,6 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 							yield return village;
 						}
 						break;
-					}
-				}
-			}
-		}
-		yield break;
-	}
-
-	private IEnumerable<Village> QueryRandomTargetVillage(StaticString keyword)
-	{
-		List<Region> regions = new List<Region>(base.Game.World.Regions);
-		regions = regions.Randomize(null);
-		foreach (Region region in regions)
-		{
-			if (region.MinorEmpire != null)
-			{
-				BarbarianCouncil barbarianCouncil = region.MinorEmpire.GetAgency<BarbarianCouncil>();
-				if (barbarianCouncil != null && barbarianCouncil.Villages != null)
-				{
-					foreach (Village village in barbarianCouncil.Villages)
-					{
-						if (village.Empire.LocalizedName.ToLower().StartsWith(QuestManager._GlobalVillageName) && this.IsQuestTargetFree(new QuestTargetGameEntity(village), this.State.Empire))
-						{
-							yield return village;
-							break;
-						}
 					}
 				}
 			}
@@ -2862,40 +2836,6 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		return questFilterRegionIsContinent.Check(region);
 	}
 
-	private bool FilterRegionHasRuins(QuestFilterRegionHasRuins questFilterRegionHasRuins, Region region)
-	{
-		if (region == null)
-		{
-			Diagnostics.LogWarning("FilterRegionHasRuins: region is null.");
-			return false;
-		}
-		return questFilterRegionHasRuins.Check(region);
-	}
-
-	private bool FilterPositionValidForDevice(QuestFilterPositionValidForDevice questFilterPositionValidForDevice, WorldPosition position)
-	{
-		if (!position.IsValid)
-		{
-			Diagnostics.LogError("FilterPositionValidForDevice: Invalid world position.");
-			return false;
-		}
-		if (string.IsNullOrEmpty(questFilterPositionValidForDevice.EmpireVarName))
-		{
-			Diagnostics.LogError("FilterPositionValidForDevice: EmpireVarName is null or empty");
-			return false;
-		}
-		Empire empire;
-		if (this.TryGetQuestVariableValueByName<Empire>(questFilterPositionValidForDevice.EmpireVarName, out empire) || this.TryGetTarget<Empire>(questFilterPositionValidForDevice.EmpireVarName, out empire))
-		{
-			return questFilterPositionValidForDevice.Check(position, empire);
-		}
-		Diagnostics.LogError("FilterPositionValidForDevice: EmpireVarName ('{0}') has not been found in quest variables (or this variable doesn't contains any Empire).", new object[]
-		{
-			questFilterPositionValidForDevice.EmpireVarName
-		});
-		return false;
-	}
-
 	private bool FilterRegionIsColonized(QuestFilterRegionIsColonized questFilterRegionIsColonized, Region region)
 	{
 		if (region == null)
@@ -2904,16 +2844,6 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 			return false;
 		}
 		return questFilterRegionIsColonized.Check(region);
-	}
-
-	private bool FilterRegionIsNamed(QuestFilterRegionIsNamed questFilterRegionIsNamed, Region region)
-	{
-		if (region == null)
-		{
-			Diagnostics.LogWarning("FilterRegionIsNamed: region is null.");
-			return false;
-		}
-		return questFilterRegionIsNamed.Check(region);
 	}
 
 	private bool FilterRegionIsOnSameContinent(QuestFilterRegionIsOnSameContinent questFilterRegionIsOnSameContinent, Region regionToCheck)
@@ -3182,8 +3112,8 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		this.Engine.RegisterParametizedSorter<QuestSorterRegionByDistance, Region>(new Engine.ParametizedSorter<QuestSorterRegionByDistance, Region>(this.SortRegionByDistance));
 		this.Engine.RegisterParametizedSorter<QuestSorterPointOfInterestByDistance, PointOfInterest>(new Engine.ParametizedSorter<QuestSorterPointOfInterestByDistance, PointOfInterest>(this.SortPointOfInterestByDistance));
 		this.Engine.RegisterParametizedSorter<QuestSorterVillageByDistance, Village>(new Engine.ParametizedSorter<QuestSorterVillageByDistance, Village>(this.SortVillageByDistance));
-		ISessionService sessionService = Services.GetService<ISessionService>();
-		this.isHosting = sessionService.Session.IsHosting;
+		ISessionService service2 = Services.GetService<ISessionService>();
+		this.isHosting = service2.Session.IsHosting;
 		this.EventService = Services.GetService<IEventService>();
 		if (this.EventService != null)
 		{
@@ -3521,22 +3451,25 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		if (questBehaviour.Quest.QuestDefinition.Triggers != null)
 		{
 			Tags tags = null;
-			switch (questBehaviour.Quest.QuestState)
+			QuestState questState = questBehaviour.Quest.QuestState;
+			if (questState != QuestState.Completed)
 			{
-			case QuestState.Completed:
+				if (questState == QuestState.Failed)
+				{
+					if (questBehaviour.Quest.QuestDefinition.Triggers.OnQuestFailed == null)
+					{
+						return false;
+					}
+					tags = questBehaviour.Quest.QuestDefinition.Triggers.OnQuestFailed.Tags;
+				}
+			}
+			else
+			{
 				if (questBehaviour.Quest.QuestDefinition.Triggers.OnQuestCompleted == null)
 				{
 					return false;
 				}
 				tags = questBehaviour.Quest.QuestDefinition.Triggers.OnQuestCompleted.Tags;
-				break;
-			case QuestState.Failed:
-				if (questBehaviour.Quest.QuestDefinition.Triggers.OnQuestFailed == null)
-				{
-					return false;
-				}
-				tags = questBehaviour.Quest.QuestDefinition.Triggers.OnQuestFailed.Tags;
-				break;
 			}
 			if (tags != null)
 			{
@@ -3653,7 +3586,33 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 			return true;
 		}
 		int num = UnityEngine.Random.Range(0, 101);
-		return questDefinition.ChanceOfTriggering * 100f >= (float)num;
+		if (this.gameSpeedMultiplier == 0f)
+		{
+			for (int i = base.Game.Empires.Length - 1; i >= 0; i--)
+			{
+				LesserEmpire lesserEmpire = base.Game.Empires[i] as LesserEmpire;
+				if (lesserEmpire != null)
+				{
+					this.gameSpeedMultiplier = lesserEmpire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+					break;
+				}
+			}
+			if (this.gameSpeedMultiplier <= 0f)
+			{
+				this.gameSpeedMultiplier = 1f;
+			}
+		}
+		if (GameManager.Preferences.QuestVerboseMode)
+		{
+			Diagnostics.LogWarning("[Quest] {0} CheckRandom {1} / {3} >= {2} ?", new object[]
+			{
+				questDefinition.Name,
+				questDefinition.ChanceOfTriggering * 100f,
+				(float)num,
+				this.gameSpeedMultiplier
+			});
+		}
+		return questDefinition.ChanceOfTriggering * 100f / this.gameSpeedMultiplier >= (float)num;
 	}
 
 	private bool CheckRepetition(QuestDefinition questDefinition)
@@ -3778,20 +3737,6 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		return true;
 	}
 
-	private bool CheckForcedByCheatCommand(QuestDefinition questDefinition)
-	{
-		if (QuestManager._GlobalVillageName == null)
-		{
-			return true;
-		}
-		if (questDefinition.Name.ToString().StartsWith(QuestManager._GlobalVillageName))
-		{
-			QuestManager._GlobalVillageName = null;
-			return true;
-		}
-		return false;
-	}
-
 	private bool CheckVariables(QuestVariableDefinition[] questVariableDefinitions, QuestDefinition questDefinition, List<QuestVariable> vars, List<QuestInstruction> pendingInstructions, Dictionary<Region, List<string>> regionQuestLocalizationVariableDefinitionLocalizationKey)
 	{
 		if (questVariableDefinitions == null)
@@ -3851,50 +3796,56 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 					return false;
 				}
 			}
-			else if (questVariableDefinition.Query != null)
+			else
 			{
-				try
+				if (questVariableDefinition.Query != null)
 				{
-					questVariable.Object = questVariableDefinition.Query.Execute(this.Engine);
-					List<object> list3 = questVariable.Object as List<object>;
-					if (list3 == null || list3.Count == 0)
+					try
 					{
-						if (GameManager.Preferences.QuestVerboseMode)
+						questVariable.Object = questVariableDefinition.Query.Execute(this.Engine);
+						List<object> list3 = questVariable.Object as List<object>;
+						if (list3 == null || list3.Count == 0)
 						{
-							Diagnostics.LogWarning("[Quest] Query returned null or empty list (type: {0}, expression: '{1}') for variable (name: '{2}') in quest {3}.", new object[]
+							if (GameManager.Preferences.QuestVerboseMode)
 							{
-								questVariableDefinition.Query.GetType().ToString(),
-								questVariableDefinition.Query.ToString(),
-								questVariable.Name,
-								questDefinition.Name
-							});
+								Diagnostics.LogWarning("[Quest] Query returned null or empty list (type: {0}, expression: '{1}') for variable (name: '{2}') in quest {3}.", new object[]
+								{
+									questVariableDefinition.Query.GetType().ToString(),
+									questVariableDefinition.Query.ToString(),
+									questVariable.Name,
+									questDefinition.Name
+								});
+							}
+							this.Engine.FlushTemporaryEnumerables();
+							return false;
 						}
+						goto IL_2B5;
+					}
+					catch (Exception ex)
+					{
+						Diagnostics.LogError("Exception caught while executing query (type: {0}, expression: '{1}') for variable (name: '{2}').", new object[]
+						{
+							questVariableDefinition.Query.GetType().ToString(),
+							questVariableDefinition.Query.ToString(),
+							questVariable.Name
+						});
+						Diagnostics.LogError(ex.ToString());
 						this.Engine.FlushTemporaryEnumerables();
 						return false;
 					}
 				}
-				catch (Exception ex)
-				{
-					Diagnostics.LogError("Exception caught while executing query (type: {0}, expression: '{1}') for variable (name: '{2}').", new object[]
-					{
-						questVariableDefinition.Query.GetType().ToString(),
-						questVariableDefinition.Query.ToString(),
-						questVariable.Name
-					});
-					Diagnostics.LogError(ex.ToString());
-					this.Engine.FlushTemporaryEnumerables();
-					return false;
-				}
-			}
-			else
-			{
 				questVariable.Object = new QuestRegisterVariable(questVariableDefinition.Value);
 			}
+			IL_2B5:
 			if (!(questVariableDefinition is QuestLocalizationVariableDefinition))
 			{
 				this.Engine.RegisterTemporaryEnumerable(questVariable.Name, new Engine.Enumerable(this.QueryQuestVariable));
 			}
 			list2.Add(questVariable);
+			if (questVariableDefinition.ToGlobal && this.questManagementService != null)
+			{
+				this.questManagementService.State.AddGlobalVariable(this.State.Empire.Index, questVariable);
+			}
 			if (questVariableDefinition is QuestLocalizationVariableDefinition && questVariable.Object != null && questVariable.Object is IEnumerable<object>)
 			{
 				IEnumerable<object> enumerable = questVariable.Object as IEnumerable<object>;
@@ -4190,6 +4141,106 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 		}
 	}
 
+	StaticString IQuestManagementService.ForceSideQuestVillageTrigger(string sideQuestVillageName)
+	{
+		string x = "I'll try to trigger '" + sideQuestVillageName + "' in the next parley with a minor faction.";
+		QuestManager._GlobalVillageName = sideQuestVillageName;
+		return x;
+	}
+
+	private Empire RandomMinorEmpire()
+	{
+		return (from min in base.Game.Empires
+		where min is MinorEmpire
+		select min).ToArray<Empire>()[0];
+	}
+
+	private IEnumerable<Village> QueryRandomTargetVillage(StaticString keyword)
+	{
+		List<Region> list = new List<Region>(base.Game.World.Regions);
+		list = list.Randomize(null);
+		foreach (Region region in list)
+		{
+			if (region.MinorEmpire != null)
+			{
+				BarbarianCouncil agency = region.MinorEmpire.GetAgency<BarbarianCouncil>();
+				if (agency != null && agency.Villages != null)
+				{
+					foreach (Village village in agency.Villages)
+					{
+						if (village.Empire.LocalizedName.ToLower().StartsWith(QuestManager._GlobalVillageName) && this.IsQuestTargetFree(new QuestTargetGameEntity(village), this.State.Empire))
+						{
+							yield return village;
+							break;
+						}
+					}
+					IEnumerator<Village> enumerator2 = null;
+				}
+			}
+		}
+		List<Region>.Enumerator enumerator = default(List<Region>.Enumerator);
+		yield break;
+		yield break;
+	}
+
+	private bool CheckForcedByCheatCommand(QuestDefinition questDefinition)
+	{
+		if (QuestManager._GlobalVillageName == null)
+		{
+			return true;
+		}
+		if (questDefinition.Name.ToString().StartsWith(QuestManager._GlobalVillageName))
+		{
+			QuestManager._GlobalVillageName = null;
+			return true;
+		}
+		return false;
+	}
+
+	private bool FilterRegionHasRuins(QuestFilterRegionHasRuins questFilterRegionHasRuins, Region region)
+	{
+		if (region == null)
+		{
+			Diagnostics.LogWarning("FilterRegionHasRuins: region is null.");
+			return false;
+		}
+		return questFilterRegionHasRuins.Check(region);
+	}
+
+	private bool FilterPositionValidForDevice(QuestFilterPositionValidForDevice questFilterPositionValidForDevice, WorldPosition position)
+	{
+		if (!position.IsValid)
+		{
+			Diagnostics.LogError("FilterPositionValidForDevice: Invalid world position.");
+			return false;
+		}
+		if (string.IsNullOrEmpty(questFilterPositionValidForDevice.EmpireVarName))
+		{
+			Diagnostics.LogError("FilterPositionValidForDevice: EmpireVarName is null or empty");
+			return false;
+		}
+		Empire empire;
+		if (this.TryGetQuestVariableValueByName<Empire>(questFilterPositionValidForDevice.EmpireVarName, out empire) || this.TryGetTarget<Empire>(questFilterPositionValidForDevice.EmpireVarName, out empire))
+		{
+			return questFilterPositionValidForDevice.Check(position, empire);
+		}
+		Diagnostics.LogError("FilterPositionValidForDevice: EmpireVarName ('{0}') has not been found in quest variables (or this variable doesn't contains any Empire).", new object[]
+		{
+			questFilterPositionValidForDevice.EmpireVarName
+		});
+		return false;
+	}
+
+	private bool FilterRegionIsNamed(QuestFilterRegionIsNamed questFilterRegionIsNamed, Region region)
+	{
+		if (region == null)
+		{
+			Diagnostics.LogWarning("FilterRegionIsNamed: region is null.");
+			return false;
+		}
+		return questFilterRegionIsNamed.Check(region);
+	}
+
 	private IQuestManagementService questManagementService;
 
 	private List<QuestDefinition> questsCheckedThisTurn = new List<QuestDefinition>();
@@ -4197,8 +4248,6 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	private Dictionary<StaticString, KeyValuePair<int, List<SimulationObject>>> questWorldEffects = new Dictionary<StaticString, KeyValuePair<int, List<SimulationObject>>>();
 
 	private IDatabase<SimulationDescriptor> descriptorDatabase;
-
-	public static string _GlobalVillageName;
 
 	private Dictionary<ulong, Droplist> armiesKillRewards = new Dictionary<ulong, Droplist>();
 
@@ -4228,6 +4277,10 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 
 	private bool isHosting;
 
+	private float gameSpeedMultiplier;
+
+	public static string _GlobalVillageName;
+
 	private struct QuestBehaviourDelayedInstructions
 	{
 		public QuestBehaviour QuestBehaviour;
@@ -4236,9 +4289,9 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class UnlockQuestTarget>c__AnonStorey8DC
+	private sealed class UnlockQuestTarget>c__AnonStorey8D8
 	{
-		internal bool <>m__33F(QuestTarget match)
+		internal bool <>m__33D(QuestTarget match)
 		{
 			return match.Equals(this.questTarget);
 		}
@@ -4247,9 +4300,9 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class LockQuestTarget>c__AnonStorey8DD
+	private sealed class LockQuestTarget>c__AnonStorey8D9
 	{
-		internal bool <>m__340(QuestTarget match)
+		internal bool <>m__33E(QuestTarget match)
 		{
 			return match.Equals(this.questTarget);
 		}
@@ -4258,9 +4311,9 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class IsQuestRunningForEmpire>c__AnonStorey8DE
+	private sealed class IsQuestRunningForEmpire>c__AnonStorey8DA
 	{
-		internal bool <>m__341(KeyValuePair<ulong, QuestBehaviour> match)
+		internal bool <>m__33F(KeyValuePair<ulong, QuestBehaviour> match)
 		{
 			return match.Value.Initiator.Index == this.empire.Index && match.Value.Quest != null && match.Value.Quest.QuestDefinition.Name == this.questDefinitionName;
 		}
@@ -4271,19 +4324,19 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class IsDroppableRewaredByQuestsInProgress>c__AnonStorey8DF
+	private sealed class IsDroppableRewaredByQuestsInProgress>c__AnonStorey8DB
 	{
-		internal bool <>m__342(QuestBehaviour questBehaviour)
+		internal bool <>m__340(QuestBehaviour questBehaviour)
 		{
 			return questBehaviour.Initiator.Index == this.empire.Index && questBehaviour.Quest != null && questBehaviour.Quest.QuestRewards != null && questBehaviour.Quest.QuestState == QuestState.InProgress && questBehaviour.Quest.QuestRewards.Any((QuestReward reward) => reward.Droppables != null && reward.Droppables.Any((IDroppable droppableReward) => droppableReward.Equals(this.droppable)));
 		}
 
-		internal bool <>m__36B(QuestReward reward)
+		internal bool <>m__368(QuestReward reward)
 		{
 			return reward.Droppables != null && reward.Droppables.Any((IDroppable droppableReward) => droppableReward.Equals(this.droppable));
 		}
 
-		internal bool <>m__36C(IDroppable droppableReward)
+		internal bool <>m__369(IDroppable droppableReward)
 		{
 			return droppableReward.Equals(this.droppable);
 		}
@@ -4294,14 +4347,14 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class IsALockedQuestTargetGameEntity>c__AnonStorey8E0
+	private sealed class IsALockedQuestTargetGameEntity>c__AnonStorey8DC
 	{
-		internal bool <>m__343(QuestTarget match)
+		internal bool <>m__341(QuestTarget match)
 		{
 			return match.Equals(this.target);
 		}
 
-		internal bool <>m__344(QuestTarget match)
+		internal bool <>m__342(QuestTarget match)
 		{
 			return match.Equals(this.target);
 		}
@@ -4310,33 +4363,33 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class GetGlobalQuestRank>c__AnonStorey8E2
+	private sealed class GetGlobalQuestRank>c__AnonStorey8DE
 	{
 		internal Quest quest;
 	}
 
 	[CompilerGenerated]
-	private sealed class GetGlobalQuestRank>c__AnonStorey8E1
+	private sealed class GetGlobalQuestRank>c__AnonStorey8DD
 	{
-		internal KeyValuePair<int, int> <>m__345(Quest q)
+		internal KeyValuePair<int, int> <>m__343(Quest q)
 		{
 			return new KeyValuePair<int, int>(q.EmpireBits, q.GetStepProgressionValueByName(this.realStepName));
 		}
 
-		internal bool <>m__347(KeyValuePair<int, int> kvp)
+		internal bool <>m__345(KeyValuePair<int, int> kvp)
 		{
-			return kvp.Key == this.<>f__ref$2274.quest.EmpireBits;
+			return kvp.Key == this.<>f__ref$2270.quest.EmpireBits;
 		}
 
 		internal StaticString realStepName;
 
-		internal QuestManager.GetGlobalQuestRank>c__AnonStorey8E2 <>f__ref$2274;
+		internal QuestManager.GetGlobalQuestRank>c__AnonStorey8DE <>f__ref$2270;
 	}
 
 	[CompilerGenerated]
-	private sealed class GetGlobalProgressionString>c__AnonStorey8E3
+	private sealed class GetGlobalProgressionString>c__AnonStorey8DF
 	{
-		internal bool <>m__348(Empire empire)
+		internal bool <>m__346(Empire empire)
 		{
 			return empire.Bits == this.quest.EmpireBits;
 		}
@@ -4345,9 +4398,9 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class ComputeRewards>c__AnonStorey8E4
+	private sealed class ComputeRewards>c__AnonStorey8E0
 	{
-		internal bool <>m__34B(Empire emp)
+		internal bool <>m__349(Empire emp)
 		{
 			return emp.Bits == this.quest.EmpireBits;
 		}
@@ -4356,26 +4409,26 @@ public class QuestManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSeria
 	}
 
 	[CompilerGenerated]
-	private sealed class AddStepRewards>c__AnonStorey8E6
+	private sealed class AddStepRewards>c__AnonStorey8E2
 	{
 		internal Quest quest;
 	}
 
 	[CompilerGenerated]
-	private sealed class AddStepRewards>c__AnonStorey8E5
+	private sealed class AddStepRewards>c__AnonStorey8E1
 	{
-		internal bool <>m__34C(QuestVariable var)
+		internal bool <>m__34A(QuestVariable var)
 		{
 			return var.Name == this.questRewardDefinition.DropVar;
 		}
 
-		internal bool <>m__34D(Empire emp)
+		internal bool <>m__34B(Empire emp)
 		{
-			return emp.Bits == this.<>f__ref$2278.quest.EmpireBits;
+			return emp.Bits == this.<>f__ref$2274.quest.EmpireBits;
 		}
 
 		internal QuestRewardDefinition questRewardDefinition;
 
-		internal QuestManager.AddStepRewards>c__AnonStorey8E6 <>f__ref$2278;
+		internal QuestManager.AddStepRewards>c__AnonStorey8E2 <>f__ref$2274;
 	}
 }

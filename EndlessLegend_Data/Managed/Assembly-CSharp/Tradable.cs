@@ -161,8 +161,7 @@ public abstract class Tradable : IXmlSerializable, IBinarySerializable, ITradabl
 		num *= tradableCategoryDefinition.SensitivityToTendency;
 		num2 *= tradableCategoryDefinition.SensitivityToStockFactor;
 		value *= tradableCategoryDefinition.ValueModifier;
-		float num4 = tradableCategoryDefinition.ReferencePrice * (1f + num3);
-		num4 += value * (1f + num3);
+		float num4 = tradableCategoryDefinition.ReferencePrice * (1f + num3) + value * (1f + num3);
 		float val = num4 * (1f + num + num2);
 		float val2 = num4 * Tradable.MinimumPriceMultiplier;
 		float val3 = num4 * Tradable.MaximumPriceMultiplier;
@@ -174,6 +173,14 @@ public abstract class Tradable : IXmlSerializable, IBinarySerializable, ITradabl
 		float num = Tradable.GetUnitPrice(this.TradableCategoryDefinition, this.Value);
 		num *= this.Quantity;
 		num = Tradable.ApplySalesTaxes(num, transactionType, empire);
+		if (this is TradableUnit && transactionType == TradableTransactionType.Buyout && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier) > 0f)
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier);
+		}
+		else if (ELCPUtilities.UseELCPStockpileRulseset && this is TradableBooster && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceStockpileCostMultiplier) > 0f)
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.MarketplaceStockpileCostMultiplier);
+		}
 		return this.GetPriceWithSeasonEffectModifier(num, empire);
 	}
 
@@ -182,14 +189,30 @@ public abstract class Tradable : IXmlSerializable, IBinarySerializable, ITradabl
 		float num = Tradable.GetUnitPrice(this.TradableCategoryDefinition, this.Value);
 		num *= quantity;
 		num = Tradable.ApplySalesTaxes(num, transactionType, empire);
+		if (this is TradableUnit && transactionType == TradableTransactionType.Buyout && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier) > 0f)
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier);
+		}
+		else if (ELCPUtilities.UseELCPStockpileRulseset && this is TradableBooster && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceStockpileCostMultiplier) > 0f)
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.MarketplaceStockpileCostMultiplier);
+		}
 		return this.GetPriceWithSeasonEffectModifier(num, empire);
 	}
 
 	public float GetReferencePriceWithSalesTaxes(TradableTransactionType transactionType, global::Empire empire)
 	{
-		float price = Tradable.GetReferencePrice(this.TradableCategoryDefinition, this.Value);
-		price = Tradable.ApplySalesTaxes(price, transactionType, empire);
-		return this.GetPriceWithSeasonEffectModifier(price, empire);
+		float num = Tradable.GetReferencePrice(this.TradableCategoryDefinition, this.Value);
+		num = Tradable.ApplySalesTaxes(num, transactionType, empire);
+		if (this is TradableUnit && transactionType == TradableTransactionType.Buyout && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier) > 0f)
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.MarketplaceMercCostMultiplier);
+		}
+		else if (ELCPUtilities.UseELCPStockpileRulseset && this is TradableBooster && empire is MajorEmpire && empire.GetPropertyValue(SimulationProperties.MarketplaceStockpileCostMultiplier) > 0f)
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.MarketplaceStockpileCostMultiplier);
+		}
+		return this.GetPriceWithSeasonEffectModifier(num, empire);
 	}
 
 	public virtual bool IsTradableValid(global::Empire empire)
@@ -209,18 +232,18 @@ public abstract class Tradable : IXmlSerializable, IBinarySerializable, ITradabl
 		}
 		if (this is TradableUnit || this is TradableHero)
 		{
-			if (empire.SimulationObject.Tags.Contains("SeasonEffectMarketplace1"))
+			if (empire.SimulationObject.Tags.Contains("SeasonEffectMarketplace1MarketPrice"))
 			{
 				price *= empire.GetPropertyValue(SimulationProperties.MarketplaceUnitCostMultiplier);
 			}
 		}
 		else if (this is TradableResource)
 		{
-			if ((this as TradableResource).ResourceName.Contains("Luxury"))
+			if ((this as TradableResource).ResourceName.ToString().Contains("Luxury"))
 			{
 				price *= empire.GetPropertyValue(SimulationProperties.MarketplaceLuxuryCostMultiplier);
 			}
-			else if ((this as TradableResource).ResourceName.Contains("Strategic"))
+			else if ((this as TradableResource).ResourceName.ToString().Contains("Strategic"))
 			{
 				price *= empire.GetPropertyValue(SimulationProperties.MarketplaceStrategicCostMultiplier);
 			}

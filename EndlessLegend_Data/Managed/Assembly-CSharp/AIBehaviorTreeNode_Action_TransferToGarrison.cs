@@ -20,8 +20,7 @@ public class AIBehaviorTreeNode_Action_TransferToGarrison : AIBehaviorTreeNode_A
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -39,6 +38,20 @@ public class AIBehaviorTreeNode_Action_TransferToGarrison : AIBehaviorTreeNode_A
 				return State.Failure;
 			}
 			return State.Success;
+		}
+		else if (this.heroTicket != null)
+		{
+			if (!this.heroTicket.Raised)
+			{
+				return State.Running;
+			}
+			if (this.heroTicket.PostOrderResponse != PostOrderResponse.Processed)
+			{
+				aiBehaviorTree.ErrorCode = 36;
+				return State.Failure;
+			}
+			this.heroTicket = null;
+			return State.Running;
 		}
 		else
 		{
@@ -58,10 +71,15 @@ public class AIBehaviorTreeNode_Action_TransferToGarrison : AIBehaviorTreeNode_A
 				return State.Failure;
 			}
 			List<GameEntityGUID> list = new List<GameEntityGUID>();
-			foreach (Unit unit in army.Units)
+			foreach (Unit unit in army.StandardUnits)
 			{
 				list.Add(unit.GUID);
 			}
+			if (list.Count == 0)
+			{
+				return State.Success;
+			}
+			bool flag2 = army.Hero != null;
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
 			IWorldPositionningService service2 = service.Game.Services.GetService<IWorldPositionningService>();
@@ -85,6 +103,15 @@ public class AIBehaviorTreeNode_Action_TransferToGarrison : AIBehaviorTreeNode_A
 					}
 					if (destinationGuid.IsValid)
 					{
+						if (flag2)
+						{
+							if (!District.IsACityTile(district) || city.Hero != null)
+							{
+								this.UnassignHero(army);
+								return State.Running;
+							}
+							list.Add(army.Hero.GUID);
+						}
 						OrderTransferUnits order = new OrderTransferUnits(army.Empire.Index, army.GUID, destinationGuid, list.ToArray(), false);
 						aiBehaviorTree.AICommander.Empire.PlayerControllers.AI.PostOrder(order, out this.currentTicket, null);
 						return State.Running;
@@ -94,6 +121,15 @@ public class AIBehaviorTreeNode_Action_TransferToGarrison : AIBehaviorTreeNode_A
 			Army armyAtPosition = service2.GetArmyAtPosition(worldPosition);
 			if (armyAtPosition != null)
 			{
+				if (flag2)
+				{
+					if (armyAtPosition.Hero != null)
+					{
+						this.UnassignHero(army);
+						return State.Running;
+					}
+					list.Add(army.Hero.GUID);
+				}
 				OrderTransferUnits order2 = new OrderTransferUnits(army.Empire.Index, army.GUID, armyAtPosition.GUID, list.ToArray(), false);
 				aiBehaviorTree.AICommander.Empire.PlayerControllers.AI.PostOrder(order2, out this.currentTicket, null);
 				return State.Running;
@@ -110,5 +146,17 @@ public class AIBehaviorTreeNode_Action_TransferToGarrison : AIBehaviorTreeNode_A
 		}
 	}
 
+	private void UnassignHero(Army army)
+	{
+		if (army.Hero != null)
+		{
+			OrderChangeHeroAssignment orderChangeHeroAssignment = new OrderChangeHeroAssignment(army.Empire.Index, army.Hero.GUID, GameEntityGUID.Zero);
+			orderChangeHeroAssignment.IgnoreCooldown = true;
+			army.Empire.PlayerControllers.AI.PostOrder(orderChangeHeroAssignment, out this.heroTicket, null);
+		}
+	}
+
 	private Ticket currentTicket;
+
+	private Ticket heroTicket;
 }

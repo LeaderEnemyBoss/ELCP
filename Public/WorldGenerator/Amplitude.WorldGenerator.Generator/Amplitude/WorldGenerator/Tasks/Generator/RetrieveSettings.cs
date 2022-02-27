@@ -39,6 +39,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			{
 				xmlSerializer = new XmlSerializer(typeof(Map));
 				string path = base.Context.Configuration.Scenario.DirectoryName + "\\" + base.Context.Configuration.Scenario.TmxMapName;
+				Tileset.TmxPath = base.Context.Configuration.Scenario.DirectoryName;
 				if (!File.Exists(path))
 				{
 					base.ReportTmx("?InvalidTmxPath");

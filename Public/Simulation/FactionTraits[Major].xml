@@ -109,19 +109,19 @@
     <SubTrait Name="FactionTraitPillarActivated"/>
   </FactionTrait>
 
-  <!--Arcana of Agility-->
-  <FactionTrait Name="FactionTraitTechnologyDefinitionRageWizards8"              SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="6">
-    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
-    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionRageWizards8"/>
-    <SimulationDescriptorReference Name="FactionTraitRageWizards8"/>
+  <!--Arcana of Renewal-->
+  <FactionTrait Name="FactionTraitRageWizards11"               SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="6">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityBrokenLords,!AffinityMimics</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionRageWizards11"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards11"/>
 
     <SubTrait Name="FactionTraitPillarActivated"/>
   </FactionTrait>
 
-  <FactionTrait Name="FactionTraitTechnologyDefinitionRageWizards8Custom"        SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
-    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
-    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionRageWizards8"/>
-    <SimulationDescriptorReference Name="FactionTraitRageWizards8"/>
+  <FactionTrait Name="FactionTraitRageWizards11Custom"         SubCategory="StartingTechnologyTrait" Family="StartingTechnology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityBrokenLords,!AffinityMimics</Prerequisites>
+    <Command Name="UnlockTechnology" Arguments="TechnologyDefinitionRageWizards11"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards11"/>
 
     <SubTrait Name="FactionTraitPillarActivated"/>
   </FactionTrait>
@@ -581,19 +581,19 @@
     <SubTrait Name="FactionTraitPillarActivated"/>
   </FactionTrait>
 
-  <!-- Arcana of Renewal -->
-  <FactionTrait Name="FactionTraitRageWizards11"               SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="6">
-    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityBrokenLords,!AffinityMimics</Prerequisites>
-    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards11"/>
-    <SimulationDescriptorReference Name="FactionTraitRageWizards11"/>
+  <!-- Arcana of Agility -->
+  <FactionTrait Name="FactionTraitTechnologyDefinitionRageWizards8"              SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="6">
+    <Prerequisites>FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+	<FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards8"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards8"/>
 
     <SubTrait Name="FactionTraitPillarActivated"/>
   </FactionTrait>
 
-  <FactionTrait Name="FactionTraitRageWizards11Custom"         SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
-    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityBrokenLords,!AffinityMimics</Prerequisites>
-    <FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards11"/>
-    <SimulationDescriptorReference Name="FactionTraitRageWizards11"/>
+  <FactionTrait Name="FactionTraitTechnologyDefinitionRageWizards8Custom"        SubCategory="FactionTechnologyTrait" Family="Technology" Custom="true" Cost="10">
+    <Prerequisites>!FactionTraitRageWizardsArcanaUse,!AffinityMimics</Prerequisites>
+	<FactionTraitTooltipOverride Type="Technology" OverrideName="TechnologyDefinitionRageWizards8"/>
+    <SimulationDescriptorReference Name="FactionTraitRageWizards8"/>
 
     <SubTrait Name="FactionTraitPillarActivated"/>
   </FactionTrait>

@@ -63,6 +63,10 @@ public class GuiDiplomaticTerm : IComparable, IComparable<GuiDiplomaticTerm>
 						{
 							text = AgeLocalizer.Instance.LocalizeString("%MainCitySymbol") + text;
 						}
+						if (diplomaticTermCityExchange.Definition.Name == DiplomaticTermCityExchange.MimicsCityDeal)
+						{
+							text = AgeLocalizer.Instance.LocalizeString("%FactionIntegrationTitle") + ": " + text;
+						}
 						return text;
 					}
 				}
@@ -435,63 +439,71 @@ public class GuiDiplomaticTerm : IComparable, IComparable<GuiDiplomaticTerm>
 			ageTooltip.Class = "Simple";
 			ageTooltip.Content = string.Empty;
 			ageTooltip.ClientData = null;
+			return;
 		}
-		else if (this.Type == GuiDiplomaticTerm.TermType.Strategic || this.Type == GuiDiplomaticTerm.TermType.Luxury)
+		if (this.Type == GuiDiplomaticTerm.TermType.City && this.Term.Definition.Name == DiplomaticTermCityExchange.MimicsCityDeal)
+		{
+			string text = this.Term.EmpireWhichProvides.Faction.Affinity.Name.ToString();
+			text = text.Replace("Affinity", "");
+			if (text == "Mezari")
+			{
+				text = "Vaulters";
+			}
+			ageTooltip.Class = "Simple";
+			ageTooltip.Content = "#FFB43F#" + AgeLocalizer.Instance.LocalizeString("%" + text + "IntegrationDescriptor1Title") + "#REVERT#\n\n" + AgeLocalizer.Instance.LocalizeString("%" + text + "IntegrationDescriptor1EffectOverride");
+			ageTooltip.ClientData = null;
+			return;
+		}
+		if (this.Type == GuiDiplomaticTerm.TermType.Strategic || this.Type == GuiDiplomaticTerm.TermType.Luxury)
 		{
 			DiplomaticTermResourceExchange diplomaticTermResourceExchange = this.Term as DiplomaticTermResourceExchange;
-			if (diplomaticTermResourceExchange != null)
+			ResourceDefinition resourceDefinition;
+			if (diplomaticTermResourceExchange != null && Databases.GetDatabase<ResourceDefinition>(false).TryGetValue(diplomaticTermResourceExchange.ResourceName, out resourceDefinition))
 			{
-				IDatabase<ResourceDefinition> database = Databases.GetDatabase<ResourceDefinition>(false);
-				ResourceDefinition resourceDefinition;
-				if (database.TryGetValue(diplomaticTermResourceExchange.ResourceName, out resourceDefinition))
+				IPlayerControllerRepositoryService service = Services.GetService<IGameService>().Game.Services.GetService<IPlayerControllerRepositoryService>();
+				Diagnostics.Assert(service != null);
+				ResourceTooltipData resourceTooltipData = new ResourceTooltipData(resourceDefinition, service.ActivePlayerController.Empire as global::Empire);
+				if (this.Type == GuiDiplomaticTerm.TermType.Luxury)
 				{
-					IGameService service = Services.GetService<IGameService>();
-					IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-					Diagnostics.Assert(service2 != null);
-					ResourceTooltipData resourceTooltipData = new ResourceTooltipData(resourceDefinition, service2.ActivePlayerController.Empire as global::Empire);
-					if (this.Type == GuiDiplomaticTerm.TermType.Luxury)
+					IDatabase<BoosterDefinition> database = Databases.GetDatabase<BoosterDefinition>(false);
+					if (database != null)
 					{
-						IDatabase<BoosterDefinition> database2 = Databases.GetDatabase<BoosterDefinition>(false);
-						if (database2 != null)
-						{
-							resourceTooltipData.Constructible = database2.GetValue("Booster" + resourceDefinition.Name);
-						}
+						resourceTooltipData.Constructible = database.GetValue("Booster" + resourceDefinition.Name);
 					}
-					ageTooltip.Class = resourceTooltipData.TooltipClass;
-					ageTooltip.Content = resourceDefinition.Name;
-					ageTooltip.ClientData = resourceTooltipData;
 				}
+				ageTooltip.Class = resourceTooltipData.TooltipClass;
+				ageTooltip.Content = resourceDefinition.Name;
+				ageTooltip.ClientData = resourceTooltipData;
+				return;
 			}
 		}
 		else if (this.Type == GuiDiplomaticTerm.TermType.Booster)
 		{
 			DiplomaticTermBoosterExchange diplomaticTermBoosterExchange = this.Term as DiplomaticTermBoosterExchange;
-			if (diplomaticTermBoosterExchange != null)
+			BoosterDefinition boosterDefinition;
+			if (diplomaticTermBoosterExchange != null && Databases.GetDatabase<BoosterDefinition>(false).TryGetValue(diplomaticTermBoosterExchange.BoosterDefinitionName, out boosterDefinition))
 			{
-				IDatabase<BoosterDefinition> database3 = Databases.GetDatabase<BoosterDefinition>(false);
-				BoosterDefinition boosterDefinition;
-				if (database3.TryGetValue(diplomaticTermBoosterExchange.BoosterDefinitionName, out boosterDefinition))
-				{
-					GuiStackedBooster guiStackedBooster = new GuiStackedBooster(boosterDefinition);
-					ageTooltip.Class = guiStackedBooster.BoosterDefinition.TooltipClass;
-					ageTooltip.Content = guiStackedBooster.BoosterDefinition.Name;
-					ageTooltip.ClientData = guiStackedBooster;
-				}
+				GuiStackedBooster guiStackedBooster = new GuiStackedBooster(boosterDefinition);
+				ageTooltip.Class = guiStackedBooster.BoosterDefinition.TooltipClass;
+				ageTooltip.Content = guiStackedBooster.BoosterDefinition.Name;
+				ageTooltip.ClientData = guiStackedBooster;
+				return;
 			}
-		}
-		else if (this.Type == GuiDiplomaticTerm.TermType.Technology)
-		{
-			DiplomaticTermTechnologyExchange diplomaticTermTechnologyExchange = this.Term as DiplomaticTermTechnologyExchange;
-			DepartmentOfScience.BuildTechnologyTooltip(diplomaticTermTechnologyExchange.TechnologyDefinition, this.Term.EmpireWhichProvides, ageTooltip, MultipleConstructibleTooltipData.TechnologyState.Normal);
-		}
-		else if (this.Type == GuiDiplomaticTerm.TermType.Orb)
-		{
-			ageTooltip.Class = "OrbResource";
-			ageTooltip.Content = "Orb";
-			ageTooltip.ClientData = null;
 		}
 		else
 		{
+			if (this.Type == GuiDiplomaticTerm.TermType.Technology)
+			{
+				DepartmentOfScience.BuildTechnologyTooltip((this.Term as DiplomaticTermTechnologyExchange).TechnologyDefinition, this.Term.EmpireWhichProvides, ageTooltip, MultipleConstructibleTooltipData.TechnologyState.Normal);
+				return;
+			}
+			if (this.Type == GuiDiplomaticTerm.TermType.Orb)
+			{
+				ageTooltip.Class = "OrbResource";
+				ageTooltip.Content = "Orb";
+				ageTooltip.ClientData = null;
+				return;
+			}
 			ageTooltip.Class = "Simple";
 			ageTooltip.Content = this.Description;
 			ageTooltip.ClientData = this;

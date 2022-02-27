@@ -543,14 +543,14 @@
     <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="0" MaximumValue="0.1"/>
     <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="10" MaximumValue="Infinity"/> <!-- positive trust -->
   </AttitudeFeedback>
-  <AttitudeFeedback Name="EliminatedAllyFeedbackFeedbackNeutral" Category="EliminatedAlly" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+  <AttitudeFeedback Name="EliminatedAllyFeedbackNeutral" Category="EliminatedAlly" MaximumOccurrenceCount="1" ProbabilityBonus="80">
     <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
     <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
     <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="-Infinity" MaximumValue="-20"/>
     <TrendRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="0" MaximumValue="0.1"/>
     <CategoryValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="-10" MaximumValue="10"/> <!-- neutral trust -->
   </AttitudeFeedback>
-  <AttitudeFeedback Name="EliminatedAllyFeedbackFeedbackNegative" Category="EliminatedAlly" MaximumOccurrenceCount="1" ProbabilityBonus="80">
+  <AttitudeFeedback Name="EliminatedAllyFeedbackNegative" Category="EliminatedAlly" MaximumOccurrenceCount="1" ProbabilityBonus="80">
     <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateWar</DiplomaticRelationStatePrerequisite>
     <DiplomaticRelationStatePrerequisite Flags="Prerequisite,Discard" Inverted="true">DiplomaticRelationStateTruce</DiplomaticRelationStatePrerequisite>
     <ValueRangeTrigger ModifierName="AttitudeScoreEliminatedAlly" MinimumValue="-Infinity" MaximumValue="-10"/>

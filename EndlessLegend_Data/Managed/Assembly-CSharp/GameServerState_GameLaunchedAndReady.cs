@@ -96,11 +96,10 @@ public class GameServerState_GameLaunchedAndReady : GameServerState
 		do
 		{
 			synced = true;
-			Steamworks.SteamID[] members = base.GameServer.Session.GetLobbyMembers();
-			for (int index = 0; index < members.Length; index++)
+			Steamworks.SteamID[] lobbyMembers = base.GameServer.Session.GetLobbyMembers();
+			for (int i = 0; i < lobbyMembers.Length; i++)
 			{
-				bool memberIsReady = base.GameServer.Session.GetLobbyMemberData<bool>(members[index], "Ready", false);
-				if (memberIsReady && !base.GameServer.GameClientConnections.Keys.Contains(members[index]))
+				if (base.GameServer.Session.GetLobbyMemberData<bool>(lobbyMembers[i], "Ready", false) && !base.GameServer.GameClientConnections.Keys.Contains(lobbyMembers[i]))
 				{
 					synced = false;
 					break;

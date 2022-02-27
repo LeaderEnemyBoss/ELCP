@@ -539,14 +539,12 @@ public class OvergrownCityPanel : GuiCollapsingPanel
 	private bool CanRazeCity()
 	{
 		bool flag = this.OvergrownCityRazeCooldownReached();
-		DepartmentOfPlanificationAndDevelopment agency = this.City.Empire.GetAgency<DepartmentOfPlanificationAndDevelopment>();
-		bool flag2 = agency.HasIntegratedFaction(this.City.LastNonInfectedOwner.Faction);
-		bool flag3 = this.City.LastNonInfectedOwner.Faction.Affinity.Name == this.City.Empire.Faction.Affinity.Name;
-		if (flag3)
+		bool flag2 = this.City.Empire.GetAgency<DepartmentOfPlanificationAndDevelopment>().HasIntegratedFaction(this.City.LastNonInfectedOwner.Faction);
+		if (this.City.LastNonInfectedOwner.Faction.Affinity.Name == this.City.Empire.Faction.Affinity.Name)
 		{
 			flag2 = true;
 		}
-		return flag2 && this.City.BesiegingEmpire == null && flag;
+		return flag2 && this.City.BesiegingEmpire == null && flag && !this.IsOtherEmpire;
 	}
 
 	private Construction GetCurrentConstructionRaze()

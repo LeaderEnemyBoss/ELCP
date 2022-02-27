@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Amplitude.Interop;
 using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
+using Amplitude.Unity.Runtime;
 using Amplitude.Unity.Steam;
 using UnityEngine;
 
@@ -765,6 +767,34 @@ namespace Amplitude.Unity.Session
 		{
 			Diagnostics.Log("[Session] Entered the lobby: " + this.SteamMatchMakingService.SteamMatchMaking.GetLobbyData(this.SteamIDLobby, "name"));
 			Steamworks.SteamMatchMaking.EChatRoomEnterResponse echatRoomEnterResponse = (Steamworks.SteamMatchMaking.EChatRoomEnterResponse)e.Message.m_EChatRoomEnterResponse;
+			if (!Amplitude.Unity.Framework.Application.Preferences.EnableMultiplayer)
+			{
+				this.OnError(Session.ErrorLevel.Info, "Modding Tools enabled.", (int)e.Message.m_EChatRoomEnterResponse);
+				this.Close();
+				return;
+			}
+			string text = this.SteamMatchMakingService.SteamMatchMaking.GetLobbyData(this.SteamIDLobby, "runtimehash");
+			if (string.IsNullOrEmpty(text))
+			{
+				text = "Invalid";
+			}
+			IRuntimeService service = Services.GetService<IRuntimeService>();
+			if (!this.hosting && (service == null || service.Runtime == null || text != service.Runtime.HashKey))
+			{
+				string text2 = "Invalid";
+				if (service != null && service.Runtime != null && !string.IsNullOrEmpty(service.Runtime.HashKey))
+				{
+					text2 = service.Runtime.HashKey;
+				}
+				Diagnostics.LogWarning("ELCP: Hash mismatch: Me: {0}; LobbyDescriptor: {1}", new object[]
+				{
+					text2,
+					text
+				});
+				this.OnError(Session.ErrorLevel.Info, "%JoinGameCheckSumMismatchDescription", (int)e.Message.m_EChatRoomEnterResponse);
+				this.Close();
+				return;
+			}
 			if (echatRoomEnterResponse == Steamworks.SteamMatchMaking.EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
 			{
 				this.OnSessionChange(new SessionChangeEventArgs(SessionChangeAction.Opened, this));
@@ -773,8 +803,7 @@ namespace Amplitude.Unity.Session
 				{
 					string empty = string.Empty;
 					string empty2 = string.Empty;
-					bool lobbyDataByIndex = this.SteamMatchMakingService.SteamMatchMaking.GetLobbyDataByIndex(this.SteamIDLobby, i, out empty, out empty2);
-					if (lobbyDataByIndex)
+					if (this.SteamMatchMakingService.SteamMatchMaking.GetLobbyDataByIndex(this.SteamIDLobby, i, out empty, out empty2))
 					{
 						this.SetLobbyData(empty, empty2, true);
 					}
@@ -881,13 +910,23 @@ namespace Amplitude.Unity.Session
 		private void ISteamClientService_ClientSteamServersDisconnected(object sender, SteamServersDisconnectedEventArgs e)
 		{
 			this.OnError(Session.ErrorLevel.Warning, "%SessionSteamServersDisconnected", (int)e.Message.m_eResult);
-			this.Close();
+			IGameService service = Services.GetService<IGameService>();
+			if (service == null || service.Game == null)
+			{
+				this.Close();
+				return;
+			}
+			this.ELCPSendServerMessage(4, "%SessionSteamServersDisconnected");
 		}
 
 		private void ISteamClientService_ClientSteamServerConnectFailure(object sender, SteamServerConnectFailureEventArgs e)
 		{
 			this.OnError(Session.ErrorLevel.Error, "%SessionSteamServerConnectFailure", (int)e.Message.m_eResult);
-			this.Close();
+			IGameService service = Services.GetService<IGameService>();
+			if (service == null || service.Game == null)
+			{
+				this.Close();
+			}
 		}
 
 		private void ISteamClientService_ClientP2PSessionConnectFail(object sender, P2PSessionConnectFailEventArgs e)
@@ -913,6 +952,10 @@ namespace Amplitude.Unity.Session
 				});
 				Session.IgnoreP2PSessionConnectFail = null;
 			}
+		}
+
+		protected virtual void ELCPSendServerMessage(int type, string command)
+		{
 		}
 
 		protected Dictionary<StaticString, object> lobbyData = new Dictionary<StaticString, object>();

@@ -258,18 +258,6 @@ public class HeroPool : GameAncillary, IXmlSerializable, IService, IHeroManageme
 		base.Releasing();
 	}
 
-	private bool IsAnyAffinityMimicsPlaying()
-	{
-		foreach (Empire empire in base.Game.Empires)
-		{
-			if (empire != null && empire is MajorEmpire && empire.Faction.Affinity.Name == "AffinityMimics")
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private bool GenerateHeroUnitFromHeroDescriptor(GameEntityGUID gameEntityGUID, HeroPool.HeroDescriptor? heroDescriptor, out Unit unit)
 	{
 		unit = DepartmentOfDefense.CreateUnitByDesign(gameEntityGUID, heroDescriptor.Value.UnitProfile);
@@ -296,47 +284,54 @@ public class HeroPool : GameAncillary, IXmlSerializable, IService, IHeroManageme
 		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
 		foreach (UnitProfile unitProfile in database)
 		{
-			if (unitProfile.IsHero)
+			if (unitProfile.IsHero && unitProfile.Tags.Contains(HeroPool.Poolable) && (!unitProfile.Tags.Contains("DiscardAffinityMimics") || !this.IsAnyAffinityMimicsPlaying()))
 			{
-				if (unitProfile.Tags.Contains(HeroPool.Poolable))
+				if (service != null)
 				{
-					if (!unitProfile.Tags.Contains("DiscardAffinityMimics") || !this.IsAnyAffinityMimicsPlaying())
+					bool flag;
+					if (service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.UnitDesign, unitProfile.Name, out flag) && !flag)
 					{
-						if (service != null)
+						continue;
+					}
+					bool flag2 = true;
+					foreach (Prerequisite prerequisite in unitProfile.Prerequisites)
+					{
+						if (prerequisite is DownloadableContentPrerequisite)
 						{
-							bool flag;
-							if (service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.UnitDesign, unitProfile.Name, out flag) && !flag)
+							DownloadableContentPrerequisite downloadableContentPrerequisite = prerequisite as DownloadableContentPrerequisite;
+							if (!service.IsShared(downloadableContentPrerequisite.DownloadableContentName))
 							{
-								continue;
-							}
-							bool flag2 = true;
-							foreach (Prerequisite prerequisite in unitProfile.Prerequisites)
-							{
-								if (prerequisite is DownloadableContentPrerequisite)
-								{
-									DownloadableContentPrerequisite downloadableContentPrerequisite = prerequisite as DownloadableContentPrerequisite;
-									if (!service.IsShared(downloadableContentPrerequisite.DownloadableContentName))
-									{
-										flag2 = false;
-										break;
-									}
-								}
-							}
-							if (!flag2)
-							{
-								continue;
+								flag2 = false;
+								break;
 							}
 						}
-						HeroPool.HeroDescriptor value = new HeroPool.HeroDescriptor(unitProfile);
-						this.pool.Add(new HeroPool.HeroDescriptor?(value));
+					}
+					if (!flag2)
+					{
+						continue;
 					}
 				}
+				HeroPool.HeroDescriptor value = new HeroPool.HeroDescriptor(unitProfile);
+				this.pool.Add(new HeroPool.HeroDescriptor?(value));
 			}
 		}
 		this.pool = this.pool.Randomize(null);
 		this.TurnWhenLastRefilled = base.Game.Turn;
-		this.GenerationNumber++;
+		int i = this.GenerationNumber;
+		this.GenerationNumber = i + 1;
 		return this.pool.Count;
+	}
+
+	private bool IsAnyAffinityMimicsPlaying()
+	{
+		foreach (Empire empire in base.Game.Empires)
+		{
+			if (empire != null && empire is MajorEmpire && empire.Faction.Affinity.Name == "AffinityMimics")
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static StaticString Poolable = new StaticString("Pool");
@@ -357,21 +352,21 @@ public class HeroPool : GameAncillary, IXmlSerializable, IService, IHeroManageme
 	}
 
 	[CompilerGenerated]
-	private sealed class TryAllocateSkillPoints>c__AnonStorey8A1
+	private sealed class TryAllocateSkillPoints>c__AnonStorey89D
 	{
 		internal Unit unit;
 	}
 
 	[CompilerGenerated]
-	private sealed class TryAllocateSkillPoints>c__AnonStorey8A0
+	private sealed class TryAllocateSkillPoints>c__AnonStorey89C
 	{
-		internal bool <>m__2C9(UnitSkill iterator)
+		internal bool <>m__2C8(UnitSkill iterator)
 		{
-			return iterator.SubCategory == this.subcategory && DepartmentOfEducation.IsUnitSkillUnlockable(this.<>f__ref$2209.unit, iterator);
+			return iterator.SubCategory == this.subcategory && DepartmentOfEducation.IsUnitSkillUnlockable(this.<>f__ref$2205.unit, iterator);
 		}
 
 		internal StaticString subcategory;
 
-		internal HeroPool.TryAllocateSkillPoints>c__AnonStorey8A1 <>f__ref$2209;
+		internal HeroPool.TryAllocateSkillPoints>c__AnonStorey89D <>f__ref$2205;
 	}
 }

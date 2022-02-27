@@ -28,7 +28,7 @@ public class CatspawTask_DenySettlerAttack : CatspawTask
 
 	public override bool CheckValidity()
 	{
-		if (this.settlerArmy.SimulationObject == null || this.settlerArmy.StandardUnits.Count == 0)
+		if (this.settlerArmy.SimulationObject == null || this.settlerArmy.StandardUnits.Count == 0 || !this.settlerArmy.IsSettler)
 		{
 			return false;
 		}
@@ -36,7 +36,7 @@ public class CatspawTask_DenySettlerAttack : CatspawTask
 		{
 			int regionIndex = (int)this.worldPositionningService.GetRegionIndex(this.settlerArmy.WorldPosition);
 			int regionIndex2 = (int)this.worldPositionningService.GetRegionIndex(base.AssignedArmy.Garrison.WorldPosition);
-			if (regionIndex != regionIndex2)
+			if (regionIndex != regionIndex2 && (float)this.worldPositionningService.GetDistance(this.settlerArmy.WorldPosition, base.AssignedArmy.Garrison.WorldPosition) > 2f * base.AssignedArmy.Garrison.GetPropertyValue(SimulationProperties.MaximumMovement))
 			{
 				return false;
 			}
@@ -56,7 +56,7 @@ public class CatspawTask_DenySettlerAttack : CatspawTask
 		}
 		int regionIndex = (int)this.worldPositionningService.GetRegionIndex(this.settlerArmy.WorldPosition);
 		int regionIndex2 = (int)this.worldPositionningService.GetRegionIndex(minorArmy.WorldPosition);
-		return regionIndex == regionIndex2;
+		return regionIndex == regionIndex2 || (float)this.worldPositionningService.GetDistance(this.settlerArmy.WorldPosition, minorArmy.WorldPosition) <= 2f * minorArmy.GetPropertyValue(SimulationProperties.MaximumMovement);
 	}
 
 	public override WorldPosition GetTargetPosition()

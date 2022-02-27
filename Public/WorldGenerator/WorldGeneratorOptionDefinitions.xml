@@ -60,11 +60,11 @@
       <KeyValuePair Key="Height">30</KeyValuePair>
       <KeyValuePair Key="MaxDifferentLuxuryTypes">6</KeyValuePair>
       <KeyValuePair Key="MaxResourcesPerRegion">9</KeyValuePair>
-      <OptionDefinitionConstraint OptionName="NumberOfMajorFactions" Type="Conditional">
+      <!-- <OptionDefinitionConstraint OptionName="NumberOfMajorFactions" Type="Conditional">
         <Key Name="2"/>
         <Key Name="3"/>
         <Key Name="4"/>
-      </OptionDefinitionConstraint>
+      </OptionDefinitionConstraint> -->
       <OptionDefinitionConstraint OptionName="WorldShape" Type="Control">
         <Key Name="NoOceans"/>
         <Key Name="2LargeContinents"/>
@@ -100,13 +100,13 @@
       <KeyValuePair Key="Height">50</KeyValuePair>
       <KeyValuePair Key="MaxDifferentLuxuryTypes">9</KeyValuePair>
       <KeyValuePair Key="MaxResourcesPerRegion">8</KeyValuePair>
-      <OptionDefinitionConstraint OptionName="NumberOfMajorFactions" Type="Conditional">
+      <!--<OptionDefinitionConstraint OptionName="NumberOfMajorFactions" Type="Conditional">
         <Key Name="2"/>
         <Key Name="3"/>
         <Key Name="4"/>
         <Key Name="5"/>
         <Key Name="6"/>
-      </OptionDefinitionConstraint>
+      </OptionDefinitionConstraint>-->
       <OptionDefinitionConstraint OptionName="PercentageOfLandmassOverWater" Type="Control">
         <Key Name="40"/>
         <Key Name="50"/>
@@ -393,6 +393,10 @@
       <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
         <Key Name="Normal"/>
       </OptionDefinitionConstraint>
+	  <OptionDefinitionConstraint OptionName="ReplaceInlandSeas" Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
+
       <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
         <Key Name="None"/>
       </OptionDefinitionConstraint>-->
@@ -410,6 +414,9 @@
       <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
         <Key Name="Normal"/>
       </OptionDefinitionConstraint>
+	  <OptionDefinitionConstraint OptionName="ReplaceInlandSeas" Type="Control">
+        <Key Name="True"/>
+      </OptionDefinitionConstraint>
       <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
         <Key Name="Some"/>
       </OptionDefinitionConstraint>-->
@@ -426,6 +433,9 @@
       </OptionDefinitionConstraint>-->
       <OptionDefinitionConstraint OptionName="RegionSize" Type="Control">
         <Key Name="Normal"/>
+      </OptionDefinitionConstraint>
+	  <OptionDefinitionConstraint OptionName="ReplaceInlandSeas" Type="Control">
+        <Key Name="True"/>
       </OptionDefinitionConstraint>
       <!--<OptionDefinitionConstraint OptionName="Noise" Type="Control">
         <Key Name="Many"/>
@@ -941,7 +951,17 @@
     </ItemDefinition>
     <ItemDefinition Name="Random" />
   </WorldGeneratorOptionDefinition>
-
+  
+  <WorldGeneratorOptionDefinition Name="ReplaceInlandSeas"   Default="True"   Category="World" SubCategory="ContinentShape"  GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+	<OptionDefinitionConstraint OptionName="NavalPack" Type="DownloadableContentConditional" />
+    <ItemDefinition Name="False">
+		<KeyValuePair Key="ReplaceInlandSeas">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+		<KeyValuePair Key="ReplaceInlandSeas">true</KeyValuePair>
+    </ItemDefinition>
+  </WorldGeneratorOptionDefinition>
 
   <!-- Advanced Options, subcategory of 'Topography' -->
   <WorldGeneratorOptionDefinition Name="LakeOdds"                      Default="Many"           Category="World" SubCategory="Topography"      GuiControlType="DropList">
@@ -1149,26 +1169,49 @@
       <KeyValuePair Key="SpawnDesirabilityFIDS">1.0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityShape">1.0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityLocation">4.0</KeyValuePair>
+      <KeyValuePair Key="TeamCount">0</KeyValuePair>
     </ItemDefinition>
     <ItemDefinition Name="Average">
       <KeyValuePair Key="SpawnDesirabilityFIDS">1.0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityShape">1.0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityLocation">1.5</KeyValuePair>
+      <KeyValuePair Key="TeamCount">0</KeyValuePair>
     </ItemDefinition>
     <ItemDefinition Name="Close">
       <KeyValuePair Key="SpawnDesirabilityFIDS">1.0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityShape">1.0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityLocation">-1.0</KeyValuePair>
+      <KeyValuePair Key="TeamCount">0</KeyValuePair>
     </ItemDefinition>
     <ItemDefinition Name="BetterStartingRegion">
       <KeyValuePair Key="SpawnDesirabilityFIDS">6.0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityShape">3.0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityLocation">0.5</KeyValuePair>
+      <KeyValuePair Key="TeamCount">0</KeyValuePair>
     </ItemDefinition>
     <ItemDefinition Name="Chaotic">
       <KeyValuePair Key="SpawnDesirabilityFIDS">0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityShape">0</KeyValuePair>
       <KeyValuePair Key="SpawnDesirabilityLocation">0</KeyValuePair>
+      <KeyValuePair Key="TeamCount">0</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="TwoTeams">
+      <KeyValuePair Key="SpawnDesirabilityFIDS">0.5</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityShape">0.5</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityLocation">8.0</KeyValuePair>
+      <KeyValuePair Key="TeamCount">2</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="ThreeTeams">
+      <KeyValuePair Key="SpawnDesirabilityFIDS">0.5</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityShape">0.5</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityLocation">8.0</KeyValuePair>
+      <KeyValuePair Key="TeamCount">3</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="FourTeams">
+      <KeyValuePair Key="SpawnDesirabilityFIDS">0.5</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityShape">0.5</KeyValuePair>
+      <KeyValuePair Key="SpawnDesirabilityLocation">8.0</KeyValuePair>
+      <KeyValuePair Key="TeamCount">4</KeyValuePair>
     </ItemDefinition>
     <ItemDefinition Name="Random" />
   </WorldGeneratorOptionDefinition>
@@ -1251,6 +1294,29 @@
       <KeyValuePair Key="Seed">0</KeyValuePair>
     </ItemDefinition>
   </WorldGeneratorOptionDefinition>
+  
+  <WorldGeneratorOptionDefinition Name="XephiStrategic"   Default="False"   Category="World" SubCategory="WorldDifficulty"  GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+	<OptionDefinitionConstraint OptionName="NavalPack" Type="DownloadableContentConditional" />
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="FortressStripmine">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="FortressStripmine">true</KeyValuePair>
+    </ItemDefinition>
+  </WorldGeneratorOptionDefinition>
+
+  <!--Xephi's World Generator balances-->
+  <WorldGeneratorOptionDefinition Name="XephiWorldGeneratorBalance"   Default="False"   Category="World" SubCategory="WorldDifficulty"  GuiControlType="DropList">
+    <Tags>Advanced</Tags>
+    <ItemDefinition Name="False">
+      <KeyValuePair Key="XephiWorldGeneratorBalance">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+      <KeyValuePair Key="XephiWorldGeneratorBalance">true</KeyValuePair>
+    </ItemDefinition>
+  </WorldGeneratorOptionDefinition>
+
 
   <WorldGeneratorOptionDefinition Name="VolcanicActivity"                        Default="Some"           Category="World" SubCategory="Topography"      GuiControlType="DropList">
     <Tags>Advanced</Tags>
@@ -1270,4 +1336,18 @@
     <ItemDefinition Name="Random" />
   </WorldGeneratorOptionDefinition>
 
+  <WorldGeneratorOptionDefinition Name="Volcanize"   Default="True"   Category="World" SubCategory="Topography"  GuiControlType="Toggle">
+    <Tags>Advanced</Tags>
+	<OptionDefinitionConstraint OptionName="SummerFlamesPack" Type="DownloadableContentConditional" />
+    <ItemDefinition Name="False">
+		<KeyValuePair Key="Volcanize">false</KeyValuePair>
+    </ItemDefinition>
+    <ItemDefinition Name="True">
+		<KeyValuePair Key="Volcanize">true</KeyValuePair>
+    </ItemDefinition>
+  </WorldGeneratorOptionDefinition>
+  
+  <WorldGeneratorOptionDefinition Name="MaxNumberOfMajorFactions"  Default="15"  Category="World"  SubCategory="WorldSize"  GuiControlType="Hidden">
+      <ItemDefinition Name="15"/>
+  </WorldGeneratorOptionDefinition>
 </Datatable>

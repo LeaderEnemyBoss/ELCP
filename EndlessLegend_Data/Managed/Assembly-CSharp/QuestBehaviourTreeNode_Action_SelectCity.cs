@@ -43,8 +43,7 @@ public class QuestBehaviourTreeNode_Action_SelectCity : QuestBehaviourTreeNode_A
 			{
 				return State.Failure;
 			}
-			global::Empire empire = game.Empires[num];
-			DepartmentOfTheInterior agency = empire.GetAgency<DepartmentOfTheInterior>();
+			DepartmentOfTheInterior agency = game.Empires[num].GetAgency<DepartmentOfTheInterior>();
 			if (agency == null)
 			{
 				return State.Failure;

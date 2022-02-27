@@ -6,7 +6,7 @@
     <SimulationDescriptorReference Name="TechnologyUnlockWeaponTier3" />
     <SimulationDescriptorReference Name="TechnologyUnlockArmorTier3" />
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier3" />
-    <InterpreterPrerequisite Flags="Prerequisite,Era">$Property(EmpireTypeMajor/ClassResearch:Era2RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Era">($Property(EmpireTypeMajor/ClassResearch:Era2RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)) or $Path(#Era3,EmpireTypeMajor,EmpireEliminated)</InterpreterPrerequisite>
   </TechnologyEraDefinition>
 
   <!-- Improvement: Food8 -->
@@ -141,7 +141,8 @@
     <SimulationDescriptorReference Name="TechnologyCountIncreaseEra3" />
     <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era3CostMultiplier)</CustomCost>
     <PathPrerequisite Flags="Prerequisite,TechnologyEra">EmpireTypeMajor/ClassResearch,TechnologyEra3</PathPrerequisite>
-    <PathPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">FactionTraitCultists7,FactionTraitCultists9</PathPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Discard,DiplomaticTradable" Inverted="true">
+	($Path(.../EmpireTypeMajor,FactionTraitCultists7)) and ($Path(.../EmpireTypeMajor,FactionTraitCultists9))</InterpreterPrerequisite>
   </TechnologyDefinition>
 
   <!-- Empire bonus: Weapon Uncommon Tier 1 -->
@@ -335,6 +336,7 @@
   <!-- Mimics: Kaiju Diplomacy -->
   <TechnologyDefinition  Name="TechnologyDefinitionMimics2"       TechnologyFlags="Affinity">
     <UnlockCategoryOverride Category="Diplomacy" SubCategory="SubCategoryDiplomaticTerm"/>
+	<SimulationDescriptorReference Name="TechnologyMimics2KaijuTameReduction" />
     <SimulationDescriptorReference Name="TechnologyMimics2" />
     <SimulationDescriptorReference Name="TechnologyCountIncreaseEra3" />
     <CustomCost ResourceName="EmpireResearch">$Property(EmpireTypeMajor/ClassResearch:TechnologyCost)* $Property(EmpireTypeMajor/ClassResearch:Era3CostMultiplier)</CustomCost>

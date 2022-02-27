@@ -46,8 +46,7 @@ public class AIBehaviorTreeNode_Action_DismantleTerraformDevice : AIBehaviorTree
 		else
 		{
 			Army army;
-			AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-			if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+			if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 			{
 				return State.Failure;
 			}
@@ -84,23 +83,18 @@ public class AIBehaviorTreeNode_Action_DismantleTerraformDevice : AIBehaviorTree
 				return State.Failure;
 			}
 			Diagnostics.Assert(AIScheduler.Services != null);
-			IWorldPositionningService service3 = service.Game.Services.GetService<IWorldPositionningService>();
-			if (service3.GetDistance(army.WorldPosition, (gameEntity as IWorldPositionable).WorldPosition) != 1)
+			if (service.Game.Services.GetService<IWorldPositionningService>().GetDistance(army.WorldPosition, (gameEntity as IWorldPositionable).WorldPosition) != 1)
 			{
 				aiBehaviorTree.ErrorCode = 12;
 				return State.Failure;
 			}
-			IEncounterRepositoryService service4 = service.Game.Services.GetService<IEncounterRepositoryService>();
-			if (service4 != null)
+			IEncounterRepositoryService service3 = service.Game.Services.GetService<IEncounterRepositoryService>();
+			if (service3 != null)
 			{
-				IEnumerable<Encounter> enumerable = service4;
-				if (enumerable != null)
+				IEnumerable<Encounter> enumerable = service3;
+				if (enumerable != null && enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false)))
 				{
-					bool flag = enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false));
-					if (flag)
-					{
-						return State.Running;
-					}
+					return State.Running;
 				}
 			}
 			OrderToggleDismantleDevice order = new OrderToggleDismantleDevice(army.Empire.Index, army.GUID, gameEntity.GUID, true);

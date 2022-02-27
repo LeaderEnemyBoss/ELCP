@@ -11,18 +11,25 @@ using Amplitude.Unity.Simulation;
 using Amplitude.Utilities.Maps;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
+using UnityEngine;
 
-public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGarrison, IRegionalEffectsConcerned<IRegionalEffectsConcernedGameEntity>, IGarrisonWithPosition, IFastTravelNode, IFastTravelNodeGameEntity, IGameEntity, IGameEntityWithEmpire, IGameEntityWithWorldPosition, IRegionalEffectsConcernedGameEntity, IWorldPositionable, ICategoryProvider, IDescriptorEffectProvider, IPropertyEffectFeatureProvider
+public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGarrison, IGameEntity, IRegionalEffectsConcerned<IRegionalEffectsConcernedGameEntity>, IGarrisonWithPosition, IGameEntityWithWorldPosition, IWorldPositionable, IFastTravelNode, IFastTravelNodeGameEntity, IGameEntityWithEmpire, IRegionalEffectsConcernedGameEntity, ICategoryProvider, IDescriptorEffectProvider, IPropertyEffectFeatureProvider
 {
 	public City(GameEntityGUID guid) : base("City#" + guid)
 	{
+		this.regionalEffects = new List<RegionalEffect>();
+		this.besiegingEmpireIndex = -1;
+		this.besiegingSeafaringArmies = new List<Army>();
+		this.cityImprovements = new List<CityImprovement>();
+		this.districts = new List<District>();
+		this.lastNonInfectedOwnerIndex = -1;
 		this.guid = guid;
 		this.AdministrationSpeciality = StaticString.Empty;
 		this.gameService = Services.GetService<IGameService>();
 		this.BesiegingEmpireIndex = -1;
 		this.CadastralMap = new CadastralMap();
 		this.TradeRoutes = new List<TradeRoute>(4);
-		this.Ownership = new float[8];
+		this.Ownership = new float[ELCPUtilities.NumberOfMajorEmpires];
 		this.DryDockPosition = WorldPosition.Invalid;
 		this.cityImprovementsReadOnlyCollection = this.cityImprovements.AsReadOnly();
 		this.districtsReadOnlyCollection = this.districts.AsReadOnly();
@@ -176,14 +183,10 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 		this.ShouldRazeRegionBuildingWithSelf = reader.GetAttribute<bool>("ShouldRazeRegionBuildingWithSelf");
 		this.ShouldInjureSpyOnRaze = reader.GetAttribute<bool>("ShouldInjureSpyOnRaze");
 		this.AdministrationSpeciality = reader.GetAttribute<string>("AdministrationSpeciality");
-		if (!StaticString.IsNullOrEmpty(this.AdministrationSpeciality))
+		AICityState aicityState;
+		if (!StaticString.IsNullOrEmpty(this.AdministrationSpeciality) && (!Databases.GetDatabase<AICityState>(false).TryGetValue(this.AdministrationSpeciality, out aicityState) || !aicityState.IsGuiCompliant))
 		{
-			IDatabase<AICityState> database = Databases.GetDatabase<AICityState>(false);
-			AICityState aicityState;
-			if (!database.TryGetValue(this.AdministrationSpeciality, out aicityState) || !aicityState.IsGuiCompliant)
-			{
-				this.AdministrationSpeciality = StaticString.Empty;
-			}
+			this.AdministrationSpeciality = StaticString.Empty;
 		}
 		base.ReadXml(reader);
 		int attribute = reader.GetAttribute<int>("Count");
@@ -191,8 +194,7 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 		this.districts.Clear();
 		for (int i = 0; i < attribute; i++)
 		{
-			ulong attribute2 = reader.GetAttribute<ulong>("GUID");
-			District district = new District(attribute2);
+			District district = new District(reader.GetAttribute<ulong>("GUID"));
 			reader.ReadElementSerializable<District>(ref district);
 			if (district != null)
 			{
@@ -208,8 +210,7 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 			}
 			else
 			{
-				GameEntityGUID gameEntityGUID = reader.GetAttribute<ulong>("GUID");
-				Militia militia = new Militia(gameEntityGUID);
+				Militia militia = new Militia(reader.GetAttribute<ulong>("GUID"));
 				militia.Empire = this.Empire;
 				reader.ReadElementSerializable<Militia>(ref militia);
 				this.Militia = militia;
@@ -219,13 +220,12 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 				}
 			}
 		}
-		int attribute3 = reader.GetAttribute<int>("Count");
+		int attribute2 = reader.GetAttribute<int>("Count");
 		reader.ReadStartElement("Improvements");
 		this.cityImprovements.Clear();
-		for (int j = 0; j < attribute3; j++)
+		for (int j = 0; j < attribute2; j++)
 		{
-			ulong attribute4 = reader.GetAttribute<ulong>("GUID");
-			CityImprovement cityImprovement = new CityImprovement(attribute4);
+			CityImprovement cityImprovement = new CityImprovement(reader.GetAttribute<ulong>("GUID"));
 			reader.ReadElementSerializable<CityImprovement>(ref cityImprovement);
 			if (cityImprovement != null)
 			{
@@ -259,9 +259,9 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 		if (num >= 4)
 		{
 			this.TradeRoutes.Clear();
-			int attribute5 = reader.GetAttribute<int>("Count");
+			int attribute3 = reader.GetAttribute<int>("Count");
 			reader.ReadStartElement("TradeRoutes");
-			for (int k = 0; k < attribute5; k++)
+			for (int k = 0; k < attribute3; k++)
 			{
 				TradeRoute item = new TradeRoute();
 				reader.ReadElementSerializable<TradeRoute>(ref item);
@@ -274,9 +274,13 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 		}
 		if (num >= 5)
 		{
-			int attribute6 = reader.GetAttribute<int>("Count");
+			int attribute4 = reader.GetAttribute<int>("Count");
+			if (this.Ownership.Length < attribute4)
+			{
+				this.Ownership = new float[attribute4];
+			}
 			reader.ReadStartElement("Ownerships");
-			for (int l = 0; l < attribute6; l++)
+			for (int l = 0; l < attribute4; l++)
 			{
 				this.Ownership[l] = reader.ReadElementString<float>("Ownership");
 			}
@@ -288,8 +292,7 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 		}
 		if (num >= 7)
 		{
-			ulong attribute7 = reader.GetAttribute<ulong>(Camp.SerializableNames.CampGUID);
-			Camp camp = new Camp(attribute7)
+			Camp camp = new Camp(reader.GetAttribute<ulong>(Camp.SerializableNames.CampGUID))
 			{
 				Empire = this.Empire
 			};
@@ -837,6 +840,8 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 
 	public void UpdateInfectionStatus()
 	{
+		bool flag = this.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics3);
+		bool flag2 = this.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics1) || this.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitCultists7);
 		IDatabase<SimulationDescriptor> database = Databases.GetDatabase<SimulationDescriptor>(false);
 		SimulationDescriptor descriptor = null;
 		if (!database.TryGetValue(City.TagCityStatusInfected, out descriptor))
@@ -846,20 +851,55 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 		}
 		if (this.LastNonInfectedOwner == null)
 		{
-			this.LastNonInfectedOwner = this.Empire;
+			DepartmentOfTheInterior agency = this.Empire.GetAgency<DepartmentOfTheInterior>();
+			if (!flag || !flag2 || agency.Cities.Count == 1)
+			{
+				this.LastNonInfectedOwner = this.Empire;
+				return;
+			}
+			DepartmentOfPlanificationAndDevelopment agency2 = this.Empire.GetAgency<DepartmentOfPlanificationAndDevelopment>();
+			global::Game game = this.gameService.Game as global::Game;
+			if (game != null)
+			{
+				List<int> list = new List<int>();
+				List<int> list2 = new List<int>();
+				foreach (global::Empire empire in game.Empires)
+				{
+					if (!(empire is MajorEmpire))
+					{
+						break;
+					}
+					if (empire.Faction.Affinity.Name != this.Empire.Faction.Affinity.Name && !agency2.HasIntegratedFaction(empire.Faction))
+					{
+						list.Add(empire.Index);
+					}
+					else if (empire.Index != this.Empire.Index)
+					{
+						list2.Add(empire.Index);
+					}
+				}
+				if (list.Count == 0)
+				{
+					list = list2;
+				}
+				int index = UnityEngine.Random.Range(0, list.Count);
+				this.LastNonInfectedOwner = game.Empires[list[index]];
+			}
 		}
-		else if (this.Empire == this.LastNonInfectedOwner)
+		if (this.Empire == this.LastNonInfectedOwner)
 		{
 			if (this.IsInfected)
 			{
 				base.RemoveDescriptor(descriptor);
+				return;
 			}
 		}
-		else if (this.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics3))
+		else if (flag)
 		{
 			if (!this.IsInfected)
 			{
 				base.AddDescriptor(descriptor, false);
+				return;
 			}
 		}
 		else
@@ -987,13 +1027,13 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 
 	private Camp camp;
 
-	private List<RegionalEffect> regionalEffects = new List<RegionalEffect>();
+	private List<RegionalEffect> regionalEffects;
 
-	private int besiegingEmpireIndex = -1;
+	private int besiegingEmpireIndex;
 
 	private global::Empire besiegingEmpire;
 
-	private List<Army> besiegingSeafaringArmies = new List<Army>();
+	private List<Army> besiegingSeafaringArmies;
 
 	public static readonly string ReadOnlyCategory = "City";
 
@@ -1007,13 +1047,13 @@ public class City : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGar
 
 	public static readonly StaticString TagCityStatusIntegrated = new StaticString("CityStatusIntegrated");
 
-	private List<CityImprovement> cityImprovements = new List<CityImprovement>();
+	private List<CityImprovement> cityImprovements;
 
-	private List<District> districts = new List<District>();
+	private List<District> districts;
 
 	private GameEntityGUID guid;
 
-	private int lastNonInfectedOwnerIndex = -1;
+	private int lastNonInfectedOwnerIndex;
 
 	private global::Empire lastNonInfectedOwner;
 

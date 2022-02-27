@@ -178,32 +178,59 @@ public class MenuCompetitorSlot : MonoBehaviour
 				}
 			}
 		}
-		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
-		if (service != null)
+		if (this.Session.SessionMode == SessionMode.Single || !this.Session.GetLobbyData<bool>("SpectatorMode", false) || this.Session.GetLobbyData<int>("NumberOfMajorFactions", 0) < 3)
 		{
 			for (int num2 = 0; num2 < this.guiFactions.Count; num2++)
 			{
-				if (this.guiFactions[num2].IsStandard || this.guiFactions[num2].IsCustom)
+				if (this.guiFactions[num2].Faction.Name == "FactionELCPSpectator")
+				{
+					this.FactionDroplist.EnableItem(num2, false);
+					this.FactionDroplist.SetItemTooltip(num2, "%GameOptionSpectatorModeDisabled");
+				}
+				else
+				{
+					this.FactionDroplist.EnableItem(num2, true);
+				}
+			}
+			if (this.GetSelectedFaction().Name == "FactionELCPSpectator")
+			{
+				Faction faction2 = this.guiFactions[0].Faction;
+				IDatabase<Faction> database2 = Databases.GetDatabase<Faction>(false);
+				if (database2 != null)
+				{
+					faction2 = database2.FirstOrDefault((Faction iterator) => iterator.IsStandard && !iterator.IsHidden && iterator.Name != "FactionELCPSpectator");
+				}
+				this.SelectFaction(faction2);
+				this.AgeTransform.Enable = false;
+				return;
+			}
+		}
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		if (service != null)
+		{
+			for (int num3 = 0; num3 < this.guiFactions.Count; num3++)
+			{
+				if (this.guiFactions[num3].IsStandard || this.guiFactions[num3].IsCustom)
 				{
 					bool flag = false;
-					if (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFaction, this.guiFactions[num2].Name, out flag) || !flag)
+					if (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFaction, this.guiFactions[num3].Name, out flag) || !flag)
 					{
-						this.FactionDroplist.EnableItem(num2, false);
-						this.FactionDroplist.SetItemTooltip(num2, "%RestrictedDownloadableContentTitle");
+						this.FactionDroplist.EnableItem(num3, false);
+						this.FactionDroplist.SetItemTooltip(num3, "%RestrictedDownloadableContentTitle");
 					}
-					else if (this.guiFactions[num2].Faction.Affinity != null && (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFactionAffinity, this.guiFactions[num2].Faction.Affinity, out flag) || !flag))
+					else if (this.guiFactions[num3].Faction.Affinity != null && (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFactionAffinity, this.guiFactions[num3].Faction.Affinity, out flag) || !flag))
 					{
-						this.FactionDroplist.EnableItem(num2, false);
-						this.FactionDroplist.SetItemTooltip(num2, "%RestrictedDownloadableContentTitle");
+						this.FactionDroplist.EnableItem(num3, false);
+						this.FactionDroplist.SetItemTooltip(num3, "%RestrictedDownloadableContentTitle");
 					}
 					else
 					{
-						foreach (FactionTrait factionTrait in Faction.EnumerableTraits(this.guiFactions[num2].Faction))
+						foreach (FactionTrait factionTrait in Faction.EnumerableTraits(this.guiFactions[num3].Faction))
 						{
 							if (!service.TryCheckAgainstRestrictions(DownloadableContentRestrictionCategory.LobbyFactionTrait, factionTrait.Name, out flag) || !flag)
 							{
-								this.FactionDroplist.EnableItem(num2, false);
-								this.FactionDroplist.SetItemTooltip(num2, "%RestrictedDownloadableContentTitle");
+								this.FactionDroplist.EnableItem(num3, false);
+								this.FactionDroplist.SetItemTooltip(num3, "%RestrictedDownloadableContentTitle");
 								break;
 							}
 						}
@@ -225,6 +252,7 @@ public class MenuCompetitorSlot : MonoBehaviour
 			}
 		}
 		this.RefreshColorDropList(colorsList);
+		this.RefreshHandicapDroplist(lobbyData);
 		bool flag2 = !this.empireLocked && !guiLocked;
 		if (!this.CompetitorIsHuman && this.Session.SessionMode != SessionMode.Single)
 		{
@@ -239,8 +267,16 @@ public class MenuCompetitorSlot : MonoBehaviour
 		}
 		if (this.Session.GetLobbyData<bool>(string.Format("Empire{0}Eliminated", this.EmpireIndex), false))
 		{
-			this.JoinButton.AgeTransform.Visible = false;
-			this.NoJoinBackground.Visible = true;
+			if (!this.Session.GetLobbyData<bool>("SpectatorMode", false) || this.CompetitorIsHuman)
+			{
+				this.JoinButton.AgeTransform.Visible = false;
+				this.NoJoinBackground.Visible = true;
+			}
+			else
+			{
+				this.JoinButton.AgeTransform.Visible = true;
+				this.NoJoinBackground.Visible = false;
+			}
 			this.EmpireType.Text = string.Format("{0} #FF0000#({1})#REVERT#", AgeLocalizer.Instance.LocalizeString(this.EmpireType.Text), AgeLocalizer.Instance.LocalizeString("%CompetitorEliminatedTitle"));
 		}
 		this.CurrentPlayerHighlight.Visible = this.IsMySlot;
@@ -270,21 +306,16 @@ public class MenuCompetitorSlot : MonoBehaviour
 		{
 			return this.guiFactions.First((GuiFaction guiFaction) => guiFaction.Name == "FactionRandom");
 		}
-		if (selectedFaction.IsCustom)
+		if (selectedFaction.IsCustom && this.Session.GetLobbyData<bool>("CustomFactions", true) && !this.guiFactions.Any((GuiFaction guiFaction) => guiFaction.Faction.Name == selectedFaction.Name))
 		{
-			bool lobbyData = this.Session.GetLobbyData<bool>("CustomFactions", true);
-			if (lobbyData && !this.guiFactions.Any((GuiFaction guiFaction) => guiFaction.Faction.Name == selectedFaction.Name))
-			{
-				this.guiFactions.Add(new GuiFaction(selectedFaction));
-			}
+			this.guiFactions.Add(new GuiFaction(selectedFaction));
 		}
 		return this.guiFactions.FirstOrDefault((GuiFaction guiFaction) => guiFaction.Faction.Name == selectedFaction.Name);
 	}
 
 	private Faction GetSelectedFaction()
 	{
-		IGuiService service = Services.GetService<IGuiService>();
-		return service.GetGuiPanel<MenuNewGameScreen>().GetSelectedFaction(this.EmpireIndex);
+		return Services.GetService<IGuiService>().GetGuiPanel<MenuNewGameScreen>().GetSelectedFaction(this.EmpireIndex);
 	}
 
 	private void RefreshPlayerLine(string playerName, int playerIndex)
@@ -294,19 +325,18 @@ public class MenuCompetitorSlot : MonoBehaviour
 		{
 			try
 			{
-				ulong value = Convert.ToUInt64(playerName, 16);
-				steamID = new Steamworks.SteamID(value);
+				steamID = new Steamworks.SteamID(Convert.ToUInt64(playerName, 16));
 				playerName = Steamworks.SteamAPI.SteamFriends.GetFriendPersonaName(steamID);
+				goto IL_4E;
 			}
 			catch
 			{
 				Diagnostics.LogWarning("Unable to get player name from steam ID " + playerName);
+				goto IL_4E;
 			}
 		}
-		else
-		{
-			playerName = Environment.UserName + "(no Steam)";
-		}
+		playerName = Environment.UserName + "(no Steam)";
+		IL_4E:
 		this.PlayersTitleLabels[playerIndex].AgeTransform.Visible = true;
 		this.PlayersTitleLabels[playerIndex].Text = playerName;
 		AgeTooltip ageTooltip = this.PlayersTitleLabels[playerIndex].AgeTransform.AgeTooltip;
@@ -318,29 +348,25 @@ public class MenuCompetitorSlot : MonoBehaviour
 		{
 			this.CompetitorIsLocalOwner = true;
 		}
-		switch (this.Session.SessionMode)
+		SessionMode sessionMode = this.Session.SessionMode;
+		if (sessionMode == SessionMode.Single)
 		{
-		case SessionMode.Single:
 			this.PlayerReadyToggles[playerIndex].AgeTransform.Visible = false;
 			this.PlayerKickButtons[playerIndex].AgeTransform.Visible = false;
-			break;
-		case SessionMode.Private:
-		case SessionMode.Protected:
-		case SessionMode.Public:
-		{
-			bool lobbyMemberData = this.Session.GetLobbyMemberData<bool>(steamID, "Ready", false);
-			this.PlayerReadyToggles[playerIndex].AgeTransform.Visible = true;
-			this.PlayerReadyToggles[playerIndex].State = lobbyMemberData;
-			this.PlayerKickButtons[playerIndex].AgeTransform.Visible = (this.CompetitorIsHuman && this.Session.IsHosting && !this.CompetitorIsLocalOwner);
-			this.PlayerKickButtons[playerIndex].OnActivateMethod = "OnKickUserCB";
-			this.PlayerKickButtons[playerIndex].OnActivateData = steamID.ToString();
-			bool visible = steamID == this.Session.LobbyOwnerSteamID;
-			this.PlayerHostingIcons[playerIndex].AgeTransform.Visible = visible;
-			break;
+			return;
 		}
-		default:
+		if (sessionMode - SessionMode.Private > 2)
+		{
 			throw new ArgumentOutOfRangeException();
 		}
+		bool lobbyMemberData = this.Session.GetLobbyMemberData<bool>(steamID, "Ready", false);
+		this.PlayerReadyToggles[playerIndex].AgeTransform.Visible = true;
+		this.PlayerReadyToggles[playerIndex].State = lobbyMemberData;
+		this.PlayerKickButtons[playerIndex].AgeTransform.Visible = (this.CompetitorIsHuman && this.Session.IsHosting && !this.CompetitorIsLocalOwner);
+		this.PlayerKickButtons[playerIndex].OnActivateMethod = "OnKickUserCB";
+		this.PlayerKickButtons[playerIndex].OnActivateData = steamID.ToString();
+		bool visible = steamID == this.Session.LobbyOwnerSteamID;
+		this.PlayerHostingIcons[playerIndex].AgeTransform.Visible = visible;
 	}
 
 	private void RefreshSelectedFaction()
@@ -381,16 +407,15 @@ public class MenuCompetitorSlot : MonoBehaviour
 			try
 			{
 				this.ColorDroplist.SelectedItem = int.Parse(lobbyData);
+				return;
 			}
 			catch
 			{
 				Diagnostics.LogWarning("Failed to parse the lobbyDataFactionColor");
+				return;
 			}
 		}
-		else
-		{
-			Diagnostics.LogWarning("No lobbyDataFactionColor found, falling back to the default color for empire" + this.EmpireIndex);
-		}
+		Diagnostics.LogWarning("No lobbyDataFactionColor found, falling back to the default color for empire" + this.EmpireIndex);
 	}
 
 	private void OnChangeColorCB(GameObject gameObject)
@@ -426,9 +451,7 @@ public class MenuCompetitorSlot : MonoBehaviour
 
 	private void OnAdvancedFactionCB(GameObject gameObject)
 	{
-		IGuiService service = Services.GetService<IGuiService>();
-		MenuNewGameScreen guiPanel = service.GetGuiPanel<MenuNewGameScreen>();
-		guiPanel.gameObject.SendMessage("OnAdvancedFactionCB", base.gameObject);
+		Services.GetService<IGuiService>().GetGuiPanel<MenuNewGameScreen>().gameObject.SendMessage("OnAdvancedFactionCB", base.gameObject);
 	}
 
 	private void OnJoinEmpireCB(GameObject gameObject)
@@ -456,6 +479,118 @@ public class MenuCompetitorSlot : MonoBehaviour
 			});
 			string message = string.Format("k:/{0}/{1}", gameObject.GetComponent<AgeControlButton>().OnActivateData, "%KickReasonByHost");
 			this.Session.SendLobbyChatMessage(message);
+		}
+	}
+
+	private void OnChangeHandicapCB(GameObject gameObject)
+	{
+		if (this.Session.IsHosting)
+		{
+			AgeControlDropList component = gameObject.GetComponent<AgeControlDropList>();
+			if (component != null)
+			{
+				int selectedItem = component.SelectedItem;
+				string message = string.Format("q:/Handicap{0}/{1}", this.EmpireIndex, selectedItem);
+				this.Session.SendLobbyChatMessage(message);
+			}
+		}
+	}
+
+	private void RefreshHandicapDroplist(string lobbyData5)
+	{
+		if (this.Session.IsHosting && this.canModifyOwnEmpireSettings)
+		{
+			if (this.Session.SessionMode == SessionMode.Single)
+			{
+				this.AiDifficultyDroplist.ReadOnly = false;
+			}
+			if (this.Session.SessionMode != SessionMode.Single)
+			{
+				if (this.CompetitorIsHuman)
+				{
+					string[] array = lobbyData5.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
+					Steamworks.SteamID steamID = Steamworks.SteamID.Zero;
+					if (Steamworks.SteamAPI.IsSteamRunning)
+					{
+						try
+						{
+							steamID = new Steamworks.SteamID(Convert.ToUInt64(array[0], 16));
+						}
+						catch
+						{
+							this.AiDifficultyDroplist.ReadOnly = true;
+							return;
+						}
+					}
+					if (steamID == Steamworks.SteamID.Zero || !Steamworks.SteamAPI.IsSteamRunning)
+					{
+						this.AiDifficultyDroplist.ReadOnly = true;
+						return;
+					}
+					if (this.Session.GetLobbyMemberData<bool>(steamID, "Ready", false))
+					{
+						this.AiDifficultyDroplist.ReadOnly = true;
+					}
+					else
+					{
+						this.AiDifficultyDroplist.ReadOnly = false;
+					}
+				}
+				else
+				{
+					this.AiDifficultyDroplist.ReadOnly = false;
+				}
+			}
+		}
+		else
+		{
+			this.AiDifficultyDroplist.ReadOnly = true;
+		}
+		List<string> list = new List<string>();
+		List<string> list2 = new List<string>();
+		for (int i = 0; i < 11; i++)
+		{
+			string key = "%Handicap" + i.ToString() + "Title";
+			string key2 = "%Handicap" + i.ToString() + "Tooltip";
+			list.Add(AgeLocalizer.Instance.LocalizeString(key));
+			string text = AgeLocalizer.Instance.LocalizeString(key2);
+			if ((this.CompetitorIsHuman && i > 5) || (!this.CompetitorIsHuman && i < 5))
+			{
+				text += AgeLocalizer.Instance.LocalizeString("%HandicapNoAchievementsTooltip");
+			}
+			list2.Add(text);
+		}
+		this.AiDifficultyDroplist.ItemTable = list.ToArray();
+		this.AiDifficultyDroplist.TooltipTable = list2.ToArray();
+		this.AiDifficultyDroplist.OnSelectionMethod = "OnChangeHandicapCB";
+		this.AiDifficultyDroplist.OnSelectionObject = base.gameObject;
+		this.AiDifficultyDroplist.AgeTransform.Visible = true;
+		this.AiDifficultyDroplist.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%HandicapTooltip");
+		AgeTransform[] array2 = this.AiDifficultyDroplist.AgeTransform.GetChildren().ToArray();
+		if (!this.AiDifficultyDroplist.ReadOnly)
+		{
+			array2[0].Alpha = 1f;
+			array2[1].Visible = true;
+			array2[3].Visible = true;
+		}
+		else
+		{
+			array2[0].Alpha = 0.5f;
+			array2[1].Visible = false;
+			array2[3].Visible = false;
+		}
+		string x = string.Format("Handicap{0}", this.EmpireIndex);
+		string lobbyData6 = this.Session.GetLobbyData<string>(x, "5");
+		if (!string.IsNullOrEmpty(lobbyData6))
+		{
+			try
+			{
+				this.AiDifficultyDroplist.SelectedItem = int.Parse(lobbyData6);
+			}
+			catch
+			{
+				Diagnostics.LogWarning("Failed to parse the lobbyDataHandicap");
+			}
 		}
 	}
 

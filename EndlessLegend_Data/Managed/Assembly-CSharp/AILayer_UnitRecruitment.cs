@@ -112,6 +112,8 @@ public class AILayer_UnitRecruitment : AILayer
 		this.NavalRecruiter.AIEntity = base.AIEntity;
 		this.NavalRecruiter.UnitDesignFilter = new Func<UnitDesign, bool>(this.UnitDesignFilter_NavyMilitaryUnit);
 		this.NavalRecruiter.Initialize();
+		this.VictoryLayer = base.AIEntity.GetLayer<AILayer_Victory>();
+		this.ColonizationLayer = base.AIEntity.GetLayer<AILayer_Colonization>();
 		yield break;
 	}
 
@@ -131,13 +133,14 @@ public class AILayer_UnitRecruitment : AILayer
 			this.NavalRecruiter = null;
 		}
 		this.requestArmyMessages.Clear();
+		this.VictoryLayer = null;
+		this.ColonizationLayer = null;
 	}
 
 	protected override void CreateLocalNeeds(StaticString context, StaticString pass)
 	{
 		base.CreateLocalNeeds(context, pass);
-		IAIEmpireDataAIHelper service = AIScheduler.Services.GetService<IAIEmpireDataAIHelper>();
-		if (!service.TryGet(base.AIEntity.Empire.Index, out this.empireData))
+		if (!AIScheduler.Services.GetService<IAIEmpireDataAIHelper>().TryGet(base.AIEntity.Empire.Index, out this.empireData))
 		{
 			return;
 		}
@@ -164,26 +167,36 @@ public class AILayer_UnitRecruitment : AILayer
 		base.AIEntity.AIPlayer.Blackboard.FillMessages<EvaluableMessage_SettlerProduction>(BlackboardLayerID.Empire, (EvaluableMessage_SettlerProduction match) => match.EvaluationState != EvaluableMessage.EvaluableMessageState.Cancel && match.EvaluationState != EvaluableMessage.EvaluableMessageState.Obtained, ref list);
 		HeuristicValue heuristicValue = new HeuristicValue(0f);
 		heuristicValue.Add(1f, "(constant)", new object[0]);
-		for (int i = 0; i < this.requestArmyMessages.Count; i++)
+		if (this.ColonizationLayer == null || this.ColonizationLayer.CurrentSettlerCount < 2)
 		{
-			if (this.requestArmyMessages[i].CommanderCategory == AICommanderMissionDefinition.AICommanderCategory.Colonization)
+			for (int i = 0; i < this.requestArmyMessages.Count; i++)
 			{
-				if (this.requestArmyMessages[i].ExecutionState == RequestUnitListMessage.RequestUnitListState.Pending)
+				if (this.requestArmyMessages[i].CommanderCategory == AICommanderMissionDefinition.AICommanderCategory.Colonization && this.requestArmyMessages[i].ExecutionState == RequestUnitListMessage.RequestUnitListState.Pending)
 				{
 					if (list.Count == 0)
 					{
 						HeuristicValue heuristicValue2 = new HeuristicValue(0f);
 						heuristicValue2.Add(this.requestArmyMessages[i].Priority, "Army request priority", new object[0]);
-						EvaluableMessage_SettlerProduction evaluableMessage_SettlerProduction = new EvaluableMessage_SettlerProduction(heuristicValue, heuristicValue2, unitDesign, -1, 1, AILayer_AccountManager.MilitaryAccountName);
-						base.AIEntity.AIPlayer.Blackboard.AddMessage(evaluableMessage_SettlerProduction);
+						EvaluableMessage_SettlerProduction message = new EvaluableMessage_SettlerProduction(heuristicValue, heuristicValue2, unitDesign, -1, 1, AILayer_AccountManager.MilitaryAccountName);
+						base.AIEntity.AIPlayer.Blackboard.AddMessage(message);
 					}
 					else
 					{
-						EvaluableMessage_SettlerProduction evaluableMessage_SettlerProduction = list[0];
-						evaluableMessage_SettlerProduction.Refresh(1f, this.requestArmyMessages[i].Priority);
+						list[0].Refresh(1f, this.requestArmyMessages[i].Priority);
 					}
 				}
 			}
+		}
+		if (this.VictoryLayer != null && this.VictoryLayer.CurrentVictoryDesign == AILayer_Victory.VictoryDesign.Settler && (this.ColonizationLayer == null || this.ColonizationLayer.CurrentSettlerCount < 10))
+		{
+			if (list.Count < 1)
+			{
+				HeuristicValue localOpportunity = new HeuristicValue(1f);
+				EvaluableMessage_SettlerProduction message2 = new EvaluableMessage_SettlerProduction(heuristicValue, localOpportunity, unitDesign, -1, 1, AILayer_AccountManager.MilitaryAccountName);
+				base.AIEntity.AIPlayer.Blackboard.AddMessage(message2);
+				return;
+			}
+			list[0].Refresh(1f, 1f);
 		}
 	}
 
@@ -202,7 +215,7 @@ public class AILayer_UnitRecruitment : AILayer
 
 	private bool UnitDesignFilter_LandMilitaryUnit(UnitDesign unitDesign)
 	{
-		return !unitDesign.CheckAgainstTag(DownloadableContent13.UnitTypeManta) && !unitDesign.CheckAgainstTag(DownloadableContent9.TagColossus) && !unitDesign.CheckAgainstTag(TradableUnit.ReadOnlyMercenary) && !unitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) && !unitDesign.CheckAgainstTag(DownloadableContent16.SeafaringUnit);
+		return !unitDesign.CheckAgainstTag(DownloadableContent13.UnitTypeManta) && !unitDesign.CheckAgainstTag(DownloadableContent9.TagColossus) && !unitDesign.CheckAgainstTag(TradableUnit.ReadOnlyMercenary) && !unitDesign.CheckUnitAbility(UnitAbility.ReadonlyColonize, -1) && !unitDesign.CheckUnitAbility(UnitAbility.ReadonlyResettle, -1) && !unitDesign.CheckAgainstTag(DownloadableContent16.SeafaringUnit);
 	}
 
 	private bool UnitDesignFilter_NavyMilitaryUnit(UnitDesign unitDesign)
@@ -219,4 +232,8 @@ public class AILayer_UnitRecruitment : AILayer
 	private List<RequestUnitListMessage> requestArmyMessages = new List<RequestUnitListMessage>();
 
 	private IEndTurnService endTurnService;
+
+	private AILayer_Victory VictoryLayer;
+
+	private AILayer_Colonization ColonizationLayer;
 }

@@ -22,11 +22,13 @@ public class AILayer_CreepingNode : AILayer
 		yield return base.Initialize(aiEntity);
 		this.gameService = Services.GetService<IGameService>();
 		Diagnostics.Assert(this.gameService != null);
+		this.playerRepositoryService = this.gameService.Game.Services.GetService<IPlayerRepositoryService>();
 		this.aiEntityCity = (base.AIEntity as AIEntity_City);
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		this.departmentOfScience = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
 		this.departmentOfTheTreasury = base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>();
 		this.departmentOfCreepingNodes = base.AIEntity.Empire.GetAgency<DepartmentOfCreepingNodes>();
+		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
 		this.creepingNodeDefinitionDatabase = Databases.GetDatabase<CreepingNodeImprovementDefinition>(true);
 		this.simulationDescriptorDatabase = Databases.GetDatabase<SimulationDescriptor>(false);
 		this.visibilityService = this.gameService.Game.Services.GetService<IVisibilityService>();
@@ -56,8 +58,10 @@ public class AILayer_CreepingNode : AILayer
 		this.departmentOfScience = null;
 		this.departmentOfTheTreasury = null;
 		this.departmentOfCreepingNodes = null;
+		this.departmentOfForeignAffairs = null;
 		this.worldPositionningService = null;
 		this.creepingNodeDefinitionDatabase = null;
+		this.playerRepositoryService = null;
 		if (this.seasonService != null)
 		{
 			this.seasonService.SeasonChange -= this.OnSeasonChange;
@@ -69,30 +73,32 @@ public class AILayer_CreepingNode : AILayer
 		base.CreateLocalNeeds(context, pass);
 		this.availableNodes.Clear();
 		CreepingNode[] array = this.departmentOfCreepingNodes.GetNodesUnderConstruction();
-		float nodesPerPopulation = this.GetNodesPerPopulation();
-		float num = nodesPerPopulation - (float)array.Length;
-		if (num > 0f)
+		this.nodesPerPopulation = this.GetNodesPerPopulation();
+		this.nodesPerPopulation -= (float)array.Length;
+		this.availableNodes = this.GetAvailableNodes();
+		this.ResetNodesScore();
+		this.ScoreAvailableNodes();
+		int num = 0;
+		if (array.Length == 0)
 		{
-			this.availableNodes = this.GetAvailableNodes();
-			int num2 = 0;
-			while ((float)num2 < num)
+			num = 1;
+		}
+		for (int i = num; i < this.availableNodes.Count; i++)
+		{
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && ELCPUtilities.ELCPVerboseMode)
 			{
-				this.FilterUnaffordableNodes();
-				if (this.availableNodes.Count == 0)
+				Diagnostics.Log("ELCP: {0} availableNodes {1} {2} {3}", new object[]
 				{
-					break;
-				}
-				this.ResetNodesScore();
-				this.ScoreAvailableNodes();
-				AILayer_CreepingNode.EvaluableCreepingNode evaluableCreepingNode = this.availableNodes[0];
-				if (evaluableCreepingNode.score < this.MinScoreToQueueNode)
-				{
-					break;
-				}
-				CreepingNodeConstructionMessage message = new CreepingNodeConstructionMessage(base.AIEntity.Empire.Index, this.aiEntityCity.City.GUID, evaluableCreepingNode.pointOfInterest, evaluableCreepingNode.nodeDefinition.Name);
-				base.AIEntity.AIPlayer.Blackboard.AddMessage(message);
-				this.availableNodes.Remove(evaluableCreepingNode);
-				num2++;
+					base.AIEntity.Empire,
+					this.availableNodes[i].nodeDefinition.Name,
+					this.availableNodes[i].pointOfInterest.WorldPosition,
+					this.availableNodes[i].score
+				});
+			}
+			if (this.availableNodes[i].score < this.MinScoreToQueueNode)
+			{
+				this.availableNodes.RemoveAt(i);
+				i--;
 			}
 		}
 		if (this.IsMadSeason)
@@ -100,14 +106,14 @@ public class AILayer_CreepingNode : AILayer
 			array = (from node in array
 			orderby node.GetBuyoutCost() descending
 			select node).ToArray<CreepingNode>();
-			for (int i = 0; i < array.Length; i++)
+			for (int j = 0; j < array.Length; j++)
 			{
-				float num3 = -array[i].GetBuyoutCost();
-				if (this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.AIEntity.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, ref num3))
+				float num2 = -array[j].GetBuyoutCost();
+				if (this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.AIEntity.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, ref num2))
 				{
-					CreepingNodeBuyoutMessage message2 = new CreepingNodeBuyoutMessage(base.AIEntity.Empire.Index, array[i].GUID);
-					base.AIEntity.AIPlayer.Blackboard.AddMessage(message2);
-					break;
+					CreepingNodeBuyoutMessage message = new CreepingNodeBuyoutMessage(base.AIEntity.Empire.Index, array[j].GUID);
+					base.AIEntity.AIPlayer.Blackboard.AddMessage(message);
+					return;
 				}
 			}
 		}
@@ -116,10 +122,15 @@ public class AILayer_CreepingNode : AILayer
 	protected override void ExecuteNeeds(StaticString context, StaticString pass)
 	{
 		base.ExecuteNeeds(context, pass);
-		List<CreepingNodeConstructionMessage> list = new List<CreepingNodeConstructionMessage>(base.AIEntity.AIPlayer.Blackboard.GetMessages<CreepingNodeConstructionMessage>(BlackboardLayerID.Empire, (CreepingNodeConstructionMessage match) => match.State != BlackboardMessage.StateValue.Message_Canceled));
+		ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
+		if (this.availableNodes.Count > 0 && this.nodesPerPopulation > 0f)
+		{
+			service.RegisterSynchronousJob(new SynchronousJob(this.SyncrhronousJob_QueueNode));
+		}
+		List<CreepingNodeBuyoutMessage> list = new List<CreepingNodeBuyoutMessage>(base.AIEntity.AIPlayer.Blackboard.GetMessages<CreepingNodeBuyoutMessage>(BlackboardLayerID.Empire, (CreepingNodeBuyoutMessage match) => match.State != BlackboardMessage.StateValue.Message_Canceled));
 		for (int i = list.Count - 1; i >= 0; i--)
 		{
-			CreepingNodeConstructionMessage message = list[i];
+			CreepingNodeBuyoutMessage message = list[i];
 			if (!this.IsMessageValid(message))
 			{
 				base.AIEntity.AIPlayer.Blackboard.CancelMessage(message);
@@ -128,25 +139,8 @@ public class AILayer_CreepingNode : AILayer
 		}
 		if (list.Count > 0)
 		{
-			this.validatedMessages = list;
-			ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-			service.RegisterSynchronousJob(new SynchronousJob(this.SyncrhronousJob_QueueNode));
-		}
-		List<CreepingNodeBuyoutMessage> list2 = new List<CreepingNodeBuyoutMessage>(base.AIEntity.AIPlayer.Blackboard.GetMessages<CreepingNodeBuyoutMessage>(BlackboardLayerID.Empire, (CreepingNodeBuyoutMessage match) => match.State != BlackboardMessage.StateValue.Message_Canceled));
-		for (int j = list2.Count - 1; j >= 0; j--)
-		{
-			CreepingNodeBuyoutMessage message2 = list2[j];
-			if (!this.IsMessageValid(message2))
-			{
-				base.AIEntity.AIPlayer.Blackboard.CancelMessage(message2);
-				list2.RemoveAt(j);
-			}
-		}
-		if (list2.Count > 0)
-		{
-			this.validatedBuyoutMessages = list2;
-			ISynchronousJobRepositoryAIHelper service2 = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-			service2.RegisterSynchronousJob(new SynchronousJob(this.SyncrhronousJob_BuyoutNode));
+			this.validatedBuyoutMessages = list;
+			service.RegisterSynchronousJob(new SynchronousJob(this.SyncrhronousJob_BuyoutNode));
 		}
 	}
 
@@ -188,24 +182,58 @@ public class AILayer_CreepingNode : AILayer
 
 	private SynchronousJobState SyncrhronousJob_QueueNode()
 	{
-		if (this.validatedMessages.Count > 0)
+		if (base.AIEntity == null || (base.AIEntity.Empire as MajorEmpire).ELCPIsEliminated || this.departmentOfTheInterior.MainCity == null || this.departmentOfTheInterior.MainCity.SimulationObject.Tags.Contains(City.TagCityStatusRazed))
 		{
-			for (int i = this.validatedMessages.Count - 1; i >= 0; i--)
-			{
-				CreepingNodeConstructionMessage creepingNodeConstructionMessage = this.validatedMessages[i];
-				this.validatedMessages.RemoveAt(i);
-				CreepingNodeImprovementDefinition value = this.creepingNodeDefinitionDatabase.GetValue(creepingNodeConstructionMessage.NodeDefinitionName);
-				OrderQueueCreepingNode order = new OrderQueueCreepingNode(creepingNodeConstructionMessage.EmpireIndex, creepingNodeConstructionMessage.CityGUID, creepingNodeConstructionMessage.PointOfInterestGUID, value, creepingNodeConstructionMessage.PointOfInterestPosition, false, true);
-				base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
-				base.AIEntity.AIPlayer.Blackboard.CancelMessage(creepingNodeConstructionMessage);
-			}
+			return SynchronousJobState.Failure;
+		}
+		if (this.departmentOfTheInterior.MainCity.GetPropertyValue(SimulationProperties.NetCityGrowth) <= 0f || this.nodesPerPopulation <= 0f)
+		{
 			return SynchronousJobState.Success;
 		}
-		return SynchronousJobState.Failure;
+		int i = 0;
+		while (i < this.availableNodes.Count)
+		{
+			if (!this.IsNodeValid(i))
+			{
+				this.availableNodes.RemoveAt(i);
+			}
+			else
+			{
+				CreepingNodeImprovementDefinition nodeDefinition = this.availableNodes[i].nodeDefinition;
+				OrderQueueCreepingNode order = new OrderQueueCreepingNode(base.AIEntity.Empire.Index, this.aiEntityCity.City.GUID, this.availableNodes[i].pointOfInterest.GUID, nodeDefinition, this.availableNodes[i].pointOfInterest.WorldPosition, false, true);
+				base.AIEntity.Empire.PlayerControllers.AI.PostOrder(order);
+				this.availableNodes.RemoveAt(i);
+				if (this.availableNodes.Count == 0)
+				{
+					return SynchronousJobState.Success;
+				}
+				bool flag = true;
+				foreach (Player player in this.playerRepositoryService)
+				{
+					if (player.Type == PlayerType.Human && player.State != PlayerState.Ready)
+					{
+						flag = false;
+						break;
+					}
+				}
+				if (flag)
+				{
+					Diagnostics.Log("ELCP: SyncrhronousJob_QueueNode() detected all humans are ready, aborting");
+					return SynchronousJobState.Failure;
+				}
+				this.nodesPerPopulation -= 1f;
+				return SynchronousJobState.Running;
+			}
+		}
+		return SynchronousJobState.Success;
 	}
 
 	private SynchronousJobState SyncrhronousJob_BuyoutNode()
 	{
+		if (base.AIEntity == null || (base.AIEntity.Empire as MajorEmpire).ELCPIsEliminated || this.departmentOfTheInterior.MainCity == null || this.departmentOfTheInterior.MainCity.SimulationObject.Tags.Contains(City.TagCityStatusRazed))
+		{
+			return SynchronousJobState.Failure;
+		}
 		if (this.validatedBuyoutMessages.Count > 0)
 		{
 			for (int i = this.validatedBuyoutMessages.Count - 1; i >= 0; i--)
@@ -359,45 +387,45 @@ public class AILayer_CreepingNode : AILayer
 		for (int i = 0; i < this.worldPositionningService.World.Regions.Length; i++)
 		{
 			Region region = this.worldPositionningService.World.Regions[i];
-			bool flag = region.IsRegionColonized();
-			bool flag2 = region.Kaiju != null;
-			bool flag3 = region.BelongToEmpire(base.AIEntity.Empire);
+			int num = region.IsRegionColonized() ? 1 : 0;
+			bool flag = region.Kaiju != null;
+			bool flag2 = region.BelongToEmpire(base.AIEntity.Empire);
+			bool flag3 = false;
+			if (ELCPUtilities.UseELCPPeacefulCreepingNodes && !flag2 && region.Owner != null && region.Owner is MajorEmpire)
+			{
+				flag3 = (this.departmentOfForeignAffairs.IsFriend(region.Owner) && this.departmentOfForeignAffairs.CanMoveOn(region.Index, false));
+			}
 			bool flag4 = false;
-			if (flag2)
+			if (flag)
 			{
 				flag4 = (region.Kaiju.IsWild() || region.Kaiju.OwnerEmpireIndex == base.AIEntity.Empire.Index);
 			}
-			if (!flag || flag3 || (flag2 && flag4))
+			if (num == 0 || flag2 || flag3 || (flag && flag4))
 			{
 				foreach (PointOfInterest pointOfInterest in region.PointOfInterests)
 				{
-					bool flag5 = this.IsPoiUnlocked(pointOfInterest);
-					if (pointOfInterest.CreepingNodeImprovement == null)
+					bool flag5 = this.departmentOfCreepingNodes.POIIsOnCooldown(pointOfInterest.GUID);
+					if ((!flag3 || pointOfInterest.Type == "QuestLocation") && !flag5)
 					{
-						if (!(pointOfInterest.Type != "Village") || pointOfInterest.PointOfInterestImprovement == null)
+						bool flag6 = this.IsPoiUnlocked(pointOfInterest);
+						if (pointOfInterest.CreepingNodeImprovement == null && (!(pointOfInterest.Type != "Village") || pointOfInterest.PointOfInterestImprovement == null) && ((this.worldPositionningService.GetExplorationBits(pointOfInterest.WorldPosition) & base.AIEntity.Empire.Bits) > 0 && flag6))
 						{
-							if ((this.worldPositionningService.GetExplorationBits(pointOfInterest.WorldPosition) & base.AIEntity.Empire.Bits) > 0 && flag5)
+							foreach (CreepingNodeImprovementDefinition creepingNodeImprovementDefinition in values)
 							{
-								foreach (CreepingNodeImprovementDefinition creepingNodeImprovementDefinition in values)
+								if (creepingNodeImprovementDefinition.PointOfInterestTemplateName == pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName && (!(pointOfInterest.Type == "Village") || (pointOfInterest.SimulationObject.Tags.Contains(Village.PacifiedVillage) && !pointOfInterest.SimulationObject.Tags.Contains(Village.ConvertedVillage))))
 								{
-									if (creepingNodeImprovementDefinition.PointOfInterestTemplateName == pointOfInterest.PointOfInterestDefinition.PointOfInterestTemplateName)
+									list2.Clear();
+									DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, creepingNodeImprovementDefinition, ref list2, new string[]
 									{
-										if (!(pointOfInterest.Type == "Village") || (pointOfInterest.SimulationObject.Tags.Contains(Village.PacifiedVillage) && !pointOfInterest.SimulationObject.Tags.Contains(Village.ConvertedVillage)))
+										ConstructionFlags.Prerequisite
+									});
+									if (!list2.Contains(ConstructionFlags.Discard) && this.departmentOfTheTreasury.CheckConstructibleInstantCosts(this.aiEntityCity.City, creepingNodeImprovementDefinition))
+									{
+										CreepingNodeImprovementDefinition bestCreepingNodeDefinition = this.departmentOfCreepingNodes.GetBestCreepingNodeDefinition(this.aiEntityCity.City, pointOfInterest, creepingNodeImprovementDefinition, list2);
+										AILayer_CreepingNode.EvaluableCreepingNode item = new AILayer_CreepingNode.EvaluableCreepingNode(pointOfInterest, bestCreepingNodeDefinition);
+										if (!list.Contains(item))
 										{
-											list2.Clear();
-											DepartmentOfTheTreasury.CheckConstructiblePrerequisites(this.aiEntityCity.City, creepingNodeImprovementDefinition, ref list2, new string[]
-											{
-												ConstructionFlags.Prerequisite
-											});
-											if (!list2.Contains(ConstructionFlags.Discard) && this.departmentOfTheTreasury.CheckConstructibleInstantCosts(this.aiEntityCity.City, creepingNodeImprovementDefinition))
-											{
-												CreepingNodeImprovementDefinition bestCreepingNodeDefinition = this.departmentOfCreepingNodes.GetBestCreepingNodeDefinition(this.aiEntityCity.City, pointOfInterest, creepingNodeImprovementDefinition, list2);
-												AILayer_CreepingNode.EvaluableCreepingNode item = new AILayer_CreepingNode.EvaluableCreepingNode(pointOfInterest, bestCreepingNodeDefinition);
-												if (!list.Contains(item))
-												{
-													list.Add(item);
-												}
-											}
+											list.Add(item);
 										}
 									}
 								}
@@ -444,14 +472,17 @@ public class AILayer_CreepingNode : AILayer
 			float item = num + num2 + num3 + num4 + num5;
 			list.Add(item);
 		}
-		float num6 = list.Min();
-		float num7 = list.Max();
-		for (int j = 0; j < list.Count; j++)
+		if (list.Count > 0)
 		{
-			float num8 = (num6 == num7) ? this.NormalizationFailSafeValue : Mathf.InverseLerp(num6, num7, list[j]);
-			float score = this.availableNodes[j].score;
-			float boostFactor = num8 * this.FIDSIWeight;
-			this.availableNodes[j].score = AILayer.Boost(score, boostFactor);
+			float num6 = list.Min();
+			float num7 = list.Max();
+			for (int j = 0; j < list.Count; j++)
+			{
+				float num8 = (num6 == num7) ? this.NormalizationFailSafeValue : Mathf.InverseLerp(num6, num7, list[j]);
+				float score = this.availableNodes[j].score;
+				float boostFactor = num8 * this.FIDSIWeight;
+				this.availableNodes[j].score = AILayer.Boost(score, boostFactor);
+			}
 		}
 	}
 
@@ -469,12 +500,10 @@ public class AILayer_CreepingNode : AILayer
 					{
 						if (dictionary.ContainsKey(missingResource.ResourceName))
 						{
-							Dictionary<StaticString, int> dictionary3;
-							Dictionary<StaticString, int> dictionary2 = dictionary3 = dictionary;
+							Dictionary<StaticString, int> dictionary2 = dictionary;
 							StaticString resourceName;
-							StaticString key = resourceName = missingResource.ResourceName;
-							int num = dictionary3[resourceName];
-							dictionary2[key] = num + 1;
+							int num = dictionary2[resourceName = missingResource.ResourceName];
+							dictionary2[resourceName] = num + 1;
 						}
 						else
 						{
@@ -491,39 +520,42 @@ public class AILayer_CreepingNode : AILayer
 			AILayer_CreepingNode.EvaluableCreepingNode evaluableCreepingNode = this.availableNodes[i];
 			PointOfInterest pointOfInterest = evaluableCreepingNode.pointOfInterest;
 			CreepingNodeImprovementDefinition nodeDefinition = evaluableCreepingNode.nodeDefinition;
-			float item = 0f;
+			float num2 = 0f;
 			if (!(pointOfInterest.Type == "ResourceDeposit"))
 			{
-				goto IL_19D;
+				goto IL_184;
 			}
-			PointOfInterestDefinition pointOfInterestDefinition = pointOfInterest.PointOfInterestDefinition;
 			string x;
-			if (pointOfInterestDefinition.TryGetValue("ResourceName", out x))
+			if (pointOfInterest.PointOfInterestDefinition.TryGetValue("ResourceName", out x))
 			{
+				num2 = 0.5f;
 				if (dictionary.ContainsKey(x))
 				{
-					item = (float)dictionary[x];
-					goto IL_19D;
+					num2 = Mathf.Max(num2, (float)dictionary[x]);
+					goto IL_184;
 				}
-				goto IL_19D;
+				goto IL_184;
 			}
-			IL_1A6:
+			IL_17E:
 			i++;
 			continue;
-			IL_19D:
-			list.Add(item);
-			goto IL_1A6;
+			IL_184:
+			list.Add(num2);
+			goto IL_17E;
 		}
-		float num2 = list.Min();
-		float num3 = list.Max();
-		for (int j = 0; j < list.Count; j++)
+		if (list.Count > 0)
 		{
-			if (!(this.availableNodes[j].pointOfInterest.Type != "ResourceDeposit"))
+			float num3 = list.Min();
+			float num4 = list.Max();
+			for (int j = 0; j < list.Count; j++)
 			{
-				float num4 = (num2 == num3) ? this.NormalizationFailSafeValue : Mathf.InverseLerp(num2, num3, list[j]);
-				float score = this.availableNodes[j].score;
-				float boostFactor = num4 * this.ResourceWeight;
-				this.availableNodes[j].score = AILayer.Boost(score, boostFactor);
+				if (!(this.availableNodes[j].pointOfInterest.Type != "ResourceDeposit"))
+				{
+					float num5 = (num3 == num4) ? this.NormalizationFailSafeValue : Mathf.InverseLerp(num3, num4, list[j]);
+					float score = this.availableNodes[j].score;
+					float boostFactor = num5 * this.ResourceWeight;
+					this.availableNodes[j].score = AILayer.Boost(score, boostFactor);
+				}
 			}
 		}
 	}
@@ -603,38 +635,41 @@ public class AILayer_CreepingNode : AILayer
 
 	private void ScoreRuinsNodes()
 	{
-		StaticString ruinPOIType = new StaticString("QuestLocation");
+		List<int> list = new List<int>();
 		for (int i = 0; i < this.availableNodes.Count; i++)
 		{
 			AILayer_CreepingNode.EvaluableCreepingNode evaluableCreepingNode = this.availableNodes[i];
-			if (evaluableCreepingNode.pointOfInterest.Type.Equals(ruinPOIType))
+			if (evaluableCreepingNode.pointOfInterest.Type.Equals(ELCPUtilities.QuestLocation))
 			{
-				Region targetRegion = this.worldPositionningService.GetRegion(evaluableCreepingNode.pointOfInterest.WorldPosition);
-				PointOfInterest[] pointOfInterests = targetRegion.PointOfInterests;
+				Region region = this.worldPositionningService.GetRegion(evaluableCreepingNode.pointOfInterest.WorldPosition);
+				PointOfInterest[] pointOfInterests = region.PointOfInterests;
 				bool flag = false;
-				for (int j = 0; j < pointOfInterests.Length; j++)
+				if (list.Contains(region.Index))
 				{
-					if (pointOfInterests[j].CreepingNodeImprovement != null && pointOfInterests[j].Empire.Index == base.AIEntity.Empire.Index && pointOfInterests[j].Type.Equals(ruinPOIType))
+					flag = true;
+				}
+				else
+				{
+					list.Add(region.Index);
+				}
+				if (!flag)
+				{
+					for (int j = 0; j < this.departmentOfCreepingNodes.Nodes.Count; j++)
 					{
-						flag = true;
-						break;
+						if (region.Index == this.departmentOfCreepingNodes.Nodes[j].Region.Index)
+						{
+							flag = true;
+							break;
+						}
 					}
 				}
 				if (flag)
 				{
-					evaluableCreepingNode.score = AILayer.Boost(evaluableCreepingNode.score, -this.RuinsWeight);
+					evaluableCreepingNode.score = AILayer.Boost(evaluableCreepingNode.score, -0.9f);
 				}
 				else
 				{
-					List<CreepingNodeConstructionMessage> list = new List<CreepingNodeConstructionMessage>(base.AIEntity.AIPlayer.Blackboard.GetMessages<CreepingNodeConstructionMessage>(BlackboardLayerID.Empire, (CreepingNodeConstructionMessage match) => match.State != BlackboardMessage.StateValue.Message_Canceled && match.PointOFInterestType.Equals(ruinPOIType) && this.worldPositionningService.GetRegion(match.PointOfInterestPosition).Index == targetRegion.Index));
-					if (list.Count > 0)
-					{
-						evaluableCreepingNode.score = AILayer.Boost(evaluableCreepingNode.score, -this.RuinsWeight);
-					}
-					else
-					{
-						evaluableCreepingNode.score = AILayer.Boost(evaluableCreepingNode.score, this.RuinsWeight);
-					}
+					evaluableCreepingNode.score = AILayer.Boost(evaluableCreepingNode.score, this.RuinsWeight);
 				}
 			}
 		}
@@ -643,7 +678,7 @@ public class AILayer_CreepingNode : AILayer
 	private void ScoreVillageNodes()
 	{
 		int num = Mathf.RoundToInt(base.AIEntity.Empire.GetPropertyValue(SimulationProperties.MinorFactionSlotCount));
-		ReadOnlyCollection<Faction> assimilatedFactions = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>().AssimilatedFactions;
+		ReadOnlyCollection<Faction> assimilatedFactions = this.departmentOfTheInterior.AssimilatedFactions;
 		List<float> list = new List<float>();
 		for (int i = 0; i < this.availableNodes.Count; i++)
 		{
@@ -653,8 +688,7 @@ public class AILayer_CreepingNode : AILayer
 			}
 			else
 			{
-				Region region = this.worldPositionningService.GetRegion(this.availableNodes[i].pointOfInterest.WorldPosition);
-				MinorFaction minorFaction = region.MinorEmpire.Faction as MinorFaction;
+				MinorFaction minorFaction = this.worldPositionningService.GetRegion(this.availableNodes[i].pointOfInterest.WorldPosition).MinorEmpire.Faction as MinorFaction;
 				float num2 = (float)num;
 				for (int j = 0; j < assimilatedFactions.Count; j++)
 				{
@@ -662,21 +696,25 @@ public class AILayer_CreepingNode : AILayer
 					{
 						float num3 = (float)this.departmentOfTheInterior.GetNumberOfOwnedMinorFactionVillages(minorFaction, false);
 						num2 += this.MaxNumOfFactionVillages - num3;
+						break;
 					}
 				}
 				list.Add(num2);
 			}
 		}
-		float num4 = list.Min();
-		float num5 = list.Max();
-		for (int k = 0; k < list.Count; k++)
+		if (list.Count > 0)
 		{
-			if (!(this.availableNodes[k].pointOfInterest.Type != "Village"))
+			float num4 = list.Min();
+			float num5 = list.Max();
+			for (int k = 0; k < list.Count; k++)
 			{
-				float num6 = (num4 == num5) ? this.NormalizationFailSafeValue : Mathf.InverseLerp(num4, num5, list[k]);
-				float score = this.availableNodes[k].score;
-				float boostFactor = num6 * this.VilageWeight;
-				this.availableNodes[k].score = AILayer.Boost(score, boostFactor);
+				if (this.availableNodes[k].pointOfInterest.Type == "Village")
+				{
+					float num6 = (num4 == num5) ? this.NormalizationFailSafeValue : Mathf.InverseLerp(num4, num5, list[k]);
+					float score = this.availableNodes[k].score;
+					float boostFactor = num6 * this.VilageWeight;
+					this.availableNodes[k].score = AILayer.Boost(score, boostFactor);
+				}
 			}
 		}
 	}
@@ -707,49 +745,67 @@ public class AILayer_CreepingNode : AILayer
 					}
 				}
 				float num4 = 0f;
-				if (knownCities.Length > 0)
+				if (knownCities.Length != 0)
 				{
 					num4 = 1f / num;
-					DepartmentOfForeignAffairs agency = knownCities[num2].Empire.GetAgency<DepartmentOfForeignAffairs>();
-					DiplomaticRelation diplomaticRelation = agency.GetDiplomaticRelation(base.AIEntity.Empire);
+					DiplomaticRelation diplomaticRelation = knownCities[num2].Empire.GetAgency<DepartmentOfForeignAffairs>().GetDiplomaticRelation(base.AIEntity.Empire);
 					if (diplomaticRelation != null)
 					{
-						string text = diplomaticRelation.State.Name;
-						switch (text)
+						string a = diplomaticRelation.State.Name;
+						if (!(a == "DiplomaticRelationStateWar"))
 						{
-						case "DiplomaticRelationStateWar":
-							num4 *= this.TowerMultiplierForWar;
-							goto IL_1F5;
-						case "DiplomaticRelationStateTruce":
-							num4 *= this.TowerMultiplierForTruce;
-							goto IL_1F5;
-						case "DiplomaticRelationStateColdWar":
-							num4 *= this.TowerMultiplierForColdWar;
-							goto IL_1F5;
-						case "DiplomaticRelationStatePeace":
-							num4 *= this.TowerMultiplierForPeace;
-							goto IL_1F5;
-						case "DiplomaticRelationStateAlliance":
-							num4 *= this.TowerMultiplierForAlliance;
-							goto IL_1F5;
+							if (!(a == "DiplomaticRelationStateTruce"))
+							{
+								if (!(a == "DiplomaticRelationStateColdWar"))
+								{
+									if (!(a == "DiplomaticRelationStatePeace"))
+									{
+										if (!(a == "DiplomaticRelationStateAlliance"))
+										{
+											num4 *= 0f;
+										}
+										else
+										{
+											num4 *= this.TowerMultiplierForAlliance;
+										}
+									}
+									else
+									{
+										num4 *= this.TowerMultiplierForPeace;
+									}
+								}
+								else
+								{
+									num4 *= this.TowerMultiplierForColdWar;
+								}
+							}
+							else
+							{
+								num4 *= this.TowerMultiplierForTruce;
+							}
 						}
-						num4 *= 0f;
+						else
+						{
+							num4 *= this.TowerMultiplierForWar;
+						}
 					}
 				}
-				IL_1F5:
 				list.Add(num4);
 			}
 		}
-		float num6 = list.Min();
-		float num7 = list.Max();
-		for (int k = 0; k < list.Count; k++)
+		if (list.Count > 0)
 		{
-			if (!(this.availableNodes[k].pointOfInterest.Type != "WatchTower"))
+			float num5 = list.Min();
+			float num6 = list.Max();
+			for (int k = 0; k < list.Count; k++)
 			{
-				float num8 = (num6 == num7) ? this.NormalizationFailSafeValue : Mathf.InverseLerp(num6, num7, list[k]);
-				float score = this.availableNodes[k].score;
-				float boostFactor = num8 * this.TowersWeight;
-				this.availableNodes[k].score = AILayer.Boost(score, boostFactor);
+				if (!(this.availableNodes[k].pointOfInterest.Type != "WatchTower"))
+				{
+					float num7 = (num5 == num6) ? this.NormalizationFailSafeValue : Mathf.InverseLerp(num5, num6, list[k]);
+					float score = this.availableNodes[k].score;
+					float boostFactor = num7 * this.TowersWeight;
+					this.availableNodes[k].score = AILayer.Boost(score, boostFactor);
+				}
 			}
 		}
 	}
@@ -787,6 +843,12 @@ public class AILayer_CreepingNode : AILayer
 	private void OnSeasonChange(object sender, SeasonChangeEventArgs e)
 	{
 		this.IsMadSeason = (e.NewSeason.SeasonDefinition.SeasonType == Season.ReadOnlyHeatWave);
+	}
+
+	private bool IsNodeValid(int i)
+	{
+		PointOfInterest pointOfInterest = this.availableNodes[i].pointOfInterest;
+		return pointOfInterest != null && pointOfInterest.CreepingNodeImprovement == null;
 	}
 
 	private static object[] NodesPerPopulationFormula;
@@ -872,6 +934,12 @@ public class AILayer_CreepingNode : AILayer
 
 	[InfluencedByPersonality]
 	private float TowerMultiplierForAlliance = 0.2f;
+
+	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
+
+	private IPlayerRepositoryService playerRepositoryService;
+
+	private float nodesPerPopulation;
 
 	public class EvaluableCreepingNode
 	{

@@ -25,6 +25,7 @@ public class RaidersCommander : BaseNavyCommander
 	{
 		for (int i = this.navyTasks.Count - 1; i >= 0; i--)
 		{
+			this.navyTasks[i].ForbiddenGUIDs.Clear();
 			if (!this.navyTasks[i].CheckValidity())
 			{
 				if (this.navyTasks[i].AssignedArmy != null)

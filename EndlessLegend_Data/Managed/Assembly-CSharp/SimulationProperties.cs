@@ -723,4 +723,22 @@ public static class SimulationProperties
 	public static readonly StaticString CityOwnedTurn = "CityOwnedTurn";
 
 	public static readonly StaticString OvergrownCityRazeCityCooldownInTurns = "OvergrownCityRazeCityCooldownInTurns";
+
+	public static readonly StaticString AllayiBoosterDurationMultiplier = "AllayiBoosterDurationMultiplier";
+
+	public static readonly StaticString MarketplaceMercCostMultiplier = "MarketplaceMercCostMultiplier";
+
+	public static readonly StaticString MarketplaceStockpileCostMultiplier = "MarketplaceStockpileCostMultiplier";
+
+	public static readonly StaticString NodeCostIncrementModifier = "NodeCostIncrementModifier";
+
+	public static readonly StaticString NodeOvergrownVillageCostModifier = "NodeOvergrownVillageCostModifier";
+
+	public static readonly StaticString ConvertVillageMultiplier = "ConvertVillageMultiplier";
+
+	public static readonly StaticString NumberOfOwnedOceanicRegions = "NumberOfOwnedOceanicRegions";
+
+	public static readonly StaticString ELCPCadaversPerVillage = "ELCPCadaversPerVillage";
+
+	public static readonly StaticString ELCPCadavresPerSacrifice = "ELCPCadavresPerSacrifice";
 }

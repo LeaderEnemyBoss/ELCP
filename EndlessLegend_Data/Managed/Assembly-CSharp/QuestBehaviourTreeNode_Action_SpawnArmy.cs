@@ -23,6 +23,8 @@ public class QuestBehaviourTreeNode_Action_SpawnArmy : QuestBehaviourTreeNode_Ac
 		this.HaveActionPointOnSpawn = true;
 		this.DroplistRewardOnDeathName = string.Empty;
 		this.UseBehaviorInitiatorEmpire = false;
+		this.TransferResourceName = string.Empty;
+		this.TransferResourceAmount = 0;
 	}
 
 	[XmlAttribute("ArmyDroplist")]
@@ -186,20 +188,29 @@ public class QuestBehaviourTreeNode_Action_SpawnArmy : QuestBehaviourTreeNode_Ac
 			{
 				this.EmpireArmyOwner = questBehaviour.Initiator;
 			}
+			if (this.EmpireArmyOwner is MajorEmpire && (this.EmpireArmyOwner as MajorEmpire).ELCPIsEliminated)
+			{
+				return;
+			}
 			Droplist droplist2;
 			DroppableArmyDefinition droppableArmyDefinition = droplist.Pick(empire2, out droplist2, new object[0]) as DroppableArmyDefinition;
 			if (droppableArmyDefinition != null)
 			{
 				int num = 0;
+				if (this.ScaleWithMaxEra)
+				{
+					num = DepartmentOfScience.GetMaxEraNumber() - 1;
+				}
+				int val = 0;
 				IDatabase<AnimationCurve> database2 = Databases.GetDatabase<AnimationCurve>(false);
 				AnimationCurve animationCurve;
 				if (database2 != null && database2.TryGetValue(QuestBehaviourTreeNode_Action_SpawnArmy.questUnitLevelEvolution, out animationCurve))
 				{
 					float propertyValue = questBehaviour.Initiator.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-					float num2 = animationCurve.EvaluateWithScaledAxis((float)game.Turn, propertyValue, 1f);
-					num = (int)num2;
-					num = Math.Max(0, Math.Min(100, num));
+					val = (int)animationCurve.EvaluateWithScaledAxis((float)game.Turn, propertyValue, 1f);
+					val = Math.Max(0, Math.Min(100, val));
 				}
+				num = Math.Max(num, val);
 				StaticString[] array = Array.ConvertAll<string, StaticString>(droppableArmyDefinition.UnitDesigns, (string input) => input);
 				bool flag = false;
 				IDatabase<UnitDesign> database3 = Databases.GetDatabase<UnitDesign>(false);
@@ -235,14 +246,14 @@ public class QuestBehaviourTreeNode_Action_SpawnArmy : QuestBehaviourTreeNode_Ac
 							{
 								if (enumerable.Contains(worldPosition2))
 								{
-									goto IL_355;
+									goto IL_330;
 								}
 								this.AddPositionToForbiddenSpawnPosition(questBehaviour, worldPosition2);
 							}
 							worldPosition = worldPosition2;
 							break;
 						}
-						IL_355:;
+						IL_330:;
 					}
 					if (!service3.IsTileStopable(worldPosition, PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water, PathfindingFlags.IgnoreFogOfWar))
 					{
@@ -284,8 +295,11 @@ public class QuestBehaviourTreeNode_Action_SpawnArmy : QuestBehaviourTreeNode_Ac
 					{
 						string format = "Cannot find a valid position to spawn on: {0}";
 						object[] array2 = new object[1];
-						array2[0] = string.Join(",", (from position in list
-						select position.ToString()).ToArray<string>());
+						array2[0] = string.Join(",", list.Select(delegate(WorldPosition position)
+						{
+							WorldPosition worldPosition3 = position;
+							return worldPosition3.ToString();
+						}).ToArray<string>());
 						Diagnostics.LogError(format, array2);
 						return;
 					}
@@ -293,17 +307,37 @@ public class QuestBehaviourTreeNode_Action_SpawnArmy : QuestBehaviourTreeNode_Ac
 				OrderSpawnArmy orderSpawnArmy;
 				if (worldPosition.IsValid)
 				{
-					orderSpawnArmy = new OrderSpawnArmy(this.EmpireArmyOwner.Index, worldPosition, num, true, this.CanMoveOnSpawn, true, questBehaviour.Quest.QuestDefinition.IsGlobal || this.ForceGlobalArmySymbol, array);
+					list.Clear();
+					list.Add(worldPosition);
+					WorldOrientation worldOrientation = WorldOrientation.East;
+					for (int l = 0; l < 6; l++)
+					{
+						WorldPosition neighbourTile = service2.GetNeighbourTile(worldPosition, worldOrientation, 1);
+						bool flag3 = flag == service2.IsWaterTile(neighbourTile);
+						if (neighbourTile.IsValid && flag3 && service3.IsTileStopable(worldPosition, PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water, PathfindingFlags.IgnoreFogOfWar))
+						{
+							list.Add(neighbourTile);
+						}
+						worldOrientation = worldOrientation.Rotate(1);
+					}
+					orderSpawnArmy = new OrderSpawnArmy(this.EmpireArmyOwner.Index, list.ToArray(), num, true, this.CanMoveOnSpawn, true, questBehaviour.Quest.QuestDefinition.IsGlobal || this.ForceGlobalArmySymbol, array);
 				}
 				else
 				{
 					orderSpawnArmy = new OrderSpawnArmy(this.EmpireArmyOwner.Index, list.ToArray(), num, true, this.CanMoveOnSpawn, true, questBehaviour.Quest.QuestDefinition.IsGlobal || this.ForceGlobalArmySymbol, array);
 				}
 				orderSpawnArmy.GameEntityGUID = this.ArmyGUID;
-				Diagnostics.Log("Posting order: {0}.", new object[]
+				Diagnostics.Log("Posting order: {0} at {1}", new object[]
 				{
-					orderSpawnArmy.ToString()
+					orderSpawnArmy.ToString(),
+					worldPosition
 				});
+				if (!string.IsNullOrEmpty(this.TransferResourceName) && this.TransferResourceAmount > 0)
+				{
+					Ticket ticket;
+					this.EmpireArmyOwner.PlayerControllers.Server.PostOrder(orderSpawnArmy, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderSpawnArmy_TicketRaised));
+					return;
+				}
 				this.EmpireArmyOwner.PlayerControllers.Server.PostOrder(orderSpawnArmy);
 			}
 		}
@@ -431,6 +465,40 @@ public class QuestBehaviourTreeNode_Action_SpawnArmy : QuestBehaviourTreeNode_Ac
 			}
 		}
 		return base.Initialize(questBehaviour);
+	}
+
+	[XmlAttribute]
+	public bool ScaleWithMaxEra { get; set; }
+
+	private void OrderSpawnArmy_TicketRaised(object sender, TicketRaisedEventArgs e)
+	{
+		if (e.Result == PostOrderResponse.Processed)
+		{
+			OrderSpawnArmy orderSpawnArmy = e.Order as OrderSpawnArmy;
+			IGameEntity gameEntity;
+			if (this.gameEntityRepositoryService != null && this.gameEntityRepositoryService.TryGetValue(orderSpawnArmy.GameEntityGUID, out gameEntity) && gameEntity != null)
+			{
+				Army army = gameEntity as Army;
+				if (army != null && army.StandardUnits.Count > 0)
+				{
+					OrderTransferResources order = new OrderTransferResources(this.EmpireArmyOwner.Index, this.TransferResourceName, (float)this.TransferResourceAmount, army.StandardUnits[0].GUID);
+					this.EmpireArmyOwner.PlayerControllers.Server.PostOrder(order);
+				}
+			}
+		}
+	}
+
+	[XmlElement]
+	public int TransferResourceAmount { get; set; }
+
+	[XmlElement]
+	public string TransferResourceName { get; set; }
+
+	public override void Release()
+	{
+		base.Release();
+		this.gameEntityRepositoryService = null;
+		this.EmpireArmyOwner = null;
 	}
 
 	[XmlIgnore]

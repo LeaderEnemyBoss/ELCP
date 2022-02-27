@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using Amplitude;
 using UnityEngine;
@@ -629,6 +631,112 @@ public class AgeFont : ScriptableObject
 		return 0f;
 	}
 
+	private static void Init()
+	{
+		if (!AgeFont._inited)
+		{
+			if (File.Exists(AgeFont._log))
+			{
+				File.Delete(AgeFont._log);
+			}
+			AgeFont.Log("Initialization");
+			StringBuilder stringBuilder = new StringBuilder().AppendLine();
+			foreach (string str in Font.GetOSInstalledFontNames())
+			{
+				stringBuilder.AppendLine("Found installed font: " + str);
+			}
+			AgeFont.Log(stringBuilder.ToString());
+			stringBuilder = new StringBuilder().AppendLine();
+			foreach (string str2 in Environment.GetCommandLineArgs())
+			{
+				stringBuilder.AppendLine("Fount command line argument: " + str2);
+			}
+			AgeFont.Log(stringBuilder.ToString());
+			AgeFont._inited = true;
+		}
+	}
+
+	private static void Log(string message)
+	{
+	}
+
+	public void Awake()
+	{
+		AgeFont.Init();
+		try
+		{
+			if (!this._scaled)
+			{
+				string key = "--fontScale=";
+				string text = Environment.GetCommandLineArgs().FirstOrDefault((string a) => a != null && a.StartsWith(key));
+				float s = 1.5f;
+				if (text != null && float.TryParse(text.Substring(key.Length), out s))
+				{
+					this.ScaleFont(s);
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			AgeFont.Log(base.name + " " + ex.Message);
+		}
+		if (this.HighdefAlternate != null && this.HighdefAlternate != this)
+		{
+			this.HighdefAlternate.Awake();
+		}
+		if (this.FallbackFonts != null)
+		{
+			AgeFont[] array = this.FallbackFonts;
+			for (int i = 0; i < array.Length; i++)
+			{
+				array[i].Awake();
+			}
+		}
+	}
+
+	public void ScaleFont(float s)
+	{
+		if (!this._scaled)
+		{
+			this._scaled = true;
+			this.fontSize = (int)((float)this.fontSize * s);
+			this.lineHeight *= s;
+			this.ascender *= s;
+			this.descender *= s;
+			for (int i = 0; i < this.characters.Length; i++)
+			{
+				AgeFont.Character character = this.characters[i];
+				character.Advance *= s;
+				character.Offset *= s;
+				character.Dimension *= s;
+				this.characters[i] = character;
+			}
+			AgeFont.Log(string.Concat(new string[]
+			{
+				"Font ",
+				base.name,
+				"(",
+				this.font.name,
+				") is scaled for ",
+				s.ToString()
+			}));
+		}
+	}
+
+	public void SetupCustomELCPScaling(float scale)
+	{
+		if (this.customELCPscaling == scale)
+		{
+			return;
+		}
+		if (this.customELCPscaling > 0f)
+		{
+			this.ScaleFont(1f / this.customELCPscaling);
+		}
+		this.customELCPscaling = scale;
+		this.ScaleFont(this.customELCPscaling);
+	}
+
 	public static string RaisableChars = "abcdefghijklmnopqrstuvwxyzáàâäéèêëïíìîóòôöûúùüçёœїąćęłńñóśźżабвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ";
 
 	public static string RaisedCharacs = "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÀÂÄÉÈÊËÏÍÌÎÓÒÔÖÛÚÙÜÇЁŒЇĄĆĘŁŃÑÓŚŹŻАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЄІЇҐ";
@@ -716,6 +824,14 @@ public class AgeFont : ScriptableObject
 
 	[SerializeField]
 	private AgeFont[] fallbackFonts;
+
+	private bool _scaled;
+
+	private static bool _inited;
+
+	private static string _log = "log-fonts.txt";
+
+	private float customELCPscaling;
 
 	public enum KerningMode
 	{

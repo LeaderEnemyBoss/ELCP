@@ -12,7 +12,7 @@
     <Prerequisites Target="$(Empire)">
       <DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
       <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityBrokenLords</PathPrerequisite>
-      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityReplicants</PathPrerequisite>
+      <!--<PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityReplicants</PathPrerequisite>-->
     </Prerequisites>
 
     <!--============ VARIABLES ============-->
@@ -116,8 +116,9 @@
         </Controller_Sequence>
 
         <!--Fail Condition 2-->
+		<!--ELCP quest fails as soon as the initial villages is pacified -->
         <Controller_Sequence>
-          <Decorator_VillagesPacified VillagesVarName="$InitialVillages" TargetOption="All" Initiator="AllEmpires"/>
+          <Decorator_VillagesPacified VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
 
@@ -150,7 +151,7 @@
       <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityNecrophages</PathPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">((($(AvailableEmpires) - 1) - $(NecrophagesCount)) - $Property(ClassEmpire:PeaceCount)) gt 2</InterpreterPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">(((($(AvailableEmpires) - 1) - $(NecrophagesCount)) - $Property(ClassEmpire:PeaceCount)) - $Property(ClassEmpire:UnknownCount)) gt 2</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era2UnlockedTechnologyCount) ge 5</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era2UnlockedTechnologyCount) ge 2</InterpreterPrerequisite>
     </Prerequisites>
 
     <!--============ VARIABLES ============-->
@@ -225,7 +226,7 @@
         <!-- Success Condition -->
         <Controller_Sequence>
           <Action_StartTimer Output_TimerVarName="$TimeBeforeQuestComplete"/>
-          <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
+          <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeQuestComplete"/>
 
           <Controller_Sequence>
             <Controller_Loop LoopCount="3">
@@ -254,7 +255,7 @@
 
         <!--Fail Condition 1-->
         <Controller_Sequence>
-          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="5" TimerLocalizationKey="$Timer" Initiator="Empire">
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeQuestComplete" TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" Initiator="Empire">
             <ConditionCheck_Prerequisite>
               <Prerequisites Target="$Empire">
                 <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) le 2</InterpreterPrerequisite>
@@ -291,7 +292,7 @@
 
   <!--========= TITLE: Legends Of Old ======-->
   <QuestDefinition Name="DLC21_03LegendsOfOld" Category="SideQuest" SubCategory="Ruins"
-                   Cooldown="0" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+                   Cooldown="5" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
 
     <!--============ TAGS ============-->
     <Tags>Interact</Tags>
@@ -387,7 +388,7 @@
             <Decorator_Inspect TargetEntityVarName="$POIRuin1" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire"/>
             <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerRuin1"/>
             <Action_LockQuestTarget TargetVarName="$POIRuin1" LockOption="Unlock"/>
-            <Action_SpawnArmy SpawnLocationVarName="$LocationToSpawnArmy" ArmyDroplist="DroplistArmyDefinitionSideQuestLegendOfOld" Output_EnemyArmyGUIDVarName="$ArmyID1" />
+            <Action_SpawnArmy SpawnLocationVarName="$LocationToSpawnArmy" ArmyDroplist="DroplistArmyDefinitionSideQuestLegendOfOldELCP" Output_EnemyArmyGUIDVarName="$ArmyID1" ScaleWithMaxEra="true" DroplistRewardOnDeathName="DroplistDustEra2"/>
             <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
             <!--Stop the sequence waiting the searching of the other ruin or the end of the timer-->
             <Controller_Loop LoopCount="9999">
@@ -410,14 +411,16 @@
             <Action_UpdateStep StepName="DLC21_LegendsOfOld_Step1" State="Completed"/>
             <Action_UpdateQuest State="Completed"/>
           </Controller_Sequence>
-
-          <!--Fail condition. The army is killed by other empire-->
+		  
+		  
+          <!--ELCP: why should the quest fail when this random army dies? its not quest relevant
+		      Fail condition. The army is killed by other empire
           <Controller_Sequence>
             <Decorator_KillArmy TargetOption="All" Initiator="OtherEmpires">
               <EnemyArmyGUIDVarName>$ArmyID1</EnemyArmyGUIDVarName>
             </Decorator_KillArmy>
             <Action_UpdateQuest State="Failed"/>
-          </Controller_Sequence>
+          </Controller_Sequence>-->
 
           <!-- Fail Condition. The timer has ended -->
           <Controller_Sequence>
@@ -446,7 +449,7 @@
   </QuestDefinition>
 
   <!--========= TITLE: Global Competitive: Infestation! ======-->
-  <QuestDefinition Name="DLC21_04Infestation" IsGlobal="true" GlobalWinner="Participants" GlobalCooldownLiability="ForceIgnore" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
+  <QuestDefinition Name="DLC21_04Infestation" IsGlobal="true" SingleCheckPerTurn="true" GlobalWinner="Participants" GlobalCooldownLiability="ForceCheck" ChanceOfTriggering="0.05" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="8" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
 
     <!--============ TAGS ============-->
     <Tags>BeginTurn</Tags>
@@ -455,7 +458,7 @@
     <Prerequisites Target="$(Empires)">
       <DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfCities) ge (1 * $(NumberOfEmpires))</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 50</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 15</InterpreterPrerequisite>
     </Prerequisites>
 
     <!--============ VARIABLES ============-->
@@ -492,9 +495,9 @@
               <FilterRegionIsColonized Inverted="true"/>
               <FilterRegionIsContinent/>
             </Where>
-            <OrderBy>
+            <!--<OrderBy>
               <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityPosition"/>
-            </OrderBy>
+            </OrderBy>-->
           </From>
         </Limit>
       </Var>
@@ -510,7 +513,7 @@
       </Var>
 
       <DropListVar VarName="$DustRewardAmount" DropList="DroplistCoopDust"/>
-      <DropListVar VarName="$BestContributorRewardAmount" DropList="DroplistGlobalQuestStrategicResource"/>
+      <DropListVar VarName="$BestContributorRewardAmount" DropList="DroplistLuxuryResources"/>
 
       <LocalizationVar LocalizationKey="$RewardPerContribution" Source="$DustRewardAmount"/>
       <LocalizationVar LocalizationKey="$BestContributorReward" Source="$BestContributorRewardAmount"/>
@@ -521,7 +524,7 @@
     <Controller_Sequence>
 
       <Action_UpdateStep StepName="DLC21_Infestation_Step1" State="InProgress"/>
-      <Action_SpawnArmies SpawnLocationVarName="$SelectedRuinsPositions" ArmyDroplist="DroplistArmyDefinitionUrkans" ArmyTag="Kelo" ArmyUnitTag="Kelo_Unit" />
+      <Action_SpawnArmies SpawnLocationVarName="$SelectedRuinsPositions" ArmyDroplist="DroplistArmyDefinitionUrkansELCP" ArmyTag="Kelo" ArmyUnitTag="Kelo_Unit" ScaleWithMaxEra="true"/>
       <!--<Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
       <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>-->
 
@@ -529,7 +532,7 @@
 
       <!--<Controller_Sequence>-->
       <Controller_Loop LoopCount="4">
-        <Decorator_KillArmy Output_LooserVarName="$LooserArmy" SelectLooserWithTag="Kelo" Initiator="Empire" LinkedStepProgression="DLC21_Infestation_Step1" >
+        <Decorator_KillArmy Output_LooserVarName="$LooserArmy" SelectLooserWithTag="Kelo" Initiator="AllEmpires" LinkedStepProgression="DLC21_Infestation_Step1" >
           <ConditionCheck_Prerequisite>
             <Prerequisites Target="$LooserArmy">
               <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,Kelo_Unit</PathPrerequisite>
@@ -558,24 +561,27 @@
         <!--Per Contribution-->
         <Reward Droplist="DroplistCoopDust" Progressive="true"/>
         <Reward LocalizationKey="%GlobalQuestCoopPerContributionReward" JustForShow="true"/>
+		<Reward DropVar="$BestContributorRewardAmount" MinimumRank="1"/>
+        <Reward LocalizationKey="%GlobalQuestCoopBestContributorReward" JustForShow="true"/>
       </Step>
     </Steps>
 
   </QuestDefinition>
 
   <!--========= TITLE: Global Competitive: City Gone Rogue - Prelude ====== -->
-  <QuestDefinition Name="DLC21_05CityGoneRogue_Prelude" GlobalCooldown="10" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">
-
+  <!--<QuestDefinition Name="DLC21_05CityGoneRogue_Prelude" GlobalCooldown="10" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">-->
+  <QuestDefinition Name="DLC21_05CityGoneRogue_Prelude" GlobalCooldownLiability="ForceCheck" ChanceOfTriggering="0.05" GlobalCooldown="10" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">
     <!--============ TAGS ============-->
     <Tags>Hidden,BeginTurn</Tags>
 
     <!--============ PREREQUISITES ============-->
-    <Prerequisites Target="$(Empire)">
+    <Prerequisites Target="$(Empires)">
       <DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$(CultistPlayersCount) lt 1</InterpreterPrerequisite>
+      <!--<InterpreterPrerequisite Flags="Prerequisite">$(CultistPlayersCount) lt 1</InterpreterPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$(MimicsPlayersCount) lt 1</InterpreterPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 60</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 60</InterpreterPrerequisite>-->
+	  <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (12 * $(NumberOfEmpires))</InterpreterPrerequisite>
     </Prerequisites>
 
     <!--============ VARIABLES ============-->
@@ -584,14 +590,17 @@
       <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
         <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
       </InterpretedVar>
+	  <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
 
-      <InterpretedVar VarName="CultistPlayersCount" Target="$(Empires)" UsedInPrerequisites="true">
+      <!--<InterpretedVar VarName="CultistPlayersCount" Target="$(Empires)" UsedInPrerequisites="true">
         <Expression>$Count(EmpireTypeMajor,AffinityCultists)</Expression>
       </InterpretedVar>
 
       <InterpretedVar VarName="MimicsPlayersCount" Target="$(Empires)" UsedInPrerequisites="true">
         <Expression>$Count(EmpireTypeMajor,AffinityMimics)</Expression>
-      </InterpretedVar>
+      </InterpretedVar>-->
 
       <Var VarName="$InstigatorEmpire">
         <From Source="$Empire"/>
@@ -625,8 +634,8 @@
     <!--============ SEQUENCE ============-->
     <Controller_Sequence>
       <Decorator_EndTurn Initiator="Empire" />
-      <Action_SpawnArmy CanMoveOnSpawn="true" HaveActionPointOnSpawn="true" SpawnLocationVarName="$SelectedRuinPosition" DroplistRewardOnDeathName="DroplistGlobalQuestDust" ArmyDroplist="DroplistArmyDefinitionSetseke" Output_EnemyArmyGUIDVarName="$Global_SetsekeGUID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true"/>
-      <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_SetsekeGUID" BehaviourName="PacifistRoaming"/>
+      <Action_SpawnArmy CanMoveOnSpawn="true" HaveActionPointOnSpawn="true" SpawnLocationVarName="$SelectedRuinPosition" DroplistRewardOnDeathName="DroplistDust" ArmyDroplist="DroplistArmyDefinitionSetsekeELCP" Output_EnemyArmyGUIDVarName="$Global_SetsekeGUID" OutputEnemyArmyGUIDIsGlobal="true" ForceGlobalArmySymbol="true" ScaleWithMaxEra="true"/>
+      <Action_UpdateArmyObjective ArmyGUIDVarName="$Global_SetsekeGUID" BehaviourName="Roaming"/>
       <Action_UpdateQuest State="Completed" />
     </Controller_Sequence>
 
@@ -673,14 +682,61 @@
 
       <Action_UpdateStep StepName="DLC21_CityGoneRogue_Step" State="InProgress"/>
       <Action_AddQuestMarker TargetEntityVarName="$POI" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$SetsekeArmyQuestMarker" Initiator="AllEmpires" />
+	  
+	  <!-- ELCP tell the AI to try pacifying this region -->
+      <Action_SendAICommand TargetRegionVarName="$ArmyRegion" Type="PacifyRegion"/>
 
-      <Decorator_KillArmy TargetOption="All" Initiator="Empire" Output_Position="$BattlePosition" >
-        <EnemyArmyGUIDVarName>$Global_SetsekeGUID</EnemyArmyGUIDVarName>
-      </Decorator_KillArmy>
+     
+	  <!-- ELCP redesigned rewards-->
+	  <!-- everyone except Cultists gets a setseke with 12 pops (Mykara get random Symbiosis in code)-->
+	  <!-- Cultists get 3 boosters -->
+	  <Controller_Parallel CompletionPolicy="Any">
+	  
+	    <Controller_Sequence>
+		  <Decorator_KillArmy TargetOption="All" Initiator="Empire" Output_Position="$BattlePosition" >
+            <EnemyArmyGUIDVarName>$Global_SetsekeGUID</EnemyArmyGUIDVarName>
+			<ConditionCheck_Prerequisite>
+			  <Prerequisites Target="$Empire">
+				<PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,!FactionTraitCultists7</PathPrerequisite>
+			  </Prerequisites>
+			</ConditionCheck_Prerequisite>
+          </Decorator_KillArmy>
+		  
+		  <Action_SpawnArmy UseBehaviorInitiatorEmpire="true" SpawnLocationVarName="$BattlePosition" HaveActionPointOnSpawn="true" ArmyDroplist="DroplistArmyDefinitionSetseke">
+	        <TransferResourceName>CityGrowth</TransferResourceName>
+		    <TransferResourceAmount>5000</TransferResourceAmount>
+	      </Action_SpawnArmy>		  
+		</Controller_Sequence>
+		
+		<Controller_Sequence>
+		  <Decorator_KillArmy TargetOption="All" Initiator="Empire" Output_Position="$BattlePosition" >
+            <EnemyArmyGUIDVarName>$Global_SetsekeGUID</EnemyArmyGUIDVarName>
+			<ConditionCheck_Prerequisite>
+			  <Prerequisites Target="$Empire">
+				<PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor,FactionTraitCultists7</PathPrerequisite>
+			  </Prerequisites>
+			</ConditionCheck_Prerequisite>
+          </Decorator_KillArmy>
+		  
+		  <Action_TransferResource>
+		    <ResourceName>BoosterIndustry</ResourceName>
+			<Amount>1</Amount>
+		  </Action_TransferResource>
+		  <Action_TransferResource>
+		    <ResourceName>BoosterFood</ResourceName>
+			<Amount>1</Amount>
+		  </Action_TransferResource>
+		  <Action_TransferResource>
+		    <ResourceName>BoosterScience</ResourceName>
+			<Amount>1</Amount>
+		  </Action_TransferResource>		  
+		</Controller_Sequence>
+		
+	  </Controller_Parallel>
+	  
+	  <Action_RemoveQuestMarker TargetQuestMarkerVarName="$SetsekeArmyQuestMarker" Initiator="AllEmpires"/>
 
-      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$SetsekeArmyQuestMarker" Initiator="AllEmpires"/>
-
-      <Action_SpawnArmy UseBehaviorInitiatorEmpire="true" SpawnLocationVarName="$BattlePosition" HaveActionPointOnSpawn="true" ArmyDroplist="DroplistArmyDefinitionSetseke"/>
+      
       <Action_UpdateStep StepName="DLC21_CityGoneRogue_Step" State="Completed"/>
       <Action_UpdateQuest State="Completed"/>
 
@@ -696,7 +752,7 @@
   </QuestDefinition>
 
   <!--========= TITLE: Volcanorofmers Step 0 ======-->
-  <QuestDefinition Name="DLC21_06Volcanoformers_Step0" IsGlobal="true" GlobalWinner="Participants" GlobalCooldownLiability="ForceIgnore" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1">
+  <QuestDefinition Name="DLC21_06Volcanoformers_Step0" GlobalCooldownLiability="ForceCheck" ChanceOfTriggering="0.05" IsGlobal="true" GlobalWinner="Participants" Category="GlobalQuest" SubCategory="Cooperative" Cooldown="0" GlobalCooldown="15" NumberOfGlobalQuestConcurrentInstances="-1" NumberOfOccurencesPerEmpire="1" SingleCheckPerTurn="true">
     <!--============ TAGS ============-->
     <Tags>Hidden,BeginTurn</Tags>
 
@@ -704,8 +760,9 @@
     <Prerequisites Target="$(Empires)">
       <DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$(KapakuPlayersCount) lt 1</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 30</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (30 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
+	  <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfTechsUnlocked) ge (12 * $(NumberOfEmpires))</InterpreterPrerequisite>
+      <!--<InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 2</InterpreterPrerequisite>-->
     </Prerequisites>
 
     <!--============ VARIABLES ============-->
@@ -713,9 +770,12 @@
       <InterpretedVar VarName="NumberOfEmpires" Target="$(Empires)" UsedInPrerequisites="true">
         <Expression>$Count(EmpireTypeMajor,!EmpireEliminated)</Expression>
       </InterpretedVar>
+	  <InterpretedVar VarName="NumberOfTechsUnlocked" Target="$(Empires)" UsedInPrerequisites="true">
+        <Expression>$Property(EmpireTypeMajor,!EmpireEliminated/ClassResearch:UnlockedTechnologyCount)</Expression>
+      </InterpretedVar>
 
       <InterpretedVar VarName="KapakuPlayersCount" Target="$(Empires)" UsedInPrerequisites="true">
-        <Expression>$Count(EmpireTypeMajor,AffinityFlames)</Expression>
+        <Expression>$Count(EmpireTypeMajor,AffinityFlames,!EmpireEliminated)</Expression>
       </InterpretedVar>
 
       <Var VarName="$InstigatorEmpire">
@@ -740,9 +800,9 @@
             <FilterRegionIsColonized Inverted="true"/>
             <FilterRegionIsContinent/>
           </Where>
-          <OrderBy>
+          <!--<OrderBy>
             <SortRegionByDistance SortBy="Nearest" PositionToCompareVarName="$EmpireCityPosition"/>
-          </OrderBy>
+          </OrderBy>-->
         </From>
       </Var>
 
@@ -851,10 +911,10 @@
       <Var VarName="$Device3" FromGlobal="true" />
 
       <DropListVar VarName="$DustRewardAmount" DropList="DroplistCoopQuestDust"/>
-      <DropListVar VarName="$BestContributorRewardAmount" DropList="DroplistGlobalQuestStrategicResource"/>
+      <DropListVar VarName="$BestContributorRewardAmount" DropList="DroplistLoreQuest0008-Step1"/>
 
       <DropListVar VarName="$StrategicResourceAmount1" DropList="DroplistStrategicResourceAmountEra1"/>
-      <DropListVar VarName="$StrategicResourceTransfertAmount1" DropList="DroplistStrategicResourceTransfertAmountEra1"/>
+      <DropListVar VarName="$StrategicResourceTransfertAmount1" DropList="DroplistStrategicResourceTransfertAmount"/>
 
       <LocalizationVar LocalizationKey="$RewardPerContribution" Source="$DustRewardAmount"/>
       <LocalizationVar LocalizationKey="$BestContributorReward" Source="$BestContributorRewardAmount"/>
@@ -871,6 +931,11 @@
       <Action_AddQuestMarker TargetEntityVarName="$Device3" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestPOI3Marker"/>
 
       <Action_UpdateStep StepName="DLC21_Volcanoformers_Step" State="InProgress" />
+	  
+	  <!--ELCP send AI commands -->
+	  <Action_SendAICommand TargetVarName="$Device1" Type="VisitTarget"/>
+	  <Action_SendAICommand TargetVarName="$Device2" Type="VisitTarget"/>
+	  <Action_SendAICommand TargetVarName="$Device3" Type="VisitTarget"/>
 
       <Controller_Parallel CompletionPolicy="Any">
 
@@ -879,16 +944,19 @@
             <Controller_Sequence>
               <Decorator_TerraformDeviceDismantled DevicePositionVarName="$Device1" LinkedStepProgression="DLC21_Volcanoformers_Step" Initiator="AllEmpires"/>
               <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI1Marker"/>
+			  <Action_SendAICommand TargetVarName="$Device1" Type="VisitTarget" CancelOrder="true"/> <!--ELCP send AI cancel command -->
             </Controller_Sequence>
 
             <Controller_Sequence>
               <Decorator_TerraformDeviceDismantled DevicePositionVarName="$Device2" LinkedStepProgression="DLC21_Volcanoformers_Step" Initiator="AllEmpires"/>
               <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI2Marker"/>
+			  <Action_SendAICommand TargetVarName="$Device2" Type="VisitTarget" CancelOrder="true"/> <!--ELCP send AI cancel command -->
             </Controller_Sequence>
 
             <Controller_Sequence>
               <Decorator_TerraformDeviceDismantled DevicePositionVarName="$Device3" LinkedStepProgression="DLC21_Volcanoformers_Step" Initiator="AllEmpires"/>
               <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestPOI3Marker"/>
+			  <Action_SendAICommand TargetVarName="$Device3" Type="VisitTarget" CancelOrder="true"/> <!--ELCP send AI cancel command -->
             </Controller_Sequence>
 
           </Controller_Parallel>
@@ -947,11 +1015,11 @@
       <Controller_Sequence>
         <!-- Wait for three winters -->
         <Decorator_BeginTurn/>
-        <Decorator_SeasonChange SeasonTypeName="Winter" Initiator="Empire" />
+        <Decorator_SeasonChange SeasonTypeName="Winter" /> <!-- removed initiator, otherwise the trigger only works for the host! -->
         <Decorator_BeginTurn/>
-        <Decorator_SeasonChange SeasonTypeName="Winter" Initiator="Empire" />
+        <Decorator_SeasonChange SeasonTypeName="Winter" />
         <Decorator_BeginTurn/>
-        <Decorator_SeasonChange SeasonTypeName="Winter" Initiator="Empire" />
+        <Decorator_SeasonChange SeasonTypeName="Winter" />
 
         <Action_UpdateStep StepName="DLC21_12Winter_Celebrations_Prelude_Step" State="Completed"/>
         <Action_UpdateQuest State="Completed"/>
@@ -1044,7 +1112,7 @@
   </QuestDefinition>
 
   <!--========= TITLE: Majestic Creatures - Prelude ======-->
-  <QuestDefinition Name="DLC21_13MajesticCreatures_Prelude" GlobalCooldown="10" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">
+  <QuestDefinition Name="DLC21_13MajesticCreatures_Prelude" ChanceOfTriggering="0.10" GlobalCooldownLiability="ForceCheck" GlobalCooldown="10" NumberOfOccurencesPerGame="1" SingleCheckPerTurn="true">
 
     <!--============ TAGS ============-->
     <Tags>Hidden,BeginTurn</Tags>
@@ -1115,11 +1183,6 @@
       <Action_UpdateQuest State="Completed" />
     </Controller_Sequence>
 
-    <Steps>
-      <Step Name="DLC21_13MajesticCreatures_Prelude_Step">
-      </Step>
-    </Steps>
-
   </QuestDefinition>
 
   <!--========= TITLE: Majestic Creatures ======-->
@@ -1177,6 +1240,7 @@
       <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
       <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="15" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
       <!-- <Action_SpawnArmy SpawnLocationVarName="$PositionToSpawnSkyfin" ArmyDroplist="DroplistArmyDefinitionSkyfin" Output_EnemyArmyGUIDVarName="$SkyfinGUID" /> -->
+	  <Action_SendAICommand TargetRegionVarName="$ArmyRegion" Type="PacifyRegion"/>
 
       <Controller_Parallel CompletionPolicy="Any">
 
@@ -1222,7 +1286,7 @@
   </QuestDefinition>
 
   <!--========= TITLE: A Forgotten Hero ======-->
-  <QuestDefinition Name="DLC21_14AForgottenHero" IsGlobal="true" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true" NumberOfOccurencesPerEmpire="1">
+  <QuestDefinition Name="DLC21_14AForgottenHero" IsGlobal="true" ChanceOfTriggering="0.05" GlobalWinner="First" Category="GlobalQuest" SubCategory="Competitive" GlobalCooldownLiability="ForceIgnore" Cooldown="0" GlobalCooldown="8" NumberOfGlobalQuestConcurrentInstances="-1" SingleCheckPerTurn="true" NumberOfOccurencesPerEmpire="1">
 
     <!--============ TAGS ============-->
     <Tags>BeginTurn</Tags>
@@ -1231,7 +1295,7 @@
     <Prerequisites Target="$(Empires)">
       <DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfEmpires) ge 3</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 52</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge (52 * $Property(ClassEmpire:GameSpeedMultiplier))</InterpreterPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$(NumberOfCities) ge (2 * $(NumberOfEmpires))</InterpreterPrerequisite>
     </Prerequisites>
 
@@ -1256,6 +1320,7 @@
               <!--<FilterRegionIsNamed Name="Shorel"/>-->
               <FilterRegionIsContinent/>
               <FilterRegionIsColonized Inverted="true"/>
+			  <FilterRegionHasRuins Count="1" OrMore="true" />
             </Where>
           </From>
         </Any>
@@ -1285,6 +1350,9 @@
       <Action_UpdateStep StepName="DLC21_AForgottenHero_Step1" State="InProgress"/>
       <Action_AddQuestMarker TargetEntityVarName="$RuinToInspect" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerRuin"/>
       <Action_LockQuestTarget TargetVarName="$RuinToInspect" LockOption="Lock"/>
+	  
+	  <!-- ELCP Tell AI to visit the ruin -->
+	  <Action_SendAICommand TargetVarName="$RuinToInspect" Type="VisitTarget"/>
 
       <Controller_Parallel CompletionPolicy="Any">
 
@@ -1297,6 +1365,7 @@
               </Prerequisites>
             </ConditionCheck_Prerequisite>
           </Decorator_Inspect>
+		  <Action_SendAICommand TargetVarName="$RuinToInspect" Type="VisitTarget" CancelOrder="true"/> <!-- ELCP cancel the order -->	
           <Action_ChangeArmyName ArmyVar="$ArmyID1" NameString="%DLC21_AForgottenHero_ArmyName"/>
           <Action_SelectCity EmpireIndexVarName="$InstigatorEmpireIndex" Output_CityVarName="$CityToVisit"/>
           <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerRuin"/>
@@ -1304,6 +1373,8 @@
           <Action_UpdateStep StepName="DLC21_AForgottenHero_Step1" State="Completed"/>
           <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
           <Action_AddQuestMarker TargetEntityVarName="$CityToVisit" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerCity"/>
+		  <!-- ELCP order the Army to visit the city -->	
+	      <Action_SendAICommand TargetVarName="$CityToVisit" Type="VisitTarget" ForceArmyVarName="$ArmyID1"/> 	
         </Controller_Sequence>
 
         <!-- Fail Condition. There are no cities
@@ -1324,6 +1395,7 @@
         <!-- Fail Condition -->
         <Controller_Sequence>
           <Decorator_Inspect TargetEntityVarName="$RuinToInspect" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="OtherEmpires"/>
+		  <Action_SendAICommand TargetVarName="$RuinToInspect" Type="VisitTarget" CancelOrder="true"/> <!-- ELCP cancel the order -->		  
           <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerRuin"/>
           <Action_LockQuestTarget TargetVarName="$RuinToInspect" LockOption="Unlock"/>
           <Action_UpdateStep StepName="DLC21_AForgottenHero_Step1" State="Failed"/>
@@ -1336,7 +1408,8 @@
 
       <Action_UpdateStep StepName="DLC21_AForgottenHero_Step2" State="InProgress"/>
       <Action_StartTimer Output_TimerVarName="$TimeBeforeReset"/>
-      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="20" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+      <Action_UpdateTimerLocalization TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" TimerVarName="$TimeBeforeReset"/>
+	  
 
       <Controller_Parallel CompletionPolicy="Any">
 
@@ -1370,8 +1443,12 @@
         <!-- The user could transfer the army to another army -->
         <Controller_Sequence>
           <Controller_Loop LoopCount="9999">
-            <Decorator_ArmyTransferred ArmyGUID="$ArmyID1" DestinationType="Army" Output_DestinationGUID="$ArmyID1"/>
+            <Decorator_ArmyTransferred ArmyGUID="$ArmyID1" DestinationType="Army" Output_DestinationGUID="$ArmyID1" Output_SourceGUID="$SourceArmyID"/>
+			<!-- ELCP Army transfered, cancel the old order, forceupdating the vars for savegame compatibilty-->
+			<Action_SendAICommand TargetVarName="$CityToVisit" Type="VisitTarget" ForceArmyVarName="$SourceArmyID" CancelOrder="true" ForceUpdate="true"/> 
             <Action_ChangeArmyName ArmyVar="$ArmyID1" NameString="%DLC21_AForgottenHero_ArmyName"/>
+			<!-- ELCP .... and create a new one-->
+			<Action_SendAICommand TargetVarName="$CityToVisit" Type="VisitTarget" ForceArmyVarName="$ArmyID1" ForceUpdate="true"/> 
           </Controller_Loop>
         </Controller_Sequence>
 
@@ -1386,7 +1463,7 @@
 
         <!-- Fail Condition 2: Timer ended -->
         <Controller_Sequence>
-          <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="20" TimerLocalizationKey="$Timer" Initiator="Empire"/>
+          <Decorator_TimerEnded TimerVarName="$TimeBeforeReset" TurnCountBeforeTimeOut="10" TimerLocalizationKey="$Timer" Initiator="Empire"/>
           <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerCity"/>
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
@@ -1398,13 +1475,13 @@
         </Controller_Sequence>
 
         <!-- Fail Condition 4: The army carrying the hero is disbanded -->
-        <Controller_Sequence>
+        <!--<Controller_Sequence>
           <Decorator_ArmyDisbanded ArmyGUIDVarName="$ArmyID1"/>
-          <!--
+          
             <ConditionCheck_IsArmyAtCity Inverterd="true" ArmyGuidVarName="$ArmyID1" CityVarName="$CityToVisit"/>
-          </Decorator_ArmyDisbanded>-->
+          </Decorator_ArmyDisbanded>
           <Action_UpdateQuest State="Failed"/>
-        </Controller_Sequence>
+        </Controller_Sequence>-->
 
         <!-- Fail Condition 5: The user transfers the army to other city -->
         <Controller_Sequence>
@@ -1429,13 +1506,6 @@
           <Decorator_ArmyTransferred ArmyGUID="$ArmyID1" DestinationType="Camp" Initiator="Empire" />
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
-
-        <!-- Fail Condition 9: The city is destroyed -->
-        <Controller_Sequence>
-          <Decorator_DestroyCity TargetCityVarName="$CityToVisit"/>
-          <Action_UpdateQuest State="Failed"/>
-        </Controller_Sequence>
-
       </Controller_Parallel>
 
     </Controller_Sequence>
@@ -1453,9 +1523,9 @@
   </QuestDefinition>
 
   <!--========= TITLE: We Take From The Land ======-->
-  <QuestDefinition Name="DLC21_15WeTakeFromTheLand"
+  <QuestDefinition Name="DLC21_15WeTakeFromTheLand" ChanceOfTriggering="0.01"
                    Category="SideQuest" SubCategory="Village"
-                   Cooldown="0" SkipLockedQuestTarget="true"
+                   Cooldown="5" SkipLockedQuestTarget="true"
                    NumberOfConcurrentInstances="0" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
 
     <!--============ TAGS ============-->
@@ -1465,7 +1535,7 @@
     <Prerequisites Target="$(Empire)">
       <DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
       <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityCultists</PathPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 65</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:CurrentTurn) ge 5</InterpreterPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
     </Prerequisites>
 
@@ -1583,11 +1653,11 @@
     <!--============ PREREQUISITES ============-->
     <Prerequisites Target="$(Empire)">
       <DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
-      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
+     <!--<PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:PeaceCount) lt 1</InterpreterPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:AllianceCount) lt 1</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:TruceCount) lt 1</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era2UnlockedTechnologyCount) ge 5</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire:TruceCount) lt 1</InterpreterPrerequisite>-->
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 2</InterpreterPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 1</InterpreterPrerequisite>
     </Prerequisites>
 
@@ -1658,7 +1728,7 @@
       <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
       <Action_UpdateStep StepName="DLC21_RampagingGolems_Step1" State="InProgress"/>
 
-      <Action_SpawnArmy SpawnLocationVarName="$PositionToSpawnArmy" HaveActionPointOnSpawn="false" CanMoveOnSpawn="false" ArmyDroplist="DroplistArmyDefinitionGolems" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
+      <Action_SpawnArmy SpawnLocationVarName="$PositionToSpawnArmy" HaveActionPointOnSpawn="false" CanMoveOnSpawn="false" ArmyDroplist="DroplistArmyDefinitionGolems" Output_EnemyArmyGUIDVarName="$ArmyID1" ScaleWithMaxEra="true"/>
       <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
 
       <Controller_Parallel CompletionPolicy="Any">
@@ -1722,7 +1792,7 @@
   <!--========= TITLE: A Melting Pot Of Power ======-->
   <QuestDefinition Name="DLC21_18AMeltingPotOfPower"
                    Category="SideQuest" SubCategory="Village"
-                   Cooldown="10" SkipLockedQuestTarget="true"
+                   Cooldown="5" SkipLockedQuestTarget="true"
                    NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
 
     <!--============ TAGS ============-->
@@ -1732,9 +1802,10 @@
     <Prerequisites Target="$(Empire)">
       <DownloadableContentPrerequisite Flags="Prerequisite">DLC21Pack</DownloadableContentPrerequisite>
       <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:Era1UnlockedTechnologyCount) ge 2</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Property(ClassEmpire/ClassResearch:UnlockedTechnologyCount) ge 8</InterpreterPrerequisite>
       <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) ge 2</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) le 4</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity) le 5</InterpreterPrerequisite>
+	  <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(EmpireTypeMajor/ClassCity:PopulationBonus;ge;1) le 3</InterpreterPrerequisite>
     </Prerequisites>
 
     <!--============ VARIABLES ============-->
@@ -1754,6 +1825,10 @@
       <Var VarName="$InitialTribeRegion">
         <From Source="$TargetVillage.$PointOfInterest.$Position.$Region"/>
       </Var>
+	  
+	  <Var VarName="$InitialVillagesPointOfInterests">
+        <From Source="$InitialTribeRegion.$Villages.$PointOfInterest"/>
+      </Var>
 
       <Var VarName="$InitialTribeEmpire">
         <From Source="$InitialTribeRegion.$MinorEmpire"/>
@@ -1766,7 +1841,9 @@
 
     <!--============ SEQUENCE ============-->
     <Controller_Sequence>
-
+	  <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Lock"/>
+      <Action_LockQuestTarget TargetVarName="$InitialVillage" LockOption="Lock"/>
+	  
       <Action_UpdateStep StepName="DLC21_AMeltingPotOfPower_Step1" State="InProgress"/>
 
       <Controller_Parallel CompletionPolicy="Any">
@@ -1776,7 +1853,7 @@
           <Decorator_BeginTurn Initiator="Empire" >
             <ConditionCheck_Prerequisite>
               <Prerequisites Target="$Empire">
-                <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(EmpireTypeMajor/ClassCity:PopulationBonus;ge;1) ge 5</InterpreterPrerequisite>
+                <InterpreterPrerequisite Flags="Prerequisite">$PropertyFilteredCount(EmpireTypeMajor/ClassCity:PopulationBonus;ge;1) ge 4</InterpreterPrerequisite>
               </Prerequisites>
             </ConditionCheck_Prerequisite>
           </Decorator_BeginTurn>
@@ -1796,8 +1873,13 @@
           <Decorator_VillagesDestroyed VillagesVarName="$InitialVillage" TargetOption="All" Initiator="AllEmpires"/>
           <Action_UpdateQuest State="Failed"/>
         </Controller_Sequence>
+		
+		
 
       </Controller_Parallel>
+	  
+	  <Action_LockInteraction TargetVarName="$InitialVillagesPointOfInterests" InteractionName="ArmyActionParley" InteractionLockOption="Unlock"/>
+	  <Action_LockQuestTarget TargetVarName="$InitialVillage" LockOption="Unlock"/>
 
     </Controller_Sequence>
 

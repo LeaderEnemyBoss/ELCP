@@ -17,69 +17,19 @@
 
   <AIParameterConverter Name="StrategyBonusPerStrategy">
     <ToAIParameter AIParameter="AICityStrategicResource">
-      $(Input) *
-      (
-        $Property(ClassCity:NetStrategic1) +
-        $Property(ClassCity:NetStrategic2) +
-        $Property(ClassCity:NetStrategic3) +
-        $Property(ClassCity:NetStrategic4) +
-        $Property(ClassCity:NetStrategic5) +
-        $Property(ClassCity:NetStrategic6)
-      )
+      $(Input) * $Count(ClassCity/ClassPointOfInterest,ResourceTypeStrategic,ExploitedPointOfInterest)
     </ToAIParameter>
     <ToAIParameter AIParameter="AIEmpireStrategicResource">
-      $(Input) *
-      (
-        $Property(../ClassEmpire:NetStrategic1) +
-        $Property(../ClassEmpire:NetStrategic2) +
-        $Property(../ClassEmpire:NetStrategic3) +
-        $Property(../ClassEmpire:NetStrategic4) +
-        $Property(../ClassEmpire:NetStrategic5) +
-        $Property(../ClassEmpire:NetStrategic6)
-      )
+      $(Input) * $Count(../ClassEmpire/ClassCity/ClassPointOfInterest,ResourceTypeStrategic,ExploitedPointOfInterest) / $Count(../ClassEmpire/ClassCity)
     </ToAIParameter>
   </AIParameterConverter>
 
   <AIParameterConverter Name="LuxuryBonusPerLuxury">
     <ToAIParameter AIParameter="AICityLuxuryResource">
-      $(Input) * 
-      (
-        $Property(ClassCity:NetLuxury1) +
-        $Property(ClassCity:NetLuxury2) +
-        $Property(ClassCity:NetLuxury3) +
-        $Property(ClassCity:NetLuxury4) +
-        $Property(ClassCity:NetLuxury5) +
-        $Property(ClassCity:NetLuxury6) +
-        $Property(ClassCity:NetLuxury7) +
-        $Property(ClassCity:NetLuxury8) +
-        $Property(ClassCity:NetLuxury9) +
-        $Property(ClassCity:NetLuxury10) +
-        $Property(ClassCity:NetLuxury11) +
-        $Property(ClassCity:NetLuxury12) +
-        $Property(ClassCity:NetLuxury13) +
-        $Property(ClassCity:NetLuxury14) +
-        $Property(ClassCity:NetLuxury15)
-      )
+      $(Input) * $Count(ClassCity/ClassPointOfInterest,ResourceTypeLuxury,ExploitedPointOfInterest)
     </ToAIParameter>
     <ToAIParameter AIParameter="AIEmpireLuxuryResource">
-      $(Input) *
-      (
-        $Property(../ClassEmpire:NetLuxury1) +
-        $Property(../ClassEmpire:NetLuxury2) +
-        $Property(../ClassEmpire:NetLuxury3) +
-        $Property(../ClassEmpire:NetLuxury4) +
-        $Property(../ClassEmpire:NetLuxury5) +
-        $Property(../ClassEmpire:NetLuxury6) +
-        $Property(../ClassEmpire:NetLuxury7) +
-        $Property(../ClassEmpire:NetLuxury8) +
-        $Property(../ClassEmpire:NetLuxury9) +
-        $Property(../ClassEmpire:NetLuxury10) +
-        $Property(../ClassEmpire:NetLuxury11) +
-        $Property(../ClassEmpire:NetLuxury12) +
-        $Property(../ClassEmpire:NetLuxury13) +
-        $Property(../ClassEmpire:NetLuxury14) +
-        $Property(../ClassEmpire:NetLuxury15)
-      )
+      $(Input) * $Count(../ClassEmpire/ClassCity/ClassPointOfInterest,ResourceTypeLuxury,ExploitedPointOfInterest) / $Count(../ClassEmpire/ClassCity)
     </ToAIParameter>
   </AIParameterConverter>
   

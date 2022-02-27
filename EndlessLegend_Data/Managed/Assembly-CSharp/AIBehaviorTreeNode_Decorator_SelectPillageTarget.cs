@@ -53,8 +53,7 @@ public class AIBehaviorTreeNode_Decorator_SelectPillageTarget : AIBehaviorTreeNo
 			return State.Failure;
 		}
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -84,34 +83,27 @@ public class AIBehaviorTreeNode_Decorator_SelectPillageTarget : AIBehaviorTreeNo
 		for (int i = 0; i < list.Count; i++)
 		{
 			PointOfInterest pointOfInterest2 = list[i] as PointOfInterest;
-			if (pointOfInterest2 != null && pointOfInterest2.Region.City != null)
+			if (pointOfInterest2 != null && pointOfInterest2.Region.City != null && pointOfInterest2.PointOfInterestImprovement != null && DepartmentOfDefense.CanStartPillage(army, pointOfInterest2, false))
 			{
-				if (pointOfInterest2.PointOfInterestImprovement != null)
+				float num2 = 0.5f;
+				if (entity != null)
 				{
-					if (DepartmentOfDefense.CanStartPillage(army, pointOfInterest2, false))
+					num2 = this.ComputePillageInterest(pointOfInterest2, entity, army) * 0.5f;
+				}
+				if (num2 >= 0f)
+				{
+					float num3 = (float)this.worldPositionningService.GetDistance(army.WorldPosition, pointOfInterest2.WorldPosition) / propertyValue;
+					if (num3 <= this.MaximumTurnDistance)
 					{
-						float num2 = 0.5f;
-						if (entity != null)
+						float num4 = 0.5f - num3 / this.MaximumTurnDistance;
+						num2 = AILayer.Boost(num2, num4 * 0.5f);
+						float propertyValue2 = pointOfInterest2.GetPropertyValue(SimulationProperties.PillageDefense);
+						float propertyValue3 = pointOfInterest2.GetPropertyValue(SimulationProperties.MaximumPillageDefense);
+						num2 = AILayer.Boost(num2, (1f - propertyValue2 / propertyValue3) * 0.2f);
+						if (num2 > num)
 						{
-							num2 = this.ComputePillageInterest(pointOfInterest2, entity, army) * 0.5f;
-						}
-						if (num2 >= 0f)
-						{
-							float num3 = (float)this.worldPositionningService.GetDistance(army.WorldPosition, pointOfInterest2.WorldPosition);
-							float num4 = num3 / propertyValue;
-							if (num4 <= this.MaximumTurnDistance)
-							{
-								float num5 = 0.5f - num4 / this.MaximumTurnDistance;
-								num2 = AILayer.Boost(num2, num5 * 0.5f);
-								float propertyValue2 = pointOfInterest2.GetPropertyValue(SimulationProperties.PillageDefense);
-								float propertyValue3 = pointOfInterest2.GetPropertyValue(SimulationProperties.MaximumPillageDefense);
-								num2 = AILayer.Boost(num2, (1f - propertyValue2 / propertyValue3) * 0.2f);
-								if (num2 > num)
-								{
-									num = num2;
-									pointOfInterest = pointOfInterest2;
-								}
-							}
+							num = num2;
+							pointOfInterest = pointOfInterest2;
 						}
 					}
 				}
@@ -121,12 +113,12 @@ public class AIBehaviorTreeNode_Decorator_SelectPillageTarget : AIBehaviorTreeNo
 		{
 			if (this.OpportunityMaximumTurn > 0f)
 			{
+				int num5 = 0;
 				int num6 = 0;
-				int num7 = 0;
 				if (aiBehaviorTree.Variables.ContainsKey(this.OpportunityMainTargetPosition))
 				{
 					WorldPosition mainTargetPosition = (WorldPosition)aiBehaviorTree.Variables[this.OpportunityMainTargetPosition];
-					if (!AIBehaviorTreeNode_Decorator_EvaluateOpportunity.IsDetourWorthCheckingFast(this.worldPositionningService, army, pointOfInterest.WorldPosition, mainTargetPosition, out num7, out num6))
+					if (!AIBehaviorTreeNode_Decorator_EvaluateOpportunity.IsDetourWorthCheckingFast(this.worldPositionningService, army, pointOfInterest.WorldPosition, mainTargetPosition, out num6, out num5))
 					{
 						return State.Failure;
 					}
@@ -134,13 +126,13 @@ public class AIBehaviorTreeNode_Decorator_SelectPillageTarget : AIBehaviorTreeNo
 				int remainingTurnToPillage = DepartmentOfDefense.GetRemainingTurnToPillage(army, pointOfInterest);
 				IAIDataRepositoryAIHelper service = AIScheduler.Services.GetService<IAIDataRepositoryAIHelper>();
 				Diagnostics.Assert(service != null);
-				float num8 = 1f;
+				float num7 = 1f;
 				AIData_Army aidata_Army;
 				if (service.TryGetAIData<AIData_Army>(army.GUID, out aidata_Army))
 				{
-					num8 = aiBehaviorTree.AICommander.GetPillageModifier(aidata_Army.CommanderMission);
+					num7 = aiBehaviorTree.AICommander.GetPillageModifier(aidata_Army.CommanderMission);
 				}
-				if ((float)(num6 - num7 + remainingTurnToPillage) > this.OpportunityMaximumTurn * num8)
+				if ((float)(num5 - num6 + remainingTurnToPillage) > this.OpportunityMaximumTurn * num7)
 				{
 					return State.Failure;
 				}
@@ -164,6 +156,10 @@ public class AIBehaviorTreeNode_Decorator_SelectPillageTarget : AIBehaviorTreeNo
 		AILayer_Diplomacy layer = entityEmpire.GetLayer<AILayer_Diplomacy>();
 		if (layer != null)
 		{
+			if (layer.GetPeaceWish(target.Region.City.Empire.Index))
+			{
+				return -1f;
+			}
 			float num = layer.GetWantWarScore(target.Region.City.Empire);
 			float num2 = layer.GetAllyScore(target.Region.City.Empire);
 			if (num2 > 0.5f || num < 0.25f)

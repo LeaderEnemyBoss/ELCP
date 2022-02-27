@@ -75,11 +75,10 @@ public class MenuMainScreen : GuiMenuScreen
 				}
 				if (versionLabel != null)
 				{
-					string text = AgeLocalizer.Instance.LocalizeStringDefaults("%GameMenuModificationFormat", "$Modification $Version");
-					string text2 = text.Replace("$Modification", runtimeModule3.Title).Replace("$Version", runtimeModule3.Version.ToString("V{0}.{1}.{2}"));
-					if (!string.IsNullOrEmpty(text2))
+					string text = AgeLocalizer.Instance.LocalizeStringDefaults("%GameMenuModificationFormat", "$Modification $Version").Replace("$Modification", runtimeModule3.Title).Replace("$Version", runtimeModule3.Version.ToString("V{0}.{1}.{2}"));
+					if (!string.IsNullOrEmpty(text))
 					{
-						versionLabel.Text = versionLabel.Text + "\n" + text2;
+						versionLabel.Text = versionLabel.Text + "\n" + text;
 					}
 				}
 			}
@@ -116,8 +115,7 @@ public class MenuMainScreen : GuiMenuScreen
 		}
 		Amplitude.Unity.Gui.IGuiService service = Services.GetService<Amplitude.Unity.Gui.IGuiService>();
 		IRuntimeService service2 = Services.GetService<IRuntimeService>();
-		IRuntimeModulePlaylistService service3 = Services.GetService<IRuntimeModulePlaylistService>();
-		ModulePlaylist modulePlaylist = service3.CurrentModulePlaylist;
+		ModulePlaylist modulePlaylist = Services.GetService<IRuntimeModulePlaylistService>().CurrentModulePlaylist;
 		if (modulePlaylist != null && modulePlaylist.Name == "VanillaModulePlaylist")
 		{
 			modulePlaylist = null;
@@ -151,6 +149,7 @@ public class MenuMainScreen : GuiMenuScreen
 					modulePlaylist2.RepairPlaylistIfInvalid();
 					string newValue = string.Join("\n - ", MenuMainScreen.GetPlaylistModuleTitles(modulePlaylist2));
 					currentModulePlaylistLabel.GetComponentInParent<AgeTooltip>().Content = AgeLocalizer.Instance.LocalizeString("%OutgameLastPlaylistDescription").Replace("$ModuleNames", newValue);
+					return;
 				}
 			}
 		}
@@ -182,16 +181,16 @@ public class MenuMainScreen : GuiMenuScreen
 
 	public static string[] GetPlaylistModuleTitles(ModulePlaylist playlist)
 	{
-		MenuMainScreen.<GetPlaylistModuleTitles>c__AnonStoreyA66 <GetPlaylistModuleTitles>c__AnonStoreyA = new MenuMainScreen.<GetPlaylistModuleTitles>c__AnonStoreyA66();
-		<GetPlaylistModuleTitles>c__AnonStoreyA.playlist = playlist;
+		MenuMainScreen.<GetPlaylistModuleTitles>c__AnonStoreyA5E <GetPlaylistModuleTitles>c__AnonStoreyA5E = new MenuMainScreen.<GetPlaylistModuleTitles>c__AnonStoreyA5E();
+		<GetPlaylistModuleTitles>c__AnonStoreyA5E.playlist = playlist;
 		IDatabase<RuntimeModule> database = Databases.GetDatabase<RuntimeModule>(true);
 		List<string> list = new List<string>();
-		string[] array = <GetPlaylistModuleTitles>c__AnonStoreyA.playlist.MissingModules.ToArray();
+		string[] array = <GetPlaylistModuleTitles>c__AnonStoreyA5E.playlist.MissingModules.ToArray();
 		int i = 0;
-		int num = <GetPlaylistModuleTitles>c__AnonStoreyA.playlist.Configuration.Length;
+		int num = <GetPlaylistModuleTitles>c__AnonStoreyA5E.playlist.Configuration.Length;
 		while (i < num)
 		{
-			list.Add(AgeLocalizer.Instance.LocalizeString(database.FirstOrDefault((RuntimeModule module) => module.Name == <GetPlaylistModuleTitles>c__AnonStoreyA.playlist.Configuration[i].ModuleName).Title));
+			list.Add(AgeLocalizer.Instance.LocalizeString(database.FirstOrDefault((RuntimeModule module) => module.Name == <GetPlaylistModuleTitles>c__AnonStoreyA5E.playlist.Configuration[i].ModuleName).Title));
 			i++;
 		}
 		int k = 0;
@@ -221,22 +220,6 @@ public class MenuMainScreen : GuiMenuScreen
 		return list.ToArray();
 	}
 
-	public void AlignMenuGroup()
-	{
-		int num = 0;
-		for (int i = 0; i < this.MenuGroup.GetChildren().Count; i++)
-		{
-			AgeTransform ageTransform = this.MenuGroup.GetChildren()[i];
-			if (ageTransform.Visible)
-			{
-				num++;
-				ageTransform.Visible = true;
-			}
-		}
-		this.MenuGroup.Width = this.MenuGroup.HorizontalMargin + (float)num * this.MenuGroup.ChildWidth + (float)(num - 1) * this.MenuGroup.HorizontalSpacing;
-		this.MenuGroup.PixelOffsetLeft = -0.5f * this.MenuGroup.Width;
-	}
-
 	public override void RefreshContent()
 	{
 		base.RefreshContent();
@@ -245,21 +228,14 @@ public class MenuMainScreen : GuiMenuScreen
 		if (service != null)
 		{
 			GameSaveDescriptor mostRecentGameSaveDescritor = service.GetMostRecentGameSaveDescritor();
-			if (mostRecentGameSaveDescritor != null)
+			if (mostRecentGameSaveDescritor != null && (mostRecentGameSaveDescritor.GameSaveSessionDescriptor.SessionMode == SessionMode.Single || Amplitude.Unity.Framework.Application.Preferences.EnableMultiplayer))
 			{
-				if (mostRecentGameSaveDescritor.GameSaveSessionDescriptor.SessionMode == SessionMode.Single || Steamworks.SteamAPI.IsSteamRunning)
-				{
-					flag = true;
-					string newValue = AgeLocalizer.Instance.LocalizeString(mostRecentGameSaveDescritor.TitleWithTurn);
-					this.TitleLast.Text = AgeLocalizer.Instance.LocalizeString("%OutgameLastSaveFormat").Replace("$Name", newValue).Replace("$Date", mostRecentGameSaveDescritor.DateTime.ToShortDateString());
-					this.ButtonLast.AgeTransform.Enable = true;
-					this.ButtonLast.OnActivateDataObject = mostRecentGameSaveDescritor;
-					this.ButtonLast.OnActivateData = mostRecentGameSaveDescritor.SourceFileName;
-				}
-				else
-				{
-					this.ButtonLast.AgeTransform.Enable = false;
-				}
+				flag = true;
+				string newValue = AgeLocalizer.Instance.LocalizeString(mostRecentGameSaveDescritor.TitleWithTurn);
+				this.TitleLast.Text = AgeLocalizer.Instance.LocalizeString("%OutgameLastSaveFormat").Replace("$Name", newValue).Replace("$Date", mostRecentGameSaveDescritor.DateTime.ToShortDateString());
+				this.ButtonLast.AgeTransform.Enable = true;
+				this.ButtonLast.OnActivateDataObject = mostRecentGameSaveDescritor;
+				this.ButtonLast.OnActivateData = mostRecentGameSaveDescritor.SourceFileName;
 			}
 		}
 		if (!flag)
@@ -297,55 +273,50 @@ public class MenuMainScreen : GuiMenuScreen
 	protected override IEnumerator OnLoad()
 	{
 		yield return base.OnLoad();
-		bool highDefResolutionAvailable = false;
-		this.HighDefGroup.Visible = highDefResolutionAvailable;
+		bool visible = false;
+		this.HighDefGroup.Visible = visible;
 		if (this.HighDefGroup.Visible)
 		{
 			this.HighDefToggle.State = AgeUtils.HighDefinition;
 		}
-		string gameLogo = "GameLogo";
-		string chineseLanguage;
-		if (global::Application.ResolveChineseLanguage(out chineseLanguage))
+		string x = "GameLogo";
+		string a;
+		if (global::Application.ResolveChineseLanguage(out a))
 		{
-			if (chineseLanguage == "schinese")
+			if (a == "schinese")
 			{
-				gameLogo = "SChineseGameLogo";
+				x = "SChineseGameLogo";
 			}
-			else if (chineseLanguage == "tchinese")
+			else if (a == "tchinese")
 			{
-				gameLogo = "TChineseGameLogo";
+				x = "TChineseGameLogo";
 			}
 		}
-		GuiElement guiElementImage;
-		base.GuiService.GuiPanelHelper.TryGetGuiElement(gameLogo, out guiElementImage);
-		if (guiElementImage != null)
+		GuiElement guiElement;
+		base.GuiService.GuiPanelHelper.TryGetGuiElement(x, out guiElement);
+		if (guiElement != null)
 		{
-			Texture2D texture = null;
-			if (base.GuiService.GuiPanelHelper.TryGetTextureFromIcon(guiElementImage, global::GuiPanel.IconSize.Large, out texture))
+			Texture2D image = null;
+			if (base.GuiService.GuiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.Large, out image))
 			{
-				this.GameLogo.Image = texture;
+				this.GameLogo.Image = image;
 			}
 		}
-		bool dlcAvailable = true;
+		bool flag = true;
 		this.AlignMenuGroup();
 		this.SetBreadcrumb(string.Empty);
 		base.SetupDepthUp();
 		base.GuiService.GetGuiPanel<MenuNewGameScreen>().Load();
 		if (Amplitude.Unity.Framework.Application.Preferences.EnableMultiplayer && global::Application.CommandLineArguments.ConnectLobby != 0UL)
 		{
-			Steamworks.SteamID steamIDLobby = new Steamworks.SteamID(global::Application.CommandLineArguments.ConnectLobby);
-			if (steamIDLobby.IsValid)
+			if (new Steamworks.SteamID(global::Application.CommandLineArguments.ConnectLobby).IsValid)
 			{
-				IRuntimeService runtimeService = Services.GetService<IRuntimeService>();
-				runtimeService.Runtime.FiniteStateMachine.PostStateChange(typeof(RuntimeState_Lobby), new object[]
-				{
-					steamIDLobby
-				});
-				global::Application.CommandLineArguments.ConnectLobby = 0UL;
+				ELCPUtilities.SteamMatchMaking_TryConnectingToLobby(global::Application.CommandLineArguments.ConnectLobby);
 			}
+			global::Application.CommandLineArguments.ConnectLobby = 0UL;
 		}
-		this.DlcIconEnumerator.AgeTransform.Visible = dlcAvailable;
-		if (dlcAvailable)
+		this.DlcIconEnumerator.AgeTransform.Visible = flag;
+		if (flag)
 		{
 			this.DlcIconEnumerator.Load();
 		}
@@ -540,28 +511,28 @@ public class MenuMainScreen : GuiMenuScreen
 				IRuntimeService service = Services.GetService<IRuntimeService>();
 				if (service != null)
 				{
-					RuntimeModuleConfigurationState runtimeModuleConfigurationState = this.CheckRuntimeModules(gameSaveDescriptor.RuntimeModules);
-					RuntimeModuleConfigurationState runtimeModuleConfigurationState2 = runtimeModuleConfigurationState;
-					switch (runtimeModuleConfigurationState2 + 1)
+					RuntimeModuleConfigurationState runtimeModuleConfigurationState = this.CheckRuntimeModules(gameSaveDescriptor.RuntimeModules) + 1;
+					if (runtimeModuleConfigurationState == RuntimeModuleConfigurationState.Yellow)
 					{
-					case RuntimeModuleConfigurationState.Yellow:
 						service.Runtime.FiniteStateMachine.PostStateChange(typeof(RuntimeState_Lobby), new object[]
 						{
 							gameSaveDescriptor
 						});
 						base.GuiService.GetGuiPanel<MenuNewGameScreen>().SetupDepthDown();
 						this.Hide(false);
-						break;
-					case RuntimeModuleConfigurationState.Red:
-					case (RuntimeModuleConfigurationState)3:
-						this.Hide(false);
-						base.GuiService.Show(typeof(ActivateRuntimeModulesModalPanel), new object[]
-						{
-							gameSaveDescriptor.RuntimeModules,
-							gameSaveDescriptor
-						});
-						break;
+						return;
 					}
+					if (runtimeModuleConfigurationState - RuntimeModuleConfigurationState.Red > 1)
+					{
+						return;
+					}
+					this.Hide(false);
+					base.GuiService.Show(typeof(ActivateRuntimeModulesModalPanel), new object[]
+					{
+						gameSaveDescriptor.RuntimeModules,
+						gameSaveDescriptor
+					});
+					return;
 				}
 			}
 			else
@@ -632,6 +603,30 @@ public class MenuMainScreen : GuiMenuScreen
 		this.UpdateFriendsOnline(5);
 	}
 
+	private void OnConfirmOpenActivationPanel(object sender, MessagePanelResultEventArgs e)
+	{
+	}
+
+	private void RequestLobbyList()
+	{
+	}
+
+	public void AlignMenuGroup()
+	{
+		int num = 0;
+		for (int i = 0; i < this.MenuGroup.GetChildren().Count; i++)
+		{
+			AgeTransform ageTransform = this.MenuGroup.GetChildren()[i];
+			if (ageTransform.Visible)
+			{
+				num++;
+				ageTransform.Visible = true;
+			}
+		}
+		this.MenuGroup.Width = this.MenuGroup.HorizontalMargin + (float)num * this.MenuGroup.ChildWidth + (float)(num - 1) * this.MenuGroup.HorizontalSpacing;
+		this.MenuGroup.PixelOffsetLeft = -0.5f * this.MenuGroup.Width;
+	}
+
 	public LoadSaveModalPanel LoadSaveModalPanel;
 
 	public AgeTransform HighDefGroup;
@@ -677,4 +672,6 @@ public class MenuMainScreen : GuiMenuScreen
 	public AgeControlButton DlcButton;
 
 	private bool onModsCBConfirmed;
+
+	private MenuJoinGameScreen.LobbyDescription SelectedLobby;
 }

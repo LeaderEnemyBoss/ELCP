@@ -117,7 +117,12 @@ public class AICommanderMission_ConvertVillage : AICommanderMissionWithRequestAr
 
 	protected override bool IsMissionCompleted()
 	{
-		return this.Village != null && this.Village.HasBeenConverted;
+		Army army = null;
+		if (base.AIDataArmyGUID.IsValid)
+		{
+			army = this.aiDataRepository.GetAIData<AIData_Army>(base.AIDataArmyGUID).Army;
+		}
+		return (army == null || army.UnitsCount == 0 || army.GetPropertyValue(SimulationProperties.Movement) < 0.1f) && this.Village != null && this.Village.HasBeenConverted;
 	}
 
 	protected override void Running()
@@ -154,10 +159,18 @@ public class AICommanderMission_ConvertVillage : AICommanderMissionWithRequestAr
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
 			return true;
 		}
-		return base.TryCreateArmyMission("ConvertVillage", new List<object>
+		if (!this.Village.HasBeenConverted || this.Village.Converter.Index != base.Commander.Empire.Index)
+		{
+			return base.TryCreateArmyMission("ConvertVillage", new List<object>
+			{
+				this.RegionTarget.Index,
+				this.Village
+			});
+		}
+		return base.TryCreateArmyMission("MajorFactionRoaming", new List<object>
 		{
 			this.RegionTarget.Index,
-			this.Village
+			false
 		});
 	}
 

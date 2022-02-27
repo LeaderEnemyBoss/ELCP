@@ -75,8 +75,8 @@ public class CutsceneModalPanel : GuiModalPanel
 		yield return base.OnShow(parameters);
 		base.enabled = true;
 		this.ActionVideoPlaybackComplete = null;
-		Amplitude.Unity.Video.IVideoSettingsService videoSettingsService = Services.GetService<Amplitude.Unity.Video.IVideoSettingsService>();
-		this.DisplaySubtitles = videoSettingsService.DisplaySubtitles;
+		Amplitude.Unity.Video.IVideoSettingsService service = Services.GetService<Amplitude.Unity.Video.IVideoSettingsService>();
+		this.DisplaySubtitles = service.DisplaySubtitles;
 		this.CutsceneSubtitle.AgeTransform.Visible = false;
 		if (this.SubtitleBackdrop != null)
 		{
@@ -96,71 +96,72 @@ public class CutsceneModalPanel : GuiModalPanel
 		}
 		if (parameters.Length >= 1)
 		{
-			string moviePath = parameters[0] as string;
-			string moviesFolder = "Movies/";
-			string moviePathFallback = null;
-			string language = "english";
-			ILocalizationService localizationService = Services.GetService<ILocalizationService>();
-			if (localizationService != null && !string.IsNullOrEmpty(localizationService.CurrentLanguage))
+			string text = parameters[0] as string;
+			string text2 = "Movies/";
+			string text3 = null;
+			string text4 = "english";
+			ILocalizationService service2 = Services.GetService<ILocalizationService>();
+			if (service2 != null && !string.IsNullOrEmpty(service2.CurrentLanguage))
 			{
-				language = localizationService.CurrentLanguage;
-				if (language == "tchinese" || language == "schinese")
+				text4 = service2.CurrentLanguage;
+				if (text4 == "tchinese" || text4 == "schinese")
 				{
-					moviePathFallback = moviePath;
-					string chineseMoviesFolder = "Chinese " + moviesFolder;
-					moviePath = moviePath.Replace(moviesFolder, chineseMoviesFolder);
-					moviesFolder = chineseMoviesFolder;
+					text3 = text;
+					string newValue = "Chinese " + text2;
+					text = text.Replace(text2, newValue);
 				}
 			}
-			if (!string.IsNullOrEmpty(moviePath))
+			if (!string.IsNullOrEmpty(text))
 			{
-				if (moviePathFallback != null && !File.Exists(moviePath))
+				if (text3 != null && !File.Exists(text))
 				{
-					moviePath = moviePathFallback;
-					language = "english";
+					text = text3;
+					text4 = "english";
 				}
-				if (File.Exists(moviePath) && this.VideoFrame != null)
+				if (File.Exists(text) && this.VideoFrame != null)
 				{
-					float masterVolume = Amplitude.Unity.Framework.Application.Registry.GetValue<float>(Amplitude.Unity.Audio.AudioManager.Registers.MasterVolume, 1f);
-					bool masterMute = Amplitude.Unity.Framework.Application.Registry.GetValue<bool>(Amplitude.Unity.Audio.AudioManager.Registers.MasterMute, false);
-					this.VideoFrame.Volume = ((!masterMute) ? masterVolume : 0f);
-					this.VideoFrame.LoadMovie(moviePath, false, false);
+					float value = Amplitude.Unity.Framework.Application.Registry.GetValue<float>(Amplitude.Unity.Audio.AudioManager.Registers.MasterVolume, 1f);
+					bool value2 = Amplitude.Unity.Framework.Application.Registry.GetValue<bool>(Amplitude.Unity.Audio.AudioManager.Registers.MasterMute, false);
+					this.VideoFrame.Volume = ((!value2) ? value : 0f);
+					this.VideoFrame.LoadMovie(text, false, false);
 					if (this.DisplaySubtitles && this.VideoFrame.BinkMovie != null)
 					{
-						string extension = string.Format(".Subtitles-{0}.xml", language);
-						string fileName = System.IO.Path.ChangeExtension(moviePath, extension);
-						if (File.Exists(fileName))
+						string extension = string.Format(".Subtitles-{0}.xml", text4);
+						string path = System.IO.Path.ChangeExtension(text, extension);
+						if (!File.Exists(path))
 						{
-							ISerializationService serializationService = Services.GetService<ISerializationService>();
-							if (serializationService != null)
+							goto IL_2BD;
+						}
+						ISerializationService service3 = Services.GetService<ISerializationService>();
+						if (service3 == null)
+						{
+							goto IL_2BD;
+						}
+						XmlSerializer xmlSerializer = service3.GetXmlSerializer<VideoSubtitles>();
+						if (xmlSerializer == null)
+						{
+							goto IL_2BD;
+						}
+						using (Stream stream = File.OpenRead(path))
+						{
+							VideoSubtitles videoSubtitles = xmlSerializer.Deserialize(stream) as VideoSubtitles;
+							if (videoSubtitles != null && videoSubtitles.Subtitles != null)
 							{
-								XmlSerializer serializer = serializationService.GetXmlSerializer<VideoSubtitles>();
-								if (serializer != null)
-								{
-									using (Stream stream = File.OpenRead(fileName))
-									{
-										VideoSubtitles videoSubtitles = serializer.Deserialize(stream) as VideoSubtitles;
-										if (videoSubtitles != null && videoSubtitles.Subtitles != null)
-										{
-											this.Subtitles = videoSubtitles.Subtitles;
-											this.CurrentSubtitleIndex = videoSubtitles.Subtitles.Length;
-											this.NextSubtitleIndex = 0;
-											this.binkSummary = default(Bink.BINKSUMMARY);
-										}
-									}
-								}
+								this.Subtitles = videoSubtitles.Subtitles;
+								this.CurrentSubtitleIndex = videoSubtitles.Subtitles.Length;
+								this.NextSubtitleIndex = 0;
+								this.binkSummary = default(Bink.BINKSUMMARY);
 							}
+							yield break;
 						}
 					}
-					else
-					{
-						this.Subtitles = null;
-						this.CurrentSubtitleIndex = 0;
-						this.NextSubtitleIndex = 0;
-					}
+					this.Subtitles = null;
+					this.CurrentSubtitleIndex = 0;
+					this.NextSubtitleIndex = 0;
 				}
 			}
 		}
+		IL_2BD:
 		yield break;
 	}
 

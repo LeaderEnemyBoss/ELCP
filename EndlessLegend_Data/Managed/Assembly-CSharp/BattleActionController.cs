@@ -306,7 +306,11 @@ public class BattleActionController : IDisposable, IInstructionContainer
 		List<BattleSimulationTarget> list = new List<BattleSimulationTarget>();
 		foreach (BattleSimulationTarget battleSimulationTarget3 in aoeCenterTargets)
 		{
-			WorldOrientation orientation = (battleSimulationTarget3.Unit == null) ? WorldOrientation.Undefined : battleSimulationTarget3.Unit.Orientation;
+			WorldOrientation worldOrientation = (battleSimulationTarget3.Unit == null) ? WorldOrientation.Undefined : battleSimulationTarget3.Unit.Orientation;
+			if (battleEffectsArea.InitiatorAsCenter || worldOrientation == WorldOrientation.Undefined)
+			{
+				worldOrientation = ((initiator == null) ? worldOrientation : initiator.Orientation);
+			}
 			List<WorldPosition> list2 = null;
 			if (battleEffectsArea.Type == BattleEffectsArea.AreaType.Chain)
 			{
@@ -316,7 +320,7 @@ public class BattleActionController : IDisposable, IInstructionContainer
 				{
 					array = this.Simulation.FilterTargets(BattleEffects.TargetFlags.SameGroup, battleSimulationTarget3.Unit, null);
 				}
-				if (array != null && array.Length > 0)
+				if (array != null && array.Length != 0)
 				{
 					list2 = new List<WorldPosition>(array.Length);
 					list2.AddRange(from battleSimulationTarget in array
@@ -329,7 +333,12 @@ public class BattleActionController : IDisposable, IInstructionContainer
 				context = initiator.SimulationObject;
 			}
 			Diagnostics.Assert(this.Simulation != null);
-			IPathfindingArea area = battleEffectsArea.GetArea(battleSimulationTarget3.DynamicPosition, orientation, list2, this.Simulation.WorldParameters, this.Simulation.BattleZone, context);
+			WorldPosition dynamicPosition = battleSimulationTarget3.DynamicPosition;
+			if (battleEffectsArea.InitiatorAsCenter)
+			{
+				dynamicPosition = new BattleSimulationTarget(initiator).DynamicPosition;
+			}
+			IPathfindingArea area = battleEffectsArea.GetArea(dynamicPosition, worldOrientation, list2, this.Simulation.WorldParameters, this.Simulation.BattleZone, context);
 			if (area == null)
 			{
 				Diagnostics.LogError("Unknown area of effect {0}, the effect will be applied on the filtered unit.", new object[]
@@ -370,12 +379,12 @@ public class BattleActionController : IDisposable, IInstructionContainer
 								}
 								if (flag)
 								{
-									goto IL_23E;
+									goto IL_225;
 								}
 							}
 							list.Add(battleSimulationTarget2);
 						}
-						IL_23E:;
+						IL_225:;
 					}
 					BattleActionAOEInstruction battleActionAOEInstruction = new BattleActionAOEInstruction(initiator.UnitGUID, battleEffectsArea.RealizationVisualEffectName);
 					battleActionAOEInstruction.RealizationApplicationMethod = battleEffectsArea.RealizationApplicationMethod;
@@ -410,7 +419,9 @@ public class BattleActionController : IDisposable, IInstructionContainer
 			return false;
 		}
 		Diagnostics.Assert(this.Simulation != null && this.Simulation.BattleSimulationRandom != null);
-		if (this.Simulation.BattleSimulationRandom.NextDouble() >= (double)battleEffects.GetProbability(initiator))
+		double num = this.Simulation.BattleSimulationRandom.NextDouble();
+		double num2 = (double)battleEffects.GetProbability(initiator);
+		if (num >= num2)
 		{
 			return false;
 		}

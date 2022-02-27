@@ -574,29 +574,44 @@
   <BattleActionUser Name="BattleActionUserSpell1Level1" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
-      <BattleEffects TargetsFilter="Target SameGroup Alive">
-        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="3">
           <SimulationDescriptorReference Name="Spell1Level1Effect" />
         </BattleEffect_UnitSimulation>
-      </BattleEffects>
+      </BattleEffects>	  
     </BattleEffectsArea>
-
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0" Probability="0.2">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor1" PropertyName="MaximumAttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+		<BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor2" PropertyName="AttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+      </BattleEffects>	  
+    </BattleEffectsArea>
+			
+	
   </BattleActionUser>
 
   <BattleActionUser Name="BattleActionUserSpell1Level2" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
-      <BattleEffects TargetsFilter="Target SameGroup Alive">
-        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="3">
           <SimulationDescriptorReference Name="Spell1Level2Effect" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
+    </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0" Probability="0.4">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor1" PropertyName="MaximumAttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+		<BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor2" PropertyName="AttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+      </BattleEffects>	  
     </BattleEffectsArea>
 
   </BattleActionUser>
@@ -604,14 +619,21 @@
   <BattleActionUser Name="BattleActionUserSpell1Level3" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
-        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="3">
           <SimulationDescriptorReference Name="Spell1Level3Effect" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
+    </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0" Probability="0.6">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor1" PropertyName="MaximumAttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+		<BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor2" PropertyName="AttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+      </BattleEffects>	  
     </BattleEffectsArea>
 
   </BattleActionUser>
@@ -619,14 +641,21 @@
   <BattleActionUser Name="BattleActionUserSpell1Level4" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
-        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="3">
           <SimulationDescriptorReference Name="Spell1Level4Effect" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
+    </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0" Probability="0.8">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor1" PropertyName="MaximumAttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+		<BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor2" PropertyName="AttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+      </BattleEffects>	  
     </BattleEffectsArea>
 
   </BattleActionUser>
@@ -634,14 +663,21 @@
   <BattleActionUser Name="BattleActionUserSpell1Level5" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
-        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="2">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell1" Duration="3">
           <SimulationDescriptorReference Name="Spell1Level5Effect" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
+    </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor1" PropertyName="MaximumAttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+		<BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell1Armor2" PropertyName="AttributeArmor" Operation="Addition" InterpreterFormula="10"/>
+      </BattleEffects>	  
     </BattleEffectsArea>
 
   </BattleActionUser>
@@ -652,27 +688,44 @@
   <BattleActionUser Name="BattleActionUserSpell2Level1" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
-      <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
           <SimulationDescriptorReference Name="Spell2Level1Effect" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
     </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2DMG" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level1EffectDMG" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+	
 
   </BattleActionUser>
 
   <BattleActionUser Name="BattleActionUserSpell2Level2" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
-      <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
           <SimulationDescriptorReference Name="Spell2Level2Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2DMG" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level2EffectDMG" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
     </BattleEffectsArea>
@@ -682,12 +735,20 @@
   <BattleActionUser Name="BattleActionUserSpell2Level3" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
-      <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
           <SimulationDescriptorReference Name="Spell2Level3Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2DMG" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level3EffectDMG" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
     </BattleEffectsArea>
@@ -697,12 +758,20 @@
   <BattleActionUser Name="BattleActionUserSpell2Level4" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
-      <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
           <SimulationDescriptorReference Name="Spell2Level4Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2DMG" Duration="2">
+          <SimulationDescriptorReference Name="Spell2Level4EffectDMG" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
     </BattleEffectsArea>
@@ -712,12 +781,20 @@
   <BattleActionUser Name="BattleActionUserSpell2Level5" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
-      <BattleEffects TargetsFilter="Target SameGroup Alive">
+      <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell2" Duration="2">
           <SimulationDescriptorReference Name="Spell2Level5Effect" />
+        </BattleEffect_UnitSimulation>
+      </BattleEffects>
+    </BattleEffectsArea>
+	
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell2DMG" Duration="3">
+          <SimulationDescriptorReference Name="Spell2Level5EffectDMG" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
     </BattleEffectsArea>
@@ -732,7 +809,7 @@
     <Period Type="Duration"     Duration="1" />
     <Period Type="Cooldown"     Duration="1" />
 
-    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+    <BattleEffectsArea TargetsFilter="Target" Type="Line" Parameter1="1">
       <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
           <SimulationDescriptorReference Name="UnitActionStun" />
@@ -747,7 +824,7 @@
     <Period Type="Duration"     Duration="1" />
     <Period Type="Cooldown"     Duration="1" />
 
-    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+    <BattleEffectsArea TargetsFilter="Target" Type="Line" Parameter1="2">
       <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
           <SimulationDescriptorReference Name="UnitActionStun" />
@@ -762,10 +839,9 @@
     <Period Type="Duration"     Duration="1" />
     <Period Type="Cooldown"     Duration="1" />
 
-    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+    <BattleEffectsArea TargetsFilter="Target" Type="Line" Parameter1="3">
       <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
-          <SimulationDescriptorReference Name="Spell3Level3Effect" />
           <SimulationDescriptorReference Name="UnitActionStun" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
@@ -778,10 +854,9 @@
     <Period Type="Duration"     Duration="1" />
     <Period Type="Cooldown"     Duration="1" />
 
-    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+    <BattleEffectsArea TargetsFilter="Target" Type="Line" Parameter1="4">
       <BattleEffects TargetsFilter="Target Alive">
         <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
-          <SimulationDescriptorReference Name="Spell3Level4Effect" />
           <SimulationDescriptorReference Name="UnitActionStun" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
@@ -792,12 +867,11 @@
   <BattleActionUser Name="BattleActionUserSpell3Level5" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
-    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
+    <BattleEffectsArea TargetsFilter="Target" Type="Line" Parameter1="5">
       <BattleEffects TargetsFilter="Target Alive">
-        <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="2">
-          <SimulationDescriptorReference Name="Spell3Level5Effect" />
+        <BattleEffect_UnitSimulation Name="BattleEffectSpell3" Duration="1">
           <SimulationDescriptorReference Name="UnitActionStun" />
         </BattleEffect_UnitSimulation>
       </BattleEffects>
@@ -811,11 +885,16 @@
   <BattleActionUser Name="BattleActionUserSpell4Level1" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target Alive">
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="8" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="16" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4C" PropertyName="Health" Operation="Subtraction" InterpreterFormula="16" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -824,11 +903,16 @@
   <BattleActionUser Name="BattleActionUserSpell4Level2" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target Alive">
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="16" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="32" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4C" PropertyName="Health" Operation="Subtraction" InterpreterFormula="32" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -837,11 +921,16 @@
   <BattleActionUser Name="BattleActionUserSpell4Level3" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target Alive">
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="24" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="48" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4C" PropertyName="Health" Operation="Subtraction" InterpreterFormula="48" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -850,11 +939,16 @@
   <BattleActionUser Name="BattleActionUserSpell4Level4" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target Alive">
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="32" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="64" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4C" PropertyName="Health" Operation="Subtraction" InterpreterFormula="64" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -863,11 +957,18 @@
   <BattleActionUser Name="BattleActionUserSpell4Level5" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target Alive">
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="40" />
+		<BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4p" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Property(ClassUnit:MaximumHealth) * 0.1" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4" PropertyName="Health" Operation="Subtraction" InterpreterFormula="80" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
+	    <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4Cp" PropertyName="Health" Operation="Subtraction" InterpreterFormula="$Property(ClassUnit:MaximumHealth) * 0.1" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell4C" PropertyName="Health" Operation="Subtraction" InterpreterFormula="80" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -879,12 +980,12 @@
   <BattleActionUser Name="BattleActionUserSpell5Level1" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
-    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
-      <BattleEffects TargetsFilter="Target SameGroup Alive">
+    <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="10" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="45" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -893,12 +994,18 @@
   <BattleActionUser Name="BattleActionUserSpell5Level2" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="20" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="30" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5C" PropertyName="Health" Operation="Addition" InterpreterFormula="15" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -907,12 +1014,18 @@
   <BattleActionUser Name="BattleActionUserSpell5Level3" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="30" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="45" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5C" PropertyName="Health" Operation="Addition" InterpreterFormula="23" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -921,12 +1034,18 @@
   <BattleActionUser Name="BattleActionUserSpell5Level4" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="40" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="60" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5C" PropertyName="Health" Operation="Addition" InterpreterFormula="30" />
       </BattleEffects>
     </BattleEffectsArea>
 
@@ -935,12 +1054,20 @@
   <BattleActionUser Name="BattleActionUserSpell5Level5" SubCategory="SubCategoryDebuff">
 
     <Period Type="Duration"     Duration="1" />
-    <Period Type="Cooldown"     Duration="1" />
+    <Period Type="Cooldown"     Duration="0" />
 
     <BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
         <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
-        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="50" />
+		<BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5p" PropertyName="Health" Operation="Addition" InterpreterFormula="$Property(ClassUnit:MaximumHealth) * 0.075" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5" PropertyName="Health" Operation="Addition" InterpreterFormula="75" />
+      </BattleEffects>
+    </BattleEffectsArea>
+	<BattleEffectsArea TargetsFilter="Target" Type="Circle" Parameter1="0">
+      <BattleEffects TargetsFilter="Target SameGroup Alive">
+        <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CanBeHealed) gt 0</InterpreterPrerequisite>
+		<BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5Cp" PropertyName="Health" Operation="Addition" InterpreterFormula="$Property(ClassUnit:MaximumHealth) * 0.075" />
+        <BattleEffect_ChangeSealedPropertyValue Name="BattleEffectSpell5C" PropertyName="Health" Operation="Addition" InterpreterFormula="38" />
       </BattleEffects>
     </BattleEffectsArea>
 

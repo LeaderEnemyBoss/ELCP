@@ -33,20 +33,20 @@ public class GamePauseScreen : GuiScreen
 	{
 		yield return base.OnShow(parameters);
 		base.GuiService.GetGuiPanel<ControlBanner>().OnShowScreen(GameScreenType.Menu);
-		ISessionService sessionService = Services.GetService<ISessionService>();
-		Diagnostics.Assert(sessionService != null && sessionService.Session != null);
-		switch (sessionService.Session.SessionMode)
+		ISessionService service = Services.GetService<ISessionService>();
+		Diagnostics.Assert(service != null && service.Session != null);
+		SessionMode sessionMode = service.Session.SessionMode;
+		if (sessionMode != SessionMode.Single)
 		{
-		case SessionMode.Single:
-			this.InviteGroup.Visible = false;
-			break;
-		case SessionMode.Private:
-		case SessionMode.Protected:
-		case SessionMode.Public:
+			if (sessionMode - SessionMode.Private > 2)
+			{
+				throw new ArgumentOutOfRangeException();
+			}
 			this.InviteGroup.Visible = true;
-			break;
-		default:
-			throw new ArgumentOutOfRangeException();
+		}
+		else
+		{
+			this.InviteGroup.Visible = false;
 		}
 		this.MenuBar.Width = 0f;
 		this.MenuBar.ArrangeChildren();
@@ -60,27 +60,27 @@ public class GamePauseScreen : GuiScreen
 		this.DlcIconEnumerator.AccessibilityMask = DownloadableContentAccessibility.Shared;
 		this.DlcIconEnumerator.SubscriptionMask = DownloadableContentAccessibility.Shared;
 		this.DlcIconEnumerator.RefreshContent();
-		float biggestWidth = 0f;
+		float num = 0f;
 		for (int i = 0; i < this.VersionLabel.TextLines.Count; i++)
 		{
-			float width = this.VersionLabel.Font.ComputeTextWidth(this.VersionLabel.TextLines[i], this.VersionLabel.ForceCaps, false);
-			if (width > biggestWidth)
+			float num2 = this.VersionLabel.Font.ComputeTextWidth(this.VersionLabel.TextLines[i], this.VersionLabel.ForceCaps, false);
+			if (num2 > num)
 			{
-				biggestWidth = width;
+				num = num2;
 			}
 		}
 		AgeTransform parent = this.VersionLabel.AgeTransform.GetParent();
-		parent.Width = biggestWidth + this.VersionLabel.AgeTransform.PixelMarginLeft + 4f;
+		parent.Width = num + this.VersionLabel.AgeTransform.PixelMarginLeft + 4f;
 		parent.Height = ((!AgeUtils.HighDefinition) ? ((float)this.VersionLabel.TextLines.Count * 17f) : ((float)this.VersionLabel.TextLines.Count * 17f * AgeUtils.HighDefinitionFactor));
 		this.DlcIconEnumerator.AgeTransform.PixelMarginBottom = parent.PixelMarginBottom + parent.Height;
 		this.RefreshContent();
 		if (!TutorialManager.IsActivated)
 		{
 			this.GameSessionInformationPanel.Visible = true;
-			GameSessionInformationSetting[] settings = this.GameSessionInformationPanel.GetComponentsInChildren<GameSessionInformationSetting>();
-			foreach (GameSessionInformationSetting setting in settings)
+			GameSessionInformationSetting[] componentsInChildren = this.GameSessionInformationPanel.GetComponentsInChildren<GameSessionInformationSetting>();
+			for (int j = 0; j < componentsInChildren.Length; j++)
 			{
-				setting.SetContent();
+				componentsInChildren[j].SetContent();
 			}
 		}
 		else

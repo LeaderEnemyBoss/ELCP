@@ -67,6 +67,10 @@ public class StrategicInputAgent_MinorStress : StrategicInputAgent
 
 	private void UpdateEmpireInfo(global::Empire empire, ref float numberOfVillage, ref float villageUnitCountAverage, ref float numberOfArmies, ref float armyUnitCountAverage, ref float maxMilitaryPower)
 	{
+		if (empire == null)
+		{
+			return;
+		}
 		DepartmentOfDefense agency = empire.GetAgency<DepartmentOfDefense>();
 		if (agency.Armies.Count > 0)
 		{

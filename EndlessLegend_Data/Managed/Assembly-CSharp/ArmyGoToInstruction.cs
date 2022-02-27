@@ -209,10 +209,16 @@ public class ArmyGoToInstruction : IXmlSerializable
 				ArmyMoveToInstruction armyMoveToInstruction = new ArmyMoveToInstruction();
 				int progress = this.Progress;
 				WorldPosition from = (this.ArmyMoveToInstruction == null) ? this.Army.WorldPosition : this.ArmyMoveToInstruction.To;
-				WorldPosition worldPosition = this.WorldPositions[this.Progress++];
+				WorldPosition[] worldPositions = this.WorldPositions;
+				int progress2 = this.Progress;
+				this.Progress = progress2 + 1;
+				WorldPosition worldPosition = worldPositions[progress2];
 				while (this.Progress < this.WorldPositions.Length && !this.pathfindingService.IsTileStopable(worldPosition, this.army, PathfindingFlags.IgnoreFogOfWar, null))
 				{
-					worldPosition = this.WorldPositions[this.Progress++];
+					WorldPosition[] worldPositions2 = this.WorldPositions;
+					progress2 = this.Progress;
+					this.Progress = progress2 + 1;
+					worldPosition = worldPositions2[progress2];
 				}
 				int num = this.Progress - progress;
 				Diagnostics.Assert(num >= 1);
@@ -224,7 +230,7 @@ public class ArmyGoToInstruction : IXmlSerializable
 						armyMoveToInstruction.IntermediatesPositions[i] = this.WorldPositions[progress + i];
 					}
 				}
-				double num2 = 1.0 * (double)num;
+				double num2 = 1.0 / ELCPUtilities.ELCPArmySpeedScaleFactor * (double)num;
 				armyMoveToInstruction.From = from;
 				armyMoveToInstruction.To = worldPosition;
 				if (this.ArmyMoveToInstruction != null)
@@ -238,7 +244,7 @@ public class ArmyGoToInstruction : IXmlSerializable
 				if (!this.CanMoveTo(gameInterface, armyMoveToInstruction.To))
 				{
 					this.Cancel(false);
-					break;
+					return;
 				}
 				if (this.ArmyMoveToInstruction == null)
 				{
@@ -256,10 +262,10 @@ public class ArmyGoToInstruction : IXmlSerializable
 					this.OnStopMoving();
 					this.IsMoving = false;
 					this.ArmyMoveToInstruction = null;
-					break;
+					return;
 				}
 				this.IsMoving = false;
-				break;
+				return;
 			}
 		}
 	}

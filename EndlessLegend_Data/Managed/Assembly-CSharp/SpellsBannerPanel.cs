@@ -223,7 +223,7 @@ public class SpellsBannerPanel : GuiPlayerControllerPanel
 	private void CheckIfThereAlreadyIsASpellCasted()
 	{
 		this.thereAlreadyIsASpellCasted = false;
-		Contender firstAlliedContenderFromEmpire = this.Encounter.GetFirstAlliedContenderFromEmpire(base.Empire);
+		Contender firstAlliedContenderFromEmpireWithUnits = this.Encounter.GetFirstAlliedContenderFromEmpireWithUnits(base.Empire);
 		int num = 0;
 		while (num < this.availableSpellDefinitions.Count && !this.thereAlreadyIsASpellCasted)
 		{
@@ -233,9 +233,9 @@ public class SpellsBannerPanel : GuiPlayerControllerPanel
 			{
 				StaticString name = spellDefinition.SpellBattleActions[num2].BattleActionUserDefinitionReference.Name;
 				BattleAction.State state;
-				if (firstAlliedContenderFromEmpire.TryGetBattleActionUserState(name, out state))
+				if (firstAlliedContenderFromEmpireWithUnits.TryGetBattleActionUserState(name, out state))
 				{
-					this.thereAlreadyIsASpellCasted = (state != BattleAction.State.Available);
+					this.thereAlreadyIsASpellCasted = (state > BattleAction.State.Available);
 				}
 				num2++;
 			}

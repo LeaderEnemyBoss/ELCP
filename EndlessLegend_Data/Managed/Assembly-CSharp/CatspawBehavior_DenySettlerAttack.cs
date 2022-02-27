@@ -18,7 +18,6 @@ public class CatspawBehavior_DenySettlerAttack : CatspawBehavior
 		Condition<CatspawArmy> condition2 = new Condition<CatspawArmy>(new Func<CatspawArmy, bool>(base.HasEnoughActionPoint));
 		Condition<CatspawArmy> condition3 = new Condition<CatspawArmy>(new Func<CatspawArmy, bool>(base.HasMovementLeft));
 		Condition<CatspawArmy> condition4 = new Condition<CatspawArmy>(new Func<CatspawArmy, bool>(base.IsSecondaryValid));
-		Condition<CatspawArmy> condition5 = new Condition<CatspawArmy>(new Func<CatspawArmy, bool>(base.IsRoamingValid));
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<CatspawArmy> action = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<CatspawArmy>(new Func<CatspawArmy, BehaviorNodeReturnCode>(base.WaitForNextTurn));
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<CatspawArmy> action2 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<CatspawArmy>(new Func<CatspawArmy, BehaviorNodeReturnCode>(base.ComputePathToSecondary));
 		Amplitude.Unity.AI.SimpleBehaviorTree.Action<CatspawArmy> action3 = new Amplitude.Unity.AI.SimpleBehaviorTree.Action<CatspawArmy>(new Func<CatspawArmy, BehaviorNodeReturnCode>(base.ComputePathToRoaming));
@@ -63,15 +62,10 @@ public class CatspawBehavior_DenySettlerAttack : CatspawBehavior
 			selector,
 			selector3
 		});
-		Selector<CatspawArmy> selector4 = new Selector<CatspawArmy>(new BehaviorNode<CatspawArmy>[]
-		{
-			condition5,
-			action5
-		});
 		Sequence<CatspawArmy> sequence5 = new Sequence<CatspawArmy>(new BehaviorNode<CatspawArmy>[]
 		{
 			condition3,
-			selector4,
+			action5,
 			action3,
 			orderAction3
 		});

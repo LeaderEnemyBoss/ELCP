@@ -1,5 +1,7 @@
 ﻿using System;
 using Amplitude;
+using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 using Amplitude.Xml;
 
 public abstract class AICommanderMissionWithRequestArmy : AICommanderMission
@@ -35,6 +37,8 @@ public abstract class AICommanderMissionWithRequestArmy : AICommanderMission
 		this.departmentOfTheInterior = commander.Empire.GetAgency<DepartmentOfTheInterior>();
 		this.intelligenceAIHelper = AIScheduler.Services.GetService<IIntelligenceAIHelper>();
 		this.personalityMPTenacity = 0.8f;
+		IGameService service = Services.GetService<IGameService>();
+		this.gameEntityRepositoryService = service.Game.Services.GetService<IGameEntityRepositoryService>();
 	}
 
 	public override void Promote()
@@ -90,6 +94,7 @@ public abstract class AICommanderMissionWithRequestArmy : AICommanderMission
 		base.Release();
 		this.departmentOfTheInterior = null;
 		this.intelligenceAIHelper = null;
+		this.gameEntityRepositoryService = null;
 	}
 
 	public virtual void SetExtraArmyRequestInformation()
@@ -137,9 +142,27 @@ public abstract class AICommanderMissionWithRequestArmy : AICommanderMission
 				base.Completion = AICommanderMission.AICommanderMissionCompletion.Interrupted;
 				return;
 			}
-			float num3 = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, aidata.Army, 0);
+			float num3 = 0f;
+			float num4 = 0f;
+			foreach (AICommanderMission aicommanderMission in base.Commander.Missions)
+			{
+				IGameEntity gameEntity = null;
+				if (aicommanderMission.AIDataArmyGUID.IsValid && this.gameEntityRepositoryService.TryGetValue(aicommanderMission.AIDataArmyGUID, out gameEntity) && gameEntity is Army)
+				{
+					Army army = gameEntity as Army;
+					if (army.GUID.IsValid)
+					{
+						float num5 = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, army, 0);
+						num3 += num5;
+						if (army.GUID == aidata.Army.GUID)
+						{
+							num4 = num5;
+						}
+					}
+				}
+			}
 			num2 *= this.personalityMPTenacity;
-			if (num2 > num3)
+			if (num2 > num3 || ((float)count < 0.5f * (float)num && num2 > num4))
 			{
 				base.Completion = AICommanderMission.AICommanderMissionCompletion.Interrupted;
 				return;
@@ -147,7 +170,7 @@ public abstract class AICommanderMissionWithRequestArmy : AICommanderMission
 		}
 		if (this.IsMissionCompleted())
 		{
-			this.State = TickableState.NoTick;
+			base.State = TickableState.NoTick;
 			aidata.ResetArmyMission();
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
 			return;
@@ -220,15 +243,15 @@ public abstract class AICommanderMissionWithRequestArmy : AICommanderMission
 			}
 			else if (this.requestArmy.ExecutionState == RequestUnitListMessage.RequestUnitListState.Regrouping)
 			{
-				this.State = TickableState.NeedTick;
+				base.State = TickableState.NeedTick;
 			}
 			else if (this.requestArmy.ExecutionState == RequestUnitListMessage.RequestUnitListState.RegroupingPending)
 			{
-				this.State = TickableState.NoTick;
+				base.State = TickableState.NoTick;
 			}
 			else if (this.requestArmy.ExecutionState == RequestUnitListMessage.RequestUnitListState.Pending)
 			{
-				this.State = TickableState.NoTick;
+				base.State = TickableState.NoTick;
 			}
 		}
 		else
@@ -271,4 +294,6 @@ public abstract class AICommanderMissionWithRequestArmy : AICommanderMission
 	private ArmyPattern armyPattern;
 
 	private float personalityMPTenacity;
+
+	private IGameEntityRepositoryService gameEntityRepositoryService;
 }

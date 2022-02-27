@@ -36,45 +36,45 @@ public class PanelFeatureDismantleNode : GuiPanelFeature
 		}
 		else
 		{
-			CreepingNode node = this.context as CreepingNode;
+			CreepingNode creepingNode = this.context as CreepingNode;
 			this.StatusLabel.Text = string.Empty;
 			base.AgeTransform.Height = this.StatusLabel.AgeTransform.Height;
 			this.DefenseGaugeGroup.Visible = true;
-			float growth = node.Life;
-			float maximumGrowth = node.MaxLife;
-			bool isDismantling = node.DismantlingArmy != null;
-			float progress = 0f;
-			int numberOfTurn = 0;
-			float progressLeft = growth;
-			float progressRight = growth;
-			if (isDismantling)
+			float life = creepingNode.Life;
+			float maxLife = creepingNode.MaxLife;
+			bool flag = creepingNode.DismantlingArmy != null;
+			float num = 0f;
+			int num2 = 0;
+			float num3 = life;
+			float num4 = life;
+			if (flag)
 			{
 				IGameEntity gameEntity;
-				if (this.gameEntityRepositoryService.TryGetValue(node.DismantlingArmyGUID, out gameEntity))
+				if (this.gameEntityRepositoryService.TryGetValue(creepingNode.DismantlingArmyGUID, out gameEntity))
 				{
 					Army army = gameEntity as Army;
 					if (army != null)
 					{
-						progress = army.GetPropertyValue(SimulationProperties.CreepingNodeDismantlePower);
+						num = army.GetPropertyValue(SimulationProperties.CreepingNodeDismantlePower);
 					}
 				}
-				if (progress > 0f)
+				if (num > 0f)
 				{
-					numberOfTurn = Mathf.CeilToInt(growth / progress);
+					num2 = Mathf.CeilToInt(life / num);
 				}
-				progress *= -1f;
-				progressLeft += progress;
+				num *= -1f;
+				num3 += num;
 				this.DefenseProgress.TintColor = this.DismantlingColor;
 				this.StatusLabel.Text = AgeLocalizer.Instance.LocalizeString("%FeatureDismantleNodeDismantlingStateTitle");
 			}
 			else
 			{
-				progress = node.NodeDefinition.GrowthPerTurn;
-				if (progress > 0f)
+				num = creepingNode.NodeDefinition.GrowthPerTurn;
+				if (num > 0f)
 				{
-					numberOfTurn = Mathf.CeilToInt((maximumGrowth - growth) / progress);
+					num2 = Mathf.CeilToInt((maxLife - life) / num);
 				}
-				progressRight += progress;
+				num4 += num;
 				this.DefenseProgress.TintColor = this.RecoveryColor;
 				this.StatusLabel.Text = AgeLocalizer.Instance.LocalizeString("%FeatureDismantleNodeRecoveringStateTitle");
 			}
@@ -84,15 +84,15 @@ public class PanelFeatureDismantleNode : GuiPanelFeature
 			{
 				text,
 				" (",
-				numberOfTurn.ToString(),
+				num2.ToString(),
 				AgeLocalizer.Instance.LocalizeString("%TurnSymbol"),
 				")"
 			});
-			this.DefenseGauge.AgeTransform.PercentRight = Mathf.Clamp(growth / maximumGrowth, 0f, 1f) * 100f;
-			this.DefenseProgress.AgeTransform.PercentLeft = Mathf.Clamp(progressLeft / maximumGrowth, 0f, 1f) * 100f;
-			this.DefenseProgress.AgeTransform.PercentRight = Mathf.Clamp(progressRight / maximumGrowth, 0f, 1f) * 100f;
+			this.DefenseGauge.AgeTransform.PercentRight = Mathf.Clamp(life / maxLife, 0f, 1f) * 100f;
+			this.DefenseProgress.AgeTransform.PercentLeft = Mathf.Clamp(num3 / maxLife, 0f, 1f) * 100f;
+			this.DefenseProgress.AgeTransform.PercentRight = Mathf.Clamp(num4 / maxLife, 0f, 1f) * 100f;
 			base.AgeTransform.Height += this.DefenseGaugeGroup.Height;
-			if (progressLeft != maximumGrowth)
+			if (num3 != maxLife)
 			{
 				this.DefenseProgress.AgeTransform.Visible = true;
 			}
@@ -106,8 +106,8 @@ public class PanelFeatureDismantleNode : GuiPanelFeature
 			}
 		}
 		yield return base.OnShow(parameters);
-		IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
-		base.AgeTransform.Visible = (this.StatusLabel.Text != string.Empty && downloadableContentService.IsShared(DownloadableContent20.ReadOnlyName));
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
+		base.AgeTransform.Visible = (this.StatusLabel.Text != string.Empty && service.IsShared(DownloadableContent20.ReadOnlyName));
 		yield break;
 	}
 

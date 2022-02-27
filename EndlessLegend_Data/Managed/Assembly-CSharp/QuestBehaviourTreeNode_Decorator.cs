@@ -25,29 +25,29 @@ public abstract class QuestBehaviourTreeNode_Decorator<T> : BehaviourTreeNode_De
 	[XmlArrayItem(Type = typeof(string), ElementName = "Var")]
 	public string[] InterpretedVarsToUpdate { get; set; }
 
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_FactionAssimilated), ElementName = "ConditionCheck_FactionAssimilated")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_TimerEnded), ElementName = "ConditionCheck_TimerEnded")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_VillagesConverted), ElementName = "ConditionCheck_VillagesConverted")]
 	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsArmyOnWeatherTile), ElementName = "ConditionCheck_IsArmyOnWeatherTile")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsArmyAlive), ElementName = "ConditionCheck_IsArmyAlive")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_Infiltrate), ElementName = "ConditionCheck_Infiltrate")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_HasResourceAmount), ElementName = "ConditionCheck_HasResourceAmount")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsStepProgressionComplete), ElementName = "ConditionCheck_IsStepProgressionComplete")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsStepOnState), ElementName = "ConditionCheck_IsStepOnState")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsArmyAtCity), ElementName = "ConditionCheck_IsArmyAtCity")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_RegionContainsEnemy), ElementName = "ConditionCheck_RegionContainsEnemy")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_RegionContainsArmy), ElementName = "ConditionCheck_RegionContainsArmy")]
 	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_DistanceArmyToLocation), ElementName = "ConditionCheck_DistanceArmyToLocation")]
 	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_RegionIsColonized), ElementName = "ConditionCheck_RegionIsColonized")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_HasEmpirePlan), ElementName = "ConditionCheck_HasEmpirePlan")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_FactionAssimilated), ElementName = "ConditionCheck_FactionAssimilated")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsStepProgressionComplete), ElementName = "ConditionCheck_IsStepProgressionComplete")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_Prerequisite), ElementName = "ConditionCheck_Prerequisite")]
 	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_RegionIsOwnedByEmpire), ElementName = "ConditionCheck_RegionIsOwnedByEmpire")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_TimerEnded), ElementName = "ConditionCheck_TimerEnded")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_RegionContainsEnemy), ElementName = "ConditionCheck_RegionContainsEnemy")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_VillagesConverted), ElementName = "ConditionCheck_VillagesConverted")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsEmpireBlackspottedBy), ElementName = "ConditionCheck_IsEmpireBlackspottedBy")]
 	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_VillagesPacified), ElementName = "ConditionCheck_VillagesPacified")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_Tutorial_IsGuiElementVisible), ElementName = "ConditionCheck_IsGuiElementVisible")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsArmyAtCity), ElementName = "ConditionCheck_IsArmyAtCity")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_RegionContainsArmy), ElementName = "ConditionCheck_RegionContainsArmy")]
 	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_TilesTerraformed), ElementName = "ConditionCheck_TilesTerraformed")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsStepOnState), ElementName = "ConditionCheck_IsStepOnState")]
-	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_AllRegionRuinsSearchedByEmpire), ElementName = "ConditionCheck_AllRegionRuinsSearchedByEmpire")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_Tutorial_IsGuiElementVisible), ElementName = "ConditionCheck_IsGuiElementVisible")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsEmpireBlackspottedBy), ElementName = "ConditionCheck_IsEmpireBlackspottedBy")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_Infiltrate), ElementName = "ConditionCheck_Infiltrate")]
 	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsFortressOwnedByEmpire), ElementName = "ConditionCheck_IsFortressOwnedByEmpire")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_IsArmyAlive), ElementName = "ConditionCheck_IsArmyAlive")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_HasResourceAmount), ElementName = "ConditionCheck_HasResourceAmount")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_Prerequisite), ElementName = "ConditionCheck_Prerequisite")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_AllRegionRuinsSearchedByEmpire), ElementName = "ConditionCheck_AllRegionRuinsSearchedByEmpire")]
+	[XmlElement(Type = typeof(QuestBehaviourTreeNode_ConditionCheck_HasEmpirePlan), ElementName = "ConditionCheck_HasEmpirePlan")]
 	public QuestBehaviourTreeNode_ConditionCheck[] ConditionChecks { get; set; }
 
 	[XmlIgnore]
@@ -94,9 +94,9 @@ public abstract class QuestBehaviourTreeNode_Decorator<T> : BehaviourTreeNode_De
 			{
 				return false;
 			}
-			int bits = majorEmpire.Bits;
+			bool bits = majorEmpire.Bits != 0;
 			int bits2 = majorEmpire2.Bits;
-			if ((bits & bits2) != 0)
+			if (((bits ? 1 : 0) & bits2) != 0)
 			{
 				return true;
 			}
@@ -139,9 +139,9 @@ public abstract class QuestBehaviourTreeNode_Decorator<T> : BehaviourTreeNode_De
 			{
 				return false;
 			}
-			int bits = majorEmpire.Bits;
+			bool bits = majorEmpire.Bits != 0;
 			int bits2 = majorEmpire2.Bits;
-			if ((bits & bits2) != 0)
+			if (((bits ? 1 : 0) & bits2) != 0)
 			{
 				return true;
 			}
@@ -175,7 +175,7 @@ public abstract class QuestBehaviourTreeNode_Decorator<T> : BehaviourTreeNode_De
 		{
 			return State.Success;
 		}
-		if (this.InterpretedVarsToUpdate != null && this.InterpretedVarsToUpdate.Length > 0)
+		if (this.InterpretedVarsToUpdate != null && this.InterpretedVarsToUpdate.Length != 0)
 		{
 			Dictionary<StaticString, IEnumerable<SimulationObjectWrapper>> dictionary = new Dictionary<StaticString, IEnumerable<SimulationObjectWrapper>>();
 			dictionary.Add("$(Empire)", new SimulationObjectWrapper[]
@@ -187,8 +187,10 @@ public abstract class QuestBehaviourTreeNode_Decorator<T> : BehaviourTreeNode_De
 			dictionary.Add("$(Empires)", (from emp in (service.Game as global::Game).Empires
 			where emp is MajorEmpire && !(emp as MajorEmpire).IsEliminated
 			select emp).ToArray<global::Empire>());
-			foreach (string variable in this.InterpretedVarsToUpdate)
+			string[] interpretedVarsToUpdate = this.InterpretedVarsToUpdate;
+			for (int i = 0; i < interpretedVarsToUpdate.Length; i++)
 			{
+				string variable = interpretedVarsToUpdate[i];
 				QuestVariableDefinition questVariableDefinition = questBehaviour.Quest.QuestDefinition.Variables.FirstOrDefault((QuestVariableDefinition varDefinition) => varDefinition is QuestInterpretedVariableDefinition && varDefinition.VarName == variable);
 				if (questVariableDefinition != null)
 				{
@@ -353,6 +355,7 @@ public abstract class QuestBehaviourTreeNode_Decorator<T> : BehaviourTreeNode_De
 									questRegisterVariable2.Value += this.ProgressionIncrement;
 									questBehaviour2.Push(new QuestInstruction_UpdateRegisterVariable(this.PersonnalLinkedStepProgression, questRegisterVariable2.Value));
 									this.questManagementService.SendPendingInstructions(questBehaviour2);
+									return;
 								}
 							}
 						}

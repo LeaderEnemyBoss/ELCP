@@ -393,7 +393,7 @@
       <BattleEffect_Void Name="BattleEffect_DebuffImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityCast" RealizationApplicationIgnoreTarget="true" />
       <BattleEffect_UnitSimulation Name="BattleEffect_DebuffImmunity" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityTransition">
         <SimulationDescriptorReference Name="UnitAbilityUnstoppableDescriptor1" />
-        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity" />
+        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunityTemp" />
       </BattleEffect_UnitSimulation>
       <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.15" RealizationApplicationMethod="OnHit" />
     </BattleEffects>
@@ -403,7 +403,7 @@
       <BattleEffect_Void Name="BattleEffect_DebuffImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityCast" RealizationApplicationIgnoreTarget="true" />
       <BattleEffect_UnitSimulation Name="BattleEffect_DebuffImmunity" Duration="6" IsCumulable="false" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityTransition">
         <SimulationDescriptorReference Name="UnitAbilityUnstoppableDescriptor1" />
-        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity" />
+        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunityTemp" />
       </BattleEffect_UnitSimulation>
       <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.25" RealizationApplicationMethod="OnHit" />
     </BattleEffects>
@@ -414,7 +414,7 @@
         <BattleEffect_Void Name="BattleEffect_DebuffImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityCast" RealizationApplicationIgnoreTarget="true" />
         <BattleEffect_UnitSimulation Name="BattleEffect_DebuffImmunity" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityTransition">
           <SimulationDescriptorReference Name="UnitAbilityUnstoppableDescriptor1"/>
-          <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity"/>
+          <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunityTemp"/>
         </BattleEffect_UnitSimulation>
         <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.15" RealizationApplicationMethod="OnHit" />
       </BattleEffects>
@@ -426,7 +426,7 @@
         <BattleEffect_Void Name="BattleEffect_DebuffImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityCast" RealizationApplicationIgnoreTarget="true" />
         <BattleEffect_UnitSimulation Name="BattleEffect_DebuffImmunity" Duration="6" IsCumulable="false" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DebuffImmunityTransition">
           <SimulationDescriptorReference Name="UnitAbilityUnstoppableDescriptor1"/>
-          <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity"/>
+          <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunityTemp"/>
         </BattleEffect_UnitSimulation>
         <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_LightHealing" PropertyName="Health" Operation="Addition" InterpreterFormula="$Link(Initiator|Property|ClassUnit:AttributeDamage) * 0.25" RealizationApplicationMethod="OnHit" />
       </BattleEffects>
@@ -898,11 +898,11 @@
   <BattleActionUnit Name="BattleActionUnitAbilityDisease" Defensible="false" TerrainConsideration="Range" Type="Attack Defense" Priority="0">
     <InterpreterPrerequisite Inverted="false">$Link(Target|Property|ClassUnit:AttributeArmor) le 0</InterpreterPrerequisite>
     <BattleEffects TargetsFilter="Target Alive">
-      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitAbilityDiseaseImmunityTemp) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
       <BattleEffect_ChangeSealedPropertyValue Operation="Affectation" Name="BattleEffect_SetSufferedDiseaseEfficiency" PropertyName="SufferedDiseaseEfficiency" InterpreterFormula="($Property(ClassBattleUnit:SufferedDiseaseEfficiency) max $Link(Initiator|Property|ClassUnit:DiseaseEfficiency)) max $Link(Initiator|Property|ClassBattleUnit:SufferedDiseaseEfficiency)" />
     </BattleEffects>
     <BattleEffects TargetsFilter="Target Alive">
-      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitActionSick) or($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitAbilityDiseaseImmunityTemp) or $Path(ClassUnit,UnitActionSick) or($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
       <BattleEffect_BattleActionUnit Name="BattleEffectAddDiseaseAction" Duration="6" RealizationApplicationMethod="OnHit">
         <BattleActionUnitReference Name="BattleActionUnitAbilityDisease"/>
         <BattleActionUnitReference Name="BattleActionUnitAbilityDiseasePassive"/>
@@ -916,7 +916,7 @@
 
   <BattleActionUnit Name="BattleActionUnitAbilityDiseasePassive" Defensible="false" TerrainConsideration="None" Type="Activation" Priority="0">
     <BattleEffects TargetsFilter="Initiator Alive">
-      <InterpreterPrerequisite Inverted="true">(($Link(Initiator|Path|ClassUnit,UnitAbilityDiseaseImmunity)) or ($Link(Initiator|Property|ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true">(($Link(Initiator|Path|ClassUnit,UnitAbilityDiseaseImmunity)) or ($Link(Initiator|Path|ClassUnit,UnitAbilityDiseaseImmunityTemp)) or ($Link(Initiator|Property|ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
       <BattleEffect_ChangeSealedPropertyValue Name="BattleEffect_DiseaseDamages" PropertyName="Health" InterpreterFormula="(0 - ($Link(Initiator|Property|ClassUnit:MaximumHealth) * $Link(Initiator|Property|ClassBattleUnit:SufferedDiseaseEfficiency)))" />
     </BattleEffects>
   </BattleActionUnit>
@@ -930,11 +930,11 @@
 
     <BattleEffectsArea TargetsFilter="Initiator" Type="Circle" Parameter1="1">
       <BattleEffects TargetsFilter="Target Alive">
-        <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitAbilityDiseaseImmunityTemp) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
         <BattleEffect_ChangeSealedPropertyValue Operation="Affectation" Name="BattleEffect_SetSufferedDiseaseEfficiency" PropertyName="SufferedDiseaseEfficiency" InterpreterFormula="($Property(ClassBattleUnit:SufferedDiseaseEfficiency) max $Link(Initiator|Property|ClassUnit:DiseaseEfficiency)) max $Link(Initiator|Property|ClassBattleUnit:SufferedDiseaseEfficiency)" />
       </BattleEffects>
       <BattleEffects TargetsFilter="Target Alive">
-        <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitActionSick) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+        <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitAbilityDiseaseImmunityTemp) or $Path(ClassUnit,UnitActionSick) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
         <BattleEffect_BattleActionUnit Name="BattleEffectAddDiseaseAction" Duration="6">
           <BattleActionUnitReference Name="BattleActionUnitAbilityDisease"/>
           <BattleActionUnitReference Name="BattleActionUnitAbilityDiseasePassive"/>
@@ -1216,7 +1216,7 @@
 
   <BattleActionUnit Name="BattleActionUnitAbilityParasite" Defensible="false" TerrainConsideration="Range" Type="Attack">
     <BattleEffects TargetsFilter="Target EnemyGroup Alive">
-      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
+      <InterpreterPrerequisite Inverted="true">($Path(ClassUnit,UnitAbilityDiseaseImmunity) or $Path(ClassUnit,UnitAbilityDiseaseImmunityTemp) or ($Property(ClassUnit:CantBeDebuffed) gt 1))</InterpreterPrerequisite>
       <BattleEffect_UnitSimulation Name="BattleEffect_Parasite" IsCumulable="false" Duration="6" CanBeCanceled="false">
         <SimulationDescriptorReference Name="UnitActionParasite" />
       </BattleEffect_UnitSimulation>
@@ -1237,7 +1237,7 @@
     <BattleEffects TargetsFilter="Target SameGroup Alive">
       <BattleEffect_Void Name="BattleEffect_DiseaseImmunityTransition" RealizationApplicationMethod="OnVisualEffectEnd" RealizationApplicationData="BattleEffect_DiseaseImmunityCast" RealizationApplicationIgnoreTarget="true" />
       <BattleEffect_UnitSimulation Name="BattleEffect_DiseaseImmunity" Duration="6" IsCumulable="false" RealizationApplicationMethod="OnHit" >
-        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunity" />
+        <SimulationDescriptorReference Name="UnitAbilityDiseaseImmunityTemp" />
       </BattleEffect_UnitSimulation>
     </BattleEffects>
   </BattleActionUnit>
@@ -1526,5 +1526,17 @@
       </BattleEffect_UnitSimulation>
     </BattleEffects>
   </BattleActionUnit>
-  
+
+  <BattleActionUnit Name="BattleActionUnitAbilitySnareBack" Defensible="false" TerrainConsideration="PassableTransition" Type="Defense">
+    <BattleEffects TargetsFilter="Initiator Alive">
+      <BattleEffect_Void Name="BattleEffect_SnareCast" />
+    </BattleEffects>
+
+    <BattleEffects TargetsFilter="Target Alive">
+      <InterpreterPrerequisite Inverted="false">$Property(ClassUnit:CantBeDebuffed) le 0</InterpreterPrerequisite>
+      <BattleEffect_UnitSimulation Name="BattleEffect_AbilitySnare" Duration="2" IsCumulable="false" RealizationApplicationMethod="OnHit">
+        <SimulationDescriptorReference Name="UnitActionSnare" />
+      </BattleEffect_UnitSimulation>
+    </BattleEffects>
+  </BattleActionUnit>
 </Datatable>

@@ -362,14 +362,26 @@ public class TechnologyFrame : MonoBehaviour
 		if (technologyState == DepartmentOfScience.ConstructibleElement.State.Available)
 		{
 			this.AgeTransform.Enable = false;
-			this.QueueResearch();
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && Input.GetKey(KeyCode.G))
+			{
+				this.ForceUnlockTechnology();
+			}
+			else
+			{
+				this.QueueResearch();
+			}
 			this.selectionClient.SendMessage("OnSelectTechnology", this.AgeTransform, SendMessageOptions.RequireReceiver);
+			return;
 		}
-		else if (technologyState == DepartmentOfScience.ConstructibleElement.State.InProgress || technologyState == DepartmentOfScience.ConstructibleElement.State.Queued)
+		if (technologyState == DepartmentOfScience.ConstructibleElement.State.InProgress || technologyState == DepartmentOfScience.ConstructibleElement.State.Queued)
 		{
 			this.AgeTransform.Enable = false;
 			Construction construction = constructionQueueForTech.Get(this.TechnologyDefinition);
 			this.CancelResearch(construction);
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && Input.GetKey(KeyCode.G))
+			{
+				this.ForceUnlockTechnology();
+			}
 			this.selectionClient.SendMessage("OnSelectTechnology", this.AgeTransform, SendMessageOptions.RequireReceiver);
 		}
 	}
@@ -443,13 +455,15 @@ public class TechnologyFrame : MonoBehaviour
 				OrderQueueKaijuResearch order = new OrderQueueKaijuResearch(this.empire.Index, this.TechnologyDefinition);
 				Ticket ticket;
 				service2.ActivePlayerController.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OnOrderResponse));
+				return;
 			}
-			else
+			OrderQueueResearch orderQueueResearch = new OrderQueueResearch(this.empire.Index, this.TechnologyDefinition);
+			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 			{
-				OrderQueueResearch order2 = new OrderQueueResearch(this.empire.Index, this.TechnologyDefinition);
-				Ticket ticket;
-				service2.ActivePlayerController.PostOrder(order2, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OnOrderResponse));
+				orderQueueResearch.InsertAtFirstPlace = true;
 			}
+			Ticket ticket2;
+			service2.ActivePlayerController.PostOrder(orderQueueResearch, out ticket2, new EventHandler<TicketRaisedEventArgs>(this.OnOrderResponse));
 		}
 	}
 
@@ -498,6 +512,20 @@ public class TechnologyFrame : MonoBehaviour
 			technologyState = service2.GetTechnologyState(this.TechnologyDefinition, this.empire);
 		}
 		this.Refresh(this.empire, technologyState);
+	}
+
+	private void ForceUnlockTechnology()
+	{
+		IGameService service = Services.GetService<IGameService>();
+		if (service != null && service.Game != null)
+		{
+			IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
+			if (service2 != null && service2.ActivePlayerController != null)
+			{
+				OrderForceUnlockTechnology order = new OrderForceUnlockTechnology(service2.ActivePlayerController.Empire.Index, this.TechnologyDefinition.Name);
+				service2.ActivePlayerController.PostOrder(order);
+			}
+		}
 	}
 
 	public AgeTransform AgeTransform;

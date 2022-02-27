@@ -50,7 +50,7 @@
     <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
   </InfiltrationActionOnCity_DamageFortification>
 
-  <InfiltrationActionOnCity_DamageFortification Name="DamageFortification_Level4" InstantDamagePercent="1" FirstName="DamageFortification" SubCategory="CityDefense" Level="4" ExperienceReward="12">
+  <InfiltrationActionOnCity_DamageFortification Name="DamageFortification_Level4" InstantDamagePercent="0.75" FirstName="DamageFortification" SubCategory="CityDefense" Level="4" ExperienceReward="12">
     <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
     <InterpreterPrerequisite Flags="DamageFortificationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:CityDefensePoint) gt 0</InterpreterPrerequisite>
     <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
@@ -58,7 +58,8 @@
 
   <InfiltrationActionOnCity_DamageFortification Name="DamageFortification_Level5" InstantDamagePercent="1" FirstName="DamageFortification" SubCategory="CityDefense" Level="5" ExperienceReward="15">
     <InterpreterPrerequisite Flags="InfiltrationLevelPrerequisite,Prerequisites">$Property(./SpiedGarrison:InfiltrateLevel) ge $(ActionLevel)</InterpreterPrerequisite>
-    <BoosterReference Name="BoosterDamageFortification"/>
+	<InterpreterPrerequisite Flags="DamageFortificationPrerequisite,Prerequisites">$Link(InfiltratedCity|Property|ClassCity:CityDefensePoint) gt 0</InterpreterPrerequisite>
+    <!--<BoosterReference Name="BoosterDamageFortification"/>-->
     <CustomCost ResourceName="EmpirePoint" Instant="true">((4 * ($Property(../EmpireTypeMajor:EmpireScaleFactor) + $Property(../ClassEmpire:CurrentEra)) / 1.5)) * $Property(UnitHero:SpyActionCostModifier)</CustomCost>
   </InfiltrationActionOnCity_DamageFortification>
 

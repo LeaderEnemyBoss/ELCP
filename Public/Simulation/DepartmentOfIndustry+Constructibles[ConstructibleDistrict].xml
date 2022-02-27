@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <ConstructibleDistrictDefinition Name="DistrictImprovementFlames14" SubCategory="SubCategoryCamp" ResourceOnMigration="FreeCamp" IsUnique="true">
+    <ConstructionName>Camp</ConstructionName>
+    <UpdateCadastralMap>false</UpdateCadastralMap>
+    <Cost ResourceName="Production">400</Cost>
+    <Cost ResourceName="Strategic1" Instant="true">5</Cost>
+    <Cost ResourceName="Strategic2" Instant="true">5</Cost>
+    <DownloadableContentPrerequisite Flags="Prerequisite,Discard">SummerFlamesPack</DownloadableContentPrerequisite>
+    <TechnologyPrerequisite  Inverted="false" Flags="Prerequisite,Discard,AIEconomicRatio">TechnologyFlames14</TechnologyPrerequisite>
+    <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard">ClassCity/DistrictProxyCampExploitation</PathPrerequisite>
+    <SimulationDescriptorReference Name="CampEffects" />
+    <SimulationDescriptorReference    Name="OnlyOnePerCity" />
+  </ConstructibleDistrictDefinition>
+  
+</Datatable>

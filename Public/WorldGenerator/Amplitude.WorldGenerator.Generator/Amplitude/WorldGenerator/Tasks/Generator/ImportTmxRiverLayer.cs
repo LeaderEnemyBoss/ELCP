@@ -125,12 +125,12 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			this.treatedHexes.Add(startHexe);
 			HexPos hexPos = new HexPos(startHexe);
 			bool flag = false;
-			for (;;)
+			do
 			{
 				Tile tile = base.Context.Settings.TmxMap.GetTile(this.tmxRiverLayer.Data[hexPos.Row, hexPos.Column]);
 				if (!tile.Properties.Keys.Contains(ImportTmxRiverLayer.nextTileProperty))
 				{
-					break;
+					return;
 				}
 				int elevation = (int)base.Context.GetElevation(hexPos);
 				HexPos.Direction d = (HexPos.Direction)Enum.Parse(typeof(HexPos.Direction), tile.Properties[ImportTmxRiverLayer.nextTileProperty]);
@@ -138,43 +138,46 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 				int elevation2 = (int)base.Context.GetElevation(hexPos);
 				if (elevation < elevation2)
 				{
-					goto Block_2;
+					goto IL_217;
 				}
 				Terrain terrain = base.Context.GetTerrain(hexPos);
 				if (terrain.Name.Contains("Waste"))
 				{
-					goto Block_3;
+					goto IL_26A;
 				}
 				if (this.tmxRiverLayer.Data[hexPos.Row, hexPos.Column] == 0)
 				{
-					if (!terrain.Name.Contains("Water") && !terrain.Name.Contains("Ocean"))
+					if (!terrain.IsWaterTile)
 					{
-						goto Block_6;
+						goto IL_2BD;
 					}
 					HexPos hexPos2 = new HexPos(hexPos);
 					river.Hexes.Add(hexPos2);
 					base.Context.SetRiverMap(hexPos2, river.Id);
 					this.treatedHexes.Add(hexPos2);
+					string a;
+					if (base.Context.Configuration.IsDLCAvailable("SummerFlamesPack") && tile.Properties.TryGetValue(ImportTmxRiverLayer.riverTypeProperty, out a) && a == "Lava")
+					{
+						river.Type = River.RiverType.LavaRiver;
+					}
 					flag = true;
 				}
 				else
 				{
-					if (terrain.Name.Contains("Water") || terrain.Name.Contains("Ocean"))
+					if (terrain.IsWaterTile)
 					{
-						goto IL_261;
+						goto IL_2C9;
 					}
 					HexPos hexPos3 = new HexPos(hexPos);
 					river.Hexes.Add(hexPos3);
 					base.Context.SetRiverMap(hexPos3, river.Id);
 					this.treatedHexes.Add(hexPos3);
 				}
-				if (flag)
-				{
-					goto Block_8;
-				}
 			}
+			while (!flag);
+			base.Context.Rivers.Add(river);
 			return;
-			Block_2:
+			IL_217:
 			base.ReportTmx(string.Concat(new object[]
 			{
 				"?AscendingRiverImpossible&$Coordinate=",
@@ -183,7 +186,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 				hexPos.Row - base.Context.Grid.Rows + 1
 			}));
 			return;
-			Block_3:
+			IL_26A:
 			base.ReportTmx(string.Concat(new object[]
 			{
 				"?RiverIncompatibleTerrain&$Coordinate=",
@@ -192,10 +195,10 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 				hexPos.Row - base.Context.Grid.Rows + 1
 			}));
 			return;
-			Block_6:
+			IL_2BD:
 			base.ReportTmx("?InvalidRiverEnding");
 			return;
-			IL_261:
+			IL_2C9:
 			base.ReportTmx(string.Concat(new object[]
 			{
 				"?RiverIncompatibleTerrain&$Coordinate=",
@@ -203,9 +206,6 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 				",",
 				hexPos.Row - base.Context.Grid.Rows + 1
 			}));
-			return;
-			Block_8:
-			base.Context.Rivers.Add(river);
 		}
 
 		private static int id = 1;
@@ -217,5 +217,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 		private Layer tmxRiverLayer;
 
 		private List<HexPos> treatedHexes = new List<HexPos>();
+
+		private static string riverTypeProperty = "RiverType";
 	}
 }

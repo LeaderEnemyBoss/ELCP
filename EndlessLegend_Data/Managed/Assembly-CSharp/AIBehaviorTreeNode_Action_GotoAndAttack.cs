@@ -46,9 +46,15 @@ public class AIBehaviorTreeNode_Action_GotoAndAttack : AIBehaviorTreeNode_Action
 		else
 		{
 			Army army;
-			AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-			if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+			if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 			{
+				return State.Failure;
+			}
+			float propertyValue = army.GetPropertyValue(SimulationProperties.MaximumNumberOfActionPoints);
+			float propertyValue2 = army.GetPropertyValue(SimulationProperties.ActionPointsSpent);
+			if (propertyValue <= propertyValue2)
+			{
+				aiBehaviorTree.ErrorCode = 33;
 				return State.Failure;
 			}
 			if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
@@ -66,22 +72,17 @@ public class AIBehaviorTreeNode_Action_GotoAndAttack : AIBehaviorTreeNode_Action
 			}
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
-			if (!service2.Contains(gameEntity.GUID))
+			if (!service.Game.Services.GetService<IGameEntityRepositoryService>().Contains(gameEntity.GUID))
 			{
 				return State.Success;
 			}
-			IEncounterRepositoryService service3 = service.Game.Services.GetService<IEncounterRepositoryService>();
-			if (service3 != null)
+			IEncounterRepositoryService service2 = service.Game.Services.GetService<IEncounterRepositoryService>();
+			if (service2 != null)
 			{
-				IEnumerable<Encounter> enumerable = service3;
-				if (enumerable != null)
+				IEnumerable<Encounter> enumerable = service2;
+				if (enumerable != null && enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false)))
 				{
-					bool flag = enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false));
-					if (flag)
-					{
-						return State.Running;
-					}
+					return State.Running;
 				}
 			}
 			IGarrison garrison;
@@ -148,7 +149,7 @@ public class AIBehaviorTreeNode_Action_GotoAndAttack : AIBehaviorTreeNode_Action
 				return State.Failure;
 			}
 			OrderGoToAndAttack orderGoToAndAttack = new OrderGoToAndAttack(army.Empire.Index, army.GUID, guid, worldPath);
-			orderGoToAndAttack.Flags = (PathfindingFlags)0;
+			orderGoToAndAttack.Flags = PathfindingFlags.IgnoreFogOfWar;
 			aiBehaviorTree.AICommander.Empire.PlayerControllers.AI.PostOrder(orderGoToAndAttack, out this.ticket, null);
 			return State.Running;
 		}

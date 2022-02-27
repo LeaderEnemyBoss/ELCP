@@ -34,8 +34,7 @@ public class QuestBehaviourTreeNode_ConditionCheck_IsArmyAtCity : QuestBehaviour
 		{
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			global::Game x = service.Game as global::Game;
-			if (x == null)
+			if (service.Game as global::Game == null)
 			{
 				return State.Failure;
 			}
@@ -49,10 +48,8 @@ public class QuestBehaviourTreeNode_ConditionCheck_IsArmyAtCity : QuestBehaviour
 			{
 				empire = questBehaviour.Initiator;
 			}
-			DepartmentOfForeignAffairs agency = empire.GetAgency<DepartmentOfForeignAffairs>();
-			Diagnostics.Assert(agency != null);
-			DepartmentOfDefense agency2 = empire.GetAgency<DepartmentOfDefense>();
-			Army army = agency2.GetArmy(this.ArmyGuid);
+			Diagnostics.Assert(empire.GetAgency<DepartmentOfForeignAffairs>() != null);
+			Army army = empire.GetAgency<DepartmentOfDefense>().GetArmy(this.ArmyGuid);
 			if (army == null)
 			{
 				return State.Failure;
@@ -98,12 +95,14 @@ public class QuestBehaviourTreeNode_ConditionCheck_IsArmyAtCity : QuestBehaviour
 			if (obj is City)
 			{
 				this.CityGUID = ((City)obj).GUID;
+				return;
 			}
-			else if (obj is ulong)
+			if (obj is ulong)
 			{
 				this.CityGUID = (ulong)obj;
+				return;
 			}
-			else if (obj is GameEntityGUID)
+			if (obj is GameEntityGUID)
 			{
 				this.CityGUID = (GameEntityGUID)obj;
 			}

@@ -11,17 +11,17 @@
           Money-grubbing
           -->
           <MoneyReferenceRatioAgent>
-            <MoneyStockToMaintainUpkeepTurnCount>1.5</MoneyStockToMaintainUpkeepTurnCount>
-            <MoneyIncomeGrowthPercent>1.2</MoneyIncomeGrowthPercent>
+            <MoneyStockToMaintainUpkeepTurnCount>2.5</MoneyStockToMaintainUpkeepTurnCount>
+            <MoneyIncomeGrowthPercent>2.5</MoneyIncomeGrowthPercent>
           </MoneyReferenceRatioAgent>
 
-          <!--
-          Science-focused
-          -->
-          <TechnologyReferenceTurnCountAgent>
-            <IdealTechnologyUnlockPeriod>0.75</IdealTechnologyUnlockPeriod>
-            <MaximumPeriodGap>0.75</MaximumPeriodGap>
-          </TechnologyReferenceTurnCountAgent>
+		<MoneyPrintTermAgent>
+            <Multiplier>0</Multiplier>
+        </MoneyPrintTermAgent>
+		
+		<ResearchAgreementTermAgent>
+		    <Multiplier>1.3</Multiplier>
+		</ResearchAgreementTermAgent>
 
         </AgentDefinition>
 
@@ -29,6 +29,12 @@
         <MajorEmpire>
           <AIEntity_Empire>
 
+			<AILayer_Victory>
+				<VictoryFocusMilitary>1.8</VictoryFocusMilitary>
+				<VictoryFocusDiplomacy>0.9</VictoryFocusDiplomacy>
+				<VictoryFocusEconomy>1.6</VictoryFocusEconomy>
+				<VictoryFocusTechnology>2</VictoryFocusTechnology>
+			</AILayer_Victory>
             <!-- The degree to which various attitude modifiers are taken into account -->
             <AILayer_Attitude>
               <!-- ##### -->
@@ -139,26 +145,26 @@
               -->
               <Network>
                 <MilitaryEmpireNeedAgent>
-                  <GlobalUnitCountMultiplier>1.2</GlobalUnitCountMultiplier>
+                  <GlobalUnitCountMultiplier>1</GlobalUnitCountMultiplier>
 
                   <!-- City unit need: NumberOfUnitPerCity = CLAMP((turn - CityUnitNeedStartTurn) / CityUnitNeedTurnRatio, MinimumNumberOfUnitPerCity, MaximumNumberOfUnitPerCity) -->
-                  <CityUnitNeedStartTurn>1.1</CityUnitNeedStartTurn>
-                  <CityUnitNeedTurnRatio>0.8</CityUnitNeedTurnRatio>
-                  <MinimumNumberOfUnitPerCity>0</MinimumNumberOfUnitPerCity>
+                  <CityUnitNeedStartTurn>1</CityUnitNeedStartTurn>
+                  <CityUnitNeedTurnRatio>1</CityUnitNeedTurnRatio>
+                  <MinimumNumberOfUnitPerCity>1</MinimumNumberOfUnitPerCity>
                   <MaximumNumberOfUnitPerCity>1.1</MaximumNumberOfUnitPerCity>
 
                   <!-- Roaming unit need: NumberOfRoamingUnit = CLAMP((turn - RoamingUnitNeedStartTurn) / RoamingUnitNeedTurnRatio, MinimumNumberOfRoamingUnit, MaximumNumberOfRoamingUnit) -->
-                  <RoamingUnitNeedStartTurn>0</RoamingUnitNeedStartTurn>
-                  <RoamingUnitNeedTurnRatio>0.9</RoamingUnitNeedTurnRatio>
-                  <MinimumNumberOfRoamingUnit>1.1</MinimumNumberOfRoamingUnit>
-                  <MaximumNumberOfRoamingUnit>1.1</MaximumNumberOfRoamingUnit>
+                  <RoamingUnitNeedStartTurn>1.5</RoamingUnitNeedStartTurn>
+                  <RoamingUnitNeedTurnRatio>1</RoamingUnitNeedTurnRatio>
+                  <MinimumNumberOfRoamingUnit>1</MinimumNumberOfRoamingUnit>
+                  <MaximumNumberOfRoamingUnit>1.5</MaximumNumberOfRoamingUnit>
 
                   <!-- War unit need: NumberOfWarUnit = CLAMP(WarUnitNeedOffset + (turn - WarUnitNeedStartTurn) / WarUnitNeedTurnRatio, MinimumNumberOfWarUnit, MaximumNumberOfWarUnit) -->
-                  <WarUnitNeedOffset>1.2</WarUnitNeedOffset>
-                  <WarUnitNeedStartTurn>0.9</WarUnitNeedStartTurn>
-                  <WarUnitNeedTurnRatio>0.9</WarUnitNeedTurnRatio>
-                  <MinimumNumberOfWarUnit>1.2</MinimumNumberOfWarUnit>
-                  <MaximumNumberOfWarUnit>1.2</MaximumNumberOfWarUnit>
+                  <WarUnitNeedOffset>1</WarUnitNeedOffset>
+                  <WarUnitNeedStartTurn>1</WarUnitNeedStartTurn>
+                  <WarUnitNeedTurnRatio>1.1</WarUnitNeedTurnRatio>
+                  <MinimumNumberOfWarUnit>1</MinimumNumberOfWarUnit>
+                  <MaximumNumberOfWarUnit>1.5</MaximumNumberOfWarUnit>
 
                   <!-- NumbeOfUnitWantedInTheEmpire = (NumberOfUnitPerCity + NumberOfRoamingUnit + NumberOfWarUnit) * GlobalUnitCountMultiplier -->
                 </MilitaryEmpireNeedAgent>
@@ -169,8 +175,8 @@
               <ElementEvaluatorContextMultiplier>
                 <AIEmpireGrowth>0.9</AIEmpireGrowth>
                 <AIEmpireProduction>1.4</AIEmpireProduction>
-                <AIEmpireMoney>1.8</AIEmpireMoney>
-                <AIEmpireResearch>2.2</AIEmpireResearch>
+                <AIEmpireMoney>2.5</AIEmpireMoney>
+                <AIEmpireResearch>1.5</AIEmpireResearch>
                 <AIEmpireEmpirePoint>0.9</AIEmpireEmpirePoint>
                 <AIEmpireApproval>0.6</AIEmpireApproval>
 
@@ -217,12 +223,17 @@
                 <AIEmpireUnlockMarketUnit>0.8</AIEmpireUnlockMarketUnit>
                 <AIEmpireUnlockMarketResource>1.2</AIEmpireUnlockMarketResource>
                 <AIEmpireUnlockBooster>0.9</AIEmpireUnlockBooster>
-                <AIEmpireUnlockBoosterCultist>0</AIEmpireUnlockBoosterCultist>
+                <AIEmpireUnlockBoosterCultist>1</AIEmpireUnlockBoosterCultist>
                 <AIEmpireUnlockDiplomacyPositive>0.8</AIEmpireUnlockDiplomacyPositive>
                 <AIEmpireWonderVictory>1.0</AIEmpireWonderVictory>
                 <AIEmpireUnlockAltarOfAuriga>0.9</AIEmpireUnlockAltarOfAuriga>
               </ElementEvaluatorContextMultiplier>
             </AILayer_Research>
+			
+			<AILayer_Colonization>
+              <EmpireApprovalNeededToEngageColonization>1</EmpireApprovalNeededToEngageColonization>
+              <AcceptedNumberOfUnPacifiedRegion>1.5</AcceptedNumberOfUnPacifiedRegion>
+            </AILayer_Colonization>
           </AIEntity_Empire>
 
           <AIEntity_City>

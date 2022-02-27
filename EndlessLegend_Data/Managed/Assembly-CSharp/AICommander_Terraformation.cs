@@ -163,22 +163,37 @@ public class AICommander_Terraformation : AICommanderWithObjective, IXmlSerializ
 				position = city.WorldPosition;
 				return true;
 			}
-			foreach (District district in city.Districts)
+			if (city.Camp != null && this.IsPositionValidToTerraform(city.Camp.WorldPosition))
 			{
-				if (district != null && this.IsPositionValidToTerraform(district.WorldPosition))
+				position = city.Camp.WorldPosition;
+				return true;
+			}
+			int num = -1;
+			int num2 = 0;
+			for (int i = 0; i < city.Districts.Count; i++)
+			{
+				if (city.Districts[i] != null && this.IsPositionValidToTerraform(city.Districts[i].WorldPosition))
 				{
-					position = district.WorldPosition;
-					return true;
+					int num3 = 0;
+					foreach (WorldPosition worldPosition in city.Districts[i].WorldPosition.GetNeighbours(this.worldPositioningService.World.WorldParameters))
+					{
+						if (this.worldPositioningService.GetDistrict(worldPosition) != null && !this.worldPositioningService.ContainsTerrainTag(worldPosition, "TerrainTagVolcanic") && !this.terraformDeviceService.IsPositionNextToDevice(worldPosition))
+						{
+							num3++;
+						}
+					}
+					if (num3 > num2)
+					{
+						num2 = num3;
+						num = i;
+					}
 				}
 			}
-		}
-		List<WorldPosition> list;
-		this.GetNonVolcanicPositions(region, out list);
-		if (list.Count > 0)
-		{
-			int index = this.random.Next(0, list.Count - 1);
-			position = list[index];
-			return true;
+			if (num >= 0)
+			{
+				position = city.Districts[num].WorldPosition;
+				return true;
+			}
 		}
 		position = WorldPosition.Invalid;
 		return false;
@@ -197,7 +212,7 @@ public class AICommander_Terraformation : AICommanderWithObjective, IXmlSerializ
 		}
 	}
 
-	private bool IsPositionValidToTerraform(WorldPosition position)
+	public bool IsPositionValidToTerraform(WorldPosition position)
 	{
 		return !this.worldPositioningService.ContainsTerrainTag(position, "TerrainTagVolcanic") && this.terraformDeviceService.IsPositionValidForDevice(base.Empire, position) && !this.terraformDeviceService.IsPositionNextToDevice(position);
 	}
@@ -221,6 +236,10 @@ public class AICommander_Terraformation : AICommanderWithObjective, IXmlSerializ
 
 	public override bool IsMissionFinished(bool forceStep)
 	{
+		if (!this.IsPositionValidToTerraform(this.terraformPosition))
+		{
+			return true;
+		}
 		if (this.terraformMessageId != 0UL)
 		{
 			EvaluableMessage_Terraform evaluableMessage_Terraform = base.AIPlayer.Blackboard.GetMessage(this.terraformMessageId) as EvaluableMessage_Terraform;
@@ -230,7 +249,7 @@ public class AICommander_Terraformation : AICommanderWithObjective, IXmlSerializ
 			}
 		}
 		GlobalObjectiveMessage globalObjectiveMessage;
-		return base.GlobalObjectiveID == 0UL || base.AIPlayer == null || !base.AIPlayer.Blackboard.TryGetMessage<GlobalObjectiveMessage>(base.GlobalObjectiveID, out globalObjectiveMessage) || (globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Canceled || globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Failed);
+		return base.GlobalObjectiveID == 0UL || base.AIPlayer == null || !base.AIPlayer.Blackboard.TryGetMessage<GlobalObjectiveMessage>(base.GlobalObjectiveID, out globalObjectiveMessage) || globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Canceled || globalObjectiveMessage.State == BlackboardMessage.StateValue.Message_Failed;
 	}
 
 	public override void Release()

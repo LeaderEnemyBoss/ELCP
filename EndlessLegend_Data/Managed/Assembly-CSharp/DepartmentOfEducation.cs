@@ -15,18 +15,18 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderCaptureHero), "CaptureHero")]
-[OrderProcessor(typeof(OrderChangeHeroAssignment), "ChangeHeroAssignment")]
-[OrderProcessor(typeof(OrderReleasePrisoner), "ReleasePrisoner")]
-[OrderProcessor(typeof(OrderUnlockUnitSkillLevel), "UnlockUnitSkillLevel")]
-[OrderProcessor(typeof(OrderRestoreHero), "RestoreHero")]
-[OrderProcessor(typeof(OrderRemoveHero), "RemoveHero")]
-[OrderProcessor(typeof(OrderForceShiftUnits), "ForceShiftUnits")]
-[OrderProcessor(typeof(OrderCaptureHeroByInfiltration), "CaptureHeroByInfiltration")]
-[OrderProcessor(typeof(OrderInjureHero), "InjureHero")]
-[OrderProcessor(typeof(OrderImmolateUnits), "ImmolateUnits")]
 [OrderProcessor(typeof(OrderGenerateHero), "GenerateHero")]
+[OrderProcessor(typeof(OrderCaptureHero), "CaptureHero")]
+[OrderProcessor(typeof(OrderImmolateUnits), "ImmolateUnits")]
+[OrderProcessor(typeof(OrderForceShiftUnits), "ForceShiftUnits")]
+[OrderProcessor(typeof(OrderChangeHeroAssignment), "ChangeHeroAssignment")]
+[OrderProcessor(typeof(OrderInjureHero), "InjureHero")]
 [OrderProcessor(typeof(OrderInjureHeroByInfiltration), "InjureHeroByInfiltration")]
+[OrderProcessor(typeof(OrderReleasePrisoner), "ReleasePrisoner")]
+[OrderProcessor(typeof(OrderRemoveHero), "RemoveHero")]
+[OrderProcessor(typeof(OrderRestoreHero), "RestoreHero")]
+[OrderProcessor(typeof(OrderUnlockUnitSkillLevel), "UnlockUnitSkillLevel")]
+[OrderProcessor(typeof(OrderCaptureHeroByInfiltration), "CaptureHeroByInfiltration")]
 public class DepartmentOfEducation : Agency, IXmlSerializable
 {
 	public DepartmentOfEducation(global::Empire empire)
@@ -240,32 +240,31 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 	private IEnumerator GameClient_EndTurn_VerifyCapturedHeroCooldown(string context, string name)
 	{
 		global::Game game = this.GameService.Game as global::Game;
-		for (int index = this.prisoners.Count - 1; index >= 0; index--)
+		for (int i = this.prisoners.Count - 1; i >= 0; i--)
 		{
 			IGameEntity gameEntity;
-			if (!this.GameEntityRepositoryService.TryGetValue(this.prisoners[index].UnitGuid, out gameEntity) || !(gameEntity is Unit))
+			if (!this.GameEntityRepositoryService.TryGetValue(this.prisoners[i].UnitGuid, out gameEntity) || !(gameEntity is Unit))
 			{
-				this.ReleaseCapturedHeroFrom(this.prisoners[index]);
+				this.ReleaseCapturedHeroFrom(this.prisoners[i]);
 			}
 			else
 			{
-				Unit hero = gameEntity as Unit;
-				float jailPower = this.prisoners[index].PrisonerSimulationObject.GetPropertyValue(SimulationProperties.JailPower);
-				float jailHeroPower = hero.GetPropertyValue(SimulationProperties.JailHeroPower);
-				float jailHeroPowerPerTurn = hero.GetPropertyValue(SimulationProperties.JailHeroGainPerTurn);
-				jailHeroPower += jailHeroPowerPerTurn;
-				hero.SetPropertyBaseValue(SimulationProperties.JailHeroPower, jailHeroPower);
-				if (jailHeroPower > jailPower)
+				Unit unit = gameEntity as Unit;
+				float propertyValue = this.prisoners[i].PrisonerSimulationObject.GetPropertyValue(SimulationProperties.JailPower);
+				float num = unit.GetPropertyValue(SimulationProperties.JailHeroPower);
+				float propertyValue2 = unit.GetPropertyValue(SimulationProperties.JailHeroGainPerTurn);
+				num += propertyValue2;
+				unit.SetPropertyBaseValue(SimulationProperties.JailHeroPower, num);
+				if (num > propertyValue)
 				{
-					DepartmentOfEducation ownerEducation = game.Empires[this.prisoners[index].OwnerEmpireIndex].GetAgency<DepartmentOfEducation>();
-					ownerEducation.ReleaseCapturedHeroBy(this.prisoners[index].UnitGuid, false);
-					this.ReleaseCapturedHeroFrom(this.prisoners[index]);
+					game.Empires[this.prisoners[i].OwnerEmpireIndex].GetAgency<DepartmentOfEducation>().ReleaseCapturedHeroBy(this.prisoners[i].UnitGuid, false);
+					this.ReleaseCapturedHeroFrom(this.prisoners[i]);
 					this.OnHeroCollectionChange(null, CollectionChangeAction.Refresh);
 				}
 				else
 				{
-					float heroUpkeep = hero.GetPropertyValue(SimulationProperties.HeroUpkeep);
-					this.prisoners[index].PrisonerSimulationObject.SetPropertyBaseValue(SimulationProperties.JailHeroUpkeep, heroUpkeep);
+					float propertyValue3 = unit.GetPropertyValue(SimulationProperties.HeroUpkeep);
+					this.prisoners[i].PrisonerSimulationObject.SetPropertyBaseValue(SimulationProperties.JailHeroUpkeep, propertyValue3);
 				}
 			}
 		}
@@ -611,6 +610,7 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 		}
 		int attribute2 = reader.GetAttribute<int>("Count");
 		reader.ReadStartElement("UnassignedHeroes");
+		this.lastTurnChecked = reader.GetAttribute<int>("lastTurnChecked");
 		DepartmentOfDefense agency = base.Empire.GetAgency<DepartmentOfDefense>();
 		for (int j = 0; j < attribute2; j++)
 		{
@@ -631,8 +631,7 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 				GameEntityGUID unitGuid = reader.GetAttribute<ulong>("UnitGuid");
 				bool attribute5 = reader.GetAttribute<bool>("CaptureNoticed");
 				reader.ReadStartElement("Prisoner");
-				string attribute6 = reader.GetAttribute("Name");
-				SimulationObject simulationObject = new SimulationObject(attribute6);
+				SimulationObject simulationObject = new SimulationObject(reader.GetAttribute("Name"));
 				reader.ReadElementSerializable<SimulationObject>(ref simulationObject);
 				this.prisoners.Add(new Prisoner(unitGuid, attribute4, attribute5, simulationObject));
 				this.jail.AddChild(simulationObject);
@@ -657,6 +656,7 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 		}
 		writer.WriteEndElement();
 		writer.WriteStartElement("UnassignedHeroes");
+		writer.WriteAttributeString<int>("lastTurnChecked", this.lastTurnChecked);
 		writer.WriteAttributeString<int>("Count", this.hallOfFame.Count((Unit match) => match.Garrison == null));
 		for (int j = 0; j < this.hallOfFame.Count; j++)
 		{
@@ -801,8 +801,19 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 				return false;
 			}
 			garrison = (gameEntity as IGarrison);
+			City city = garrison as City;
+			if (city != null && city.Empire != base.Empire)
+			{
+				Diagnostics.LogError("Order preprocessing failed because the target city {0} of {1} does not belong to {2}", new object[]
+				{
+					city.LocalizedName,
+					city.Empire,
+					base.Empire
+				});
+				return false;
+			}
 		}
-		return DepartmentOfEducation.CanAssignHeroTo(hero, garrison);
+		return order.IgnoreCooldown || DepartmentOfEducation.CanAssignHeroTo(hero, garrison);
 	}
 
 	private IEnumerator ChangeHeroAssignmentProcessor(OrderChangeHeroAssignment order)
@@ -818,8 +829,9 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 			Diagnostics.LogError("Order preprocessing failed because the target game entity is not a unit.");
 			yield break;
 		}
-		Unit hero = gameEntity as Unit;
+		Unit unit = gameEntity as Unit;
 		IGarrison garrison = null;
+		City city = null;
 		if (order.AssignmentGUID.IsValid)
 		{
 			if (!this.GameEntityRepositoryService.TryGetValue(order.AssignmentGUID, out gameEntity))
@@ -833,13 +845,44 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 				yield break;
 			}
 			garrison = (gameEntity as IGarrison);
+			city = (garrison as City);
 		}
-		IGarrison lastAssignment = hero.Garrison;
-		this.ChangeAssignment(hero, garrison);
+		IGarrison garrison2 = unit.Garrison;
+		City city2 = garrison2 as City;
+		this.ChangeAssignment(unit, garrison);
+		if (ELCPUtilities.UseELCPCreepingNodeRuleset && Services.GetService<IDownloadableContentService>().IsShared(DownloadableContent20.ReadOnlyName))
+		{
+			DepartmentOfCreepingNodes agency = base.Empire.GetAgency<DepartmentOfCreepingNodes>();
+			DepartmentOfTheInterior agency2 = base.Empire.GetAgency<DepartmentOfTheInterior>();
+			if (agency != null && agency2 != null)
+			{
+				if (((city != null && agency2.MainCityGUID == city.GUID) || (city2 != null && agency2.MainCityGUID == city2.GUID)) && unit.IsSkillUnlocked("HeroSkillCommon04"))
+				{
+					using (IEnumerator<City> enumerator = agency2.Cities.GetEnumerator())
+					{
+						while (enumerator.MoveNext())
+						{
+							City city3 = enumerator.Current;
+							agency.RefreshCityNodesFIMSE(city3);
+						}
+						goto IL_1B9;
+					}
+				}
+				if (city != null)
+				{
+					agency.RefreshCityNodesFIMSE(city);
+				}
+				if (city2 != null)
+				{
+					agency.RefreshCityNodesFIMSE(city2);
+				}
+			}
+		}
+		IL_1B9:
 		if (this.EventService != null)
 		{
-			EventHeroAssignment eventHeroAssignment = new EventHeroAssignment(base.Empire, hero, lastAssignment, garrison);
-			this.EventService.Notify(eventHeroAssignment);
+			EventHeroAssignment eventToNotify = new EventHeroAssignment(base.Empire, unit, garrison2, garrison);
+			this.EventService.Notify(eventToNotify);
 			yield break;
 		}
 		yield break;
@@ -1371,6 +1414,36 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 		}
 		Unit unit = gameEntity as Unit;
 		unit.UnlockSkill(order.UnitSkillName, order.UnitSkillLevel);
+		if (unit.IsHero() && ELCPUtilities.UseELCPCreepingNodeRuleset && Services.GetService<IDownloadableContentService>().IsShared(DownloadableContent20.ReadOnlyName))
+		{
+			DepartmentOfCreepingNodes agency = base.Empire.GetAgency<DepartmentOfCreepingNodes>();
+			if (agency != null)
+			{
+				City city = unit.Garrison as City;
+				if (city.HasTag(City.TagMainCity) && order.UnitSkillName == "HeroSkillCommon04")
+				{
+					DepartmentOfTheInterior agency2 = base.Empire.GetAgency<DepartmentOfTheInterior>();
+					if (agency2 == null)
+					{
+						goto IL_142;
+					}
+					using (IEnumerator<City> enumerator = agency2.Cities.GetEnumerator())
+					{
+						while (enumerator.MoveNext())
+						{
+							City city2 = enumerator.Current;
+							agency.RefreshCityNodesFIMSE(city2);
+						}
+						yield break;
+					}
+				}
+				if (city != null)
+				{
+					agency.RefreshCityNodesFIMSE(city);
+				}
+			}
+		}
+		IL_142:
 		yield break;
 	}
 
@@ -1731,8 +1804,7 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 			Diagnostics.LogError("Unit profile is not a hero profile.");
 			return null;
 		}
-		DepartmentOfDefense agency = base.Empire.GetAgency<DepartmentOfDefense>();
-		UnitDesign unitDesign2 = agency.RegisterHeroUnitDesign(unitDesign);
+		UnitDesign unitDesign2 = base.Empire.GetAgency<DepartmentOfDefense>().RegisterHeroUnitDesign(unitDesign);
 		Unit unit = DepartmentOfDefense.CreateUnitByDesign(guid, unitDesign2);
 		Diagnostics.Assert(this.GameService != null);
 		Diagnostics.Assert(this.GameService.Game != null);
@@ -1835,9 +1907,19 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 				global::Empire owner = game.Empires[prisoner.OwnerEmpireIndex];
 				DepartmentOfEducation.ReleaseCapturedHero(prisoner.UnitGuid, jailer, owner, true);
 			}
+			while (this.myCapturedHeroes.Count > 0)
+			{
+				CapturedHero capturedHero = this.myCapturedHeroes[0];
+				DepartmentOfEducation.ReleaseCapturedHero(capturedHero.Hero.GUID, capturedHero.JailerEmpire, capturedHero.OwnerEmpire, true);
+			}
 			for (int i = 0; i < this.Heroes.Count; i++)
 			{
 				this.UnassignHero(this.Heroes[i]);
+			}
+			List<VaultItem> vaultItems = this.GetVaultItems<BoosterDefinition>();
+			for (int j = 0; j < vaultItems.Count; j++)
+			{
+				this.DestroyVaultItem(vaultItems[j]);
 			}
 		}
 	}
@@ -1915,7 +1997,13 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 		base.Empire.RegisterPass("GameClientState_Turn_End", "VerifyCapturedHeroCooldown", new Agency.Action(this.GameClient_EndTurn_VerifyCapturedHeroCooldown), new string[0]);
 		base.Empire.RegisterPass("GameClientState_Turn_Begin", "UnassignHeroNotification", new Agency.Action(this.GameClientState_Turn_Begin_UnassignHeroNotification), new string[0]);
 		this.maximalTurnUnassigned = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<int>("Gameplay/Agencies/DepartmentOfEducation/MaximalTurnUnassigned", this.maximalTurnUnassigned);
+		this.heroSellChanceOnDeath = Amplitude.Unity.Runtime.Runtime.Registry.GetValue<float>("Gameplay/Agencies/DepartmentOfEducation/HeroSellChanceOnDeath", 0.1f);
 		this.InitializeJail();
+		DepartmentOfScience agency = base.Empire.GetAgency<DepartmentOfScience>();
+		if (agency != null)
+		{
+			agency.TechnologyUnlocked += this.DepartmentOfScience_TechnologyUnlocked;
+		}
 		yield break;
 	}
 
@@ -1928,12 +2016,12 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 	protected override IEnumerator OnLoadGame(Amplitude.Unity.Game.Game game)
 	{
 		yield return base.OnLoadGame(game);
-		for (int index = 0; index < this.hallOfFame.Count; index++)
+		for (int i = 0; i < this.hallOfFame.Count; i++)
 		{
-			if (this.hallOfFame[index].Garrison == null)
+			if (this.hallOfFame[i].Garrison == null)
 			{
-				this.hallOfFame[index].SetPropertyBaseValue(SimulationProperties.InfiltrationCooldown, float.MaxValue);
-				this.GameEntityRepositoryService.Register(this.hallOfFame[index]);
+				this.hallOfFame[i].SetPropertyBaseValue(SimulationProperties.InfiltrationCooldown, float.MaxValue);
+				this.GameEntityRepositoryService.Register(this.hallOfFame[i]);
 			}
 		}
 		foreach (IGarrison garrison in this.GetGarrisons())
@@ -1943,35 +2031,50 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 				this.hallOfFame.Add(garrison.Hero);
 			}
 		}
-		global::Game myGame = game as global::Game;
-		for (int index2 = 0; index2 < this.prisoners.Count; index2++)
+		global::Game game2 = game as global::Game;
+		for (int j = 0; j < this.prisoners.Count; j++)
 		{
-			DepartmentOfEducation ownerEducation = myGame.Empires[this.prisoners[index2].OwnerEmpireIndex].GetAgency<DepartmentOfEducation>();
-			ownerEducation.LoadCapturedHeroBy(this.prisoners[index2], base.Empire as global::Empire);
+			game2.Empires[this.prisoners[j].OwnerEmpireIndex].GetAgency<DepartmentOfEducation>().LoadCapturedHeroBy(this.prisoners[j], base.Empire as global::Empire);
 		}
 		this.jail.Refresh();
-		for (int index3 = 0; index3 < this.vault.Count; index3++)
+		for (int k = 0; k < this.vault.Count; k++)
 		{
-			this.GameEntityRepositoryService.Register(this.vault[index3]);
 			IGameEntity gameEntity;
-			if (this.vault[index3].Owner.IsValid && this.GameEntityRepositoryService.TryGetValue(this.vault[index3].Owner, out gameEntity) && gameEntity is Unit)
+			if (this.GameEntityRepositoryService.TryGetValue(this.vault[k].GUID, out gameEntity))
 			{
-				Unit unit = gameEntity as Unit;
-				bool found = false;
-				UnitEquipmentSet equipmentSet = unit.UnitDesign.UnitEquipmentSet;
-				int equipmentSlotIndex = 0;
-				while (equipmentSlotIndex < equipmentSet.Slots.Length)
+				Diagnostics.LogError("ELCP {0} entity {1}/{2} already exists as Type {3}", new object[]
 				{
-					if (equipmentSet.Slots[equipmentSlotIndex].ItemName == this.vault[index3].Constructible.Name)
+					base.Empire,
+					this.vault[k].GUID,
+					this.vault[k].Constructible.Name,
+					gameEntity.GetType().ToString()
+				});
+				this.vault.RemoveAt(k);
+				k--;
+			}
+			else
+			{
+				this.GameEntityRepositoryService.Register(this.vault[k]);
+				IGameEntity gameEntity2;
+				if (this.vault[k].Owner.IsValid && this.GameEntityRepositoryService.TryGetValue(this.vault[k].Owner, out gameEntity2) && gameEntity2 is Unit)
+				{
+					Unit unit = gameEntity2 as Unit;
+					bool flag = false;
+					UnitEquipmentSet unitEquipmentSet = unit.UnitDesign.UnitEquipmentSet;
+					int l = 0;
+					while (l < unitEquipmentSet.Slots.Length)
 					{
-						found = true;
-						break;
+						if (unitEquipmentSet.Slots[l].ItemName == this.vault[k].Constructible.Name)
+						{
+							flag = true;
+							break;
+						}
+						k++;
 					}
-					index3++;
-				}
-				if (!found)
-				{
-					this.vault[index3].Owner = GameEntityGUID.Zero;
+					if (!flag)
+					{
+						this.vault[k].Owner = GameEntityGUID.Zero;
+					}
 				}
 			}
 		}
@@ -2008,22 +2111,81 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 
 	private IEnumerator GameClientState_Turn_Begin_UnassignHeroNotification(string context, string name)
 	{
-		for (int index = 0; index < this.hallOfFame.Count; index++)
+		if ((this.GameService.Game as global::Game).Turn == this.lastTurnChecked)
 		{
-			if (this.hallOfFame[index].Garrison == null && !DepartmentOfEducation.IsInjured(this.hallOfFame[index]) && !DepartmentOfEducation.IsLocked(this.hallOfFame[index]))
+			yield break;
+		}
+		if (!base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
+		{
+			for (int i = 0; i < this.hallOfFame.Count; i++)
 			{
-				this.hallOfFame[index].UnitUnassignedTurnCount++;
-				if (this.hallOfFame[index].UnitUnassignedTurnCount > this.maximalTurnUnassigned)
+				if (this.hallOfFame[i].Garrison == null && !DepartmentOfEducation.IsInjured(this.hallOfFame[i]) && !DepartmentOfEducation.IsLocked(this.hallOfFame[i]))
 				{
-					this.hallOfFame[index].UnitUnassignedTurnCount = 0;
-					this.EventService.Notify(new EventHeroUnassigned(base.Empire, this.hallOfFame[index]));
+					Unit unit = this.hallOfFame[i];
+					int unitUnassignedTurnCount = unit.UnitUnassignedTurnCount;
+					unit.UnitUnassignedTurnCount = unitUnassignedTurnCount + 1;
+					if (this.hallOfFame[i].UnitUnassignedTurnCount > this.maximalTurnUnassigned)
+					{
+						this.hallOfFame[i].UnitUnassignedTurnCount = 0;
+						this.EventService.Notify(new EventHeroUnassigned(base.Empire, this.hallOfFame[i]));
+					}
+				}
+				else
+				{
+					this.hallOfFame[i].UnitUnassignedTurnCount = 0;
 				}
 			}
-			else
+		}
+		else
+		{
+			global::PlayerController server = (base.Empire as global::Empire).PlayerControllers.Server;
+			if (server != null)
 			{
-				this.hallOfFame[index].UnitUnassignedTurnCount = 0;
+				List<Unit> list = new List<Unit>();
+				foreach (Unit unit2 in this.hallOfFame)
+				{
+					if (!DepartmentOfEducation.IsInjured(unit2) && !DepartmentOfEducation.IsLocked(unit2))
+					{
+						list.Add(unit2);
+					}
+				}
+				if (list.Count > 0)
+				{
+					UnityEngine.Random.seed = (this.GameService.Game as global::Game).World.Regions.Length * 77 + (this.GameService.Game as global::Game).Turn * 222 + base.Empire.Index * 87654;
+					float num = UnityEngine.Random.Range(0f, 1f);
+					if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+					{
+						Diagnostics.Log("ELCP {0} DeadHeroSellout rolled {1}", new object[]
+						{
+							base.Empire,
+							num
+						});
+					}
+					if (num <= this.heroSellChanceOnDeath / base.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier))
+					{
+						int num2 = UnityEngine.Random.Range(0, list.Count);
+						if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+						{
+							Diagnostics.Log("ELCP {0} {7} {8} DeadHeroSellout seed {6} rolled {1} <= {2}, Hero {3}/{4} of {5}", new object[]
+							{
+								base.Empire,
+								num,
+								this.heroSellChanceOnDeath / base.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier),
+								num2 + 1,
+								list[num2].GUID,
+								list.Count,
+								UnityEngine.Random.seed,
+								this.lastTurnChecked,
+								(this.GameService.Game as global::Game).Turn
+							});
+						}
+						OrderSelloutTradableHero order = new OrderSelloutTradableHero(base.Empire.Index, list[num2].GUID);
+						server.PostOrder(order);
+					}
+				}
 			}
 		}
+		this.lastTurnChecked = (this.GameService.Game as global::Game).Turn;
 		yield break;
 	}
 
@@ -2141,6 +2303,117 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 		}
 	}
 
+	private void DepartmentOfScience_TechnologyUnlocked(object sender, ConstructibleElementEventArgs e)
+	{
+		if (!ELCPUtilities.UseELCPStockpileRulseset)
+		{
+			return;
+		}
+		float num;
+		if (e.ConstructibleElement.Name == "TechnologyDefinitionAllBoosterLevel1")
+		{
+			DepartmentOfScience.ConstructibleElement technology;
+			if (!base.Empire.GetAgency<DepartmentOfScience>().TechnologyDatabase.TryGetValue("TechnologyDefinitionAllBoosterLevel2", out technology) || base.Empire.GetAgency<DepartmentOfScience>().GetTechnologyState(technology) == DepartmentOfScience.ConstructibleElement.State.Researched)
+			{
+				return;
+			}
+			num = 0.5f;
+		}
+		else
+		{
+			if (!(e.ConstructibleElement.Name == "TechnologyDefinitionAllBoosterLevel2"))
+			{
+				return;
+			}
+			DepartmentOfScience.ConstructibleElement technology2;
+			if (!base.Empire.GetAgency<DepartmentOfScience>().TechnologyDatabase.TryGetValue("TechnologyDefinitionAllBoosterLevel1", out technology2) || base.Empire.GetAgency<DepartmentOfScience>().GetTechnologyState(technology2) == DepartmentOfScience.ConstructibleElement.State.Researched)
+			{
+				num = 0.5f;
+			}
+			else
+			{
+				num = 0.75f;
+			}
+		}
+		if (num > 0f)
+		{
+			List<VaultItem> vaultItems = this.GetVaultItems<BoosterDefinition>();
+			List<VaultItem> list = new List<VaultItem>();
+			List<VaultItem> list2 = new List<VaultItem>();
+			List<VaultItem> list3 = new List<VaultItem>();
+			for (int i = 0; i < vaultItems.Count; i++)
+			{
+				BoosterDefinition boosterDefinition = vaultItems[i].Constructible as BoosterDefinition;
+				if (boosterDefinition != null && boosterDefinition.Name == "BoosterFood")
+				{
+					list.Add(vaultItems[i]);
+				}
+				if (boosterDefinition != null && boosterDefinition.Name == "BoosterScience")
+				{
+					list2.Add(vaultItems[i]);
+				}
+				if (boosterDefinition != null && (boosterDefinition.Name == "BoosterIndustry" || boosterDefinition.Name == "FlamesIndustryBooster"))
+				{
+					list3.Add(vaultItems[i]);
+				}
+			}
+			int num2 = Mathf.FloorToInt((float)list.Count * num);
+			for (int j = 0; j < num2; j++)
+			{
+				this.DestroyVaultItem(list[j]);
+			}
+			num2 = Mathf.FloorToInt((float)list2.Count * num);
+			for (int k = 0; k < num2; k++)
+			{
+				this.DestroyVaultItem(list2[k]);
+			}
+			num2 = Mathf.FloorToInt((float)list3.Count * num);
+			for (int l = 0; l < num2; l++)
+			{
+				this.DestroyVaultItem(list3[l]);
+			}
+		}
+	}
+
+	public List<CapturedHero> MyCapturedHeroes
+	{
+		get
+		{
+			return this.myCapturedHeroes;
+		}
+	}
+
+	public Unit CreateHeroELCP(GameEntityGUID guid, UnitDesign unitDesign, uint modelId)
+	{
+		UnitProfile unitProfile = unitDesign as UnitProfile;
+		if (unitProfile == null)
+		{
+			Diagnostics.LogError("Unit design is not a unit profile.");
+			return null;
+		}
+		if (!unitProfile.IsHero)
+		{
+			Diagnostics.LogError("Unit profile is not a hero profile.");
+			return null;
+		}
+		UnitDesign unitDesign2 = base.Empire.GetAgency<DepartmentOfDefense>().RegisterHeroUnitDesignELCP(unitDesign, modelId);
+		Unit unit = DepartmentOfDefense.CreateUnitByDesign(guid, unitDesign2);
+		Diagnostics.Assert(this.GameService != null);
+		Diagnostics.Assert(this.GameService.Game != null);
+		IHeroManagementService service = this.GameService.Game.Services.GetService<IHeroManagementService>();
+		if (service != null)
+		{
+			service.AssignNewUserDefinedName(unit);
+		}
+		unit.SetPropertyBaseValue(SimulationProperties.AssignmentCooldown, float.MaxValue);
+		unit.SetPropertyBaseValue(SimulationProperties.InfiltrationCooldown, float.MaxValue);
+		this.AddHero(unit);
+		float propertyValue = unit.GetPropertyValue(SimulationProperties.UnitExperienceRewardAtCreation);
+		unit.GainXp(propertyValue, false, false);
+		this.EventService.Notify(new EventHeroCreated(base.Empire, unit));
+		return unit;
+	}
+
 	private SimulationObject jail;
 
 	private SimulationDescriptor prisonerDescriptor;
@@ -2164,4 +2437,8 @@ public class DepartmentOfEducation : Agency, IXmlSerializable
 	private List<Unit> hallOfFame = new List<Unit>();
 
 	private int maximalTurnUnassigned = 2;
+
+	private float heroSellChanceOnDeath;
+
+	private int lastTurnChecked;
 }

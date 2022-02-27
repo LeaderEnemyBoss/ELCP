@@ -93,51 +93,51 @@ public class DefaultWorldViewTechnique : WorldViewTechnique
 	private IEnumerator LoadGeometry()
 	{
 		string pathToGameArchive = string.Empty;
-		IGameSerializationService gameSerializationService = Amplitude.Unity.Framework.Services.GetService<IGameSerializationService>();
-		if (gameSerializationService != null && gameSerializationService.GameSaveDescriptor != null)
+		IGameSerializationService service = Amplitude.Unity.Framework.Services.GetService<IGameSerializationService>();
+		if (service != null && service.GameSaveDescriptor != null)
 		{
-			pathToGameArchive = gameSerializationService.GameSaveDescriptor.SourceFileName;
+			pathToGameArchive = service.GameSaveDescriptor.SourceFileName;
 		}
 		if (string.IsNullOrEmpty(pathToGameArchive))
 		{
-			using (WorldGenerator worldGenerator = new WorldGenerator())
+			using (WorldGenerator worldGenerator3 = new WorldGenerator())
 			{
-				pathToGameArchive = worldGenerator.GetOuputPath();
+				pathToGameArchive = worldGenerator3.GetOuputPath();
 			}
 		}
 		string pathToGeometryArchive = pathToGameArchive;
 		int geometryArchiveVersionIndex = 1;
 		bool forceRegenerateGeometry = false;
 		bool reloadOrRegenarateGeometry = false;
-		bool geometryWasAlreadyGeneratedOnce = false;
-		for (;;)
+		bool flag = false;
+		do
 		{
 			reloadOrRegenarateGeometry = false;
 			using (Archive archive = Archive.Open(pathToGameArchive, ArchiveMode.Open))
 			{
 				MemoryStream memoryStream = null;
-				Guid mapGUID = Guid.Empty;
+				Guid guid = Guid.Empty;
 				try
 				{
 					if (archive.TryGet("WorldGeneratorReport.xml", out memoryStream))
 					{
-						XmlDocument document = new XmlDocument();
-						document.Load(memoryStream);
-						XmlNode guid = document.DocumentElement.SelectSingleNode("//GUID");
-						if (guid != null)
+						XmlDocument xmlDocument = new XmlDocument();
+						xmlDocument.Load(memoryStream);
+						XmlNode xmlNode = xmlDocument.DocumentElement.SelectSingleNode("//GUID");
+						if (xmlNode != null)
 						{
-							mapGUID = new Guid(guid.InnerText);
-							if (mapGUID != Guid.Empty)
+							guid = new Guid(xmlNode.InnerText);
+							if (guid != Guid.Empty)
 							{
-								ISessionService sessionService = Amplitude.Unity.Framework.Services.GetService<ISessionService>();
-								if (sessionService != null)
+								ISessionService service2 = Amplitude.Unity.Framework.Services.GetService<ISessionService>();
+								if (service2 != null)
 								{
-									Diagnostics.Assert(sessionService.Session != null);
-									Diagnostics.Assert(sessionService.Session.IsOpened);
-									IAdvancedVideoSettingsService advancedVideoSettingsService = Amplitude.Unity.Framework.Services.GetService<IAdvancedVideoSettingsService>();
-									Diagnostics.Assert(advancedVideoSettingsService != null);
-									string geometryValue = advancedVideoSettingsService.WorldGeometryType;
-									pathToGeometryArchive = System.IO.Path.Combine(Amplitude.Unity.Framework.Application.TempDirectory, string.Format("{0}/{1}_V{2}.geo", mapGUID, geometryValue, geometryArchiveVersionIndex));
+									Diagnostics.Assert(service2.Session != null);
+									Diagnostics.Assert(service2.Session.IsOpened);
+									IAdvancedVideoSettingsService service3 = Amplitude.Unity.Framework.Services.GetService<IAdvancedVideoSettingsService>();
+									Diagnostics.Assert(service3 != null);
+									string worldGeometryType = service3.WorldGeometryType;
+									pathToGeometryArchive = System.IO.Path.Combine(Amplitude.Unity.Framework.Application.TempDirectory, string.Format("{0}/{1}_V{2}.geo", guid, worldGeometryType, geometryArchiveVersionIndex));
 								}
 							}
 						}
@@ -145,7 +145,7 @@ public class DefaultWorldViewTechnique : WorldViewTechnique
 				}
 				catch
 				{
-					mapGUID = Guid.Empty;
+					guid = Guid.Empty;
 				}
 				finally
 				{
@@ -161,11 +161,11 @@ public class DefaultWorldViewTechnique : WorldViewTechnique
 					forceRegenerateGeometry = true;
 					using (WorldGenerator worldGenerator2 = new WorldGenerator())
 					{
-						string worldGeneratorConfigurationPath = Amplitude.Unity.Framework.Path.GetFullPath(worldGenerator2.ConfigurationPath);
-						XmlDocument worldGeneratorConfiguration = new XmlDocument();
+						string fullPath = Amplitude.Unity.Framework.Path.GetFullPath(worldGenerator2.ConfigurationPath);
+						XmlDocument xmlDocument2 = new XmlDocument();
 						if (archive.TryGet("WorldGeneratorConfiguration.xml", out memoryStream))
 						{
-							worldGeneratorConfiguration.Load(memoryStream);
+							xmlDocument2.Load(memoryStream);
 							memoryStream.Close();
 							memoryStream.Dispose();
 							memoryStream = null;
@@ -173,61 +173,60 @@ public class DefaultWorldViewTechnique : WorldViewTechnique
 						else
 						{
 							worldGenerator2.WriteConfigurationFile();
-							worldGeneratorConfiguration.Load(worldGeneratorConfigurationPath);
+							xmlDocument2.Load(fullPath);
 						}
-						XmlNode outputDirectory = worldGeneratorConfiguration.SelectSingleNode("//OutputDirectory");
-						if (outputDirectory == null)
+						XmlNode xmlNode2 = xmlDocument2.SelectSingleNode("//OutputDirectory");
+						if (xmlNode2 == null)
 						{
-							outputDirectory = worldGeneratorConfiguration.CreateElement("OutputDirectory");
-							worldGeneratorConfiguration.AppendChild(outputDirectory);
+							xmlNode2 = xmlDocument2.CreateElement("OutputDirectory");
+							xmlDocument2.AppendChild(xmlNode2);
 						}
-						outputDirectory.InnerText = Amplitude.Unity.Framework.Application.TempDirectory;
-						XmlNode outputPath = worldGeneratorConfiguration.SelectSingleNode("//OutputPath");
-						if (outputPath == null)
+						xmlNode2.InnerText = Amplitude.Unity.Framework.Application.TempDirectory;
+						XmlNode xmlNode3 = xmlDocument2.SelectSingleNode("//OutputPath");
+						if (xmlNode3 == null)
 						{
-							outputPath = worldGeneratorConfiguration.CreateElement("OutputPath");
-							worldGeneratorConfiguration.AppendChild(outputPath);
+							xmlNode3 = xmlDocument2.CreateElement("OutputPath");
+							xmlDocument2.AppendChild(xmlNode3);
 						}
-						outputPath.InnerText = pathToGameArchive;
-						XmlNode settingsPath = worldGeneratorConfiguration.SelectSingleNode("//SettingsPath");
-						if (settingsPath == null)
+						xmlNode3.InnerText = pathToGameArchive;
+						XmlNode xmlNode4 = xmlDocument2.SelectSingleNode("//SettingsPath");
+						if (xmlNode4 == null)
 						{
-							settingsPath = worldGeneratorConfiguration.CreateElement("SettingsPath");
-							worldGeneratorConfiguration.AppendChild(settingsPath);
+							xmlNode4 = xmlDocument2.CreateElement("SettingsPath");
+							xmlDocument2.AppendChild(xmlNode4);
 						}
-						WorldGeneratorConfiguration localWorldGeneratorConfiguration = new WorldGeneratorConfiguration();
-						settingsPath.InnerText = localWorldGeneratorConfiguration.SettingsPath;
-						IAdvancedVideoSettingsService advancedVideoSettingsService2 = Amplitude.Unity.Framework.Services.GetService<IAdvancedVideoSettingsService>();
-						Diagnostics.Assert(advancedVideoSettingsService2 != null);
-						string geometryValue2 = advancedVideoSettingsService2.WorldGeometryType;
-						XmlNode propertiesNode = worldGeneratorConfiguration.SelectSingleNode("//Properties");
-						Diagnostics.Assert(propertiesNode != null);
-						StaticString geometryEntryName = "Geometry";
-						XmlNode geometryNode = propertiesNode.SelectSingleNode(string.Format("//{0}", geometryEntryName));
-						Diagnostics.Assert(geometryNode != null);
-						geometryNode.InnerText = geometryValue2;
-						IDatabase<OptionDefinition> optionDefinitionsDatabase = Databases.GetDatabase<OptionDefinition>(false);
+						WorldGeneratorConfiguration worldGeneratorConfiguration = new WorldGeneratorConfiguration();
+						xmlNode4.InnerText = worldGeneratorConfiguration.SettingsPath;
+						IAdvancedVideoSettingsService service4 = Amplitude.Unity.Framework.Services.GetService<IAdvancedVideoSettingsService>();
+						Diagnostics.Assert(service4 != null);
+						string worldGeometryType2 = service4.WorldGeometryType;
+						XmlNode xmlNode5 = xmlDocument2.SelectSingleNode("//Properties");
+						Diagnostics.Assert(xmlNode5 != null);
+						StaticString staticString = "Geometry";
+						XmlNode xmlNode6 = xmlNode5.SelectSingleNode(string.Format("//{0}", staticString));
+						Diagnostics.Assert(xmlNode6 != null);
+						xmlNode6.InnerText = worldGeometryType2;
 						OptionDefinition optionDefinition;
-						if (optionDefinitionsDatabase.TryGetValue(geometryEntryName, out optionDefinition) && optionDefinition.ItemDefinitions != null)
+						if (Databases.GetDatabase<OptionDefinition>(false).TryGetValue(staticString, out optionDefinition) && optionDefinition.ItemDefinitions != null)
 						{
-							int optionIndex = -1;
-							for (int itemPosition = 0; itemPosition < optionDefinition.ItemDefinitions.Length; itemPosition++)
+							int num = -1;
+							for (int i = 0; i < optionDefinition.ItemDefinitions.Length; i++)
 							{
-								if (optionDefinition.ItemDefinitions[itemPosition].Name == geometryValue2)
+								if (optionDefinition.ItemDefinitions[i].Name == worldGeometryType2)
 								{
-									optionIndex = itemPosition;
+									num = i;
 									break;
 								}
 							}
-							OptionDefinition.ItemDefinition itemDefinition = (optionIndex < 0) ? optionDefinition.Default : optionDefinition.ItemDefinitions[optionIndex];
-							for (int keyValuePairIndex = 0; keyValuePairIndex < itemDefinition.KeyValuePairs.Length; keyValuePairIndex++)
+							OptionDefinition.ItemDefinition itemDefinition = (num < 0) ? optionDefinition.Default : optionDefinition.ItemDefinitions[num];
+							for (int j = 0; j < itemDefinition.KeyValuePairs.Length; j++)
 							{
-								OptionDefinition.ItemDefinition.KeyValuePair keyValuePair = itemDefinition.KeyValuePairs[keyValuePairIndex];
-								XmlNode valueNode = propertiesNode.SelectSingleNode(string.Format("//{0}", keyValuePair.Key));
-								if (valueNode != null)
+								OptionDefinition.ItemDefinition.KeyValuePair keyValuePair = itemDefinition.KeyValuePairs[j];
+								XmlNode xmlNode7 = xmlNode5.SelectSingleNode(string.Format("//{0}", keyValuePair.Key));
+								if (xmlNode7 != null)
 								{
-									Diagnostics.Assert(valueNode != null);
-									valueNode.InnerText = itemDefinition.KeyValuePairs[keyValuePairIndex].Value;
+									Diagnostics.Assert(xmlNode7 != null);
+									xmlNode7.InnerText = itemDefinition.KeyValuePairs[j].Value;
 								}
 								else
 								{
@@ -238,12 +237,12 @@ public class DefaultWorldViewTechnique : WorldViewTechnique
 								}
 							}
 						}
-						XmlNode scenarioDirectoryNameNode = worldGeneratorConfiguration.SelectSingleNode("//Scenario//DirectoryName");
-						if (scenarioDirectoryNameNode != null && !Directory.Exists(scenarioDirectoryNameNode.InnerText))
+						XmlNode xmlNode8 = xmlDocument2.SelectSingleNode("//Scenario//DirectoryName");
+						if (xmlNode8 != null && !Directory.Exists(xmlNode8.InnerText))
 						{
-							scenarioDirectoryNameNode.InnerText = Amplitude.Unity.Framework.Path.FullPath + "../Public/WorldGenerator/Scenarios";
+							xmlNode8.InnerText = Amplitude.Unity.Framework.Path.FullPath + "../Public/WorldGenerator/Scenarios";
 						}
-						XmlWriterSettings xmlWriterSettings = new XmlWriterSettings
+						XmlWriterSettings settings = new XmlWriterSettings
 						{
 							Encoding = Encoding.UTF8,
 							Indent = true,
@@ -252,75 +251,74 @@ public class DefaultWorldViewTechnique : WorldViewTechnique
 							NewLineHandling = NewLineHandling.Replace,
 							OmitXmlDeclaration = false
 						};
-						using (XmlWriter writer = XmlWriter.Create(worldGeneratorConfigurationPath, xmlWriterSettings))
+						using (XmlWriter xmlWriter = XmlWriter.Create(fullPath, settings))
 						{
-							worldGeneratorConfiguration.WriteTo(writer);
+							xmlDocument2.WriteTo(xmlWriter);
 						}
 						archive.Close();
 						yield return null;
 						yield return worldGenerator2.GenerateWorldGeometry();
-						geometryWasAlreadyGeneratedOnce = true;
+						flag = true;
 					}
+					WorldGenerator worldGenerator2 = null;
 				}
 				archive.Close();
 			}
+			Archive archive = null;
 			if (!File.Exists(pathToGeometryArchive))
 			{
-				break;
+				goto IL_7C3;
 			}
 			using (Archive archive2 = Archive.Open(pathToGeometryArchive, ArchiveMode.Open))
 			{
-				MemoryStream geometry2MemoryStream = null;
-				if (!archive2.TryGet("Geometry2.bin", out geometry2MemoryStream))
+				MemoryStream input = null;
+				if (!archive2.TryGet("Geometry2.bin", out input))
 				{
 					throw new InvalidDataException("Archive does not contain the geometry binary.");
 				}
-				using (BinaryReader binaryReader = new BinaryReader(geometry2MemoryStream))
+				using (BinaryReader binaryReader = new BinaryReader(input))
 				{
 					WorldMeshes worldMeshes = WorldMeshes.LoadFromFile(binaryReader);
 					WorldData worldData = WorldData.LoadFromFile(binaryReader);
-					bool worldDataIsUpToDate = this.CheckWorldDataUpToDate(worldData);
-					if (worldDataIsUpToDate)
+					if (this.CheckWorldDataUpToDate(worldData))
 					{
 						this.WorldMeshes = worldMeshes;
 						this.WorldData = worldData;
 						if (this.PatchsData == null)
 						{
 							this.PatchsData = new DefaultWorldViewTechnique.PatchData[this.WorldMeshes.PatchCountX * this.WorldMeshes.PatchCountY];
-							for (int i = 0; i < this.WorldMeshes.PatchCountY; i++)
+							for (int k = 0; k < this.WorldMeshes.PatchCountY; k++)
 							{
-								for (int j = 0; j < this.WorldMeshes.PatchCountX; j++)
+								for (int l = 0; l < this.WorldMeshes.PatchCountX; l++)
 								{
-									this.PatchsData[j + i * this.WorldMeshes.PatchCountX] = new DefaultWorldViewTechnique.PatchData();
+									this.PatchsData[l + k * this.WorldMeshes.PatchCountX] = new DefaultWorldViewTechnique.PatchData();
 								}
 							}
 						}
-						foreach (DefaultWorldViewTechnique.PatchData onePatchData in this.PatchsData)
+						DefaultWorldViewTechnique.PatchData[] patchsData = this.PatchsData;
+						for (int m = 0; m < patchsData.Length; m++)
 						{
-							onePatchData.InitMeshList();
+							patchsData[m].InitMeshList();
 						}
 						if (this.WorldMeshes.MeshList != null)
 						{
 							foreach (Mesh mesh in this.WorldMeshes.MeshList)
 							{
-								DefaultWorldViewTechnique.PatchData patchData = this.GetSurfacePatchData(mesh.PatchY, mesh.PatchX);
-								patchData.MeshList.Add(mesh);
+								this.GetSurfacePatchData(mesh.PatchY, mesh.PatchX).MeshList.Add(mesh);
 							}
 						}
 						if (this.WorldData.Cliffs != null)
 						{
 							foreach (WorldData.CliffData cliffData in this.WorldData.Cliffs)
 							{
-								DefaultWorldViewTechnique.PatchData patchData2 = this.GetSurfacePatchData(cliffData.PatchY, cliffData.PatchX);
-								patchData2.AddCliffData(cliffData);
+								this.GetSurfacePatchData(cliffData.PatchY, cliffData.PatchX).AddCliffData(cliffData);
 							}
 						}
 						if (this.WorldData.WaterPOIs != null)
 						{
 							foreach (WorldData.WaterPOIData waterPOIData in this.WorldData.WaterPOIs)
 							{
-								DefaultWorldViewTechnique.PatchData patchData3 = this.GetSurfacePatchData(waterPOIData.PatchY, waterPOIData.PatchX);
-								patchData3.AddWaterPOIData(waterPOIData);
+								this.GetSurfacePatchData(waterPOIData.PatchY, waterPOIData.PatchX).AddWaterPOIData(waterPOIData);
 							}
 						}
 					}
@@ -328,7 +326,7 @@ public class DefaultWorldViewTechnique : WorldViewTechnique
 					{
 						reloadOrRegenarateGeometry = true;
 						forceRegenerateGeometry = true;
-						if (geometryWasAlreadyGeneratedOnce)
+						if (flag)
 						{
 							throw new InvalidDataException("The WorldGenerator.exe currently used is not up to date and produces deprecated data. Please update.");
 						}
@@ -336,13 +334,11 @@ public class DefaultWorldViewTechnique : WorldViewTechnique
 				}
 				archive2.Close();
 			}
-			if (!reloadOrRegenarateGeometry)
-			{
-				goto Block_8;
-			}
 		}
+		while (reloadOrRegenarateGeometry);
+		yield break;
+		IL_7C3:
 		throw new FileNotFoundException(string.Format("The file containing the geometry data is missing. path: {0}", pathToGeometryArchive));
-		Block_8:
 		yield break;
 	}
 

@@ -499,9 +499,7 @@
   <AIParameterConverter Name="WinterPercentAssimilationCostBonus">
     <ToAIParameter AIParameter="AIEmpireEmpirePoint">
       $(Input) 
-      * ($Property(ClassEmpire:MinorFactionSlotCount) - $Property(ClassEmpire:MinorFactionAssimilationSlotCount))
-      * (((($Property(ClassEmpire:MinorFactionAssimilatedCount) + 1) ^ 3) * 10) + 20) * $Property(ClassEmpire:MinorFactionAssimilationCostModifier) * $Property(ClassEmpire:GameSpeedMultiplier)
-      / 20
+      * (0.1 max ($Property(ClassEmpire:MinorFactionSlotCount)-$Property(ClassEmpire:MinorFactionAssimilatedCount)))
     </ToAIParameter>
   </AIParameterConverter>
 
@@ -1132,7 +1130,7 @@
 
   <AIParameterConverter Name="WinterIceShelf">
     <ToAIParameter AIParameter="AIWorldWar">
-      $(Input) * (1 - 1.5*$Count(ClassEmpire/ClassResearch,TechnologyShip))
+      $(Input) * (1 - 0.5*$Path(ClassEmpire/ClassResearch,TechnologyShip))
     </ToAIParameter>
     <ToAIParameter AIParameter="AIWorldPeace">
       (0 - $(Input)) * 0.15

@@ -1,80 +1,80 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-  <AIArmyMissionDefinition Name="MantaExploration">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$MantaZone"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="MantaExploration">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$MantaZone"/>
+		</Parameters>
 
-    <Controller_Sequence>
+		<Controller_Sequence>
 
-      <!--IF Army in under control THEN Mission failed-->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
-      <Controller_Selector>
+			<Controller_Selector>
+				<Controller_Sequence Debug="SelectMantaTarget">
+					<Decorator_SelectMantaTarget MantaZoneVarName="$MantaZone" Output_TargetVarName="$MantaTarget"/>
+					<Decorator_GetTargetPosition TargetVarName="$MantaTarget" Output_DestinationVarName="$MantaWorldPosition"/>
+				</Controller_Sequence> 
+				<Decorator_Successor />
+			</Controller_Selector>
+			
+			<Controller_Selector Debug="MantaExploration_Main">
 
-        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
-        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
+				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+				<Include SubTreeName="TryAttackNearbyEmptyFortresses"/>
+				
+				
+				<Include SubTreeName="ExploreNearbyRuin"/>
+				<Include SubTreeName="ParleyWithVillage"/>
+				<!--IF we could collect orbs THEN Change path -->
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$MantaWorldPosition"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
+				</Include>
 
-        <Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+				<!--IF City need vision for spy THEN move to get a look at the city -->
+				<Controller_Sequence Debug="Opportunity_CityToSpy">
+					<Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
+					<Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
 
-        <!--IF we could collect orbs THEN Change path -->
-        <Include SubTreeName="OrbsOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$MantaWorldPosition"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
+					<Controller_Selector>
+						<Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
+							<Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
+							<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
+							<Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>
 
-        <!--IF we could collect a map boost then change path -->
-        <Include SubTreeName="MapBoostOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$MantaWorldPosition"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
+				<!--IF we could Pillage something THEN try to pillage it -->
+				<Include SubTreeName="AspirateOpportunity">
+					<VariableConverter ToVariable="$TargetList" FromVariable="$TargetList"/>
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$MantaWorldPosition"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+				</Include>
 
-        <!--IF RuinDetected THEN explore the ruin -->
-        <Include SubTreeName="ExploreNearbyRuin"/>
+				<Controller_Sequence Debug="Explore_MantaTarget">
+					<Decorator_SelectMantaTarget MantaZoneVarName="$MantaZone" Output_TargetVarName="$MantaTarget"/>
+					<Decorator_GetTargetPosition TargetVarName="$MantaTarget" Output_DestinationVarName="$MantaWorldPosition"/>
 
-        <!--IF City need vision for spy THEN move to get a look at the city -->
-        <Controller_Sequence Debug="Opportunity_CityToSpy">
-          <Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget"/>
-          <Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
+					<Controller_Selector>            
+						<Controller_Sequence Debug="Explore_MantaTarget_AlreadyAtDestination">
+							<Decorator_DestinationReached DestinationVarName="$MantaWorldPosition" TypeOfCheck="Regular"/>
+						</Controller_Sequence>
 
-          <Controller_Selector>
-            <Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
-              <Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
-              <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
-              <Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
-              <Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
-            </Controller_Sequence>
-          </Controller_Selector>
-        </Controller_Sequence>
+						<Controller_Sequence Debug="Explore_MantaTarget_MoveToRuin">
+							<Action_GeneratePath DestinationVarName="$MantaWorldPosition" TypeOfPath="Regular" Output_PathVarName="$MantaPath"/>
+							<Action_Move PathVarName="$MantaPath" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$MantaPath"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>        
 
-        <!--IF we could Pillage something THEN try to pillage it -->
-        <Include SubTreeName="AspirateOpportunity">
-          <VariableConverter ToVariable="$TargetList" FromVariable="$TargetList"/>
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$MantaWorldPosition"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
-        </Include>
+			</Controller_Selector>
 
-        <Controller_Sequence Debug="Explore_MantaTarget">
-          <Decorator_SelectMantaTarget MantaZoneVarName="$MantaZone" Output_TargetVarName="$MantaTarget"/>
-          <Decorator_GetTargetPosition TargetVarName="$MantaTarget" Output_DestinationVarName="$MantaWorldPosition"/>
-
-          <Controller_Selector>
-            <Controller_Sequence Debug="Explore_MantaTarget_AlreadyAtDestination">
-              <Decorator_DestinationReached DestinationVarName="$MantaWorldPosition" TypeOfCheck="Regular"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="Explore_MantaTarget_MoveToRuin">
-              <Action_GeneratePath DestinationVarName="$MantaWorldPosition" TypeOfPath="Regular" Output_PathVarName="$MantaPath"/>
-              <Action_Move PathVarName="$MantaPath" TypeOfMove="Regular"/>
-              <Decorator_MoveEnded PathVarName="$MantaPath"/>
-            </Controller_Sequence>
-          </Controller_Selector>
-        </Controller_Sequence>
-
-      </Controller_Selector>
-
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
 </Datatable>

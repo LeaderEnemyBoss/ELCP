@@ -3,11 +3,15 @@ using Amplitude;
 using Amplitude.Interop;
 using Amplitude.Unity.Audio;
 using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 using Amplitude.Unity.Localization;
+using Amplitude.Unity.Messaging;
 using Amplitude.Unity.Networking;
 using Amplitude.Unity.Runtime;
 using Amplitude.Unity.Session;
+using Amplitude.Unity.Steam;
 using Amplitude.Unity.View;
+using UnityEngine;
 
 public class Session : Amplitude.Unity.Session.Session, IGameClientLauncher, IGameServerLauncher
 {
@@ -300,11 +304,11 @@ public class Session : Amplitude.Unity.Session.Session, IGameClientLauncher, IGa
 					}
 					string friendPersonaName = Steamworks.SteamAPI.SteamFriends.GetFriendPersonaName(e.SteamIDUserChanged);
 					string text3 = service5.Localize(text2).ToString().Replace("$Player", friendPersonaName);
-					string newValue = string.Empty;
+					string empty = string.Empty;
 					if (e.SteamIDMakingChanges.IsValid)
 					{
-						newValue = Steamworks.SteamAPI.SteamFriends.GetFriendPersonaName(e.SteamIDMakingChanges);
-						text3 = text3.Replace("$ChangingPlayer", newValue);
+						Steamworks.SteamAPI.SteamFriends.GetFriendPersonaName(e.SteamIDMakingChanges);
+						text3 = text3.Replace("$ChangingPlayer", empty);
 					}
 					if (!string.IsNullOrEmpty(text3))
 					{
@@ -348,6 +352,50 @@ public class Session : Amplitude.Unity.Session.Session, IGameClientLauncher, IGa
 		string text = AgeLocalizer.Instance.LocalizeString("%RichPresenceInLobby" + base.SessionMode);
 		text = text.Replace("$Name", base.GetLobbyData<string>("name", null));
 		Steamworks.SteamAPI.SteamFriends.SetRichPresence("status", text);
+	}
+
+	protected override void ELCPSendServerMessage(int type, string command)
+	{
+		if (this.GameClient == null)
+		{
+			return;
+		}
+		type = Mathf.Clamp(type, 0, 4);
+		if (command.StartsWith("%"))
+		{
+			command = AgeLocalizer.Instance.LocalizeString(command);
+		}
+		ISteamService service = Services.GetService<ISteamService>();
+		IGameService service2 = Services.GetService<IGameService>();
+		string text = string.Empty;
+		if (service2 != null)
+		{
+			IPlayerControllerRepositoryService service3 = service2.Game.Services.GetService<IPlayerControllerRepositoryService>();
+			if (service3 != null)
+			{
+				global::PlayerController activePlayerController = service3.ActivePlayerController;
+				if (activePlayerController != null)
+				{
+					text = (activePlayerController.Empire as global::Empire).Color.GetAgeCompatibleColorCode(true);
+					if (service != null && service.IsSteamRunning)
+					{
+						text += Steamworks.SteamAPI.SteamFriends.GetFriendPersonaName(service.SteamUser.SteamID);
+					}
+					else
+					{
+						text += (activePlayerController.Empire as global::Empire).LocalizedName;
+					}
+					text += "#REVERT#: ";
+					text = AgeLocalizer.Instance.LocalizeString(text);
+				}
+			}
+		}
+		Message message = new GameClientChatMessage((ChatMessageType)type, text + command);
+		this.GameClient.SendMessageToServer(ref message);
+	}
+
+	void IGameClientLauncher.Launch()
+	{
 	}
 
 	private static ITimeSynchronizationService timeSynchronizationService;

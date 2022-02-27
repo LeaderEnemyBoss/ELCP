@@ -279,11 +279,11 @@ public class ExchangeInfoPanel : GuiPlayerControllerPanel
 			MajorEmpire majorEmpire = game.Empires[i] as MajorEmpire;
 			if (majorEmpire != null)
 			{
-				if (base.Empire == majorEmpire)
+				if (base.Empire.Index == majorEmpire.Index)
 				{
 					this.empireToFilter.Add(majorEmpire);
 				}
-				else
+				else if (!majorEmpire.IsEliminated)
 				{
 					DepartmentOfScience agency2 = majorEmpire.GetAgency<DepartmentOfScience>();
 					if (agency2.CanTradeHeroes(true) || agency2.CanTradeUnits(true) || agency2.CanTradeResourcesAndBoosters(true))
@@ -321,7 +321,7 @@ public class ExchangeInfoPanel : GuiPlayerControllerPanel
 
 	private void SetEmpiresToShow(List<global::Empire> empiresToSelect)
 	{
-		ExchangeInfoPanel.<SetEmpiresToShow>c__AnonStoreyA50 <SetEmpiresToShow>c__AnonStoreyA = new ExchangeInfoPanel.<SetEmpiresToShow>c__AnonStoreyA50();
+		ExchangeInfoPanel.<SetEmpiresToShow>c__AnonStoreyA48 <SetEmpiresToShow>c__AnonStoreyA = new ExchangeInfoPanel.<SetEmpiresToShow>c__AnonStoreyA48();
 		<SetEmpiresToShow>c__AnonStoreyA.empiresToSelect = empiresToSelect;
 		this.empireIndexesToShow.Clear();
 		int index;

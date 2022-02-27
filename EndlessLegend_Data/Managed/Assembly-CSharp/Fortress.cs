@@ -11,7 +11,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-public class Fortress : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGarrison, IGarrisonWithPosition, IGameEntity, IGameEntityWithWorldPosition, IWorldPositionable, ICategoryProvider, IDescriptorEffectProvider, IPropertyEffectFeatureProvider
+public class Fortress : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, IGarrison, IGameEntity, IGarrisonWithPosition, IGameEntityWithWorldPosition, IWorldPositionable, ICategoryProvider, IDescriptorEffectProvider, IPropertyEffectFeatureProvider
 {
 	public Fortress(GameEntityGUID guid) : base("Fortress#" + guid)
 	{
@@ -161,9 +161,30 @@ public class Fortress : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, 
 			if (this.isOccupiedBy != null)
 			{
 				this.isOccupiedByIndex = this.isOccupiedBy.Index;
+				if (ELCPUtilities.SpectatorMode && this.PointOfInterest != null)
+				{
+					global::Empire[] empires = (this.gameService.Game as global::Game).Empires;
+					for (int i = 0; i < empires.Length; i++)
+					{
+						MajorEmpire majorEmpire = empires[i] as MajorEmpire;
+						if (majorEmpire == null)
+						{
+							return;
+						}
+						if (majorEmpire.Index != this.isOccupiedBy.Index && majorEmpire.ELCPIsEliminated)
+						{
+							this.PointOfInterest.InfiltrationBits |= 1 << majorEmpire.Index;
+						}
+					}
+					return;
+				}
 			}
 			else
 			{
+				if (ELCPUtilities.SpectatorMode && this.PointOfInterest != null)
+				{
+					this.PointOfInterest.InfiltrationBits = 0;
+				}
 				this.isOccupiedByIndex = -1;
 			}
 		}
@@ -432,17 +453,17 @@ public class Fortress : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, 
 		bool flag = false;
 		global::Empire empire = null;
 		Contender contender = null;
-		foreach (Contender contender2 in this.Encounter.Contenders)
+		foreach (Contender contender2 in base.Encounter.Contenders)
 		{
 			if (!contender2.IsAttacking && contender2.Garrison.GUID == this.GUID)
 			{
 				DepartmentOfDefense agency = this.Empire.GetAgency<DepartmentOfDefense>();
 				agency.UpdateLifeAfterEncounter(this);
 				agency.CleanGarrisonAfterEncounter(this);
-				if (this.Units.Count<Unit>() <= 0 && contender2.IsMainContender)
+				if (base.Units.Count<Unit>() <= 0 && contender2.IsMainContender)
 				{
 					flag = true;
-					foreach (Contender contender3 in this.Encounter.GetAlliedContendersFromContender(contender2))
+					foreach (Contender contender3 in base.Encounter.GetAlliedContendersFromContender(contender2))
 					{
 						if (contender3.IsTakingPartInBattle && contender3.ContenderState != ContenderState.Defeated)
 						{
@@ -460,13 +481,13 @@ public class Fortress : Garrison, Amplitude.Xml.Serialization.IXmlSerializable, 
 		if (flag && empire != null)
 		{
 			DepartmentOfTheInterior departmentOfTheInterior = null;
-			if (occupant is MajorEmpire)
-			{
-				departmentOfTheInterior = (occupant as MajorEmpire).GetAgency<DepartmentOfTheInterior>();
-			}
-			else if (empire is MajorEmpire)
+			if (empire is MajorEmpire)
 			{
 				departmentOfTheInterior = (empire as MajorEmpire).GetAgency<DepartmentOfTheInterior>();
+			}
+			else if (occupant is MajorEmpire)
+			{
+				departmentOfTheInterior = (occupant as MajorEmpire).GetAgency<DepartmentOfTheInterior>();
 			}
 			if (departmentOfTheInterior != null)
 			{

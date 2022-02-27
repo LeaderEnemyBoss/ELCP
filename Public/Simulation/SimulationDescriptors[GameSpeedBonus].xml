@@ -49,11 +49,15 @@
                                                                                                                                                                                                                                              
       <SimulationModifierDescriptor TargetProperty="AspirateValue"                        Operation="Multiplication"  Value="1.5"   Path="../ClassEmpire/ClassArmy"                               Priority="10"                              TooltipHidden="true"/>
 
-      <SimulationModifierDescriptor TargetProperty="DissentCost"                          Operation="Multiplication"  Value="0.5"     Path="../ClassEmpire"                                       Priority="10"                              TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="DissentCost"                          Operation="Multiplication"  Value="0.5"   Path="../ClassEmpire"                                       Priority="10"                              TooltipHidden="true"/>
 
-      <SimulationModifierDescriptor TargetProperty="OvergrownCityRazeCityCooldownInTurns" Operation="Multiplication"  Value="0.5"     Path="../ClassEmpire/ClassCity"                             Priority="10"                              TooltipHidden="true"/>
-
-    </SimulationModifierDescriptors>
+      <SimulationModifierDescriptor TargetProperty="OvergrownCityRazeCityCooldownInTurns" Operation="Multiplication"  Value="0.5"   Path="../ClassEmpire/ClassCity"                             Priority="10"                              TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="ConvertVillageMultiplier"             Operation="Multiplication"  Value="0.5"   Path="ELCPEmpireProperties" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="MarketplaceStockpileCostMultiplier"   Operation="Multiplication"  Value="0.5"   Path="ELCPEmpireProperties" TooltipHidden="true"/>
+	  <!-- ELCP: Counter weight to make victory wonder not scale -->
+      <SimulationModifierDescriptor TargetProperty="GameSpeedProductionCostWonderReduction"     Operation="Addition"        Value="-0.5"   Path="../ClassEmpire/ClassCity"                                                                          TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="GameSpeedProductionCostWonderReduction"     Operation="Addition"        Value="-0.5"   Path="../ClassEmpire"  TooltipHidden="true"/>
+	</SimulationModifierDescriptors>
   </SimulationDescriptor>
   
   <SimulationDescriptor Name="GameSpeedNormalMajorEmpire" Type="GameSpeedBonus">
@@ -109,8 +113,12 @@
       <SimulationModifierDescriptor TargetProperty="DissentCost"                          Operation="Multiplication"  Value="1.5"     Path="../ClassEmpire"                                       Priority="10"                              TooltipHidden="true"/>
 
       <SimulationModifierDescriptor TargetProperty="OvergrownCityRazeCityCooldownInTurns" Operation="Multiplication"  Value="1.5"     Path="../ClassEmpire/ClassCity"                             Priority="10"                              TooltipHidden="true"/>
-      
-    </SimulationModifierDescriptors>                                                                                                                                                                                                         
+      <SimulationModifierDescriptor TargetProperty="ConvertVillageMultiplier"             Operation="Multiplication"  Value="1.5"   Path="ELCPEmpireProperties" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="MarketplaceStockpileCostMultiplier"   Operation="Multiplication"  Value="1.5"   Path="ELCPEmpireProperties" TooltipHidden="true"/>
+	  <!-- ELCP: Counter weight to make victory wonder not scale -->
+      <SimulationModifierDescriptor TargetProperty="GameSpeedProductionCostWonderReduction"     Operation="Addition"        Value="0.5"   Path="../ClassEmpire/ClassCity"  TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="GameSpeedProductionCostWonderReduction"     Operation="Addition"        Value="0.5"   Path="../ClassEmpire"  TooltipHidden="true"/>
+	</SimulationModifierDescriptors>                                                                                                                                                                                                         
   </SimulationDescriptor>                                                                                                                                                                                                                    
                                                                                                                                                                                                                                              
   <SimulationDescriptor Name="GameSpeedEndlessMajorEmpire" Type="GameSpeedBonus">                                                                                                                                                            
@@ -161,7 +169,11 @@
       <SimulationModifierDescriptor TargetProperty="DissentCost"                          Operation="Multiplication"  Value="2"     Path="../ClassEmpire"                                         Priority="10"                              TooltipHidden="true"/>
 
       <SimulationModifierDescriptor TargetProperty="OvergrownCityRazeCityCooldownInTurns" Operation="Multiplication"  Value="2"     Path="../ClassEmpire/ClassCity"                             Priority="10"                              TooltipHidden="true"/>
-      
+      <SimulationModifierDescriptor TargetProperty="ConvertVillageMultiplier"             Operation="Multiplication"  Value="2"   Path="ELCPEmpireProperties" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="MarketplaceStockpileCostMultiplier"   Operation="Multiplication"  Value="2"   Path="ELCPEmpireProperties" TooltipHidden="true"/>
+	  <!-- ELCP: Counter weight to make victory wonder not scale -->
+      <SimulationModifierDescriptor TargetProperty="GameSpeedProductionCostWonderReduction"     Operation="Addition"        Value="1"   Path="../ClassEmpire/ClassCity"  TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="GameSpeedProductionCostWonderReduction"     Operation="Addition"        Value="1"   Path="../ClassEmpire"  TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

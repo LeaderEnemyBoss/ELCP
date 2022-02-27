@@ -16,6 +16,7 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			base.Execute(context);
 			this.GenerateUniqueAnomalies();
 			base.ExecuteSubTask(new GenerateTerrainAnomalies());
+			base.ExecuteSubTask(new ImproveSpawnAreas());
 		}
 
 		protected void GenerateUniqueAnomalies()

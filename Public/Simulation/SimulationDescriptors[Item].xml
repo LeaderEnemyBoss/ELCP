@@ -890,6 +890,8 @@
   <SimulationDescriptor Name="ItemAttributesHeadStrategic1Tier1" Type="ItemAttributes">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"            Value="0.05"      Operation="Percent"   Path="../ClassUnit" Priority="2"/>
+	  <!-- ELCP buff to Tier 1 Strategic Gear -->
+	  <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth" 		 Value="5"         Operation="Addition" />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -908,6 +910,9 @@
   <SimulationDescriptor Name="ItemAttributesLegsStrategic1Tier1" Type="ItemAttributes">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BaseAttributeAttack"            Value="0.05"      Operation="Percent"   Path="../ClassUnit" Priority="2"/>
+	  <!-- ELCP buff to Tier 1 Strategic Gear -->
+	  <SimulationModifierDescriptor TargetProperty="EquipmentInitiative" 		  Value="1"   Operation="Addition" />
+	  <SimulationModifierDescriptor TargetProperty="EquipmentDefense"             Value="2"   Operation="Addition" />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -947,6 +952,8 @@
   <SimulationDescriptor Name="ItemAttributesHeadStrategic2Tier1" Type="ItemAttributes">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BaseMaximumHealth"                  Value="0.05"      Operation="Percent"   Path="../ClassUnit" Priority="2"/>
+	  <!-- ELCP buff to Tier 1 Strategic Gear -->
+	  <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth" 		 Value="5"         Operation="Addition" />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -965,7 +972,9 @@
   <SimulationDescriptor Name="ItemAttributesLegsStrategic2Tier1" Type="ItemAttributes">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"            Value="0.05"      Operation="Percent"   Path="../ClassUnit" Priority="2"/>
-      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"                   Value="3"         Operation="Addition"   />
+	  <!-- ELCP buff to Tier 1 Strategic Gear -->
+	  <SimulationModifierDescriptor TargetProperty="EquipmentInitiative"                Value="1"         Operation="Addition" />
+      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"                   Value="5"         Operation="Addition"   />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1428,8 +1437,9 @@
   <!--Strategic1-->
   <SimulationDescriptor Name="ItemAttributesTorsoStrategic1Tier1" Type="ItemAttributes">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"             Value="2"      Operation="Addition" />
-      <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth"       Value="6"      Operation="Addition" />
+	  <!-- ELCP buff to Tier 1 Strategic Gear -->
+      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"             Value="3"      Operation="Addition" />
+      <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth"       Value="16"      Operation="Addition" />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1453,7 +1463,8 @@
   <SimulationDescriptor Name="ItemAttributesTorsoStrategic2Tier1" Type="ItemAttributes">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="EquipmentInitiative"          Value="3"      Operation="Addition" />
-      <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth"       Value="6"      Operation="Addition" />
+	  <SimulationModifierDescriptor TargetProperty="EquipmentDefense"             Value="2"      Operation="Addition" />
+      <SimulationModifierDescriptor TargetProperty="EquipmentMaximumHealth"       Value="16"      Operation="Addition" />
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1946,14 +1957,14 @@
   <SimulationDescriptor Name="ItemAttributesTomeStrategic1Tier2ReplicantsPack" Type="ItemAttributes">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MaximumPillageDefense"      Operation="Addition"     Value="12" Path="../ClassCity/ExploitedPointOfInterest"/>
-      <SimulationModifierDescriptor TargetProperty="PillageDefenseRecovery"     Operation="Addition"     Value="4"   Path="../ClassCity/ExploitedPointOfInterest" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="PillageDefenseRecovery"     Operation="Addition"     Value="8"   Path="../ClassCity/ExploitedPointOfInterest" Priority="2"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="ItemAttributesTomeStrategic1Tier3ReplicantsPack" Type="ItemAttributes">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MaximumPillageDefense"      Operation="Addition"      Value="18" Path="../ClassCity/ExploitedPointOfInterest"/>
-      <SimulationModifierDescriptor TargetProperty="PillageDefenseRecovery"     Operation="Addition"     Value="4"   Path="../ClassCity/ExploitedPointOfInterest" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="PillageDefenseRecovery"     Operation="Addition"     Value="8"   Path="../ClassCity/ExploitedPointOfInterest" Priority="2"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -2487,9 +2498,10 @@
 
   <SimulationDescriptor Name="LegsVolcanicWalker" Type="ItemAttributes">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="EquipmentInitiative"          Value="6"   Operation="Addition"  />
-      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"             Value="9"   Operation="Addition"  />
-      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"          Value="0.08"      Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="EquipmentInitiative"          Value="7"   Operation="Addition"  />
+      <SimulationModifierDescriptor TargetProperty="EquipmentDefense"             Value="20"   Operation="Addition"  />
+	  <SimulationModifierDescriptor TargetProperty="BaseAttributeInitiative"          Value="0.05"      Operation="Percent"  Path="../ClassUnit" Priority="2"/>
+      <SimulationModifierDescriptor TargetProperty="BaseAttributeDefense"          Value="0.15"      Operation="Percent"  Path="../ClassUnit" Priority="2"/> 
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

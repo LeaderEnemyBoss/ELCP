@@ -1,197 +1,197 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-  <AIArmyMissionDefinition Name="OpportunityPillage">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-      <Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
-      <Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="OpportunityPillage">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+			<Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
+			<Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
+		</Parameters>
 
-    <!--IF we could Pillage something THEN try to pillage it -->
-    <Controller_Selector Debug="Opportunity_Pillage">
-      <Decorator_IsArmyPillaging TargetVarName="$Army"/>
+		<!--IF we could Pillage something THEN try to pillage it -->
+		<Controller_Selector Debug="Opportunity_Pillage">
+			<Decorator_IsArmyPillaging TargetVarName="$Army"/>
 
-      <Controller_Sequence Debug="Opportunity_LookOutForPillage" >
-        <Decorator_SelectPillageTarget TargetListVarName="$TargetList"
+			<Controller_Sequence Debug="Opportunity_LookOutForPillage" >
+				<Decorator_SelectPillageTarget TargetListVarName="$TargetList"
                                        Output_TargetVarName="$PillageTarget"
                                        OpportunityMainTargetPosition="$MainTargetPosition"
                                        OpportunityMaximumTurnName="$OpportunityMaximumTurn"/>
 
-        <Decorator_GetTargetPosition TargetVarName="$PillageTarget" Output_DestinationVarName="$PillageTargetWorldPositionDestination"/>
+				<Decorator_GetTargetPosition TargetVarName="$PillageTarget" Output_DestinationVarName="$PillageTargetWorldPositionDestination"/>
 
-        <Controller_Selector>
-          <Controller_Sequence Debug="Opportunity_Pillage_AlreadyAtDestination">
-            <Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
-            <Action_TogglePillage TargetVarName="$PillageTarget"/>
-          </Controller_Sequence>
+				<Controller_Selector>
+					<Controller_Sequence Debug="Opportunity_Pillage_AlreadyAtDestination">
+						<Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
+						<Action_TogglePillage TargetVarName="$PillageTarget"/>
+					</Controller_Sequence>
 
-          <!-- Wait until we have ended the pillage! -->
-          <Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
+					<!-- Wait until we have ended the pillage! -->
+					<Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
 
-          <Controller_Sequence Debug="Opportunity_Pillage_MoveToTarget">
-            <Action_GeneratePath DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$PillagePath"/>
-            <Action_Move PathVarName="$PillagePath" TypeOfMove="Regular"/>
-            <Decorator_MoveEnded PathVarName="$PillagePath"/>
-          </Controller_Sequence>
-        </Controller_Selector>
-      </Controller_Sequence>
-    </Controller_Selector>
-  </AIArmyMissionDefinition>
+					<Controller_Sequence Debug="Opportunity_Pillage_MoveToTarget">
+						<Action_GeneratePath DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$PillagePath"/>
+						<Action_Move PathVarName="$PillagePath" TypeOfMove="Regular"/>
+						<Decorator_MoveEnded PathVarName="$PillagePath"/>
+					</Controller_Sequence>
+				</Controller_Selector>
+			</Controller_Sequence>
+		</Controller_Selector>
+	</AIArmyMissionDefinition>
 
-  <AIArmyMissionDefinition Name="OpportunityPillageOrFlee">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-      <Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
-      <Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="OpportunityPillageOrFlee">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+			<Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
+			<Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
+		</Parameters>
 
-    <!--IF we could Pillage something THEN try to pillage it -->
-    <Controller_Sequence>
-      <Controller_Selector Debug="PillagingAndHeavyArmyComing">
-        <!-- We are all right when there is no target around.-->
-        <Decorator_SelectTarget Inverted="true" TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="DangerForMe" Output_TargetVarName="$Target"/>
+		<!--IF we could Pillage something THEN try to pillage it -->
+		<Controller_Sequence>
+			<Controller_Selector Debug="PillagingAndHeavyArmyComing">
+				<!-- We are all right when there is no target around.-->
+				<Decorator_SelectTarget Inverted="true" TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="DangerForMe" Output_TargetVarName="$Target"/>
 
-        <!-- We are all right when there is a target but we are able to defeat it.-->
-        <Decorator_CanDefeatTarget TargetVarName="$Target" EstimateBattlegound="true"/>
-      </Controller_Selector>
+				<!-- We are all right when there is a target but we are able to defeat it.-->
+				<Decorator_CanDefeatTarget TargetVarName="$Target" EstimateBattlegound="true"/>
+			</Controller_Selector>
 
-      <!-- nothing to do! -->
-      <Controller_Selector>
-        <Decorator_IsArmyPillaging TargetVarName="$Army"/>
+			<!-- nothing to do! -->
+			<Controller_Selector>
+				<Decorator_IsArmyPillaging TargetVarName="$Army"/>
 
-        <Controller_Sequence>
-          <Decorator_SelectPillageTarget TargetListVarName="$TargetList"
+				<Controller_Sequence>
+					<Decorator_SelectPillageTarget TargetListVarName="$TargetList"
                                          Output_TargetVarName="$PillageTarget"
                                          OpportunityMainTargetPosition="$MainTargetPosition"
                                          OpportunityMaximumTurnName="$OpportunityMaximumTurn"/>
 
-          <Decorator_GetTargetPosition TargetVarName="$PillageTarget" Output_DestinationVarName="$PillageTargetWorldPositionDestination"/>
+					<Decorator_GetTargetPosition TargetVarName="$PillageTarget" Output_DestinationVarName="$PillageTargetWorldPositionDestination"/>
 
-          <Controller_Selector>
-            <Controller_Sequence Debug="Opportunity_Pillage_AlreadyAtDestination">
-              <Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
-              <Action_TogglePillage TargetVarName="$PillageTarget"/>
-            </Controller_Sequence>
+					<Controller_Selector>
+						<Controller_Sequence Debug="Opportunity_Pillage_AlreadyAtDestination">
+							<Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
+							<Action_TogglePillage TargetVarName="$PillageTarget"/>
+						</Controller_Sequence>
 
-            <!-- Wait until we have ended the pillage! -->
-            <Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
+						<!-- Wait until we have ended the pillage! -->
+						<Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
 
-            <Controller_Sequence Debug="Opportunity_Pillage_MoveToTarget">
-              <Action_GeneratePath DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$PillagePath"/>
-              <Action_Move PathVarName="$PillagePath" TypeOfMove="Regular"/>
-              <Decorator_MoveEnded PathVarName="$PillagePath"/>
-            </Controller_Sequence>
-          </Controller_Selector>
-        </Controller_Sequence>
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+						<Controller_Sequence Debug="Opportunity_Pillage_MoveToTarget">
+							<Action_GeneratePath DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$PillagePath"/>
+							<Action_Move PathVarName="$PillagePath" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$PillagePath"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
 
-  <AIArmyMissionDefinition Name="TryAttackNearbyVillages">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="TryAttackNearbyVillages">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
 
-    <Controller_Sequence Debug="TryAttackNearbyVillages_TryToAttackEnemyInRange">
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Village" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="DangerForMe"/>
-      <Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
-      <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+		<Controller_Sequence Debug="TryAttackNearbyVillages_TryToAttackEnemyInRange">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Village" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="DangerForMe"/>
+			<Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
 
-      <Controller_Selector Debug="TryAttackNearbyVillages_TryToAttackEnemyInRange_EnemyInRange">
-        <Controller_Sequence Debug="TryAttackNearbyVillages_TryToAttackEnemyInRange_EnemyClose">
-          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
-          <Action_ShiftUnits TargetVarName="$Target"/>
-          <Action_Attack TargetVarName="$Target"/>
-        </Controller_Sequence>
+			<Controller_Selector Debug="TryAttackNearbyVillages_TryToAttackEnemyInRange_EnemyInRange">
+				<Controller_Sequence Debug="TryAttackNearbyVillages_TryToAttackEnemyInRange_EnemyClose">
+					<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+					<Action_ShiftUnits TargetVarName="$Target"/>
+					<Action_Attack TargetVarName="$Target"/>
+				</Controller_Sequence>
 
-        <Controller_Sequence Debug="TryAttackNearbyVillages_TryToAttackEnemyInRange_GotoAndAttack">
-          <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
-          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
-          <Action_ShiftUnits TargetVarName="$Target"/>
-          <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-        </Controller_Sequence>
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+				<Controller_Sequence Debug="TryAttackNearbyVillages_TryToAttackEnemyInRange_GotoAndAttack">
+					<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+					<Action_ShiftUnits TargetVarName="$Target"/>
+					<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
 
-  <AIArmyMissionDefinition Name="OpportunityAttackNearbyVillages">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-      <Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
-      <Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
-      <Parameter ParameterIndex="3" VarName="$MainTargetType"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="OpportunityAttackNearbyVillages">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+			<Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
+			<Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
+			<Parameter ParameterIndex="3" VarName="$MainTargetType"/>
+		</Parameters>
 
-    <Controller_Sequence Debug="OpportunityAttackNearbyArmies_TryToAttackEnemyInRange">
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Village" TypeOfDiplomaticRelationVariableName="$TypeOfDiplomaticRelation" Output_TargetVarName="$Target"/>
-      <Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
-      <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
-      <Decorator_EvaluateOpportunity OpportunityPosition="$AttackWorldPositionDestination"
+		<Controller_Sequence Debug="OpportunityAttackNearbyArmies_TryToAttackEnemyInRange">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Village" TypeOfDiplomaticRelationVariableName="$TypeOfDiplomaticRelation" Output_TargetVarName="$Target"/>
+			<Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+			<Decorator_EvaluateOpportunity OpportunityPosition="$AttackWorldPositionDestination" 
                                      MaximumDetourTurnVariableName="$MaximumDetourTurn"
                                      MinimumTurnToObjectif="2"
-                                     OpportunityType="Village"
-                                     MainTargetPosition="$MainTargetPosition"
+                                     OpportunityType="Village" 
+                                     MainTargetPosition="$MainTargetPosition" 
                                      MainTargetTypeVariableName="$MainTargetType"/>
 
-      <Controller_Selector Debug="OpportunityAttackNearbyArmies_TryToAttackEnemyInRange_EnemyInRange">
-        <Controller_Sequence Debug="OpportunityAttackNearbyArmies_TryToAttackEnemyInRange_EnemyClose">
-          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
-          <Action_ShiftUnits TargetVarName="$Target"/>
-          <Action_Attack TargetVarName="$Target"/>
-        </Controller_Sequence>
+			<Controller_Selector Debug="OpportunityAttackNearbyArmies_TryToAttackEnemyInRange_EnemyInRange">
+				<Controller_Sequence Debug="OpportunityAttackNearbyArmies_TryToAttackEnemyInRange_EnemyClose">
+					<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+					<Action_ShiftUnits TargetVarName="$Target"/>
+					<Action_Attack TargetVarName="$Target"/>
+				</Controller_Sequence>
 
-        <Controller_Sequence Debug="OpportunityAttackNearbyArmies_TryToAttackEnemyInRange_GotoAndAttack">
-          <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
-          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
-          <Action_ShiftUnits TargetVarName="$Target"/>
-          <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-        </Controller_Sequence>
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+				<Controller_Sequence Debug="OpportunityAttackNearbyArmies_TryToAttackEnemyInRange_GotoAndAttack">
+					<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+					<Action_ShiftUnits TargetVarName="$Target"/>
+					<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
 
-  <AIArmyMissionDefinition Name="OptimizeArmyAttackPosition">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$Target"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="OptimizeArmyAttackPosition">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$Target"/>
+		</Parameters>
 
-    <Controller_Sequence Debug="OptimizeCheck">
-      <Decorator_OptimizeAttackPosition TargetVarName="$Target" Output_BestAttackPositionVarName="$BestAttackPosition"/>
-      <Action_GeneratePath DestinationVarName="$BestAttackPosition" TypeOfPath="Regular" Output_PathVarName="$BetterPath"/>
-      <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$BestAttackPosition" PathVarName="$BetterPath"/>
-      <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$BetterPath"/>
-      <Decorator_MoveEnded PathVarName="$BetterPath"/>
-    </Controller_Sequence>
+		<Controller_Sequence Debug="OptimizeCheck">
+			<Decorator_OptimizeAttackPosition TargetVarName="$Target" Output_BestAttackPositionVarName="$BestAttackPosition"/>
+			<Action_GeneratePath DestinationVarName="$BestAttackPosition" TypeOfPath="Regular" Output_PathVarName="$BetterPath"/>
+			<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$BestAttackPosition" PathVarName="$BetterPath"/>
+			<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$BetterPath"/>
+			<Decorator_MoveEnded PathVarName="$BetterPath"/>
+		</Controller_Sequence>
 
-  </AIArmyMissionDefinition>
+	</AIArmyMissionDefinition>
 
-  <AIArmyMissionDefinition Name="OrbsOpportunity">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$MainTargetPosition"/>
-      <Parameter ParameterIndex="1" VarName="$OpportunityMaximumTurn"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="OrbsOpportunity">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$MainTargetPosition"/>
+			<Parameter ParameterIndex="1" VarName="$OpportunityMaximumTurn"/>
+		</Parameters>
 
-    <Controller_Sequence Debug="Orbs">
-      <Decorator_SelectOrbSpawnTarget Output_TargetVarName="$OrbTarget"
-                                            OpportunityMaximumTurnName="$OpportunityMaximumTurn"
+		<Controller_Sequence Debug="Orbs">
+			<Decorator_SelectOrbSpawnTarget Output_TargetVarName="$OrbTarget" 
+                                            OpportunityMaximumTurnName="$OpportunityMaximumTurn" 
                                             OpportunityMainTargetPosition="$MainTargetPosition"/>
-      <Decorator_GetTargetPosition TargetVarName="$OrbTarget" Output_DestinationVarName="$OrbWorldPositionDestination"/>
+			<Decorator_GetTargetPosition TargetVarName="$OrbTarget" Output_DestinationVarName="$OrbWorldPositionDestination"/>
 
-      <Controller_Sequence Debug="Orb_MoveToOrb">
-        <Action_GeneratePath DestinationVarName="$OrbWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$OrbPath"/>
-        <Action_Move PathVarName="$OrbPath" TypeOfMove="Regular"/>
-        <Decorator_MoveEnded PathVarName="$OrbPath"/>
-      </Controller_Sequence>
-    </Controller_Sequence>
+			<Controller_Sequence Debug="Orb_MoveToOrb">
+				<Action_GeneratePath DestinationVarName="$OrbWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$OrbPath"/>
+				<Action_Move PathVarName="$OrbPath" TypeOfMove="Regular"/>
+				<Decorator_MoveEnded PathVarName="$OrbPath"/>
+			</Controller_Sequence>
+		</Controller_Sequence>
 
-  </AIArmyMissionDefinition>
+	</AIArmyMissionDefinition>
 
   <AIArmyMissionDefinition Name="MapBoostOpportunity">
     <Parameters>
@@ -214,118 +214,121 @@
 
   </AIArmyMissionDefinition>
 
-  <AIArmyMissionDefinition Name="AspirateOpportunity">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-      <Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
-      <Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
-    </Parameters>
+	<AIArmyMissionDefinition Name="AspirateOpportunity">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+			<Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
+			<Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
+		</Parameters>
 
-    <Controller_Sequence Debug="Aspirate">
-      <Decorator_SelectAspirateTarget Output_TargetVarName="$ResourceTarget"
-                                          OpportunityMaximumTurnName="$OpportunityMaximumTurn"
+		<Controller_Sequence Debug="Aspirate">
+			<Decorator_SelectAspirateTarget Output_TargetVarName="$ResourceTarget" 
+                                          OpportunityMaximumTurnName="$OpportunityMaximumTurn" 
                                           OpportunityMainTargetPosition="$MainTargetPosition"/>
 
-      <Decorator_GetTargetPosition TargetVarName="$ResourceTarget" Output_DestinationVarName="$ResourceWorldPositionDestination"/>
+			<Decorator_GetTargetPosition TargetVarName="$ResourceTarget" Output_DestinationVarName="$ResourceWorldPositionDestination"/>
 
-      <Controller_Selector>
-        <Decorator_DestinationReached DestinationVarName="$ResourceWorldPositionDestination" TypeOfCheck="Regular"/>
+			<Controller_Selector>
+				<Decorator_DestinationReached DestinationVarName="$ResourceWorldPositionDestination" TypeOfCheck="Regular"/>
 
-        <Controller_Sequence Debug="Aspirate">
-          <Action_GeneratePath DestinationVarName="$ResourceWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$ResourcePath"/>
-          <Action_Move PathVarName="$ResourcePath" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$ResourcePath"/>
-        </Controller_Sequence>
-      </Controller_Selector>
-    </Controller_Sequence>
+				<Controller_Sequence Debug="Aspirate">
+					<Action_GeneratePath DestinationVarName="$ResourceWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$ResourcePath"/>
+					<Action_Move PathVarName="$ResourcePath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$ResourcePath"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
 
-  </AIArmyMissionDefinition>
+	</AIArmyMissionDefinition>
 
-  <AIArmyMissionDefinition Name="TryToAttackEnemyInRange">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-    </Parameters>
 
-    <!--IF EnnemyDetected THEN Engage him-->
-    <Controller_Sequence Debug="TryToAttackEnemyInRange">
+	<AIArmyMissionDefinition Name="TryToAttackEnemyInRange">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
 
-      <!-- First, select a target. -->
-      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
+		<!--IF EnnemyDetected THEN Engage him-->
+		<Controller_Sequence Debug="TryToAttackEnemyInRange">
 
-      <Controller_Sequence>
-        <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+			<!-- First, select a target. -->
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
 
-        <Controller_Selector Debug="TryToAttackEnemyInRange_EnemyInRange">
-          <Include SubTreeName="OptimizeArmyAttackPosition"/>
+			<Controller_Sequence>
+				<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
 
-          <Controller_Sequence Debug="TryToAttackEnemyInRange_EnemyClose">
-            <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-            <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
-            <Action_ShiftUnits TargetVarName="$Target"/>
-            <Action_Attack TargetVarName="$Target"/>
-          </Controller_Sequence>
+				<Controller_Selector Debug="TryToAttackEnemyInRange_EnemyInRange">
+					<Include SubTreeName="OptimizeArmyAttackPosition"/>
 
-          <Controller_Sequence Debug="TryToAttackEnemyInRange_GotoAndAttack">
-            <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
-            <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
-            <Action_ShiftUnits TargetVarName="$Target"/>
-            <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
-            <Decorator_MoveEnded PathVarName="$Path"/>
-          </Controller_Sequence>
-        </Controller_Selector>
-      </Controller_Sequence>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+					<Controller_Sequence Debug="TryToAttackEnemyInRange_EnemyClose">
+						<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+						<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+						<Action_ShiftUnits TargetVarName="$Target"/>
+						<Action_Attack TargetVarName="$Target"/>
+					</Controller_Sequence>
 
-  <AIArmyMissionDefinition Name="TryToAttackEnemyInRangeOrFlee">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-    </Parameters>
+					<Controller_Sequence Debug="TryToAttackEnemyInRange_GotoAndAttack">
+						<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+						<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+						<Action_ShiftUnits TargetVarName="$Target"/>
+						<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+						<Decorator_MoveEnded PathVarName="$Path"/>
+					</Controller_Sequence>
+				</Controller_Selector>
+			</Controller_Sequence>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
 
-    <!--IF EnnemyDetected AND I can defeat him THEN Engage it -->
-    <Controller_Sequence Debug="TryToAttackEnemyInRange">
+	<AIArmyMissionDefinition Name="TryToAttackEnemyInRangeOrFlee">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
 
-      <!-- First, select a target. -->
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="Any" Output_TargetVarName="$Target"/>
+		<!--IF EnnemyDetected AND I can defeat him THEN Engage it -->
+		<Controller_Sequence Debug="TryToAttackEnemyInRange">
 
-      <Controller_Selector>
-        <Controller_Sequence>
-          <!-- Check if we ca defeat this target. -->
-          <Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
-          <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+			<!-- First, select a target. -->
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
 
-          <Controller_Selector Debug="TryToAttackEnemyInRange_EnemyInRange">
-            <Include SubTreeName="OptimizeArmyAttackPosition"/>
-            <Controller_Sequence Debug="TryToAttackEnemyInRange_EnemyClose">
-              <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-              <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
-              <Action_ShiftUnits TargetVarName="$Target"/>
-              <Action_Attack TargetVarName="$Target"/>
-            </Controller_Sequence>
+			<Controller_Selector>
+				<Controller_Sequence>
+					<!-- Check if we ca defeat this target. -->
+					<Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
+					<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
 
-            <Controller_Sequence Debug="TryToAttackEnemyInRange_GotoAndAttack">
-              <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-              <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
-              <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
-              <Decorator_MoveEnded PathVarName="$Path"/>
-            </Controller_Sequence>
-          </Controller_Selector>
-        </Controller_Sequence>
+					<Controller_Selector Debug="TryToAttackEnemyInRange_EnemyInRange">
+					  <Include SubTreeName="OptimizeArmyAttackPosition"/>
+						<Controller_Sequence Debug="TryToAttackEnemyInRange_EnemyClose">
+							<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+							<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+							<Action_ShiftUnits TargetVarName="$Target"/>
+							<Action_Attack TargetVarName="$Target"/>
+						</Controller_Sequence>
 
-        <!--IF EnnemyDetected AND I can not defeat him THEN retreat him-->
-        <Controller_Sequence Debug="TryToRetreat">
-          <Decorator_CanDefeatTarget Inverted="true" TargetVarName="$Target"/>
-          <Decorator_ComputeSavingPosition TargetListVarName="$TargetList" Output_DestinationVarName="$SafeWorldPositionDestination"/>
-          <Action_GeneratePath DestinationVarName="$SafeWorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$SafePath"/>
-          <Action_Move PathVarName="$SafePath" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$SafePath"/>
-        </Controller_Sequence>
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+						<Controller_Sequence Debug="TryToAttackEnemyInRange_GotoAndAttack">
+							<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+							<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+							<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+							<Action_ShiftUnits TargetVarName="$Target"/>
+							<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+							<Decorator_MoveEnded PathVarName="$Path"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>
 
+				<!--IF EnnemyDetected AND I can not defeat him THEN retreat him-->
+				<Controller_Sequence Debug="TryToRetreat">
+					<Decorator_CanDefeatTarget Inverted="true" TargetVarName="$Target"/>
+					<Decorator_ComputeSavingPosition TargetListVarName="$TargetList" Output_DestinationVarName="$SafeWorldPositionDestination"/>
+					<Action_GeneratePath DestinationVarName="$SafeWorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$SafePath"/>
+					<Action_Move PathVarName="$SafePath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$SafePath"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
   <AIArmyMissionDefinition Name="TryToDeactivateVolcanoformerDevice">
     <Parameters>
       <Parameter ParameterIndex="0" VarName="$TargetList"/>
@@ -360,78 +363,73 @@
       </Controller_Selector>
     </Controller_Sequence>
   </AIArmyMissionDefinition>
+	<AIArmyMissionDefinition Name="OpportunityConvertVillage">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
 
-  <AIArmyMissionDefinition Name="ExploreNearbyRuin">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-    </Parameters>
+		<!--IF valid Village detected THEN try to parley -->
+		<Controller_Sequence Debug="Opportunity_ConvertVillage">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Village" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="VillageConvert"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$ConvertPositionDestination"/>
 
-    <!--IF RuinDetected THEN explore the ruin -->
-    <Controller_Sequence Debug="Explore_SearchRuin">
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Ruin" Output_TargetVarName="$Target"/>
-      <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$RuinWorldPositionDestination"/>
+			<Controller_Selector>            
+				<Controller_Sequence Debug="OpportunityConvertVillage_AlreadyAtDestination">
+					<Decorator_DestinationReached DestinationVarName="$ConvertPositionDestination" TypeOfCheck="Attack"/>
+					<Action_ConvertVillage TargetVarName="$Target"/>
+				</Controller_Sequence>
 
-      <Controller_Selector>
-        <Controller_Sequence Debug="Explore_SearchRuin_AlreadyAtDestination">
-          <Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Attack"/>
-          <Action_SearchInRuin TargetVarName="$Target"/>
-        </Controller_Sequence>
+				<Controller_Sequence Debug="OpportunityConvertVillage_MoveTo">
+					<Action_GeneratePath DestinationVarName="$ConvertPositionDestination" TypeOfPath="Regular" Output_PathVarName="$ConvertPath"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$ConvertPositionDestination" PathVarName="$ConvertPath"/>
+					<Action_Move PathVarName="$ConvertPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$ConvertPath"/>
+					<Action_ConvertVillage TargetVarName="$Target"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<AIArmyMissionDefinition Name="OpportunitySearchRuin">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+			<Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
+			<Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
+		</Parameters>
 
-        <Controller_Sequence Debug="Explore_SearchRuin_DiveAtDestination">
-          <Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Regular"/>
-          <Action_SearchInRuin TargetVarName="$Target"/>
-        </Controller_Sequence>
-
-        <Controller_Sequence Debug="Explore_SearchRuin_MoveToRuin">
-          <Action_GeneratePath DestinationVarName="$RuinWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$RuinPath"/>
-          <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$RuinWorldPositionDestination" PathVarName="$RuinPath"/>
-          <Action_Move PathVarName="$RuinPath" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$RuinPath"/>
-          <Action_SearchInRuin TargetVarName="$Target"/>
-        </Controller_Sequence>
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
-
-  <AIArmyMissionDefinition Name="OpportunitySearchRuin">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetList"/>
-      <Parameter ParameterIndex="1" VarName="$MainTargetPosition"/>
-      <Parameter ParameterIndex="2" VarName="$OpportunityMaximumTurn"/>
-    </Parameters>
-
-    <!--IF RuinDetected THEN explore the ruin -->
-    <Controller_Sequence Debug="Explore_SearchRuin">
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Ruin" Output_TargetVarName="$Target"/>
-      <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$RuinWorldPositionDestination"/>
-      <Decorator_EvaluateOpportunity OpportunityPosition="$RuinWorldPositionDestination"
-                                            MaximumDetourTurnVariableName="$MaximumDetourTurn"
+		<!--IF RuinDetected THEN explore the ruin -->
+		<Controller_Sequence Debug="Explore_SearchRuin">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Ruin" Output_TargetVarName="$Target"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$RuinWorldPositionDestination"/>
+			<Decorator_EvaluateOpportunity OpportunityPosition="$RuinWorldPositionDestination" 
+                                            MaximumDetourTurnVariableName="$OpportunityMaximumTurn"
                                             MinimumTurnToObjectif="2"
-                                            OpportunityType="Ruin"
-                                            MainTargetPosition="$MainTargetPosition"
+                                            OpportunityType="Ruin" 
+                                            MainTargetPosition="$MainTargetPosition" 
                                             MainTargetTypeVariableName="$MainTargetType"/>
 
-      <Controller_Selector>
-        <Controller_Sequence Debug="Explore_SearchRuin_AlreadyAtDestination">
-          <Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Attack"/>
-          <Action_SearchInRuin TargetVarName="$Target"/>
-        </Controller_Sequence>
+			<Controller_Selector>            
+				<Controller_Sequence Debug="Explore_SearchRuin_AlreadyAtDestination">
+					<Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+		
+				<Controller_Sequence Debug="Explore_SearchRuin_DiveAtDestination">
+					<Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Regular"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
 
-        <Controller_Sequence Debug="Explore_SearchRuin_DiveAtDestination">
-          <Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Regular"/>
-          <Action_SearchInRuin TargetVarName="$Target"/>
-        </Controller_Sequence>
-
-        <Controller_Sequence Debug="Explore_SearchRuin_MoveToRuin">
-          <Action_GeneratePath DestinationVarName="$RuinWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$RuinPath"/>
-          <Action_Move PathVarName="$RuinPath" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$RuinPath"/>
-          <Action_SearchInRuin TargetVarName="$Target"/>
-        </Controller_Sequence>
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
-
+				<Controller_Sequence Debug="Explore_SearchRuin_MoveToRuin">
+					<Action_GeneratePath DestinationVarName="$RuinWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$RuinPath"/>
+					<Action_Move PathVarName="$RuinPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$RuinPath"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	
   <AIArmyMissionDefinition Name="TryAttackNearbyWildKaiju">
     <Parameters>
       <Parameter ParameterIndex="0" VarName="$TargetList"/>
@@ -445,8 +443,8 @@
 
       <Controller_Selector Debug="TryAttackNearbyWildKaiju_TryToAttackKaijuInRange_KaijuInRange">
         <Controller_Sequence Debug="TryAttackNearbyKaijus_TryToAttackKaijuInRange_KaijuClose">
-          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
+          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
           <Action_ShiftUnits TargetVarName="$Target"/>
           <Action_Attack TargetVarName="$Target"/>
         </Controller_Sequence>
@@ -454,7 +452,7 @@
         <Controller_Sequence Debug="TryAttackNearbyWildKaiju_TryToAttackKaijuInRange_GotoAndAttack">
           <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
           <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
-          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
+          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
           <Action_ShiftUnits TargetVarName="$Target"/>
           <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
           <Decorator_MoveEnded PathVarName="$Path"/>
@@ -470,14 +468,14 @@
 
     <Controller_Sequence Debug="TryAttackNearbyTamedKaiju_TryToAttackKaijuInRange">
       <Decorator_IsEmpireControlledByAI Inverted="false"/>
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="TamedKaiju" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="Any"/>
+      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="TamedKaiju" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="Enemy"/>
       <Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
       <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
 
       <Controller_Selector Debug="TryAttackNearbyTamedKaiju_TryToAttackKaijuInRange_KaijuInRange">
         <Controller_Sequence Debug="TryAttackNearbyTamedKaijus_TryToAttackKaijuInRange_KaijuClose">
-          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
+          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
           <Action_ShiftUnits TargetVarName="$Target"/>
           <Action_Attack TargetVarName="$Target"/>
         </Controller_Sequence>
@@ -485,7 +483,7 @@
         <Controller_Sequence Debug="TryAttackNearbyTamedKaiju_TryToAttackKaijuInRange_GotoAndAttack">
           <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
           <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
-          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>/>
+          <Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
           <Action_ShiftUnits TargetVarName="$Target"/>
           <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
           <Decorator_MoveEnded PathVarName="$Path"/>
@@ -520,7 +518,7 @@
       </Controller_Selector>
     </Controller_Sequence>
   </AIArmyMissionDefinition>
-
+  
   <AIArmyMissionDefinition Name="TryLuxuryTameNearbyKaiju">
     <Parameters>
       <Parameter ParameterIndex="0" VarName="$TargetList"/>
@@ -529,12 +527,18 @@
     <Controller_Sequence Debug="TryLuxuryTameNearbyKaiju_TryToTameStunnedKaijuInRange">
       <Decorator_IsEmpireControlledByAI Inverted="false"/>
       <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="WildKaiju" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="Any"/>
-      <Decorator_CanAffordArmyAction Inverted="false" ArmyActionReadOnlyName="ArmyActionTameUnstunnedKaiju" Output_ArmyActionVarName="$ArmyAction"/>
       <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
-
+	  <!-- LEB: Try to buyout tame resources -->
+	  <Include SubTreeName="TryBuyingOutKaijuResources">
+		  <VariableConverter ToVariable="$TargetKaiju" FromVariable="$Target"/>
+          <VariableConverter ToVariable="$TargetPosition" FromVariable="$AttackWorldPositionDestination"/>
+      </Include>
+	  
+	  <Decorator_CanAffordArmyAction Inverted="false" ArmyActionReadOnlyName="ArmyActionTameUnstunnedKaiju" Output_ArmyActionVarName="$ArmyAction" TargetVarName="$Target"/>
+	  
       <Controller_Selector Debug="TryLuxuryTameNearbyKaiju_KaijuInRange">
         <Controller_Sequence Debug="TryLuxuryTameNearbyKaiju_KaijuClose">
-          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
           <Action_ExecuteArmyAction ArmyActionVarName="$ArmyAction" TargetVarName="$Target"/>
         </Controller_Sequence>
 
@@ -547,6 +551,7 @@
       </Controller_Selector>
     </Controller_Sequence>
   </AIArmyMissionDefinition>
+
 
   <AIArmyMissionDefinition Name="OptimizeKaijuAttackPosition">
     <Parameters>
@@ -600,5 +605,551 @@
       </Controller_Sequence>
     </Controller_Selector>
   </AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: new parley village subtree -->
+	<!-- I modified the search ruin action to also work for accepting village quests (dont know how to create new BT-Actions yet) -->
+	<AIArmyMissionDefinition Name="ParleyWithVillage">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
 
+		<!--IF valid Village detected THEN try to parley -->
+		<Controller_Sequence Debug="Parley_Village">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Village" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="VillageQuest"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$ParleyPositionDestination"/>
+
+			<Controller_Selector>            
+				<Controller_Sequence Debug="Parley_Village_AlreadyAtDestination">
+					<Decorator_DestinationReached DestinationVarName="$ParleyPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+
+				<Controller_Sequence Debug="Parley_Village_MoveToRuin">
+					<Action_GeneratePath DestinationVarName="$ParleyPositionDestination" TypeOfPath="Regular" Output_PathVarName="$ParleyPath"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$ParleyPositionDestination" PathVarName="$ParleyPath"/>
+					<Action_Move PathVarName="$ParleyPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$ParleyPath"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: new subtree for dynamic siege defending of warpatrols (including vaulter teleport!) -->
+	<AIArmyMissionDefinition Name="DefendBesiegedCities">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$BesiegedCity"/>
+		</Parameters>
+		<Controller_Selector Debug="DefendBesiegedCities_Selector">
+			
+			<!-- If we can teleport into the besieged city, go to the nearest unbesieged city and do that -->
+			<Controller_Sequence Debug="DefendBesiegedCities_Teleport">
+				<Decorator_SelectClosestBesiegedCity Inverted="false" Teleport="true" Output_TargetVarName="$BesiegedCity"/>
+				<Decorator_SelectClosestBesiegedCity Inverted="true" Output_TargetVarName="$AlliedCity"/>
+				<Decorator_GetTargetPosition TargetVarName="$AlliedCity" Output_DestinationVarName="$AlliedCityPosition"/>
+				
+				<Controller_Selector>
+					<Controller_Sequence Debug="Teleport_Now">
+						<!-- The army is right above the city, initiate teleport!. -->
+						<Decorator_DestinationReached DestinationVarName="$AlliedCityPosition"/>
+						<Controller_Selector>
+							<Decorator_IsTargetLocked TargetVarName="$BesiegedCity"/>
+							<Action_TeleportToCity DestinationVarName="$BesiegedCity"/>
+						</Controller_Selector>
+					</Controller_Sequence>
+
+					<Controller_Sequence Debug="Teleport_ReachCity">
+						<Action_GeneratePath DestinationVarName="$AlliedCityPosition" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+						<Decorator_MoveEnded PathVarName="$Path"/>
+						<Decorator_DestinationReached DestinationVarName="$AlliedCityPosition"/>
+						<Controller_Selector>
+							<Decorator_IsTargetLocked TargetVarName="$BesiegedCity"/>
+							<Action_TeleportToCity DestinationVarName="$BesiegedCity"/>
+						</Controller_Selector>
+					</Controller_Sequence>
+				</Controller_Selector>
+			</Controller_Sequence>
+			
+			<Controller_Sequence Debug="DefendBesiegedCities_Walk">
+				<Decorator_SelectClosestBesiegedCity Inverted="false" Output_TargetVarName="$BesiegedCity"/>
+				
+				<Controller_Selector>
+					<Decorator_SelectSiegingArmyPosition CityUnderSiege="$BesiegedCity" Output_DestinationVarName="$WorldPositionDestination"/> 
+					<Decorator_GetTargetPosition TargetVarName="$BesiegedCity" Output_DestinationVarName="$WorldPositionDestination"/>
+				</Controller_Selector>
+				
+				<Decorator_UpdateSiegeBreakerAssignation WaitForSupport="false" CityUnderSiege="$BesiegedCity"/>
+				
+				<Controller_Selector>
+					<Include SubTreeName="TryToAttackEnemyInRangeOrIgnore"/>
+					
+					<!-- TryToAttackEnemyInRangeOrIgnore only targets major empires, but sometimes a minor/lesser empires lays siege... -->
+					<Controller_Sequence Debug="DefendBesiegedCities_AttackNeutrals">
+						<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Attack"/>
+						<Include SubTreeName="TryToAttackAllEnemiesInRangeOrIgnore"/>
+					</Controller_Sequence>					
+					
+					<Controller_Sequence Debug="DefendBesiegedCities_AttackImmediatly">
+						<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Attack"/>
+						<Decorator_CityNeedsImmediateHelp CityUnderSiege="$BesiegedCity"/>
+						<Controller_Selector>
+							<Decorator_UpdateSiegeBreakerAssignation WaitForSupport="true" CityUnderSiege="$BesiegedCity" DestinationVarName="$WorldPositionDestination"/>
+							<Include SubTreeName="TryToAttackEnemyInRange"/>
+						</Controller_Selector>
+					</Controller_Sequence>
+					
+					<Decorator_IsTargetLocked TargetVarName="$BesiegedCity"/>
+					
+					<Controller_Sequence Debug="DefendBesiegedCities_MoveTowardCity">
+						<Action_GeneratePath DestinationVarName="$WorldPositionDestination" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+						<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+					</Controller_Sequence>
+					
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Attack"/>
+				</Controller_Selector>
+			</Controller_Sequence>
+		</Controller_Selector>
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: new subtree for dynamic preemptive city defense -->
+	<AIArmyMissionDefinition Name="DefendEndangeredCities">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+		<Controller_Sequence Debug="DefendBesiegedCities_Selector">
+			<!-- AILayer_War assigns armies to defensive cities, if we got assigned, go there -->
+			<Decorator_SelectDefenseCity Inverted="false" Output_TargetVarName="$AlliedCity"/>
+			<Decorator_GetTargetPosition TargetVarName="$AlliedCity" Output_DestinationVarName="$AlliedCityPosition"/>
+			
+			<Controller_Selector>
+				<!-- if we are at the target, attack weak nearby enemies, or do nothing -->
+				<Controller_Sequence>
+					<Decorator_DestinationReached DestinationVarName="$AlliedCityPosition" TypeOfCheck="Regular"/>
+					<Controller_Selector>
+						<Include SubTreeName="TryToAttackEnemyInRangeOrIgnore"/>
+						<!-- always succeed so the army stays in place -->
+						<Decorator_Successor />
+					</Controller_Selector>
+				</Controller_Sequence>
+				
+				<!-- try to teleport to the target if possible -->
+				<Controller_Sequence Debug="Defense_ReachCity_Teleport">
+					<Decorator_CanTeleportToTarget TargetVarName="$AlliedCity"/>
+					<Decorator_SelectClosestBesiegedCity Inverted="true" Output_TargetVarName="$TeleCity"/>
+					<Decorator_GetTargetPosition TargetVarName="$TeleCity" Output_DestinationVarName="$TeleCityPosition"/>
+					
+					<Controller_Selector>
+						<Controller_Sequence Debug="Teleport_Now">
+							<!-- The army is right above the city, initiate teleport!. -->
+							<Decorator_DestinationReached DestinationVarName="$TeleCityPosition"/>
+							<Controller_Selector>
+								<Decorator_IsTargetLocked TargetVarName="$AlliedCity"/>
+								<Action_TeleportToCity DestinationVarName="$AlliedCity"/>
+							</Controller_Selector>
+						</Controller_Sequence>
+						
+						<Include SubTreeName="TryToAttackEnemyInRangeOrIgnore" />
+						<Include SubTreeName="OpportunitySearchRuin">
+							<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$TeleCityPosition"/>
+							<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>                
+						</Include>
+						
+						<Include SubTreeName="OrbsOpportunity">
+							<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$TeleCityPosition"/>
+							<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+						</Include>
+
+						<Controller_Sequence Debug="Teleport_ReachCity">
+							<Action_GeneratePath DestinationVarName="$TeleCityPosition" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+							<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$Path"/>
+							<Decorator_DestinationReached DestinationVarName="$TeleCityPosition"/>
+							<Controller_Selector>
+								<Decorator_IsTargetLocked TargetVarName="$AlliedCity"/>
+								<Action_TeleportToCity DestinationVarName="$AlliedCity"/>
+							</Controller_Selector>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>
+				
+				<!-- attack or ignor enemies, search opportune ruins-->
+				<Include SubTreeName="TryToAttackEnemyInRangeOrIgnore"/>
+				<Include SubTreeName="OpportunitySearchRuin">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$AlliedCityPosition"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>                
+				</Include>
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$AlliedCityPosition"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="1"/>
+				</Include>
+				
+				<Decorator_IsTargetLocked TargetVarName="$AlliedCity"/>
+				<!-- go to the city we want to reach -->
+				<Controller_Sequence Debug="Defense_ReachCity">
+					<Action_GeneratePath DestinationVarName="$AlliedCityPosition" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+					<Decorator_DestinationReached DestinationVarName="$AlliedCityPosition"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>	
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: new subtree for attacking or ignoring all enemies (including villages and cities!), ignores minor/lesser factions -->
+	<AIArmyMissionDefinition Name="TryToAttackEnemyInRangeOrIgnore">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+
+		<!--IF EnnemyDetected AND I can defeat him THEN Engage it -->
+		<Controller_Sequence Debug="TryToAttackEnemyInRangeOrIgnore">
+
+			<!-- First, select a target. -->
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Any" TypeOfDiplomaticRelation="DangerForMe" Output_TargetVarName="$Target"/>
+
+			<Controller_Selector>
+				<Controller_Sequence>
+					<!-- Check if we ca defeat this target. -->
+					<Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
+					<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+					
+					<Controller_Selector>
+						<Controller_Sequence Debug="TryToAttackEnemyCityInRange">
+							<Decorator_TargetTypeCheck TargetVarName="$Target" TargetTypeCheck="City"/>	
+							
+							<Controller_Selector>
+								<Controller_Sequence>
+									<Decorator_IsTargetBesieging Inverted="false" TargetVarName="$Army" TargetCityVarName="$Target"/>
+									<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+									<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+									<Action_ShiftUnits TargetVarName="$Target"/>
+									<Action_Attack TargetVarName="$Target"/>
+								</Controller_Sequence>
+								
+								<Controller_Sequence>
+									<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+									<Action_ToggleSiege TargetVarName="$Target" State="On"/>
+								</Controller_Sequence>
+							
+								<Controller_Sequence Debug="MoveTowardCity">
+									<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" Output_PathVarName="$Path"/>
+									<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+									<Decorator_MoveEnded PathVarName="$Path"/>
+									<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+									<Action_ToggleSiege TargetVarName="$Target" State="On"/>
+								</Controller_Sequence>
+							</Controller_Selector>
+						</Controller_Sequence>
+					
+						<Controller_Selector Debug="TryToAttackEnemyInRange_EnemyInRange">
+							<Include SubTreeName="OptimizeArmyAttackPosition"/>
+							<Controller_Sequence Debug="TryToAttackEnemyInRange_EnemyClose">
+								<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+								<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+								<Action_ShiftUnits TargetVarName="$Target"/>
+								<Action_Attack TargetVarName="$Target"/>
+							</Controller_Sequence>
+
+							<Controller_Sequence Debug="TryToAttackEnemyInRange_GotoAndAttack">
+								<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+								<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+								<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+								<Action_ShiftUnits TargetVarName="$Target"/>
+								<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+								<Decorator_MoveEnded PathVarName="$Path"/>
+							</Controller_Sequence>
+						</Controller_Selector>
+					</Controller_Selector>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: new subtree for attacking or ignoring all enemies (including villages and cities!)-->
+	<AIArmyMissionDefinition Name="TryToAttackAllEnemiesInRangeOrIgnore">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+
+		<!--IF EnnemyDetected AND I can defeat him THEN Engage it -->
+		<Controller_Sequence Debug="TryToAttackAllEnemiesInRangeOrIgnore">
+
+			<!-- First, select a target. -->
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Any" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
+
+			<Controller_Selector>
+				<Controller_Sequence>
+					<!-- Check if we ca defeat this target. -->
+					<Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
+					<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+					
+					<Controller_Selector>
+						<Controller_Sequence Debug="TryToAttackEnemyCityInRange">
+							<Decorator_TargetTypeCheck TargetVarName="$Target" TargetTypeCheck="City"/>	
+							
+							<Controller_Selector>
+								<Controller_Sequence>
+									<Decorator_IsTargetBesieging Inverted="false" TargetVarName="$Army" TargetCityVarName="$Target"/>
+									<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+									<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+									<Action_ShiftUnits TargetVarName="$Target"/>
+									<Action_Attack TargetVarName="$Target"/>
+								</Controller_Sequence>
+								
+								<Controller_Sequence>
+									<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+									<Action_ToggleSiege TargetVarName="$Target" State="On"/>
+								</Controller_Sequence>
+							
+								<Controller_Sequence Debug="MoveTowardCity">
+									<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" Output_PathVarName="$Path"/>
+									<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+									<Decorator_MoveEnded PathVarName="$Path"/>
+									<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+									<Action_ToggleSiege TargetVarName="$Target" State="On"/>
+								</Controller_Sequence>
+							</Controller_Selector>
+						</Controller_Sequence>
+					
+						<Controller_Selector Debug="TryToAttackEnemyInRange_EnemyInRange">
+							<Include SubTreeName="OptimizeArmyAttackPosition"/>
+							<Controller_Sequence Debug="TryToAttackEnemyInRange_EnemyClose">
+								<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+								<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+								<Action_ShiftUnits TargetVarName="$Target"/>
+								<Action_Attack TargetVarName="$Target"/>
+							</Controller_Sequence>
+
+							<Controller_Sequence Debug="TryToAttackEnemyInRange_GotoAndAttack">
+								<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+								<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+								<Action_ImmolateUnits TargetVarName="$Target" PowerRatioCeil="10.0" PowerRatioFloor="0.1"/>
+								<Action_ShiftUnits TargetVarName="$Target"/>
+								<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+								<Decorator_MoveEnded PathVarName="$Path"/>
+							</Controller_Sequence>
+						</Controller_Selector>
+					</Controller_Selector>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: new subtree for dynamic leader following -->
+	<AIArmyMissionDefinition Name="SupportLeader">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+		<Controller_Sequence Debug="SupportLeader_Sequence">
+			<Decorator_FindArmyToSupport Output_TargetVarName="$ArmyToSupport" Output_MainTargetVarName="$CommanderTarget"/>
+			<Decorator_GetTargetPosition TargetVarName="$ArmyToSupport" Output_DestinationVarName="$AlliedArmyPosition"/>
+			
+			
+			<Controller_Selector>
+				<Include SubTreeName="TryToAttackEnemyInRangeOrIgnore"/>
+				
+				<!-- if we are near the leading army or their objective, move towards the objective -->
+				<Controller_Sequence Debug="MoveTowardAlliedObjective">
+					<!-- get the objective position, otherwise abort -->
+					<Decorator_GetTargetPosition TargetVarName="$CommanderTarget" Output_DestinationVarName="$CommanderTargetPosition"/>
+					<!-- be close to the objective or close to the leading army -->
+					<Controller_Selector>
+						<Decorator_DestinationReached DestinationVarName="$CommanderTargetPosition" TypeOfCheck="InRange" Range="6"/>	
+						<Decorator_DestinationReached DestinationVarName="$AlliedArmyPosition" TypeOfCheck="InRange" Range="1"/>
+					</Controller_Selector>						
+					<Controller_Selector>	
+						<!-- if we reached the destination, and it's a city, siege -->
+						<Controller_Sequence>
+							<Decorator_DestinationReached DestinationVarName="$CommanderTargetPosition" TypeOfCheck="Regular"/>
+							<Decorator_TargetTypeCheck TargetVarName="$CommanderTarget" TargetTypeCheck="City"/>
+							<Controller_Selector>	
+								<Decorator_IsTargetBesieging Inverted="false" TargetVarName="$Army" TargetCityVarName="$CommanderTarget"/>
+								<Action_ToggleSiege TargetVarName="$CommanderTarget" State="On"/>
+							</Controller_Selector>
+						</Controller_Sequence>
+						
+						<!-- otherwise just wait -->
+						<Decorator_DestinationReached DestinationVarName="$CommanderTargetPosition" TypeOfCheck="Regular"/>	
+						
+						<!-- if we didnt reach it yet, move towards it -->
+						<Controller_Sequence Debug="MoveTowardsCommanderTarget">
+							<Controller_Selector>
+								<Action_GeneratePath DestinationVarName="$CommanderTargetPosition" TypeOfPath="Regular" Output_PathVarName="$PathToTarget" AllowFastTravel="true"/>
+								<!--ELCP: LastResortRoaming if no valid path has been found-->		
+								<Controller_Sequence Debug="LastResortRoaming">
+									<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+									<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+									<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$PathToTarget"/>
+								</Controller_Sequence>
+							</Controller_Selector>
+							<Action_Move PathVarName="$PathToTarget" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$PathToTarget" TypeOfCheck="Regular"/>
+						</Controller_Sequence>
+						<Decorator_DestinationReached DestinationVarName="$AlliedArmyPosition" TypeOfCheck="InRange" Range="1"/>
+					</Controller_Selector>
+				</Controller_Sequence>
+				
+				<!-- If we are near the allied army, and there is no objective, just wait -->
+				<Decorator_DestinationReached DestinationVarName="$AlliedArmyPosition" TypeOfCheck="InRange" Range="1"/>
+				
+				<Controller_Sequence Debug="MoveToTowardAlliedArmy">
+					<Action_GeneratePath DestinationVarName="$AlliedArmyPosition" TypeOfPath="Regular" Output_PathVarName="$PathToTarget"/>
+					<Action_Move PathVarName="$PathToTarget" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$PathToTarget" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+		
+	</AIArmyMissionDefinition>
+	
+	<AIArmyMissionDefinition Name="ExploreNearbyRuin">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+
+		<!--IF RuinDetected THEN explore the ruin -->
+		<Controller_Sequence Debug="Explore_SearchRuin">
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Ruin" Output_TargetVarName="$Target"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$RuinWorldPositionDestination"/>
+
+			<Controller_Selector>            
+				<Controller_Sequence Debug="Explore_SearchRuin_AlreadyAtDestination">
+					<Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Attack"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+
+        <Controller_Sequence Debug="Explore_SearchRuin_DiveAtDestination">
+          <Decorator_DestinationReached DestinationVarName="$RuinWorldPositionDestination" TypeOfCheck="Regular"/>
+          <Action_SearchInRuin TargetVarName="$Target"/>
+        </Controller_Sequence>
+
+				<Controller_Sequence Debug="Explore_SearchRuin_MoveToRuin">
+					<Action_GeneratePath DestinationVarName="$RuinWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$RuinPath"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$RuinWorldPositionDestination" PathVarName="$RuinPath"/>
+					<Action_Move PathVarName="$RuinPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$RuinPath"/>
+					<Action_SearchInRuin TargetVarName="$Target"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP/LeaderEnemyBoss: simple pillage without opportunity -->
+	<AIArmyMissionDefinition Name="PillageOrFlee">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+
+		<!--IF we could Pillage something THEN try to pillage it -->
+		<Controller_Sequence>
+			<Controller_Selector Debug="PillagingAndHeavyArmyComing">
+				<!-- We are all right when there is no target around.-->
+				<Decorator_SelectTarget Inverted="true" TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="DangerForMe" Output_TargetVarName="$Target"/>
+
+				<!-- We are all right when there is a target but we are able to defeat it.-->
+				<Decorator_CanDefeatTarget TargetVarName="$Target" EstimateBattlegound="true"/>
+			</Controller_Selector>
+
+			<!-- nothing to do! -->
+			<Controller_Selector>
+				<Decorator_IsArmyPillaging TargetVarName="$Army"/>
+
+				<Controller_Sequence>
+					<Decorator_SelectPillageTarget TargetListVarName="$TargetList"
+                                         Output_TargetVarName="$PillageTarget"
+                                         OpportunityMaximumTurn="0"/>
+
+					<Decorator_GetTargetPosition TargetVarName="$PillageTarget" Output_DestinationVarName="$PillageTargetWorldPositionDestination"/>
+
+					<Controller_Selector>
+						<Controller_Sequence Debug="Opportunity_Pillage_AlreadyAtDestination">
+							<Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
+							<Action_TogglePillage TargetVarName="$PillageTarget"/>
+						</Controller_Sequence>
+
+						<!-- Wait until we have ended the pillage! -->
+						<Decorator_DestinationReached DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfCheck="Attack"/>
+
+						<Controller_Sequence Debug="Opportunity_Pillage_MoveToTarget">
+							<Action_GeneratePath DestinationVarName="$PillageTargetWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$PillagePath"/>
+							<Action_Move PathVarName="$PillagePath" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$PillagePath"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP Try to buyout Urkan tame resources when near one -->
+	<AIArmyMissionDefinition Name="TryBuyingOutKaijuResources">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetKaiju"/>
+			<Parameter ParameterIndex="1" VarName="$TargetPosition"/>
+		</Parameters>
+
+		<Controller_Selector Debug="TryBuyingOutKaijuResources">
+			<Decorator_HasTriedResourceTrade TargetVarName="$TargetKaiju"/>
+			<Controller_Sequence>
+				<Action_GeneratePath DestinationVarName="$TargetPosition" TypeOfPath="Regular" Output_PathVarName="$KaijuPath"/>
+				<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$TargetPosition" PathVarName="$KaijuPath"/>
+				<Action_TryKaijuResourceTrade TargetVarName="$TargetKaiju"/>
+			</Controller_Sequence>
+		</Controller_Selector>
+
+	</AIArmyMissionDefinition>
+	
+	<!-- ELCP Opportunity attack empty fortresses -->
+	<AIArmyMissionDefinition Name="TryAttackNearbyEmptyFortresses">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetList"/>
+		</Parameters>
+
+		<Controller_Sequence Debug="TryAttackNearbyFortresses_TryToAttackInRange">
+			<Decorator_IsEmbarked/>
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Fortress" Output_TargetVarName="$Target" TypeOfDiplomaticRelation="Enemy"/>
+			<Decorator_CanDefeatTarget Inverted="false" TargetVarName="$Target"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+
+			<Controller_Selector Debug="TryAttackNearbyFortresses_TryToAttackInRange_EnemyInRange">
+				<Controller_Sequence Debug="TryAttackNearbyVillages_TryToAttackInRange_EnemyClose">
+					<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Regular"/>
+					<Action_Attack TargetVarName="$Target"/>
+				</Controller_Sequence>
+
+				<Controller_Sequence Debug="TryAttackNearbyFortresses_TryToAttackInRange_GotoAndAttack">
+					<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+					<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>	
+	
+	<!-- ELCP Opportunity terraform suitable tiles-->
+	<AIArmyMissionDefinition Name="TryOpportunityTerraform">
+		<Controller_Sequence Debug="TryOpportunityTerraform_Root">
+			<Decorator_GetOpportunityTerraform OpportunityTerraform_DestinationVarName="$OpportunityTerraformPosition" />
+
+			<Controller_Selector Debug="TryOpportunityTerraform_ReachPosition">
+				<Controller_Sequence Debug="TryOpportunityTerraform_PositionReached">
+					<Decorator_DestinationReached DestinationVarName="$OpportunityTerraformPosition" TypeOfCheck="Regular"/>
+					<Action_Terraform/>
+				</Controller_Sequence>
+
+				<Controller_Sequence Debug="TryOpportunityTerraform_GotoPosition">
+					<Action_GeneratePath DestinationVarName="$OpportunityTerraformPosition" TypeOfPath="Regular" Output_PathVarName="$TerraPath"/>
+					<Action_Move PathVarName="$TerraPath" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$TerraPath"/>
+					<Decorator_DestinationReached DestinationVarName="$OpportunityTerraformPosition" TypeOfCheck="Regular"/>
+					<Action_Terraform/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>	
+	
+	<!-- End ELCP -->	
 </Datatable>

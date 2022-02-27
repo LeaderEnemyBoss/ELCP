@@ -470,13 +470,12 @@ public class WorldAtlasHelper : AIHelper, IWorldAtlasAIHelper, IService, ISimula
 	{
 		global::Empire empire = base.Game.Empires[regionData.EmpireIndex];
 		DepartmentOfScience agency = empire.GetAgency<DepartmentOfScience>();
-		DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
-		if (agency2.Cities.Count <= 0)
+		if (empire.GetAgency<DepartmentOfTheInterior>().Cities.Count <= 0)
 		{
 			return true;
 		}
 		Region region = this.world.Regions[regionData.RegionIndex];
-		PathfindingContext pathfindingContext = new PathfindingContext(GameEntityGUID.Zero, null, (!agency.HaveResearchedShipTechnology()) ? PathfindingMovementCapacity.Ground : (PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water));
+		PathfindingContext pathfindingContext = new PathfindingContext(GameEntityGUID.Zero, null, (!agency.HaveResearchedShipTechnology()) ? (PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.FrozenWater) : (PathfindingMovementCapacity.Ground | PathfindingMovementCapacity.Water | PathfindingMovementCapacity.FrozenWater));
 		pathfindingContext.RefreshProperties(1f, float.PositiveInfinity, false, false, float.PositiveInfinity, float.PositiveInfinity);
 		pathfindingContext.Greedy = true;
 		PathfindingFlags flags = PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreEncounterAreas | PathfindingFlags.IgnoreFogOfWar | PathfindingFlags.IgnoreZoneOfControl;
@@ -889,12 +888,14 @@ public class WorldAtlasHelper : AIHelper, IWorldAtlasAIHelper, IService, ISimula
 
 	public void ComputeConnectedRegion(global::Empire empire, ref List<int> connectedRegion, Func<Region, bool> match = null)
 	{
-		DepartmentOfTheInterior agency = empire.GetAgency<DepartmentOfTheInterior>();
-		Diagnostics.Assert(agency != null);
+		DepartmentOfCreepingNodes agency = empire.GetAgency<DepartmentOfCreepingNodes>();
+		DepartmentOfTheInterior agency2 = empire.GetAgency<DepartmentOfTheInterior>();
+		DepartmentOfForeignAffairs agency3 = empire.GetAgency<DepartmentOfForeignAffairs>();
+		Diagnostics.Assert(agency2 != null);
 		bool flag = false;
-		for (int i = 0; i < agency.Cities.Count; i++)
+		for (int i = 0; i < agency2.Cities.Count; i++)
 		{
-			Region region = agency.Cities[i].Region;
+			Region region = agency2.Cities[i].Region;
 			if (match == null || match(region))
 			{
 				connectedRegion.Add(region.Index);
@@ -906,15 +907,19 @@ public class WorldAtlasHelper : AIHelper, IWorldAtlasAIHelper, IService, ISimula
 				{
 					flag = true;
 				}
-				if (region2.City == null || region2.City.Empire != empire)
+				if ((region2.City == null || region2.City.Empire != empire) && !connectedRegion.Contains(region2.Index) && (match == null || match(region2)))
 				{
-					if (!connectedRegion.Contains(region2.Index))
-					{
-						if (match == null || match(region2))
-						{
-							connectedRegion.Add(region2.Index);
-						}
-					}
+					connectedRegion.Add(region2.Index);
+				}
+			}
+		}
+		if (agency != null && agency3 != null)
+		{
+			foreach (CreepingNode creepingNode in agency.Nodes)
+			{
+				if (!creepingNode.IsUnderConstruction && AILayer_Exploration.IsTravelAllowedInNode(empire, creepingNode) && agency3.CanMoveOn((int)this.worldPositionningService.GetRegionIndex(creepingNode.WorldPosition), false) && !connectedRegion.Contains(creepingNode.Region.Index) && (match == null || match(creepingNode.Region)))
+				{
+					connectedRegion.Add(creepingNode.Region.Index);
 				}
 			}
 		}
@@ -926,10 +931,9 @@ public class WorldAtlasHelper : AIHelper, IWorldAtlasAIHelper, IService, ISimula
 				if (!continent.IsOcean && !continent.IsWasteland)
 				{
 					bool flag2 = false;
-					for (int l = 0; l < agency.Cities.Count; l++)
+					for (int l = 0; l < agency2.Cities.Count; l++)
 					{
-						Region region3 = agency.Cities[l].Region;
-						if (region3.ContinentID == continent.ID)
+						if (agency2.Cities[l].Region.ContinentID == continent.ID)
 						{
 							flag2 = true;
 							break;
@@ -939,10 +943,10 @@ public class WorldAtlasHelper : AIHelper, IWorldAtlasAIHelper, IService, ISimula
 					{
 						for (int m = 0; m < continent.CostalRegionList.Length; m++)
 						{
-							Region region4 = this.world.Regions[continent.CostalRegionList[m]];
-							if (!connectedRegion.Contains(region4.Index) && (match == null || match(region4)))
+							Region region3 = this.world.Regions[continent.CostalRegionList[m]];
+							if (!connectedRegion.Contains(region3.Index) && (match == null || match(region3)))
 							{
-								connectedRegion.Add(region4.Index);
+								connectedRegion.Add(region3.Index);
 							}
 						}
 					}

@@ -118,23 +118,30 @@ public class EmpireInfo : IComparable, IComparable<EmpireInfo>
 					'&'
 				};
 				string[] array = lobbyData5.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-				if (array.Length > 0)
+				if (array.Length != 0)
 				{
 					List<VictoryCondition> list = new List<VictoryCondition>();
-					foreach (string text in array)
+					string[] array2 = array;
+					for (int i = 0; i < array2.Length; i++)
 					{
-						string[] array2 = text.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
-						for (int j = 1; j < array2.Length; j++)
+						string[] array3 = array2[i].Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
+						int j = 1;
+						while (j < array3.Length)
 						{
 							int num2;
-							if (int.TryParse(array2[j], out num2) && num2 == empireIndex)
+							if (int.TryParse(array3[j], out num2) && num2 == empireIndex)
 							{
 								VictoryCondition item;
-								if (database2.TryGetValue(array2[0], out item))
+								if (database2.TryGetValue(array3[0], out item))
 								{
 									list.Add(item);
+									break;
 								}
 								break;
+							}
+							else
+							{
+								j++;
 							}
 						}
 					}
@@ -148,19 +155,25 @@ public class EmpireInfo : IComparable, IComparable<EmpireInfo>
 		}
 		ILocalizationService service = Services.GetService<ILocalizationService>();
 		empireInfo.LocalizedName = string.Empty;
-		string[] array3 = lobbyData2.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
-		for (int k = 0; k < array3.Length; k++)
+		string[] array4 = lobbyData2.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
+		for (int k = 0; k < array4.Length; k++)
 		{
 			if (service != null)
 			{
-				if (array3[k].StartsWith("AI"))
+				if (array4[k].StartsWith("AI"))
 				{
-					empireInfo.LocalizedName = MajorEmpire.GenerateAIName(empireInfo.Faction.Affinity.Name, empireInfo.EmpireIndex);
+					if (empireInfo.Faction.Name == "FactionELCPSpectator")
+					{
+						empireInfo.LocalizedName = AgeLocalizer.Instance.LocalizeString("%NotificationEncounterParticipationModeSpectatorTitle");
+					}
+					else
+					{
+						empireInfo.LocalizedName = MajorEmpire.GenerateAIName(empireInfo.Faction.Affinity.Name, empireInfo.EmpireIndex);
+					}
 				}
 				else
 				{
-					ulong value2 = Convert.ToUInt64(array3[k], 16);
-					Steamworks.SteamID steamID = new Steamworks.SteamID(value2);
+					Steamworks.SteamID steamID = new Steamworks.SteamID(Convert.ToUInt64(array4[k], 16));
 					string newValue = AgeLocalizer.Instance.LocalizeString("%DefaultPlayerName");
 					if (Steamworks.SteamAPI.IsSteamRunning)
 					{

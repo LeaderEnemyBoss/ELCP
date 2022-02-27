@@ -1,15 +1,71 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Amplitude;
+using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
+using Amplitude.Unity.Session;
+using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.Advanced;
 using UnityEngine;
 
 [Diagnostics.TagAttribute("AI")]
 public class AILayer_Population : AILayer
 {
-	protected Empire Empire
+	static AILayer_Population()
+	{
+		AILayer_Population.Settler = "Settler";
+		AILayer_Population.CitiesWithScienceFocus = new List<GameEntityGUID>[15];
+		AILayer_Population.DistrictResource = new StaticString[]
+		{
+			SimulationProperties.DistrictFood,
+			SimulationProperties.DistrictIndustry,
+			SimulationProperties.DistrictScience,
+			SimulationProperties.DistrictDust,
+			SimulationProperties.DistrictCityPoint
+		};
+		AILayer_Population.GainPerPopulation = new StaticString[]
+		{
+			SimulationProperties.BaseFoodPerPopulation,
+			SimulationProperties.BaseIndustryPerPopulation,
+			SimulationProperties.BaseSciencePerPopulation,
+			SimulationProperties.BaseDustPerPopulation,
+			SimulationProperties.BaseCityPointPerPopulation
+		};
+		AILayer_Population.PopulationResource = new StaticString[]
+		{
+			SimulationProperties.FoodPopulation,
+			SimulationProperties.IndustryPopulation,
+			SimulationProperties.SciencePopulation,
+			SimulationProperties.DustPopulation,
+			SimulationProperties.CityPointPopulation
+		};
+		AILayer_Population.Terrain = new StaticString[]
+		{
+			SimulationProperties.DistrictFoodNet,
+			SimulationProperties.DistrictIndustryNet,
+			SimulationProperties.DistrictScienceNet,
+			SimulationProperties.DistrictDustNet,
+			SimulationProperties.DistrictCityPointNet
+		};
+		AILayer_Population.GlobalPopulationInfos = new AILayer_Population.ELCPGlobalPopulationInfo[15];
+		AILayer_Population.CitiesWithDustFocus = new List<GameEntityGUID>[15];
+		AILayer_Population.CitiesWithScienceFocus = new List<GameEntityGUID>[15];
+		AILayer_Population.EndlessTempleWonderInQueue = "EndlessTempleWonderInQueue";
+		AILayer_Population.CityStatusProducingSettler = "CityStatusProducingSettler";
+		AILayer_Population.Settler = "Settler";
+		AILayer_Population.NonFoodPopPriority = new int[]
+		{
+			4,
+			2,
+			1,
+			3
+		};
+	}
+
+	protected global::Empire Empire
 	{
 		get
 		{
@@ -70,19 +126,84 @@ public class AILayer_Population : AILayer
 
 	public override void Release()
 	{
-		base.Release();
+		if (this.departmentOfIndustry != null)
+		{
+			this.departmentOfIndustry.GetConstructionQueue(this.aiEntityCity.City).CollectionChanged -= this.ConstructionQueue_CollectionChanged;
+			this.departmentOfIndustry = null;
+		}
 		this.aiEntityCity = null;
 		this.assignPopulationOrder = null;
 		this.amasCityLayer = null;
+		this.departmentOfTheInterior = null;
+		this.departmentOfForeignAffairs = null;
+		this.departmentOfTheTreasury = null;
+		this.game = null;
+		this.aILayer_Victory = null;
+		AILayer_Population.CitiesWithDustFocus[this.Empire.Index].Clear();
+		AILayer_Population.CitiesWithScienceFocus[this.Empire.Index].Clear();
+		base.Release();
 	}
 
 	protected override void CreateLocalNeeds(StaticString context, StaticString pass)
 	{
 		base.CreateLocalNeeds(context, pass);
+		this.CreateLocalNeeds_ELCPGlobalDustNeed();
+		this.CreateLocalNeeds_ELCPGlobalScienceNeed();
 		Diagnostics.Assert(this.amasCityLayer != null);
 		AmasCityDataMessage amasCityDataMessage = base.AIEntity.AIPlayer.Blackboard.GetMessage(this.amasCityLayer.AmasCityDataMessageID) as AmasCityDataMessage;
 		Diagnostics.Assert(amasCityDataMessage != null);
 		this.resourceScore = amasCityDataMessage.PopulationRepartitions;
+		if (this.aiEntityCity.City.SimulationObject.Tags.Contains(AILayer_Population.CityStatusProducingSettler))
+		{
+			this.resourceScore[1] += this.resourceScore[0];
+			this.resourceScore[0] = 0f;
+		}
+		if (AILayer_Population.CitiesWithDustFocus[this.Empire.Index].Contains(this.aiEntityCity.City.GUID))
+		{
+			string format = "ELCP {0} city {1} selected for victory dust focus, original resource scores {2}";
+			object[] array = new object[3];
+			array[0] = this.Empire;
+			array[1] = this.aiEntityCity.City.LocalizedName;
+			array[2] = string.Join(", ", this.resourceScore.Select(delegate(float x)
+			{
+				float num4 = x;
+				return num4.ToString();
+			}).ToArray<string>());
+			Diagnostics.Log(format, array);
+			float num = 0f;
+			for (int i = 1; i < 5; i++)
+			{
+				num += this.resourceScore[i];
+				this.resourceScore[i] = 0f;
+			}
+			this.resourceScore[3] = num;
+		}
+		if (AILayer_Population.CitiesWithScienceFocus[this.Empire.Index].Contains(this.aiEntityCity.City.GUID))
+		{
+			string format2 = "ELCP {0} city {1} selected for victory science focus, original resource scores {2}";
+			object[] array2 = new object[3];
+			array2[0] = this.Empire;
+			array2[1] = this.aiEntityCity.City.LocalizedName;
+			array2[2] = string.Join(", ", this.resourceScore.Select(delegate(float x)
+			{
+				float num4 = x;
+				return num4.ToString();
+			}).ToArray<string>());
+			Diagnostics.Log(format2, array2);
+			int[] array3 = new int[]
+			{
+				1,
+				2,
+				4
+			};
+			float num2 = 0f;
+			foreach (int num3 in array3)
+			{
+				num2 += this.resourceScore[num3];
+				this.resourceScore[num3] = 0f;
+			}
+			this.resourceScore[2] = num2;
+		}
 		Diagnostics.Assert(this.resourceScore != null);
 		PreferedPopulationMessage preferedPopulationMessage = base.AIEntity.AIPlayer.Blackboard.GetMessage(this.preferedPopulationMessageID) as PreferedPopulationMessage;
 		if (preferedPopulationMessage == null)
@@ -107,8 +228,10 @@ public class AILayer_Population : AILayer
 		this.ExecutePopulationBuyout();
 		this.ExecutePopulationSacrifice();
 		this.assignPopulationOrder = new OrderAssignPopulation(this.Empire.Index, this.aiEntityCity.City.GUID, AILayer_Population.PopulationResource, this.resourceScore);
-		ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_AssignPopulation));
+		this.assignedPopulationThisTurn = false;
+		AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>().RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_AssignPopulation));
+		AILayer_Population.CitiesWithDustFocus[this.Empire.Index].Clear();
+		AILayer_Population.CitiesWithScienceFocus[this.Empire.Index].Clear();
 	}
 
 	private void BuyOutPopulation_TicketRaised(object sender, TicketRaisedEventArgs e)
@@ -152,10 +275,15 @@ public class AILayer_Population : AILayer
 			});
 		}
 		EvaluableMessage_PopulationBuyout evaluableMessage_PopulationBuyout = list[0];
+		Diagnostics.Log("ELCP {0}/{1} ExecutePopulationBuyout {2}", new object[]
+		{
+			this.Empire,
+			this.aiEntityCity.City,
+			evaluableMessage_PopulationBuyout.EvaluationState
+		});
 		if (evaluableMessage_PopulationBuyout.EvaluationState == EvaluableMessage.EvaluableMessageState.Validate)
 		{
-			ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-			service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_BuyoutPopulation));
+			AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>().RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_BuyoutPopulation));
 		}
 	}
 
@@ -165,18 +293,23 @@ public class AILayer_Population : AILayer
 		{
 			return;
 		}
-		float propertyValue = this.aiEntityCity.City.GetPropertyValue(SimulationProperties.Population);
-		if (propertyValue < this.populationThresholdForSacrifice)
+		if (this.aiEntityCity.City.GetPropertyValue(SimulationProperties.Population) < this.populationThresholdForSacrifice)
 		{
 			return;
 		}
-		float propertyValue2 = this.aiEntityCity.City.GetPropertyValue(SimulationProperties.NetCityApproval);
-		if (propertyValue2 > this.approvalThresholdForSacrifice)
+		if (this.aiEntityCity.City.GetPropertyValue(SimulationProperties.NetCityApproval) > this.approvalThresholdForSacrifice)
 		{
 			return;
 		}
-		ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-		service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_SacrificePopulation));
+		Booster[] activeBoosters = this.Empire.GetAgency<DepartmentOfPlanificationAndDevelopment>().GetActiveBoosters();
+		for (int i = 0; i < activeBoosters.Length; i++)
+		{
+			if (activeBoosters[i].TargetGUID == this.aiEntityCity.City.GUID && activeBoosters[i].BoosterDefinition.Name == "BoosterSacrificePopulation" && activeBoosters[i].RemainingTime > 1)
+			{
+				return;
+			}
+		}
+		AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>().RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_SacrificePopulation));
 	}
 
 	private void GeneratePopulationBuyoutMessage()
@@ -185,6 +318,7 @@ public class AILayer_Population : AILayer
 		{
 			return;
 		}
+		this.GeneratePopulationBuyoutMessage_ELCPGlobalPopulationInfo();
 		List<EvaluableMessage_PopulationBuyout> list = new List<EvaluableMessage_PopulationBuyout>(this.aiEntityCity.Blackboard.GetMessages<EvaluableMessage_PopulationBuyout>(BlackboardLayerID.City, (EvaluableMessage_PopulationBuyout message) => message.CityGuid == this.aiEntityCity.City.GUID && message.EvaluationState != EvaluableMessage.EvaluableMessageState.Obtained && message.EvaluationState != EvaluableMessage.EvaluableMessageState.Cancel));
 		EvaluableMessage_PopulationBuyout evaluableMessage_PopulationBuyout;
 		if (list.Count == 0)
@@ -201,39 +335,51 @@ public class AILayer_Population : AILayer
 		{
 			num += this.aiEntityCity.City.GetPropertyValue(AILayer_Population.GainPerPopulation[i]);
 		}
-		float num2 = 0f;
-		for (int j = 0; j < AILayer_Population.Terrain.Length; j++)
+		float num2 = num / AILayer_Population.GlobalPopulationInfos[this.Empire.Index].bestGainPerPop * 0.5f;
+		float propertyValue = this.aiEntityCity.City.GetPropertyValue(SimulationProperties.Population);
+		if (propertyValue == AILayer_Population.GlobalPopulationInfos[this.Empire.Index].lowestPopulation)
 		{
-			num2 += this.aiEntityCity.City.GetPropertyValue(AILayer_Population.Terrain[j]);
-		}
-		if (num2 == 0f)
-		{
-			num2 = 1f;
-		}
-		float num3 = num / num2;
-		float num4 = this.aiEntityCity.City.GetPropertyValue(SimulationProperties.NetCityProduction);
-		float productionCostWithBonus = DepartmentOfTheTreasury.GetProductionCostWithBonus(this.aiEntityCity.City, this.districtImprovement, DepartmentOfTheTreasury.Resources.Production);
-		if (num4 == 0f)
-		{
-			num4 = 1f;
-		}
-		float num5 = productionCostWithBonus / num4;
-		float num6 = 1f - num5 / 10f;
-		if (num6 < 0f)
-		{
-			num6 = 0f;
+			num2 = AILayer.Boost(num2, 0.2f);
 		}
 		float populationBuyOutCost = DepartmentOfTheTreasury.GetPopulationBuyOutCost(this.aiEntityCity.City);
-		int turnGain = Mathf.CeilToInt(num5);
-		float num7 = num3 + num6;
-		num7 = Mathf.Clamp01(num7);
-		evaluableMessage_PopulationBuyout.Refresh(1f, num7, populationBuyOutCost, turnGain);
+		float num3;
+		if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num3, false))
+		{
+			num3 = 1f;
+		}
+		float num4 = (num3 - populationBuyOutCost) / num3 / 0.8f;
+		if (this.departmentOfForeignAffairs.IsInWarWithSomeone())
+		{
+			num4 -= 0.05f;
+		}
+		num2 = AILayer.Boost(num2, num4);
+		ConstructionQueue constructionQueue = this.departmentOfIndustry.GetConstructionQueue(this.aiEntityCity.City);
+		if (propertyValue > 1f)
+		{
+			for (int j = constructionQueue.Length - 1; j >= 0; j--)
+			{
+				if (constructionQueue.PeekAt(j).ConstructibleElementName.ToString().Contains("Settler"))
+				{
+					num2 = AILayer.Boost(num2, -1f);
+					break;
+				}
+			}
+		}
+		Diagnostics.Log("ELCP {0}/{1} GeneratePopulationBuyoutMessage score: {2}, cost: {3}", new object[]
+		{
+			this.Empire,
+			this.aiEntityCity.City.LocalizedName,
+			num2,
+			populationBuyOutCost
+		});
+		evaluableMessage_PopulationBuyout.Refresh(1f, num2, populationBuyOutCost, int.MaxValue);
 	}
 
 	private SynchronousJobState SynchronousJob_AssignPopulation()
 	{
 		if (this.assignPopulationOrder == null)
 		{
+			this.assignedPopulationThisTurn = true;
 			return SynchronousJobState.Failure;
 		}
 		Diagnostics.Assert(this.assignPopulationOrder.PopulationValues != null);
@@ -263,7 +409,7 @@ public class AILayer_Population : AILayer
 			}
 		}
 		Ticket ticket;
-		this.Empire.PlayerControllers.AI.PostOrder(this.assignPopulationOrder, out ticket, null);
+		this.Empire.PlayerControllers.AI.PostOrder(this.assignPopulationOrder, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderAssignPopulation_TicketRaised));
 		return SynchronousJobState.Success;
 	}
 
@@ -295,44 +441,217 @@ public class AILayer_Population : AILayer
 		}
 		OrderSacrificePopulation order = new OrderSacrificePopulation(this.Empire.Index, this.aiEntityCity.City.GUID);
 		this.Empire.PlayerControllers.AI.PostOrder(order);
+		Diagnostics.Log("ELCP {0}/{1} sacrificing pops", new object[]
+		{
+			base.AIEntity.Empire,
+			this.aiEntityCity.City.LocalizedName
+		});
 		return SynchronousJobState.Success;
 	}
 
-	public static StaticString[] DistrictResource = new StaticString[]
+	private void GeneratePopulationBuyoutMessage_ELCPGlobalPopulationInfo()
 	{
-		SimulationProperties.DistrictFood,
-		SimulationProperties.DistrictIndustry,
-		SimulationProperties.DistrictScience,
-		SimulationProperties.DistrictDust,
-		SimulationProperties.DistrictCityPoint
-	};
+		if (AILayer_Population.GlobalPopulationInfos[this.Empire.Index] == null)
+		{
+			AILayer_Population.GlobalPopulationInfos[this.Empire.Index] = new AILayer_Population.ELCPGlobalPopulationInfo();
+		}
+		AILayer_Population.ELCPGlobalPopulationInfo elcpglobalPopulationInfo = AILayer_Population.GlobalPopulationInfos[this.Empire.Index];
+		if (elcpglobalPopulationInfo.lastUpdateTurn == this.game.Turn)
+		{
+			return;
+		}
+		elcpglobalPopulationInfo.lastUpdateTurn = this.game.Turn;
+		elcpglobalPopulationInfo.lowestPopulation = float.MaxValue;
+		elcpglobalPopulationInfo.bestGainPerPop = float.MinValue;
+		foreach (City city in this.departmentOfTheInterior.Cities)
+		{
+			if (city != null && !city.IsInfected && city.SimulationObject != null && !city.SimulationObject.Tags.Contains(City.TagCityStatusRazed))
+			{
+				float propertyValue = city.GetPropertyValue(SimulationProperties.Population);
+				if (propertyValue < elcpglobalPopulationInfo.lowestPopulation)
+				{
+					elcpglobalPopulationInfo.lowestPopulation = propertyValue;
+				}
+				float num = 0f;
+				for (int i = 0; i < AILayer_Population.GainPerPopulation.Length; i++)
+				{
+					num += city.GetPropertyValue(AILayer_Population.GainPerPopulation[i]);
+				}
+				if (num > elcpglobalPopulationInfo.bestGainPerPop)
+				{
+					elcpglobalPopulationInfo.bestGainPerPop = num;
+				}
+			}
+		}
+	}
 
-	public static StaticString[] GainPerPopulation = new StaticString[]
+	public override IEnumerator Load()
 	{
-		SimulationProperties.BaseFoodPerPopulation,
-		SimulationProperties.BaseIndustryPerPopulation,
-		SimulationProperties.BaseSciencePerPopulation,
-		SimulationProperties.BaseDustPerPopulation,
-		SimulationProperties.BaseCityPointPerPopulation
-	};
+		yield return base.Load();
+		this.departmentOfTheInterior = this.Empire.GetAgency<DepartmentOfTheInterior>();
+		this.departmentOfForeignAffairs = this.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		this.departmentOfIndustry = this.Empire.GetAgency<DepartmentOfIndustry>();
+		this.departmentOfTheTreasury = this.Empire.GetAgency<DepartmentOfTheTreasury>();
+		this.departmentOfIndustry.GetConstructionQueue(this.aiEntityCity.City).CollectionChanged += this.ConstructionQueue_CollectionChanged;
+		IGameService service = Services.GetService<IGameService>();
+		this.game = (service.Game as global::Game);
+		GameServer gameServer = (Services.GetService<ISessionService>().Session as global::Session).GameServer as GameServer;
+		AIPlayer_MajorEmpire aiplayer_MajorEmpire;
+		if (gameServer.AIScheduler != null && gameServer.AIScheduler.TryGetMajorEmpireAIPlayer(base.AIEntity.Empire as MajorEmpire, out aiplayer_MajorEmpire))
+		{
+			AIEntity entity = aiplayer_MajorEmpire.GetEntity<AIEntity_Empire>();
+			if (entity != null)
+			{
+				this.aILayer_Victory = entity.GetLayer<AILayer_Victory>();
+			}
+		}
+		this.sciencePhobic = this.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitReplicants1);
+		AILayer_Population.CitiesWithDustFocus[this.Empire.Index] = new List<GameEntityGUID>();
+		AILayer_Population.CitiesWithScienceFocus[this.Empire.Index] = new List<GameEntityGUID>();
+		yield break;
+	}
 
-	public static StaticString[] PopulationResource = new StaticString[]
+	private void CreateLocalNeeds_ELCPGlobalDustNeed()
 	{
-		SimulationProperties.FoodPopulation,
-		SimulationProperties.IndustryPopulation,
-		SimulationProperties.SciencePopulation,
-		SimulationProperties.DustPopulation,
-		SimulationProperties.CityPointPopulation
-	};
+		if ((this.aILayer_Victory.CurrentFocusEnum == AILayer_Victory.VictoryFocus.Economy || (this.aILayer_Victory.CurrentFocusEnum == AILayer_Victory.VictoryFocus.MostTechnologiesDiscovered && this.sciencePhobic)) && AILayer_Population.CitiesWithDustFocus[this.Empire.Index].Count == 0)
+		{
+			List<City> list = new List<City>();
+			City city = null;
+			foreach (City city2 in this.departmentOfTheInterior.Cities)
+			{
+				if (city2 != null && !city2.IsInfected && city2.SimulationObject != null && !city2.SimulationObject.Tags.Contains(City.TagCityStatusRazed))
+				{
+					if (city == null)
+					{
+						using (IEnumerator<SimulationDescriptor> enumerator2 = ((IDescriptorEffectProvider)city2).GetDescriptors().GetEnumerator())
+						{
+							while (enumerator2.MoveNext())
+							{
+								if (enumerator2.Current.Name == AILayer_Population.EndlessTempleWonderInQueue)
+								{
+									city = city2;
+								}
+							}
+						}
+					}
+					if (city != city2)
+					{
+						list.Add(city2);
+					}
+				}
+			}
+			list = (from o in list
+			orderby o.GetPropertyValue(SimulationProperties.BaseDustPerPopulation) descending
+			select o).ToList<City>();
+			if (city != null)
+			{
+				list.Add(city);
+			}
+			int count = (int)Mathf.Ceil((float)list.Count * 0.3f);
+			list = list.Take(count).ToList<City>();
+			AILayer_Population.CitiesWithDustFocus[this.Empire.Index] = (from guid in list
+			select guid.GUID).ToList<GameEntityGUID>();
+		}
+	}
 
-	public static StaticString[] Terrain = new StaticString[]
+	private void CreateLocalNeeds_ELCPGlobalScienceNeed()
 	{
-		SimulationProperties.DistrictFoodNet,
-		SimulationProperties.DistrictIndustryNet,
-		SimulationProperties.DistrictScienceNet,
-		SimulationProperties.DistrictDustNet,
-		SimulationProperties.DistrictCityPointNet
-	};
+		if (this.aILayer_Victory.CurrentFocusEnum == AILayer_Victory.VictoryFocus.MostTechnologiesDiscovered && !this.sciencePhobic && AILayer_Population.CitiesWithScienceFocus[this.Empire.Index].Count == 0)
+		{
+			List<City> list = new List<City>();
+			City city = null;
+			foreach (City city2 in this.departmentOfTheInterior.Cities)
+			{
+				if (city2 != null && !city2.IsInfected && city2.SimulationObject != null && !city2.SimulationObject.Tags.Contains(City.TagCityStatusRazed))
+				{
+					if (city == null)
+					{
+						using (IEnumerator<SimulationDescriptor> enumerator2 = ((IDescriptorEffectProvider)city2).GetDescriptors().GetEnumerator())
+						{
+							while (enumerator2.MoveNext())
+							{
+								if (enumerator2.Current.Name == AILayer_Population.EndlessTempleWonderInQueue)
+								{
+									city = city2;
+								}
+							}
+						}
+					}
+					if (city != city2)
+					{
+						list.Add(city2);
+					}
+				}
+			}
+			list = (from o in list
+			orderby o.GetPropertyValue(SimulationProperties.BaseSciencePerPopulation) descending
+			select o).ToList<City>();
+			if (city != null)
+			{
+				list.Add(city);
+			}
+			int count = (int)Mathf.Ceil((float)list.Count * 0.4f);
+			list = list.Take(count).ToList<City>();
+			AILayer_Population.CitiesWithScienceFocus[this.Empire.Index] = (from guid in list
+			select guid.GUID).ToList<GameEntityGUID>();
+		}
+	}
+
+	private void ConstructionQueue_CollectionChanged(object sender, CollectionChangeEventArgs e)
+	{
+		ConstructionQueue constructionQueue = this.departmentOfIndustry.GetConstructionQueue(this.aiEntityCity.City);
+		if (constructionQueue != null && constructionQueue.Length > 0)
+		{
+			UnitDesign unitDesign = constructionQueue.Peek().ConstructibleElement as UnitDesign;
+			if (unitDesign != null && this.IsActive() && unitDesign.UnitBodyDefinition != null && unitDesign.UnitBodyDefinition.Tags.Contains(AILayer_Population.Settler) && this.resourceScore[0] > 0f)
+			{
+				this.resourceScore[1] += this.resourceScore[0];
+				this.resourceScore[0] = 0f;
+				if (this.assignedPopulationThisTurn)
+				{
+					this.assignedPopulationThisTurn = false;
+					AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>().RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_AssignPopulation));
+				}
+			}
+		}
+	}
+
+	private void OrderAssignPopulation_TicketRaised(object sender, TicketRaisedEventArgs e)
+	{
+		for (int i = 0; i < AILayer_Population.PopulationResource.Length; i++)
+		{
+			this.resourceScore[i] = this.aiEntityCity.City.GetPropertyValue(AILayer_Population.PopulationResource[i]);
+		}
+		float propertyValue = this.aiEntityCity.City.GetPropertyValue(SimulationProperties.NetCityGrowth);
+		if (propertyValue < 0f)
+		{
+			float propertyValue2 = this.aiEntityCity.City.GetPropertyValue(SimulationProperties.Population);
+			float num = DepartmentOfTheInterior.ComputeGrowthLimit(this.Empire.SimulationObject, propertyValue2);
+			if (this.aiEntityCity.City.GetPropertyValue(SimulationProperties.CityGrowthStock) + propertyValue < num)
+			{
+				foreach (int num2 in AILayer_Population.NonFoodPopPriority)
+				{
+					if (this.resourceScore[num2] >= 1f)
+					{
+						this.resourceScore[num2] -= 1f;
+						this.resourceScore[0] += 1f;
+						this.assignedPopulationThisTurn = false;
+						AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>().RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_AssignPopulation));
+						return;
+					}
+				}
+			}
+		}
+		this.assignedPopulationThisTurn = true;
+	}
+
+	public static StaticString[] DistrictResource;
+
+	public static StaticString[] GainPerPopulation;
+
+	public static StaticString[] PopulationResource;
+
+	public static StaticString[] Terrain;
 
 	private AIEntity_City aiEntityCity;
 
@@ -351,4 +670,56 @@ public class AILayer_Population : AILayer
 	private ulong preferedPopulationMessageID;
 
 	private float[] resourceScore;
+
+	private DepartmentOfPlanificationAndDevelopment departmentOfPlanificationAndDevelopment;
+
+	private DepartmentOfTheInterior departmentOfTheInterior;
+
+	private DepartmentOfIndustry departmentOfIndustry;
+
+	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
+
+	private global::Game game;
+
+	private static AILayer_Population.ELCPGlobalPopulationInfo[] GlobalPopulationInfos;
+
+	private DepartmentOfTheTreasury departmentOfTheTreasury;
+
+	private bool sciencePhobic;
+
+	private static List<GameEntityGUID>[] CitiesWithDustFocus;
+
+	private AILayer_Victory aILayer_Victory;
+
+	public static StaticString EndlessTempleWonderInQueue;
+
+	private static List<GameEntityGUID>[] CitiesWithScienceFocus;
+
+	private bool assignedPopulationThisTurn;
+
+	private static StaticString CityStatusProducingSettler;
+
+	public static StaticString Settler;
+
+	private static int[] NonFoodPopPriority = new int[]
+	{
+		4,
+		2,
+		1,
+		3
+	};
+
+	private class ELCPGlobalPopulationInfo
+	{
+		public ELCPGlobalPopulationInfo()
+		{
+			this.lastUpdateTurn = -1;
+		}
+
+		public int lastUpdateTurn;
+
+		public float lowestPopulation;
+
+		public float bestGainPerPop;
+	}
 }

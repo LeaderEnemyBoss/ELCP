@@ -1,574 +1,638 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-  <!-- 100% opportunist -->
-  <AIArmyMissionDefinition Name="PatrolAt">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-    </Parameters>
+	<!-- 100% opportunist -->
+	<AIArmyMissionDefinition Name="PatrolAt">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+		</Parameters>
 
-    <Controller_Sequence Debug="Root">
+		<Controller_Sequence Debug="Root">
 
-      <!--IF Army locked (in battle) THEN Mission failed-->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+			<!--IF Army locked (in battle) THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
 
-      <Controller_Selector>
+			<Controller_Selector>
 
-        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
-        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
-        <Include SubTreeName="TryToAttackEnemyInRange"/>
-        <Include SubTreeName="ExploreNearbyRuin"/>
-        <Include SubTreeName="OrbsOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
-        <Include SubTreeName="OpportunityPillageOrFlee">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-        </Include>
+				<Include SubTreeName="TryToAttackEnemyInRange"/>
+				<Include SubTreeName="TryAttackNearbyEmptyFortresses"/>
+				<Include SubTreeName="ParleyWithVillage"/>
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				<Include SubTreeName="ExploreNearbyRuin"/>                
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
+				</Include>
+				<Include SubTreeName="PillageOrFlee"/>
 
-        <!--IF we could collect a map boost then change path -->
-        <Include SubTreeName="MapBoostOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
+				<!--IF we could collect a map boost then change path -->
+				<Include SubTreeName="MapBoostOpportunity">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
+				</Include>
 
-        <!--If there is a creeping node, destroy it -->
-        <Include SubTreeName="OpportunityDestroyCreepingNode">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-        </Include>
+				<!--If there is a creeping node, destroy it -->
+				<Include SubTreeName="OpportunityDestroyCreepingNode">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+				</Include>
+				
+				<Include SubTreeName="TryOpportunityTerraform"/>	
 
-        <!--IF NO EnnemyDetected THEN patrol the region-->
-        <Controller_Sequence Debug="Patrol_GoToDestination">
-          <Controller_Selector>
-            <Controller_Sequence Debug="Patrol_ChangeTarget">
-              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-              <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
+				<!--IF NO EnnemyDetected THEN patrol the region-->
+				<Controller_Sequence Debug="Patrol_GoToDestination">
+					<Controller_Selector>
+						<Controller_Sequence Debug="Patrol_ChangeTarget">
+							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+							<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
 
-            <Controller_Sequence Debug="Patrol_GoToPreviousTarget">
-              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
+						<Controller_Sequence Debug="Patrol_GoToPreviousTarget">
+							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
 
-            <Controller_Sequence Debug="Patrol_FirstTime">
-              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
+						<Controller_Sequence Debug="Patrol_FirstTime">
+							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
 
-          </Controller_Selector>
+					</Controller_Selector>
 
-          <Controller_Selector>
+					<Controller_Selector>
 
-            <!-- Evaluate some opportunities -->
-            <!--IF City need vision for spy THEN explore Ruin-->
-            <Controller_Sequence Debug="Opportunity_CityToSpy">
-              <Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget" />
-              <Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
-              <Decorator_EvaluateOpportunity OpportunityPosition="$CityToLookAtWorldPositionDestination"
-                                                           OpportunityType="CityToSpy"
-                                                           MainTargetPosition="$RoamingDestination"
-                                                           MainTargetType="ArmySupport"
+						<!-- Evaluate some opportunities -->
+						<!--IF City need vision for spy THEN explore Ruin-->
+						<Controller_Sequence Debug="Opportunity_CityToSpy">
+							<Decorator_SelectCityLookAtToInfiltrate TargetListVarName="$TargetList" Output_TargetVarName="$CityToLookAtTarget" />
+							<Decorator_GetTargetPosition TargetVarName="$CityToLookAtTarget" Output_DestinationVarName="$CityToLookAtWorldPositionDestination"/>
+							<Decorator_EvaluateOpportunity OpportunityPosition="$CityToLookAtWorldPositionDestination" 
+                                                           OpportunityType="CityToSpy" 
+                                                           MainTargetPosition="$RoamingDestination" 
+                                                           MainTargetType="ArmySupport" 
                                                            MinimumTurnToObjectif="0" MaximumDetourTurn="2"/>
 
-              <Controller_Selector>
-                <Controller_Sequence Debug="Opportunity_CityToSpy_AlreadyAtDestination">
-                  <Decorator_DestinationReached DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfCheck="Attack"/>
-                </Controller_Sequence>
-
-                <Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
-                  <Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
-                  <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
-                  <Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
-                  <Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
-                </Controller_Sequence>
-              </Controller_Selector>
-            </Controller_Sequence>
-
-            <!-- Move to roaming position -->
-            <Controller_Sequence>
-              <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-              <Decorator_MoveEnded PathVarName="$Path"/>
-              <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-            </Controller_Sequence>
-
-          </Controller_Selector>
-
-        </Controller_Sequence>
-
-      </Controller_Selector>
-
-    </Controller_Sequence>
-
-  </AIArmyMissionDefinition>
-
-  <!-- 100% opportunist -->
-  <AIArmyMissionDefinition Name="MinorFactionRoaming">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
-      <Parameter ParameterIndex="1" VarName="$RegionIndex"/>
-    </Parameters>
-    <Controller_Sequence Debug="Root">
-
-      <!--IF Army locked (in battle) control THEN Mission failed-->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-      <Decorator_IsTargetBesieging Inverted="true" TargetVarName="$Army"/>
-
-      <Controller_Selector Debug="MinorFactionRoaming_Root2">
-
-        <!-- When already a destination, just return success. -->
-        <Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
-
-        <!--IF EnnemyDetected THEN Engage him-->
-        <Controller_Sequence Debug="MinorFactionRoaming_TryToAttackEnemyInRange">
-          <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList" RegionRestriction="$RegionIndex"/>
-          <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
-          <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
-
-          <Controller_Selector Debug="MinorFactionRoaming_TryToAttackEnemyInRange_EnemyInRange">
-            <Controller_Sequence Debug="MinorFactionRoaming_TryToAttackEnemyInRange_EnemyClose">
-              <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-              <Action_Attack TargetVarName="$Target"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="MinorFactionRoaming_TryToAttackEnemyInRange_GotoAndAttack">
-              <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-              <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
-              <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
-              <Decorator_MoveEnded PathVarName="$Path"/>
-            </Controller_Sequence>
-          </Controller_Selector>
-        </Controller_Sequence>
-
-
-        <!--IF we could Pillage something THEN try to pillage it -->
-        <Include SubTreeName="OpportunityPillage">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="6"/>
-        </Include>
-
-        <!--IF NO EnnemyDetected THEN Move to Destination-->
-        <Controller_Sequence Debug="MinorFactionRoaming_Roam">
-          <Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$Path"/>
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-          <Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
-        </Controller_Sequence>
-
-      </Controller_Selector>
-
-    </Controller_Sequence>
-
-  </AIArmyMissionDefinition>
-
-  <!-- 100% opportunist -->
-  <AIArmyMissionDefinition Name="MajorFactionRoaming">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-    </Parameters>
-
-    <Controller_Sequence Debug="MajorFactionRoaming_Root">
-
-      <!--IF Army locked (in battle) control THEN Mission failed -->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-      <Controller_Selector>
-
-        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
-        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
-
-        <!--IF we could collect orbs THEN Change path -->
-        <Include SubTreeName="OrbsOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
-
-        <!--IF we could collect a map boost then change path -->
-        <Include SubTreeName="MapBoostOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
-
-        <Include SubTreeName="ExploreNearbyRuin"/>
-        
-        <Include SubTreeName="OpportunityPillageOrFlee">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-        </Include>
-
-        <!--If there is a creeping node, destroy it -->
-        <Include SubTreeName="OpportunityDestroyCreepingNode">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
-        </Include>
-
-        <Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
-
-        <Include SubTreeName="TryAttackNearbyVillages">
-          <VariableConverter ToVariable="$TargetList" FromVariable="$TargetList"/>
-        </Include>
-
-        <!-- Actual Raoming behavior -->
-        <Controller_Sequence Debug="MajorFactionRoaming_GoToDestination">
-
-          <Controller_Selector>
-            <Controller_Sequence Debug="MajorFactionRoaming_ChangeTarget">
-              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-              <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="MajorFactionRoaming_GoToPreviousTarget">
-              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="MajorFactionRoaming_FirstTime">
-              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-          </Controller_Selector>
-
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-          <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-        </Controller_Sequence>
-
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
-
-  <!-- 100% opportunist -->
-  <AIArmyMissionDefinition Name="MajorFactionWarRoaming">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-    </Parameters>
-
-    <Controller_Sequence Debug="MajorFactionWarRoaming_Root">
-
-      <!--IF Army locked (in battle) control THEN Mission failed -->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-
-      <!-- First, select a target. -->
-      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-
-      <Controller_Selector>
-
-        <!--IF a Volcanoformer Device is Detected, THEN try to deactivate it-->
-        <Include SubTreeName="TryToDeactivateVolcanoformerDevice"/>
-
-        <Include SubTreeName="TryToAttackEnemyInRange"/>
-
-        <!--IF we could collect orbs THEN Change path -->
-        <Include SubTreeName="OrbsOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
-        </Include>
-
-        <!--IF we could collect a map boost then change path -->
-        <Include SubTreeName="MapBoostOpportunity">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
-        </Include>
-
-        <Include SubTreeName="ExploreNearbyRuin"/>
-
-        <!--IF we could Pillage something THEN try to pillage it -->
-        <Include SubTreeName="OpportunityPillage">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
-
-        <!--If there is a creeping node, destroy it -->
-        <Include SubTreeName="OpportunityDestroyCreepingNode">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
-        </Include>
-
-        <!-- Actual Raoming behavior -->
-        <Controller_Sequence Debug="MajorFactionWarRoaming_GoToDestination">
-
-          <Controller_Selector>
-            <Controller_Sequence Debug="MajorFactionWarRoaming_ChangeTarget">
-              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-              <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-              <Decorator_GetNextRoamingPositionAroundCity TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="MajorFactionWarRoaming_GoToPreviousTarget">
-              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="MajorFactionWarRoaming_FirstTime">
-              <Decorator_GetNextRoamingPositionAroundCity TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-          </Controller_Selector>
-
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-          <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-        </Controller_Sequence>
-
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
-
-  <!-- 100% opportunist -->
-  <AIArmyMissionDefinition Name="LesserFactionSearchEmpire">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$EmpireToAttack"/>
-      <Parameter ParameterIndex="1" VarName="$SiegeTurnsNumber"/>
-    </Parameters>
-    <Controller_Sequence Debug="Root">
-
-      <!--IF Army locked (in battle) control THEN Mission failed-->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-
-      <Controller_Selector Debug="Root2">
-
-        <!--IF any EnnemyEntityDetected (city or army)  AND I can reach him in the Turn THEN Engage him-->
-        <Controller_Sequence Debug="Lesser_TryEngage">
-          <Decorator_GetTargetInRange Inverted="false" IncludePOI="false" Output_TargetListVarName="$TargetList" TargetEmpireVarName="$EmpireToAttack"/>
-          <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Any" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
-          <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$TargetPosition"/>
-
-          <Controller_Selector Debug="Lesser_TryAttack">
-            <Controller_Sequence Debug="Lesser_AlreadyAtDestination">
-
-              <!-- based on target type don't do the same stuff-->
-              <Controller_Selector Debug="Lesser_TryAttackByType">
-
-                <Controller_Sequence Debug="Lesser_TryAttackCity">
-                  <Decorator_DestinationReached DestinationVarName="$TargetPosition" TypeOfCheck="Regular"/>
-                  <Decorator_TargetTypeCheck TargetVarName="$Target" TargetTypeCheck="City"/>
-                  <Controller_Selector Debug="Lesser_TryAttackOrSiegeCity">
-                    <Controller_Sequence Debug="Lesser_TryAttackCity_CanAttack">
-                      <Decorator_CityInteractionCheck CityInteractionType="Attack" TargetVarName="$Target" SiegeTurnsNumberVarName="$SiegeTurnsNumber"/>
-                      <Controller_Selector Debug="Lesser_TryAttackCity_Attack">
-                        <Controller_Sequence Debug="Lesser_TryAttackCity_CanAttack_RemoveSiege">
-                          <Decorator_IsTargetBesieging Inverted="false" TargetVarName="$Army" TargetCityVarName="$Target"/>
-                          <Action_ToggleSiege TargetVarName="$Target" State="Off"/>
-                          <Action_Attack TargetVarName="$Target"/>
-                        </Controller_Sequence>
-
-                        <Action_Attack TargetVarName="$Target"/>
-                      </Controller_Selector>
-
-                    </Controller_Sequence>
-
-                    <Controller_Sequence Debug="Lesser_TryAttackCity_CanSiege">
-                      <Decorator_CityInteractionCheck CityInteractionType="Siege" TargetVarName="$Target" SiegeTurnsNumberVarName="$SiegeTurnsNumber"/>
-                      <Decorator_IsTargetBesieging Inverted="true" TargetVarName="$Army" TargetCityVarName="$Target"/>
-                      <Action_ToggleSiege TargetVarName="$Target" State="On"/>
-                    </Controller_Sequence>
-
-                    <Controller_Sequence Debug="Lesser_TryAttackCity_Wait">
-                      <Decorator_VariableCheck VarName="$Target" CheckOperation="Exists"/>
-                    </Controller_Sequence>
-                  </Controller_Selector>
-                </Controller_Sequence>
-
-
-                <Controller_Sequence Debug="Lesser_TryAttackArmy">
-                  <Decorator_DestinationReached DestinationVarName="$TargetPosition" TypeOfCheck="Attack"/>
-                  <Decorator_TargetTypeCheck TargetVarName="$Target" TargetTypeCheck="Army"/>
-                  <Action_Attack TargetVarName="$Target"/>
-                </Controller_Sequence>
-
-              </Controller_Selector>
-
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="Lesser_MoveTowardTarget">
-              <Action_GeneratePath DestinationVarName="$TargetPosition" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-              <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-            </Controller_Sequence>
-          </Controller_Selector>
-
-        </Controller_Sequence>
-
-        <!-- Search Nearest enemy entity and go toward it -->
-        <Controller_Sequence Debug="Lesser_FindAnyEmpireTarget">
-          <!-- Ask for a destination. -->
-          <Controller_Selector>
-            <Controller_Sequence Debug="Lesser_FindAnyEmpireTargetr_GoToTarget">
-              <Decorator_VariableCheck VarName="$AttackDestination" CheckOperation="Exists"/>
-              <Action_GeneratePath DestinationVarName="$AttackDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="Lesser_FindAnyEmpireTarget_FirstTime">
-              <Decorator_GetAllEmpireTargets Output_TargetListVarName="$TargetList" TargetEmpireVarName="$EmpireToAttack"/>
-              <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Any" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
-              <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackDestination"/>
-              <Action_GeneratePath DestinationVarName="$AttackDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-          </Controller_Selector>
-
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-        </Controller_Sequence>
-
-      </Controller_Selector>
-
-    </Controller_Sequence>
-
-  </AIArmyMissionDefinition>
-
-  <!-- Agressif roaming-->
-  <AIArmyMissionDefinition Name="LesserFactionRegionRoaming">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-    </Parameters>
-
-    <Controller_Sequence Debug="LesserFactionRegionRoaming_Root">
-
-      <!--IF Army locked (in battle) control THEN Mission failed -->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-
-      <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-      <Controller_Selector>
-
-        <!--IF EnnemyDetected AND I can defeat him THEN Engage him-->
-        <Controller_Sequence Debug="MajorFactionRoaming_TryToAttackEnemyInRange">
-
-          <!-- First, select a target. (only army for now)-->
-          <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
-          <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Any" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
-
-          <Controller_Selector>
-            <Controller_Sequence>
-              <!-- Check if we ca defeat this target. -->
-              <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
-
-              <Controller_Selector Debug="LesserFactionRegionRoaming_TryToAttackEnemyInRange_EnemyInRange">
-                <Include SubTreeName="OptimizeArmyAttackPosition">
-                  <!--<VariableConverter ToVariable="$Target" FromVariable="$Target"/>-->
-                </Include>
-
-                <Controller_Sequence Debug="LesserFactionRegionRoaming_TryToAttackEnemyInRange_EnemyClose">
-                  <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-                  <Action_Attack TargetVarName="$Target"/>
-                </Controller_Sequence>
-
-                <Controller_Sequence Debug="LesserFactionRegionRoaming_TryToAttackEnemyInRange_GotoAndAttack">
-                  <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-                  <Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
-                  <Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
-                  <Decorator_MoveEnded PathVarName="$Path"/>
-                </Controller_Sequence>
-              </Controller_Selector>
-            </Controller_Sequence>
-
-            <!--IF EnnemyDetected AND I can not defeat him THEN retreat him-->
-            <Controller_Sequence Debug="LesserFactionRegionRoaming_TryToRetreat">
-              <Decorator_CanDefeatTarget Inverted="true" TargetVarName="$Target"/>
-              <Decorator_ComputeSavingPosition TargetListVarName="$TargetList" Output_DestinationVarName="$SafeWorldPositionDestination"/>
-              <Action_GeneratePath DestinationVarName="$SafeWorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$SafePath"/>
-              <Action_Move PathVarName="$SafePath" TypeOfMove="Regular"/>
-              <Decorator_MoveEnded PathVarName="$SafePath"/>
-            </Controller_Sequence>
-          </Controller_Selector>
-        </Controller_Sequence>
-
-        <Include SubTreeName="OpportunityPillage">
-          <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
-          <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
-        </Include>
-
-        <!-- Actual Raoming behavior -->
-        <Controller_Sequence Debug="LesserFactionRegionRoaming_GoToDestination">
-
-          <Controller_Selector>
-            <Controller_Sequence Debug="LesserFactionRegionRoaming_ChangeTarget">
-              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-              <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="LesserFactionRegionRoaming_GoToPreviousTarget">
-              <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-            <Controller_Sequence Debug="LesserFactionRegionRoaming_FirstTime">
-              <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-              <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-            </Controller_Sequence>
-
-          </Controller_Selector>
-
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-          <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-        </Controller_Sequence>
-
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
-
-  <!-- Pacifist roaming-->
-  <AIArmyMissionDefinition Name="LesserFactionRegionRoamingPacifist">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
-    </Parameters>
-    <Controller_Sequence Debug="LesserFactionRegionRoaming_Root">
-
-      <!--IF Army locked (in battle) control THEN Mission failed -->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-
-      <!-- Actual Raoming behavior -->
-      <Controller_Sequence Debug="LesserFactionRegionRoaming_GoToDestination">
-
-        <Controller_Selector>
-          <Controller_Sequence Debug="LesserFactionRegionRoaming_ChangeTarget">
-            <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-            <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-            <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-            <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          </Controller_Sequence>
-
-          <Controller_Sequence Debug="LesserFactionRegionRoaming_GoToPreviousTarget">
-            <Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
-            <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          </Controller_Sequence>
-
-          <Controller_Sequence Debug="LesserFactionRegionRoaming_FirstTime">
-            <Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
-            <Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          </Controller_Sequence>
-
-        </Controller_Selector>
-
-        <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-        <Decorator_MoveEnded PathVarName="$Path"/>
-        <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
-      </Controller_Sequence>
-
-    </Controller_Sequence>
-
-  </AIArmyMissionDefinition>
-
+							<Controller_Selector>
+								<Controller_Sequence Debug="Opportunity_CityToSpy_AlreadyAtDestination">
+									<Decorator_DestinationReached DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfCheck="Attack"/>
+								</Controller_Sequence>
+
+								<Controller_Sequence Debug="Opportunity_CityToSpy_MoveToRuin">
+									<Action_GeneratePath DestinationVarName="$CityToLookAtWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$CityToSpyPath"/>
+									<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$CityToLookAtWorldPositionDestination" PathVarName="$CityToSpyPath"/>
+									<Action_Move PathVarName="$CityToSpyPath" TypeOfMove="Regular"/>
+									<Decorator_MoveEnded PathVarName="$CityToSpyPath"/>
+								</Controller_Sequence>
+							</Controller_Selector>
+						</Controller_Sequence>
+
+						<!-- Move to roaming position -->
+						<Controller_Sequence>
+							<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$Path"/>
+							<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+						</Controller_Sequence>
+
+					</Controller_Selector>
+
+				</Controller_Sequence>
+
+			</Controller_Selector>
+
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
+
+	<!-- 100% opportunist -->
+	<AIArmyMissionDefinition Name="MinorFactionRoaming">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$WorldPositionDestination"/>
+			<Parameter ParameterIndex="1" VarName="$RegionIndex"/>
+		</Parameters>
+		<Controller_Sequence Debug="Root">
+
+			<!--IF Army locked (in battle) control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_IsTargetBesieging Inverted="true" TargetVarName="$Army"/>
+
+			<Controller_Selector Debug="MinorFactionRoaming_Root2">
+
+				<!-- When already a destination, just return success. -->
+				<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+
+				
+
+
+				<!--IF we could Pillage something THEN try to pillage it -->
+				<Include SubTreeName="OpportunityPillage">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$WorldPositionDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="6"/>
+				</Include>
+
+				<!--IF NO EnnemyDetected THEN Move to Destination-->
+				<Controller_Sequence Debug="MinorFactionRoaming_Roam">
+					<Action_GeneratePath DestinationVarName="$WorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+					<Decorator_DestinationReached DestinationVarName="$WorldPositionDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+				
+				<!--ELCP: LastResortAttack -->
+				<Controller_Sequence Debug="LastResortAttack">
+					<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+					<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
+					<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+
+					<Controller_Selector Debug="MinorFactionRoaming_TryToAttackEnemyInRange_EnemyInRange">
+						<Controller_Sequence Debug="MinorFactionRoaming_TryToAttackEnemyInRange_EnemyClose">
+							<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+							<Action_Attack TargetVarName="$Target"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="MinorFactionRoaming_TryToAttackEnemyInRange_GotoAndAttack">
+							<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+							<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+							<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+							<Decorator_MoveEnded PathVarName="$Path"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>
+				
+				<!--ELCP: LastResortRoaming if target is unreachable (locked in region) just roam around generally-->		
+				<Controller_Sequence Debug="LastResortRoaming">
+					<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+					<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+					<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+
+			</Controller_Selector>
+
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
+
+	<!-- 100% opportunist -->
+	<AIArmyMissionDefinition Name="MajorFactionRoaming">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+		</Parameters>
+
+		<Controller_Sequence Debug="MajorFactionRoaming_Root">
+
+			<!--IF Army locked (in battle) control THEN Mission failed -->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+			<Controller_Selector>
+				<!--ELCP: help besieged cities-->
+				<Include SubTreeName="DefendBesiegedCities"/>
+				<Include SubTreeName="TryAttackNearbyEmptyFortresses"/>
+				<Include SubTreeName="DefendEndangeredCities"/>
+				
+				<Include SubTreeName="ExploreNearbyRuin"/>
+				<Include SubTreeName="OpportunityPillageOrFlee"/>				
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				<!--IF we could collect orbs THEN Change path -->
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="4"/>
+				</Include>
+
+				<!--IF we could collect a map boost then change path -->
+				<Include SubTreeName="MapBoostOpportunity">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="4"/>
+				</Include>
+
+				<!--If there is a creeping node, destroy it -->
+				<Include SubTreeName="OpportunityDestroyCreepingNode">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="3"/>
+				</Include>
+
+				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+
+				<Include SubTreeName="TryAttackNearbyVillages">
+					<VariableConverter ToVariable="$TargetList" FromVariable="$TargetList"/>
+				</Include>        
+
+				<Include SubTreeName="ParleyWithVillage"/>
+				
+				<Include SubTreeName="TryOpportunityTerraform"/>	
+				<!-- Actual Raoming behavior -->
+				<Controller_Sequence Debug="MajorFactionRoaming_GoToDestination">
+
+					<Controller_Selector>
+						<Controller_Sequence Debug="MajorFactionRoaming_ChangeTarget">
+							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+							<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="MajorFactionRoaming_GoToPreviousTarget">
+							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="MajorFactionRoaming_FirstTime">
+							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
+
+					</Controller_Selector>
+
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+					<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+
+				<!--ELCP: LastResortRoaming if target is unreachable (locked in region) just roam around generally-->		
+				<Controller_Sequence Debug="LastResortRoaming">
+					<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+					<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+					<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+
+	<!-- 100% opportunist -->
+	<AIArmyMissionDefinition Name="MajorFactionWarRoaming">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+		</Parameters>
+
+		<Controller_Sequence Debug="MajorFactionWarRoaming_Root">
+
+			<!--IF Army locked (in battle) control THEN Mission failed -->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+
+			<!-- First, select a target. -->
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+
+			<Controller_Selector>
+				<!--ELCP: help besieged cities-->
+				<Include SubTreeName="TryAttackNearbyEmptyFortresses"/>
+				<Include SubTreeName="DefendBesiegedCities"/>
+				<Controller_Sequence Debug="DefendIfStillAtHome2">
+					<Decorator_IsInOwnRegion Inverted="false"/>
+					<Include SubTreeName="DefendEndangeredCities"/>
+				</Controller_Sequence>
+				
+				<Include SubTreeName="SupportLeader"/> 
+				<Include SubTreeName="DefendEndangeredCities"/>
+				
+				<Include SubTreeName="TryToAttackEnemyInRangeOrFlee"/>
+				
+				<Include SubTreeName="OpportunityConvertVillage"/>
+				
+				<!--IF we could collect orbs THEN Change path -->
+				<Include SubTreeName="OrbsOpportunity">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
+				</Include>
+
+				<!--IF we could collect a map boost then change path -->
+				<Include SubTreeName="MapBoostOpportunity">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="0"/>
+				</Include>
+
+				<Include SubTreeName="ExploreNearbyRuin"/>
+				
+				<Include SubTreeName="TryOpportunityTerraform"/>	
+
+				<!--IF we could Pillage something THEN try to pillage it -->
+				<Include SubTreeName="PillageOrFlee"/>
+
+				<!--If there is a creeping node, destroy it -->
+				<Include SubTreeName="OpportunityDestroyCreepingNode">
+				  <VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+				  <NumericConstant ToVariable="$OpportunityMaximumTurn" Value="2"/>
+				</Include>
+
+				<!-- Actual Raoming behavior -->
+				<Controller_Sequence Debug="MajorFactionWarRoaming_GoToDestination">
+
+					<Controller_Selector>
+						<Controller_Sequence Debug="MajorFactionWarRoaming_ChangeTarget">
+							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+							<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+							<Decorator_GetNextRoamingPositionAroundCity TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination" />
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="MajorFactionWarRoaming_GoToPreviousTarget">
+							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="MajorFactionWarRoaming_FirstTime">
+							<Decorator_GetNextRoamingPositionAroundCity TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+					<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+				
+				<!--ELCP: LastResortRoaming if target is unreachable (locked in region) just roam around generally-->		
+				<Controller_Sequence Debug="LastResortRoaming">
+					<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+					<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+					<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+
+	<!-- 100% opportunist -->
+	<AIArmyMissionDefinition Name="LesserFactionSearchEmpire">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$EmpireToAttack"/>    
+			<Parameter ParameterIndex="1" VarName="$SiegeTurnsNumber"/>
+		</Parameters>
+		<Controller_Sequence Debug="Root">
+
+			<!--IF Army locked (in battle) control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+
+			<Controller_Selector Debug="Root2">
+				
+				<!--IF any EnnemyEntityDetected (city or army)  AND I can reach him in the Turn THEN Engage him-->
+				<Controller_Sequence Debug="Lesser_TryEngage">          
+					<Decorator_GetTargetInRange Inverted="false" IncludePOI="false" Output_TargetListVarName="$TargetList" TargetEmpireVarName="$EmpireToAttack"/>
+					<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Any" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
+					<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$TargetPosition"/>
+
+					<Controller_Selector Debug="Lesser_TryAttack">
+						<Decorator_IsTargetLocked TargetVarName="$Target"/>
+					
+						<Controller_Sequence Debug="Lesser_AlreadyAtDestination">
+
+							<!-- based on target type don't do the same stuff-->
+							<Controller_Selector Debug="Lesser_TryAttackByType">
+
+								<Controller_Sequence Debug="Lesser_TryAttackCity">
+									<Decorator_DestinationReached DestinationVarName="$TargetPosition" TypeOfCheck="Regular"/>
+									<Decorator_TargetTypeCheck TargetVarName="$Target" TargetTypeCheck="City"/>					
+									<Controller_Selector Debug="Lesser_TryAttackOrSiegeCity">
+										<Controller_Sequence Debug="Lesser_TryAttackCity_CanAttack">
+											<Decorator_CityInteractionCheck CityInteractionType="Attack" TargetVarName="$Target" SiegeTurnsNumberVarName="$SiegeTurnsNumber"/>
+											<Controller_Selector Debug="Lesser_TryAttackCity_Attack">
+												<Controller_Sequence Debug="Lesser_TryAttackCity_CanAttack_RemoveSiege">
+													<Decorator_IsTargetBesieging Inverted="false" TargetVarName="$Army" TargetCityVarName="$Target"/>
+													<Action_ToggleSiege TargetVarName="$Target" State="Off"/>					  
+													<Action_Attack TargetVarName="$Target"/>
+												</Controller_Sequence>
+
+												<Action_Attack TargetVarName="$Target"/>
+											</Controller_Selector>
+
+										</Controller_Sequence>                    
+
+										<Controller_Sequence Debug="Lesser_TryAttackCity_CanSiege">
+											<Decorator_CityInteractionCheck CityInteractionType="Siege" TargetVarName="$Target" SiegeTurnsNumberVarName="$SiegeTurnsNumber"/>
+											<Decorator_IsTargetBesieging Inverted="true" TargetVarName="$Army" TargetCityVarName="$Target"/>
+											<Action_ToggleSiege TargetVarName="$Target" State="On"/>                    
+										</Controller_Sequence>														
+
+										<Controller_Sequence Debug="Lesser_TryAttackCity_Wait">
+											<Decorator_VariableCheck VarName="$Target" CheckOperation="Exists"/>					
+										</Controller_Sequence>
+									</Controller_Selector>                
+								</Controller_Sequence>
+
+
+								<Controller_Sequence Debug="Lesser_TryAttackArmy">
+									<Decorator_DestinationReached DestinationVarName="$TargetPosition" TypeOfCheck="Attack"/>
+									<Controller_Selector>
+										<Decorator_TargetTypeCheck TargetVarName="$Target" TargetTypeCheck="Army"/>
+										<Decorator_TargetTypeCheck TargetVarName="$Target" TargetTypeCheck="Village"/>
+									</Controller_Selector>
+									<Action_Attack TargetVarName="$Target"/>
+								</Controller_Sequence>				
+
+							</Controller_Selector>
+
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="Lesser_MoveTowardTarget">
+							<Action_GeneratePath DestinationVarName="$TargetPosition" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+							<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+						</Controller_Sequence>
+					</Controller_Selector>			
+
+				</Controller_Sequence>
+
+				<!-- Search Nearest enemy entity and go toward it -->
+				<Controller_Sequence Debug="Lesser_FindAnyEmpireTarget">
+					<!-- Ask for a destination. -->
+					<Controller_Selector>
+						<Controller_Sequence Debug="Lesser_FindAnyEmpireTargetr_GoToTarget">
+							<Decorator_VariableCheck VarName="$AttackDestination" CheckOperation="Exists"/>
+							<Action_GeneratePath DestinationVarName="$AttackDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="Lesser_FindAnyEmpireTarget_FirstTime">
+							<Decorator_GetAllEmpireTargets Output_TargetListVarName="$TargetList" TargetEmpireVarName="$EmpireToAttack"/>
+							<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Any" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
+							<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackDestination"/>
+							<Action_GeneratePath DestinationVarName="$AttackDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						</Controller_Sequence>
+
+					</Controller_Selector>
+
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+				</Controller_Sequence>
+				
+				<!--ELCP: LastResortRoaming if no valid path has been found-->		
+				<Controller_Sequence Debug="LastResortRoaming">
+					<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+					<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+					<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+
+			</Controller_Selector>
+
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
+
+	<!-- Agressif roaming-->
+	<AIArmyMissionDefinition Name="LesserFactionRegionRoaming">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+		</Parameters>
+
+		<Controller_Sequence Debug="LesserFactionRegionRoaming_Root">
+
+			<!--IF Army locked (in battle) control THEN Mission failed -->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+
+			<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+			<Controller_Selector>
+
+				<!--IF EnnemyDetected AND I can defeat him THEN Engage him-->
+				<Controller_Sequence Debug="MajorFactionRoaming_TryToAttackEnemyInRange">
+
+					<!-- First, select a target. (only army for now)-->
+					<Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
+					<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" TypeOfDiplomaticRelation="Enemy" Output_TargetVarName="$Target"/>
+
+					<Controller_Selector>
+						<Controller_Sequence>
+							<!-- Check if we ca defeat this target. -->
+							<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+
+							<Controller_Selector Debug="LesserFactionRegionRoaming_TryToAttackEnemyInRange_EnemyInRange">
+								<Include SubTreeName="OptimizeArmyAttackPosition"/>
+
+								<Controller_Sequence Debug="LesserFactionRegionRoaming_TryToAttackEnemyInRange_EnemyClose">
+									<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+									<Action_Attack TargetVarName="$Target"/>
+								</Controller_Sequence>
+
+								<Controller_Sequence Debug="LesserFactionRegionRoaming_TryToAttackEnemyInRange_GotoAndAttack">
+									<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+									<Decorator_CanReachPositionInTurn Inverted="false" DestinationVarName="$AttackWorldPositionDestination" PathVarName="$Path"/>
+									<Action_GotoAndAttack TargetVarName="$Target" PathVarName="$Path"/>
+									<Decorator_MoveEnded PathVarName="$Path"/>
+								</Controller_Sequence>
+							</Controller_Selector>
+						</Controller_Sequence>
+
+						<!--IF EnnemyDetected AND I can not defeat him THEN retreat him-->
+						<Controller_Sequence Debug="LesserFactionRegionRoaming_TryToRetreat">
+							<Decorator_CanDefeatTarget Inverted="true" TargetVarName="$Target"/>
+							<Decorator_ComputeSavingPosition TargetListVarName="$TargetList" Output_DestinationVarName="$SafeWorldPositionDestination"/>
+							<Action_GeneratePath DestinationVarName="$SafeWorldPositionDestination" TypeOfPath="FuzzyDestination" Output_PathVarName="$SafePath"/>
+							<Action_Move PathVarName="$SafePath" TypeOfMove="Regular"/>
+							<Decorator_MoveEnded PathVarName="$SafePath"/>
+						</Controller_Sequence>
+					</Controller_Selector>
+				</Controller_Sequence>
+
+				<Include SubTreeName="OpportunityPillage">
+					<VariableConverter ToVariable="$MainTargetPosition" FromVariable="$RoamingDestination"/>
+					<NumericConstant ToVariable="$OpportunityMaximumTurn" Value="5"/>
+				</Include>
+
+				<!-- Actual Raoming behavior -->
+				<Controller_Sequence Debug="LesserFactionRegionRoaming_GoToDestination">
+
+					<Controller_Selector>
+						<Controller_Sequence Debug="LesserFactionRegionRoaming_ChangeTarget">
+							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+							<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="LesserFactionRegionRoaming_GoToPreviousTarget">
+							<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						</Controller_Sequence>
+
+						<Controller_Sequence Debug="LesserFactionRegionRoaming_FirstTime">
+							<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+							<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						</Controller_Sequence>
+
+					</Controller_Selector>
+
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+					<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+				
+				<!--ELCP: LastResortRoaming if no valid path has been found-->		
+				<Controller_Sequence Debug="LastResortRoaming">
+					<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+					<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+					<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
+
+	<!-- Pacifist roaming-->
+	<AIArmyMissionDefinition Name="LesserFactionRegionRoamingPacifist">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$RegionIndex"/>
+		</Parameters>
+		<Controller_Sequence Debug="LesserFactionRegionRoamingPacifist_Root">
+
+			<!--IF Army locked (in battle) control THEN Mission failed -->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+
+			<!-- Actual Raoming behavior -->
+			<Controller_Sequence Debug="LesserFactionRegionRoaming_GoToDestination">
+
+				<Controller_Selector>
+					<Controller_Sequence Debug="LesserFactionRegionRoaming_ChangeTarget">
+						<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+						<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+						<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+						<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					</Controller_Sequence>
+
+					<Controller_Sequence Debug="LesserFactionRegionRoaming_GoToPreviousTarget">
+						<Decorator_VariableCheck VarName="$RoamingDestination" CheckOperation="Exists"/>
+						<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					</Controller_Sequence>
+
+					<Controller_Sequence Debug="LesserFactionRegionRoaming_FirstTime">
+						<Decorator_GetNextRoamingPosition TargetRegionVarName="$RegionIndex" Output_DestinationVarName="$RoamingDestination"/>
+						<Action_GeneratePath DestinationVarName="$RoamingDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					</Controller_Sequence>
+					
+					<!--ELCP: LastResortRoaming if no valid path has been found-->		
+					<Controller_Sequence Debug="LastResortRoaming">
+						<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+						<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+						<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+						<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+						<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+					</Controller_Sequence>
+
+				</Controller_Selector>
+
+				<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+				<Decorator_MoveEnded PathVarName="$Path"/>
+				<Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
+			</Controller_Sequence>  
+
+		</Controller_Sequence>
+
+	</AIArmyMissionDefinition>
+  
   <!-- Flee roaming -->
   <AIArmyMissionDefinition Name="LesserFactionRegionRoamingFlee">
     <Parameters>
       <Parameter ParameterIndex="0" VarName="$RegionIndex"/>
     </Parameters>
-
-    <Controller_Sequence Debug="LesserFactionRegionRoaming_Root">
+    
+    <Controller_Sequence Debug="LesserFactionRegionRoamingFlee_Root">
       <!--IF Army locked (in battle) control THEN Mission failed -->
       <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
       <Controller_Selector>
-
+        
         <!-- If enemy detected and i can flee somewhere, do it.-->
         <Controller_Sequence Debug="BewareOfEnemies">
           <Decorator_GetTargetInRange Inverted="false" Output_TargetListVarName="$TargetList"/>
@@ -578,7 +642,7 @@
           <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
           <Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
         </Controller_Sequence>
-
+ 
         <!-- Default pacifist roaming - If no enemy detected. -->
         <Controller_Sequence Debug="LesserFactionRegionRoaming_GoToDestination">
           <Controller_Selector>
@@ -601,100 +665,120 @@
           <Decorator_MoveEnded PathVarName="$Path"/>
           <Decorator_DestinationReached DestinationVarName="$RoamingDestination" TypeOfCheck="Regular"/>
         </Controller_Sequence>
-
+		
+		<!--ELCP: LastResortRoaming if no valid path has been found-->		
+		<Controller_Sequence Debug="LastResortRoaming">
+			<Decorator_GetTargetPosition TargetVarName="$Army" Output_DestinationVarName="$MyPosition"/>
+			<Decorator_GetNextRoamingPosition PositionVarName="$MyPosition" Output_DestinationVarName="$BorderDestination" LastResort="true"/>
+			<Action_GeneratePath DestinationVarName="$BorderDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+			<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+			<Decorator_MoveEnded PathVarName="$Path" TypeOfCheck="Regular"/>
+		</Controller_Sequence>
       </Controller_Selector>
     </Controller_Sequence>
-
+    
   </AIArmyMissionDefinition>
+  
+	<!-- Not Opportunist at all-->
+	<AIArmyMissionDefinition Name="DefendCity_BreakSiege">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetCity"/>
+		</Parameters>
+		<Controller_Sequence Debug="FreeCity_Root">
 
-  <!-- Not Opportunist at all-->
-  <AIArmyMissionDefinition Name="DefendCity_BreakSiege">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetCity"/>
-    </Parameters>
-    <Controller_Sequence Debug="FreeCity_Root">
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			
+			<!--IF Ennemy sieging the city is detected THEN Engage him-->
+			<Decorator_GetSiegingArmiesInRange CityUnderSiege="$TargetCity" Output_TargetListVarName="$TargetList"/>
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" Output_TargetVarName="$Target"/>
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Target"/>
+			
+			<Controller_Selector>
+				<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+				<Include SubTreeName="TryToAttackAllEnemiesInRangeOrIgnore"/>
+			</Controller_Selector>
+			
+			<Decorator_VariableCheck VarName="$AttackWorldPositionDestination" CheckOperation="Exists"/>
+			
+			<Controller_Selector>
+				<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
 
-      <!--IF Army in under control THEN Mission failed-->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+				<Controller_Sequence Debug="FreeCity_MoveToward">
+					<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+				</Controller_Sequence>    
 
-      <!--IF Ennemy sieging the city is detected THEN Engage him-->
-      <Decorator_GetSiegingArmiesInRange CityUnderSiege="$TargetCity" Output_TargetListVarName="$TargetList"/>
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" Output_TargetVarName="$Target"/>
+				<Include SubTreeName="TryToAttackAllEnemiesInRangeOrIgnore"/>
+			</Controller_Selector>
 
-      <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
-      <Controller_Selector>
-        <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+			<!-- Otherwise, engage him. -->
+			<Action_Attack TargetVarName="$Target"/>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
 
-        <Controller_Sequence Debug="FreeCity_MoveToward">
-          <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-        </Controller_Sequence>
-      </Controller_Selector>
+	<AIArmyMissionDefinition Name="DefendCity_BreakSiegeNow">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetCity"/>
+		</Parameters>
+		<Controller_Sequence Debug="FreeCity_Root">
 
-      <!-- Otherwise, engage him. -->
-      <Action_Attack TargetVarName="$Target"/>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+			<!--IF Army in under control THEN Mission failed-->
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
 
-  <AIArmyMissionDefinition Name="DefendCity_BreakSiegeNow">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetCity"/>
-    </Parameters>
-    <Controller_Sequence Debug="FreeCity_Root">
+			<!--IF Ennemy sieging the city is detected THEN Engage him-->
+			<Decorator_GetSiegingArmiesInRange CityUnderSiege="$TargetCity" Output_TargetListVarName="$TargetList"/>
+			<Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" Output_TargetVarName="$Target"/>
 
-      <!--IF Army in under control THEN Mission failed-->
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
+			<Controller_Selector>
 
-      <!--IF Ennemy sieging the city is detected THEN Engage him-->
-      <Decorator_GetSiegingArmiesInRange CityUnderSiege="$TargetCity" Output_TargetListVarName="$TargetList"/>
-      <Decorator_SelectTarget TargetListVarName="$TargetList" TypeOfTarget="Army" Output_TargetVarName="$Target"/>
+				<Controller_Sequence>
+					<Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
+					<Action_Attack TargetVarName="$Target"/>
+				</Controller_Sequence>
 
-      <Decorator_GetTargetPosition TargetVarName="$Target" Output_DestinationVarName="$AttackWorldPositionDestination"/>
-      <Controller_Selector>
+				<!-- Move toward besieger. -->
+				<Controller_Sequence>
+					<Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+				</Controller_Sequence>
 
-        <Controller_Sequence>
-          <Decorator_DestinationReached DestinationVarName="$AttackWorldPositionDestination" TypeOfCheck="Attack"/>
-          <Action_Attack TargetVarName="$Target"/>
-        </Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
 
-        <!-- Move toward besieger. -->
-        <Controller_Sequence>
-          <Action_GeneratePath DestinationVarName="$AttackWorldPositionDestination" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-        </Controller_Sequence>
+	<AIArmyMissionDefinition Name="DefendCity_Bail">
+		<Parameters>
+			<Parameter ParameterIndex="0" VarName="$TargetCity"/>
+		</Parameters>
+		<Controller_Sequence Debug="Bail_Root">
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Decorator_IsTargetLocked Inverted="true" TargetVarName="$TargetCity"/>
 
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+			<Decorator_GetTargetPosition TargetVarName="$TargetCity" Output_DestinationVarName="$TargetCityPosition"/>
 
-  <AIArmyMissionDefinition Name="DefendCity_Bail">
-    <Parameters>
-      <Parameter ParameterIndex="0" VarName="$TargetCity"/>
-    </Parameters>
-    <Controller_Sequence Debug="Bail_Root">
-      <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
+			<Controller_Selector>
+				<Controller_Sequence Debug="Bail_Transfer">
+					<!-- The army is right above the city, juste transfer unit. -->
+					<Decorator_DestinationReached DestinationVarName="$TargetCityPosition"/>
+					<Action_TransferToGarrison DestinationVarName="$TargetCityPosition"/>
+				</Controller_Sequence>
+				
+				<Include SubTreeName="ExploreNearbyRuin"/>
 
-      <Decorator_GetTargetPosition TargetVarName="$TargetCity" Output_DestinationVarName="$TargetCityPosition"/>
-
-      <Controller_Selector>
-        <Controller_Sequence Debug="Bail_Transfer">
-          <!-- The army is right above the city, juste transfer unit. -->
-          <Decorator_DestinationReached DestinationVarName="$TargetCityPosition"/>
-          <Action_TransferToGarrison DestinationVarName="$TargetCityPosition"/>
-        </Controller_Sequence>
-
-        <Controller_Sequence Debug="Bail_ReachCity">
-          <Action_GeneratePath DestinationVarName="$TargetCityPosition" TypeOfPath="Regular" Output_PathVarName="$Path"/>
-          <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
-          <Decorator_MoveEnded PathVarName="$Path"/>
-          <Decorator_DestinationReached DestinationVarName="$TargetCityPosition"/>
-          <Action_TransferToGarrison DestinationVarName="$TargetCityPosition"/>
-        </Controller_Sequence>
-      </Controller_Selector>
-    </Controller_Sequence>
-  </AIArmyMissionDefinition>
+				<Controller_Sequence Debug="Bail_ReachCity">
+					<Action_GeneratePath DestinationVarName="$TargetCityPosition" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
+					<Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
+					<Decorator_MoveEnded PathVarName="$Path"/>
+					<Decorator_DestinationReached DestinationVarName="$TargetCityPosition"/>
+					<Action_TransferToGarrison DestinationVarName="$TargetCityPosition"/>
+				</Controller_Sequence>
+			</Controller_Selector>
+		</Controller_Sequence>
+	</AIArmyMissionDefinition>
 
   <AIArmyMissionDefinition Name="DefendCamp_Bail">
     <Parameters>
@@ -702,16 +786,18 @@
     </Parameters>
     <Controller_Sequence Debug="Bail_Root">
       <Decorator_IsTargetLocked Inverted="true" TargetVarName="$Army"/>
-
+      
       <Controller_Selector>
         <Controller_Sequence Debug="Bail_Transfer">
           <!-- The army is right above the camp, juste transfer unit. -->
           <Decorator_DestinationReached DestinationVarName="$TargetCampPosition"/>
           <Action_TransferToGarrison DestinationVarName="$TargetCampPosition"/>
         </Controller_Sequence>
+		
+		<Include SubTreeName="TryOpportunityTerraform"/>
 
         <Controller_Sequence Debug="Bail_ReachCamp">
-          <Action_GeneratePath DestinationVarName="$TargetCampPosition" TypeOfPath="Regular" Output_PathVarName="$Path"/>
+          <Action_GeneratePath DestinationVarName="$TargetCampPosition" TypeOfPath="Regular" Output_PathVarName="$Path" AllowFastTravel="true"/>
           <Action_Move PathVarName="$Path" TypeOfMove="Regular"/>
           <Decorator_MoveEnded PathVarName="$Path"/>
           <Decorator_DestinationReached DestinationVarName="$TargetCampPosition"/>

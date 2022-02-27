@@ -394,7 +394,7 @@
 
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
-    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/WatchTower0) + $Count(../ClassCity/WatchTower1)+ $Count(../ClassCity/WatchTower2) )lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/WatchTower0) + $Count(../ClassCity/WatchTower1)+ $Count(../ClassCity/WatchTower2) + $Count(../ClassCity/DefensiveTower0) + $Count(../ClassCity/DefensiveTower1))lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
   </PointOfInterestImprovementDefinition>
 
   <PointOfInterestImprovementDefinition Name="WatchTower1"                          SubCategory="SubCategoryVision">
@@ -412,7 +412,7 @@
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,AIEconomicRatio">.../ClassEmpire/ClassResearch,TechnologyTradeRouteBonus3Replicants</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
     <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
-    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/WatchTower0) + $Count(../ClassCity/WatchTower1)+ $Count(../ClassCity/WatchTower2) )lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/WatchTower0) + $Count(../ClassCity/WatchTower1)+ $Count(../ClassCity/WatchTower2) + $Count(../ClassCity/DefensiveTower0) + $Count(../ClassCity/DefensiveTower1))lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
   </PointOfInterestImprovementDefinition>
 
   <PointOfInterestImprovementDefinition Name="WatchTower2"                          SubCategory="SubCategoryVision">
@@ -427,7 +427,7 @@
     <PathPrerequisite Flags="Prerequisite,Discard,AIEconomicRatio">../ClassCity/PointOfInterestTypeWatchTower,!InfectedPointOfInterest</PathPrerequisite>
     <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
-    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/WatchTower0)+ $Count(../ClassCity/WatchTower1)+ $Count(../ClassCity/WatchTower2) )lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/WatchTower0) + $Count(../ClassCity/WatchTower1)+ $Count(../ClassCity/WatchTower2) + $Count(../ClassCity/DefensiveTower0) + $Count(../ClassCity/DefensiveTower1))lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
   </PointOfInterestImprovementDefinition>
 
   <PointOfInterestImprovementDefinition Name="WatchTower0ReplicantsPack"            SubCategory="SubCategoryVision">
@@ -447,7 +447,9 @@
 
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
     <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
-    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/Watchtower0ReplicantsPack)+ $Count(../ClassCity/WatchTower1ReplicantsPack)+ $Count(../ClassCity/WatchTower2ReplicantsPack) )lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Discard">
+      ($Count(../ClassCity/WatchTower0ReplicantsPack) + $Count(../ClassCity/WatchTower1ReplicantsPack) + $Count(../ClassCity/WatchTower2ReplicantsPack)
+      + $Count(../ClassCity/DefensiveTower0ReplicantsPack) + $Count(../ClassCity/DefensiveTower1ReplicantsPack))lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
   </PointOfInterestImprovementDefinition>
 
   <PointOfInterestImprovementDefinition Name="WatchTower1ReplicantsPack"            SubCategory="SubCategoryVision">
@@ -465,7 +467,9 @@
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,AIEconomicRatio">.../ClassEmpire/ClassResearch,TechnologyTradeRouteBonus3Replicants</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
     <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
-    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/WatchTower0ReplicantsPack) + $Count(../ClassCity/Watchtower1ReplicantsPack)+ $Count(../ClassCity/WatchTower2Replicants) )lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Discard">
+      ($Count(../ClassCity/WatchTower0ReplicantsPack) + $Count(../ClassCity/WatchTower1ReplicantsPack) + $Count(../ClassCity/WatchTower2ReplicantsPack)
+      + $Count(../ClassCity/DefensiveTower0) + $Count(../ClassCity/DefensiveTower1))lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
   </PointOfInterestImprovementDefinition>
 
   <PointOfInterestImprovementDefinition Name="WatchTower2ReplicantsPack"            SubCategory="SubCategoryVision">
@@ -479,13 +483,15 @@
     <PathPrerequisite Flags="Prerequisite,Discard,AIEconomicRatio">../ClassCity/PointOfInterestTypeWatchTower,!InfectedPointOfInterest</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
     <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
-    <InterpreterPrerequisite Flags="Prerequisite,Discard">($Count(../ClassCity/WatchTower0ReplicantsPack)+ $Count(../ClassCity/WatchTower1ReplicantsPack)+ $Count(../ClassCity/Watchtower2ReplicantsPack) )lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Discard">
+      ($Count(../ClassCity/WatchTower0ReplicantsPack) + $Count(../ClassCity/WatchTower1ReplicantsPack) + $Count(../ClassCity/WatchTower2ReplicantsPack)
+      + $Count(../ClassCity/DefensiveTower0ReplicantsPack) + $Count(../ClassCity/DefensiveTower1ReplicantsPack))lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
   </PointOfInterestImprovementDefinition>
 
   <!-- Without Replicants Pack-->
   <PointOfInterestImprovementDefinition Name="DefensiveTower0"                      SubCategory="SubCategoryVision">
     <NextUpgradeName>DefensiveTower1</NextUpgradeName>
-    <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Orb" Instant="true">5 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
     <Cost ResourceName="Production" Instant="false">150</Cost>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <XmlMappingOverride Name="MappingType">DefensiveTower</XmlMappingOverride>
@@ -507,7 +513,7 @@
 
   <!-- Without Replicants Pack -->
   <PointOfInterestImprovementDefinition Name="DefensiveTower1"                      SubCategory="SubCategoryVision">
-    <CustomCost ResourceName="Orb" Instant="true">20 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
     <Cost ResourceName="Production" Instant="false">200</Cost>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <XmlMappingOverride Name="MappingType">DefensiveTower</XmlMappingOverride>
@@ -529,7 +535,7 @@
   <!-- With Replicants Pack -->
   <PointOfInterestImprovementDefinition Name="DefensiveTower0ReplicantsPack"        SubCategory="SubCategoryVision">
     <NextUpgradeName>DefensiveTower1ReplicantsPack</NextUpgradeName>
-    <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Orb" Instant="true">5 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
     <Cost ResourceName="Production" Instant="false">150</Cost>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <XmlMappingOverride Name="MappingType">DefensiveTower</XmlMappingOverride>
@@ -547,14 +553,13 @@
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Siege,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
     <InterpreterPrerequisite Flags="Prerequisite,Discard">
-      ($Count(../ClassCity/WatchTower0) + $Count(../ClassCity/WatchTower1) + $Count(../ClassCity/WatchTower2)
-      + $Count(../ClassCity/WatchTower0ReplicantsPack) + $Count(../ClassCity/WatchTower1ReplicantsPack) + $Count(../ClassCity/WatchTower2ReplicantsPack)
-      + $Count(../ClassCity/DefensiveTower0) + $Count(../ClassCity/DefensiveTower1))lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
+      ($Count(../ClassCity/WatchTower0ReplicantsPack) + $Count(../ClassCity/WatchTower1ReplicantsPack) + $Count(../ClassCity/WatchTower2ReplicantsPack)
+      + $Count(../ClassCity/DefensiveTower0ReplicantsPack) + $Count(../ClassCity/DefensiveTower1ReplicantsPack)) lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
   </PointOfInterestImprovementDefinition>
 
   <!-- With Replicants Pack -->
   <PointOfInterestImprovementDefinition Name="DefensiveTower1ReplicantsPack"        SubCategory="SubCategoryVision">
-    <CustomCost ResourceName="Orb" Instant="true">20 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
+    <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
     <Cost ResourceName="Production" Instant="false">200</Cost>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <XmlMappingOverride Name="MappingType">DefensiveTower</XmlMappingOverride>
@@ -571,9 +576,8 @@
     <PathPrerequisite        Inverted="true"  Flags="Prerequisite,Siege,AIEconomicRatio,AIEconomicRatio">ClassCity,CityStatusSiege</PathPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
     <InterpreterPrerequisite Flags="Prerequisite,Discard">
-      ($Count(../ClassCity/WatchTower0) + $Count(../ClassCity/WatchTower1)+ $Count(../ClassCity/WatchTower2)
-      + $Count(../ClassCity/WatchTower0ReplicantsPack) + $Count(../ClassCity/WatchTower1ReplicantsPack) + $Count(../ClassCity/WatchTower2ReplicantsPack)
-      + $Count(../ClassCity/DefensiveTower0) + $Count(../ClassCity/DefensiveTower1))lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
+      ($Count(../ClassCity/WatchTower0ReplicantsPack) + $Count(../ClassCity/WatchTower1ReplicantsPack) + $Count(../ClassCity/WatchTower2ReplicantsPack)
+      + $Count(../ClassCity/DefensiveTower0ReplicantsPack) + $Count(../ClassCity/DefensiveTower1ReplicantsPack)) lt $Count(../ClassCity/PointOfInterestTypeWatchTower)</InterpreterPrerequisite>
   </PointOfInterestImprovementDefinition>
 
   <PointOfInterestImprovementDefinition Name="DestroyedVillage"                     SubCategory="SubCategoryVillage">

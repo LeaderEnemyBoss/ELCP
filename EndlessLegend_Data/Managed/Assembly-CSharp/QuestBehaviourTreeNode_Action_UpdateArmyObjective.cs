@@ -61,7 +61,6 @@ public class QuestBehaviourTreeNode_Action_UpdateArmyObjective : QuestBehaviourT
 
 	protected override State Execute(QuestBehaviour questBehaviour, params object[] parameters)
 	{
-		Diagnostics.Log("UpdateArmyObjective.Execute");
 		this.ComputeObjective(questBehaviour);
 		if (!this.Objective.IsValid)
 		{
@@ -95,7 +94,6 @@ public class QuestBehaviourTreeNode_Action_UpdateArmyObjective : QuestBehaviourT
 
 	protected override bool Initialize(QuestBehaviour questBehaviour)
 	{
-		Diagnostics.Log("UpdateArmyObjective.Initialize");
 		IGameService service = Services.GetService<IGameService>();
 		if (service == null || service.Game == null)
 		{

@@ -10,6 +10,11 @@ using Amplitude.Utilities.Maps;
 
 public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode_Decorator
 {
+	public AIBehaviorTreeNode_Decorator_GetTargetPosition()
+	{
+		this.AllowBackupPosition = true;
+	}
+
 	[XmlAttribute]
 	public string Output_DestinationVarName { get; set; }
 
@@ -19,14 +24,17 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 	protected override State Execute(AIBehaviorTree aiBehaviorTree, params object[] parameters)
 	{
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
 		if (!aiBehaviorTree.Variables.ContainsKey(this.TargetVarName))
 		{
-			aiBehaviorTree.LogError("$Target not set", new object[0]);
+			aiBehaviorTree.LogError("$Target not set {0}/{1}", new object[]
+			{
+				army.Empire,
+				army.LocalizedName
+			});
 			return State.Failure;
 		}
 		IWorldPositionable worldPositionable = aiBehaviorTree.Variables[this.TargetVarName] as IWorldPositionable;
@@ -60,6 +68,22 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 				worldPosition = nearestDistrictToReinforce.WorldPosition;
 			}
 		}
+		else if (worldPositionable is Fortress)
+		{
+			Fortress fortress = worldPositionable as Fortress;
+			WorldPosition worldPosition2 = worldPositionable.WorldPosition;
+			int num = service2.GetDistance(army.WorldPosition, worldPosition2);
+			foreach (PointOfInterest pointOfInterest in fortress.Facilities)
+			{
+				int distance = service2.GetDistance(army.WorldPosition, pointOfInterest.WorldPosition);
+				if (distance < num)
+				{
+					num = distance;
+					worldPosition2 = pointOfInterest.WorldPosition;
+				}
+			}
+			worldPosition = this.GetValidTileToAttack(service3, service2, worldPosition2, army);
+		}
 		else if (worldPositionable is Camp)
 		{
 			worldPosition = this.GetValidTileToAttack(service3, service2, worldPositionable.WorldPosition, army);
@@ -83,6 +107,18 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 		else if (worldPositionable is Kaiju)
 		{
 			worldPosition = this.GetValidTileToAttack(service3, service2, worldPositionable.WorldPosition, army);
+			if (!worldPosition.IsValid && this.AllowBackupPosition)
+			{
+				worldPosition = worldPositionable.WorldPosition;
+			}
+		}
+		else if (worldPositionable is Army)
+		{
+			worldPosition = this.GetValidTileToAttack(service3, service2, worldPositionable.WorldPosition, army);
+			if (!worldPosition.IsValid && this.AllowBackupPosition)
+			{
+				worldPosition = worldPositionable.WorldPosition;
+			}
 		}
 		else if (service2.IsWaterTile(army.WorldPosition) != service2.IsWaterTile(worldPositionable.WorldPosition))
 		{
@@ -171,7 +207,7 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 
 	private WorldPosition NewDistrictToAttackCity(Army army, City city)
 	{
-		AIBehaviorTreeNode_Decorator_GetTargetPosition.<NewDistrictToAttackCity>c__AnonStorey799 <NewDistrictToAttackCity>c__AnonStorey = new AIBehaviorTreeNode_Decorator_GetTargetPosition.<NewDistrictToAttackCity>c__AnonStorey799();
+		AIBehaviorTreeNode_Decorator_GetTargetPosition.<NewDistrictToAttackCity>c__AnonStorey795 <NewDistrictToAttackCity>c__AnonStorey = new AIBehaviorTreeNode_Decorator_GetTargetPosition.<NewDistrictToAttackCity>c__AnonStorey795();
 		<NewDistrictToAttackCity>c__AnonStorey.city = city;
 		<NewDistrictToAttackCity>c__AnonStorey.army = army;
 		<NewDistrictToAttackCity>c__AnonStorey.<>f__this = this;
@@ -333,6 +369,7 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 
 	private WorldPosition GetValidTileToAttack(IPathfindingService pathfindingService, IWorldPositionningService worldPositionningService, WorldPosition maintAttackedPosition, Army army)
 	{
+		District district = worldPositionningService.GetDistrict(army.WorldPosition);
 		bool flag = worldPositionningService.IsWaterTile(maintAttackedPosition);
 		WorldOrientation worldOrientation = worldPositionningService.GetOrientation(maintAttackedPosition, army.WorldPosition);
 		for (int i = 0; i < 6; i++)
@@ -340,7 +377,25 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 			WorldPosition neighbourTile = worldPositionningService.GetNeighbourTile(maintAttackedPosition, worldOrientation, 1);
 			if (worldPositionningService.IsWaterTile(neighbourTile) == flag && pathfindingService.IsTransitionPassable(neighbourTile, maintAttackedPosition, army, OrderAttack.AttackFlags, null) && pathfindingService.IsTileStopableAndPassable(neighbourTile, army, PathfindingFlags.IgnoreFogOfWar, null))
 			{
-				return neighbourTile;
+				District district2 = worldPositionningService.GetDistrict(neighbourTile);
+				if (district2 != null && district2.City.Empire.Index == army.Empire.Index && district2.City.BesiegingEmpire != null && District.IsACityTile(district2))
+				{
+					if (district != null && District.IsACityTile(district) && district.City.GUID == district2.City.GUID)
+					{
+						return neighbourTile;
+					}
+				}
+				else
+				{
+					if (district == null || !District.IsACityTile(district) || district.City.BesiegingEmpire == null)
+					{
+						return neighbourTile;
+					}
+					if (district2 != null && District.IsACityTile(district2) && district.City.GUID == district2.City.GUID)
+					{
+						return neighbourTile;
+					}
+				}
 			}
 			if (i % 2 == 0)
 			{
@@ -353,4 +408,7 @@ public class AIBehaviorTreeNode_Decorator_GetTargetPosition : AIBehaviorTreeNode
 		}
 		return WorldPosition.Invalid;
 	}
+
+	[XmlAttribute]
+	public bool AllowBackupPosition { get; set; }
 }

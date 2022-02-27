@@ -873,7 +873,7 @@
   <!-- ########################################### -->
 
   <!-- Increases the morale of nearby embarked units -->
-  <BattleActionUnit Name="BattleActionUnitAbilityTrust" Defensible="false" TerrainConsideration="None" Type="Deactivation" >
+  <BattleActionUnit Name="BattleActionUnitAbilityTrust" Defensible="false" TerrainConsideration="None" Type="Activation Deactivation" >
     <BattleEffectsArea TargetsFilter="Initiator Alive" Type="Circle" Parameter1="1" AvoidCastingUnit="true">
       <BattleEffects TargetsFilter="Target SameGroup Alive">
         <PathPrerequisite Inverted="false">TransportShipUnit</PathPrerequisite>

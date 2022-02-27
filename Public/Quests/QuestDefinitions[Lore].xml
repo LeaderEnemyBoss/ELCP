@@ -539,7 +539,7 @@
 
   </QuestDefinition>
 
-  <!-- ============ A Diplomat in a Dangerous Land / Sisters of Mercy ============-->
+  <!-- ============ A Diplomat in a Dang                                                erous Land / Sisters of Mercy ============-->
   <QuestDefinition Name="SideQuestLore#0005" Category="SideQuest" SubCategory="Minor"
                       Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="2" NumberOfOccurencesPerGame="0">
 
@@ -757,7 +757,6 @@
       <DownloadableContentPrerequisite Flags="Prerequisite">LoreQuestsPack</DownloadableContentPrerequisite>
       <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/AffinitySistersOfMercy</PathPrerequisite>
       <PathPrerequisite Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
-      <PathPrerequisite Inverted="true" Flags="Prerequisite">../EmpireTypeMajor,AffinityMimics</PathPrerequisite>
       <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor/ClassResearch,TechnologyEra4</PathPrerequisite>
 
       <PathPrerequisite Inverted="true" Flags="Prerequisite">ClassEmpire/ClassCity/UnitProfileSistersOfMercyHero1</PathPrerequisite>
@@ -2308,7 +2307,7 @@
 
     </Vars>
 
-        <!--============ SEQUENCE ============-->
+    <!--============ SEQUENCE ============-->
     <Controller_Sequence>
 
       <Controller_Parallel CompletionPolicy="Any">
@@ -2331,7 +2330,7 @@
           <!--Make a Gauran Unit spawn on initial village-->
           <Action_SpawnArmy ArmyDroplist="DroplistArmyDefinitionLoreQuest0013" SpawnLocationVarName="$SpawnArmyPosition" Output_EnemyArmyGUIDVarName="$ArmyID"/>
           
-		  <!-- Patch: moved all gauran related fail conditions here, so they only get checked after it spawned -->
+		  <!-- ELCP: moved all gauran related fail conditions here, so they only get checked after it spawned -->
 		  <Controller_Parallel CompletionPolicy="Any">
 			<!-- Success: Win the battle against the Gauran Unit -->
 			<Controller_Sequence>
@@ -2426,8 +2425,74 @@
 
     <!--============ REWARDS ============-->
     <Steps>
+      <Step Name="SideQuestLore#0013-Step1">
+        <Reward Droplist="DroplistMadFairiesMainQuestRewards" Picks="1"/>
+        <Reward LocalizationKey="%Pacification"/>
+      </Step>
+    </Steps>
+
+  </QuestDefinition>
+
+  <!-- ============ Mothers in distress / Ceratan ============-->
+  <QuestDefinition Name="SideQuestLore#0014" Category="SideQuest" SubCategory="Minor"
+                 Cooldown="10" SkipLockedQuestTarget="true" NumberOfConcurrentInstances="1" NumberOfOccurencesPerEmpire="1" NumberOfOccurencesPerGame="0">
+
+    <!--============ TAGS ============-->
+    <Tags>Interact</Tags>
+
+    <!--============ PREREQUISITES ============-->
+    <Prerequisites Target="$(Empire)">
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitCultists7</PathPrerequisite><!--No settler trait-->
+      <PathPrerequisite Inverted="true" Flags="Prerequisite">EmpireTypeMajor,FactionTraitMimics1</PathPrerequisite><!--No settler trait-->
+      <DownloadableContentPrerequisite Flags="Prerequisite">LoreQuestsPack</DownloadableContentPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">#Summer</PathPrerequisite>
+      <PathPrerequisite Flags="Prerequisite">../EmpireTypeMajor/ClassResearch,TechnologyEra2</PathPrerequisite>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0010" QuestState="InProgress"/>
+      <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0010" QuestState="Unstarted"/>
+    </Prerequisites>
+
+    <!--============ VARIABLES ============-->
+    <Vars>
+      <!--Initial ruin -->
+      <Var VarName="$InitialRuin">
+        <From Source="$TargetPointsOfInterest"/>
+      </Var>
+	  <!-- ELCP for Army Reward -->
+	  <Var VarName="$PointOfInterestToInspectLocation">
+        <From Source="$InitialRuin.$Position"/>
+      </Var>
+	  <Var VarName="$InstigatorEmpire">
+        <From Source="$Empire"/>
+      </Var>
+    </Vars>
+    <!--============ SEQUENCE ============-->
+
+    <Controller_Sequence>
+      <Action_UpdateStep StepName="SideQuestLore#0014-Step1" State="InProgress" />
+
+      <Action_AddQuestMarker TargetEntityVarName="$InitialRuin" Tags="Ruins" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+      <Decorator_Inspect TargetEntityVarName="$InitialRuin" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire">
+        <ConditionCheck_Prerequisite>
+          <Prerequisites Target="$InspectionInstigatorSimObject">
+            <InterpreterPrerequisite Flags="Prerequisite">$Count(ClassArmy/ClassUnit) eq 1</InterpreterPrerequisite>
+            <PathPrerequisite Flags="Prerequisite">ClassArmy/ClassUnit,UnitSettler</PathPrerequisite>
+          </Prerequisites>
+        </ConditionCheck_Prerequisite>
+      </Decorator_Inspect>
+      <Action_DestroyArmy ArmyGUIDVarName="$InspectionInstigatorGUID" />
+      <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspect"/>
+	  <!-- ELCP new Army reward -->
+	  <Action_SpawnArmy SpawnLocationVarName="$PointOfInterestToInspectLocation" ArmyDroplist="DroplistLoreQuestMotherProtectionArmyRewardELCP" EmpireArmyOwnerVarName="$InstigatorEmpire" ScaleWithMaxEra="true"/>
+
+      <Action_UpdateStep StepName="SideQuestLore#0014-Step1" State="Completed" />
+      <Action_UpdateQuest State="Completed"/>
+    </Controller_Sequence>
+
+    <!--============ REWARDS ============-->
+    <Steps>
       <Step Name="SideQuestLore#0014-Step1">
         <Reward Droplist="DroplistLoreQuestMotherProtectionShieldReward" Picks="1"/>
+		<Reward LocalizationKey="%ELCPSideQuestLore#0014Reward"/>
       </Step>
     </Steps>
 
@@ -2443,19 +2508,24 @@
     <!--============ PREREQUISITES ============-->
     <Prerequisites Target="$(Empire)">
       <DownloadableContentPrerequisite Flags="Prerequisite">LoreQuestsPack</DownloadableContentPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly) ge 5</InterpreterPrerequisite>
-      <InterpreterPrerequisite Flags="Prerequisite">$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly) le 10</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">($Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly)
+													+ $Count(EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict,TerrainTagAnomaly)
+													+ $Count(EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagAnomaly)) ge 5</InterpreterPrerequisite>
+      <InterpreterPrerequisite Flags="Prerequisite">($Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly)
+													+ $Count(EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict,TerrainTagAnomaly)
+													+ $Count(EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagAnomaly)) le 10</InterpreterPrerequisite>
       <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0011" QuestState="InProgress"/>
       <QuestStatePrerequisite Inverted="true" QuestDefinitionName="SideQuestNavalInteract#0011" QuestState="Unstarted"/>
     </Prerequisites>
-
     <!--============ VARIABLES============-->
 
     <Vars>
 
       <!--Current Anomalies exploited-->
       <InterpretedVar VarName="CurrentAnomaliesExploited" Target="$(Empire)">
-        <Expression>$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly)</Expression>
+        <Expression>$Count(EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly)
+		            + $Count(EmpireTypeMajor/ClassCity/ConvertedVillage/ClassDistrict,TerrainTagAnomaly)
+		            + $Count(EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagAnomaly)</Expression>
       </InterpretedVar>
 
       <!--Anomalies exploited objective -->
@@ -3392,7 +3462,7 @@
 
       <!--Plains exploited objective-->
       <InterpretedVar VarName="PlainsExploitedObjective" Target="$(Empire)">
-        <Expression>$(CurrentPlainsExploited) + 3</Expression>
+        <Expression>$(CurrentPlainsExploited) + 2</Expression>
       </InterpretedVar>
 
       <!--Current Rocks exploited-->
@@ -3402,7 +3472,7 @@
 
       <!--Rocks exploited objective-->
       <InterpretedVar VarName="RocksExploitedObjective" Target="$(Empire)">
-        <Expression>$(CurrentRocksExploited) + 3</Expression>
+        <Expression>$(CurrentRocksExploited) + 2</Expression>
       </InterpretedVar>
 
       <!--Current Forest exploited-->
@@ -3412,7 +3482,7 @@
 
       <!--Forest exploited objective-->
       <InterpretedVar VarName="ForestExploitedObjective" Target="$(Empire)">
-        <Expression>$(CurrentForestExploited) + 3</Expression>
+        <Expression>$(CurrentForestExploited) + 2</Expression>
       </InterpretedVar>
 
       <!--Current Arid exploited-->
@@ -3422,7 +3492,7 @@
 
       <!--Arid exploited objective-->
       <InterpretedVar VarName="AridExploitedObjective" Target="$(Empire)">
-        <Expression>$(CurrentAridExploited) + 3</Expression>
+        <Expression>$(CurrentAridExploited) + 2</Expression>
       </InterpretedVar>
 
       <!--Targets my Empire-->
@@ -3440,7 +3510,7 @@
         </From>
       </Var>
 
-      <!--Check that at least 1 region has at least 1 Dorgeshi village-->
+      <!--Check that at least 1 region has at least 1 Erycis village-->
       <Var VarName="$EmpireRegionsErycisMinorEmpire">
         <Any>
           <From Source="$EmpireRegions.$MinorEmpire">
@@ -3532,7 +3602,7 @@
 
       </Controller_Parallel>
 
-        <Action_SpawnArmy SpawnLocationVarName="$ErycisVillagePOILocation" ArmyDroplist="DroplistArmyDefinitionLoreQuest0017EndReward" EmpireArmyOwnerVarName="$MyEmpire"/>
+        <Action_SpawnArmy SpawnLocationVarName="$ErycisVillagePOILocation" ArmyDroplist="DroplistArmyDefinitionLoreQuest0017EndRewardELCP" ScaleWithMaxEra="true" EmpireArmyOwnerVarName="$MyEmpire"/>
         <!--Make a Erycis Units spawn on initial village-->
         <Action_UpdateStep StepName="SideQuestLore#0017-Step1" State="Completed" />
         <Action_UpdateQuest State="Completed"/>
@@ -3560,7 +3630,7 @@
     <Steps>
       <Step Name="SideQuestLore#0017-Step1">
         <ProgressionRange StartValue="0" EndValue="4"/>
-        <Reward Droplist="DroplistDustEra3" Picks="1"/>
+        <Reward Droplist="DroplistGlobalQuestDust" Picks="1"/>
         <Reward LocalizationKey="%SideQuestLore#0017-Step1Reward"/>
       </Step>
     </Steps>

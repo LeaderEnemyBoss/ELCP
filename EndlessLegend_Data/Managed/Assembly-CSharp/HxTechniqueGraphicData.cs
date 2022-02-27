@@ -429,10 +429,13 @@ public class HxTechniqueGraphicData : Amplitude.Unity.Framework.Behaviour
 				return this.instancingPolicyMeshCount[i];
 			}
 		}
-		Diagnostics.LogWarning("Unable to find instancing policy for mesh [{0}].", new object[]
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
 		{
-			meshName
-		});
+			Diagnostics.LogWarning("Unable to find instancing policy for mesh [{0}].", new object[]
+			{
+				meshName
+			});
+		}
 		return 16;
 	}
 
@@ -1020,14 +1023,6 @@ public class HxTechniqueGraphicData : Amplitude.Unity.Framework.Behaviour
 			}
 		}
 
-		public int SoftwareRasterAtlasRevisionIndex
-		{
-			get
-			{
-				return AgeManager.Instance.FontAtlasRenderer.SoftwareRasterAtlasRevisionIndex;
-			}
-		}
-
 		public HxTechniqueGraphicData.RegionNameGraphicData.RegionData[] RegionDatas
 		{
 			get
@@ -1039,20 +1034,6 @@ public class HxTechniqueGraphicData : Amplitude.Unity.Framework.Behaviour
 		public void IncRevision()
 		{
 			this.revision++;
-		}
-
-		public void BindDynamicTextureAtlas(Material material)
-		{
-			FontAtlasRenderer fontAtlasRenderer = AgeManager.Instance.FontAtlasRenderer;
-			Texture texture = fontAtlasRenderer.Texture();
-			if (texture != null)
-			{
-				material.SetTexture("_DynamicAtlasTex", texture);
-			}
-			else
-			{
-				Diagnostics.Assert(false);
-			}
 		}
 
 		private void InitRegionNamePosition(WorldController worldController)
@@ -1144,6 +1125,25 @@ public class HxTechniqueGraphicData : Amplitude.Unity.Framework.Behaviour
 						}
 					}
 				}
+			}
+		}
+
+		public void BindDynamicTextureAtlas(Material material)
+		{
+			Texture texture = AgeManager.Instance.FontAtlasRenderer.Texture();
+			if (texture != null)
+			{
+				material.SetTexture("_DynamicAtlasTex", texture);
+				return;
+			}
+			Diagnostics.Assert(false);
+		}
+
+		public int SoftwareRasterAtlasRevisionIndex
+		{
+			get
+			{
+				return AgeManager.Instance.FontAtlasRenderer.SoftwareRasterAtlasRevisionIndex;
 			}
 		}
 

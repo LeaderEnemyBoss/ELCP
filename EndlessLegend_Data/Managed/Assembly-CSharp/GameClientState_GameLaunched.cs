@@ -42,7 +42,7 @@ public class GameClientState_GameLaunched : GameClientState
 			}
 			if (lobbyData.Contains(text))
 			{
-				goto Block_3;
+				goto IL_113;
 			}
 			num++;
 		}
@@ -50,10 +50,10 @@ public class GameClientState_GameLaunched : GameClientState
 		{
 			text
 		});
-		goto IL_14E;
-		Block_3:
+		goto IL_12C;
+		IL_113:
 		playerController.Empire = base.GameClient.Game.Empires[num];
-		IL_14E:
+		IL_12C:
 		int num2 = 0;
 		for (;;)
 		{
@@ -75,8 +75,7 @@ public class GameClientState_GameLaunched : GameClientState
 						string[] array = lobbyData2.Split(Amplitude.String.Separators, StringSplitOptions.RemoveEmptyEntries);
 						for (int i = 0; i < array.Length; i++)
 						{
-							ulong value = Convert.ToUInt64(array[i], 16);
-							Steamworks.SteamID steamID = new Steamworks.SteamID(value);
+							Steamworks.SteamID steamID = new Steamworks.SteamID(Convert.ToUInt64(array[i], 16));
 							if (!service2.Session.GetLobbyMemberData<bool>(steamID, "Ready", false) && base.GameClient.Session.SessionMode != SessionMode.Single)
 							{
 								majorEmpire.BindPlayer(new Player(majorEmpire)

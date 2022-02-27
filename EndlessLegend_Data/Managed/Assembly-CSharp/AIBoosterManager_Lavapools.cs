@@ -6,6 +6,13 @@ using Amplitude.Unity.Framework;
 
 public class AIBoosterManager_Lavapools : AIBoosterManager
 {
+	public AIBoosterManager_Lavapools()
+	{
+		this.decisionResults = new List<DecisionResult>();
+		this.costFactorFromRegistry = 0.5f;
+		this.chosenmessages = new List<EvaluableMessage_LavaboostNeeded>();
+	}
+
 	protected internal override void Initialize(AIEntity aiEntity)
 	{
 		base.Initialize(aiEntity);
@@ -33,18 +40,21 @@ public class AIBoosterManager_Lavapools : AIBoosterManager
 	{
 		base.CreateLocals();
 		float propertyValue = base.AIEntity.Empire.GetPropertyValue(SimulationProperties.LavapoolStock);
-		float num = 3f - propertyValue;
-		if (num > 0f)
+		if (3f - propertyValue > 0f)
 		{
 			this.decisionResults.Clear();
 			this.decisionMaker.EvaluateDecisions(this.boosterDefinitions, ref this.decisionResults);
 			for (int i = 0; i < this.decisionResults.Count; i++)
 			{
-				float productionCostWithBonus = DepartmentOfTheTreasury.GetProductionCostWithBonus(base.Empire, this.boosterDefinitions[i], this.boosterDefinitions[i].Costs[0].ResourceName);
-				if (base.DepartmentOfTheTreasury.CanAfford(productionCostWithBonus, this.boosterDefinitions[i].Costs[0].ResourceName))
+				BoosterDefinition boosterDefinition = this.decisionResults[i].Element as BoosterDefinition;
+				if (boosterDefinition != null)
 				{
-					this.CreateChosenBoosterNeedMessage(this.boosterDefinitions[i]);
-					break;
+					float productionCostWithBonus = DepartmentOfTheTreasury.GetProductionCostWithBonus(base.Empire, boosterDefinition, boosterDefinition.Costs[0].ResourceName);
+					if (base.DepartmentOfTheTreasury.CanAfford(productionCostWithBonus, boosterDefinition.Costs[0].ResourceName))
+					{
+						this.CreateChosenBoosterNeedMessage(boosterDefinition);
+						return;
+					}
 				}
 			}
 		}
@@ -82,41 +92,40 @@ public class AIBoosterManager_Lavapools : AIBoosterManager
 	protected internal override void Execute()
 	{
 		base.Execute();
-		this.chosenBoosterMessage = null;
-		IEnumerable<EvaluableMessage_LavaboostNeeded> messages = base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_LavaboostNeeded>(BlackboardLayerID.Empire, (EvaluableMessage_LavaboostNeeded match) => match.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending);
-		foreach (EvaluableMessage_LavaboostNeeded evaluableMessage_LavaboostNeeded in messages)
+		this.chosenmessages.Clear();
+		this.chosenmessages.AddRange(base.AIEntity.AIPlayer.Blackboard.GetMessages<EvaluableMessage_LavaboostNeeded>(BlackboardLayerID.Empire, (EvaluableMessage_LavaboostNeeded match) => match.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending));
+		if (this.chosenmessages.Count > 0)
 		{
-			this.chosenBoosterMessage = evaluableMessage_LavaboostNeeded;
-			ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-			service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_StartBooster));
+			AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>().RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_StartBooster));
 		}
 	}
 
 	private SynchronousJobState SynchronousJob_StartBooster()
 	{
-		if (this.chosenBoosterMessage == null)
-		{
-			return SynchronousJobState.Failure;
-		}
-		OrderBuyoutAndActivateBooster order = new OrderBuyoutAndActivateBooster(base.Empire.Index, this.chosenBoosterMessage.BoosterDefinition.Name, 0UL, false);
+		int count = this.chosenmessages.Count;
+		OrderBuyoutAndActivateBooster order = new OrderBuyoutAndActivateBooster(base.Empire.Index, this.chosenmessages[count - 1].BoosterDefinition.Name, 0UL, false);
 		Ticket ticket;
 		base.Empire.PlayerControllers.AI.PostOrder(order, out ticket, new EventHandler<TicketRaisedEventArgs>(this.OrderBuyoutAndActivateBooster_TicketRaised));
-		return SynchronousJobState.Success;
+		this.chosenmessages.RemoveAt(count - 1);
+		if (count == 1)
+		{
+			return SynchronousJobState.Success;
+		}
+		return SynchronousJobState.Running;
 	}
 
 	private void OrderBuyoutAndActivateBooster_TicketRaised(object sender, TicketRaisedEventArgs e)
 	{
 		OrderBuyoutAndActivateBooster orderBuyoutAndActivateBooster = e.Order as OrderBuyoutAndActivateBooster;
-		if (this.chosenBoosterMessage != null && orderBuyoutAndActivateBooster.BoosterDefinitionName == this.chosenBoosterMessage.BoosterDefinition.Name)
+		EvaluableMessage_LavaboostNeeded firstMessage = base.AIEntity.AIPlayer.Blackboard.GetFirstMessage<EvaluableMessage_LavaboostNeeded>(BlackboardLayerID.Empire, (EvaluableMessage_LavaboostNeeded match) => match.EvaluationState == EvaluableMessage.EvaluableMessageState.Pending && match.BoosterDefinition.Name == orderBuyoutAndActivateBooster.BoosterDefinitionName);
+		if (firstMessage != null)
 		{
 			if (e.Result != PostOrderResponse.Processed)
 			{
-				this.chosenBoosterMessage.SetFailedToObtain();
+				firstMessage.SetFailedToObtain();
+				return;
 			}
-			else
-			{
-				this.chosenBoosterMessage.SetObtained();
-			}
+			firstMessage.SetObtained();
 		}
 	}
 
@@ -148,6 +157,7 @@ public class AIBoosterManager_Lavapools : AIBoosterManager
 	{
 		base.Release();
 		this.synchronousJobRepository = null;
+		this.chosenmessages.Clear();
 	}
 
 	private const int requiredLavapools = 3;
@@ -160,7 +170,9 @@ public class AIBoosterManager_Lavapools : AIBoosterManager
 
 	private SimulationDecisionMaker<ConstructibleElement> decisionMaker;
 
-	private List<DecisionResult> decisionResults = new List<DecisionResult>();
+	private List<DecisionResult> decisionResults;
 
-	private float costFactorFromRegistry = 0.5f;
+	private float costFactorFromRegistry;
+
+	private List<EvaluableMessage_LavaboostNeeded> chosenmessages;
 }

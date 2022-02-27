@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Amplitude;
 using Amplitude.Unity.Event;
 using Amplitude.Unity.Framework;
@@ -10,7 +12,7 @@ using Amplitude.Utilities.Maps;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 
-public class TerraformDeviceManager : GameAncillary, IXmlSerializable, IService, IEnumerable, ITerraformDeviceRepositoryService, ITerraformDeviceService, IRepositoryService<TerraformDevice>, IEnumerable<TerraformDevice>, IEnumerable<KeyValuePair<ulong, TerraformDevice>>
+public class TerraformDeviceManager : GameAncillary, IXmlSerializable, IService, IEnumerable, ITerraformDeviceRepositoryService, IRepositoryService<TerraformDevice>, IEnumerable<TerraformDevice>, IEnumerable<KeyValuePair<ulong, TerraformDevice>>, ITerraformDeviceService
 {
 	public event EventHandler<TerraformDeviceRepositoryChangeEventArgs> TerraformDeviceRepositoryChange;
 
@@ -144,8 +146,7 @@ public class TerraformDeviceManager : GameAncillary, IXmlSerializable, IService,
 		reader.ReadEndElement("TerraformStateMap");
 		if (attribute > 0)
 		{
-			GridMap<byte> gridMap = base.Game.World.Atlas.GetMap(WorldAtlas.Maps.TerraformState) as GridMap<byte>;
-			gridMap.Data = array;
+			(base.Game.World.Atlas.GetMap(WorldAtlas.Maps.TerraformState) as GridMap<byte>).Data = array;
 		}
 		int attribute2 = reader.GetAttribute<int>("DevicesCount");
 		reader.ReadStartElement("TerraformDevices");
@@ -203,11 +204,35 @@ public class TerraformDeviceManager : GameAncillary, IXmlSerializable, IService,
 			reader.ReadEndElement("TerraformDevice");
 		}
 		reader.ReadEndElement("TerraformDevices");
+		if (num > 2 && reader.IsStartElement("TemporaryTerraformations"))
+		{
+			int attribute15 = reader.GetAttribute<int>("Count");
+			reader.ReadStartElement("TemporaryTerraformations");
+			base.Game.World.TemporaryTerraformations.Clear();
+			for (int l = 0; l < attribute15; l++)
+			{
+				World.TemporaryTerraformation temporaryTerraformation = new World.TemporaryTerraformation(WorldPosition.Invalid, StaticString.Empty, 1);
+				reader.ReadElementSerializable<World.TemporaryTerraformation>(ref temporaryTerraformation);
+				if (temporaryTerraformation.worldPosition.IsValid)
+				{
+					if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+					{
+						Diagnostics.Log("ELCP: Loading TemporaryTerraformation {0}", new object[]
+						{
+							temporaryTerraformation.ToString()
+						});
+					}
+					base.Game.World.TemporaryTerraformations.Add(temporaryTerraformation);
+				}
+			}
+			global::Game.ELCPRevertTempTerraformationsToOriginal(base.Game.World, true);
+			reader.ReadEndElement("TemporaryTerraformations");
+		}
 	}
 
 	public virtual void WriteXml(XmlWriter writer)
 	{
-		writer.WriteVersionAttribute(2);
+		writer.WriteVersionAttribute(3);
 		writer.WriteAttributeString("AssemblyQualifiedName", base.GetType().AssemblyQualifiedName);
 		writer.WriteAttributeString<int>("TurnWhenLastBegun", this.turnWhenLastBegun);
 		writer.WriteStartElement("TerraformStateMap");
@@ -241,6 +266,14 @@ public class TerraformDeviceManager : GameAncillary, IXmlSerializable, IService,
 			writer.WriteAttributeString<float>("ChargesWhenDismantleStarted", terraformDevice.ChargesWhenDismantleStarted);
 			writer.WriteAttributeString<bool>("PlacedByPrivateers", terraformDevice.PlacedByPrivateers);
 			writer.WriteEndElement();
+		}
+		writer.WriteEndElement();
+		writer.WriteStartElement("TemporaryTerraformations");
+		writer.WriteAttributeString<int>("Count", base.Game.World.TemporaryTerraformations.Count);
+		for (int j = 0; j < base.Game.World.TemporaryTerraformations.Count; j++)
+		{
+			IXmlSerializable xmlSerializable = base.Game.World.TemporaryTerraformations[j];
+			writer.WriteElementSerializable<IXmlSerializable>(ref xmlSerializable);
 		}
 		writer.WriteEndElement();
 	}
@@ -307,6 +340,8 @@ public class TerraformDeviceManager : GameAncillary, IXmlSerializable, IService,
 		}
 		this.RunTerraformation();
 		this.UnregisterExpiredDevices();
+		this.ManageGeomancy();
+		this.ManageTemporaryTerraformations();
 	}
 
 	public TerraformDevice AddDevice(GameEntityGUID guid, TerraformDeviceDefinition terraformDeviceDefinition, WorldPosition position, global::Empire empire, bool placedByPrivateers)
@@ -589,6 +624,84 @@ public class TerraformDeviceManager : GameAncillary, IXmlSerializable, IService,
 		for (int j = 0; j < list2.Count; j++)
 		{
 			this.worldPositionSimulationEvaluatorService.SetSomethingChangedOnRegion(list2[j]);
+		}
+	}
+
+	private void ManageTemporaryTerraformations()
+	{
+		List<WorldPosition> list = new List<WorldPosition>();
+		foreach (World.TemporaryTerraformation temporaryTerraformation in base.Game.World.TemporaryTerraformations)
+		{
+			temporaryTerraformation.turnsRemaing--;
+			if (temporaryTerraformation.turnsRemaing == 0)
+			{
+				list.Add(temporaryTerraformation.worldPosition);
+			}
+		}
+		if (list.Count > 0)
+		{
+			WorldPosition[] array = base.Game.World.PerformReversibleTerraformation(list.ToArray(), true, 0);
+			if (array.Length != 0)
+			{
+				base.Game.World.UpdateTerraformStateMap(true);
+				global::Empire terraformingEmpire = Services.GetService<IGameService>().Game.Services.GetService<IPlayerControllerRepositoryService>().ActivePlayerController.Empire as global::Empire;
+				this.eventService.Notify(new EventEmpireWorldTerraformed(terraformingEmpire, array, true));
+			}
+		}
+	}
+
+	private void ManageGeomancy()
+	{
+		if (ELCPUtilities.GeomancyDuration < 1 || ELCPUtilities.GeomancyRadius < 0)
+		{
+			return;
+		}
+		Stopwatch stopwatch = new Stopwatch();
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			stopwatch.Start();
+		}
+		foreach (global::Empire empire in base.Game.Empires)
+		{
+			List<IGarrison> list = new List<IGarrison>();
+			DepartmentOfTheInterior agency = empire.GetAgency<DepartmentOfTheInterior>();
+			if (agency != null)
+			{
+				list.AddRange(agency.Cities.Cast<IGarrison>());
+				list.AddRange(agency.Camps.Cast<IGarrison>());
+			}
+			DepartmentOfDefense agency2 = empire.GetAgency<DepartmentOfDefense>();
+			if (agency2 != null)
+			{
+				list.AddRange(agency2.Armies.Cast<IGarrison>());
+			}
+			foreach (IGarrison garrison in list)
+			{
+				using (IEnumerator<Unit> enumerator2 = garrison.Units.GetEnumerator())
+				{
+					while (enumerator2.MoveNext())
+					{
+						if (enumerator2.Current.CheckUnitAbility(UnitAbility.UnitAbilityGeomancy, -1))
+						{
+							WorldCircle worldCircle = new WorldCircle((garrison as IWorldPositionable).WorldPosition, ELCPUtilities.GeomancyRadius);
+							WorldPosition[] array = base.Game.World.PerformReversibleTerraformation(worldCircle.GetWorldPositions(base.Game.World.WorldParameters), false, ELCPUtilities.GeomancyDuration + 1);
+							if (array.Length != 0)
+							{
+								base.Game.World.UpdateTerraformStateMap(true);
+								this.eventService.Notify(new EventEmpireWorldTerraformed(empire, array, true));
+							}
+						}
+					}
+				}
+			}
+		}
+		if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+		{
+			stopwatch.Stop();
+			Diagnostics.Log("ELCP ManageGeomancy time elapsed: {0}", new object[]
+			{
+				stopwatch.Elapsed
+			});
 		}
 	}
 

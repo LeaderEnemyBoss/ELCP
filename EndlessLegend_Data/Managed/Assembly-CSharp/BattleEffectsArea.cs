@@ -104,6 +104,9 @@ public class BattleEffectsArea : BattleEffects
 		return 1;
 	}
 
+	[XmlAttribute]
+	public bool InitiatorAsCenter { get; set; }
+
 	private object preprocessedParameter;
 
 	public enum AreaType

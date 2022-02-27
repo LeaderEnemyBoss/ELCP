@@ -129,6 +129,7 @@ public class CityLabel : MonoBehaviour
 		this.ConstructionQueue = agency.GetConstructionQueue(this.City);
 		this.guiPanelHelper = helper;
 		IGameService service = Services.GetService<IGameService>();
+		this.game = (service.Game as global::Game);
 		this.playerControllerRepository = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
 		this.regionalEffectsService = service.Game.Services.GetService<IRegionalEffectsService>();
 		this.PanelSpying.Visible = false;
@@ -155,7 +156,7 @@ public class CityLabel : MonoBehaviour
 				Faction faction = this.GuiPreviousEmpire.Empire.Faction;
 				if (faction != null)
 				{
-					List<string> list = new List<string>();
+					new List<string>();
 					foreach (SimulationDescriptor simulationDescriptor in faction.GetIntegrationDescriptors())
 					{
 						this.PreviousEmpireFactionTooltip.Content = simulationDescriptor.Name;
@@ -164,9 +165,8 @@ public class CityLabel : MonoBehaviour
 			}
 		}
 		this.infiltrationCostResourceName = DepartmentOfTheTreasury.Resources.InfiltrationCost;
-		IDatabase<ResourceDefinition> database = Databases.GetDatabase<ResourceDefinition>(false);
 		ResourceDefinition resourceDefinition;
-		if (database.TryGetValue(DepartmentOfTheTreasury.Resources.InfiltrationCost, out resourceDefinition))
+		if (Databases.GetDatabase<ResourceDefinition>(false).TryGetValue(DepartmentOfTheTreasury.Resources.InfiltrationCost, out resourceDefinition))
 		{
 			this.infiltrationCostResourceName = resourceDefinition.GetName(this.playerControllerRepository.ActivePlayerController.Empire);
 		}
@@ -232,7 +232,7 @@ public class CityLabel : MonoBehaviour
 				Faction faction = this.GuiPreviousEmpire.Empire.Faction;
 				if (faction != null)
 				{
-					List<string> list = new List<string>();
+					new List<string>();
 					foreach (SimulationDescriptor simulationDescriptor in faction.GetIntegrationDescriptors())
 					{
 						this.PreviousEmpireFactionTooltip.Content = simulationDescriptor.Name;
@@ -251,21 +251,30 @@ public class CityLabel : MonoBehaviour
 		this.ConstructionGroup.AgeTooltip.Content = content;
 		this.RefreshCityName();
 		DepartmentOfIntelligence agency2 = this.playerControllerRepository.ActivePlayerController.Empire.GetAgency<DepartmentOfIntelligence>();
+		bool flag = this.playerControllerRepository.ActivePlayerController.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated);
+		if (flag && ELCPUtilities.SpectatorSpyFocus >= 0)
+		{
+			agency2 = this.game.Empires[ELCPUtilities.SpectatorSpyFocus].GetAgency<DepartmentOfIntelligence>();
+		}
 		Unit hero = null;
 		InfiltrationProcessus.InfiltrationState infiltrationState = InfiltrationProcessus.InfiltrationState.None;
-		bool flag = false;
+		bool flag2 = false;
 		if (this.playerControllerRepository != null)
 		{
 			if (this.City.Empire == this.playerControllerRepository.ActivePlayerController.Empire)
 			{
-				flag = true;
+				flag2 = true;
 			}
 			else if (this.PanelSpying.Visible && agency2 != null && agency2.TryGetSpyOnGarrison(this.City, out hero, out infiltrationState) && infiltrationState == InfiltrationProcessus.InfiltrationState.Infiltrated)
 			{
-				flag = true;
+				flag2 = true;
+			}
+			else if (flag)
+			{
+				flag2 = true;
 			}
 		}
-		if (!flag)
+		if (!flag2)
 		{
 			if (this.City.Empire == null)
 			{
@@ -292,9 +301,9 @@ public class CityLabel : MonoBehaviour
 				}
 			}
 		}
-		this.SelectionButton.AgeTransform.Enable = flag;
-		this.PlayerSpecificGroup.Visible = flag;
-		this.CompetitorSpecificGroup.Visible = !flag;
+		this.SelectionButton.AgeTransform.Enable = flag2;
+		this.PlayerSpecificGroup.Visible = flag2;
+		this.CompetitorSpecificGroup.Visible = !flag2;
 		float propertyValue = this.City.GetPropertyValue(SimulationProperties.CityDefensePoint);
 		float propertyValue2 = this.City.GetPropertyValue(SimulationProperties.MaximumCityDefensePoint);
 		float propertyValue3 = this.City.GetPropertyValue(SimulationProperties.CityDefensePointRecoveryPerTurn);
@@ -336,7 +345,7 @@ public class CityLabel : MonoBehaviour
 		{
 			this.DefenseTendency.Text = string.Empty;
 		}
-		if (flag)
+		if (flag2)
 		{
 			Construction construction2 = null;
 			if (this.ConstructionQueue != null)
@@ -361,10 +370,10 @@ public class CityLabel : MonoBehaviour
 				}
 				else if (this.guiPanelHelper.TryGetGuiElement(construction2.ConstructibleElement.Name, out guiElement))
 				{
-					Texture2D image;
-					if (this.guiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.Small, out image))
+					Texture2D image2;
+					if (this.guiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.Small, out image2))
 					{
-						this.ConstructionImage.Image = image;
+						this.ConstructionImage.Image = image2;
 					}
 				}
 				else
@@ -375,8 +384,8 @@ public class CityLabel : MonoBehaviour
 				int b;
 				float num3;
 				float num4;
-				bool flag2;
-				QueueGuiItem.GetConstructionTurnInfos(this.City, construction2, CityLabel.emptyList, out b, out num3, out num4, out flag2);
+				bool flag3;
+				QueueGuiItem.GetConstructionTurnInfos(this.City, construction2, CityLabel.emptyList, out b, out num3, out num4, out flag3);
 				int numberOfTurn = Mathf.Max(1, b);
 				this.ConstructionTurns.Text = QueueGuiItem.FormatNumberOfTurns(numberOfTurn);
 			}
@@ -426,19 +435,18 @@ public class CityLabel : MonoBehaviour
 						this.InfiltrationTurnValue.Text = GuiFormater.FormatGui(value2);
 					}
 				}
-				else
+				else if (!flag)
 				{
 					this.AssignSpyButton.AgeTransform.Visible = true;
 					float value3 = 0f;
 					this.failures.Clear();
-					bool flag3 = agency2.CanBeInfiltrate(this.City, out value3, this.failures);
-					DepartmentOfEducation agency3 = agency2.Empire.GetAgency<DepartmentOfEducation>();
-					bool flag4 = agency3.Heroes.Count < 1;
-					if (flag4)
+					bool flag4 = agency2.CanBeInfiltrate(this.City, out value3, this.failures);
+					bool flag5 = agency2.Empire.GetAgency<DepartmentOfEducation>().Heroes.Count < 1;
+					if (flag5)
 					{
-						flag3 = false;
+						flag4 = false;
 					}
-					this.AssignSpyButton.AgeTransform.Enable = flag3;
+					this.AssignSpyButton.AgeTransform.Enable = flag4;
 					global::IGuiService service = Services.GetService<global::IGuiService>();
 					string str = string.Empty;
 					if (this.failures.Contains(DepartmentOfIntelligence.InfiltrationTargetFailureNotAffordable))
@@ -451,11 +459,11 @@ public class CityLabel : MonoBehaviour
 					AgeTooltip ageTooltip2 = this.AssignSpyButton.AgeTransform.AgeTooltip;
 					if (ageTooltip2)
 					{
-						if (flag3)
+						if (flag4)
 						{
 							ageTooltip2.Content = "%EspionageLabelAssignSpyDescription";
 						}
-						else if (flag4)
+						else if (flag5)
 						{
 							ageTooltip2.Content = "%EspionageLabelAssignSpyNoHeroesDescription";
 						}
@@ -483,41 +491,39 @@ public class CityLabel : MonoBehaviour
 				}
 			}
 		}
-		bool flag5 = false;
-		List<Kaiju> list2 = new List<Kaiju>();
+		bool flag6 = false;
+		List<Kaiju> list = new List<Kaiju>();
 		foreach (RegionalEffect regionalEffect in this.city.GetRegionalEffects())
 		{
 			IRegionalEffectsProviderGameEntity regionalEffectsProviderGameEntity = null;
 			if (this.regionalEffectsService.TryGetEffectOwner(regionalEffect.GUID, out regionalEffectsProviderGameEntity) && regionalEffectsProviderGameEntity.GetRegionalEffectsProviderContext().SimulationObject.Tags.Contains("ClassKaiju"))
 			{
-				flag5 = true;
+				flag6 = true;
 				if (regionalEffectsProviderGameEntity is Kaiju)
 				{
 					Kaiju item = regionalEffectsProviderGameEntity as Kaiju;
-					if (!list2.Contains(item))
+					if (!list.Contains(item))
 					{
-						list2.Add(item);
+						list.Add(item);
 					}
 				}
 			}
 		}
-		if (flag5)
+		if (flag6)
 		{
 			AgeTransform ageTransform = this.KaijuIcon.AgeTransform;
 			ageTransform.Visible = true;
 			ageTransform.Enable = true;
 			this.PopulationGroup.PercentBottom = 100f - (ageTransform.Height + ageTransform.PixelMarginBottom) / ageTransform.GetParent().Height * 100f;
-			KaijuInfluenceInCityTooltipData clientData = new KaijuInfluenceInCityTooltipData(this.City, list2);
+			KaijuInfluenceInCityTooltipData clientData = new KaijuInfluenceInCityTooltipData(this.City, list);
 			this.KaijuIcon.AgeTransform.AgeTooltip.Content = "%CityKaijuAffectedDescription";
 			this.KaijuIcon.AgeTransform.AgeTooltip.Class = "Kaijus";
 			this.KaijuIcon.AgeTransform.AgeTooltip.ClientData = clientData;
+			return;
 		}
-		else
-		{
-			this.KaijuIcon.AgeTransform.Visible = false;
-			this.KaijuIcon.AgeTransform.Enable = false;
-			this.PopulationGroup.PercentBottom = 100f;
-		}
+		this.KaijuIcon.AgeTransform.Visible = false;
+		this.KaijuIcon.AgeTransform.Enable = false;
+		this.PopulationGroup.PercentBottom = 100f;
 	}
 
 	private void OnDestroy()
@@ -706,4 +712,6 @@ public class CityLabel : MonoBehaviour
 	private string temp = string.Empty;
 
 	private List<StaticString> failures = new List<StaticString>();
+
+	private global::Game game;
 }

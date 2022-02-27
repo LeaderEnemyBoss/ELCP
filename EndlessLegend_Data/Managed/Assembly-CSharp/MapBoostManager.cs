@@ -14,7 +14,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-public class MapBoostManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSerializable, IService, IEnumerable, IMapBoostRepositoryService, IMapBoostService, IRepositoryService<MapBoost>, IEnumerable<MapBoost>, IEnumerable<KeyValuePair<ulong, MapBoost>>
+public class MapBoostManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSerializable, IService, IEnumerable, IMapBoostRepositoryService, IRepositoryService<MapBoost>, IEnumerable<MapBoost>, IEnumerable<KeyValuePair<ulong, MapBoost>>, IMapBoostService
 {
 	public event EventHandler<MapBoostRepositoryChangeEventArgs> MapBoostRepositoryChange;
 

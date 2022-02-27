@@ -8,7 +8,7 @@
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryDustMaterial" />
     <SimulationDescriptorReference Name="TechnologyUnlockAccessoryTier3" />
 
-    <InterpreterPrerequisite Flags="Prerequisite,Era">$Property(EmpireTypeMajor/ClassResearch:Era5RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)</InterpreterPrerequisite>
+    <InterpreterPrerequisite Flags="Prerequisite,Era">($Property(EmpireTypeMajor/ClassResearch:Era5RequiredUnlockedTechnologyCount) ge $Property(EmpireTypeMajor/ClassResearch:EraTechnologyCountPrerequisite)) or $Path(#Era6,EmpireTypeMajor,EmpireEliminated)</InterpreterPrerequisite>
   </TechnologyEraDefinition>
 
   <!-- Improvement: Food6 -->

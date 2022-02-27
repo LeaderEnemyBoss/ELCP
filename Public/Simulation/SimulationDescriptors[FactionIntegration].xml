@@ -5,6 +5,7 @@
   <SimulationDescriptor Name="BrokenLordsIntegrationDescriptor1"                Type="FactionIntegration">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagDust"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagDust" TooltipHidden="true"/>
       <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Birdhive)"       Path="EmpireTypeMajor"/>
       <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Bos)"            Path="EmpireTypeMajor"/>
       <BinarySimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement" Operation="Addition" Left="0.01" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Ceratan)"        Path="EmpireTypeMajor"/>
@@ -31,6 +32,8 @@
      <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus" Operation="Addition" Value="0.2" Path="EmpireTypeMajor/Garrison/ClassUnit"/>
      <SimulationModifierDescriptor TargetProperty="ForestDefenseBonus" Operation="Addition" Value="0.2" Path="EmpireTypeMajor/ClassCity/Militia/ClassUnit" TooltipHidden="true"/>
      <SimulationModifierDescriptor TargetProperty="DistrictIndustry"   Operation="Addition" Value="1"   Path="EmpireTypeMajor/ClassCity/ClassDistrict,#Summer,TerrainTagForest"/>
+	 <SimulationModifierDescriptor TargetProperty="DistrictIndustry"   Operation="Addition" Value="1"   Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,#Summer,TerrainTagForest" TooltipHidden="true"/>
+	 <SimulationModifierDescriptor TargetProperty="LevelOfCamouflage"  Operation="Addition" Value="1"   Path="EmpireTypeMajor/ClassArmy/ClassUnit,!AdvancedTransportShipUnit,!TransportShipUnit,!SeafaringUnit"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -38,7 +41,7 @@
   <SimulationDescriptor Name="NecrophagesIntegrationDescriptor1"                Type="FactionIntegration">
     <SimulationModifierDescriptors>
      <SimulationModifierDescriptor TargetProperty="GlobalUnitRegenImprovement"  Operation="Addition" Value="0.05" Path="EmpireTypeMajor"/>
-     <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"              Operation="Percent"  Value="-0.25" Path="EmpireTypeMajor/Garrison"/>
+     <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"              Operation="Percent"  Value="-0.5" Path="EmpireTypeMajor/Garrison"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -46,8 +49,9 @@
   <SimulationDescriptor Name="RageWizardsIntegrationDescriptor1"                Type="FactionIntegration">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BaseCityPointPerPopulation" Operation="Addition"  Value="1"     Path="EmpireTypeMajor/ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="CityCityPoint"              Operation="Addition"  Value="5"     Path="EmpireTypeMajor/ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="CityApproval"               Operation="Addition"  Value="15"    Path="EmpireTypeMajor/ClassCity"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="5" BinaryOperation="Multiplication" Right="$(NumberOfCities)" Path="EmpireTypeMajor/ClassCity,MainCity"/>
+     <!-- <SimulationModifierDescriptor TargetProperty="CityEmpirePoint"              Operation="Addition"  Value="5"   Path="EmpireTypeMajor/ClassCity" Priority="10"/>-->
+      <SimulationModifierDescriptor TargetProperty="CityApproval"               Operation="Addition"  Value="15"    Path="EmpireTypeMajor/ClassCity" Priority="20"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -55,6 +59,7 @@
   <SimulationDescriptor Name="VaultersIntegrationDescriptor1"                   Type="FactionIntegration">
     <SimulationModifierDescriptors>
      <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagScience"/>
+	 <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagScience" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -63,8 +68,8 @@
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="CommercialAgreementCostMultiplier"  Operation="Percent" Value="-0.5" Path="EmpireTypeMajor"/>
       <SimulationModifierDescriptor TargetProperty="ResearchAgreementCostMultiplier"    Operation="Percent" Value="-0.5" Path="EmpireTypeMajor"/>
-      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"        Operation="Percent" Value="0.1" Path="EmpireTypeMajor/ClassCity"/>
-      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome"           Operation="Percent" Value="0.1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityScienceIncome"        Operation="Percent" Value="0.5" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="TradeRouteCityDustIncome"           Operation="Percent" Value="0.5" Path="EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -72,6 +77,7 @@
   <SimulationDescriptor Name="DrakkensIntegrationDescriptor1"                   Type="FactionIntegration">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MinorFactionAssimilationCostModifier"  Operation="Percent"  Value="-1" Path="ClassEmpire,EmpireTypeMajor" />
+	  <SimulationModifierDescriptor TargetProperty="NodeOvergrownVillageCostModifier"      Operation="Multiplication" Value="0.5" Path="ELCPEmpireProperties"/>
       <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Birdhive)"       Path="EmpireTypeMajor/ClassCity,MainCity"/>
       <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Bos)"            Path="EmpireTypeMajor/ClassCity,MainCity"/>
       <BinarySimulationModifierDescriptor TargetProperty="CityCityPoint" Operation="Addition" Left="2" BinaryOperation="Multiplication" Right="$(PacifiedVillages_Ceratan)"        Path="EmpireTypeMajor/ClassCity,MainCity"/>
@@ -96,7 +102,9 @@
   <SimulationDescriptor Name="CultistsIntegrationDescriptor1"                   Type="FactionIntegration">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"      Operation="Addition"       Value="75"  Path="EmpireTypeMajor/ClassCity,MainCity"/>
-      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"   Operation="Addition"       Value="50"  Path="EmpireTypeMajor/ClassCity/ClassUnit"/>
+	  <SimulationModifierDescriptor TargetProperty="MaximumCityDefensePoint"      Operation="Addition"       Value="50"  Path="EmpireTypeMajor/ClassCity" Priority="25"/>
+	  <SimulationModifierDescriptor TargetProperty="MaximumUnitSlotCount"         Operation="Addition"       Value="1"   Path="EmpireTypeMajor/ClassCity/Militia" Priority="25"/>
+      <SimulationModifierDescriptor TargetProperty="ExperienceRewardAtCreation"   Operation="Addition"       Value="100" Path="EmpireTypeMajor/ClassCity/ClassUnit"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -106,6 +114,7 @@
       <SimulationModifierDescriptor TargetProperty="CityAntiSpy"                 Operation="Addition"        Value="10"         Path="ClassEmpire/ClassCity"/>
       <SimulationModifierDescriptor TargetProperty="NetInfiltrationPoint"        Operation="Addition"        Value="2"          Path="EmpireTypeMajor/SpiedGarrison"/>
       <SimulationModifierDescriptor TargetProperty="PillageBoost"                Operation="Percent"         Value="0.5"        Path="EmpireTypeMajor"/>
+	  <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn" Operation ="Addition"       Value="1"          Path="EmpireTypeMajor/ClassArmy/!AdvancedTransportShipUnit,!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -117,14 +126,18 @@
       <SimulationModifierDescriptor TargetProperty="DiplomaticNegotiationFactor"           Operation="Percent"         Value="-0.25"   Path="#Summer,EmpireTypeMajor"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-
+  
   <!-- Sea Demons -->
   <SimulationDescriptor Name="SeaDemonsIntegrationDescriptor1"                  Type="FactionIntegration">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry"           Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagWater"/>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry"           Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagRiver"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictIndustry"           Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagRiver" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictIndustry"           Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagWater" TooltipHidden="true"/>
       <SimulationModifierDescriptor TargetProperty="DistrictScience"            Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagWater"/>
       <SimulationModifierDescriptor TargetProperty="DistrictScience"            Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagRiver"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience"            Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagWater" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience"            Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagRiver" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -139,8 +152,7 @@
   <!-- Mimics -->
   <SimulationDescriptor Name="MimicsIntegrationDescriptor1"                     Type="FactionIntegration">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="OrganicIndustryPercent"          Operation="Addition" Value="0.1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="OrganicIndustryPercent"          Operation="Addition" Value="0.15" Path="EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-
 </Datatable>

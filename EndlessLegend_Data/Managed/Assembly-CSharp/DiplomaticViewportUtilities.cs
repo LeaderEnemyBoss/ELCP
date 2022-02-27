@@ -192,6 +192,36 @@ public static class DiplomaticViewportUtilities
 		}
 	}
 
+	public static void SetSocketTexture(GameObject gameObject, Texture texture)
+	{
+		DiplomaticViewportUtilities.SetSocketTexture(gameObject.GetComponentsInChildren<Renderer>(true), texture);
+	}
+
+	public static void SetSocketTexture(Renderer[] renderers, Texture texture)
+	{
+		int num = 0;
+		while (renderers != null && num < renderers.Length)
+		{
+			Renderer renderer = renderers[num];
+			if (num > 0)
+			{
+				for (int i = 0; i < renderer.materials.Length; i++)
+				{
+					DiplomaticViewportUtilities.SetSocketTexture(renderer.materials[i], texture);
+				}
+			}
+			num++;
+		}
+	}
+
+	public static void SetSocketTexture(Material oneMaterial, Texture texture)
+	{
+		if (oneMaterial != null && oneMaterial.HasProperty("_MainTex"))
+		{
+			oneMaterial.SetTexture("_MainTex", texture);
+		}
+	}
+
 	public static float SeasonChangeShiftingDelay = 1f;
 
 	private static string statusMaterialPropertyName = "_Status";

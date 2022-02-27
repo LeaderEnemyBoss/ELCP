@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Amplitude;
 using Amplitude.Unity.AI;
 using Amplitude.Unity.Framework;
+using Amplitude.Unity.Game;
 using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
@@ -14,10 +17,20 @@ using UnityEngine;
 })]
 public class AILayer_ResourceManager : AILayer, IXmlSerializable
 {
+	public AILayer_ResourceManager()
+	{
+		this.sellInfos = new List<AILayer_ResourceManager.SellInfo>();
+		this.strategicResourceMinimumStockPerCity = 5f;
+		this.maxDeviationFromResourceMinimumStock = 0.5f;
+		this.boosterManagers = new List<AIBoosterManager>();
+		this.moneyFactor = 0.5f;
+		this.productionFactor = 10f;
+		this.BoostersInUse = new List<string>();
+	}
+
 	public override void ReadXml(XmlReader reader)
 	{
-		int num = reader.ReadVersionAttribute();
-		if (num >= 2)
+		if (reader.ReadVersionAttribute() >= 2)
 		{
 			this.ResourcePolicyMessageID = reader.GetAttribute<ulong>("ResourcePolicyMessageID");
 		}
@@ -26,8 +39,7 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 
 	public override void WriteXml(XmlWriter writer)
 	{
-		int num = writer.WriteVersionAttribute(2);
-		if (num >= 2)
+		if (writer.WriteVersionAttribute(2) >= 2)
 		{
 			writer.WriteAttributeString<ulong>("ResourcePolicyMessageID", this.ResourcePolicyMessageID);
 		}
@@ -68,8 +80,7 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 
 	private void ExecuteResourceSellNeeds()
 	{
-		DepartmentOfScience agency = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
-		if (!agency.CanTradeResourcesAndBoosters(false))
+		if (!base.AIEntity.Empire.GetAgency<DepartmentOfScience>().CanTradeResourcesAndBoosters(false))
 		{
 			return;
 		}
@@ -101,8 +112,7 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 		}
 		if (flag)
 		{
-			ISynchronousJobRepositoryAIHelper service = AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>();
-			service.RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_SellResources));
+			AIScheduler.Services.GetService<ISynchronousJobRepositoryAIHelper>().RegisterSynchronousJob(new SynchronousJob(this.SynchronousJob_SellResources));
 		}
 	}
 
@@ -110,48 +120,153 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 	{
 		float propertyValue = base.AIEntity.Empire.GetPropertyValue(SimulationProperties.EmpireScaleFactor);
 		float num = 5f * (propertyValue + 1f);
-		float num2;
-		this.departmentOfTheTreasury.TryGetNetResourceValue(base.AIEntity.Empire, sellInfo.ResourceDefinition.Name, out num2, true);
-		if (num2 < 0.5f && stockValue < num)
+		float num2 = 0f;
+		if (this.aILayer_Research.ResourcesNeededForKaijus.TryGetValue(sellInfo.ResourceDefinition.Name, out num2))
 		{
+			return 1.5f * num + num2;
+		}
+		if (this.aILayer_QuestBTController.ResourcesNeededForQuest.TryGetValue(sellInfo.ResourceDefinition.Name, out num2))
+		{
+			return 1.5f * num + num2;
+		}
+		float num3;
+		this.departmentOfTheTreasury.TryGetNetResourceValue(base.AIEntity.Empire, sellInfo.ResourceDefinition.Name, out num3, true);
+		if (num3 < 0.5f && stockValue < num)
+		{
+			if (this.departmentOfScience.CanTradeResourcesAndBoosters(false))
+			{
+				List<string> list = new List<string>
+				{
+					"Luxury5",
+					"Luxury11",
+					"Luxury12",
+					"Luxury7",
+					"Luxury3",
+					"Luxury13",
+					"Luxury6",
+					"Luxury2",
+					"Luxury10",
+					"Luxury4",
+					"Luxury8",
+					"Luxury1",
+					"Luxury9",
+					"Luxury15",
+					"Luxury14"
+				};
+				float num4 = 0f;
+				foreach (City city in this.departmentOfTheInterior.Cities)
+				{
+					num4 += city.GetPropertyValue(SimulationProperties.OverrallTradeRoutesCityDustIncome);
+				}
+				if (num4 < 50f)
+				{
+					list.Remove("Luxury7");
+				}
+				if (this.departmentOfEducation.Heroes.Count < 5)
+				{
+					list.Remove("Luxury13");
+				}
+				if (base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireApproval) > 90f)
+				{
+					list.Remove("Luxury14");
+					list.Remove("Luxury5");
+				}
+				if (!this.departmentOfForeignAffairs.IsInWarWithSomeone())
+				{
+					list.Remove("Luxury6");
+					list.Remove("Luxury2");
+				}
+				if (base.AIEntity.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitReplicants1))
+				{
+					list.Remove("Luxury8");
+				}
+				if (base.AIEntity.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitBrokenLords2))
+				{
+					list.Remove("Luxury4");
+				}
+				float num5;
+				if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num5, false))
+				{
+					num5 = 0f;
+				}
+				if (num5 < 600f || (float)this.departmentOfEducation.Heroes.Count < (float)this.departmentOfTheInterior.Cities.Count * 1.5f || base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireMoney) < 10f)
+				{
+					list.Remove("Luxury14");
+					list.Remove("Luxury15");
+					list.Remove("Luxury9");
+				}
+				if (list.Contains(sellInfo.ResourceDefinition.Name))
+				{
+					float num6 = Mathf.Ceil(num - stockValue);
+					TradableResource tradableResource = this.TryGetTradableRessource(sellInfo.ResourceDefinition.Name);
+					if (tradableResource != null && tradableResource.Quantity >= num6)
+					{
+						float priceWithSalesTaxes = TradableResource.GetPriceWithSalesTaxes(sellInfo.ResourceDefinition.Name, TradableTransactionType.Buyout, base.AIEntity.Empire, num6);
+						float num7 = (num6 <= 10f) ? 2.5f : (2.5f + (num6 - 10f) / 20f);
+						if (num5 >= priceWithSalesTaxes * num7)
+						{
+							return 1.5f * num;
+						}
+					}
+				}
+			}
 			return 0f;
 		}
-		return 2f * num;
+		return 1.5f * num;
 	}
 
 	private float GetStrategicSellThreshold(AILayer_ResourceManager.SellInfo sellInfo, float stockValue)
 	{
+		float num;
+		if (!this.departmentOfTheTreasury.TryGetResourceStockValue(base.AIEntity.Empire.SimulationObject, DepartmentOfTheTreasury.Resources.EmpireMoney, out num, false))
+		{
+			num = 0f;
+		}
+		bool flag = false;
+		if (base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireMoney) >= 1f)
+		{
+			flag = true;
+		}
 		float averageValue = this.resourcesAIData.GetAverageValue(string.Format("{0}Stock", sellInfo.ResourceDefinition.Name));
 		float averageValue2 = this.resourcesAIData.GetAverageValue(string.Format("{0}Income", sellInfo.ResourceDefinition.Name));
 		float averageValue3 = this.resourcesAIData.GetAverageValue(string.Format("{0}Expenditure", sellInfo.ResourceDefinition.Name));
-		float num = averageValue + 8f * base.AIEntity.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier) * (averageValue2 - averageValue3);
-		float propertyValue = base.AIEntity.Empire.GetPropertyValue(SimulationProperties.EmpireScaleFactor);
-		float b = propertyValue * this.strategicResourceMinimumStockPerCity;
-		float num2 = Mathf.Max(stockValue - num, b);
+		float num2 = averageValue + 8f * base.AIEntity.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier) * (averageValue2 - averageValue3);
+		float b = base.AIEntity.Empire.GetPropertyValue(SimulationProperties.EmpireScaleFactor) * this.strategicResourceMinimumStockPerCity;
+		float num3 = Mathf.Max(stockValue - num2, b);
 		float averageValue4 = this.resourcesAIData.GetAverageValue(SimulationProperties.BankAccount);
 		float averageValue5 = this.resourcesAIData.GetAverageValue(SimulationProperties.NetEmpireMoney);
 		float b2 = averageValue4 + 8f * base.AIEntity.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier) * averageValue5;
-		float quantity = stockValue - num2;
+		float quantity = stockValue - num3;
 		float priceWithSalesTaxes = TradableResource.GetPriceWithSalesTaxes(sellInfo.ResourceDefinition.Name, TradableTransactionType.Sellout, base.AIEntity.Empire, quantity);
 		if (priceWithSalesTaxes <= 1.401298E-45f)
 		{
 			return float.PositiveInfinity;
 		}
-		float num3 = priceWithSalesTaxes / Mathf.Max(1f, b2);
-		float value = 1f / num3;
-		float num4 = Mathf.Clamp01(this.maxDeviationFromResourceMinimumStock);
-		return num2 * Mathf.Clamp(value, 1f - num4, 1f + num4);
+		float num4 = priceWithSalesTaxes / Mathf.Max(1f, b2);
+		float value = 1f / num4;
+		float num5 = Mathf.Clamp01(this.maxDeviationFromResourceMinimumStock);
+		float num6 = num3 * Mathf.Clamp(value, 1f - num5, 1f + num5);
+		if (flag)
+		{
+			float num7 = this.departmentOfForeignAffairs.IsInWarWithSomeone() ? 2f : 1f;
+			float b3 = (20f + ((float)this.departmentOfScience.CurrentTechnologyEraNumber - 1f) * 10f) * num7;
+			num6 = Mathf.Max(num6, b3);
+		}
+		return num6;
 	}
 
 	private SynchronousJobState SynchronousJob_SellResources()
 	{
+		IGameService service = Services.GetService<IGameService>();
+		int turn = (service.Game as global::Game).Turn;
+		ReadOnlyCollection<TradableTransaction> pastTransactions = this.tradeManagementService.GetPastTransactions();
 		for (int i = 0; i < this.sellInfos.Count; i++)
 		{
 			AILayer_ResourceManager.SellInfo sellInfo = this.sellInfos[i];
-			if (sellInfo.AmountToSell >= 1f)
+			if (sellInfo.AmountToSell >= 1f && !pastTransactions.Any((TradableTransaction T) => T.ReferenceName == sellInfo.ResourceDefinition.Name && T.Type == TradableTransactionType.Buyout && T.Turn >= (uint)(turn - 5) && T.EmpireIndex == (uint)this.AIEntity.Empire.Index))
 			{
 				float amountToSell = sellInfo.AmountToSell;
-				if (this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.AIEntity.Empire, sellInfo.ResourceDefinition.Name, ref amountToSell))
+				if (this.departmentOfTheTreasury.IsTransferOfResourcePossible(base.AIEntity.Empire, sellInfo.ResourceDefinition.Name, ref amountToSell) && amountToSell >= 1f)
 				{
 					OrderSelloutTradableResource order = new OrderSelloutTradableResource(base.AIEntity.Empire.Index, sellInfo.ResourceDefinition.Name, amountToSell, false);
 					Ticket ticket;
@@ -182,26 +297,32 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 	public override IEnumerator Initialize(AIEntity aiEntity)
 	{
 		yield return base.Initialize(aiEntity);
+		this.aILayer_Research = base.AIEntity.GetLayer<AILayer_Research>();
+		this.aILayer_QuestBTController = base.AIEntity.GetLayer<AILayer_QuestBTController>();
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		this.departmentOfTheTreasury = base.AIEntity.Empire.GetAgency<DepartmentOfTheTreasury>();
+		this.departmentOfEducation = base.AIEntity.Empire.GetAgency<DepartmentOfEducation>();
+		this.departmentOfForeignAffairs = base.AIEntity.Empire.GetAgency<DepartmentOfForeignAffairs>();
+		this.departmentOfScience = base.AIEntity.Empire.GetAgency<DepartmentOfScience>();
+		IGameService service = Services.GetService<IGameService>();
+		this.tradeManagementService = (service.Game as global::Game).Services.GetService<ITradeManagementService>();
 		this.resourceDatabase = Databases.GetDatabase<ResourceDefinition>(true);
-		IDatabase<AIBoosterManagerDefinition> boosterManagerDatabase = Databases.GetDatabase<AIBoosterManagerDefinition>(false);
-		foreach (AIBoosterManagerDefinition boosterManagerDefinition in boosterManagerDatabase)
+		foreach (AIBoosterManagerDefinition aiboosterManagerDefinition in Databases.GetDatabase<AIBoosterManagerDefinition>(false))
 		{
-			if (boosterManagerDefinition.CheckPrerequisites(base.AIEntity.Empire))
+			if (aiboosterManagerDefinition.CheckPrerequisites(base.AIEntity.Empire))
 			{
 				try
 				{
-					string assemblyQualifiedName = boosterManagerDefinition.BoosterManagerAssemblyQualifiedName;
-					if (!string.IsNullOrEmpty(assemblyQualifiedName))
+					string boosterManagerAssemblyQualifiedName = aiboosterManagerDefinition.BoosterManagerAssemblyQualifiedName;
+					if (!string.IsNullOrEmpty(boosterManagerAssemblyQualifiedName))
 					{
-						Type assemblyQualifiedType = Type.GetType(assemblyQualifiedName);
-						if (assemblyQualifiedType != null)
+						Type type = Type.GetType(boosterManagerAssemblyQualifiedName);
+						if (type != null)
 						{
-							AIBoosterManager boosterManager = Activator.CreateInstance(assemblyQualifiedType) as AIBoosterManager;
-							if (boosterManager != null)
+							AIBoosterManager aiboosterManager = Activator.CreateInstance(type) as AIBoosterManager;
+							if (aiboosterManager != null)
 							{
-								this.boosterManagers.Add(boosterManager);
+								this.boosterManagers.Add(aiboosterManager);
 							}
 						}
 					}
@@ -211,9 +332,9 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 				}
 			}
 		}
-		for (int index = 0; index < this.boosterManagers.Count; index++)
+		for (int i = 0; i < this.boosterManagers.Count; i++)
 		{
-			this.boosterManagers[index].Initialize(base.AIEntity);
+			this.boosterManagers[i].Initialize(base.AIEntity);
 		}
 		base.AIEntity.RegisterPass(AIEntity.Passes.CreateLocalNeeds.ToString(), "AILayer_ResourceManager_CreateLocalNeedsPass", new AIEntity.AIAction(this.CreateLocalNeeds), this, new StaticString[0]);
 		base.AIEntity.RegisterPass(AIEntity.Passes.EvaluateNeeds.ToString(), "AILayer_ResourceManager_EvaluateNeedsPass", new AIEntity.AIAction(this.EvaluateNeeds), this, new StaticString[0]);
@@ -230,9 +351,9 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 	public override IEnumerator Load()
 	{
 		yield return base.Load();
-		for (int index = 0; index < this.boosterManagers.Count; index++)
+		for (int i = 0; i < this.boosterManagers.Count; i++)
 		{
-			this.boosterManagers[index].Load();
+			this.boosterManagers[i].Load();
 		}
 		yield break;
 	}
@@ -248,6 +369,13 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 		this.resourceDatabase = null;
 		this.departmentOfTheInterior = null;
 		this.departmentOfTheTreasury = null;
+		this.departmentOfEducation = null;
+		this.departmentOfForeignAffairs = null;
+		this.departmentOfScience = null;
+		this.tradeManagementService = null;
+		this.BoostersInUse = null;
+		this.aILayer_Research = null;
+		this.aILayer_QuestBTController = null;
 	}
 
 	protected override void CreateLocalNeeds(StaticString context, StaticString pass)
@@ -304,10 +432,9 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 		aiscoring2.Name = DepartmentOfTheTreasury.Resources.EmpireMoney;
 		aiscoring2.Value = 50f;
 		float propertyValue = base.AIEntity.Empire.GetPropertyValue(SimulationProperties.NetEmpireMoney);
-		AILayer_AccountManager layer = base.AIEntity.GetLayer<AILayer_AccountManager>();
 		float num;
 		float num2;
-		if (layer.TryGetAccountInfos("Military", "EmpireMoney", out num, out num2))
+		if (base.AIEntity.GetLayer<AILayer_AccountManager>().TryGetAccountInfos("Military", "EmpireMoney", out num, out num2))
 		{
 			if (propertyValue > 0f)
 			{
@@ -325,8 +452,7 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 			if (resourceDefinition.ResourceType == ResourceDefinition.Type.Strategic)
 			{
 				Diagnostics.Assert(AIScheduler.Services != null);
-				IUnitDesignAIHelper service = AIScheduler.Services.GetService<IUnitDesignAIHelper>();
-				float num3 = service.ComputeResourceAvailabilityByUnit(base.AIEntity.Empire, resourceDefinition);
+				float num3 = AIScheduler.Services.GetService<IUnitDesignAIHelper>().ComputeResourceAvailabilityByUnit(base.AIEntity.Empire, resourceDefinition);
 				if (num3 > 0f)
 				{
 					list.Add(new AIScoring
@@ -340,17 +466,32 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 		resourcePolicyMessage2.ResourcePolicyForUnitDesign = list;
 	}
 
-	private List<AILayer_ResourceManager.SellInfo> sellInfos = new List<AILayer_ResourceManager.SellInfo>();
+	private TradableResource TryGetTradableRessource(StaticString resourceName)
+	{
+		List<ITradable> list;
+		this.tradeManagementService.TryGetTradables("TradableResource" + resourceName, out list);
+		for (int i = 0; i < list.Count; i++)
+		{
+			TradableResource tradableResource = list[i] as TradableResource;
+			if (tradableResource.ResourceName == resourceName)
+			{
+				return tradableResource;
+			}
+		}
+		return null;
+	}
+
+	private List<AILayer_ResourceManager.SellInfo> sellInfos;
 
 	private AIData resourcesAIData;
 
 	[InfluencedByPersonality]
-	private float strategicResourceMinimumStockPerCity = 5f;
+	private float strategicResourceMinimumStockPerCity;
 
 	[InfluencedByPersonality]
-	private float maxDeviationFromResourceMinimumStock = 0.5f;
+	private float maxDeviationFromResourceMinimumStock;
 
-	private List<AIBoosterManager> boosterManagers = new List<AIBoosterManager>();
+	private List<AIBoosterManager> boosterManagers;
 
 	private DepartmentOfTheInterior departmentOfTheInterior;
 
@@ -359,10 +500,24 @@ public class AILayer_ResourceManager : AILayer, IXmlSerializable
 	private DepartmentOfTheTreasury departmentOfTheTreasury;
 
 	[InfluencedByPersonality]
-	private float moneyFactor = 0.5f;
+	private float moneyFactor;
 
 	[InfluencedByPersonality]
-	private float productionFactor = 10f;
+	private float productionFactor;
+
+	public List<string> BoostersInUse;
+
+	private DepartmentOfScience departmentOfScience;
+
+	private DepartmentOfEducation departmentOfEducation;
+
+	private DepartmentOfForeignAffairs departmentOfForeignAffairs;
+
+	private ITradeManagementService tradeManagementService;
+
+	private AILayer_Research aILayer_Research;
+
+	private AILayer_QuestBTController aILayer_QuestBTController;
 
 	private class SellInfo
 	{

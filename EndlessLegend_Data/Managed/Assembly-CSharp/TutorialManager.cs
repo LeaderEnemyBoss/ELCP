@@ -345,10 +345,9 @@ public class TutorialManager : GameAncillary, Amplitude.Xml.Serialization.IXmlSe
 				text += "/TChinese";
 			}
 		}
-		IEnumerable<GameSaveDescriptor> source = from element in TutorialManager.GetListOfGameSaveDescritors(text)
+		GameSaveDescriptor gameSaveDescriptor = (from element in TutorialManager.GetListOfGameSaveDescritors(text)
 		orderby element.SourceFileName
-		select element;
-		GameSaveDescriptor gameSaveDescriptor = source.FirstOrDefault<GameSaveDescriptor>();
+		select element).FirstOrDefault<GameSaveDescriptor>();
 		if (gameSaveDescriptor != null)
 		{
 			TutorialManager.Launch(gameSaveDescriptor);

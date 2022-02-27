@@ -156,8 +156,7 @@ public class ArmyAction_ToggleDismantleDevice : ArmyAction, IArmyActionWithTarge
 			}
 			if (device.Empire != army.Empire && army.Empire is MajorEmpire && !(device.Empire is LesserEmpire))
 			{
-				DepartmentOfForeignAffairs agency = army.Empire.GetAgency<DepartmentOfForeignAffairs>();
-				DiplomaticRelation diplomaticRelation = agency.DiplomaticRelations[device.Empire.Index];
+				DiplomaticRelation diplomaticRelation = army.Empire.GetAgency<DepartmentOfForeignAffairs>().DiplomaticRelations[device.Empire.Index];
 				if (diplomaticRelation != null && diplomaticRelation.State != null && (diplomaticRelation.State.Name == DiplomaticRelationState.Names.Alliance || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace))
 				{
 					failureFlags.Add(ArmyAction.NoCanDoWhileHidden);

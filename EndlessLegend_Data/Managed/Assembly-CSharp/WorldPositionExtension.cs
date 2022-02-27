@@ -12,7 +12,6 @@ public static class WorldPositionExtension
 		}
 		if (!worldPosition.IsValid)
 		{
-			Diagnostics.LogWarning("worldPosition " + worldPosition.ToString());
 			return default(T);
 		}
 		if (worldPosition.Column < 0 || (int)worldPosition.Column >= map.Width || worldPosition.Row < 0 || (int)worldPosition.Row >= map.Height)

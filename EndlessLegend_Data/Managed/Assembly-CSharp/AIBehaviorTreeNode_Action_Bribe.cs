@@ -32,8 +32,7 @@ public class AIBehaviorTreeNode_Action_Bribe : AIBehaviorTreeNode_Action
 			return State.Running;
 		}
 		Army army;
-		AIArmyMission.AIArmyMissionErrorCode armyUnlessLocked = base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army);
-		if (armyUnlessLocked != AIArmyMission.AIArmyMissionErrorCode.None)
+		if (base.GetArmyUnlessLocked(aiBehaviorTree, "$Army", out army) != AIArmyMission.AIArmyMissionErrorCode.None)
 		{
 			return State.Failure;
 		}
@@ -52,8 +51,7 @@ public class AIBehaviorTreeNode_Action_Bribe : AIBehaviorTreeNode_Action
 		}
 		IGameService service = Services.GetService<IGameService>();
 		Diagnostics.Assert(service != null);
-		IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
-		if (!service2.Contains(target.GUID))
+		if (!service.Game.Services.GetService<IGameEntityRepositoryService>().Contains(target.GUID))
 		{
 			return State.Success;
 		}
@@ -76,17 +74,13 @@ public class AIBehaviorTreeNode_Action_Bribe : AIBehaviorTreeNode_Action
 		{
 			return State.Failure;
 		}
-		IEncounterRepositoryService service3 = service.Game.Services.GetService<IEncounterRepositoryService>();
-		if (service3 != null)
+		IEncounterRepositoryService service2 = service.Game.Services.GetService<IEncounterRepositoryService>();
+		if (service2 != null)
 		{
-			IEnumerable<Encounter> enumerable = service3;
-			if (enumerable != null)
+			IEnumerable<Encounter> enumerable = service2;
+			if (enumerable != null && enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false) || encounter.IsGarrisonInEncounter(target.GUID, false)))
 			{
-				bool flag = enumerable.Any((Encounter encounter) => encounter.IsGarrisonInEncounter(army.GUID, false) || encounter.IsGarrisonInEncounter(target.GUID, false));
-				if (flag)
-				{
-					return State.Running;
-				}
+				return State.Running;
 			}
 		}
 		Village village = target as Village;
@@ -96,8 +90,7 @@ public class AIBehaviorTreeNode_Action_Bribe : AIBehaviorTreeNode_Action
 			return State.Failure;
 		}
 		Diagnostics.Assert(AIScheduler.Services != null);
-		IWorldPositionningService service4 = service.Game.Services.GetService<IWorldPositionningService>();
-		if (service4.GetDistance(army.WorldPosition, (target as IWorldPositionable).WorldPosition) != 1)
+		if (service.Game.Services.GetService<IWorldPositionningService>().GetDistance(army.WorldPosition, (target as IWorldPositionable).WorldPosition) != 1)
 		{
 			aiBehaviorTree.ErrorCode = 12;
 			return State.Failure;

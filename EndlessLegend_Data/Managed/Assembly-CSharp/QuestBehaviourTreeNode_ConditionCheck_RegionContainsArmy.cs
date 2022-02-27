@@ -37,8 +37,7 @@ public class QuestBehaviourTreeNode_ConditionCheck_RegionContainsArmy : QuestBeh
 		{
 			IGameService service = Services.GetService<IGameService>();
 			Diagnostics.Assert(service != null);
-			global::Game x = service.Game as global::Game;
-			if (x == null)
+			if (service.Game as global::Game == null)
 			{
 				return State.Failure;
 			}
@@ -107,18 +106,15 @@ public class QuestBehaviourTreeNode_ConditionCheck_RegionContainsArmy : QuestBeh
 			}
 			this.RegionIndex = region.Index;
 		}
-		if (!this.CheckAllArmies)
+		ulong num;
+		if (!this.CheckAllArmies && this.ArmyGuid == 0UL && !string.IsNullOrEmpty(this.ArmyGuidVarName) && questBehaviour.TryGetQuestVariableValueByName<ulong>(this.ArmyGuidVarName, out num))
 		{
-			ulong num;
-			if (this.ArmyGuid == 0UL && !string.IsNullOrEmpty(this.ArmyGuidVarName) && questBehaviour.TryGetQuestVariableValueByName<ulong>(this.ArmyGuidVarName, out num))
+			if (num == 0UL)
 			{
-				if (num == 0UL)
-				{
-					Diagnostics.LogError("QuestBehaviourTreeNode_ConditionCheck_IsArmyAlive : Army guid is invalid");
-					return false;
-				}
-				this.ArmyGuid = new GameEntityGUID(num);
+				Diagnostics.LogError("QuestBehaviourTreeNode_ConditionCheck_IsArmyAlive : Army guid is invalid");
+				return false;
 			}
+			this.ArmyGuid = new GameEntityGUID(num);
 		}
 		return base.Initialize(questBehaviour);
 	}

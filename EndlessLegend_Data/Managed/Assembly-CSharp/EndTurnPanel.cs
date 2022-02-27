@@ -396,8 +396,8 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		this.PlayerRepositoryService = base.Game.Services.GetService<IPlayerRepositoryService>();
 		this.DownloadableContentService = Services.GetService<IDownloadableContentService>();
 		this.worldPositionningService = base.Game.Services.GetService<IWorldPositionningService>();
-		ISessionService sessionService = Services.GetService<ISessionService>();
-		this.Session = (sessionService.Session as global::Session);
+		ISessionService service = Services.GetService<ISessionService>();
+		this.Session = (service.Session as global::Session);
 		global::Game game = base.GameService.Game as global::Game;
 		this.mainEmpires.Clear();
 		for (int i = 0; i < game.Empires.Length; i++)
@@ -407,10 +407,17 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 				this.mainEmpires.Add(game.Empires[i]);
 			}
 		}
-		this.currentAngle = 180f + (float)(this.mainEmpires.Count - 1) * 0.5f * 24f;
+		this.sectorangle = 24f;
+		if (this.mainEmpires.Count > 8)
+		{
+			this.sectorangle *= -0.0625f * (float)this.mainEmpires.Count + 1.5f;
+			this.sectorangle -= 1f;
+		}
+		float num = 180f + (float)(this.mainEmpires.Count - 1) * 0.5f * this.sectorangle;
+		this.currentAngle = num;
 		this.PlayersSectorContainer.ReserveChildren(this.mainEmpires.Count, this.PlayerSectorPrefab, "EmpireSector");
 		this.PlayersSectorContainer.RefreshChildrenIList<global::Empire>(this.mainEmpires, this.setupEmpireSectorDelegate, true, false);
-		this.currentAngle = 180f + (float)(this.mainEmpires.Count - 1) * 0.5f * 24f;
+		this.currentAngle = num;
 		this.PlayersStatusContainer.ReserveChildren(this.mainEmpires.Count, this.EmpirePlayersStatusItemPrefab, "EmpireStatus");
 		this.PlayersStatusContainer.RefreshChildrenIList<global::Empire>(this.mainEmpires, this.setupEmpireStatusDelegate, true, false);
 		this.OrbCounterGroup.Visible = false;
@@ -420,6 +427,7 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 			this.OrbCounterGroup.Visible = true;
 			this.OrbCounterButton.AgeTransform.Visible = true;
 		}
+		this.AutoMoveActive = false;
 		yield break;
 	}
 
@@ -531,35 +539,19 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		string name = e.GameClientStateType.Name;
 		if (name != null)
 		{
-			if (EndTurnPanel.<>f__switch$map1D == null)
+			if (name == "GameClientState_Turn_End")
 			{
-				EndTurnPanel.<>f__switch$map1D = new Dictionary<string, int>(2)
-				{
-					{
-						"GameClientState_Turn_Main",
-						0
-					},
-					{
-						"GameClientState_Turn_End",
-						1
-					}
-				};
+				this.EndTurnTimerContainer.Visible = false;
 			}
-			int num;
-			if (EndTurnPanel.<>f__switch$map1D.TryGetValue(name, out num))
+			else if (name == "GameClientState_Turn_Main")
 			{
-				if (num != 0)
+				this.FocusCircle.Visible = true;
+				this.FocusCircle.StartAllModifiers(true, false);
+				base.StartCoroutine(this.FadeCircle());
+				if (this.AutoMoveActive)
 				{
-					if (num == 1)
-					{
-						this.EndTurnTimerContainer.Visible = false;
-					}
-				}
-				else
-				{
-					this.FocusCircle.Visible = true;
-					this.FocusCircle.StartAllModifiers(true, false);
-					base.StartCoroutine(this.FadeCircle());
+					this.OnApplyPlannedMovementsCB(new GameObject());
+					this.AutoMoveActive = false;
 				}
 			}
 		}
@@ -615,6 +607,10 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 	private void OnApplyPlannedMovementsCB(GameObject obj)
 	{
 		IEnumerable<Army> armiesWithPlannedMovements = this.GetArmiesWithPlannedMovements();
+		if (!(base.PlayerController.GameInterface.CurrentState is GameClientState_Turn_Main))
+		{
+			this.AutoMoveActive = true;
+		}
 		foreach (Army army in armiesWithPlannedMovements)
 		{
 			OrderContinueGoToInstruction order = new OrderContinueGoToInstruction(army.Empire.Index, army.GUID);
@@ -947,9 +943,15 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		empireSector.AgePrimitive.TintColor = empire.Color;
 		empireSector.Alpha = 0.8f;
 		AgePrimitiveSector agePrimitiveSector = empireSector.AgePrimitive as AgePrimitiveSector;
-		agePrimitiveSector.MinAngle = this.currentAngle - 10f;
-		agePrimitiveSector.MaxAngle = this.currentAngle + 10f;
-		this.currentAngle -= 24f;
+		float num = 10f;
+		if (this.mainEmpires.Count > 8)
+		{
+			num += 1f;
+			num *= -0.0625f * (float)this.mainEmpires.Count + 1.5f;
+		}
+		agePrimitiveSector.MinAngle = this.currentAngle - num;
+		agePrimitiveSector.MaxAngle = this.currentAngle + num;
+		this.currentAngle -= this.sectorangle;
 	}
 
 	private void SetupEmpireStatus(AgeTransform empireSlot, global::Empire empire, int index)
@@ -963,9 +965,8 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		num2 -= empireSlot.Height * 0.5f;
 		empireSlot.X = num;
 		empireSlot.Y = num2;
-		EmpirePlayersStatusItem component = empireSlot.GetComponent<EmpirePlayersStatusItem>();
-		component.SetContent(empire as MajorEmpire);
-		this.currentAngle -= 24f;
+		empireSlot.GetComponent<EmpirePlayersStatusItem>().SetContent(empire as MajorEmpire);
+		this.currentAngle -= this.sectorangle;
 	}
 
 	private IEnumerator UpdateOrbCollectFeedback()
@@ -1125,6 +1126,53 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 		yield break;
 	}
 
+	private void OnRightClick(GameObject obj)
+	{
+		if (!base.IsVisible)
+		{
+			return;
+		}
+		MajorEmpire majorEmpire = obj.GetComponent<EmpirePlayersStatusItem>().MajorEmpire;
+		if (majorEmpire == null)
+		{
+			return;
+		}
+		if (base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
+		{
+			ELCPUtilities.SpectatorSpyFocus = majorEmpire.Index;
+			GameResearchScreen guiPanel = base.GuiService.GetGuiPanel<GameResearchScreen>();
+			bool isVisible = guiPanel.IsVisible;
+			if (isVisible)
+			{
+				guiPanel.Hide(true);
+			}
+			guiPanel.Bind(majorEmpire);
+			if (isVisible)
+			{
+				guiPanel.Show(new object[0]);
+			}
+			base.GuiService.GetGuiPanel<EmpireBannerPanel>().Bind(majorEmpire);
+			return;
+		}
+		if (majorEmpire.IsEliminated)
+		{
+			return;
+		}
+		GameNegotiationScreen guiPanel2 = base.GuiService.GetGuiPanel<GameNegotiationScreen>();
+		if (guiPanel2 != null)
+		{
+			if (guiPanel2.IsVisible)
+			{
+				guiPanel2.ReShow(majorEmpire);
+				return;
+			}
+			guiPanel2.Show(new object[]
+			{
+				majorEmpire
+			});
+		}
+	}
+
 	public const float DisableAlpha = 0.7f;
 
 	public const float EmpireStartAngle = 180f;
@@ -1236,4 +1284,8 @@ public class EndTurnPanel : GuiPlayerControllerPanel
 	private List<float> orbAmountsCollectedQueue;
 
 	private IKeyMappingService keyMapperService;
+
+	private bool AutoMoveActive;
+
+	private float sectorangle;
 }

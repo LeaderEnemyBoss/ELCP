@@ -17,18 +17,18 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-[OrderProcessor(typeof(OrderChangeEmpirePlan), "ChangeEmpirePlan")]
+[OrderProcessor(typeof(OrderIntegrateFaction), "IntegrateFaction")]
 [OrderProcessor(typeof(OrderSelloutTradableResource), "SelloutTradableResource")]
-[OrderProcessor(typeof(OrderSwitchCheatMode), "SwitchCheatMode")]
+[OrderProcessor(typeof(OrderSelloutTradableHero), "SelloutTradableHero")]
+[OrderProcessor(typeof(OrderChangeEmpirePlan), "ChangeEmpirePlan")]
 [OrderProcessor(typeof(OrderBuyoutTradableUnit), "BuyoutTradable")]
 [OrderProcessor(typeof(OrderBuyoutTradable), "BuyoutTradable")]
+[OrderProcessor(typeof(OrderSelloutTradableBooster), "SelloutTradableBooster")]
 [OrderProcessor(typeof(OrderBuyoutAndActivateBoosterThroughArmy), "BuyoutAndActivateBoosterThroughArmy")]
 [OrderProcessor(typeof(OrderBuyoutAndActivateBoosterByInfiltration), "BuyoutAndActivateBoosterByInfiltration")]
-[OrderProcessor(typeof(OrderSelloutTradableHero), "SelloutTradableHero")]
-[OrderProcessor(typeof(OrderBuyoutAndActivateBooster), "BuyoutAndActivateBooster")]
-[OrderProcessor(typeof(OrderIntegrateFaction), "IntegrateFaction")]
 [OrderProcessor(typeof(OrderSelloutTradableUnits), "SelloutTradableUnits")]
-[OrderProcessor(typeof(OrderSelloutTradableBooster), "SelloutTradableBooster")]
+[OrderProcessor(typeof(OrderSwitchCheatMode), "SwitchCheatMode")]
+[OrderProcessor(typeof(OrderBuyoutAndActivateBooster), "BuyoutAndActivateBooster")]
 public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable, IEmpirePlanProvider
 {
 	public DepartmentOfPlanificationAndDevelopment(global::Empire empire) : base(empire)
@@ -60,9 +60,16 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			throw new ArgumentNullException("boosterDefinition");
 		}
 		float duration = boosterDefinition.GetDuration(context);
-		float propertyValue = empire.GetPropertyValue(SimulationProperties.BoosterDurationMultiplier);
-		int a = Mathf.RoundToInt(duration * propertyValue);
-		return Mathf.Max(a, 1);
+		float num = empire.GetPropertyValue(SimulationProperties.BoosterDurationMultiplier);
+		if (boosterDefinition.ToString() == "BoosterIndustry" || boosterDefinition.ToString() == "BoosterFood" || boosterDefinition.ToString() == "BoosterScience" || boosterDefinition.ToString() == "FlamesIndustryBooster" || boosterDefinition.ToString() == "BoosterCadavers")
+		{
+			num = 1f;
+		}
+		else if (boosterDefinition.ToString().Contains("Luxury"))
+		{
+			num *= empire.GetPropertyValue(SimulationProperties.AllayiBoosterDurationMultiplier);
+		}
+		return Mathf.Max(Mathf.RoundToInt(duration * num), 1);
 	}
 
 	public void ActivateBooster(BoosterDefinition boosterDefinition, GameEntityGUID boosterGuid, int boosterDuration, SimulationObjectWrapper context, GameEntityGUID targetGuid, int instigatorEmpireIndex)
@@ -96,14 +103,6 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		{
 			float propertyBaseValue = base.Empire.SimulationObject.GetPropertyBaseValue(boosterActivationsPropertyName);
 			base.Empire.SimulationObject.SetPropertyBaseValue(boosterActivationsPropertyName, propertyBaseValue + 1f);
-		}
-		else
-		{
-			Diagnostics.LogWarning("Booster {0} does not have an activations counter property named '{1}'.", new object[]
-			{
-				boosterDefinition.Name,
-				boosterActivationsPropertyName
-			});
 		}
 	}
 
@@ -750,8 +749,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					}
 				}
 				ConstructionResourceStock[] array = null;
-				bool flag = order.IsFree || this.departmentOfTheTreasury.GetInstantConstructionResourceCostForBuyout(base.Empire, boosterDefinition, out array);
-				if (flag)
+				if (order.IsFree || order.IgnoreCost || this.departmentOfTheTreasury.GetInstantConstructionResourceCostForBuyout(base.Empire, boosterDefinition, out array))
 				{
 					if (order.BoosterGameEntityGUID == GameEntityGUID.Zero)
 					{
@@ -1473,8 +1471,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 				Diagnostics.LogError("Order processing failed because the tradable is not available in the requested quantity.");
 				yield break;
 			}
-			bool transferOfResourcePossible = this.departmentOfTheTreasury.TryTransferResources(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, order.Price);
-			if (transferOfResourcePossible)
+			if (this.departmentOfTheTreasury.TryTransferResources(base.Empire, DepartmentOfTheTreasury.Resources.EmpireMoney, order.Price))
 			{
 				object[] parameters = null;
 				if (order is OrderBuyoutTradableUnit)
@@ -1482,18 +1479,33 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 					GameEntityGUID destination = (order as OrderBuyoutTradableUnit).Destination;
 					WorldPosition spawnLocation = (order as OrderBuyoutTradableUnit).SpawnLocation;
 					GameEntityGUID spawnNewArmyGUID = (order as OrderBuyoutTradableUnit).SpawnNewArmyGUID;
-					IGameEntity garrison;
-					if (this.gameEntityRepositoryService.TryGetValue(destination, out garrison))
+					IGameEntity gameEntity;
+					if (this.gameEntityRepositoryService.TryGetValue(destination, out gameEntity))
 					{
 						parameters = new object[]
 						{
-							garrison,
+							gameEntity,
 							spawnLocation,
 							spawnNewArmyGUID
 						};
 					}
 				}
 				this.tradeManagementService.SetTendency(tradable.TradableCategoryDefinition.Name, order.UpdatedTradableCategoryTendency);
+				if (tradable.TradableCategoryDefinition.Name.ToString().Contains("TradableUnit"))
+				{
+					foreach (StaticString staticString in new StaticString[]
+					{
+						TradableUnit.ReadOnlyCategory,
+						TradableUnit.ReadOnlyNeutral,
+						TradableUnit.ReadOnlyNeutralSeafaring
+					})
+					{
+						if (tradable.TradableCategoryDefinition.Name != staticString)
+						{
+							this.tradeManagementService.SetTendency(staticString, order.UpdatedTradableCategoryTendency);
+						}
+					}
+				}
 				this.tradeManagementService.TryConsumeTradableAndAllocateTo(order.TradableUID, order.Quantity, (global::Empire)base.Empire, parameters);
 				this.tradeManagementService.NotifyTradableTransactionComplete(TradableTransactionType.Buyout, (global::Empire)base.Empire, tradable, order.Quantity, order.Price);
 				yield break;
@@ -1702,8 +1714,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			Diagnostics.LogError("Order preprocessor failed because the Game Service is not valid.");
 			return false;
 		}
-		global::Game game = service.Game as global::Game;
-		global::Empire empireByIndex = game.GetEmpireByIndex(order.IntegratingEmpireIndex);
+		global::Empire empireByIndex = (service.Game as global::Game).GetEmpireByIndex(order.IntegratingEmpireIndex);
 		if (empireByIndex == null)
 		{
 			Diagnostics.LogError("Order prepreprocessor failed because the integrating Empire could not be retrieved.");
@@ -1719,8 +1730,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		{
 			return false;
 		}
-		int integrationDescriptorsCount = faction.GetIntegrationDescriptorsCount();
-		if (integrationDescriptorsCount <= 0)
+		if (faction.GetIntegrationDescriptorsCount() <= 0)
 		{
 			return false;
 		}
@@ -1735,6 +1745,15 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		if (list.Count > 0)
 		{
 			order.IntegrationDescriptors = list.ToArray();
+			if (order.TechnologiesToUnlock != null)
+			{
+				foreach (string technologyDefinitionName in order.TechnologiesToUnlock)
+				{
+					OrderForceUnlockTechnology orderForceUnlockTechnology = new OrderForceUnlockTechnology(base.Empire.Index, technologyDefinitionName);
+					orderForceUnlockTechnology.Notify = true;
+					(base.Empire as global::Empire).PlayerControllers.Server.PostOrder(orderForceUnlockTechnology);
+				}
+			}
 			return true;
 		}
 		return false;
@@ -1742,42 +1761,57 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 
 	private IEnumerator IntegrateFactionProcessor(OrderIntegrateFaction order)
 	{
-		IGameService gameService = Services.GetService<IGameService>();
-		if (gameService == null || gameService.Game == null || !(gameService.Game is global::Game))
+		IGameService service = Services.GetService<IGameService>();
+		if (service == null || service.Game == null || !(service.Game is global::Game))
 		{
 			Diagnostics.LogError("Order processor failed because the Game Service is not valid.");
 			yield break;
 		}
-		global::Game game = gameService.Game as global::Game;
-		global::Empire integratingEmpire = game.GetEmpireByIndex(order.IntegratingEmpireIndex);
-		if (integratingEmpire == null)
+		global::Empire empireByIndex = (service.Game as global::Game).GetEmpireByIndex(order.IntegratingEmpireIndex);
+		if (empireByIndex == null)
 		{
 			Diagnostics.LogError("Order processor failed because the integrating Empire could not be retrieved.");
 			yield break;
 		}
-		Faction integratingFaction = integratingEmpire.Faction;
-		if (integratingFaction == null)
+		Faction faction = empireByIndex.Faction;
+		if (faction == null)
 		{
 			Diagnostics.LogError("Order processor failed because the integrating Faction could not be retrieved.");
 			yield break;
 		}
-		for (int descriptorIndex = 0; descriptorIndex < order.IntegrationDescriptors.Length; descriptorIndex++)
+		for (int i = 0; i < order.IntegrationDescriptors.Length; i++)
 		{
 			SimulationDescriptor descriptor = null;
-			if (this.simulationDescriptorDatabase.TryGetValue(order.IntegrationDescriptors[descriptorIndex], out descriptor))
+			if (this.simulationDescriptorDatabase.TryGetValue(order.IntegrationDescriptors[i], out descriptor))
 			{
 				base.Empire.AddDescriptor(descriptor, false);
 			}
 		}
-		StaticString integratingAffinityName = integratingFaction.Affinity.Name;
-		if (integratingAffinityName.Equals(new StaticString("AffinityMezari")))
+		StaticString staticString = faction.Affinity.Name;
+		if (staticString.Equals(new StaticString("AffinityMezari")))
 		{
-			integratingAffinityName = new StaticString("AffinityVaulters");
+			staticString = new StaticString("AffinityVaulters");
 		}
-		this.integratedAffinities.Add(integratingAffinityName);
+		this.integratedAffinities.Add(staticString);
 		base.Empire.SetPropertyBaseValue("IntegratedMajorFactionCount", (float)this.integratedAffinities.Count);
 		base.Empire.Refresh(false);
-		this.eventService.Notify(new EventFactionIntegrated(base.Empire, integratingEmpire, order.IntegrationDescriptors));
+		this.eventService.Notify(new EventFactionIntegrated(base.Empire, empireByIndex, order.IntegrationDescriptors));
+		if (ELCPUtilities.UseELCPCreepingNodeRuleset && Services.GetService<IDownloadableContentService>().IsShared(DownloadableContent20.ReadOnlyName))
+		{
+			DepartmentOfCreepingNodes agency = base.Empire.GetAgency<DepartmentOfCreepingNodes>();
+			if (this.departmentOfTheInterior.MainCity != null)
+			{
+				for (int j = 0; j < agency.Nodes.Count; j++)
+				{
+					agency.Nodes[j].PointOfInterest.Empire = (base.Empire as global::Empire);
+					if (!agency.Nodes[j].IsUnderConstruction)
+					{
+						DepartmentOfTheInterior.ClearFIMSEOnCreepingNode(base.Empire as global::Empire, agency.Nodes[j]);
+						DepartmentOfTheInterior.GenerateFIMSEForCreepingNode(base.Empire, agency.Nodes[j]);
+					}
+				}
+			}
+		}
 		yield break;
 	}
 
@@ -1898,10 +1932,11 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 			Diagnostics.LogError("Order preprocessing failed because the game entity is not of type 'Unit'.");
 			return false;
 		}
+		bool flag = base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated);
 		DepartmentOfEducation agency = base.Empire.GetAgency<DepartmentOfEducation>();
 		if (agency != null && agency.Heroes.Contains(unit))
 		{
-			if (unit.CheckUnitAbility(UnitAbility.ReadonlyUnsalable, -1))
+			if (unit.CheckUnitAbility(UnitAbility.ReadonlyUnsalable, -1) && !flag)
 			{
 				Diagnostics.LogError("Order preprocessing failed because the hero has the 'unsalable' ability.");
 				return false;
@@ -1914,8 +1949,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 				{
 					tradable
 				};
-				DepartmentOfScience agency2 = base.Empire.GetAgency<DepartmentOfScience>();
-				if (agency2.CanTradeHeroes(false))
+				if (base.Empire.GetAgency<DepartmentOfScience>().CanTradeHeroes(false) && !flag)
 				{
 					order.Price = tradable.GetPriceWithSalesTaxes(TradableTransactionType.Sellout, (global::Empire)base.Empire);
 				}
@@ -2039,9 +2073,6 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		yield break;
 	}
 
-	[Service]
-	private IEventService EventService { get; set; }
-
 	private bool SelloutTradableUnitsPreprocessor(OrderSelloutTradableUnits order)
 	{
 		if (order == null)
@@ -2156,15 +2187,13 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		Diagnostics.Assert(order.Tradables != null);
 		Diagnostics.Assert(order.Tradables.Length == order.GameEntityGUIDs.Length);
 		List<Army> besiegingSeafaringArmies = DepartmentOfTheInterior.GetBesiegingSeafaringArmies(order.GameEntityGUIDs);
-		DepartmentOfScience departmentOfScience = base.Empire.GetAgency<DepartmentOfScience>();
-		bool canTradeUnits = departmentOfScience.CanTradeUnits(false);
-		DepartmentOfDefense departmentOfDefense = base.Empire.GetAgency<DepartmentOfDefense>();
+		bool flag = base.Empire.GetAgency<DepartmentOfScience>().CanTradeUnits(false);
+		DepartmentOfDefense agency = base.Empire.GetAgency<DepartmentOfDefense>();
 		TradableUnit tradableUnit = null;
-		TradableUnit anyTradableUnitForTheTendencyUpdate = null;
-		for (int index = 0; index < order.GameEntityGUIDs.Length; index++)
+		for (int i = 0; i < order.GameEntityGUIDs.Length; i++)
 		{
 			IGameEntity gameEntity;
-			if (this.gameEntityRepositoryService.TryGetValue(order.GameEntityGUIDs[index], out gameEntity))
+			if (this.gameEntityRepositoryService.TryGetValue(order.GameEntityGUIDs[i], out gameEntity))
 			{
 				Unit unit = gameEntity as Unit;
 				if (unit != null)
@@ -2182,12 +2211,8 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 						{
 							if (garrison.IsEmpty)
 							{
-								IEventService eventService = Services.GetService<IEventService>();
-								if (eventService != null)
-								{
-									eventService.Notify(new EventArmyDisbanded(garrison.Empire, garrison.GUID));
-								}
-								departmentOfDefense.RemoveArmy(garrison as Army, true);
+								this.eventService.Notify(new EventArmyDisbanded(garrison.Empire, garrison.GUID));
+								agency.RemoveArmy(garrison as Army, true);
 								if (besiegingSeafaringArmies != null)
 								{
 									besiegingSeafaringArmies.Remove(garrison as Army);
@@ -2201,30 +2226,34 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 						}
 					}
 					this.gameEntityRepositoryService.Unregister(unit);
-					tradableUnit = (order.Tradables[index] as TradableUnit);
-					if (tradableUnit != null)
+					TradableUnit tradableUnit2 = order.Tradables[i] as TradableUnit;
+					if (tradableUnit2 != null)
 					{
 						if (this.tradeManagementService != null)
 						{
 							UnitDesign unitDesign = unit.UnitDesign;
-							bool collected = this.tradeManagementService.CollectTradableUnit(tradableUnit, unit, base.Empire.Index);
-							if (collected)
+							if (this.tradeManagementService.CollectTradableUnit(tradableUnit2, unit, base.Empire.Index))
 							{
-								if (canTradeUnits)
+								if (flag)
 								{
-									this.tradeManagementService.NotifyTradableTransactionComplete(TradableTransactionType.Sellout, (global::Empire)base.Empire, tradableUnit, order.Quantity, order.Price);
+									this.tradeManagementService.NotifyTradableTransactionComplete(TradableTransactionType.Sellout, (global::Empire)base.Empire, tradableUnit2, 1f, order.Price / (float)order.GameEntityGUIDs.Length);
 								}
-								unitDesign.Barcode = tradableUnit.Barcode;
+								unitDesign.Barcode = tradableUnit2.Barcode;
 							}
 						}
-						anyTradableUnitForTheTendencyUpdate = tradableUnit;
+						tradableUnit = tradableUnit2;
 					}
 				}
 			}
 		}
-		if (anyTradableUnitForTheTendencyUpdate != null)
+		if (tradableUnit != null)
 		{
-			this.tradeManagementService.SetTendency(anyTradableUnitForTheTendencyUpdate.TradableCategoryDefinition.Name, order.UpdatedTradableCategoryTendency);
+			this.tradeManagementService.SetTendency(tradableUnit.TradableCategoryDefinition.Name, order.UpdatedTradableCategoryTendency);
+			if (tradableUnit.TradableCategoryDefinition.Name == TradableUnit.ReadOnlyCategory)
+			{
+				this.tradeManagementService.SetTendency(TradableUnit.ReadOnlyNeutral, order.UpdatedTradableCategoryTendency);
+				this.tradeManagementService.SetTendency(TradableUnit.ReadOnlyNeutralSeafaring, order.UpdatedTradableCategoryTendency);
+			}
 		}
 		this.departmentOfTheTreasury.TryTransferResources(base.Empire, SimulationProperties.EmpireMoney, order.Price);
 		if (besiegingSeafaringArmies != null)
@@ -2329,9 +2358,7 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 	{
 		get
 		{
-			global::Empire empire = base.Empire as global::Empire;
-			Diagnostics.Assert(empire != null);
-			return empire.IsControlledByAI || this.isEmpirePlanChoiced;
+			return this.isEmpirePlanChoiced;
 		}
 		set
 		{
@@ -2452,13 +2479,17 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		this.departmentOfTheInterior = base.Empire.GetAgency<DepartmentOfTheInterior>();
 		Diagnostics.Assert(this.departmentOfTheInterior != null);
 		this.eventService = Services.GetService<IEventService>();
-		IDownloadableContentService downloadableContentService = Services.GetService<IDownloadableContentService>();
+		IDownloadableContentService service = Services.GetService<IDownloadableContentService>();
 		Diagnostics.Assert(this.eventService != null);
 		Diagnostics.Assert(base.Empire != null);
 		base.Empire.RegisterPass("GameClientState_Turn_Begin", "NotifyEmpirePlanChoiceTurn", new Agency.Action(this.GameClientState_Turn_Begin_NotifyEmpirePlanChoiceTurn), new string[0]);
-		base.Empire.RegisterPass("GameClientState_Turn_Begin", "CreateNewTradeRoutes", new Agency.Action(this.GameClientState_Turn_Begin_CreateNewTradeRoutes), new string[]
+		base.Empire.RegisterPass("GameClientState_Turn_Begin", "RefreshRoads", new Agency.Action(this.GameClientState_Turn_Begin_RefreshRoads), new string[]
 		{
 			"ClearAllTradeRoutes"
+		});
+		base.Empire.RegisterPass("GameClientState_Turn_Begin", "CreateNewTradeRoutes", new Agency.Action(this.GameClientState_Turn_Begin_CreateNewTradeRoutes), new string[]
+		{
+			"RefreshRoads"
 		});
 		base.Empire.RegisterPass("GameClientState_Turn_Begin", "ApplyTradeRoutesSimulation", new Agency.Action(this.GameClientState_Turn_Begin_ApplyTradeRoutesSimulation), new string[]
 		{
@@ -2470,11 +2501,14 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		{
 			base.Empire.RegisterPass("GameClientState_Turn_Begin", "PillarsNotification", new Agency.Action(this.GameClientState_Turn_Begin_PillarsNotification), new string[0]);
 		}
-		if (downloadableContentService != null && downloadableContentService.IsShared(DownloadableContent13.ReadOnlyName))
+		if (service != null && service.IsShared(DownloadableContent13.ReadOnlyName))
 		{
 			base.Empire.RegisterPass("GameClientState_Turn_End", "UpdateLocalWinterImmunity", new Agency.Action(this.GameClientState_Turn_End_UpdateLocalWinterImmunity), new string[0]);
 		}
-		base.Empire.RegisterPass("GameClientState_Turn_End", "ResetEmpirePlan", new Agency.Action(this.GameClientState_Turn_End_ResetEmpirePlan), new string[0]);
+		base.Empire.RegisterPass("GameClientState_Turn_End", "ResetEmpirePlan", new Agency.Action(this.GameClientState_Turn_End_ResetEmpirePlan), new string[]
+		{
+			"ComputeBuildConstruction"
+		});
 		base.Empire.RegisterPass("GameClientState_Turn_End", "ComputeEmpirePoint", new Agency.Action(this.GameClientState_Turn_End_ComputeEmpirePoint), new string[]
 		{
 			"CollectResources",
@@ -2515,26 +2549,26 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		Diagnostics.Assert(this.empirePlanDefinitionsByClass != null);
 		Diagnostics.Assert(this.empirePlanDatabase != null);
 		this.empirePlanDefinitionsByClass.Clear();
-		DepartmentOfPlanificationAndDevelopment.ConstructibleElement[] empirePlans = (from predicate in this.empirePlanDatabase
+		DepartmentOfPlanificationAndDevelopment.ConstructibleElement[] array = (from predicate in this.empirePlanDatabase
 		where predicate is EmpirePlanDefinition
 		select predicate).ToArray<DepartmentOfPlanificationAndDevelopment.ConstructibleElement>();
-		for (int index = 0; index < empirePlans.Length; index++)
+		for (int i = 0; i < array.Length; i++)
 		{
-			EmpirePlanDefinition empirePlan = empirePlans[index] as EmpirePlanDefinition;
+			EmpirePlanDefinition empirePlan = array[i] as EmpirePlanDefinition;
 			if (empirePlan != null && !(empirePlan.EmpirePlanClass == null) && !this.empirePlanDefinitionsByClass.ContainsKey(empirePlan.EmpirePlanClass))
 			{
-				DepartmentOfPlanificationAndDevelopment.ConstructibleElement[] constructibleElements = (from empirePlanDefinition in empirePlans
+				DepartmentOfPlanificationAndDevelopment.ConstructibleElement[] array2 = (from empirePlanDefinition in array
 				where (empirePlanDefinition as EmpirePlanDefinition).EmpirePlanClass == empirePlan.EmpirePlanClass
 				select empirePlanDefinition).ToArray<DepartmentOfPlanificationAndDevelopment.ConstructibleElement>();
-				List<EmpirePlanDefinition> empirePlanDefinitions = Array.ConvertAll<DepartmentOfPlanificationAndDevelopment.ConstructibleElement, EmpirePlanDefinition>(constructibleElements, (DepartmentOfPlanificationAndDevelopment.ConstructibleElement input) => input as EmpirePlanDefinition).ToList<EmpirePlanDefinition>();
-				for (int i = 0; i < constructibleElements.Length; i++)
+				List<EmpirePlanDefinition> list = Array.ConvertAll<DepartmentOfPlanificationAndDevelopment.ConstructibleElement, EmpirePlanDefinition>(array2, (DepartmentOfPlanificationAndDevelopment.ConstructibleElement input) => input as EmpirePlanDefinition).ToList<EmpirePlanDefinition>();
+				for (int j = 0; j < array2.Length; j++)
 				{
-					if (!this.CheckEmpireplanPrerequisite(constructibleElements[i] as EmpirePlanDefinition))
+					if (!this.CheckEmpireplanPrerequisite(array2[j] as EmpirePlanDefinition))
 					{
-						empirePlanDefinitions.Remove(constructibleElements[i] as EmpirePlanDefinition);
+						list.Remove(array2[j] as EmpirePlanDefinition);
 					}
 				}
-				this.empirePlanDefinitionsByClass.Add(empirePlan.EmpirePlanClass, empirePlanDefinitions.ToArray());
+				this.empirePlanDefinitionsByClass.Add(empirePlan.EmpirePlanClass, list.ToArray());
 			}
 		}
 		Diagnostics.Assert(this.currentEmpirePlanDefinitionByClass != null);
@@ -2542,23 +2576,23 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		StaticString[] empirePlanClasses = this.GetEmpirePlanClasses();
 		if (empirePlanClasses != null)
 		{
-			foreach (StaticString empirePlanClass in empirePlanClasses)
+			foreach (StaticString staticString in empirePlanClasses)
 			{
-				Diagnostics.Assert(empirePlanClass != null);
-				EmpirePlanDefinition currentPlan = this.GetEmpirePlanDefinition(empirePlanClass, 0);
+				Diagnostics.Assert(staticString != null);
+				EmpirePlanDefinition empirePlanDefinition2 = this.GetEmpirePlanDefinition(staticString, 0);
 				Diagnostics.Assert(this.currentEmpirePlanDefinitionByClass != null);
-				Diagnostics.Assert(currentPlan != null, "There is no level 0 for empire plan {0}.", new object[]
+				Diagnostics.Assert(empirePlanDefinition2 != null, "There is no level 0 for empire plan {0}.", new object[]
 				{
-					empirePlanClass
+					staticString
 				});
-				this.UnlockEmpirePlan(currentPlan);
+				this.UnlockEmpirePlan(empirePlanDefinition2);
 			}
 		}
 		this.departmentOfTheTreasury.ResourcePropertyChange += this.DepartmentOfTheTreasury_ResourcePropertyChange;
-		IEventService eventService = Services.GetService<IEventService>();
-		if (eventService != null)
+		IEventService service2 = Services.GetService<IEventService>();
+		if (service2 != null)
 		{
-			eventService.EventRaise += this.EventService_EventRaise;
+			service2.EventRaise += this.EventService_EventRaise;
 		}
 		yield break;
 	}
@@ -3117,6 +3151,20 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 				base.Empire.SetPropertyBaseValue("NumberOfWinters", base.Empire.GetPropertyValue("NumberOfWinters") + 1f);
 			}
 		}
+		if (e.OldSeason == null || e.OldSeason.SeasonDefinition.SeasonType == Season.ReadOnlyWinter || e.NewSeason.SeasonDefinition.SeasonType == Season.ReadOnlyWinter)
+		{
+			global::Empire empire = (Services.GetService<IGameService>().Game as global::Game).Empires.FirstOrDefault((global::Empire em) => em != null && em is MajorEmpire && !(em as MajorEmpire).IsEliminated);
+			if (empire != null && empire.Index == base.Empire.Index)
+			{
+				Diagnostics.Log("ELCP {2} Season change registered from {0} -> {1}", new object[]
+				{
+					(e.OldSeason == null) ? "NULL" : e.OldSeason.SeasonDefinition.SeasonType,
+					e.NewSeason.SeasonDefinition.SeasonType,
+					base.Empire
+				});
+				this.RoadsNeedsRefreshing = false;
+			}
+		}
 	}
 
 	private IEnumerator GameClientState_Turn_End_ClearAllTradeRoutes(string context, string name)
@@ -3605,7 +3653,14 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		this.IsEmpirePlanChoiced = false;
 		if (this.IsEmpirePlanChoiceTurn)
 		{
-			this.eventService.Notify(new EventEmpirePlanNeeded(base.Empire));
+			if (this.empirePlanQueue.Length > 0)
+			{
+				this.IsEmpirePlanChoiced = true;
+			}
+			else
+			{
+				this.eventService.Notify(new EventEmpirePlanNeeded(base.Empire));
+			}
 		}
 		yield break;
 	}
@@ -4327,6 +4382,228 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 		return result;
 	}
 
+	private IEnumerator GameClientState_Turn_Begin_RefreshRoads(string context, string name)
+	{
+		global::Empire empire = (Services.GetService<IGameService>().Game as global::Game).Empires.FirstOrDefault((global::Empire em) => em != null && em is MajorEmpire && !(em as MajorEmpire).IsEliminated);
+		if (empire == null || empire.Index != base.Empire.Index)
+		{
+			yield break;
+		}
+		StaticString type = new StaticString("DistrictImprovement");
+		StaticString y = new StaticString("DistrictImprovementDocks");
+		IGameService service = Services.GetService<IGameService>();
+		ICadasterService service2 = service.Game.Services.GetService<ICadasterService>();
+		List<City> citylist = new List<City>();
+		List<global::Empire> empirelist = new List<global::Empire>();
+		Func<District, bool> <>9__2;
+		for (int j = 0; j < (service.Game as global::Game).Empires.Length; j++)
+		{
+			global::Empire empire2 = (service.Game as global::Game).Empires[j];
+			if (empire2 != null && empire2 is MajorEmpire && !(empire2 as MajorEmpire).IsEliminated)
+			{
+				DepartmentOfTheInterior agency = empire2.GetAgency<DepartmentOfTheInterior>();
+				for (int k = 0; k < agency.Cities.Count; k++)
+				{
+					City city7 = agency.Cities[k];
+					if (city7 != null && city7.GUID.IsValid && city7.Empire != null && city7.Empire.Index == agency.Empire.Index)
+					{
+						bool flag = city7.CityImprovements.Any((CityImprovement I) => I.CityImprovementDefinition.Name == "CityImprovementRoads");
+						IEnumerable<District> districts = city7.Districts;
+						Func<District, bool> predicate;
+						if ((predicate = <>9__2) == null)
+						{
+							predicate = (<>9__2 = ((District D) => D.Type == DistrictType.Improvement && D.GetDescriptorNameFromType(type) == y));
+						}
+						bool flag2 = districts.Any(predicate);
+						if (this.RoadsNeedsRefreshing && (flag || flag2))
+						{
+							service2.Disconnect(city7, PathfindingMovementCapacity.All, true);
+							service2.RefreshCadasterMap();
+							citylist.Add(city7);
+							empirelist.AddOnce(city7.Empire);
+						}
+						else if (flag2)
+						{
+							service2.Disconnect(city7, PathfindingMovementCapacity.Water, true);
+							service2.RefreshCadasterMap();
+							citylist.Add(city7);
+							empirelist.AddOnce(city7.Empire);
+						}
+					}
+				}
+			}
+		}
+		yield return null;
+		Func<District, bool> <>9__4;
+		int num;
+		for (int i = 0; i < citylist.Count; i = num + 1)
+		{
+			City city6 = citylist[i];
+			if (city6 != null && city6.GUID.IsValid && city6.Empire != null)
+			{
+				bool flag3 = city6.CityImprovements.Any((CityImprovement I) => I.CityImprovementDefinition.Name == "CityImprovementRoads");
+				IEnumerable<District> districts2 = city6.Districts;
+				IEnumerable<District> source = districts2;
+				Func<District, bool> predicate2;
+				if ((predicate2 = <>9__4) == null)
+				{
+					predicate2 = (<>9__4 = ((District D) => D.Type == DistrictType.Improvement && D.GetDescriptorNameFromType(type) == y));
+				}
+				District district = source.FirstOrDefault(predicate2);
+				if (flag3 && this.RoadsNeedsRefreshing)
+				{
+					OrderUpdateCadastralMapClient order = new OrderUpdateCadastralMapClient(city6.Empire.Index, city6, PathfindingMovementCapacity.Ground, CadastralMapOperation.Connect)
+					{
+						WorldPosition = city6.WorldPosition
+					};
+					if (this.UpdateCadastralMapClientPreprocessor(ref order))
+					{
+						yield return null;
+						yield return this.UpdateCadastralMapClientProcessor(order);
+					}
+					order = null;
+				}
+				if (district != null)
+				{
+					OrderUpdateCadastralMapClient order = new OrderUpdateCadastralMapClient(city6.Empire.Index, city6, PathfindingMovementCapacity.Water, CadastralMapOperation.Connect)
+					{
+						WorldPosition = district.WorldPosition
+					};
+					if (this.UpdateCadastralMapClientPreprocessor(ref order))
+					{
+						yield return null;
+						yield return this.UpdateCadastralMapClientProcessor(order);
+					}
+					order = null;
+				}
+				city6.Refresh(false);
+				district = null;
+			}
+			num = i;
+			city6 = null;
+		}
+		int num2;
+		for (int i = 0; i < empirelist.Count; i = num2 + 1)
+		{
+			DepartmentOfPlanificationAndDevelopment agency2 = empirelist[i].GetAgency<DepartmentOfPlanificationAndDevelopment>();
+			agency2.TurnWhenTradeRoutesWereLastCreated = 0;
+			yield return agency2.ClearTradeRoutes();
+			empirelist[i].Refresh(false);
+			yield return null;
+			num2 = i;
+		}
+		this.RoadsNeedsRefreshing = false;
+		yield break;
+	}
+
+	public IEnumerator ClearTradeRoutes()
+	{
+		DepartmentOfTheInterior agency = base.Empire.GetAgency<DepartmentOfTheInterior>();
+		Diagnostics.Assert(agency != null);
+		foreach (City city in agency.Cities)
+		{
+			float propertyValue = city.GetPropertyValue(SimulationProperties.OverrallTradeRoutesCityDustIncome);
+			city.SetPropertyBaseValue(SimulationProperties.LastOverrallTradeRoutesCityDustIncome, propertyValue);
+			float propertyValue2 = city.GetPropertyValue(SimulationProperties.OverrallTradeRoutesCityScienceIncome);
+			city.SetPropertyBaseValue(SimulationProperties.LastOverrallTradeRoutesCityScienceIncome, propertyValue2);
+			Diagnostics.Assert(city.TradeRoutes != null);
+			city.TradeRoutes.Clear();
+			city.SetPropertyBaseValue(SimulationProperties.IntermediateTradeRoutesCount, 0f);
+			city.SetPropertyBaseValue(SimulationProperties.IntermediateTradeRoutesDistance, 0f);
+			city.SetPropertyBaseValue(SimulationProperties.IntermediateTradeRoutesGain, 0f);
+		}
+		this.OnTradeRouteChanged(null);
+		yield break;
+	}
+
+	private bool UpdateCadastralMapClientPreprocessor(ref OrderUpdateCadastralMapClient order)
+	{
+		if (order.PathfindingMovementCapacity == PathfindingMovementCapacity.None)
+		{
+			return false;
+		}
+		IGameEntity gameEntity = null;
+		if (!this.gameEntityRepositoryService.TryGetValue(order.CityGameEntityGUID, out gameEntity))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the target game entity is not valid.");
+			return false;
+		}
+		City city = gameEntity as City;
+		if (city == null)
+		{
+			Diagnostics.LogError("Order preprocessing failed because the target game entity does not convert to a city.");
+			return false;
+		}
+		IGameService service = Services.GetService<IGameService>();
+		ICadasterService service2 = service.Game.Services.GetService<ICadasterService>();
+		if (service != null)
+		{
+			switch (order.Operation)
+			{
+			case CadastralMapOperation.Connect:
+			case CadastralMapOperation.Proxy:
+			{
+				bool proxied = order.Operation == CadastralMapOperation.Proxy;
+				ushort[] array = service2.Connect(city, order.PathfindingMovementCapacity, proxied);
+				if (array != null && array.Length != 0)
+				{
+					order.Indices = array;
+					order.Roads = new Road[array.Length];
+					ushort num = 0;
+					while ((int)num < array.Length)
+					{
+						order.Roads[(int)num] = service2[array[(int)num]];
+						num += 1;
+					}
+					return true;
+				}
+				break;
+			}
+			case CadastralMapOperation.Disconnect:
+				service2.Disconnect(city, order.PathfindingMovementCapacity, true);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private IEnumerator UpdateCadastralMapClientProcessor(OrderUpdateCadastralMapClient order)
+	{
+		IGameService service = Services.GetService<IGameService>();
+		ICadasterService service2 = service.Game.Services.GetService<ICadasterService>();
+		service.Game.Services.GetService<IWorldPositionningService>();
+		IGameEntity gameEntity = null;
+		if (!this.gameEntityRepositoryService.TryGetValue(order.CityGameEntityGUID, out gameEntity))
+		{
+			Diagnostics.LogError("Order preprocessing failed because the target game entity is not valid.");
+			yield break;
+		}
+		City city = gameEntity as City;
+		if (city == null)
+		{
+			Diagnostics.LogError("Order preprocessing failed because the target game entity does not convert to a city.");
+			yield break;
+		}
+		CadastralMapOperation operation = order.Operation;
+		if (operation == CadastralMapOperation.Connect || operation == CadastralMapOperation.Proxy)
+		{
+			Diagnostics.Assert(order.Indices.Length == order.Roads.Length);
+			for (int i = 0; i < order.Indices.Length; i++)
+			{
+				service2.Register(order.Indices[i], order.Roads[i]);
+			}
+			int index = city.Region.Index;
+			if (city.CadastralMap.Roads == null)
+			{
+				city.CadastralMap.Roads = new List<ushort>();
+			}
+			city.CadastralMap.Roads.AddRange(order.Indices);
+			city.NotifyCityCadastralChange();
+		}
+		service2.RefreshCadasterMap();
+		yield break;
+	}
+
 	public static readonly StaticString HeroSkillGovernor25 = new StaticString("HeroSkillGovernor25");
 
 	public static readonly StaticString HeroSkillGovernor28 = new StaticString("HeroSkillGovernor28");
@@ -4386,6 +4663,8 @@ public class DepartmentOfPlanificationAndDevelopment : Agency, IXmlSerializable,
 	private int maximalTurnWithoutPillar = 10;
 
 	private int localWinterImmunityWinnerIndex = -1;
+
+	private bool RoadsNeedsRefreshing;
 
 	public abstract class ConstructibleElement : global::ConstructibleElement
 	{

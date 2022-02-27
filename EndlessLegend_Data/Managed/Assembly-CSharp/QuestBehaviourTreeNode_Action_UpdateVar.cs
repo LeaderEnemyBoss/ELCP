@@ -22,8 +22,7 @@ public class QuestBehaviourTreeNode_Action_UpdateVar : QuestBehaviourTreeNode_Ac
 	protected override bool Initialize(QuestBehaviour questBehaviour)
 	{
 		Diagnostics.Log("UpdateVariable.Initialize");
-		IGameService service = Services.GetService<IGameService>();
-		global::Game game = service.Game as global::Game;
+		global::Game game = Services.GetService<IGameService>().Game as global::Game;
 		if (game == null)
 		{
 			Diagnostics.LogError("Cannot retrieve game service, Action_uptateVariable");

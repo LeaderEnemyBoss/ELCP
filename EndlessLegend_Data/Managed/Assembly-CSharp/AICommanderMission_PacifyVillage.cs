@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Amplitude;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Game;
@@ -75,14 +76,19 @@ public class AICommanderMission_PacifyVillage : AICommanderMissionWithRequestArm
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Fail;
 			return;
 		}
+		this.departmentOfInternalAffairs = base.Commander.Empire.GetAgency<DepartmentOfInternalAffairs>();
 		this.barbarianCouncil = this.RegionTarget.MinorEmpire.GetAgency<BarbarianCouncil>();
+		AIEntity_Empire entity = base.Commander.AIPlayer.GetEntity<AIEntity_Empire>();
+		this.villageLayer = entity.GetLayer<AILayer_Village>();
 		this.Village = this.SelectVillage();
 	}
 
 	public override void Release()
 	{
 		base.Release();
+		this.departmentOfInternalAffairs = null;
 		this.barbarianCouncil = null;
+		this.villageLayer = null;
 		this.RegionTarget = null;
 	}
 
@@ -107,6 +113,11 @@ public class AICommanderMission_PacifyVillage : AICommanderMissionWithRequestArm
 	{
 		isMaxPower = false;
 		perUnitTest = false;
+		if (this.villageLayer.SuspendPacification)
+		{
+			minMilitaryPower = 1f;
+			return;
+		}
 		if (this.Village == null)
 		{
 			this.Village = this.SelectVillage();
@@ -114,11 +125,10 @@ public class AICommanderMission_PacifyVillage : AICommanderMissionWithRequestArm
 		if (this.Village == null)
 		{
 			minMilitaryPower = this.intelligenceAIHelper.EvaluateMaxMilitaryPowerOfRegion(base.Commander.Empire, this.RegionTarget.Index);
+			return;
 		}
-		else
-		{
-			minMilitaryPower = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, this.Village, 0);
-		}
+		minMilitaryPower = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, this.Village, 0);
+		minMilitaryPower *= 1.5f;
 	}
 
 	protected override int GetNeededAvailabilityTime()
@@ -128,7 +138,19 @@ public class AICommanderMission_PacifyVillage : AICommanderMissionWithRequestArm
 
 	protected override bool IsMissionCompleted()
 	{
-		return this.Village != null && this.Village.HasBeenPacified;
+		if (this.Village == null)
+		{
+			return true;
+		}
+		ReadOnlyCollection<Quest> readOnlyCollection = this.departmentOfInternalAffairs.QuestJournal.Read(QuestState.InProgress);
+		for (int i = 0; i < readOnlyCollection.Count; i++)
+		{
+			if (this.Village.PointOfInterest.GUID == readOnlyCollection[i].QuestGiverGUID)
+			{
+				return true;
+			}
+		}
+		return (this.villageLayer.SuspendPacification && (this.Village.PointOfInterest.Interaction.Bits & base.Commander.Empire.Bits) != 0) || this.Village.HasBeenPacified;
 	}
 
 	protected override void Running()
@@ -165,7 +187,14 @@ public class AICommanderMission_PacifyVillage : AICommanderMissionWithRequestArm
 			base.Completion = AICommanderMission.AICommanderMissionCompletion.Success;
 			return true;
 		}
-		return base.TryCreateArmyMission("PacifyVillage", new List<object>
+		if (!this.villageLayer.SuspendPacification || this.Village.HasBeenConverted)
+		{
+			return base.TryCreateArmyMission("PacifyVillage", new List<object>
+			{
+				this.Village
+			});
+		}
+		return base.TryCreateArmyMission("ELCPPeacefulPacify", new List<object>
 		{
 			this.Village
 		});
@@ -184,4 +213,8 @@ public class AICommanderMission_PacifyVillage : AICommanderMissionWithRequestArm
 	}
 
 	private BarbarianCouncil barbarianCouncil;
+
+	private AILayer_Village villageLayer;
+
+	private DepartmentOfInternalAffairs departmentOfInternalAffairs;
 }

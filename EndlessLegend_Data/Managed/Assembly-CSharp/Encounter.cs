@@ -74,8 +74,6 @@ public class Encounter : IDisposable, IVisibilityProvider, IGameEntity, IWorldEn
 
 	public event EventHandler<DeployementPhaseTimeChangedEventArgs> DeployementPhaseTimeChanged;
 
-	public event EventHandler EncounterDisposed;
-
 	public IEnumerable<Contender> GetAlliedContendersFromContender(Contender contender)
 	{
 		if (this.Contenders != null)
@@ -204,7 +202,7 @@ public class Encounter : IDisposable, IVisibilityProvider, IGameEntity, IWorldEn
 
 	public Contender GetFirstEnemyContenderFromEmpire(global::Empire empire)
 	{
-		Encounter.<GetFirstEnemyContenderFromEmpire>c__AnonStorey894 <GetFirstEnemyContenderFromEmpire>c__AnonStorey = new Encounter.<GetFirstEnemyContenderFromEmpire>c__AnonStorey894();
+		Encounter.<GetFirstEnemyContenderFromEmpire>c__AnonStorey890 <GetFirstEnemyContenderFromEmpire>c__AnonStorey = new Encounter.<GetFirstEnemyContenderFromEmpire>c__AnonStorey890();
 		<GetFirstEnemyContenderFromEmpire>c__AnonStorey.empire = empire;
 		if (this.Contenders == null)
 		{
@@ -852,6 +850,7 @@ public class Encounter : IDisposable, IVisibilityProvider, IGameEntity, IWorldEn
 			}
 			this.Contenders = null;
 			this.ExternalArmies.Clear();
+			ELCPUtilities.SpellUsage_UnregisterEncounter(this.GUID);
 			if (this.EncounterDisposed != null)
 			{
 				this.EncounterDisposed(this, null);
@@ -1059,6 +1058,17 @@ public class Encounter : IDisposable, IVisibilityProvider, IGameEntity, IWorldEn
 		{
 			this.BattleActionStateChange(this, e);
 		}
+	}
+
+	public event EventHandler EncounterDisposed;
+
+	public Contender GetFirstAlliedContenderFromEmpireWithUnits(global::Empire empire)
+	{
+		if (this.Contenders != null)
+		{
+			return this.Contenders.FirstOrDefault((Contender match) => match.Empire.Index == empire.Index && match.Garrison.UnitsCount > 0);
+		}
+		return null;
 	}
 
 	protected EventHandler<EncounterUnitSpawnEventArgs> encounterUnitSpawnEventHandler;

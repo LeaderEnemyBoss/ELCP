@@ -8,20 +8,20 @@ public class DiplomaticMetaPrerequisite : DiplomaticPrerequisite
 	public DiplomaticMetaPrerequisite.OperatorType Operator { get; private set; }
 
 	[XmlElement(Type = typeof(DiplomaticRelationStateEmpirePrerequisite), ElementName = "DiplomaticRelationStateEmpirePrerequisite")]
-	[XmlElement(Type = typeof(DiplomaticAbilityPrerequisite), ElementName = "DiplomaticAbilityPrerequisite")]
 	[XmlElement(Type = typeof(DiplomaticMetaPrerequisite), ElementName = "DiplomaticMetaPrerequisite")]
-	[XmlElement(Type = typeof(DiplomaticContractContainsTermPrerequisite), ElementName = "DiplomaticContractContainsTermPrerequisite")]
 	[XmlElement(Type = typeof(DiplomaticRelationStatePrerequisite), ElementName = "DiplomaticRelationStatePrerequisite")]
+	[XmlElement(Type = typeof(DiplomaticContractContainsTermPrerequisite), ElementName = "DiplomaticContractContainsTermPrerequisite")]
+	[XmlElement(Type = typeof(DiplomaticAbilityPrerequisite), ElementName = "DiplomaticAbilityPrerequisite")]
+	[XmlElement(Type = typeof(DiplomaticCooldownPrerequisite), ElementName = "DiplomaticCooldownPrerequisite")]
 	public DiplomaticPrerequisite[] Prerequisites { get; private set; }
 
 	public override bool Check(IDiplomaticContract diplomaticContract, Empire empireWhichProvides, Empire empireWhichReceives)
 	{
-		Diagnostics.Assert(this.Prerequisites != null && this.Prerequisites.Length > 0);
+		Diagnostics.Assert(this.Prerequisites != null && this.Prerequisites.Length != 0);
 		int num = 0;
 		for (int i = 0; i < this.Prerequisites.Length; i++)
 		{
-			DiplomaticPrerequisite diplomaticPrerequisite = this.Prerequisites[i];
-			if (diplomaticPrerequisite.Check(diplomaticContract, empireWhichProvides, empireWhichReceives))
+			if (this.Prerequisites[i].Check(diplomaticContract, empireWhichProvides, empireWhichReceives))
 			{
 				num++;
 			}

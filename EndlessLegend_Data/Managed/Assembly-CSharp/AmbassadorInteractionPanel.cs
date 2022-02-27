@@ -145,7 +145,7 @@ public class AmbassadorInteractionPanel : global::GuiPanel
 
 	private bool CanSeeAllInformation()
 	{
-		if (this.LookingEmpire.Index == this.PlayerEmpire.Index || this.AmbassadorEmpire.Index == this.PlayerEmpire.Index)
+		if (this.LookingEmpire.Index == this.PlayerEmpire.Index || this.AmbassadorEmpire.Index == this.PlayerEmpire.Index || this.PlayerEmpire.SimulationObject.Tags.Contains(Empire.TagEmpireEliminated))
 		{
 			return true;
 		}
@@ -164,6 +164,10 @@ public class AmbassadorInteractionPanel : global::GuiPanel
 
 	private void OnNegotiationCB(GameObject obj)
 	{
+		if (this.PlayerEmpire.SimulationObject.Tags.Contains(Empire.TagEmpireEliminated))
+		{
+			return;
+		}
 		if (!base.IsVisible || base.IsHiding)
 		{
 			return;

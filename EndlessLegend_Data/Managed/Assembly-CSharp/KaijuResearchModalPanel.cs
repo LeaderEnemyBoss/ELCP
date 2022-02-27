@@ -183,8 +183,7 @@ public class KaijuResearchModalPanel : GuiPlayerControllerModalPanel
 		ConstructionQueue constructionQueueForEmpire = this.kaijuTechsService.GetConstructionQueueForEmpire(base.Empire);
 		if (constructionQueueForEmpire != null)
 		{
-			int length = constructionQueueForEmpire.Length;
-			for (int i = length - 1; i >= 0; i--)
+			for (int i = constructionQueueForEmpire.Length - 1; i >= 0; i--)
 			{
 				this.buyoutButton.AgeTransform.Enable = false;
 				Construction construction = constructionQueueForEmpire.PeekAt(i);
@@ -296,19 +295,11 @@ public class KaijuResearchModalPanel : GuiPlayerControllerModalPanel
 		{
 			component.AgeTransform.X = ((!AgeUtils.HighDefinition) ? component.KaijuGuiElement.X : (component.KaijuGuiElement.X * AgeUtils.HighDefinitionFactor));
 			component.AgeTransform.Y = ((!AgeUtils.HighDefinition) ? component.KaijuGuiElement.Y : (component.KaijuGuiElement.Y * AgeUtils.HighDefinitionFactor));
+			return;
 		}
-		else
-		{
-			Diagnostics.LogError("The Kaiju doesn't have a KaijuTechPortrait");
-			component.AgeTransform.X = 0f;
-			component.AgeTransform.Y = 0f;
-		}
-	}
-
-	public override void Hide(bool instant = false)
-	{
-		this.kaijuTechsService.EmptyConstructionQueueForEmpire(base.Empire);
-		base.Hide(instant);
+		Diagnostics.LogError("The Kaiju doesn't have a KaijuTechPortrait");
+		component.AgeTransform.X = 0f;
+		component.AgeTransform.Y = 0f;
 	}
 
 	[SerializeField]

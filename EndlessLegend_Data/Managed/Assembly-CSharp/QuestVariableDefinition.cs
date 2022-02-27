@@ -22,11 +22,11 @@ public class QuestVariableDefinition
 	public bool UsedInPrerequisites { get; set; }
 
 	[XmlElement("Count", typeof(XmlQueryCount))]
-	[XmlElement("First", typeof(XmlQueryFirst))]
-	[XmlElement("Limit", typeof(XmlQueryLimit))]
 	[XmlElement("Any", typeof(XmlQueryAny))]
+	[XmlElement("Limit", typeof(XmlQueryLimit))]
 	[XmlElement("Last", typeof(XmlQueryLast))]
 	[XmlElement("From", typeof(XmlQuery))]
+	[XmlElement("First", typeof(XmlQueryFirst))]
 	public IQuery Query { get; set; }
 
 	public static InterpreterContext.InterpreterSession CreateSession(SimulationObjectWrapper simObject, IEnumerable<QuestVariable> variables)
@@ -56,4 +56,7 @@ public class QuestVariableDefinition
 		}
 		return result;
 	}
+
+	[XmlAttribute]
+	public bool ToGlobal { get; set; }
 }

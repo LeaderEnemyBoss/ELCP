@@ -9,7 +9,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSightEntity, IFastTravelNode, IFastTravelNodeGameEntity, IGameEntity, IGameEntityWithEmpire, IGameEntityWithLineOfSight, IGameEntityWithWorldPosition, IWorldPositionable, ICategoryProvider
+public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSightEntity, IWorldPositionable, IFastTravelNode, IFastTravelNodeGameEntity, IGameEntity, IGameEntityWithWorldPosition, IGameEntityWithEmpire, IGameEntityWithLineOfSight, ICategoryProvider
 {
 	public CreepingNode(GameEntityGUID guid, global::Empire empire) : base("CreepingNode#" + guid.ToString())
 	{
@@ -33,6 +33,16 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 		this.simulationDescriptorDatabase = Databases.GetDatabase<SimulationDescriptor>(false);
 		Diagnostics.Assert(this.simulationDescriptorDatabase != null);
 		this.departmentOfTheInterior = this.Empire.GetAgency<DepartmentOfTheInterior>();
+		if (ELCPUtilities.UseELCPCreepingNodeRuleset)
+		{
+			SimulationDescriptor descriptor = null;
+			if (this.simulationDescriptorDatabase.TryGetValue("VanillaNode", out descriptor))
+			{
+				base.SimulationObject.AddDescriptor(descriptor);
+			}
+		}
+		this.StoredConstructionCost = new Dictionary<string, float>();
+		this.ExploitedTiles = new List<WorldPosition>();
 	}
 
 	public CreepingNode(GameEntityGUID guid, global::Empire empire, PointOfInterest poi, CreepingNodeImprovementDefinition definition) : this(guid, empire)
@@ -157,7 +167,7 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 		Diagnostics.Assert(service.Game != null);
 		global::Game game = service.Game as global::Game;
 		Diagnostics.Assert(game != null);
-		int num = reader.ReadVersionAttribute();
+		reader.ReadVersionAttribute();
 		this.GUID = reader.GetAttribute<ulong>("GUID");
 		base.ReadXml(reader);
 		string x = reader.ReadElementString("NodeDefinitionName");
@@ -167,9 +177,9 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 		{
 			this.NodeDefinition = nodeDefinition;
 		}
-		int num2 = reader.ReadElementString<int>("IndexOfPointOfInterest");
-		int num3 = reader.ReadElementString<int>("IndexOfRegion");
-		this.PointOfInterest = game.World.Regions[num3].PointOfInterests[num2];
+		int num = reader.ReadElementString<int>("IndexOfPointOfInterest");
+		int num2 = reader.ReadElementString<int>("IndexOfRegion");
+		this.PointOfInterest = game.World.Regions[num2].PointOfInterests[num];
 		this.LastTurnChecked = reader.ReadElementString<int>("LastTurnChecked");
 		this.IsUpgradeReady = reader.ReadElementString<bool>("IsUpgradeReady");
 		this.UpgradeReachedTurn = reader.ReadElementString<int>("UpgradeReachedTurn");
@@ -178,11 +188,12 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 		this.Life = reader.ReadElementString<float>("Life");
 		this.MaxLife = reader.ReadElementString<float>("MaxLife");
 		this.LastTurnWhenDismantleBegun = reader.ReadElementString<int>("LastTurnWhenDismantleBegun");
+		this.ReadDictionnary(reader, "StoredConstructionCost", this.StoredConstructionCost);
 	}
 
 	public override void WriteXml(XmlWriter writer)
 	{
-		int num = writer.WriteVersionAttribute(1);
+		writer.WriteVersionAttribute(1);
 		writer.WriteAttributeString<ulong>("GUID", this.GUID);
 		base.WriteXml(writer);
 		writer.WriteElementString<StaticString>("NodeDefinitionName", this.NodeDefinition.Name);
@@ -198,6 +209,7 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 		writer.WriteElementString<float>("Life", this.Life);
 		writer.WriteElementString<float>("MaxLife", this.MaxLife);
 		writer.WriteElementString<int>("LastTurnWhenDismantleBegun", this.LastTurnWhenDismantleBegun);
+		this.WriteDictionnary(writer, "StoredConstructionCost", this.StoredConstructionCost);
 	}
 
 	public GameEntityGUID GUID { get; private set; }
@@ -382,6 +394,10 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 
 	public bool IsConstructionPaused()
 	{
+		if (this.Empire != null && this.Empire.IsControlledByAI)
+		{
+			return false;
+		}
 		float propertyValue = this.departmentOfTheInterior.MainCity.GetPropertyValue(SimulationProperties.Population);
 		float propertyValue2 = this.departmentOfTheInterior.MainCity.GetPropertyValue(SimulationProperties.NetCityGrowth);
 		return propertyValue == 1f && propertyValue2 < 0f;
@@ -397,7 +413,7 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 		if (this.LastTurnChecked < this.game.Turn)
 		{
 			bool flag = this.IsConstructionPaused();
-			if (this.UpgradeReachedTurn == -1 && flag)
+			if (this.UpgradeReachedTurn == -1 && flag && this.DismantlingArmyGUID == GameEntityGUID.Zero)
 			{
 				num = 0f;
 			}
@@ -435,6 +451,7 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 
 	public void CompleteUpgrade()
 	{
+		this.StoredConstructionCost.Clear();
 		this.IsUpgradeReady = true;
 		this.UpgradeReachedTurn = this.game.Turn;
 		this.Life = this.MaxLife;
@@ -449,7 +466,7 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 			this.OnUpgradeComplete(this, new EventArgs());
 		}
 		this.eventService.Notify(new EventCreepingNodeUpgradeComplete(this, false));
-		if (this.NodeDefinition is ConstructibleElement)
+		if (this.NodeDefinition != null)
 		{
 			this.eventService.Notify(new EventConstructionEnded(this.Empire, this.GUID, this.NodeDefinition));
 		}
@@ -524,6 +541,46 @@ public class CreepingNode : SimulationObjectWrapper, IXmlSerializable, ILineOfSi
 			}
 		}
 	}
+
+	public Dictionary<string, float> StoredConstructionCost { get; set; }
+
+	private void WriteDictionnary(XmlWriter writer, string name, Dictionary<string, float> dictionary)
+	{
+		writer.WriteStartElement(name);
+		writer.WriteAttributeString<int>("Count", dictionary.Count);
+		foreach (KeyValuePair<string, float> keyValuePair in dictionary)
+		{
+			writer.WriteStartElement("KeyValuePair");
+			writer.WriteAttributeString<string>("Key", keyValuePair.Key);
+			writer.WriteAttributeString<float>("Value", keyValuePair.Value);
+			writer.WriteEndElement();
+		}
+		writer.WriteEndElement();
+	}
+
+	private void ReadDictionnary(XmlReader reader, string name, Dictionary<string, float> dictionary)
+	{
+		if (reader.IsStartElement(name))
+		{
+			int attribute = reader.GetAttribute<int>("Count");
+			if (attribute > 0)
+			{
+				reader.ReadStartElement(name);
+				for (int i = 0; i < attribute; i++)
+				{
+					string attribute2 = reader.GetAttribute<string>("Key");
+					float attribute3 = reader.GetAttribute<float>("Value");
+					reader.Skip();
+					dictionary[attribute2] = attribute3;
+				}
+				reader.ReadEndElement(name);
+				return;
+			}
+			reader.Skip();
+		}
+	}
+
+	public List<WorldPosition> ExploitedTiles { get; set; }
 
 	private IGameService gameService;
 

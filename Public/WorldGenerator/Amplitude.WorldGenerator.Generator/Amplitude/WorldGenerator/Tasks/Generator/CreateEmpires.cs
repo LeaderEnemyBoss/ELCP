@@ -10,7 +10,6 @@ namespace Amplitude.WorldGenerator.Tasks.Generator
 			base.Report("?CreateEmpires");
 			base.Execute(context);
 			base.ExecuteSubTask(new SelectSpawnRegions());
-			base.ExecuteSubTask(new ImproveSpawnAreas());
 		}
 	}
 }

@@ -121,5 +121,7 @@ public class AIEntity_Empire : AIEntity, IXmlSerializable, IAIDrawDebugger
 		this.AddLayer(new AILayer_Dissent());
 		this.AddLayer(new AILayer_WeatherControl());
 		this.AddLayer(new AILayer_KaijuManagement());
+		this.AddLayer(new AILayer_Victory());
+		this.AddLayer(new AILayer_QuestBTController());
 	}
 }

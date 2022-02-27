@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Datatable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!-- These properties and modifiers get added to ClassEmpire by the game -->
+  <!-- they are seperated here in order to improve compatibility with mods who modify EmpireTypeMajor or ClassEmpire -->
+  <SimulationDescriptor Name="ELCPEmpireProperties" Type="ELCPEmpireProperties">
+    <SimulationPropertyDescriptors>
+      <SimulationPropertyDescriptor Name="ELCPCadaversPerVillage"   MinValue="0" BaseValue="0"/>
+	  <SimulationPropertyDescriptor Name="ELCPCadavresPerSacrifice"   MinValue="0" BaseValue="0"/>	  
+	  <SimulationPropertyDescriptor Name="AllayiBoosterDurationMultiplier"     BaseValue="1"/>
+	  <SimulationPropertyDescriptor Name="NumberOfOwnedOceanicRegions" BaseValue="0" MinValue="0" IsSealed="true" IsSerializable="false"/> <!-- is calculated in managed code -->
+	  <SimulationPropertyDescriptor Name="AIHasAnyVolcanicCity"  BaseValue="0" MaxValue="1" MinValue="0"/>
+	  <SimulationPropertyDescriptor Name="KaijuTameReduction" MinValue="-0.9" BaseValue="0"/>
+	  <SimulationPropertyDescriptor Name="ConvertVillageMultiplier" MinValue="0" BaseValue="1"/>
+	  <SimulationPropertyDescriptor Name="NodeCostIncrementModifier" MinValue="0" BaseValue="1"/>
+	  <SimulationPropertyDescriptor Name="NodeOvergrownVillageCostModifier" MinValue="0" BaseValue="1"/>
+	  <SimulationPropertyDescriptor Name="MarketplaceMercCostMultiplier" MinValue="0" BaseValue="1"/>
+	  <SimulationPropertyDescriptor Name="MarketplaceStockpileCostMultiplier" MinValue="0" BaseValue="1"/>
+	  <!-- peacepoint bucket -->
+	  <SimulationPropertyDescriptor Name="PeacePointBucketStock" MinValue="0" IsSealed="true"/>
+	  <SimulationPropertyDescriptor Name="NetPeacePointBucket" MinValue="Negative" BaseValue="0"/>
+	  <SimulationPropertyDescriptor Name="TreatyPeacePointPerTurn" MinValue="0" BaseValue="30"/>
+	  <SimulationPropertyDescriptor Name="TreatyPeacePointPerTurnMult" MinValue="0" BaseValue="1" IsSealed="true"/> <!--hardcoded multiplier dependant on PeacePointThreshold mults -->
+    </SimulationPropertyDescriptors>
+	<SimulationModifierDescriptors>
+	  <!-- ELCP bonus cadavers for necro-->
+	  <SimulationModifierDescriptor TargetProperty="ELCPCadaversPerVillage" Operation ="Addition" Value="2" Path="FactionTraitNecrophagesRecycling" TooltipHidden="true" Priority="0"/>
+	  <!--<SimulationModifierDescriptor TargetProperty="ELCPCadaversPerVillage" Operation ="Multiplication" Value="2" Path="#HeatWave,FactionTraitNecrophagesHeatWave" TooltipHidden="true" Priority="1"/>-->
+	  
+	  <SimulationModifierDescriptor TargetProperty="ELCPCadavresPerSacrifice" Operation ="Addition" Value="1" Path="FactionTraitNecrophagesRecycling" TooltipHidden="true" Priority="0"/>
+	  <!--<SimulationModifierDescriptor TargetProperty="ELCPCadavresPerSacrifice" Operation ="Multiplication" Value="2" Path="#HeatWave,FactionTraitNecrophagesHeatWave" TooltipHidden="true" Priority="1"/>-->
+	  
+	  <!-- ELCP modify node cost-->
+	  <SimulationModifierDescriptor TargetProperty="NodeCostIncrement"                   Operation="Multiplication" Value="$(NodeCostIncrementModifier)" Path="ClassEmpire/ClassCity,MainCity/ClassCreepingNode" Priority="-1"/>
+	  <SimulationModifierDescriptor TargetProperty="NodeCostIncrement"                   Operation="Multiplication" Value="$(NodeOvergrownVillageCostModifier)" Path="ClassEmpire/ClassCity,MainCity/ClassCreepingNode,NodeVillageFoodCost" Priority="-1"/>
+	  
+	  <!-- balance changes -->
+	  <SimulationModifierDescriptor TargetProperty="Pillar2Duration" Operation="Force" Value="2" Path="EmpireTypeMajor" TooltipHidden="true" Priority="-1" IsBase="true"/>
+	  <SimulationModifierDescriptor TargetProperty="MaximumNumberOfExclusiveHeroes" Operation="Force" Value="4" Path="EmpireTypeMajor" TooltipHidden="true" Priority="-1" IsBase="true"/>
+	  <SimulationModifierDescriptor TargetProperty="EmpirePointToPeacePointFactor" Operation="Force" Value="0.075" Path="EmpireTypeMajor" TooltipHidden="true" Priority="-1" IsBase="true"/>
+	  
+	  <!-- peacepoint bucket -->
+	  <SimulationModifierDescriptor TargetProperty="TreatyPeacePointPerTurn" Operation="Multiplication" Value="$(TreatyPeacePointPerTurnMult)" Priority="1" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="TreatyPeacePointPerTurn" Operation="Multiplication" Value="$(PeacePointGainMultiplier)" Priority="2" Path="EmpireTypeMajor" TooltipHidden="true"/>
+	  <BinarySimulationModifierDescriptor TargetProperty="NetEmpirePeacePoint" Operation="Addition" Left="$(PeacePointBucketStock)" BinaryOperation="Minimum" Right="$(TreatyPeacePointPerTurn)" Priority="3" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="NetPeacePointBucket" Operation="Subtraction" Value="$(TreatyPeacePointPerTurn)" Priority="4" TooltipHidden="true"/>
+	  
+	  <!-- prayer cost bugfix -->
+	  <SimulationModifierDescriptor TargetProperty="PrayerCostByPastWinter" Operation="Force" Value="0" Path="EmpireTypeMajor" TooltipHidden="true" Priority="-1" IsBase="true"/>
+	</SimulationModifierDescriptors>
+  </SimulationDescriptor>
+  
+  <!-- These properties and modifiers get added to Heros by the game -->
+  <SimulationDescriptor Name="ClassHeroELCP" Type="Class">
+    <SimulationPropertyDescriptors>
+	  <SimulationPropertyDescriptor Name="ELCPApprovalOverflow"    		BaseValue="0"   MinValue="0"/>
+	  <SimulationPropertyDescriptor Name="ELCPFortificationOverflow"    BaseValue="0"   MinValue="0"/>
+	  <SimulationPropertyDescriptor Name="ELCPAwestrikerRuin"           BaseValue="0"   MinValue="0" MaxValue="1"/>
+	</SimulationPropertyDescriptors>
+  </SimulationDescriptor>
+</Datatable>

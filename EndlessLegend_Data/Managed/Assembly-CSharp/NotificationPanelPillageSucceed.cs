@@ -22,27 +22,24 @@ public class NotificationPanelPillageSucceed : NotificationPanelPillageUpdate
 		if (this.guiNotification != null && this.notificationItem != null)
 		{
 			GuiNotificationPillageSucceed guiNotificationPillageSucceed = this.guiNotification as GuiNotificationPillageSucceed;
-			if (guiNotificationPillageSucceed != null)
+			if (guiNotificationPillageSucceed != null && guiNotificationPillageSucceed.RaisedEvent is EventPillageSucceed)
 			{
-				EventPillageSucceed eventPillageSucceed = guiNotificationPillageSucceed.RaisedEvent as EventPillageSucceed;
-				if (eventPillageSucceed != null)
+				IDroppable[] loots = (guiNotificationPillageSucceed.RaisedEvent as EventPillageSucceed).Loots;
+				this.sourceText = string.Empty;
+				bool flag = true;
+				foreach (IDroppable droppable in loots)
 				{
-					IDroppable[] droppables = (guiNotificationPillageSucceed.RaisedEvent as EventPillageSucceed).Loots;
-					this.sourceText = string.Empty;
-					for (int i = 0; i < droppables.Length; i++)
+					if ((droppable != null && !(droppable is DroppableResource)) || (droppable as DroppableResource).Quantity > 0)
 					{
-						IDroppable droppable = droppables[i];
-						if (droppable != null)
+						if (!flag)
 						{
-							if (i != 0)
-							{
-								this.sourceText += "\n";
-							}
-							this.sourceText += droppable.ToGuiString();
+							this.sourceText += "\n";
 						}
+						this.sourceText += droppable.ToGuiString();
+						flag = false;
 					}
-					this.LootLabel.Text = this.sourceText;
 				}
+				this.LootLabel.Text = this.sourceText;
 			}
 		}
 		yield break;

@@ -148,7 +148,7 @@ public class EncounterSpellCursor : EncounterWorldCursor, IWorldPlacementCursorW
 			this.SpellDefinition = (parameters.FirstOrDefault((object iterator) => iterator != null && iterator.GetType() == typeof(SpellDefinition)) as SpellDefinition);
 		}
 		global::Empire empire = base.PlayerControllerRepositoryService.ActivePlayerController.Empire as global::Empire;
-		this.Contender = base.Encounter.GetFirstAlliedContenderFromEmpire(empire);
+		this.Contender = base.Encounter.GetFirstAlliedContenderFromEmpireWithUnits(empire);
 		WorldCursor.HighlightedWorldPositionChange += this.WorldCursor_HighlightedWorldPositionChange;
 		this.InitializeInterpreterContext();
 		this.CreateHighlights();
@@ -245,7 +245,7 @@ public class EncounterSpellCursor : EncounterWorldCursor, IWorldPlacementCursorW
 	private void SetWorldAreaHexagonRendererPosition(GameObject worldAreaHexagonRendererOwner, WorldPosition position, bool resetVisibilityTimer)
 	{
 		WorldAreaHexagonRenderer[] componentsInChildren = worldAreaHexagonRendererOwner.GetComponentsInChildren<WorldAreaHexagonRenderer>(true);
-		if (componentsInChildren != null && componentsInChildren.Length > 0)
+		if (componentsInChildren != null && componentsInChildren.Length != 0)
 		{
 			WorldPosition[] worldArea = this.SpellDefinition.GetAffectedPosition(this.Contender, position, this.Contender.WorldOrientation, this.worldPositionningService.World.WorldParameters).ToArray();
 			foreach (WorldAreaHexagonRenderer worldAreaHexagonRenderer in componentsInChildren)

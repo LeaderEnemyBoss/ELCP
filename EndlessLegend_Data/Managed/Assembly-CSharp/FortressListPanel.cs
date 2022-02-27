@@ -151,6 +151,7 @@ public class FortressListPanel : GuiPanel
 		component.Bind(fortress, this.Empire, this.selectionClient.gameObject, false);
 		component.RefreshContent();
 		component.AgeTransform.Enable = true;
+		component.DisableIfGarrisonIsInEncounter();
 	}
 
 	public const string LastSortString = "ZZZZZZZ";

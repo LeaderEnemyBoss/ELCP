@@ -68,8 +68,7 @@ public class QuestBehaviourTreeNode_Decorator_TerraformDevicePlaced : QuestBehav
 
 	protected override State Execute(QuestBehaviour questBehaviour, EventTerraformDeviceEntityCreated e, params object[] parameters)
 	{
-		IGameService service = Services.GetService<IGameService>();
-		global::Game game = service.Game as global::Game;
+		global::Game game = Services.GetService<IGameService>().Game as global::Game;
 		if (this.DevicePositionVarName == string.Empty)
 		{
 			return State.Success;
@@ -81,12 +80,12 @@ public class QuestBehaviourTreeNode_Decorator_TerraformDevicePlaced : QuestBehav
 		}
 		if (this.DevicePositions != null && this.DevicePositions[0] == e.TerraformDevice.WorldPosition)
 		{
-			IQuestManagementService service2 = game.Services.GetService<IQuestManagementService>();
-			if (service2 != null)
+			IQuestManagementService service = game.Services.GetService<IQuestManagementService>();
+			if (service != null)
 			{
 				this.EntityGUID = e.TerraformDevice.GUID;
 				QuestVariable questVariable = new QuestVariable(this.Output_EntityVarName, e.TerraformDevice);
-				service2.State.AddGlobalVariable(questBehaviour.Initiator.Index, questVariable);
+				service.State.AddGlobalVariable(questBehaviour.Initiator.Index, questVariable);
 			}
 			return State.Success;
 		}

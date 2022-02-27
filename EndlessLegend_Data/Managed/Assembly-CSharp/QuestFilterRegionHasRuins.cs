@@ -19,13 +19,9 @@ public class QuestFilterRegionHasRuins
 			int num = 0;
 			foreach (PointOfInterest pointOfInterest in regionToCheck.PointOfInterests)
 			{
-				if (pointOfInterest.Type == "QuestLocation")
+				if (pointOfInterest.Type == "QuestLocation" && pointOfInterest.SimulationObject.Tags.Contains("QuestLocationTypeRuin"))
 				{
-					bool flag2 = pointOfInterest.SimulationObject.Tags.Contains("QuestLocationTypeRuin");
-					if (flag2)
-					{
-						num++;
-					}
+					num++;
 				}
 			}
 			if (!this.OrMore)
@@ -35,17 +31,6 @@ public class QuestFilterRegionHasRuins
 			else
 			{
 				flag &= (num >= this.Count);
-			}
-			if (flag)
-			{
-				Diagnostics.Log(string.Concat(new object[]
-				{
-					"[EGO] ",
-					regionToCheck.LocalizedName,
-					" has ",
-					num,
-					" ruins."
-				}));
 			}
 		}
 		return flag;

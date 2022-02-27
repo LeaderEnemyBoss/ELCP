@@ -16,5 +16,13 @@ namespace Amplitude.WorldGenerator.World.Info
 
 		[XmlIgnore]
 		public byte Id { get; set; }
+
+		public bool IsWaterTile
+		{
+			get
+			{
+				return this.Name.Contains("Ocean") || this.Name.Contains("Water") || this.Name.Contains("DriftIce") || this.Name.Contains("CoralReef");
+			}
+		}
 	}
 }

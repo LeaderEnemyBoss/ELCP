@@ -16,11 +16,11 @@ public class Application : Amplitude.Unity.Framework.Application
 		Amplitude.Unity.Framework.Application.Name = "Endless Legend";
 		Amplitude.Unity.Framework.Application.Version = new Amplitude.Unity.Framework.Version
 		{
-			Major = 1,
-			Minor = 8,
-			Revision = 52,
+			Major = 2,
+			Minor = 7,
+			Revision = 69,
 			Serial = 3,
-			Label = string.Empty,
+			Label = "Community Patch",
 			Accessibility = Accessibility.Public
 		};
 		global::Application.SteamAppID = 289130;
@@ -98,66 +98,43 @@ public class Application : Amplitude.Unity.Framework.Application
 
 	public static int SteamAppID { get; private set; }
 
-	public static bool ResolveChineseLanguage(out string chineseLanguage)
-	{
-		if (global::Application.chineseLanguage == null)
-		{
-			global::Application.chineseLanguage = string.Empty;
-			try
-			{
-				Steamworks.SteamApps steamApps = Steamworks.SteamAPI.SteamApps;
-				if (steamApps != null)
-				{
-					string currentGameLanguage = steamApps.GetCurrentGameLanguage();
-					if (currentGameLanguage == "tchinese" || currentGameLanguage == "schinese")
-					{
-						global::Application.chineseLanguage = currentGameLanguage;
-					}
-				}
-			}
-			catch
-			{
-			}
-		}
-		chineseLanguage = global::Application.chineseLanguage;
-		return !string.IsNullOrEmpty(global::Application.chineseLanguage);
-	}
-
 	protected override void Awake()
 	{
 		base.Awake();
 		Diagnostics.Log(global::Application.CommandLineArguments);
 		Amplitude.Unity.Framework.Application.DebugNetwork = global::Application.CommandLineArguments.DebugNetwork;
 		Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools = global::Application.CommandLineArguments.EnableModdingTools;
-		Amplitude.Unity.Framework.Application.Preferences.EnableMultiplayer = !global::Application.CommandLineArguments.EnableModdingTools;
+		Amplitude.Unity.Framework.Application.Preferences.ELCPDevMode = false;
+		ELCPUtilities.UseELCPMultiThreading = false;
+		Amplitude.Unity.Framework.Application.Preferences.EnableMultiplayer = (Amplitude.Unity.Framework.Application.Preferences.ELCPDevMode || !Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools);
 	}
 
 	protected override IEnumerator OnApplicationIgnitionComplete()
 	{
 		try
 		{
-			List<DirectoryInfo> potentialDirectories = new List<DirectoryInfo>();
-			int maximumNumberOfTemporaryFilesFolders = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(global::Application.Registers.MaximumNumberOfTemporaryFilesFolders, 10);
+			List<DirectoryInfo> list = new List<DirectoryInfo>();
+			int value = Amplitude.Unity.Framework.Application.Registry.GetValue<int>(global::Application.Registers.MaximumNumberOfTemporaryFilesFolders, 10);
 			string[] directories = Directory.GetDirectories(Amplitude.Unity.Framework.Application.TempDirectory, "*", SearchOption.AllDirectories);
-			if (directories.Length > maximumNumberOfTemporaryFilesFolders)
+			if (directories.Length > value)
 			{
-				for (int index = 0; index < directories.Length; index++)
+				for (int i = 0; i < directories.Length; i++)
 				{
 					try
 					{
-						DirectoryInfo nfo = new DirectoryInfo(directories[index]);
-						potentialDirectories.Add(nfo);
+						DirectoryInfo item = new DirectoryInfo(directories[i]);
+						list.Add(item);
 					}
 					catch
 					{
 					}
 				}
-				if (potentialDirectories.Count > maximumNumberOfTemporaryFilesFolders)
+				if (list.Count > value)
 				{
-					potentialDirectories.Sort((DirectoryInfo l, DirectoryInfo r) => r.LastWriteTime.CompareTo(l.LastWriteTime));
-					for (int index2 = maximumNumberOfTemporaryFilesFolders; index2 < potentialDirectories.Count; index2++)
+					list.Sort((DirectoryInfo l, DirectoryInfo r) => r.LastWriteTime.CompareTo(l.LastWriteTime));
+					for (int j = value; j < list.Count; j++)
 					{
-						potentialDirectories[index2].Delete(true);
+						list[j].Delete(true);
 					}
 				}
 			}
@@ -186,6 +163,31 @@ public class Application : Amplitude.Unity.Framework.Application
 	protected override void OnApplicationQuit()
 	{
 		base.OnApplicationQuit();
+	}
+
+	public static bool ResolveChineseLanguage(out string chineseLanguage)
+	{
+		if (global::Application.chineseLanguage == null)
+		{
+			global::Application.chineseLanguage = string.Empty;
+			try
+			{
+				Steamworks.SteamApps steamApps = Steamworks.SteamAPI.SteamApps;
+				if (steamApps != null)
+				{
+					string currentGameLanguage = steamApps.GetCurrentGameLanguage();
+					if (currentGameLanguage == "tchinese" || currentGameLanguage == "schinese")
+					{
+						global::Application.chineseLanguage = currentGameLanguage;
+					}
+				}
+			}
+			catch
+			{
+			}
+		}
+		chineseLanguage = global::Application.chineseLanguage;
+		return !string.IsNullOrEmpty(global::Application.chineseLanguage);
 	}
 
 	private static Amplitude.Unity.Framework.CommandLineArguments commandLineArguments;

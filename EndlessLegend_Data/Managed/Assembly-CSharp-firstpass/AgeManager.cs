@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Amplitude;
 using UnityEngine;
 
@@ -187,11 +188,16 @@ public class AgeManager : MonoBehaviour
 		if (texture2D == null)
 		{
 			bool defaultResource = true;
-			if (this.OnLoadDynamicTexture != null)
+			if (this.TryLoadELCPDynamicTexture(path, out texture2D))
 			{
-				foreach (AgeManager.LoadDynamicTexturesDelegate loadDynamicTexturesDelegate in this.OnLoadDynamicTexture.GetInvocationList())
+				defaultResource = false;
+			}
+			else if (this.OnLoadDynamicTexture != null)
+			{
+				Delegate[] invocationList = this.OnLoadDynamicTexture.GetInvocationList();
+				for (int i = 0; i < invocationList.Length; i++)
 				{
-					if (loadDynamicTexturesDelegate(path, out texture2D))
+					if (((AgeManager.LoadDynamicTexturesDelegate)invocationList[i])(path, out texture2D))
 					{
 						defaultResource = false;
 						break;
@@ -500,6 +506,38 @@ public class AgeManager : MonoBehaviour
 			Diagnostics.Log("Automatic initialization the age manager...");
 			this.Init();
 		}
+	}
+
+	private bool TryLoadELCPDynamicTexture(string path, out Texture2D texture)
+	{
+		texture = null;
+		if (path.Substring(0, 4) != "ELCP")
+		{
+			return false;
+		}
+		string text = Path.Combine(Environment.CurrentDirectory, "Public");
+		if (!Directory.Exists(text))
+		{
+			text = Path.Combine(Environment.CurrentDirectory, "EndlessLegend.app//Contents//Public");
+		}
+		if (Directory.Exists(text))
+		{
+			text = Path.ChangeExtension(Path.Combine(text, path), "png");
+			if (File.Exists(text))
+			{
+				WWW www = new WWW(new Uri(text).AbsoluteUri);
+				while (!www.isDone)
+				{
+					Thread.Sleep(0);
+				}
+				if (www.texture != null)
+				{
+					texture = www.texture;
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public static bool AutoInit = true;

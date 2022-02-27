@@ -3,7 +3,6 @@ using Amplitude;
 using Amplitude.Interop;
 using Amplitude.Unity.Framework;
 using Amplitude.Unity.Gui;
-using Amplitude.Unity.Runtime;
 using Amplitude.Unity.Steam;
 using Amplitude.Unity.View;
 
@@ -27,17 +26,9 @@ public class RuntimeState_OutGame : RuntimeState
 			Diagnostics.Assert(this.guiService != null);
 			this.guiService.GuiSceneStateChange += this.IGuiService_GuiSceneStateChange;
 		}
-		if (parameters.Length == 1 && parameters[0] is ulong)
+		if (parameters.Length == 1 && parameters[0] is ulong && new Steamworks.SteamID((ulong)parameters[0]).IsValid)
 		{
-			Steamworks.SteamID steamID = new Steamworks.SteamID((ulong)parameters[0]);
-			if (steamID.IsValid)
-			{
-				IRuntimeService service = Services.GetService<IRuntimeService>();
-				service.Runtime.FiniteStateMachine.PostStateChange(typeof(RuntimeState_Lobby), new object[]
-				{
-					steamID
-				});
-			}
+			ELCPUtilities.SteamMatchMaking_TryConnectingToLobby((ulong)parameters[0]);
 		}
 	}
 
@@ -54,14 +45,9 @@ public class RuntimeState_OutGame : RuntimeState
 	protected override void OnGameLobbyJoinRequested(object sender, SteamGameLobbyJoinRequestedEventArgs e)
 	{
 		base.OnGameLobbyJoinRequested(sender, e);
-		Steamworks.SteamID steamID = new Steamworks.SteamID(e.Message.m_steamIDLobby);
-		if (steamID.IsValid)
+		if (new Steamworks.SteamID(e.Message.m_steamIDLobby).IsValid)
 		{
-			IRuntimeService service = Services.GetService<IRuntimeService>();
-			service.Runtime.FiniteStateMachine.PostStateChange(typeof(RuntimeState_Lobby), new object[]
-			{
-				steamID
-			});
+			ELCPUtilities.SteamMatchMaking_TryConnectingToLobby(e.Message.m_steamIDLobby);
 		}
 	}
 

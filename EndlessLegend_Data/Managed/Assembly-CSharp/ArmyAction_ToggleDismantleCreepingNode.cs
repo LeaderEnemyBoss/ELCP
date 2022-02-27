@@ -194,8 +194,7 @@ public class ArmyAction_ToggleDismantleCreepingNode : ArmyAction, IArmyActionWit
 			}
 			if (creepingNode.Empire != army.Empire && army.Empire is MajorEmpire)
 			{
-				DepartmentOfForeignAffairs agency = army.Empire.GetAgency<DepartmentOfForeignAffairs>();
-				DiplomaticRelation diplomaticRelation = agency.DiplomaticRelations[creepingNode.Empire.Index];
+				DiplomaticRelation diplomaticRelation = army.Empire.GetAgency<DepartmentOfForeignAffairs>().DiplomaticRelations[creepingNode.Empire.Index];
 				if (diplomaticRelation != null && diplomaticRelation.State != null && (diplomaticRelation.State.Name == DiplomaticRelationState.Names.Alliance || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Peace || diplomaticRelation.State.Name == DiplomaticRelationState.Names.Truce))
 				{
 					failureFlags.Add(ArmyAction.NoCanDoWhileHidden);

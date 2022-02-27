@@ -66,7 +66,7 @@ public class RuntimeManager : Amplitude.Unity.Runtime.RuntimeManager, IService, 
 		string[] array;
 		missingNonWorkshopItems = (array = new string[0]);
 		missingWorkshopItems = array;
-		if (this.Runtime == null)
+		if (base.Runtime == null)
 		{
 			return RuntimeModuleConfigurationState.Red;
 		}
@@ -74,20 +74,28 @@ public class RuntimeManager : Amplitude.Unity.Runtime.RuntimeManager, IService, 
 		{
 			return RuntimeModuleConfigurationState.Red;
 		}
-		List<string> list = (from runtimeModuleIterator in this.Runtime.RuntimeModules
-		select runtimeModuleIterator.Name).ToList<string>();
+		List<string> list = (from runtimeModuleIterator in base.Runtime.RuntimeModules
+		select runtimeModuleIterator.Name.ToString()).ToList<string>();
 		List<string> list2 = list.Except(runtimeModuleIds).ToList<string>();
 		List<string> list3 = runtimeModuleIds.Except(list).ToList<string>();
 		if (list2.Count == 0 && list3.Count == 0)
 		{
+			List<string> list4 = runtimeModuleIds.ToList<string>();
+			for (int i = 0; i < list4.Count; i++)
+			{
+				if (list4[i] != list[i])
+				{
+					return RuntimeModuleConfigurationState.Yellow;
+				}
+			}
 			return RuntimeModuleConfigurationState.Green;
 		}
 		if (list3.Count == 0)
 		{
 			return RuntimeModuleConfigurationState.Yellow;
 		}
-		List<string> list4 = new List<string>();
 		List<string> list5 = new List<string>();
+		List<string> list6 = new List<string>();
 		foreach (string text in list3)
 		{
 			RuntimeModule runtimeModule;
@@ -95,17 +103,17 @@ public class RuntimeManager : Amplitude.Unity.Runtime.RuntimeManager, IService, 
 			{
 				if (text.StartsWith(global::RuntimeManager.Folders.Workshop.Affix))
 				{
-					list4.Add(text);
+					list5.Add(text);
 				}
 				else
 				{
-					list5.Add(text);
+					list6.Add(text);
 				}
 			}
 		}
-		missingWorkshopItems = list4.ToArray();
-		missingNonWorkshopItems = list5.ToArray();
-		if (list5.Count != 0)
+		missingWorkshopItems = list5.ToArray();
+		missingNonWorkshopItems = list6.ToArray();
+		if (list6.Count != 0)
 		{
 			return RuntimeModuleConfigurationState.Red;
 		}

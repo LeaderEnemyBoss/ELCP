@@ -114,25 +114,30 @@ public class GameEndedModalPanel : global::GuiModalPanel
 
 	private void OnContinuePlayingCB(GameObject obj)
 	{
-		ISessionService service = Services.GetService<ISessionService>();
-		Diagnostics.Assert(service != null);
-		Diagnostics.Assert(service.Session != null);
-		switch (service.Session.SessionMode)
+		if (ELCPUtilities.SpectatorMode && this.sortedWinningEmpiresInfo.Count == 0)
 		{
-		case SessionMode.Single:
+			Services.GetService<IGuiNotificationService>().DestroyNotification(this.GuiNotificationGameEnded);
+			IEventService service = Services.GetService<IEventService>();
+			Diagnostics.Assert(service != null);
+			this.Hide(false);
+			service.Notify(new EventELCPSpectator());
+			return;
+		}
+		ISessionService service2 = Services.GetService<ISessionService>();
+		Diagnostics.Assert(service2 != null);
+		Diagnostics.Assert(service2.Session != null);
+		if (service2.Session.SessionMode == SessionMode.Single)
 		{
-			IGuiNotificationService service2 = Services.GetService<IGuiNotificationService>();
-			service2.DestroyNotification(this.GuiNotificationGameEnded);
+			Services.GetService<IGuiNotificationService>().DestroyNotification(this.GuiNotificationGameEnded);
 			IEventService service3 = Services.GetService<IEventService>();
 			Diagnostics.Assert(service3 != null);
 			service3.Notify(new EventDealtWithGameEndingConditions());
 			this.Hide(false);
 			return;
 		}
-		}
 		Diagnostics.LogError("Cannot continue playing at the moment (session mode: '{0}').", new object[]
 		{
-			service.Session.SessionMode
+			service2.Session.SessionMode
 		});
 	}
 
@@ -208,19 +213,27 @@ public class GameEndedModalPanel : global::GuiModalPanel
 		ISessionService service = Services.GetService<ISessionService>();
 		Diagnostics.Assert(service != null);
 		Diagnostics.Assert(service.Session != null);
-		switch (service.Session.SessionMode)
+		if (service.Session.SessionMode == SessionMode.Single)
 		{
-		case SessionMode.Single:
 			Diagnostics.Assert(this.ContinuePlayingButton.AgeTransform != null);
 			this.ContinuePlayingButton.AgeTransform.Visible = true;
-			goto IL_B4;
 		}
-		Diagnostics.Assert(this.ContinuePlayingButton.AgeTransform != null);
-		this.ContinuePlayingButton.AgeTransform.Visible = false;
-		IL_B4:
+		else
+		{
+			Diagnostics.Assert(this.ContinuePlayingButton.AgeTransform != null);
+			this.ContinuePlayingButton.AgeTransform.Visible = false;
+		}
 		if (this.playerGuiEmpire.Empire.SimulationObject.Tags.Contains(Empire.TagEmpireEliminated))
 		{
-			this.ContinuePlayingButton.AgeTransform.Visible = false;
+			if (!ELCPUtilities.SpectatorMode)
+			{
+				this.ContinuePlayingButton.AgeTransform.Visible = false;
+			}
+			else if (this.sortedWinningEmpiresInfo.Count == 0)
+			{
+				this.ContinuePlayingButton.AgeTransform.Visible = true;
+				this.ContinuePlayingButton.AgeTransform.GetComponentInChildren<AgePrimitiveLabel>().Text = "%NotificationEncounterParticipationModeSpectatorTitle";
+			}
 		}
 		bool isActivated = TutorialManager.IsActivated;
 		if (isActivated)

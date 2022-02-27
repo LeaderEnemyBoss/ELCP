@@ -70,9 +70,25 @@ namespace Amplitude.Unity.Session
 
 		protected virtual void LateUpdate()
 		{
-			if (this.Session != null)
+			if (!Application.Preferences.EnableModdingTools && this.Session != null)
 			{
 				this.Session.Update();
+				return;
+			}
+			try
+			{
+				if (this.Session != null)
+				{
+					this.Session.Update();
+				}
+			}
+			catch (Exception ex)
+			{
+				Diagnostics.LogError("ELCP: Exception propagated through Amplitude.Unity.Session.SessionManager.LateUpdate: '{0}' ", new object[]
+				{
+					ex
+				});
+				throw ex;
 			}
 		}
 

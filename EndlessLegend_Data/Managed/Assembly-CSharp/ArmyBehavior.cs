@@ -83,7 +83,20 @@ public abstract class ArmyBehavior : BehaviorTree<ArmyWithTask>
 
 	protected bool CanReachTargetThisTurn(ArmyWithTask army)
 	{
-		return army.PathToMainTarget != null && (army.PathToMainTarget.ControlPoints == null || army.PathToMainTarget.ControlPoints.Length == 0);
+		bool flag = false;
+		if (army.MainAttackableTarget == null || !(army.Garrison is Army))
+		{
+			flag = true;
+		}
+		else
+		{
+			Army army2 = army.Garrison as Army;
+			if ((float)this.worldPositionService.GetDistance(army.Garrison.WorldPosition, army.MainAttackableTarget.WorldPosition) <= army2.GetPropertyValue(SimulationProperties.Movement) + 1f)
+			{
+				flag = true;
+			}
+		}
+		return army.PathToMainTarget != null && (army.PathToMainTarget.ControlPoints == null || army.PathToMainTarget.ControlPoints.Length == 0) && flag;
 	}
 
 	protected bool HasMovementLeft(ArmyWithTask army)
@@ -121,15 +134,13 @@ public abstract class ArmyBehavior : BehaviorTree<ArmyWithTask>
 		Fortress fortress = target as Fortress;
 		if (fortress != null)
 		{
-			int distance = this.worldPositionService.GetDistance(army.WorldPosition, fortress.WorldPosition);
-			if (distance == 1 && this.pathfindingService.IsTransitionPassable(army.WorldPosition, fortress.WorldPosition, army, OrderAttack.AttackFlags, null))
+			if (this.worldPositionService.GetDistance(army.WorldPosition, fortress.WorldPosition) == 1 && this.pathfindingService.IsTransitionPassable(army.WorldPosition, fortress.WorldPosition, army, OrderAttack.AttackFlags, null))
 			{
 				return true;
 			}
 			for (int i = 0; i < fortress.Facilities.Count; i++)
 			{
-				distance = this.worldPositionService.GetDistance(army.WorldPosition, fortress.Facilities[i].WorldPosition);
-				if (distance == 1 && this.pathfindingService.IsTransitionPassable(army.WorldPosition, fortress.Facilities[i].WorldPosition, army, OrderAttack.AttackFlags, null))
+				if (this.worldPositionService.GetDistance(army.WorldPosition, fortress.Facilities[i].WorldPosition) == 1 && this.pathfindingService.IsTransitionPassable(army.WorldPosition, fortress.Facilities[i].WorldPosition, army, OrderAttack.AttackFlags, null))
 				{
 					return true;
 				}
@@ -138,8 +149,11 @@ public abstract class ArmyBehavior : BehaviorTree<ArmyWithTask>
 		IGameEntityWithWorldPosition gameEntityWithWorldPosition = target as IGameEntityWithWorldPosition;
 		if (gameEntityWithWorldPosition != null)
 		{
-			int distance2 = this.worldPositionService.GetDistance(army.WorldPosition, gameEntityWithWorldPosition.WorldPosition);
-			if (distance2 > 1)
+			if (this.worldPositionService.GetDistance(army.WorldPosition, gameEntityWithWorldPosition.WorldPosition) > 1)
+			{
+				return false;
+			}
+			if (army.IsSeafaring && !this.worldPositionService.IsOceanTile(gameEntityWithWorldPosition.WorldPosition))
 			{
 				return false;
 			}
@@ -216,11 +230,13 @@ public abstract class ArmyBehavior : BehaviorTree<ArmyWithTask>
 			return WorldPosition.Invalid;
 		}
 		bool flag = this.worldPositionService.IsWaterTile(worldPosition);
+		bool isSeafaring = army.IsSeafaring;
 		WorldOrientation worldOrientation = this.worldPositionService.GetOrientation(worldPosition, army.WorldPosition);
 		for (int i = 0; i < 6; i++)
 		{
 			WorldPosition neighbourTile = this.worldPositionService.GetNeighbourTile(worldPosition, worldOrientation, 1);
-			if (neighbourTile.IsValid && flag == this.worldPositionService.IsWaterTile(neighbourTile) && this.pathfindingService.IsTransitionPassable(neighbourTile, worldPosition, army, OrderAttack.AttackFlags, null) && this.pathfindingService.IsTileStopableAndPassable(neighbourTile, army, PathfindingFlags.IgnoreFogOfWar, null))
+			bool flag2 = this.worldPositionService.IsWaterTile(neighbourTile);
+			if ((isSeafaring || !army.IsNaval || flag == flag2) && neighbourTile.IsValid && ((!isSeafaring && flag == flag2) || this.worldPositionService.IsOceanTile(neighbourTile)) && this.pathfindingService.IsTransitionPassable(neighbourTile, worldPosition, army, OrderAttack.AttackFlags, null) && this.pathfindingService.IsTileStopableAndPassable(neighbourTile, army, PathfindingFlags.IgnoreFogOfWar, null))
 			{
 				return neighbourTile;
 			}

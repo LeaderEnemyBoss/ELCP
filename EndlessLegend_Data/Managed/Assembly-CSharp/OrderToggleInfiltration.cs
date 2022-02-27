@@ -11,6 +11,7 @@ public class OrderToggleInfiltration : global::Order
 		this.AssignmentGUID = assignmentGuid;
 		this.IsAGroundInfiltration = isAGroundInfiltration;
 		this.IsStarting = isStarting;
+		this.IgnoreVision = false;
 	}
 
 	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByClient)]
@@ -36,6 +37,7 @@ public class OrderToggleInfiltration : global::Order
 	public override void Pack(BinaryWriter writer)
 	{
 		base.Pack(writer);
+		writer.Write(this.IgnoreVision);
 		writer.Write(this.HeroGuid);
 		writer.Write(this.AssignmentGUID);
 		writer.Write(this.IsAGroundInfiltration);
@@ -46,12 +48,16 @@ public class OrderToggleInfiltration : global::Order
 	public override void Unpack(BinaryReader reader)
 	{
 		base.Unpack(reader);
+		this.IgnoreVision = reader.ReadBoolean();
 		this.HeroGuid = reader.ReadUInt64();
 		this.AssignmentGUID = reader.ReadUInt64();
 		this.IsAGroundInfiltration = reader.ReadBoolean();
 		this.InfiltrationCost = reader.ReadSingle();
 		this.IsStarting = reader.ReadBoolean();
 	}
+
+	[Amplitude.Unity.Game.Orders.Order.Flow(Amplitude.Unity.Game.Orders.Order.Control.SetByServer)]
+	public bool IgnoreVision { get; set; }
 
 	public static StaticString AuthenticationPath = "DepartmentOfIntelligence/OrderToggleInfiltration";
 }

@@ -41,6 +41,7 @@ public class TechnologyReferenceTurnCountAgent : SimulationAgent
 		this.departmentOfTheTreasury = null;
 		this.netCityResearchAgents = null;
 		this.game = null;
+		this.aILayer_Victory = null;
 		base.Release();
 	}
 
@@ -65,8 +66,7 @@ public class TechnologyReferenceTurnCountAgent : SimulationAgent
 			base.Enable = false;
 			return;
 		}
-		AgentGroupPath agentGroupPath = new AgentGroupPath("ResourceEvaluationAmas/CityAgentGroup");
-		Agent[] validatedAgents = agentGroupPath.GetValidatedAgents(base.ParentGroup, "NetCityResearch");
+		Agent[] validatedAgents = new AgentGroupPath("ResourceEvaluationAmas/CityAgentGroup").GetValidatedAgents(base.ParentGroup, "NetCityResearch");
 		SimulationNormalizedAgent[] array;
 		if (validatedAgents != null)
 		{
@@ -78,6 +78,8 @@ public class TechnologyReferenceTurnCountAgent : SimulationAgent
 		}
 		this.netCityResearchAgents = array;
 		Diagnostics.Assert(this.netCityResearchAgents != null);
+		AIEntity_Empire entity = (base.ContextObject as AIPlayer_MajorEmpire).GetEntity<AIEntity_Empire>();
+		this.aILayer_Victory = entity.GetLayer<AILayer_Victory>();
 	}
 
 	protected override void ComputeInitValue()
@@ -133,8 +135,16 @@ public class TechnologyReferenceTurnCountAgent : SimulationAgent
 		float num7 = researchPropertyValue + (float)num5;
 		float num8 = num + num4;
 		float num9 = num7 * this.idealTechnologyUnlockPeriod;
-		float val = (num8 - num9) / this.maximumPeriodGap;
-		base.Value = Math.Max(base.ValueMin, Math.Min(val, base.ValueMax));
+		float num10 = (num8 - num9) / this.maximumPeriodGap;
+		if (this.aILayer_Victory.CurrentFocusEnum == AILayer_Victory.VictoryFocus.Economy)
+		{
+			num10 = Math.Max(0.2f, num10 * 1.2f);
+		}
+		else if (this.aILayer_Victory.CurrentFocusEnum == AILayer_Victory.VictoryFocus.MostTechnologiesDiscovered)
+		{
+			num10 = Math.Max(0.5f, num10 * 1.5f);
+		}
+		base.Value = Math.Max(base.ValueMin, Math.Min(num10, base.ValueMax));
 	}
 
 	private DepartmentOfScience departmentOfScience;
@@ -152,4 +162,6 @@ public class TechnologyReferenceTurnCountAgent : SimulationAgent
 
 	[InfluencedByPersonality]
 	private float maximumPeriodGap = 15f;
+
+	private AILayer_Victory aILayer_Victory;
 }

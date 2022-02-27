@@ -73,6 +73,7 @@
       
     <!--Step 1-->
       <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1-Step1" State="InProgress" />
+	  <Action_SendAICommand Type="SuspendPacification"/> <!-- ELCP: dont burn villages during the quest -->
       <Controller_Loop LoopCount="2">
         <Decorator_Talk LinkedStepProgression="MainQuestRageWizards-Chapter1-Step1" ForceDifferentTargets="true" Initiator="Empire"/>
       </Controller_Loop>
@@ -81,6 +82,8 @@
       <!--Step 2-->
       <Action_UpdateStep StepName="MainQuestRageWizards-Chapter1-Step2" HideRewards="true" State="InProgress" />
       <Action_AddQuestMarker TargetEntityVarName="$PointOfInterestToInspectChapter1" Tags="YoplaitFraise" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1"/>
+	  <!-- ELCP: Tell AI-Player to visit the ruin -->
+	  <Action_SendAICommand TargetVarName="$PointOfInterestToInspectChapter1" Type="VisitTarget"/>
       <Decorator_Inspect TargetEntityVarName="$PointOfInterestToInspectChapter1" Output_InstigatorSimObjectVarName="$InspectionInstigatorSimObject" Output_InstigatorGUIDVarName="$InspectionInstigatorGUID" PrerequisiteNotVerifiedMessage="%QuestPrerequisiteNotVerified" Initiator="Empire"/>
       <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerPointOfInterestToInspectChapter1"/>
       <Action_LockQuestTarget TargetVarName="$PointOfInterestToInspectChapter1" LockOption="Unlock"/>
@@ -340,7 +343,7 @@
       </Var>
       <Var VarName="$VillagePOILocation">
         <From Source="$VillagePOI.$Position"/>
-      </Var>-->
+      </Var>
       <Var VarName="$QuestPOI2">
         <Any>
           <From Source="$VillagePOILocation.$Region.$QuestPointsOfInterest"/>
@@ -376,7 +379,9 @@
       <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step1" State="InProgress" />
       <Action_AddQuestMarker TargetEntityVarName="$QuestPOI1" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI1"/>
       <Action_AddQuestMarker TargetEntityVarName="$QuestPOI2" Tags="MainQuest" RevealUnexploredLand="true" MarkerVisibleInFogOfWar="true" Output_QuestMarkerVarName="$QuestMarkerQuestPOI2"/>
-      
+      <!-- ELCP: Tell AI-Player to visit the ruin -->
+	  <Action_SendAICommand TargetVarName="$QuestPOI2" Type="VisitTarget" RequiredMilitaryPower="150"/>
+	  
       <Controller_Parallel CompletionPolicy="Any">
 
         <Controller_Sequence>
@@ -419,6 +424,9 @@
         </Controller_Sequence>
           
       </Controller_Parallel>
+	  
+	  <!-- ELCP: Cancel the order -->
+	  <Action_SendAICommand TargetVarName="$QuestPOI2" Type="VisitTarget" CancelOrder="true"/>
 
       <Action_SpawnArmy SpawnLocationVarName="$QuestPOI2Location" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter2Step1" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" ArmyDroplistSuffixVarName="$TribeName" Output_EnemyArmyGUIDVarName="$ArmyID1"/>
       <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID1" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
@@ -434,13 +442,16 @@
       <!--Step 3-->
       <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step3" State="InProgress" />
       <Action_AddQuestMarker TargetEntityVarName="$VillagePOI" Tags="Village" Output_QuestMarkerVarName="$QuestMarkerVillagePOI"/>
+	  <!-- ELCP: Tell AI-Player to visit the village -->
+	  <Action_SendAICommand TargetVarName="$VillagePOI" Type="VisitTarget" RequiredMilitaryPower="800"/>
       <Decorator_Talk TargetEntityVarName="$VillagePOI" Initiator="Empire"/>
       <Action_RemoveQuestMarker TargetQuestMarkerVarName="$QuestMarkerVillagePOI" />
       <Action_LockQuestTarget TargetVarName="$VillagePOI" LockOption="Unlock"/>
       <Action_SpawnArmy SpawnLocationVarName="$VillagePOILocation" ArmyDroplist="DroplistArmyDefinitionMainQuestRageWizardsChapter2Step3" ForbiddenSpawnLocationVarName="$ForbiddenSpawnLocation" ArmyDroplistSuffixVarName="$TribeName" Output_EnemyArmyGUIDVarName="$ArmyID2" />
       <Action_UpdateArmyObjective ArmyGUIDVarName="$ArmyID2" TargetEmpireVarName="$InstigatorEmpire" BehaviourName="Roaming"/>
       <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step3" State="Completed" />
-
+	  <!-- ELCP: Cancel the order -->
+	  <Action_SendAICommand TargetVarName="$VillagePOI" Type="VisitTarget" CancelOrder="true"/>
       <!--Step 4-->
       <Action_UpdateStep StepName="MainQuestRageWizards-Chapter2-Step4" State="InProgress" />
       <Decorator_KillArmy TargetOption="All" Initiator="AllEmpires">

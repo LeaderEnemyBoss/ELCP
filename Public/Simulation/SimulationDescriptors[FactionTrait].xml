@@ -15,13 +15,14 @@
   <SimulationDescriptor Name="FactionTraitBrokenLords1"             Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagDust"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagDust" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="FactionTraitBrokenLords2"             Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BaseFoodPerPopulation"         Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
-      <SimulationModifierDescriptor TargetProperty="DistrictFood"                  Operation="Multiplication" Value="0" Path="EmpireTypeMajor,AffinityBrokenLords/ClassCity/ClassDistrict" Priority="1"/>
+      <SimulationModifierDescriptor TargetProperty="DistrictFood"                  Operation="Multiplication" Value="0" Path="EmpireTypeMajor,AffinityBrokenLords/ClassCity/ClassDistrict" Priority="3"/>
       <SimulationModifierDescriptor TargetProperty="CityFood"                      Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="CityGrowthUpkeepPerPopulation" Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
       <!--<BinarySimulationModifierDescriptor TargetProperty="DistrictFoodNet" Operation="Addition" Left="$(DistrictDustToDistrictFoodNetConversionFactor)" BinaryOperation="Multiplication" Right="$(DistrictDust)" Path="../EmpireTypeMajor/ClassCity" IsBindOnSource="false" priority="1"/>-->
@@ -60,6 +61,7 @@
   <SimulationDescriptor Name="FactionTraitMadFairies1"              Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1" Path="EmpireTypeMajor,FactionTraitMadFairies1/ClassCity/ClassDistrict,#Summer,TerrainTagForest"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1" Path="EmpireTypeMajor,FactionTraitMadFairies1/ClassCity/ClassCreepingNode/ClassDistrict,#Summer,TerrainTagForest" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -105,6 +107,7 @@
   <SimulationDescriptor Name="FactionTraitVaulters1"                Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagScience"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagScience" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
     
@@ -138,8 +141,8 @@
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic1)" Path="EmpireTypeMajor/ClassCity"     IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic1)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic1"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic1"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic1"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic1" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic1" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -148,8 +151,8 @@
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic2)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic2)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic2"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic2"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic2"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic2" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic2" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -158,8 +161,8 @@
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic3)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic3)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic3"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic3"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic3"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic3" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic3" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -168,8 +171,8 @@
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic4)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic4)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic4"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic4"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic4"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic4" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic4" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -178,8 +181,8 @@
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic5)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic5)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic5"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic5"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic5"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic5" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic5" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -188,8 +191,8 @@
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic6)" Path="EmpireTypeMajor/ClassCity" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetAffinityStrategic" Operation="Force"     Value="$(NetStrategic6)" Path="EmpireTypeMajor/ClassFortress" IsBindOnSource="false" Priority="-2"/>
       <SimulationModifierDescriptor TargetProperty="NetStrategic6"        Operation="Force"     Value="0"   Path="EmpireTypeMajor" Priority="2"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic6"/>
-      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic6"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic6" TooltipHidden="true"/>
+      <SimulationModifierDescriptor TargetProperty="Efficiency"           Operation ="Addition" Value="0.35"  Path="EmpireTypeMajor/ClassUnit,UnitAbilityTechnoloverDescriptor/ItemMaterialStrategic6" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -217,13 +220,17 @@
   
   <SimulationDescriptor Name="FactionTraitNecrophagesRecycling"     Type="FactionTrait">
     <SimulationPropertyDescriptors>
-      <SimulationPropertyDescriptor Name="CadaverCountNeededToObtainBooster" BaseValue="8"/>
+      <SimulationPropertyDescriptor Name="CadaverCountNeededToObtainBooster" BaseValue="6"/>
     </SimulationPropertyDescriptors>
+	<SimulationModifierDescriptors>
+	  <BinarySimulationModifierDescriptor TargetProperty="CadaverCountNeededToObtainBooster" Operation="Addition" Left="$(GameSpeedMultiplier)" BinaryOperation="Multiplication" Right="2" Path="EmpireTypeMajor"/>
+	</SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <SimulationDescriptor Name="FactionTraitNecrophages1"             Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagFood"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagFood" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -407,6 +414,8 @@
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="2" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
       <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"  Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="2" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagQuestLocation" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictCityPoint"  Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagQuestLocation" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -486,7 +495,7 @@
 
   <SimulationDescriptor Name="FactionTraitReplicants3"              Type="FactionTrait">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"      Operation="Addition"       Value="2"   Path="EmpireTypeMajor/ClassArmy/!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
+      <SimulationModifierDescriptor TargetProperty="CityDefensePointLossPerTurn"      Operation="Addition"       Value="1"   Path="EmpireTypeMajor/ClassArmy/!TransportShipUnit,!SeafaringUnit,ClassUnit"/>
       <SimulationModifierDescriptor TargetProperty="MilitaryUpkeep"                   Operation="Addition"       Value="-1"  Path="EmpireTypeMajor/ClassArmy/UnitRankStandard,ClassUnit"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -574,7 +583,7 @@
   </SimulationDescriptor>
 
   <!-- Heat wave effect -->
-  <SimulationDescriptor Name="FactionTraitSeaDemonsHeatWave"        Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitSeaDemonsHeatWave"   Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="MaximumMovementOnWater" Operation="Addition" Value="4" Path="EmpireTypeMajor/Garrison/ClassUnit,#HeatWave" Priority="101"/>
     </SimulationModifierDescriptors>
@@ -588,6 +597,11 @@
 
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Addition"   Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagRiver"/>
       <SimulationModifierDescriptor TargetProperty="DistrictScience"      Operation="Addition"   Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagRiver"/>
+	  
+	  <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagRiver" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictIndustry"     Operation="Addition"  Value="2"  Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagWater" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience"      Operation="Addition"  Value="1"  Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagRiver" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience"      Operation="Addition"  Value="2"  Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagWater" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -624,14 +638,13 @@
   <SimulationDescriptor Name="FactionTraitSeaDemons8"               Type="FactionTrait" />
 
 
-
   <!-- ########################################## -->
   <!-- ######            FLAMES            ###### -->
   <!-- ########################################## -->
 
-  <SimulationDescriptor Name="FactionTraitFlames1"                  Type="FactionTrait"/>
+  <SimulationDescriptor Name="FactionTraitFlames1"      Type="FactionTrait"/>
 
-  <SimulationDescriptor Name="FactionTraitFlamesHeatWave"           Type="FactionTrait"/>
+  <SimulationDescriptor Name="FactionTraitFlamesHeatWave"      Type="FactionTrait"/>
 
   <SimulationDescriptor Name="FactionTraitFlamesMainQuest"          Type="FactionTrait">
     <SimulationModifierDescriptors>
@@ -650,15 +663,17 @@
   <!-- <SimulationDescriptor Name="FactionTraitFlames2"          	Type="FactionTrait">
   </SimulationDescriptor>-->
 
-  <SimulationDescriptor Name="FactionTraitFlames3"          	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitFlames3"          	Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity/ClassDistrict,!TerrainTagVolcanic" Priority="1" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,!TerrainTagVolcanic" Priority="1" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
   
-  <SimulationDescriptor Name="FactionTraitFlames8"          	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitFlames8"          	Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagQuestLocation"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagQuestLocation" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -673,43 +688,41 @@
   </SimulationDescriptor> -->
 
   <!-- Concrete's Moon -->
-  <SimulationDescriptor Name="FactionTraitFlames7"          	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitFlames7"          	Type="FactionTrait">
   </SimulationDescriptor>
 
   <!-- Rubble Rousers -->
-  <SimulationDescriptor Name="FactionTraitFlames9"                  Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitFlames9"     Type="FactionTrait">
     <SimulationPropertyDescriptors>
       <SimulationPropertyDescriptor Name="SiegeDamageNeededToObtainBooster" BaseValue="100"/>
     </SimulationPropertyDescriptors>
   </SimulationDescriptor>
 
   <!-- Golem Camps -->
-  <SimulationDescriptor Name="FactionTraitFlames10"          	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitFlames10"          	Type="FactionTrait">
   </SimulationDescriptor>
 
   <!-- Ben's Curse (No Food on Volcanic) -->
-  <SimulationDescriptor Name="FactionTraitToxicLands"          	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitToxicLands"          	Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagVolcanic" Priority="1" TooltipHidden="true"/>
       <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagVolcanic" Priority="1" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
-
-
   <!-- ########################################## -->
   <!-- ######            MIMICS            ###### -->
   <!-- ########################################## -->
 
   <!-- Creeping nodes -->
-  <SimulationDescriptor Name="FactionTraitMimics1"            	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimics1"      Type="FactionTrait">
     <SimulationModifierDescriptors>
       <BinarySimulationModifierDescriptor TargetProperty="BrokenLordsUnitRegenPerPacifiedVillage"       Operation="Addition" Left="$(NumberOfFinishedCreepingNodes)" BinaryOperation="Multiplication" Right="0.005" Path="EmpireTypeMajor/Garrison/ClassUnit,UnitAbilityNodeRegenerationDescriptor"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Industry Phobic -->
-  <SimulationDescriptor Name="FactionTraitMimics2"            	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimics2"      Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="BaseIndustryPerPopulation"                        Operation="Multiplication" Value="0" Path="EmpireTypeMajor/ClassCity" Priority="10"/>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry"                                 Operation="Multiplication" Value="0" Path="EmpireTypeMajor,AffinityMimics/ClassCity/ClassDistrict" Priority="1"/>
@@ -718,27 +731,27 @@
    </SimulationDescriptor>
 
   <!-- Overgrown cities -->
-  <SimulationDescriptor Name="FactionTraitMimics3"          	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimics3"      Type="FactionTrait">
     <SimulationModifierDescriptors>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Organic Industry -->
-  <SimulationDescriptor Name="FactionTraitMimics6"          	    Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimics6"      Type="FactionTrait">
     <SimulationModifierDescriptors>
-      <SimulationModifierDescriptor TargetProperty="OrganicIndustryPercent"                       Operation="Addition" Value="0.1" Path="EmpireTypeMajor/ClassCity"/>
+      <SimulationModifierDescriptor TargetProperty="OrganicIndustryPercent"                       Operation="Addition" Value="0.15" Path="EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Organic Defense -->
-  <SimulationDescriptor Name="FactionTraitMimics7"         	        Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimics7"      Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="CityDefensePointRecoveryPerTurn"  Operation="Addition" Value="20"  Path="EmpireTypeMajor/ClassCity" Priority="2"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Mining flaws -->
-  <SimulationDescriptor Name="FactionTraitMimics8"        	        Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimics8"      Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="ResourceBonus"              Operation="Percent"    Value="-0.5"     Path="EmpireTypeMajor/ClassCity/PointOfInterestTypeResourceDeposit,ResourceExtractor_Strategic" Priority="101"/>
       <SimulationModifierDescriptor TargetProperty="NodeResourceBonus"          Operation="Percent"    Value="-0.5"      Path="EmpireTypeMajor/ClassCity/ClassCreepingNode, CreepingNode_StrategicExtractor_Counter" TooltipHidden="true" Priority="101"/>
@@ -752,13 +765,13 @@
   </SimulationDescriptor>
 
   <!-- Kaiju Garrison -->
-  <SimulationDescriptor Name="FactionTraitMimics4"         	        Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimics4"      Type="FactionTrait">
     <SimulationModifierDescriptors>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
   <!-- Kaiju Diplomacy -->
-  <SimulationDescriptor Name="FactionTraitMimics5"                 	Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimics5"           Type="FactionTrait">
     <SimulationModifierDescriptors>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
@@ -772,15 +785,13 @@
   <SimulationDescriptor Name="FactionTraitMimicsUnit3"          	Type="FactionTrait">
   </SimulationDescriptor>
   
-  <SimulationDescriptor Name="FactionTraitMimicsHeatWave"           Type="FactionTrait"/>
+  <SimulationDescriptor Name="FactionTraitMimicsHeatWave"         Type="FactionTrait"/>
 
-  <SimulationDescriptor Name="FactionTraitMimicsMainQuest"          Type="FactionTrait">
+  <SimulationDescriptor Name="FactionTraitMimicsMainQuest"        Type="FactionTrait">
     <SimulationModifierDescriptors>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
-
-
-
+  
   <!-- ########################################## -->
   <!-- ######            CUSTOM            ###### -->
   <!-- ########################################## -->
@@ -1033,6 +1044,7 @@
   <SimulationDescriptor Name="FactionTraitEconomy7Positive"         Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagFood"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictFood" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagFood" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1040,6 +1052,7 @@
   <SimulationDescriptor Name="FactionTraitEconomy8Positive"         Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagIndustry"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Addition" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagIndustry" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1047,6 +1060,7 @@
   <SimulationDescriptor Name="FactionTraitEconomy8Negative"         Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagIndustry"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictIndustry" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagIndustry" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1062,6 +1076,7 @@
   <SimulationDescriptor Name="FactionTraitEconomy10Negative"        Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagDust"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagDust" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1069,6 +1084,7 @@
   <SimulationDescriptor Name="FactionTraitEconomy11Negative"        Type="FactionTrait">
     <SimulationModifierDescriptors>
       <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagScience"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Subtraction" Value="1" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagScience" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1078,6 +1094,10 @@
       <SimulationModifierDescriptor TargetProperty="DistrictScience"    Operation="Addition" Value="2" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly"/>
       <SimulationModifierDescriptor TargetProperty="DistrictDust"  Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly"/>
       <SimulationModifierDescriptor TargetProperty="CityApproval"  Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassDistrict,TerrainTagAnomaly"/>
+	  
+	  <SimulationModifierDescriptor TargetProperty="DistrictScience" Operation="Addition" Value="2" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagAnomaly" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="DistrictDust" Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagAnomaly" TooltipHidden="true"/>
+	  <SimulationModifierDescriptor TargetProperty="CityApproval" Operation="Addition" Value="3" Path="EmpireTypeMajor/ClassCity/ClassCreepingNode/ClassDistrict,TerrainTagAnomaly" TooltipHidden="true"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 
@@ -1182,7 +1202,7 @@
       <!-- [FB]  TODO: Based on the previous comment, this bonus should be applied only on district improvement, but, by design, only one category exists for the building...
                        Just make your mind and then come to me if you need some help to change it...      -->
       <SimulationModifierDescriptor       TargetProperty="MinorFactionAssimilatedCount"     Operation="Addition" Value="1"      Path="EmpireTypeMajor"/>
-      <BinarySimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  Operation="Addition" Left=".05"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Urces)" Path="EmpireTypeMajor/ClassCity"/>
+      <BinarySimulationModifierDescriptor TargetProperty="BuildingProductionCostReduction"  MultiplicativeStacking="true" Operation="Addition" Left=".05"     BinaryOperation="Multiplication" Right="$(PacifiedVillages_Urces)" Path="EmpireTypeMajor/ClassCity"/>
     </SimulationModifierDescriptors>
   </SimulationDescriptor>
 

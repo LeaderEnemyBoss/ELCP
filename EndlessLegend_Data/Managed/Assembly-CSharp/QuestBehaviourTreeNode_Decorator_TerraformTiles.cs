@@ -24,11 +24,15 @@ public class QuestBehaviourTreeNode_Decorator_TerraformTiles : QuestBehaviourTre
 
 	protected override State Execute(QuestBehaviour questBehaviour, EventEmpireWorldTerraformed e, params object[] parameters)
 	{
+		if (e.Reversible)
+		{
+			return State.Running;
+		}
 		if (string.IsNullOrEmpty(this.Output_NumberOfTilesVarName))
 		{
 			return State.Success;
 		}
-		if (base.CheckAgainstQuestInitiatorFilter(questBehaviour, e.TerraformingEmpire as Empire, base.QuestInitiatorFilter) && e.TerraformedTiles.Length > 0)
+		if (base.CheckAgainstQuestInitiatorFilter(questBehaviour, e.TerraformingEmpire as Empire, base.QuestInitiatorFilter) && e.TerraformedTiles.Length != 0)
 		{
 			this.NumberOfTiles = (int)questBehaviour.Initiator.GetPropertyValue(SimulationProperties.TilesTerraformed);
 			base.UpdateQuestVariable(questBehaviour, this.Output_NumberOfTilesVarName, this.NumberOfTiles);

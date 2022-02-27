@@ -126,57 +126,57 @@ public class QuestBehaviourTreeNode_Action_AddQuestMarker : QuestBehaviourTreeNo
 
 	private bool TryResolveTarget(QuestBehaviour questBehaviour)
 	{
-		if (this.TargetEntityGUID == 0UL)
+		if (this.TargetEntityGUID != 0UL)
 		{
-			QuestVariable questVariableByName = questBehaviour.GetQuestVariableByName(this.TargetEntityVarName);
-			if (questVariableByName == null)
-			{
-				Diagnostics.LogError("Cannot retrieve quest variable (varname: '{0}')", new object[]
-				{
-					this.TargetEntityVarName
-				});
-				return false;
-			}
-			if (questVariableByName.Object == null)
-			{
-				Diagnostics.LogError("Quest variable object is null (varname: '{0}')", new object[]
-				{
-					this.TargetEntityVarName
-				});
-				return false;
-			}
-			try
-			{
-				IGameEntity gameEntity;
-				if (questVariableByName.Object is IEnumerable<object>)
-				{
-					gameEntity = ((questVariableByName.Object as IEnumerable<object>).ElementAt(0) as IGameEntity);
-				}
-				else
-				{
-					gameEntity = (questVariableByName.Object as IGameEntity);
-				}
-				if (gameEntity == null)
-				{
-					Diagnostics.LogWarning("Quest variable object is not a game entity (varname: '{0}')", new object[]
-					{
-						this.TargetEntityVarName
-					});
-				}
-				else
-				{
-					this.TargetEntityGUID = gameEntity.GUID;
-				}
-			}
-			catch
-			{
-				Diagnostics.LogError("Quest variable object is not a game entity (varname: '{0}')", new object[]
-				{
-					this.TargetEntityVarName
-				});
-				return false;
-			}
 			return true;
+		}
+		QuestVariable questVariableByName = questBehaviour.GetQuestVariableByName(this.TargetEntityVarName);
+		if (questVariableByName == null)
+		{
+			Diagnostics.LogError("Cannot retrieve quest variable (varname: '{0}')", new object[]
+			{
+				this.TargetEntityVarName
+			});
+			return false;
+		}
+		if (questVariableByName.Object == null)
+		{
+			Diagnostics.LogError("Quest variable object is null (varname: '{0}')", new object[]
+			{
+				this.TargetEntityVarName
+			});
+			return false;
+		}
+		try
+		{
+			IGameEntity gameEntity;
+			if (questVariableByName.Object is IEnumerable<object>)
+			{
+				gameEntity = ((questVariableByName.Object as IEnumerable<object>).ElementAt(0) as IGameEntity);
+			}
+			else
+			{
+				gameEntity = (questVariableByName.Object as IGameEntity);
+			}
+			if (gameEntity == null)
+			{
+				Diagnostics.LogWarning("Quest variable object is not a game entity (varname: '{0}')", new object[]
+				{
+					this.TargetEntityVarName
+				});
+			}
+			else
+			{
+				this.TargetEntityGUID = gameEntity.GUID;
+			}
+		}
+		catch
+		{
+			Diagnostics.LogError("Quest variable object is not a game entity (varname: '{0}')", new object[]
+			{
+				this.TargetEntityVarName
+			});
+			return false;
 		}
 		return true;
 	}

@@ -46,10 +46,10 @@
     </DiplomaticMetaPrerequisite>
 
     <!-- The base cost in influence is 2 for War, 6 for Cold War, 4 for Peace and 2 for Alliance -->
-    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">
-      ((2*$(IsWar)) + (6*$(IsTruce)) + (6*$(IsColdWar)) + (4*$(IsPeace)) + (2*$(IsAlliance)))
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">
+      (((2*$(IsWar)) + (6*$(IsTruce)) + (6*$(IsColdWar)) + (4*$(IsPeace)) + (2*$(IsAlliance)))
       * ($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra))
-      / 1.5
+      / 1.5)
       * $Property(ClassEmpire:GameSpeedMultiplier)
       * $Property(ClassEmpire:DiplomaticTermsFactor)
       * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)
@@ -65,16 +65,52 @@
   <!-- ####################################### -->
   <!-- ############ CITY EXCHANGE ############ -->
   <!-- ####################################### -->
+  
+  <!-- ELCP\LeaderenemyBoss Fixed prerequisites for citydeals having no DiplomaticMetaPrerequisite-->
 
   <DiplomaticTermCityExchangeDefinition Name="CityDeal" PropositionMethod="Negotiation" Category="City" Alignment="Neutral">
-    <DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
+  
+	<DiplomaticMetaPrerequisite Flags="Prerequisite,Discard" Operator="AND">
+	<DiplomaticRelationStateEmpirePrerequisite Responsible="EmpireWhichProvides">
       <PathPrerequisite Inverted="true">EmpireTypeMajor,FactionTraitCultists9</PathPrerequisite>
     </DiplomaticRelationStateEmpirePrerequisite>
-    <DiplomaticContractContainsTermPrerequisite Flags="Prerequisite,Discard">WarToTruce</DiplomaticContractContainsTermPrerequisite>
+    <DiplomaticContractContainsTermPrerequisite>WarToTruce</DiplomaticContractContainsTermPrerequisite>
+	</DiplomaticMetaPrerequisite>
+  <!-- End ELCP-->
+	
+    <!--<DiplomaticRelationStateEmpirePrerequisite Flags="Prerequisite,Discard" Responsible="EmpireWhichProvides">
+      <PathPrerequisite Inverted="true">EmpireTypeMajor,FactionTraitCultists9</PathPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+    <DiplomaticContractContainsTermPrerequisite Flags="Prerequisite,Discard">WarToTruce</DiplomaticContractContainsTermPrerequisite>-->
     <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">
-      6
+      (6
       * ($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra))
-      / 1.5
+      / 1.5)
+      * $Property(ClassEmpire:GameSpeedMultiplier)
+      * $Property(ClassEmpire:DiplomaticTermsFactor)
+      * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)
+    </DiplomaticCustomCost>
+  </DiplomaticTermCityExchangeDefinition>
+  
+  <!-- ELCP\LeaderenemyBoss CityDeal for Mimics-->
+  <DiplomaticTermCityExchangeDefinition Name="MimicsCityDeal" PropositionMethod="Negotiation" Category="City" Alignment="Neutral">
+  
+	<DiplomaticRelationStateEmpirePrerequisite Responsible="EmpireWhichReceives" Flags="Prerequisite,Discard">
+      <PathPrerequisite>EmpireTypeMajor,FactionTraitMimics3</PathPrerequisite>
+    </DiplomaticRelationStateEmpirePrerequisite>
+	<!--<DiplomaticContractContainsTermPrerequisite Flags="Prerequisite,Discard" Inverted="true">MimicsCityDeal</DiplomaticContractContainsTermPrerequisite>-->
+	<DiplomaticMetaPrerequisite Flags="Prerequisite,Discard" Operator="OR">
+      <DiplomaticContractContainsTermPrerequisite>ColdWarToPeace</DiplomaticContractContainsTermPrerequisite>
+      <DiplomaticContractContainsTermPrerequisite>ColdWarToAlliance</DiplomaticContractContainsTermPrerequisite>
+      <DiplomaticContractContainsTermPrerequisite>PeaceToAlliance</DiplomaticContractContainsTermPrerequisite>	
+      <DiplomaticRelationStatePrerequisite>DiplomaticRelationStatePeace</DiplomaticRelationStatePrerequisite>
+      <DiplomaticRelationStatePrerequisite>DiplomaticRelationStateAlliance</DiplomaticRelationStatePrerequisite>
+	</DiplomaticMetaPrerequisite>
+
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">
+	  (((48*$(IsColdWar)) + (24*$(IsPeace)) + (12*$(IsAlliance)))
+      * ($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra))
+      / 1.5)
       * $Property(ClassEmpire:GameSpeedMultiplier)
       * $Property(ClassEmpire:DiplomaticTermsFactor)
       * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)
@@ -101,10 +137,10 @@
     </DiplomaticMetaPrerequisite>
 
     <!-- The base cost in influence is 2 for War, 6 for Truce, 6 for Cold War, 4 for Peace and 2 for Alliance -->
-    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">
-      ((2*$(IsWar)) + (6*$(IsTruce)) + (6*$(IsColdWar)) + (4*$(IsPeace)) + (2*$(IsAlliance)))
+    <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint" CanBeConvertedToPeacePoint="false">
+      (((2*$(IsWar)) + (6*$(IsTruce)) + (6*$(IsColdWar)) + (4*$(IsPeace)) + (2*$(IsAlliance)))
       * ($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra))
-      / 1.5
+      / 1.5)
       * $Property(ClassEmpire:GameSpeedMultiplier)
       * $Property(ClassEmpire:DiplomaticTermsFactor)
       * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)
@@ -158,9 +194,9 @@
 
     <!-- The base cost in influence is 3 for War, 15 for Truce, 15 for Cold War, 9 for Peace and 3 for Alliance -->
     <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">
-      ((3*$(IsWar)) + (15*$(IsTruce)) + (15*$(IsColdWar)) + (9*$(IsPeace)) + (3*$(IsAlliance)))
+      (((3*$(IsWar)) + (15*$(IsTruce)) + (15*$(IsColdWar)) + (9*$(IsPeace)) + (3*$(IsAlliance)))
       * ($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra))
-      / 1.5
+      / 1.5)
       * $Property(ClassEmpire:GameSpeedMultiplier)
       * $Property(ClassEmpire:DiplomaticTermsFactor)
       * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)
@@ -173,9 +209,9 @@
   <!-- ########################################## -->
 
   <DiplomaticTermPrisonerExchangeDefinition Name="PrisonerDeal" PropositionMethod="Negotiation" Category="Treaty" Alignment="Neutral">
-    9
+    (9
     * ($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra))
-    / 1.5
+    / 1.5)
     * $Property(ClassEmpire:GameSpeedMultiplier)
     * $Property(ClassEmpire:DiplomaticTermsFactor)
     * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)
@@ -197,9 +233,9 @@
     </DiplomaticMetaPrerequisite>
 
     <DiplomaticCustomCost Responsible="EmpireWhichProposes" ResourceName="EmpirePoint">
-      6
+      (6
       * ($Property(EmpireTypeMajor:EmpireScaleFactor) + $Property(ClassEmpire:CurrentEra))
-      / 1.5
+      / 1.5)
       * $Property(ClassEmpire:GameSpeedMultiplier)
       * $Property(ClassEmpire:DiplomaticTermsFactor)
       * $Property(EmpireTypeMajor:DiplomaticNegotiationFactor)

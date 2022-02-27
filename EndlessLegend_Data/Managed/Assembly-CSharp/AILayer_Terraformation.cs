@@ -10,15 +10,21 @@ public class AILayer_Terraformation : AILayerWithObjective
 {
 	public AILayer_Terraformation() : base("Terraformation")
 	{
+		this.regions = new List<Region>();
+		this.random = new Random();
+		this.opportunityPositions = new Dictionary<int, WorldPosition>();
 	}
 
 	public override IEnumerator Initialize(AIEntity aiEntity)
 	{
 		yield return base.Initialize(aiEntity);
-		IGameService gameService = Services.GetService<IGameService>();
-		Diagnostics.Assert(gameService != null);
-		this.worldPositionningService = gameService.Game.Services.GetService<IWorldPositionningService>();
+		IGameService service = Services.GetService<IGameService>();
+		Diagnostics.Assert(service != null);
+		this.worldPositionningService = service.Game.Services.GetService<IWorldPositionningService>();
 		Diagnostics.Assert(this.worldPositionningService != null);
+		this.terraformDeviceService = service.Game.Services.GetService<ITerraformDeviceService>();
+		this.terraformDeviceRepositoryService = service.Game.Services.GetService<ITerraformDeviceRepositoryService>();
+		this.terraformDeviceRepositoryService.TerraformDeviceRepositoryChange += this.OnDevicePlaced;
 		this.departmentOfTheInterior = base.AIEntity.Empire.GetAgency<DepartmentOfTheInterior>();
 		this.aiLayerStrategy = base.AIEntity.GetLayer<AILayer_Strategy>();
 		base.AIEntity.RegisterPass(AIEntity.Passes.RefreshObjectives.ToString(), "AILayer_Terraformation_RefreshObjectives", new AIEntity.AIAction(this.RefreshObjectives), this, new StaticString[0]);
@@ -34,16 +40,32 @@ public class AILayer_Terraformation : AILayerWithObjective
 	{
 		base.RefreshObjectives(context, pass);
 		this.FillUpRegions();
+		this.opportunityPositions.Clear();
+		foreach (Region region in this.regions)
+		{
+			WorldPosition worldPosition = this.SelectPositionToTerraform(region);
+			if (worldPosition.IsValid)
+			{
+				if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+				{
+					Diagnostics.Log("ELCP {0} AILayer_Terraformation adding opportunity position in {1} at {2}", new object[]
+					{
+						base.AIEntity.Empire,
+						region.LocalizedName,
+						worldPosition
+					});
+				}
+				this.opportunityPositions.Add(region.Index, worldPosition);
+			}
+		}
 		this.ComputeGlobalPriority();
 		base.GatherObjectives(base.ObjectiveType, false, ref this.globalObjectiveMessages);
 		base.ValidateMessages(ref this.globalObjectiveMessages);
 		for (int i = 0; i < this.globalObjectiveMessages.Count; i++)
 		{
 			GlobalObjectiveMessage globalObjectiveMessage = this.globalObjectiveMessages[i];
-			if (this.IsObjectiveValid(globalObjectiveMessage))
-			{
-				this.RefreshMessagePriority(globalObjectiveMessage);
-			}
+			this.RefreshMessagePriority(globalObjectiveMessage);
+			this.regions.Remove(this.worldPositionningService.GetRegion(globalObjectiveMessage.RegionIndex));
 		}
 		int num = (int)base.AIEntity.Empire.GetPropertyValue(SimulationProperties.LavapoolStock);
 		for (int j = 0; j < this.globalObjectiveMessages.Count; j++)
@@ -85,7 +107,7 @@ public class AILayer_Terraformation : AILayerWithObjective
 		if (objective.ObjectiveType == base.ObjectiveType)
 		{
 			Region region = this.worldPositionningService.GetRegion(objective.RegionIndex);
-			return (region.City == null || region.City.Empire.Index == base.AIEntity.Empire.Index) && objective.State != BlackboardMessage.StateValue.Message_Canceled;
+			return region.City != null && region.City.Empire.Index == base.AIEntity.Empire.Index && this.GetTerrainToTerraformInRegion(region) != 0 && objective.State != BlackboardMessage.StateValue.Message_Canceled;
 		}
 		return false;
 	}
@@ -101,6 +123,13 @@ public class AILayer_Terraformation : AILayerWithObjective
 		this.worldPositionningService = null;
 		this.departmentOfTheInterior = null;
 		this.aiLayerStrategy = null;
+		this.terraformDeviceService = null;
+		if (this.terraformDeviceRepositoryService != null)
+		{
+			this.terraformDeviceRepositoryService.TerraformDeviceRepositoryChange -= this.OnDevicePlaced;
+			this.terraformDeviceRepositoryService = null;
+		}
+		this.opportunityPositions.Clear();
 	}
 
 	private void FillUpRegions()
@@ -135,31 +164,32 @@ public class AILayer_Terraformation : AILayerWithObjective
 		{
 			return -1;
 		}
-		int index = 0;
-		int num = this.GetVolcanicTerrainInRegion(this.regions[0]);
-		for (int i = 1; i < this.regions.Count; i++)
+		int num = -1;
+		int num2 = 0;
+		for (int i = 0; i < this.regions.Count; i++)
 		{
-			int volcanicTerrainInRegion = this.GetVolcanicTerrainInRegion(this.regions[i]);
-			if (volcanicTerrainInRegion < num)
+			int terrainToTerraformInRegion = this.GetTerrainToTerraformInRegion(this.regions[i]);
+			if (terrainToTerraformInRegion > num2)
 			{
-				num = volcanicTerrainInRegion;
-				index = i;
+				num2 = terrainToTerraformInRegion;
+				num = i;
 			}
 		}
-		if (this.regions[index].WorldPositions.Length == num)
+		if (num >= 0)
 		{
-			return -1;
+			int index = this.regions[num].Index;
+			this.regions.RemoveAt(num);
+			return index;
 		}
-		return this.regions[index].Index;
+		return -1;
 	}
 
 	private int GetVolcanicTerrainInRegion(Region region)
 	{
 		int num = 0;
-		WorldPosition[] worldPositions = region.WorldPositions;
-		for (int i = 0; i < worldPositions.Length; i++)
+		for (int i = 0; i < region.City.Districts.Count; i++)
 		{
-			if (this.worldPositionningService.ContainsTerrainTag(worldPositions[i], "TerrainTagVolcanic") || this.worldPositionningService.IsWaterTile(worldPositions[i]))
+			if (this.worldPositionningService.ContainsTerrainTag(region.City.Districts[i].WorldPosition, "TerrainTagVolcanic") || this.worldPositionningService.IsWaterTile(region.City.Districts[i].WorldPosition))
 			{
 				num++;
 			}
@@ -178,22 +208,124 @@ public class AILayer_Terraformation : AILayerWithObjective
 		if (this.departmentOfTheInterior.Cities.Count == 0)
 		{
 			base.GlobalPriority.Subtract(1f, "We should focus on getting a city!", new object[0]);
+			return;
 		}
-		else
+		AILayer_Strategy layer = base.AIEntity.GetLayer<AILayer_Strategy>();
+		base.GlobalPriority.Add(layer.StrategicNetwork.GetAgentValue("Expansion"), "Expansion strategic network score", new object[0]);
+		if (this.aiLayerStrategy.IsAtWar())
 		{
-			AILayer_Strategy layer = base.AIEntity.GetLayer<AILayer_Strategy>();
-			base.GlobalPriority.Add(layer.StrategicNetwork.GetAgentValue("Expansion"), "Expansion strategic network score", new object[0]);
-			if (this.aiLayerStrategy.IsAtWar())
+			base.GlobalPriority.Boost(-0.4f, "At war", new object[0]);
+			return;
+		}
+		if (this.aiLayerStrategy.WantWarWithSomeone())
+		{
+			base.GlobalPriority.Boost(-0.2f, "Want war but not at war", new object[0]);
+			return;
+		}
+		if (this.departmentOfTheInterior.Cities.Count >= 1)
+		{
+			base.GlobalPriority.Boost(0.4f, "I am sure you want to improve your cities", new object[0]);
+		}
+	}
+
+	private int GetTerrainToTerraformInRegion(Region region)
+	{
+		int num = 0;
+		for (int i = 0; i < region.City.Districts.Count; i++)
+		{
+			if (!this.worldPositionningService.ContainsTerrainTag(region.City.Districts[i].WorldPosition, "TerrainTagVolcanic") && !this.worldPositionningService.IsWaterTile(region.City.Districts[i].WorldPosition) && !this.terraformDeviceService.IsPositionNextToDevice(region.City.Districts[i].WorldPosition))
 			{
-				base.GlobalPriority.Boost(-0.4f, "At war", new object[0]);
+				num++;
 			}
-			else if (this.aiLayerStrategy.WantWarWithSomeone())
+		}
+		return num;
+	}
+
+	private WorldPosition SelectPositionToTerraform(Region region)
+	{
+		City city = region.City;
+		if (city != null)
+		{
+			if (this.IsPositionValidToTerraform(city.WorldPosition))
 			{
-				base.GlobalPriority.Boost(-0.2f, "Want war but not at war", new object[0]);
+				return city.WorldPosition;
 			}
-			else if (this.departmentOfTheInterior.Cities.Count >= 1)
+			if (city.Camp != null && this.IsPositionValidToTerraform(city.Camp.WorldPosition))
 			{
-				base.GlobalPriority.Boost(0.4f, "I am sure you want to improve your cities", new object[0]);
+				return city.Camp.WorldPosition;
+			}
+			int num = -1;
+			int num2 = 0;
+			for (int i = 0; i < city.Districts.Count; i++)
+			{
+				if (city.Districts[i] != null && this.IsPositionValidToTerraform(city.Districts[i].WorldPosition))
+				{
+					int num3 = 0;
+					foreach (WorldPosition worldPosition in city.Districts[i].WorldPosition.GetNeighbours(this.worldPositionningService.World.WorldParameters))
+					{
+						if (this.worldPositionningService.GetDistrict(worldPosition) != null && !this.worldPositionningService.ContainsTerrainTag(worldPosition, "TerrainTagVolcanic") && !this.terraformDeviceService.IsPositionNextToDevice(worldPosition))
+						{
+							num3++;
+						}
+					}
+					if (num3 > num2)
+					{
+						num2 = num3;
+						num = i;
+					}
+				}
+			}
+			if (num >= 0)
+			{
+				return city.Districts[num].WorldPosition;
+			}
+		}
+		return WorldPosition.Invalid;
+	}
+
+	private bool IsPositionValidToTerraform(WorldPosition position)
+	{
+		return !this.worldPositionningService.ContainsTerrainTag(position, "TerrainTagVolcanic") && this.terraformDeviceService.IsPositionValidForDevice(base.AIEntity.Empire, position) && !this.terraformDeviceService.IsPositionNextToDevice(position);
+	}
+
+	public Dictionary<int, WorldPosition> OpportunityPositions
+	{
+		get
+		{
+			return this.opportunityPositions;
+		}
+	}
+
+	public void OnDevicePlaced(object sender, TerraformDeviceRepositoryChangeEventArgs eventArgs)
+	{
+		if (!this.IsActive())
+		{
+			return;
+		}
+		if (eventArgs.Action != TerraformDeviceRepositoryChangeAction.Add)
+		{
+			return;
+		}
+		TerraformDevice terraformDevice;
+		this.terraformDeviceRepositoryService.TryGetValue(eventArgs.PillarGUID, out terraformDevice);
+		Region region = this.worldPositionningService.GetRegion(terraformDevice.WorldPosition);
+		if (this.opportunityPositions.ContainsKey(region.Index))
+		{
+			this.opportunityPositions.Remove(region.Index);
+			WorldPosition worldPosition = this.SelectPositionToTerraform(region);
+			if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools)
+			{
+				Diagnostics.Log("ELCP {0} AILayer_Terraformation registered placed terraform device in {1} at {2}, new position: {3}", new object[]
+				{
+					base.AIEntity.Empire,
+					region.LocalizedName,
+					terraformDevice.WorldPosition,
+					worldPosition
+				});
+			}
+			if (worldPosition.IsValid)
+			{
+				this.opportunityPositions.Add(region.Index, worldPosition);
 			}
 		}
 	}
@@ -206,7 +338,13 @@ public class AILayer_Terraformation : AILayerWithObjective
 
 	private DepartmentOfTheInterior departmentOfTheInterior;
 
-	private List<Region> regions = new List<Region>();
+	private List<Region> regions;
 
-	private Random random = new Random();
+	private Random random;
+
+	private ITerraformDeviceService terraformDeviceService;
+
+	private Dictionary<int, WorldPosition> opportunityPositions;
+
+	private ITerraformDeviceRepositoryService terraformDeviceRepositoryService;
 }

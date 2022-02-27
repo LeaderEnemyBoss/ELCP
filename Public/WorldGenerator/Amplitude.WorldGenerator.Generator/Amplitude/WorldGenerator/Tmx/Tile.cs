@@ -38,6 +38,10 @@ namespace Amplitude.WorldGenerator.Tmx
 				reader.Read();
 			}
 			reader.ReadEndElement();
+			if (reader.Name == "image")
+			{
+				reader.Read();
+			}
 			reader.ReadEndElement();
 		}
 

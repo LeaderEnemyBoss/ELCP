@@ -40,7 +40,9 @@
     <AIParameter Name="CityApproval"                                    Value="20"/>
     <AIParameter Name="CityIndustry"                                    Value="5 * (1 + $Count(ClassCity/TerrainTagWater))"/>
     <AIParameter Name="EmpireFasterMovement"                            Value="0.1 * $Count(ClassEmpire/ClassResearch,TechnologyShip)"/>
+	<AIParameter Name="AIItemMustBuild" 								Value="0.1 * (5 max $Count(ClassCity/TerrainTagWater))"/>
   </AIParameterDatatableElement>
+  
   <AIParameterDatatableElement  Name="FreeDistrictDocks">
     <AIParameter Name="CityFood"                                        Value="2"/>
     <AIParameter Name="CityApproval"                                    Value="20"/>
@@ -58,12 +60,14 @@
     <AIParameter Name="CityEmpirePoint"                                 Value="5"/>
     <AIParameter Name="CityFood"                                        Value="3"/>
     <AIParameter Name="EmpireUnlockAltarOfAuriga"                       Value="1"/>
+	<AIParameter Name="AIItemMustBuild" 								Value="1 * ($Property(EmpireTypeMajor:NumberOfPastWinters) ge 2)"/>
   </AIParameterDatatableElement>
   <AIParameterDatatableElement  Name="FreeDistrictAltarOfAuriga">
     <AIParameter Name="CityApproval"                                    Value="5"/>
     <AIParameter Name="CityEmpirePoint"                                 Value="5"/>
     <AIParameter Name="CityFood"                                        Value="3"/>
     <AIParameter Name="EmpireUnlockAltarOfAuriga"                       Value="1"/>
+	<AIParameter Name="AIItemMustBuild" 								Value="1 * ($Property(EmpireTypeMajor:NumberOfPastWinters) ge 2)"/>
   </AIParameterDatatableElement>
 
   <!-- Orb District Anomaly intensifier -->
@@ -108,7 +112,7 @@
   </AIParameterDatatableElement>
 
 
-  <!-- Orb District Winter Borough -->
+  <!-- Orb District < -->
   <AIParameterDatatableElement  Name="DistrictImprovementOrbUnlock9">
     <AIParameter Name="DistrictFood"                                    Value="2 * $Count(ClassCity/DistrictTypeExtension,#Winter)" />
     <AIParameter Name="DistrictIndustry"                                Value="2 * $Count(ClassCity/DistrictTypeExtension,#Winter)" />

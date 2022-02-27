@@ -85,9 +85,6 @@ namespace Amplitude.Interop
 		public static extern void SteamAPI_UnregisterDelegate(HandleRef handle);
 
 		[DllImport("steam_api_dotnetwrapper64", CallingConvention = CallingConvention.Cdecl)]
-		public static extern bool AmplitudeWrapper_IsIDValid(ulong steamId);
-
-		[DllImport("steam_api_dotnetwrapper64", CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr SteamAPI_RegisterLobbyCreatedDelegate(ulong steamAPICall, [MarshalAs(UnmanagedType.FunctionPtr)] Steamworks.LobbyCreatedCallback callback);
 
 		[DllImport("steam_api_dotnetwrapper64", CallingConvention = CallingConvention.Cdecl)]
@@ -113,6 +110,9 @@ namespace Amplitude.Interop
 
 		[DllImport("steam_api_dotnetwrapper64", CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr SteamAPI_RegisterItemInstalledDelegate([MarshalAs(UnmanagedType.FunctionPtr)] Steamworks.ItemInstalledCallback callback, bool server);
+
+		[DllImport("steam_api_dotnetwrapper64", CallingConvention = CallingConvention.Cdecl)]
+		public static extern bool AmplitudeWrapper_IsIDValid(ulong steamId);
 
 		public const uint k_uAppIdInvalid = 0u;
 
@@ -534,14 +534,6 @@ namespace Amplitude.Interop
 			private HandleRef handle;
 
 			private bool disposed;
-		}
-
-		[StructLayout(LayoutKind.Sequential, Pack = 8)]
-		public struct DlcInstalled
-		{
-			public const int k_iCallback = 1005;
-
-			public uint m_nAppID;
 		}
 
 		public class SteamApps
@@ -3116,11 +3108,6 @@ namespace Amplitude.Interop
 				return Steamworks.SteamUserStats.ISteamUserStats_RequestCurrentStats(this.Handle);
 			}
 
-			public void RegisterAchievement(int achievementId, string achivementName)
-			{
-				Steamworks.SteamUserStats.ISteamUserStats_RegisterAchievement(achievementId, achivementName);
-			}
-
 			public bool GetStat(string statName, ref int value)
 			{
 				return Steamworks.SteamUserStats.ISteamUserStats_GetStat(this.Handle, statName, ref value);
@@ -3224,9 +3211,6 @@ namespace Amplitude.Interop
 			[DllImport("steam_api_dotnetwrapper64", CallingConvention = CallingConvention.Cdecl)]
 			private static extern bool ISteamUserStats_ClearAchievement(IntPtr ptr, [MarshalAs(UnmanagedType.LPStr)] string pchName);
 
-			[DllImport("steam_api64", CallingConvention = CallingConvention.Cdecl)]
-			public static extern void ISteamUserStats_RegisterAchievement(int appID, string storeID);
-
 			[DllImport("steam_api_dotnetwrapper64", CallingConvention = CallingConvention.Cdecl)]
 			private static extern bool ISteamUserStats_StoreStats(IntPtr ptr);
 
@@ -3238,6 +3222,14 @@ namespace Amplitude.Interop
 
 			[DllImport("steam_api_dotnetwrapper64", CallingConvention = CallingConvention.Cdecl)]
 			private static extern ulong ISteamUserStats_UploadLeaderboardScore(IntPtr ptr, ulong hSteamLeaderboard, ELeaderboardUploadScoreMethod eLeaderboardUploadScoreMethod, int nScore, ref int pScoreDetails, int cScoreDetailsCount);
+
+			public void RegisterAchievement(int achievementId, string achivementName)
+			{
+				Steamworks.SteamUserStats.ISteamUserStats_RegisterAchievement(achievementId, achivementName);
+			}
+
+			[DllImport("steam_api64", CallingConvention = CallingConvention.Cdecl)]
+			public static extern void ISteamUserStats_RegisterAchievement(int appID, string storeID);
 
 			private HandleRef handle;
 		}
@@ -3687,5 +3679,13 @@ namespace Amplitude.Interop
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate void SubmitItemUpdateCallback(ref Steamworks.SubmitItemUpdate message, bool ioFailure);
+
+		[StructLayout(LayoutKind.Sequential, Pack = 8)]
+		public struct DlcInstalled
+		{
+			public const int k_iCallback = 1005;
+
+			public uint m_nAppID;
+		}
 	}
 }

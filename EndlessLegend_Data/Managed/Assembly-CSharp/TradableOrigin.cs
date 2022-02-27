@@ -12,5 +12,12 @@ public enum TradableOrigin : sbyte
 	Empire4,
 	Empire5,
 	Empire6,
-	Empire7
+	Empire7,
+	Empire8,
+	Empire9,
+	Empire10,
+	Empire11,
+	Empire12,
+	Empire13,
+	Empire14
 }

@@ -59,6 +59,14 @@ public class QuestBehaviourTreeNode_ConditionCheck_Prerequisite : QuestBehaviour
 				questBehaviour.Quest.Name
 			});
 		}
+		if (global::GameManager.Preferences.QuestVerboseMode)
+		{
+			Diagnostics.Log("ELCP: {0} quest {1} begins prereq check", new object[]
+			{
+				questBehaviour.Initiator,
+				questBehaviour.Quest.Name
+			});
+		}
 		int i = 0;
 		while (i < this.Prerequisites.Length)
 		{
@@ -88,6 +96,14 @@ public class QuestBehaviourTreeNode_ConditionCheck_Prerequisite : QuestBehaviour
 				bool flag = false;
 				foreach (SimulationObjectWrapper simulationObjectWrapper in enumerable)
 				{
+					if (global::GameManager.Preferences.QuestVerboseMode)
+					{
+						Diagnostics.Log("ELCP: {0} simulationObjectWrapper {1}", new object[]
+						{
+							questBehaviour.Initiator,
+							(simulationObjectWrapper is Garrison) ? (simulationObjectWrapper as Garrison).LocalizedName : simulationObjectWrapper.GetType().ToString()
+						});
+					}
 					flag = false;
 					using (InterpreterContext.InterpreterSession interpreterSession = new InterpreterContext.InterpreterSession(simulationObjectWrapper))
 					{
@@ -103,6 +119,14 @@ public class QuestBehaviourTreeNode_ConditionCheck_Prerequisite : QuestBehaviour
 						{
 							if (!questBehaviourPrerequisites.Prerequisites[j].Check(interpreterSession.Context))
 							{
+								if (global::GameManager.Preferences.QuestVerboseMode)
+								{
+									Diagnostics.Log("ELCP: context check failed for {0} {1}", new object[]
+									{
+										j,
+										questBehaviourPrerequisites.ToString()
+									});
+								}
 								if (questBehaviourPrerequisites.AnyTarget)
 								{
 									flag = true;
@@ -139,6 +163,20 @@ public class QuestBehaviourTreeNode_ConditionCheck_Prerequisite : QuestBehaviour
 			return false;
 		}
 		return true;
+	}
+
+	public override object Clone()
+	{
+		QuestBehaviourTreeNode_ConditionCheck_Prerequisite questBehaviourTreeNode_ConditionCheck_Prerequisite = (QuestBehaviourTreeNode_ConditionCheck_Prerequisite)base.MemberwiseClone();
+		if (this.Prerequisites != null)
+		{
+			questBehaviourTreeNode_ConditionCheck_Prerequisite.Prerequisites = new QuestBehaviourPrerequisites[this.Prerequisites.Length];
+			for (int i = 0; i < this.Prerequisites.Length; i++)
+			{
+				questBehaviourTreeNode_ConditionCheck_Prerequisite.Prerequisites[i] = (QuestBehaviourPrerequisites)this.Prerequisites[i].Clone();
+			}
+		}
+		return questBehaviourTreeNode_ConditionCheck_Prerequisite;
 	}
 
 	private IQuestManagementService questManagementService;

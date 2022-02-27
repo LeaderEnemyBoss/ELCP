@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Amplitude;
 using Amplitude.Unity;
@@ -12,6 +13,15 @@ using UnityEngine;
 
 public class CityWorkersPanel : global::GuiPanel
 {
+	public CityWorkersPanel()
+	{
+		this.TopMargin = 12f;
+		this.Separator = 2f;
+		this.workersPerLine = 1;
+		this.interactionsAllowed = true;
+		this.ParentIsCityListScreen = false;
+	}
+
 	public City City { get; private set; }
 
 	private IEndTurnService EndTurnService
@@ -93,6 +103,8 @@ public class CityWorkersPanel : global::GuiPanel
 				}
 			}
 		}
+		this.departmentOfEducation = this.City.Empire.GetAgency<DepartmentOfEducation>();
+		this.departmentOfEducation.VaultItemsCollectionChange += this.DepartmentOfEducation_VaultItemsCollectionChange;
 	}
 
 	public override void RefreshContent()
@@ -188,26 +200,262 @@ public class CityWorkersPanel : global::GuiPanel
 			this.WorkersGroups[k].GetComponent<AgeTransform>().Height = num;
 		}
 		base.AgeTransform.Height = this.TopMargin * AgeUtils.CurrentUpscaleFactor() + num + this.WorkerGroupsTable.PixelMarginBottom;
-		this.AgeModifierPosition.EndHeight = base.AgeTransform.Height;
 		bool flag = DepartmentOfTheInterior.CanBuyoutPopulation(this.City);
 		bool flag2 = this.City.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitReplicants1);
 		bool flag3 = this.City.Empire.SimulationObject.Tags.Contains(FactionTrait.FactionTraitMimics2);
 		int rowIndex;
-		for (rowIndex = 0; rowIndex < this.FoodColumnCells.Length; rowIndex++)
+		Func<WorkersGroup, bool> <>9__0;
+		int rowIndex2;
+		for (rowIndex = 0; rowIndex < this.FoodColumnCells.Length; rowIndex = rowIndex2 + 1)
 		{
 			bool flag4 = false;
 			if (this.IsOtherEmpire)
 			{
-				flag4 = this.WorkersGroups.Any((WorkersGroup cell) => cell.GetComponent<AgeTransform>() == this.FoodColumnCells[rowIndex]);
+				IEnumerable<WorkersGroup> workersGroups = this.WorkersGroups;
+				Func<WorkersGroup, bool> predicate;
+				if ((predicate = <>9__0) == null)
+				{
+					predicate = (<>9__0 = ((WorkersGroup cell) => cell.GetComponent<AgeTransform>() == this.FoodColumnCells[rowIndex]));
+				}
+				flag4 = workersGroups.Any(predicate);
 			}
 			this.FoodColumnCells[rowIndex].Enable = (!flag && this.interactionsAllowed && !flag4);
 			this.ScienceColumnCells[rowIndex].Enable = (!flag2 && this.interactionsAllowed && !flag4);
 			this.IndustryColumnCells[rowIndex].Enable = (!flag3 && this.interactionsAllowed && !flag4);
+			rowIndex2 = rowIndex;
+		}
+		if (this.BoostersTable == null)
+		{
+			bool highDefinition = AgeUtils.HighDefinition;
+			AgeUtils.HighDefinition = false;
+			this.BoostersTable = base.AgeTransform.InstanciateChild(this.BoostersEnumerator.BoostersTable.transform, "WorkerPanelBoostersTable1");
+			this.BoostersTable.TableArrangement = false;
+			this.BoostersTable2 = base.AgeTransform.InstanciateChild(this.BoostersEnumerator.BoostersTable.transform, "WorkerPanelBoostersTable2");
+			this.BoostersTable2.TableArrangement = false;
+			AgeUtils.HighDefinition = highDefinition;
+		}
+		this.stackedBoosters.Clear();
+		this.stackedBoosters2.Clear();
+		float num7 = 0f;
+		bool flag5 = false;
+		bool flag6 = false;
+		bool flag7 = false;
+		bool flag8 = false;
+		float num8 = AgeUtils.HighDefinition ? 3f : 2f;
+		if (!this.IsOtherEmpire)
+		{
+			foreach (string text in new List<string>
+			{
+				"BoosterFood",
+				"BoosterCadavers",
+				"BoosterIndustry",
+				"FlamesIndustryBooster",
+				"BoosterScience"
+			})
+			{
+				BoosterDefinition boosterDefinition2;
+				if (this.database.TryGetValue(text, out boosterDefinition2))
+				{
+					GuiStackedBooster item = new GuiStackedBooster(boosterDefinition2);
+					this.stackedBoosters.Add(item);
+					if (!this.ParentIsCityListScreen && (text == "BoosterCadavers" || text == "FlamesIndustryBooster"))
+					{
+						this.stackedBoosters2.Add(item);
+					}
+				}
+			}
+			bool flag9 = false;
+			this.vaultBoosters = this.departmentOfEducation.GetVaultItems<BoosterDefinition>();
+			for (int l = 0; l < this.vaultBoosters.Count; l++)
+			{
+				BoosterDefinition boosterDefinition = this.vaultBoosters[l].Constructible as BoosterDefinition;
+				if (boosterDefinition != null)
+				{
+					flag9 = true;
+					if (boosterDefinition.Name == "BoosterFood")
+					{
+						flag5 = true;
+					}
+					else if (boosterDefinition.Name == "BoosterIndustry")
+					{
+						flag6 = true;
+					}
+					else if (boosterDefinition.Name == "BoosterCadavers")
+					{
+						flag7 = true;
+					}
+					else if (boosterDefinition.Name == "FlamesIndustryBooster")
+					{
+						flag8 = true;
+					}
+					this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.RewardType == boosterDefinition.RewardType).AddVaultBooster(this.vaultBoosters[l]);
+				}
+			}
+			if (!flag9)
+			{
+				this.stackedBoosters.Clear();
+				this.stackedBoosters2.Clear();
+			}
+			else
+			{
+				num7 = this.FidsGroups[0].Height;
+				if (!this.ParentIsCityListScreen)
+				{
+					if (!flag6)
+					{
+						GuiStackedBooster item2 = this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.Name == "BoosterIndustry");
+						this.stackedBoosters.Remove(item2);
+					}
+					else
+					{
+						GuiStackedBooster item3 = this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.Name == "FlamesIndustryBooster");
+						this.stackedBoosters.Remove(item3);
+					}
+					if (!flag5)
+					{
+						GuiStackedBooster item4 = this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.Name == "BoosterFood");
+						this.stackedBoosters.Remove(item4);
+					}
+					else
+					{
+						GuiStackedBooster item5 = this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.Name == "BoosterCadavers");
+						this.stackedBoosters.Remove(item5);
+					}
+					if (!flag6 && !flag5)
+					{
+						this.stackedBoosters2.Clear();
+					}
+				}
+				else
+				{
+					if (flag8 && !flag6)
+					{
+						GuiStackedBooster item6 = this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.Name == "BoosterIndustry");
+						this.stackedBoosters.Remove(item6);
+					}
+					else if (!flag8)
+					{
+						GuiStackedBooster item7 = this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.Name == "FlamesIndustryBooster");
+						this.stackedBoosters.Remove(item7);
+					}
+					if (!flag5 && flag7)
+					{
+						GuiStackedBooster item8 = this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.Name == "BoosterFood");
+						this.stackedBoosters.Remove(item8);
+					}
+					else if (!flag7)
+					{
+						GuiStackedBooster item9 = this.stackedBoosters.Find((GuiStackedBooster booster) => booster.BoosterDefinition.Name == "BoosterCadavers");
+						this.stackedBoosters.Remove(item9);
+					}
+				}
+			}
+		}
+		this.BoostersTable2.ReserveChildren(this.stackedBoosters2.Count, this.BoostersEnumerator.BoosterStockPrefab, "Item2");
+		this.BoostersTable2.RefreshChildrenIList<GuiStackedBooster>(this.stackedBoosters2, this.refreshDelegate, true, true);
+		this.BoostersTable.ReserveChildren(this.stackedBoosters.Count, this.BoostersEnumerator.BoosterStockPrefab, "Item");
+		this.BoostersTable.RefreshChildrenIList<GuiStackedBooster>(this.stackedBoosters, this.refreshDelegate, true, true);
+		this.BoostersTable.PixelMarginTop = base.AgeTransform.Height;
+		this.BoostersTable2.PixelMarginTop = base.AgeTransform.Height + this.FidsGroups[0].Height + num8;
+		float num9 = 0f;
+		foreach (BoosterStock boosterStock in this.BoostersTable.GetChildren<BoosterStock>(true))
+		{
+			float num10 = num8;
+			if (this.ParentIsCityListScreen && ((flag5 && flag7 && (boosterStock.GuiStackedBooster.BoosterDefinition.Name == "BoosterFood" || boosterStock.GuiStackedBooster.BoosterDefinition.Name == "BoosterCadavers")) || (flag6 && flag8 && (boosterStock.GuiStackedBooster.BoosterDefinition.Name == "BoosterIndustry" || boosterStock.GuiStackedBooster.BoosterDefinition.Name == "FlamesIndustryBooster"))))
+			{
+				boosterStock.AgeTransform.Width = this.FidsGroups[0].Width / 2f - 1f;
+				if (boosterStock.GuiStackedBooster.BoosterDefinition.Name == "BoosterFood" || boosterStock.GuiStackedBooster.BoosterDefinition.Name == "BoosterIndustry")
+				{
+					num10 = 2f;
+				}
+			}
+			else
+			{
+				boosterStock.AgeTransform.Width = this.FidsGroups[0].Width;
+			}
+			if (boosterStock.GuiStackedBooster.Quantity == 0 || (flag && (num9 == 0f || boosterStock.GuiStackedBooster.BoosterDefinition.Name == "BoosterCadavers")) || (flag2 && boosterStock.GuiStackedBooster.BoosterDefinition.Name == "BoosterScience"))
+			{
+				boosterStock.AgeTransform.Enable = false;
+				boosterStock.AgeTransform.Visible = false;
+			}
+			else
+			{
+				num7 = boosterStock.AgeTransform.Height;
+				boosterStock.AgeTransform.Enable = this.interactionsAllowed;
+				boosterStock.AgeTransform.Visible = true;
+				boosterStock.QuickActivation = true;
+				boosterStock.Guid = this.City.GUID;
+				boosterStock.QuantityLabel.AgeTransform.AttachTop = true;
+				boosterStock.QuantityLabel.AgeTransform.AttachRight = true;
+				boosterStock.QuantityLabel.AgeTransform.PixelMarginLeft = 0f;
+				boosterStock.QuantityLabel.Alignement = AgeTextAnchor.AscendMiddleRight;
+				if (!this.ParentIsCityListScreen)
+				{
+					boosterStock.IconImage.AgeTransform.PixelMarginLeft = num8 * 2.5f;
+					boosterStock.QuantityLabel.AgeTransform.PixelMarginRight = num8 * 2f;
+				}
+				else
+				{
+					boosterStock.IconImage.AgeTransform.PixelMarginLeft = ((boosterStock.AgeTransform.Width == this.FidsGroups[0].Width) ? (boosterStock.AgeTransform.Width / 3f) : (boosterStock.AgeTransform.Width / 5f));
+					boosterStock.QuantityLabel.AgeTransform.PixelMarginRight = ((boosterStock.AgeTransform.Width == this.FidsGroups[0].Width) ? (boosterStock.AgeTransform.Width / 3f) : (boosterStock.AgeTransform.Width / 5f));
+				}
+			}
+			boosterStock.AgeTransform.X = num9;
+			boosterStock.AgeTransform.AttachRight = false;
+			boosterStock.AgeTransform.AttachLeft = true;
+			num9 += boosterStock.AgeTransform.Width + num10;
+		}
+		if (this.BoostersTable2.GetChildren<BoosterStock>(true).Count > 0)
+		{
+			bool flag10 = false;
+			num9 = 0f;
+			foreach (BoosterStock boosterStock2 in this.BoostersTable2.GetChildren<BoosterStock>(true))
+			{
+				boosterStock2.AgeTransform.Width = this.FidsGroups[0].Width;
+				if (boosterStock2.GuiStackedBooster.Quantity == 0 || (num9 == 0f && !flag5) || (num9 > 0f && !flag6) || (flag && num9 == 0f))
+				{
+					boosterStock2.AgeTransform.Enable = false;
+					boosterStock2.AgeTransform.Visible = false;
+				}
+				else
+				{
+					flag10 = true;
+					boosterStock2.AgeTransform.Enable = this.interactionsAllowed;
+					boosterStock2.AgeTransform.Visible = true;
+					boosterStock2.QuickActivation = true;
+					boosterStock2.Guid = this.City.GUID;
+					boosterStock2.IconImage.AgeTransform.PixelMarginLeft = num8 * 2.5f;
+					boosterStock2.QuantityLabel.AgeTransform.AttachTop = true;
+					boosterStock2.QuantityLabel.AgeTransform.AttachRight = true;
+					boosterStock2.QuantityLabel.AgeTransform.PixelMarginLeft = 0f;
+					boosterStock2.QuantityLabel.AgeTransform.PixelMarginRight = num8 * 2f;
+					boosterStock2.QuantityLabel.Alignement = AgeTextAnchor.AscendMiddleRight;
+				}
+				boosterStock2.AgeTransform.X = num9;
+				boosterStock2.AgeTransform.AttachRight = false;
+				boosterStock2.AgeTransform.AttachLeft = true;
+				num9 += this.FidsGroups[0].Width + this.BoostersTable2.HorizontalSpacing;
+			}
+			num7 += (flag10 ? (this.FidsGroups[0].Height + num8) : 0f);
+		}
+		base.AgeTransform.Height += num7;
+		this.AgeModifierPosition.EndHeight = base.AgeTransform.Height;
+		foreach (AgeTransform ageTransform in base.AgeTransform.GetChildren())
+		{
+			if (ageTransform.name.Contains("CityTile") || ageTransform.name.Contains("Total") || ageTransform.name.Contains("Modifiers"))
+			{
+				ageTransform.PixelMarginBottom = this.OriginalMargins[ageTransform.name] * (AgeUtils.HighDefinition ? 1.5f : 1f) + num7;
+			}
 		}
 	}
 
 	public void Unbind()
 	{
+		if (this.departmentOfEducation != null)
+		{
+			this.departmentOfEducation.VaultItemsCollectionChange -= this.DepartmentOfEducation_VaultItemsCollectionChange;
+			this.departmentOfEducation = null;
+		}
 		if (this.City != null)
 		{
 			for (int i = 0; i < this.prodPerPopFIDSTypes.Count; i++)
@@ -248,8 +496,8 @@ public class CityWorkersPanel : global::GuiPanel
 	protected override IEnumerator OnShow(params object[] parameters)
 	{
 		yield return base.OnShow(parameters);
-		IPlayerControllerRepositoryService playerControllerRepository = base.Game.Services.GetService<IPlayerControllerRepositoryService>();
-		this.interactionsAllowed = playerControllerRepository.ActivePlayerController.CanSendOrders();
+		IPlayerControllerRepositoryService service = base.Game.Services.GetService<IPlayerControllerRepositoryService>();
+		this.interactionsAllowed = service.ActivePlayerController.CanSendOrders();
 		this.previousCursor = AgeManager.Instance.Cursor;
 		this.WorkerGroupsTable.Enable = true;
 		this.updateDrag = true;
@@ -258,6 +506,14 @@ public class CityWorkersPanel : global::GuiPanel
 		if (this.City != null)
 		{
 			base.NeedRefresh = true;
+		}
+		if (this.BoostersEnumerator == null)
+		{
+			bool highDefinition = AgeUtils.HighDefinition;
+			AgeUtils.HighDefinition = false;
+			GameEmpireScreen guiPanel = base.GuiService.GetGuiPanel<GameEmpireScreen>();
+			this.BoostersEnumerator = UnityEngine.Object.Instantiate<BoosterEnumerator>(guiPanel.BoostersEnumerator);
+			AgeUtils.HighDefinition = highDefinition;
 		}
 		yield break;
 	}
@@ -277,7 +533,7 @@ public class CityWorkersPanel : global::GuiPanel
 
 	protected override IEnumerator OnLoad()
 	{
-		yield return base.OnLoad();
+		yield return base.OnLoadGame();
 		base.UseRefreshLoop = true;
 		this.workerTypes = new List<StaticString>();
 		this.workerTypes.Add(SimulationProperties.FoodPopulation);
@@ -318,10 +574,10 @@ public class CityWorkersPanel : global::GuiPanel
 				ExtendedGuiElement extendedGuiElement = (ExtendedGuiElement)guiElement;
 				if (i < this.FidsSymbols.Length && i < this.ProdPerPopFIDSValues.Length && i < this.ModifierFIDSValues.Length && i < this.CityTileFIDSValues.Length && i < this.TotalFIDSValues.Length && extendedGuiElement != null)
 				{
-					Texture2D texture;
-					if (base.GuiService.GuiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.Small, out texture))
+					Texture2D image;
+					if (base.GuiService.GuiPanelHelper.TryGetTextureFromIcon(guiElement, global::GuiPanel.IconSize.Small, out image))
 					{
-						this.FidsSymbols[i].Image = texture;
+						this.FidsSymbols[i].Image = image;
 						this.FidsSymbols[i].TintColor = extendedGuiElement.Color;
 					}
 					this.ProdPerPopFIDSValues[i].TintColor = extendedGuiElement.Color;
@@ -331,74 +587,72 @@ public class CityWorkersPanel : global::GuiPanel
 				}
 			}
 		}
-		if (this.WorkersGroups.Length > 0)
+		if (this.WorkersGroups.Length != 0)
 		{
-			AgeTransform table = this.WorkersGroups[0].WorkersTable;
-			AgeTransform childPrefab = this.WorkersGroups[0].WorkerSymbolPrefab.GetComponent<AgeTransform>();
-			this.childWidth = childPrefab.Width * AgeUtils.CurrentUpscaleFactor();
-			this.childHeight = childPrefab.Height * AgeUtils.CurrentUpscaleFactor();
-			this.workersPerLine = Mathf.RoundToInt((table.Width - table.HorizontalMargin) / (this.childWidth + table.HorizontalSpacing));
+			AgeTransform workersTable = this.WorkersGroups[0].WorkersTable;
+			AgeTransform component = this.WorkersGroups[0].WorkerSymbolPrefab.GetComponent<AgeTransform>();
+			this.childWidth = component.Width * AgeUtils.CurrentUpscaleFactor();
+			this.childHeight = component.Height * AgeUtils.CurrentUpscaleFactor();
+			this.workersPerLine = Mathf.RoundToInt((workersTable.Width - workersTable.HorizontalMargin) / (this.childWidth + workersTable.HorizontalSpacing));
 		}
-		string[] modifiers = new string[this.prodPerPopFIDSTypes.Count];
-		modifiers[0] = string.Format("{0},{1},{2},!{3}", new object[]
+		string[] array = new string[this.prodPerPopFIDSTypes.Count];
+		array[0] = string.Format("{0},{1},{2},!{3}", new object[]
 		{
 			SimulationProperties.CityFood,
 			SimulationProperties.CityGrowth,
 			SimulationProperties.NetCityGrowth,
 			SimulationProperties.CityGrowthUpkeep
 		});
-		modifiers[1] = string.Format("{0},{1},{2},!{3}", new object[]
+		array[1] = string.Format("{0},{1},{2},!{3}", new object[]
 		{
 			SimulationProperties.CityIndustry,
 			SimulationProperties.CityProduction,
 			SimulationProperties.NetCityProduction,
 			SimulationProperties.CityProductionUpkeep
 		});
-		modifiers[2] = string.Format("{0},{1},{2},!{3}", new object[]
+		array[2] = string.Format("{0},{1},{2},!{3}", new object[]
 		{
 			SimulationProperties.CityScience,
 			SimulationProperties.CityResearch,
 			SimulationProperties.NetCityResearch,
 			SimulationProperties.CityResearchUpkeep
 		});
-		modifiers[3] = string.Format("{0},{1},{2},!{3}", new object[]
+		array[3] = string.Format("{0},{1},{2},!{3}", new object[]
 		{
 			SimulationProperties.CityDust,
 			SimulationProperties.CityMoney,
 			SimulationProperties.NetCityMoney,
 			SimulationProperties.TotalCityMoneyUpkeep
 		});
-		modifiers[4] = string.Format("{0},{1},{2}", SimulationProperties.CityCityPoint, SimulationProperties.CityEmpirePoint, SimulationProperties.NetCityEmpirePoint);
-		string[] modifiersTitle = new string[this.prodPerPopFIDSTypes.Count];
-		modifiersTitle[0] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityFood);
-		modifiersTitle[1] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityIndustry);
-		modifiersTitle[2] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityScience);
-		modifiersTitle[3] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityDust);
-		modifiersTitle[4] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityCityPoint);
-		string[] cityTileFIDSTooltip = new string[this.prodPerPopFIDSTypes.Count];
-		cityTileFIDSTooltip[0] = string.Format("{0},{1}", SimulationProperties.DistrictFood, SimulationProperties.DistrictFoodNet);
-		cityTileFIDSTooltip[1] = string.Format("{0},{1}", SimulationProperties.DistrictIndustry, SimulationProperties.DistrictIndustryNet);
-		cityTileFIDSTooltip[2] = string.Format("{0},{1}", SimulationProperties.DistrictScience, SimulationProperties.DistrictScienceNet);
-		cityTileFIDSTooltip[3] = string.Format("{0},{1}", SimulationProperties.DistrictDust, SimulationProperties.DistrictDustNet);
-		cityTileFIDSTooltip[4] = string.Format("{0},{1}", SimulationProperties.DistrictCityPoint, SimulationProperties.DistrictCityPointNet);
-		for (int j = 0; j < this.prodPerPopFIDSTypes.Count; j++)
+		array[4] = string.Format("{0},{1},{2}", SimulationProperties.CityCityPoint, SimulationProperties.CityEmpirePoint, SimulationProperties.NetCityEmpirePoint);
+		string[] array2 = new string[this.prodPerPopFIDSTypes.Count];
+		array2[0] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityFood);
+		array2[1] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityIndustry);
+		array2[2] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityScience);
+		array2[3] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityDust);
+		array2[4] = string.Format("%ModifierCategory{0}Title", SimulationProperties.CityCityPoint);
+		string[] array3 = new string[this.prodPerPopFIDSTypes.Count];
+		array3[0] = string.Format("{0},{1}", SimulationProperties.DistrictFood, SimulationProperties.DistrictFoodNet);
+		array3[1] = string.Format("{0},{1}", SimulationProperties.DistrictIndustry, SimulationProperties.DistrictIndustryNet);
+		array3[2] = string.Format("{0},{1}", SimulationProperties.DistrictScience, SimulationProperties.DistrictScienceNet);
+		array3[3] = string.Format("{0},{1}", SimulationProperties.DistrictDust, SimulationProperties.DistrictDustNet);
+		array3[4] = string.Format("{0},{1}", SimulationProperties.DistrictCityPoint, SimulationProperties.DistrictCityPointNet);
+		int num = 0;
+		while (num < this.prodPerPopFIDSTypes.Count && !(this.ProdPerPopFIDSValues[num].AgeTransform.AgeTooltip == null))
 		{
-			if (this.ProdPerPopFIDSValues[j].AgeTransform.AgeTooltip == null)
-			{
-				break;
-			}
-			this.ProdPerPopFIDSValues[j].AgeTransform.AgeTooltip.Class = "FIDS";
-			this.ProdPerPopFIDSValues[j].AgeTransform.AgeTooltip.Content = this.prodPerPopFIDSTypes[j];
-			this.ProdPerPopFIDSValues[j].AgeTransform.AgeTooltip.ClientData = new SimulationPropertyTooltipData(this.prodPerPopFIDSTypes[j], this.prodPerPopFIDSTypes[j], this.City);
-			this.CityTileFIDSValues[j].AgeTransform.AgeTooltip.Class = "FIDS";
-			this.CityTileFIDSValues[j].AgeTransform.AgeTooltip.Content = this.cityTileFIDSTypes[j];
-			this.CityTileFIDSValues[j].AgeTransform.AgeTooltip.ClientData = new SimulationPropertyTooltipData(this.cityTileFIDSTypes[j], cityTileFIDSTooltip[j], this.City);
-			this.ModifierFIDSValues[j].AgeTransform.AgeTooltip.Class = "FIDS";
-			this.ModifierFIDSValues[j].AgeTransform.AgeTooltip.Content = modifiersTitle[j];
-			this.ModifierFIDSValues[j].AgeTransform.AgeTooltip.ClientData = new SimulationPropertyTooltipData(modifiersTitle[j], modifiers[j], this.City);
-			this.TotalFIDSValues[j].AgeTransform.AgeTooltip.Class = "FIDS";
-			this.TotalFIDSValues[j].AgeTransform.AgeTooltip.Content = this.totalFIDSTypes[j];
-			this.TotalFIDSValues[j].AgeTransform.AgeTooltip.ClientData = new SimulationPropertyTooltipData(this.totalFIDSTypes[j], GuiSimulation.Instance.FIMSTooltipTotal[j], this.City);
+			this.ProdPerPopFIDSValues[num].AgeTransform.AgeTooltip.Class = "FIDS";
+			this.ProdPerPopFIDSValues[num].AgeTransform.AgeTooltip.Content = this.prodPerPopFIDSTypes[num];
+			this.ProdPerPopFIDSValues[num].AgeTransform.AgeTooltip.ClientData = new SimulationPropertyTooltipData(this.prodPerPopFIDSTypes[num], this.prodPerPopFIDSTypes[num], this.City);
+			this.CityTileFIDSValues[num].AgeTransform.AgeTooltip.Class = "FIDS";
+			this.CityTileFIDSValues[num].AgeTransform.AgeTooltip.Content = this.cityTileFIDSTypes[num];
+			this.CityTileFIDSValues[num].AgeTransform.AgeTooltip.ClientData = new SimulationPropertyTooltipData(this.cityTileFIDSTypes[num], array3[num], this.City);
+			this.ModifierFIDSValues[num].AgeTransform.AgeTooltip.Class = "FIDS";
+			this.ModifierFIDSValues[num].AgeTransform.AgeTooltip.Content = array2[num];
+			this.ModifierFIDSValues[num].AgeTransform.AgeTooltip.ClientData = new SimulationPropertyTooltipData(array2[num], array[num], this.City);
+			this.TotalFIDSValues[num].AgeTransform.AgeTooltip.Class = "FIDS";
+			this.TotalFIDSValues[num].AgeTransform.AgeTooltip.Content = this.totalFIDSTypes[num];
+			this.TotalFIDSValues[num].AgeTransform.AgeTooltip.ClientData = new SimulationPropertyTooltipData(this.totalFIDSTypes[num], GuiSimulation.Instance.FIMSTooltipTotal[num], this.City);
+			num++;
 		}
 		yield break;
 	}
@@ -412,16 +666,14 @@ public class CityWorkersPanel : global::GuiPanel
 
 	protected override void OnUnload()
 	{
-		for (int i = 0; i < this.prodPerPopFIDSTypes.Count; i++)
+		int num = 0;
+		while (num < this.prodPerPopFIDSTypes.Count && !(this.ProdPerPopFIDSValues[num].AgeTransform.AgeTooltip == null))
 		{
-			if (this.ProdPerPopFIDSValues[i].AgeTransform.AgeTooltip == null)
-			{
-				break;
-			}
-			this.ProdPerPopFIDSValues[i].AgeTransform.AgeTooltip.ClientData = null;
-			this.CityTileFIDSValues[i].AgeTransform.AgeTooltip.ClientData = null;
-			this.TotalFIDSValues[i].AgeTransform.AgeTooltip.ClientData = null;
-			this.ModifierFIDSValues[i].AgeTransform.AgeTooltip.ClientData = null;
+			this.ProdPerPopFIDSValues[num].AgeTransform.AgeTooltip.ClientData = null;
+			this.CityTileFIDSValues[num].AgeTransform.AgeTooltip.ClientData = null;
+			this.TotalFIDSValues[num].AgeTransform.AgeTooltip.ClientData = null;
+			this.ModifierFIDSValues[num].AgeTransform.AgeTooltip.ClientData = null;
+			num++;
 		}
 		this.prodPerPopFIDSTypes = null;
 		this.workerTypes = null;
@@ -479,32 +731,28 @@ public class CityWorkersPanel : global::GuiPanel
 					component = component2.AgeTransform.GetParent().GetComponent<WorkersGroup>();
 				}
 			}
-			if (component != null)
-			{
-				if (workersDragPanel.StartingWorkerType != component.WorkerType)
-				{
-					workersDragPanel.ValidateDrag(this.WorkerGroupsTable, component.WorkerType, new EventHandler<TicketRaisedEventArgs>(this.OnOrderResponse));
-					if (TutorialManager.IsActivated)
-					{
-						IEventService service = Services.GetService<IEventService>();
-						Diagnostics.Assert(service != null);
-						IGameService service2 = Services.GetService<IGameService>();
-						Diagnostics.Assert(service2 != null);
-						global::Game x = service2.Game as global::Game;
-						Diagnostics.Assert(x != null);
-						service.Notify(new EventTutorialWorkerDragged(this.City.Empire, workersDragPanel.StartingWorkerType, component.WorkerType));
-					}
-				}
-				else
-				{
-					workersDragPanel.CancelDrag();
-					base.NeedRefresh = true;
-				}
-			}
-			else
+			if (!(component != null))
 			{
 				workersDragPanel.CancelDrag();
 				base.NeedRefresh = true;
+				return;
+			}
+			if (!(workersDragPanel.StartingWorkerType != component.WorkerType))
+			{
+				workersDragPanel.CancelDrag();
+				base.NeedRefresh = true;
+				return;
+			}
+			workersDragPanel.ValidateDrag(this.WorkerGroupsTable, component.WorkerType, new EventHandler<TicketRaisedEventArgs>(this.OnOrderResponse));
+			if (TutorialManager.IsActivated)
+			{
+				IEventService service = Services.GetService<IEventService>();
+				Diagnostics.Assert(service != null);
+				IGameService service2 = Services.GetService<IGameService>();
+				Diagnostics.Assert(service2 != null);
+				Diagnostics.Assert(service2.Game as global::Game != null);
+				service.Notify(new EventTutorialWorkerDragged(this.City.Empire, workersDragPanel.StartingWorkerType, component.WorkerType));
+				return;
 			}
 		}
 		else
@@ -518,49 +766,49 @@ public class CityWorkersPanel : global::GuiPanel
 	{
 		while (this.updateDrag)
 		{
-			WorkersDragPanel workersDragPanel = base.GuiService.GetGuiPanel<WorkersDragPanel>();
+			WorkersDragPanel guiPanel = base.GuiService.GetGuiPanel<WorkersDragPanel>();
 			if (Input.GetMouseButtonDown(0))
 			{
-				if (workersDragPanel.DragInProgress)
+				if (guiPanel.DragInProgress)
 				{
-					if (workersDragPanel.DragMoved)
+					if (guiPanel.DragMoved)
 					{
-						this.CheckDragTarget(workersDragPanel);
+						this.CheckDragTarget(guiPanel);
 					}
 					else
 					{
-						workersDragPanel.CancelDrag();
+						guiPanel.CancelDrag();
 						base.NeedRefresh = true;
 					}
 				}
 				else if (AgeManager.Instance.ActiveControl != null)
 				{
-					WorkerSymbol worker = AgeManager.Instance.ActiveControl.GetComponent<WorkerSymbol>();
-					if (worker != null)
+					WorkerSymbol component = AgeManager.Instance.ActiveControl.GetComponent<WorkerSymbol>();
+					if (component != null)
 					{
-						workersDragPanel.InitDrag(this.City, worker.WorkerType, worker.DragQuantity);
+						guiPanel.InitDrag(this.City, component.WorkerType, component.DragQuantity);
 					}
 				}
 			}
 			else if (Input.GetMouseButtonUp(0))
 			{
-				if (workersDragPanel.DragInProgress)
+				if (guiPanel.DragInProgress)
 				{
-					if (!workersDragPanel.DragMoved)
+					if (!guiPanel.DragMoved)
 					{
-						workersDragPanel.StartDrag();
+						guiPanel.StartDrag();
 						base.NeedRefresh = true;
 					}
 					else
 					{
-						workersDragPanel.DragInProgress = false;
-						this.CheckDragTarget(workersDragPanel);
+						guiPanel.DragInProgress = false;
+						this.CheckDragTarget(guiPanel);
 					}
 				}
 			}
-			else if (workersDragPanel.DragInProgress && !workersDragPanel.DragMoved && this.previousCursor != AgeManager.Instance.Cursor)
+			else if (guiPanel.DragInProgress && !guiPanel.DragMoved && this.previousCursor != AgeManager.Instance.Cursor)
 			{
-				workersDragPanel.StartDrag();
+				guiPanel.StartDrag();
 				base.NeedRefresh = true;
 			}
 			this.previousCursor = AgeManager.Instance.Cursor;
@@ -575,9 +823,71 @@ public class CityWorkersPanel : global::GuiPanel
 		base.NeedRefresh = true;
 	}
 
-	public float TopMargin = 12f;
+	private void RefreshBoosterStock(AgeTransform tableitem, GuiStackedBooster guiStackedBooster, int index)
+	{
+		if (this.City == null || this.City.Empire == null)
+		{
+			return;
+		}
+		BoosterStock component = tableitem.GetComponent<BoosterStock>();
+		if (component != null)
+		{
+			component.Bind(this.City.Empire);
+			component.SetContent(guiStackedBooster);
+			component.RefreshContent();
+		}
+	}
 
-	public float Separator = 2f;
+	private void DepartmentOfEducation_VaultItemsCollectionChange(object sender, CollectionChangeEventArgs e)
+	{
+		base.NeedRefresh = true;
+	}
+
+	public override void Initialize()
+	{
+		this.database = Databases.GetDatabase<BoosterDefinition>(false);
+		this.vaultBoosters = new List<VaultItem>();
+		this.stackedBoosters = new List<GuiStackedBooster>();
+		this.stackedBoosters2 = new List<GuiStackedBooster>();
+		this.refreshDelegate = new AgeTransform.RefreshTableItem<GuiStackedBooster>(this.RefreshBoosterStock);
+		this.OriginalMargins = new Dictionary<string, float>();
+		foreach (AgeTransform ageTransform in base.AgeTransform.GetChildren())
+		{
+			if (ageTransform.name.Contains("CityTile") || ageTransform.name.Contains("Total") || ageTransform.name.Contains("Modifiers"))
+			{
+				if (!this.OriginalMargins.ContainsKey(ageTransform.name))
+				{
+					this.OriginalMargins.Add(ageTransform.name, 0f);
+				}
+				this.OriginalMargins[ageTransform.name] = ageTransform.PixelMarginBottom / (AgeUtils.HighDefinition ? 1.5f : 1f);
+			}
+		}
+		base.Initialize();
+	}
+
+	public new virtual void Unload()
+	{
+		base.Unload();
+		this.vaultBoosters = null;
+		this.stackedBoosters.Clear();
+		this.stackedBoosters2.Clear();
+		this.refreshDelegate = null;
+		this.database = null;
+		this.BoostersEnumerator.AgeTransform.DestroyAllChildren();
+		UnityEngine.Object.Destroy(this.BoostersEnumerator.gameObject);
+		this.BoostersEnumerator = null;
+		this.OriginalMargins.Clear();
+		this.BoostersTable.DestroyAllChildren();
+		UnityEngine.Object.Destroy(this.BoostersTable.gameObject);
+		this.BoostersTable = null;
+		this.BoostersTable2.DestroyAllChildren();
+		UnityEngine.Object.Destroy(this.BoostersTable2.gameObject);
+		this.BoostersTable2 = null;
+	}
+
+	public float TopMargin;
+
+	public float Separator;
 
 	public AgeTransform WorkerGroupsTable;
 
@@ -621,7 +931,7 @@ public class CityWorkersPanel : global::GuiPanel
 
 	private IPlayerControllerRepositoryService playerControllerRepository;
 
-	private int workersPerLine = 1;
+	private int workersPerLine;
 
 	private float childWidth;
 
@@ -629,5 +939,29 @@ public class CityWorkersPanel : global::GuiPanel
 
 	private IEndTurnService endTurnService;
 
-	private bool interactionsAllowed = true;
+	private bool interactionsAllowed;
+
+	private BoosterEnumerator BoostersEnumerator;
+
+	private AgeTransform BoostersTable;
+
+	private List<BoosterStock> BoosterStocks;
+
+	private List<VaultItem> vaultBoosters;
+
+	private List<GuiStackedBooster> stackedBoosters;
+
+	private AgeTransform.RefreshTableItem<GuiStackedBooster> refreshDelegate;
+
+	private DepartmentOfEducation departmentOfEducation;
+
+	private Dictionary<string, float> OriginalMargins;
+
+	private List<GuiStackedBooster> stackedBoosters2;
+
+	private AgeTransform BoostersTable2;
+
+	private IDatabase<BoosterDefinition> database;
+
+	public bool ParentIsCityListScreen;
 }

@@ -3,7 +3,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Strategic1"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Strategic_01</MappingName>
@@ -13,6 +13,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Strategic1"/>
     <SimulationDescriptorReference Name="CreepingNode_StrategicExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Strategic1</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyStrategicExtractionCommon</TechnologyPrerequisite>
@@ -24,7 +25,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Strategic2"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Strategic_01</MappingName>
@@ -34,6 +35,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Strategic2"/>
     <SimulationDescriptorReference Name="CreepingNode_StrategicExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Strategic2</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyStrategicExtractionCommon</TechnologyPrerequisite>
@@ -45,7 +47,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Strategic3"         Categroy="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Strategic_01</MappingName>
@@ -55,6 +57,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Strategic3"/>
     <SimulationDescriptorReference Name="CreepingNode_StrategicExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Strategic3</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyStrategicExtractionUncommon</TechnologyPrerequisite>
@@ -66,7 +69,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Strategic4"        Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Strategic_01</MappingName>
@@ -76,6 +79,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Strategic4"/>
     <SimulationDescriptorReference Name="CreepingNode_StrategicExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Strategic4</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyStrategicExtractionUncommon</TechnologyPrerequisite>
@@ -87,7 +91,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Strategic5"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Strategic_01</MappingName>
@@ -97,6 +101,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Strategic5"/>
     <SimulationDescriptorReference Name="CreepingNode_StrategicExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Strategic5</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyStrategicExtractionRare</TechnologyPrerequisite>
@@ -107,8 +112,8 @@
   </CreepingNodeImprovementDefinition>
   
   <CreepingNodeImprovementDefinition Name="CreepingNode_Strategic6"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
-    <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>	
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Strategic_01</MappingName>
@@ -118,6 +123,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Strategic6"/>
     <SimulationDescriptorReference Name="CreepingNode_StrategicExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Strategic6</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyStrategicExtractionRare</TechnologyPrerequisite>
@@ -129,7 +135,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury1"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -139,6 +145,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury1"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury1</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionCommon</TechnologyPrerequisite>
@@ -150,7 +157,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury2"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -160,6 +167,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury2"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury2</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionCommon</TechnologyPrerequisite>
@@ -171,7 +179,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury3"        Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -181,6 +189,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury3"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury3</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionCommon</TechnologyPrerequisite>
@@ -192,7 +201,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury4"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -202,6 +211,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury4"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury4</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionCommon</TechnologyPrerequisite>
@@ -213,7 +223,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury5"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -223,6 +233,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury5"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury5</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionCommon</TechnologyPrerequisite>
@@ -234,7 +245,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury6"        Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -244,6 +255,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury6"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury6</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionUncommon</TechnologyPrerequisite>
@@ -255,7 +267,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury7"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -265,6 +277,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury7"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury7</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionUncommon</TechnologyPrerequisite>
@@ -276,7 +289,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury8"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -286,6 +299,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury8"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury8</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionUncommon</TechnologyPrerequisite>
@@ -297,7 +311,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury9"        Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -307,6 +321,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury9"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury9</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionUncommon</TechnologyPrerequisite>
@@ -318,7 +333,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury10"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -328,6 +343,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury10"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury10</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionUncommon</TechnologyPrerequisite>
@@ -339,7 +355,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury11"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -349,6 +365,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury11"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury11</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionRare</TechnologyPrerequisite>
@@ -360,7 +377,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury12"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -370,6 +387,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury12"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury12</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionRare</TechnologyPrerequisite>
@@ -381,7 +399,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury13"        Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -391,6 +409,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury13"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury13</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionRare</TechnologyPrerequisite>
@@ -402,7 +421,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury14"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -412,6 +431,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury14"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury14</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionRare</TechnologyPrerequisite>
@@ -423,7 +443,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Luxury15"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryExploit">
     <ConstructionCostDescriptor Name="NodeExtractorFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>6</ConstructionTurns>
     <GrowthPerTurn>13</GrowthPerTurn>
     <MappingName>Luxury_01</MappingName>
@@ -433,6 +453,7 @@
     <SimulationDescriptorReference Name="CreepingExtractor_Luxury15"/>
     <SimulationDescriptorReference Name="CreepingNode_LuxuryExtractor_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>ResourceDeposit_Luxury15</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
     <TechnologyPrerequisite  Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyLuxuryExtractionRare</TechnologyPrerequisite>
@@ -445,10 +466,11 @@
   <!-- Without Replicants Pack -->
   <CreepingNodeImprovementDefinition Name="CreepingNode_WatchTower0"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <ConstructionCostDescriptor Name="NodeTower0FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>6</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>WatchTower_01</MappingName>
+	<FIDSIExtractionRange>1</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <NextUpgradeName>CreepingNode_WatchTower1</NextUpgradeName>
     <SimulationDescriptorReference Name="Tower0Upkeep"/>
@@ -456,6 +478,8 @@
     <SimulationDescriptorReference Name="WatchTowerHealthEffectArea"/>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<SimulationDescriptorReference Name="TowerExtraHex1"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">MimicsPack</DownloadableContentPrerequisite>
@@ -472,16 +496,19 @@
   <!-- Without Replicants Pack -->
   <CreepingNodeImprovementDefinition Name="CreepingNode_WatchTower1"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <ConstructionCostDescriptor Name="NodeTower1FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>10</ConstructionTurns>
-    <GrowthPerTurn>16</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>8</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>WatchTower_01</MappingName>
+	<FIDSIExtractionRange>3</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <NextUpgradeName>CreepingNode_WatchTower2</NextUpgradeName>
     <SimulationDescriptorReference Name="Tower1Upkeep"/>
     <SimulationDescriptorReference Name="CreepingVision3" />
     <SimulationDescriptorReference Name="WatchTowerHealthEffectArea"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<SimulationDescriptorReference Name="TowerExtraHex3"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
@@ -498,17 +525,18 @@
   <!-- Without Replicants Pack -->
   <CreepingNodeImprovementDefinition Name="CreepingNode_WatchTower2"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <ConstructionCostDescriptor Name="NodeTower2FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>12</ConstructionTurns>
-    <GrowthPerTurn>16</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>10</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>WatchTower_01</MappingName>
-    <FIDSIExtractionRange>1</FIDSIExtractionRange>
+    <FIDSIExtractionRange>6</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="Tower2Upkeep"/>
     <SimulationDescriptorReference Name="CreepingVision4" />
     <SimulationDescriptorReference Name="WatchTowerHealthEffectArea"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
-    <SimulationDescriptorReference Name="TowerExtraExploit"/>
+	<SimulationDescriptorReference Name="TowerExtraHex6"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
@@ -524,10 +552,11 @@
   <!-- With Replicants Pack -->
   <CreepingNodeImprovementDefinition Name="CreepingNode_WatchTower0ReplicantsPack"        Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <ConstructionCostDescriptor Name="NodeTower0FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>6</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>WatchTower_01</MappingName>
+	<FIDSIExtractionRange>1</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <NextUpgradeName>CreepingNode_WatchTower1ReplicantsPack</NextUpgradeName>
     <SimulationDescriptorReference Name="Tower0Upkeep"/>
@@ -535,6 +564,8 @@
     <SimulationDescriptorReference Name="WatchTowerHealthEffectArea"/>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<SimulationDescriptorReference Name="TowerExtraHex1"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">MimicsPack</DownloadableContentPrerequisite>
@@ -551,16 +582,19 @@
   <!-- With Replicants Pack -->
   <CreepingNodeImprovementDefinition Name="CreepingNode_WatchTower1ReplicantsPack"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <ConstructionCostDescriptor Name="NodeTower1FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>10</ConstructionTurns>
-    <GrowthPerTurn>16</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>8</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>WatchTower_01</MappingName>
+	<FIDSIExtractionRange>3</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <NextUpgradeName>CreepingNode_WatchTower2ReplicantsPack</NextUpgradeName>
     <SimulationDescriptorReference Name="Tower1Upkeep"/>
     <SimulationDescriptorReference Name="CreepingVision3" />
     <SimulationDescriptorReference Name="WatchTowerHealthEffectArea"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<SimulationDescriptorReference Name="TowerExtraHex3"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
@@ -577,17 +611,18 @@
   <!-- With Replicants Pack -->
   <CreepingNodeImprovementDefinition Name="CreepingNode_WatchTower2ReplicantsPack"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <ConstructionCostDescriptor Name="NodeTower2FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>12</ConstructionTurns>
-    <GrowthPerTurn>16</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>10</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>WatchTower_01</MappingName>
-    <FIDSIExtractionRange>1</FIDSIExtractionRange>
+    <FIDSIExtractionRange>6</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="Tower2Upkeep"/>
     <SimulationDescriptorReference Name="CreepingVision4" />
     <SimulationDescriptorReference Name="WatchTowerHealthEffectArea"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
-    <SimulationDescriptorReference Name="TowerExtraExploit"/>
+	<SimulationDescriptorReference Name="TowerExtraHex6"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
@@ -604,10 +639,11 @@
   <CreepingNodeImprovementDefinition Name="CreepingNode_DefensiveTower0"        Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
     <ConstructionCostDescriptor Name="NodeTower0FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>6</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>DefensiveTower_00</MappingName>
+	<FIDSIExtractionRange>2</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <NextUpgradeName>CreepingNode_DefensiveTower1</NextUpgradeName>
     <SimulationDescriptorReference Name="Tower0Upkeep"/>
@@ -615,12 +651,14 @@
     <SimulationDescriptorReference Name="DamageableNodeDescriptor"/>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<SimulationDescriptorReference Name="TowerExtraHex2"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">MimicsPack</DownloadableContentPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyOrbUnlock1</TechnologyPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,AIEconomicRatio">.../ClassEmpire/ClassResearch,TechnologyOrbUnlock10</PathPrerequisite>
-    <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
 
     <AIPreferences>
       <ScoringByDistanceMultiplier>2.0</ScoringByDistanceMultiplier>
@@ -631,23 +669,24 @@
   <CreepingNodeImprovementDefinition Name="CreepingNode_DefensiveTower1"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
     <ConstructionCostDescriptor Name="NodeTower1FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>10</ConstructionTurns>
-    <GrowthPerTurn>16</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>8</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>DefensiveTower_01</MappingName>
-    <FIDSIExtractionRange>1</FIDSIExtractionRange>
+    <FIDSIExtractionRange>6</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="Tower1Upkeep"/>
     <SimulationDescriptorReference Name="CreepingVision2" />
     <SimulationDescriptorReference Name="DamageableNodeDescriptor"/>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
-    <SimulationDescriptorReference Name="TowerExtraExploit"/>
+	<SimulationDescriptorReference Name="TowerExtraHex6"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Inverted="true" Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">MimicsPack</DownloadableContentPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyOrbUnlock10</TechnologyPrerequisite>
-    <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
 
     <AIPreferences>
       <ScoringByDistanceMultiplier>2.0</ScoringByDistanceMultiplier>
@@ -658,10 +697,11 @@
   <CreepingNodeImprovementDefinition Name="CreepingNode_DefensiveTower0ReplicantsPack"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
     <ConstructionCostDescriptor Name="NodeTower0FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>6</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>DefensiveTower_00</MappingName>
+	<FIDSIExtractionRange>2</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <NextUpgradeName>CreepingNode_DefensiveTower1ReplicantsPack</NextUpgradeName>
     <SimulationDescriptorReference Name="Tower0Upkeep"/>
@@ -669,12 +709,14 @@
     <SimulationDescriptorReference Name="DamageableNodeDescriptor"/>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<SimulationDescriptorReference Name="TowerExtraHex2"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">MimicsPack</DownloadableContentPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyOrbUnlock1</TechnologyPrerequisite>
     <PathPrerequisite Inverted="true" Flags="Prerequisite,Discard,AIEconomicRatio">.../ClassEmpire/ClassResearch,TechnologyOrbUnlock10</PathPrerequisite>
-    <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
 
     <AIPreferences>
       <ScoringByDistanceMultiplier>2.0</ScoringByDistanceMultiplier>
@@ -685,23 +727,24 @@
   <CreepingNodeImprovementDefinition Name="CreepingNode_DefensiveTower1ReplicantsPack"       Category="PointOfInterestImprovement"  SubCategory="SubCategoryVision">
     <CustomCost ResourceName="Orb" Instant="true">10 * (1 - $Property(ClassCity:BuildingOrbCostReduction))</CustomCost>
     <ConstructionCostDescriptor Name="NodeTower1FoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>10</ConstructionTurns>
-    <GrowthPerTurn>16</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
+    <ConstructionTurns>8</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>DefensiveTower_01</MappingName>
-    <FIDSIExtractionRange>1</FIDSIExtractionRange>
+    <FIDSIExtractionRange>6</FIDSIExtractionRange>
     <BaseCostPropertyName>NodeWatchtowerCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="Tower1Upkeep"/>
     <SimulationDescriptorReference Name="CreepingVision2" />
     <SimulationDescriptorReference Name="DamageableNodeDescriptor"/>
     <SimulationDescriptorReference Name="CreepingNode_Foundation_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
-    <SimulationDescriptorReference Name="TowerExtraExploit"/>
+	<SimulationDescriptorReference Name="TowerExtraHex6"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>WatchTower</PointOfInterestTemplateName>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">ReplicantsPack</DownloadableContentPrerequisite>
     <DownloadableContentPrerequisite Flags="Prerequisite,Discard,Affinity">MimicsPack</DownloadableContentPrerequisite>
     <TechnologyPrerequisite Flags="Prerequisite,Discard,Technology,AIEconomicRatio">TechnologyOrbUnlock10</TechnologyPrerequisite>
-    <PathPrerequisite Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,AffinityMimics</PathPrerequisite>
+    <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
 
     <AIPreferences>
       <ScoringByDistanceMultiplier>2.0</ScoringByDistanceMultiplier>
@@ -710,7 +753,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Temple"       Category="QuestLocation_Temple">
     <ConstructionCostDescriptor Name="NodeRuinsFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>8</ConstructionTurns>
     <GrowthPerTurn>15</GrowthPerTurn>
     <MappingName>QuestLocation_Temple_01</MappingName>
@@ -721,6 +764,7 @@
     <SimulationDescriptorReference Name="ExitTravelNodeDescriptor"/>
     <SimulationDescriptorReference Name="CreepingNode_Ruin_Counter"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <PointOfInterestTemplateName>QuestLocation_Temple</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
 
@@ -731,7 +775,7 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Ruin"        Category="QuestLocation_Ruin">
     <ConstructionCostDescriptor Name="NodeRuinsFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier)</BuyoutCost>
     <ConstructionTurns>8</ConstructionTurns>
     <GrowthPerTurn>15</GrowthPerTurn>
     <MappingName>QuestLocation_Ruin_01</MappingName>
@@ -741,6 +785,7 @@
     <SimulationDescriptorReference Name="EntryTravelNodeDescriptor"/>
     <SimulationDescriptorReference Name="ExitTravelNodeDescriptor"/>
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Ruin_Counter"/>
     <PointOfInterestTemplateName>QuestLocation_Ruin</PointOfInterestTemplateName>
     <PathPrerequisite        Inverted="false" Flags="Prerequisite,Discard,Affinity">.../ClassEmpire,FactionTraitMimics1</PathPrerequisite>
@@ -752,14 +797,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Urces"    Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Urces"/>
     <PointOfInterestTemplateName>Village_Urces</PointOfInterestTemplateName>
@@ -772,14 +818,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Erycis"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Erycis"/>
     <PointOfInterestTemplateName>Village_Erycis</PointOfInterestTemplateName>
@@ -792,14 +839,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Ceratan"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Ceratan"/>
     <PointOfInterestTemplateName>Village_Ceratan</PointOfInterestTemplateName>
@@ -812,14 +860,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Kazanji"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Kazanji"/>
     <PointOfInterestTemplateName>Village_Kazanji</PointOfInterestTemplateName>
@@ -832,14 +881,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Bos"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Bos"/>
     <PointOfInterestTemplateName>Village_Bos</PointOfInterestTemplateName>
@@ -852,14 +902,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Silics"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Silics"/>
     <PointOfInterestTemplateName>Village_Silics</PointOfInterestTemplateName>
@@ -872,14 +923,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Delvers"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <VillageInfectionDescriptor Name="Infected_Village_Delvers"/>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <PointOfInterestTemplateName>Village_Delvers</PointOfInterestTemplateName>
@@ -892,14 +944,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_SistersOfMercy"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_SistersOfMercy"/>
     <PointOfInterestTemplateName>Village_SistersOfMercy</PointOfInterestTemplateName>
@@ -912,14 +965,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Haunts"  Category="PointOfInterestImprovement"  SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Haunts"/>
     <PointOfInterestTemplateName>Village_Haunts</PointOfInterestTemplateName>
@@ -932,14 +986,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Jotus"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Jotus"/>
     <PointOfInterestTemplateName>Village_Jotus</PointOfInterestTemplateName>
@@ -952,14 +1007,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Hurnas"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Hurnas"/>
     <PointOfInterestTemplateName>Village_Hurnas</PointOfInterestTemplateName>
@@ -972,14 +1028,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Gauran"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Gauran"/>
     <PointOfInterestTemplateName>Village_Gauran</PointOfInterestTemplateName>
@@ -992,14 +1049,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Birdhive"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Birdhive"/>
     <PointOfInterestTemplateName>Village_Birdhive</PointOfInterestTemplateName>
@@ -1012,14 +1070,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Geldirus"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Geldirus"/>
     <PointOfInterestTemplateName>Village_Geldirus</PointOfInterestTemplateName>
@@ -1032,14 +1091,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_EyelessOnes"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_EyelessOnes"/>
     <PointOfInterestTemplateName>Village_EyelessOnes</PointOfInterestTemplateName>
@@ -1052,14 +1112,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_Dorgeshi"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+	<InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_Dorgeshi"/>
     <PointOfInterestTemplateName>Village_Dorgeshi</PointOfInterestTemplateName>
@@ -1072,14 +1133,15 @@
 
   <CreepingNodeImprovementDefinition Name="CreepingNode_Village_DawnShua"   Category="PointOfInterestImprovement" SubCategory="SubCategoryVillage">
     <ConstructionCostDescriptor Name="NodeVillageFoodCost"/>
-    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier)</BuyoutCost>
-    <ConstructionTurns>8</ConstructionTurns>
-    <GrowthPerTurn>15</GrowthPerTurn>
+    <BuyoutCost ResourceName="EmpireMoney">2 * ($Property(ClassEmpire:NumberOfFinishedCreepingNodes) + 1) * $Property(ClassEmpire:GameSpeedMultiplier) * $Property(ELCPEmpireProperties:NodeCostIncrementModifier) * $Property(ELCPEmpireProperties:NodeOvergrownVillageCostModifier)</BuyoutCost>
+    <ConstructionTurns>4</ConstructionTurns>
+    <GrowthPerTurn>20</GrowthPerTurn>
     <MappingName>Village_01</MappingName>
     <BaseCostPropertyName>NodeOvergrownVillageCost</BaseCostPropertyName>
     <SimulationDescriptorReference Name="VillagesUpkeep"/>
     <SimulationDescriptorReference Name="CreepingVision1" />
     <SimulationDescriptorReference Name="FullFIDSI"/>
+    <InterpreterPrerequisite Inverted="false" Flags="Prerequisite,Discard">$Property(../ClassCity:NetCityGrowth) gt 0</InterpreterPrerequisite>
     <SimulationDescriptorReference Name="CreepingNode_Village_Counter"/>
     <VillageInfectionDescriptor Name="Infected_Village_DawnShua"/>
     <PointOfInterestTemplateName>Village_DawnShua</PointOfInterestTemplateName>

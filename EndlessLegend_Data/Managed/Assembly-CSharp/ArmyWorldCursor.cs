@@ -40,10 +40,10 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 	}
 
 	[Ancillary]
-	private protected IPathRendererService PathRendererService { protected get; private set; }
+	private protected IPathRendererService PathRendererService { get; private set; }
 
 	[Ancillary]
-	private protected IPlayerControllerRepositoryService PlayerControllerRepositoryService { protected get; private set; }
+	private protected IPlayerControllerRepositoryService PlayerControllerRepositoryService { get; private set; }
 
 	protected override WorldPosition GarrisonPosition
 	{
@@ -102,70 +102,19 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 			this.armyActionDatabase = Databases.GetDatabase<ArmyAction>(false);
 			Diagnostics.Assert(this.armyActionDatabase != null);
 			this.allArmyActions = new List<ArmyAction>(this.armyActionDatabase.GetValues());
+			return;
 		}
-		else
-		{
-			this.PlayerControllerRepositoryService = null;
-			this.WorldArmy = null;
-			this.battleTarget = null;
-			this.armyActionDatabase = null;
-			this.allArmyActions = null;
-		}
+		this.PlayerControllerRepositoryService = null;
+		this.WorldArmy = null;
+		this.battleTarget = null;
+		this.armyActionDatabase = null;
+		this.allArmyActions = null;
 	}
 
 	protected override void OnCursorActivate(bool activate, params object[] parameters)
 	{
 		base.OnCursorActivate(activate, parameters);
-		if (activate)
-		{
-			Diagnostics.Assert(base.GameEntityRepositoryService != null);
-			Diagnostics.Assert(base.PathfindingService != null);
-			Diagnostics.Assert(this.PlayerControllerRepositoryService != null);
-			Diagnostics.Assert(base.WorldPositionningService != null);
-			Diagnostics.Assert(this.PathRendererService != null);
-			if (base.CursorTarget == null)
-			{
-				Diagnostics.LogError("Cursor target is null.");
-				return;
-			}
-			this.WorldArmy = base.CursorTarget.GetComponent<WorldArmy>();
-			if (this.WorldArmy == null)
-			{
-				Diagnostics.LogError("Invalid cursor target (cant find component of type: 'WorldArmy').");
-				return;
-			}
-			if (this.PlayerControllerRepositoryService == null || this.PlayerControllerRepositoryService.ActivePlayerController == null)
-			{
-				return;
-			}
-			Diagnostics.Assert(this.WorldArmy.Army != null);
-			if (this.WorldArmy.Army.Empire != this.PlayerControllerRepositoryService.ActivePlayerController.Empire)
-			{
-				return;
-			}
-			base.AddMouseCursorKey("PlayerArmyWorldCursor");
-			for (int i = 0; i < this.allArmyActions.Count; i++)
-			{
-				StaticString staticString = this.allArmyActions[i].MouseCursorKey();
-				if (staticString != null && this.allArmyActions[i].MayExecuteSomewhereLater(this.Army))
-				{
-					base.AddMouseCursorKey(staticString);
-				}
-			}
-			base.Focus(this.Army, false);
-			IAudioEventService service = Services.GetService<IAudioEventService>();
-			Diagnostics.Assert(service != null);
-			service.Play2DEvent("Gui/Interface/InGame/SelectUnit");
-			if (this.WorldArmy.Army.WorldPath != null && this.WorldArmy.Army.WorldPath.Length > 1)
-			{
-				this.WorldPath = this.WorldArmy.Army.WorldPath;
-				this.WorldPath.Rebuild(this.Army.WorldPosition, this.Army, this.Army.GetPropertyValue(SimulationProperties.MovementRatio), int.MaxValue, PathfindingFlags.IgnoreArmies, false);
-				this.PathRendererService.RenderPath(this.WorldPath, this.WorldArmy.Army.WorldPosition);
-			}
-			this.WorldArmy.Army.WorldPathChange += this.Army_WorldPathChange;
-			this.WorldArmy.Army.WorldPositionChange += this.Army_WorldPositionChange;
-		}
-		else
+		if (!activate)
 		{
 			if (this.PathRendererService != null)
 			{
@@ -187,34 +136,79 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 				this.WorldArmy = null;
 			}
 			this.LastHighlightedWorldPosition = default(WorldPosition);
+			this.LastHighlightedWorldPosition = WorldPosition.Invalid;
 			this.battleTarget = null;
 			this.HideBattleZone();
+			return;
 		}
+		Diagnostics.Assert(base.GameEntityRepositoryService != null);
+		Diagnostics.Assert(base.PathfindingService != null);
+		Diagnostics.Assert(this.PlayerControllerRepositoryService != null);
+		Diagnostics.Assert(base.WorldPositionningService != null);
+		Diagnostics.Assert(this.PathRendererService != null);
+		if (base.CursorTarget == null)
+		{
+			Diagnostics.LogError("Cursor target is null.");
+			return;
+		}
+		this.WorldArmy = base.CursorTarget.GetComponent<WorldArmy>();
+		if (this.WorldArmy == null)
+		{
+			Diagnostics.LogError("Invalid cursor target (cant find component of type: 'WorldArmy').");
+			return;
+		}
+		if (this.PlayerControllerRepositoryService == null || this.PlayerControllerRepositoryService.ActivePlayerController == null)
+		{
+			return;
+		}
+		Diagnostics.Assert(this.WorldArmy.Army != null);
+		if (this.WorldArmy.Army.Empire != this.PlayerControllerRepositoryService.ActivePlayerController.Empire)
+		{
+			return;
+		}
+		base.AddMouseCursorKey("PlayerArmyWorldCursor");
+		for (int i = 0; i < this.allArmyActions.Count; i++)
+		{
+			StaticString staticString = this.allArmyActions[i].MouseCursorKey();
+			if (staticString != null && this.allArmyActions[i].MayExecuteSomewhereLater(this.Army))
+			{
+				base.AddMouseCursorKey(staticString);
+			}
+		}
+		base.Focus(this.Army, false);
+		IAudioEventService service = Services.GetService<IAudioEventService>();
+		Diagnostics.Assert(service != null);
+		service.Play2DEvent("Gui/Interface/InGame/SelectUnit");
+		if (this.WorldArmy.Army.WorldPath != null && this.WorldArmy.Army.WorldPath.Length > 1)
+		{
+			this.WorldPath = this.WorldArmy.Army.WorldPath;
+			this.WorldPath.Rebuild(this.Army.WorldPosition, this.Army, this.Army.GetPropertyValue(SimulationProperties.MovementRatio), int.MaxValue, PathfindingFlags.IgnoreArmies, false);
+			this.PathRendererService.RenderPath(this.WorldPath, this.WorldArmy.Army.WorldPosition);
+		}
+		this.WorldArmy.Army.WorldPathChange += this.Army_WorldPathChange;
+		this.WorldArmy.Army.WorldPositionChange += this.Army_WorldPositionChange;
 	}
 
 	protected override void OnCursorDown(MouseButton mouseButton, Amplitude.Unity.View.CursorTarget[] cursorTargets)
 	{
 		base.OnCursorDown(mouseButton, cursorTargets);
-		if (mouseButton == MouseButton.Right)
+		if (mouseButton == MouseButton.Right && this.Army != null)
 		{
-			if (this.Army != null)
+			if (this.Army.Empire != this.PlayerControllerRepositoryService.ActivePlayerController.Empire)
 			{
-				if (this.Army.Empire != this.PlayerControllerRepositoryService.ActivePlayerController.Empire)
-				{
-					return;
-				}
-				if (this.WorldPath != null)
-				{
-					this.PathRendererService.RemovePath(this.WorldPath);
-				}
-				if (this.TemporaryWorldPath != null)
-				{
-					this.PathRendererService.RemovePath(this.TemporaryWorldPath);
-					this.TemporaryWorldPath = null;
-				}
-				this.TemporaryWorldPath = new WorldPath();
-				this.GeneratePath();
+				return;
 			}
+			if (this.WorldPath != null)
+			{
+				this.PathRendererService.RemovePath(this.WorldPath);
+			}
+			if (this.TemporaryWorldPath != null)
+			{
+				this.PathRendererService.RemovePath(this.TemporaryWorldPath);
+				this.TemporaryWorldPath = null;
+			}
+			this.TemporaryWorldPath = new WorldPath();
+			this.GeneratePath();
 		}
 	}
 
@@ -244,7 +238,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 				}
 				return;
 			}
-			if (WorldCursor.HighlightedWorldPosition.IsValid && !this.LastHighlightedWorldPosition.Equals(WorldCursor.HighlightedWorldPosition))
+			if (WorldCursor.HighlightedWorldPosition.IsValid && !this.LastHighlightedWorldPosition.Equals(WorldCursor.HighlightedWorldPosition) && !this.LastUnpathableWorldPosition.Equals(WorldCursor.HighlightedWorldPosition))
 			{
 				if (this.TemporaryWorldPath == null)
 				{
@@ -258,16 +252,13 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 	protected override void OnCursorUp(MouseButton mouseButton, Amplitude.Unity.View.CursorTarget[] cursorTargets)
 	{
 		base.OnCursorUp(mouseButton, cursorTargets);
-		if (mouseButton == MouseButton.Right)
+		if (mouseButton == MouseButton.Right && this.Army != null)
 		{
-			if (this.Army != null)
+			if (this.Army.Empire != this.PlayerControllerRepositoryService.ActivePlayerController.Empire)
 			{
-				if (this.Army.Empire != this.PlayerControllerRepositoryService.ActivePlayerController.Empire)
-				{
-					return;
-				}
-				this.ValidatePath();
+				return;
 			}
+			this.ValidatePath();
 		}
 	}
 
@@ -280,6 +271,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 			if (this.PathRendererService == null)
 			{
 				Diagnostics.LogError("Invalid null path renderer service.");
+				return;
 			}
 		}
 		else
@@ -308,18 +300,17 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 		if (this.TemporaryWorldPath != null)
 		{
 			this.GeneratePath();
+			return;
 		}
-		else if (this.WorldPath != null)
+		if (this.WorldPath != null)
 		{
 			if (this.WorldArmy.Army.WorldPath != null)
 			{
 				this.PathRendererService.RefreshCurrentPosition(this.WorldPath, this.WorldArmy.Army.WorldPosition);
+				return;
 			}
-			else
-			{
-				this.PathRendererService.RemovePath(this.WorldPath);
-				this.WorldPath = null;
-			}
+			this.PathRendererService.RemovePath(this.WorldPath);
+			this.WorldPath = null;
 		}
 	}
 
@@ -366,8 +357,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 				bool flag4 = base.WorldPositionningService.IsWaterTile(position);
 				if (flag3 != flag4)
 				{
-					global::Game game = base.GameService.Game as global::Game;
-					World world = game.World;
+					World world = (base.GameService.Game as global::Game).World;
 					List<WorldPosition> neighbours = lastHighlightedWorldPosition.GetNeighbours(world.WorldParameters);
 					List<WorldPosition> list = new List<WorldPosition>();
 					for (int i = 0; i < neighbours.Count; i++)
@@ -441,8 +431,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 		PointOfInterest pointOfInterest = region.PointOfInterests.FirstOrDefault((PointOfInterest match) => match.WorldPosition == this.LastHighlightedWorldPosition);
 		if (pointOfInterest != null && (pointOfInterest.Type == Fortress.Citadel || pointOfInterest.Type == Fortress.Facility))
 		{
-			PirateCouncil agency = region.NavalEmpire.GetAgency<PirateCouncil>();
-			Fortress fortressAt = agency.GetFortressAt(pointOfInterest.WorldPosition);
+			Fortress fortressAt = region.NavalEmpire.GetAgency<PirateCouncil>().GetFortressAt(pointOfInterest.WorldPosition);
 			this.battleTarget = fortressAt;
 		}
 		if (region != null)
@@ -464,12 +453,9 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 		if (this.battleTarget == null)
 		{
 			Army armyAtPosition = base.WorldPositionningService.GetArmyAtPosition(this.LastHighlightedWorldPosition);
-			if (armyAtPosition != null)
+			if (armyAtPosition != null && (!armyAtPosition.IsCamouflaged || base.VisibilityService.IsWorldPositionDetectedFor(this.LastHighlightedWorldPosition, this.Army.Empire)))
 			{
-				if (!armyAtPosition.IsCamouflaged || base.VisibilityService.IsWorldPositionDetectedFor(this.LastHighlightedWorldPosition, this.Army.Empire))
-				{
-					this.battleTarget = armyAtPosition;
-				}
+				this.battleTarget = armyAtPosition;
 			}
 		}
 		if (region != null && this.battleTarget == null)
@@ -485,7 +471,47 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 					{
 						if (creepingNode.Empire.Index != this.Army.Empire.Index)
 						{
-							this.battleTarget = creepingNode;
+							if (ELCPUtilities.UseELCPPeacefulCreepingNodes)
+							{
+								DepartmentOfForeignAffairs agency = this.Army.Empire.GetAgency<DepartmentOfForeignAffairs>();
+								if (agency != null && agency.IsFriend(creepingNode.Empire))
+								{
+									if (pointOfInterest.Type == "QuestLocation")
+									{
+										this.battleTarget = pointOfInterest;
+									}
+									else if (pointOfInterest.Type == "Village")
+									{
+										IQuestManagementService service = base.GameService.Game.Services.GetService<IQuestManagementService>();
+										IQuestRepositoryService service2 = base.GameService.Game.Services.GetService<IQuestRepositoryService>();
+										IEnumerable<QuestMarker> markersByBoundTargetGUID = service.GetMarkersByBoundTargetGUID(pointOfInterest.GUID);
+										bool flag = false;
+										foreach (QuestMarker questMarker in markersByBoundTargetGUID)
+										{
+											Quest quest;
+											if (service2.TryGetValue(questMarker.QuestGUID, out quest) && quest.EmpireBits == this.Army.Empire.Bits)
+											{
+												Village villageAt = region.MinorEmpire.GetAgency<BarbarianCouncil>().GetVillageAt(pointOfInterest.WorldPosition);
+												this.battleTarget = villageAt;
+												flag = true;
+												break;
+											}
+										}
+										if (!flag)
+										{
+											this.battleTarget = creepingNode;
+										}
+									}
+									else
+									{
+										this.battleTarget = creepingNode;
+									}
+								}
+							}
+							else
+							{
+								this.battleTarget = creepingNode;
+							}
 						}
 						else if (pointOfInterest.Type == "QuestLocation" || pointOfInterest.Type == "NavalQuestLocation")
 						{
@@ -495,9 +521,8 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 				}
 				else if (pointOfInterest.Type == "Village")
 				{
-					BarbarianCouncil agency2 = region.MinorEmpire.GetAgency<BarbarianCouncil>();
-					Village villageAt = agency2.GetVillageAt(pointOfInterest.WorldPosition);
-					this.battleTarget = villageAt;
+					Village villageAt2 = region.MinorEmpire.GetAgency<BarbarianCouncil>().GetVillageAt(pointOfInterest.WorldPosition);
+					this.battleTarget = villageAt2;
 				}
 				else if (pointOfInterest.Type == "QuestLocation" || pointOfInterest.Type == "NavalQuestLocation")
 				{
@@ -515,9 +540,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 		}
 		if (this.battleTarget == null)
 		{
-			global::Game game = base.GameService.Game as global::Game;
-			ITerraformDeviceService service = game.GetService<ITerraformDeviceService>();
-			TerraformDevice deviceAtPosition = service.GetDeviceAtPosition(this.LastHighlightedWorldPosition);
+			TerraformDevice deviceAtPosition = (base.GameService.Game as global::Game).GetService<ITerraformDeviceService>().GetDeviceAtPosition(this.LastHighlightedWorldPosition);
 			if (deviceAtPosition != null)
 			{
 				this.battleTarget = deviceAtPosition;
@@ -631,6 +654,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 			{
 				this.PathRendererService.RemovePath(this.TemporaryWorldPath);
 				this.TemporaryWorldPath.Clear();
+				return;
 			}
 		}
 		else if (this.TemporaryWorldPath != null)
@@ -648,6 +672,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 		}
 		if (!this.BuildWorldPath())
 		{
+			this.LastUnpathableWorldPosition = WorldCursor.HighlightedWorldPosition;
 			this.LastHighlightedWorldPosition = WorldPosition.Invalid;
 		}
 		this.SelectTarget();
@@ -657,13 +682,11 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 
 	private void GenerateBattleZone(WorldPosition attackerPosition, WorldOrientation orientation)
 	{
-		global::Game game = base.GameService.Game as global::Game;
-		World world = game.World;
+		World world = (base.GameService.Game as global::Game).World;
 		IGlobalPositionningService globalPositionningService = null;
 		if (globalPositionningService == null)
 		{
-			Amplitude.Unity.View.IViewService service = Services.GetService<Amplitude.Unity.View.IViewService>();
-			WorldView worldView = service.CurrentView as WorldView;
+			WorldView worldView = Services.GetService<Amplitude.Unity.View.IViewService>().CurrentView as WorldView;
 			if (worldView != null && worldView.CurrentWorldViewTechnique != null)
 			{
 				globalPositionningService = worldView.CurrentWorldViewTechnique.Services.GetService<IGlobalPositionningService>();
@@ -678,10 +701,9 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 		deploymentArea.Initialize(this.DeploymentAreaWidth, this.DeploymentAreaDepth);
 		WorldArea worldArea = new WorldArea(deploymentArea.GetWorldPositions(world.WorldParameters));
 		WorldOrientation forward = orientation.Rotate(3);
-		WorldPosition neighbourTile = WorldPosition.GetNeighbourTile(worldPosition, orientation, 1);
-		deploymentArea = new DeploymentArea(neighbourTile, forward, world.WorldParameters);
-		deploymentArea.Initialize(this.DeploymentAreaWidth, this.DeploymentAreaDepth);
-		WorldArea worldArea2 = new WorldArea(deploymentArea.GetWorldPositions(world.WorldParameters));
+		DeploymentArea deploymentArea2 = new DeploymentArea(WorldPosition.GetNeighbourTile(worldPosition, orientation, 1), forward, world.WorldParameters);
+		deploymentArea2.Initialize(this.DeploymentAreaWidth, this.DeploymentAreaDepth);
+		WorldArea worldArea2 = new WorldArea(deploymentArea2.GetWorldPositions(world.WorldParameters));
 		WorldArea worldArea3 = new WorldArea(worldArea.Grow(world.WorldParameters));
 		worldArea3 = worldArea3.Union(worldArea2.Grow(world.WorldParameters));
 		WorldPatch worldPatch = globalPositionningService.GetWorldPatch(attackerPosition);
@@ -731,9 +753,8 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 					Army army = garrison as Army;
 					if (army != null && army.IsPrivateers)
 					{
-						IGameService service = Services.GetService<IGameService>();
-						IPlayerControllerRepositoryService service2 = service.Game.Services.GetService<IPlayerControllerRepositoryService>();
-						if (service2.ActivePlayerController != null && service2.ActivePlayerController.Empire != null && service2.ActivePlayerController.Empire.Index != garrison.Empire.Index)
+						IPlayerControllerRepositoryService service = Services.GetService<IGameService>().Game.Services.GetService<IPlayerControllerRepositoryService>();
+						if (service.ActivePlayerController != null && service.ActivePlayerController.Empire != null && service.ActivePlayerController.Empire.Index != garrison.Empire.Index)
 						{
 							color2 = global::Game.PrivateersColor;
 						}
@@ -783,8 +804,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 			if (this.battleTarget is Army)
 			{
 				Army army = this.battleTarget as Army;
-				bool flag2 = army.Empire.Index == this.Army.Empire.Index;
-				if (flag2)
+				if (army.Empire.Index == this.Army.Empire.Index)
 				{
 					int num = Mathf.Max(army.MaximumUnitSlot - army.CurrentUnitSlot, 0);
 					if (this.Army.HasCatspaw || army.HasCatspaw)
@@ -793,8 +813,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 					}
 					else if (this.Army.StandardUnits.Count > num)
 					{
-						string message = string.Format(AgeLocalizer.Instance.LocalizeString("%UnitsTransferNotEnoughSlotsInTargetArmy"), num);
-						QuickWarningPanel.Show(message);
+						QuickWarningPanel.Show(string.Format(AgeLocalizer.Instance.LocalizeString("%UnitsTransferNotEnoughSlotsInTargetArmy"), num));
 					}
 					else if (this.Army.GetPropertyValue(SimulationProperties.Movement) <= 0f && base.WorldPositionningService.GetDistance(this.Army.WorldPosition, army.WorldPosition) == 1)
 					{
@@ -811,8 +830,8 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 				{
 					DepartmentOfForeignAffairs agency = empire.GetAgency<DepartmentOfForeignAffairs>();
 					Diagnostics.Assert(agency != null);
-					bool flag3 = this.Army.IsNaval == army.IsNaval;
-					if ((agency.CanAttack(this.battleTarget) || this.WorldArmy.Army.IsPrivateers) && flag3)
+					bool flag2 = this.Army.IsNaval == army.IsNaval;
+					if ((agency.CanAttack(this.battleTarget) || this.WorldArmy.Army.IsPrivateers) && flag2)
 					{
 						ArmyAction armyAction = null;
 						IDatabase<ArmyAction> database = Databases.GetDatabase<ArmyAction>(false);
@@ -837,7 +856,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 						}
 						service2.Play2DEvent("Gui/Interface/InGame/OrderAttack");
 					}
-					else if (army.Empire is MajorEmpire && flag3)
+					else if (army.Empire is MajorEmpire && flag2)
 					{
 						global::Empire empire2 = army.Empire;
 						service.GetGuiPanel<WarDeclarationModalPanel>().Show(new object[]
@@ -850,31 +869,31 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 			}
 			else
 			{
-				bool flag4 = false;
+				bool flag3 = false;
 				if (this.battleTarget != null)
 				{
 					if (this.TemporaryWorldPath != null && this.TemporaryWorldPath.Length > 1)
 					{
-						flag4 = (this.TemporaryWorldPath.ControlPoints.Length == 0);
-						flag4 |= (this.TemporaryWorldPath.ControlPoints.Length == 1 && (int)this.TemporaryWorldPath.ControlPoints[0] == this.TemporaryWorldPath.Length - 1);
+						flag3 = (this.TemporaryWorldPath.ControlPoints.Length == 0);
+						flag3 |= (this.TemporaryWorldPath.ControlPoints.Length == 1 && (int)this.TemporaryWorldPath.ControlPoints[0] == this.TemporaryWorldPath.Length - 1);
 					}
 					else
 					{
-						flag4 = base.PathfindingService.IsTransitionPassable(this.Army.WorldPosition, this.battleTarget.WorldPosition, this.Army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null);
+						flag3 = base.PathfindingService.IsTransitionPassable(this.Army.WorldPosition, this.battleTarget.WorldPosition, this.Army, PathfindingFlags.IgnoreArmies | PathfindingFlags.IgnoreOtherEmpireDistrict | PathfindingFlags.IgnoreDiplomacy | PathfindingFlags.IgnorePOI | PathfindingFlags.IgnoreSieges | PathfindingFlags.IgnoreKaijuGarrisons, null);
 					}
 				}
-				if (flag4 || this.battleTarget is Fortress || this.battleTarget is KaijuGarrison)
+				if (flag3 || this.battleTarget is Fortress || this.battleTarget is KaijuGarrison)
 				{
-					flag4 = false;
-					bool flag5 = true;
+					flag3 = false;
+					bool flag4 = true;
 					if (this.battleTarget is KaijuGarrison)
 					{
 						KaijuGarrison kaijuGarrison = this.battleTarget as KaijuGarrison;
 						DepartmentOfForeignAffairs agency2 = empire.GetAgency<DepartmentOfForeignAffairs>();
 						Diagnostics.Assert(agency2 != null);
-						if (!agency2.CanAttack(this.battleTarget) || this.WorldArmy.Army.IsPrivateers)
+						if (!agency2.CanAttack(this.battleTarget))
 						{
-							flag5 = false;
+							flag4 = false;
 							global::Empire empire3 = kaijuGarrison.Empire;
 							service.GetGuiPanel<WarDeclarationModalPanel>().Show(new object[]
 							{
@@ -883,21 +902,20 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 							});
 						}
 					}
-					if (flag5)
+					if (flag4)
 					{
 						ArmyActionModalPanel guiPanel = service.GetGuiPanel<ArmyActionModalPanel>();
 						if (guiPanel != null)
 						{
 							WorldPosition destination = (this.TemporaryWorldPath == null || this.TemporaryWorldPath.Length <= 1) ? WorldPosition.Invalid : this.TemporaryWorldPath.Destination;
-							List<ArmyAction> list = guiPanel.CheckForArmyActionsAvailability(this.Army, this.battleTarget, destination);
-							if (list.Count > 0)
+							if (guiPanel.CheckForArmyActionsAvailability(this.Army, this.battleTarget, destination).Count > 0)
 							{
-								flag4 = true;
+								flag3 = true;
 							}
 						}
 					}
 				}
-				if (flag4 && this.battleTarget != null && !this.Army.IsPrivateers)
+				if (flag3 && this.battleTarget != null && !this.Army.IsPrivateers)
 				{
 					MajorEmpire majorEmpire = null;
 					if (this.battleTarget is Garrison)
@@ -910,11 +928,10 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 					}
 					if (majorEmpire != null && majorEmpire.Index != this.Army.Empire.Index)
 					{
-						DepartmentOfForeignAffairs agency3 = this.Army.Empire.GetAgency<DepartmentOfForeignAffairs>();
-						flag4 = agency3.IsSymetricallyDiscovered(majorEmpire);
+						flag3 = this.Army.Empire.GetAgency<DepartmentOfForeignAffairs>().IsSymetricallyDiscovered(majorEmpire);
 					}
 				}
-				if (flag4)
+				if (flag3)
 				{
 					WorldPosition worldPosition = (this.TemporaryWorldPath == null || this.TemporaryWorldPath.Length <= 1) ? WorldPosition.Invalid : this.TemporaryWorldPath.Destination;
 					service.Show(typeof(ArmyActionModalPanel), new object[]
@@ -936,21 +953,18 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 					Region region = base.WorldPositionningService.GetRegion(WorldCursor.HighlightedWorldPosition);
 					if (region != null && region.City != null && region.City.Empire != null)
 					{
-						DepartmentOfForeignAffairs agency4 = this.Army.Empire.GetAgency<DepartmentOfForeignAffairs>();
-						Diagnostics.Assert(agency4 != null);
-						if (!agency4.CanMoveOn(WorldCursor.HighlightedWorldPosition, this.WorldArmy.Army.IsPrivateers, this.WorldArmy.Army.IsCamouflaged))
+						DepartmentOfForeignAffairs agency3 = this.Army.Empire.GetAgency<DepartmentOfForeignAffairs>();
+						Diagnostics.Assert(agency3 != null);
+						if (!agency3.CanMoveOn(WorldCursor.HighlightedWorldPosition, this.WorldArmy.Army.IsPrivateers, this.WorldArmy.Army.IsCamouflaged))
 						{
 							District district = base.WorldPositionningService.GetDistrict(WorldCursor.HighlightedWorldPosition);
-							if (district == null || district.Type == DistrictType.Exploitation)
+							if ((district == null || district.Type == DistrictType.Exploitation) && region.City.Empire is MajorEmpire)
 							{
-								if (region.City.Empire is MajorEmpire)
+								service.GetGuiPanel<WarDeclarationModalPanel>().Show(new object[]
 								{
-									service.GetGuiPanel<WarDeclarationModalPanel>().Show(new object[]
-									{
-										region.City.Empire,
-										"BreakCloseBorder"
-									});
-								}
+									region.City.Empire,
+									"BreakCloseBorder"
+								});
 							}
 						}
 					}
@@ -958,6 +972,7 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 			}
 		}
 		this.LastHighlightedWorldPosition = WorldPosition.Invalid;
+		this.LastUnpathableWorldPosition = WorldPosition.Invalid;
 		this.SelectTarget();
 		this.UpdateBattlegroundVisibility();
 		if (this.TemporaryWorldPath != null)
@@ -980,8 +995,37 @@ public class ArmyWorldCursor : GarrisonWorldCursor
 		}
 		CreepingNode creepingNode = null;
 		base.GameEntityRepositoryService.TryGetValue<CreepingNode>(pointOfInterest.CreepingNodeGUID, out creepingNode);
-		return creepingNode != null && empire != null && creepingNode.Empire != null && pointOfInterest.Empire.Index != empire.Index && creepingNode.DismantlingArmy == null;
+		if (creepingNode != null && empire != null && creepingNode.Empire != null && pointOfInterest.Empire.Index != empire.Index && creepingNode.DismantlingArmy == null)
+		{
+			if (!ELCPUtilities.UseELCPPeacefulCreepingNodes)
+			{
+				return true;
+			}
+			if (pointOfInterest.CreepingNodeGUID != GameEntityGUID.Zero && pointOfInterest.Empire != empire)
+			{
+				if (pointOfInterest.Empire == null)
+				{
+					return true;
+				}
+				if (!(pointOfInterest.Empire is MajorEmpire))
+				{
+					return true;
+				}
+				DepartmentOfForeignAffairs agency = empire.GetAgency<DepartmentOfForeignAffairs>();
+				if (agency == null)
+				{
+					return true;
+				}
+				if (!agency.IsFriend(pointOfInterest.Empire))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
+
+	private WorldPosition LastUnpathableWorldPosition { get; set; }
 
 	public int DeploymentAreaWidth = 3;
 

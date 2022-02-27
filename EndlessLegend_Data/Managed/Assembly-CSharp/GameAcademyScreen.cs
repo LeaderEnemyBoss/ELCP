@@ -210,7 +210,28 @@ public class GameAcademyScreen : GuiPlayerControllerScreen
 				}
 			}
 		}
-		this.heroesList.Sort((Unit hero1, Unit hero2) => hero1.GUID.CompareTo(hero2.GUID));
+		this.heroesList.Sort(delegate(Unit hero1, Unit hero2)
+		{
+			bool flag = hero1.GetPropertyValue(SimulationProperties.MaximumSkillPoints) - hero1.GetPropertyValue(SimulationProperties.SkillPointsSpent) > 0f;
+			bool flag2 = hero2.GetPropertyValue(SimulationProperties.MaximumSkillPoints) - hero2.GetPropertyValue(SimulationProperties.SkillPointsSpent) > 0f;
+			if (flag && !flag2)
+			{
+				return -1;
+			}
+			if (!flag && flag2)
+			{
+				return 1;
+			}
+			if (hero1.Garrison == null && hero2.Garrison != null)
+			{
+				return -1;
+			}
+			if (hero1.Garrison != null && hero2.Garrison == null)
+			{
+				return 1;
+			}
+			return hero1.GUID.CompareTo(hero2.GUID);
+		});
 		this.HeroesTable.DestroyAllChildren();
 		this.HeroesTable.ReserveChildren(this.heroesList.Count, this.HeroCardPrefab, "HeroCard");
 		this.HeroesTable.RefreshChildrenIList<Unit>(this.heroesList, this.refreshHeroCardDelegate, true, false);
@@ -224,7 +245,7 @@ public class GameAcademyScreen : GuiPlayerControllerScreen
 		{
 			if (this.SelectedHero == null)
 			{
-				this.SelectHeroCardAtIndex((this.heroesList.Count - 1) / 2);
+				this.SelectHeroCardAtIndex(Mathf.Min(this.heroesList.Count - 1, 2));
 			}
 			else
 			{
@@ -859,31 +880,33 @@ public class GameAcademyScreen : GuiPlayerControllerScreen
 			this.DismissButton.AgeTransform.Enable = false;
 			return;
 		}
-		if (this.SelectedHero.CheckUnitAbility(UnitAbility.ReadonlyUnsalable, -1) || DepartmentOfEducation.IsCaptured(this.SelectedHero))
+		if (this.SelectedHero.CheckUnitAbility(UnitAbility.ReadonlyUnsalable, -1) || DepartmentOfEducation.IsCaptured(this.SelectedHero) || base.Empire.SimulationObject.Tags.Contains(global::Empire.TagEmpireEliminated))
 		{
 			this.DismissButton.AgeTransform.Enable = false;
 			this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyUndismissableOrSalableHeroDescription");
 			return;
 		}
-		if (!DepartmentOfEducation.CanAssignHeroTo(this.SelectedHero, null))
+		if (DepartmentOfEducation.CanAssignHeroTo(this.SelectedHero, null))
 		{
-			this.DismissButton.AgeTransform.Enable = false;
-			if (DepartmentOfEducation.IsInjured(this.SelectedHero))
-			{
-				this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyRestoreBeforeDismissalOrSaleDescription");
-			}
-			else if (DepartmentOfEducation.IsLocked(this.SelectedHero))
-			{
-				this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyUnlockBeforeDismissalOrSaleDescription");
-			}
-			else if (this.SelectedHero.Garrison != null && this.SelectedHero.Garrison.IsInEncounter)
-			{
-				this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyHeroLockedInBattleDescription");
-			}
+			this.DismissButton.AgeTransform.Enable = this.interactionsAllowed;
+			this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyDismissDescription");
 			return;
 		}
-		this.DismissButton.AgeTransform.Enable = this.interactionsAllowed;
-		this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyDismissDescription");
+		this.DismissButton.AgeTransform.Enable = false;
+		if (DepartmentOfEducation.IsInjured(this.SelectedHero))
+		{
+			this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyRestoreBeforeDismissalOrSaleDescription");
+			return;
+		}
+		if (DepartmentOfEducation.IsLocked(this.SelectedHero))
+		{
+			this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyUnlockBeforeDismissalOrSaleDescription");
+			return;
+		}
+		if (this.SelectedHero.Garrison != null && this.SelectedHero.Garrison.IsInEncounter)
+		{
+			this.DismissButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%AcademyHeroLockedInBattleDescription");
+		}
 	}
 
 	private void RefreshSellButton()

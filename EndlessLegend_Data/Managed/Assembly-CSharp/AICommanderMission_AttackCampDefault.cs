@@ -69,6 +69,11 @@ public class AICommanderMission_AttackCampDefault : AICommanderMissionWithReques
 	{
 		isMaxPower = false;
 		perUnitTest = false;
+		if (this.TargetCamp == null)
+		{
+			minMilitaryPower = 1f;
+			return;
+		}
 		minMilitaryPower = this.intelligenceAIHelper.EvaluateMilitaryPowerOfGarrison(base.Commander.Empire, this.TargetCamp, 0);
 	}
 

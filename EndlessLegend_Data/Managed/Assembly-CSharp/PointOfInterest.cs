@@ -8,7 +8,7 @@ using Amplitude.Xml;
 using Amplitude.Xml.Serialization;
 using UnityEngine;
 
-public class PointOfInterest : SimulationObjectWrapper, IXmlSerializable, ILineOfSightEntity, IGameEntity, IGameEntityWithLineOfSight, IGameEntityWithWorldPosition, IWorldPositionable, ICategoryProvider, IPropertyEffectFeatureProvider, IWorldEntityMappingOverride
+public class PointOfInterest : SimulationObjectWrapper, IXmlSerializable, ILineOfSightEntity, IWorldPositionable, IGameEntity, IGameEntityWithLineOfSight, IGameEntityWithWorldPosition, ICategoryProvider, IPropertyEffectFeatureProvider, IWorldEntityMappingOverride
 {
 	public PointOfInterest()
 	{
@@ -53,7 +53,7 @@ public class PointOfInterest : SimulationObjectWrapper, IXmlSerializable, ILineO
 	{
 		get
 		{
-			return 0;
+			return this.InfiltrationBits;
 		}
 	}
 
@@ -230,13 +230,13 @@ public class PointOfInterest : SimulationObjectWrapper, IXmlSerializable, ILineO
 				if (database4.TryGetValue(text3, out creepingNodeImprovement))
 				{
 					this.CreepingNodeImprovement = creepingNodeImprovement;
-					if (this.CreepingNodeImprovement != null)
+					if (Amplitude.Unity.Framework.Application.Preferences.EnableModdingTools && this.CreepingNodeImprovement != null)
 					{
 						for (int num2 = 0; num2 < this.CreepingNodeImprovement.Descriptors.Length; num2++)
 						{
-							if (!base.SimulationObject.Tags.Contains(this.CreepingNodeImprovement.Descriptors[num2].Name))
+							if (base.SimulationObject.Tags.Contains(this.CreepingNodeImprovement.Descriptors[num2].Name))
 							{
-								base.AddDescriptor(this.CreepingNodeImprovement.Descriptors[num2], false);
+								base.RemoveDescriptor(this.CreepingNodeImprovement.Descriptors[num2]);
 							}
 						}
 					}
@@ -520,6 +520,8 @@ public class PointOfInterest : SimulationObjectWrapper, IXmlSerializable, ILineO
 		string a;
 		return this.type == PointOfInterest.ResourceDepositType && this.PointOfInterestDefinition.PointOfInterestTemplate.Properties.TryGetValue("ResourceType", out a) && a == "Luxury";
 	}
+
+	public int InfiltrationBits { get; set; }
 
 	public static readonly StaticString PointOfInterestType = "PointOfInterestType";
 

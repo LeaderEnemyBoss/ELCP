@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Amplitude.Path;
+using Amplitude.Unity.Framework;
+using Amplitude.Unity.Session;
 using Amplitude.Unity.Simulation;
 using Amplitude.Unity.Simulation.SimulationModifierDescriptors;
 using UnityEngine;
@@ -82,6 +84,14 @@ namespace Amplitude.Unity.Gui.SimulationEffect
 					{
 						EffectDescription effectDescription = new EffectDescription();
 						effectDescription.Override = AgeLocalizer.Instance.LocalizeString(extendedGuiElement.TooltipElement.EffectOverride);
+						if (extendedGuiElement.Name.ToString().Contains("Bonus1Value"))
+						{
+							effectDescription.Override = effectDescription.Override.Replace("+500", "+" + 500f * (float)this.GetGameSpeed() / 2f);
+						}
+						else if (extendedGuiElement.Name.ToString().Contains("Bonus2Value"))
+						{
+							effectDescription.Override = effectDescription.Override.Replace("+1000", "+" + 1000f * (float)this.GetGameSpeed() / 2f);
+						}
 						if (parseTitle)
 						{
 							effectDescription.Title = AgeLocalizer.Instance.LocalizeString(guiElement.Title);
@@ -108,6 +118,10 @@ namespace Amplitude.Unity.Gui.SimulationEffect
 					}
 					EffectDescription effectDescription2 = new EffectDescription();
 					effectDescription2.Override = AgeLocalizer.Instance.LocalizeString(guiElement.Title);
+					if (guiElement.Name == "TechnologyNecrophages8")
+					{
+						effectDescription2.Override = effectDescription2.Override.Replace("+1", "+" + this.GetGameSpeed());
+					}
 					if (parseTitle)
 					{
 						effectDescription2.Title = AgeLocalizer.Instance.LocalizeString(guiElement.Title);
@@ -603,6 +617,29 @@ namespace Amplitude.Unity.Gui.SimulationEffect
 				}
 			}
 			return string.Empty;
+		}
+
+		private int GetGameSpeed()
+		{
+			int result = 1;
+			ISessionService service = Services.GetService<ISessionService>();
+			if (service != null && service.Session != null)
+			{
+				string lobbyData = service.Session.GetLobbyData<string>("GameSpeed", "Normal");
+				if (lobbyData == "Normal")
+				{
+					result = 2;
+				}
+				if (lobbyData == "Slow")
+				{
+					result = 3;
+				}
+				if (lobbyData == "Endless")
+				{
+					result = 4;
+				}
+			}
+			return result;
 		}
 
 		public const string ValueFormat = "#####0.#";

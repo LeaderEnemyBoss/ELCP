@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Xml.Serialization;
 using Amplitude;
 using Amplitude.Unity.AI.BehaviourTree;
@@ -46,45 +45,44 @@ public class QuestBehaviourTreeNode_Decorator_ConstructionEnded : QuestBehaviour
 
 	protected override State Execute(QuestBehaviour questBehaviour, EventConstructionEnded e, params object[] parameters)
 	{
-		if (e.ConstructibleElement.Name == this.ConstructionName)
+		Diagnostics.Assert(e.ConstructibleElement != null);
+		if (e.ConstructibleElement.Name != this.ConstructionName)
 		{
-			IGameService service = Services.GetService<IGameService>();
-			IGameEntityRepositoryService service2 = service.Game.Services.GetService<IGameEntityRepositoryService>();
-			IGameEntity gameEntity = null;
-			City city = null;
-			if (service2.TryGetValue(e.Context, out gameEntity))
+			return State.Running;
+		}
+		City city;
+		if (!Services.GetService<IGameService>().Game.Services.GetService<IGameEntityRepositoryService>().TryGetValue<City>(e.Context, out city))
+		{
+			if (!(this.CityGUID == GameEntityGUID.Zero))
 			{
-				city = (gameEntity as City);
-				if (city == null && this.TargetCityVarName != string.Empty)
-				{
-					return State.Running;
-				}
+				return State.Running;
 			}
-			if (city != null)
+			return State.Success;
+		}
+		else
+		{
+			if (this.CityGUID != GameEntityGUID.Zero && this.CityGUID != city.GUID)
 			{
-				City city2;
-				if (this.TargetCityVarName != string.Empty && questBehaviour.TryGetQuestVariableValueByName<City>(this.TargetCityVarName, out city2) && city2.GUID != city.GUID)
-				{
-					return State.Running;
-				}
-				QuestVariable questVariable = questBehaviour.QuestVariables.FirstOrDefault((QuestVariable match) => match.Name == this.Output_CityVarName);
-				if (questVariable == null)
-				{
-					questVariable = new QuestVariable(this.Output_CityVarName);
-					questBehaviour.QuestVariables.Add(questVariable);
-				}
-				questVariable.Object = city;
+				return State.Running;
+			}
+			base.UpdateQuestVariable(questBehaviour, this.Output_CityVarName, city);
+			if (!string.IsNullOrEmpty(this.Output_CityVarName))
+			{
 				this.CityGUID = city.GUID;
 			}
 			return State.Success;
 		}
-		return State.Running;
 	}
 
 	protected override bool Initialize(QuestBehaviour questBehaviour)
 	{
 		if (string.IsNullOrEmpty(this.ConstructionName))
 		{
+			if (string.IsNullOrEmpty(this.ConstructionNameVarName))
+			{
+				Diagnostics.LogError("Missing attribute 'ConstructionNameVarName'");
+				return false;
+			}
 			string text;
 			if (!questBehaviour.TryGetQuestVariableValueByName<string>(this.ConstructionNameVarName, out text))
 			{
@@ -104,7 +102,7 @@ public class QuestBehaviourTreeNode_Decorator_ConstructionEnded : QuestBehaviour
 			}
 			this.ConstructionName = text;
 		}
-		if (this.CityGUID != GameEntityGUID.Zero && !questBehaviour.QuestVariables.Exists((QuestVariable match) => match.Name == this.Output_CityVarName))
+		if (this.CityGUID != GameEntityGUID.Zero && !string.IsNullOrEmpty(this.Output_CityVarName) && !questBehaviour.QuestVariables.Exists((QuestVariable match) => match.Name == this.Output_CityVarName))
 		{
 			IGameService service = Services.GetService<IGameService>();
 			if (service == null)
@@ -118,27 +116,18 @@ public class QuestBehaviourTreeNode_Decorator_ConstructionEnded : QuestBehaviour
 				Diagnostics.LogError("Unable to retrieve the game entity repository service.");
 				return false;
 			}
-			IGameEntity gameEntity;
-			if (!service2.TryGetValue(this.CityGUID, out gameEntity))
+			City @object;
+			if (service2.TryGetValue<City>(this.CityGUID, out @object))
 			{
-				Diagnostics.LogError("Unable to retrieve the game entity (GUID='{0}') in the repository service.", new object[]
-				{
-					this.CityGUID
-				});
-				return false;
+				QuestVariable questVariable = new QuestVariable(this.Output_CityVarName);
+				questVariable.Object = @object;
+				questBehaviour.QuestVariables.Add(questVariable);
 			}
-			City city = gameEntity as City;
-			if (city == null)
-			{
-				Diagnostics.LogError("Unable to cast the game entity (GUID='{0}') to 'City'.", new object[]
-				{
-					this.CityGUID
-				});
-				return false;
-			}
-			QuestVariable questVariable = new QuestVariable(this.Output_CityVarName);
-			questVariable.Object = city;
-			questBehaviour.QuestVariables.Add(questVariable);
+		}
+		City city = null;
+		if (this.CityGUID == GameEntityGUID.Zero && !string.IsNullOrEmpty(this.TargetCityVarName) && questBehaviour.TryGetQuestVariableValueByName<City>(this.TargetCityVarName, out city))
+		{
+			this.CityGUID = city.GUID;
 		}
 		return base.Initialize(questBehaviour);
 	}

@@ -358,16 +358,16 @@ public class GameMilitaryScreen : GuiPlayerControllerScreen
 
 	private List<Unit> GetRetrofitableUnits(ReadOnlyCollection<Unit> candidateUnits)
 	{
-		GameMilitaryScreen.<GetRetrofitableUnits>c__AnonStoreyA5A <GetRetrofitableUnits>c__AnonStoreyA5A = new GameMilitaryScreen.<GetRetrofitableUnits>c__AnonStoreyA5A();
-		<GetRetrofitableUnits>c__AnonStoreyA5A.candidateUnits = candidateUnits;
+		GameMilitaryScreen.<GetRetrofitableUnits>c__AnonStoreyA52 <GetRetrofitableUnits>c__AnonStoreyA = new GameMilitaryScreen.<GetRetrofitableUnits>c__AnonStoreyA52();
+		<GetRetrofitableUnits>c__AnonStoreyA.candidateUnits = candidateUnits;
 		List<Unit> list = new List<Unit>();
 		int i;
-		for (i = 0; i < <GetRetrofitableUnits>c__AnonStoreyA5A.candidateUnits.Count; i++)
+		for (i = 0; i < <GetRetrofitableUnits>c__AnonStoreyA.candidateUnits.Count; i++)
 		{
-			UnitDesign unitDesign = this.DepartmentOfDefense.UnitDesignDatabase.UserDefinedUnitDesigns.FirstOrDefault((UnitDesign design) => design.Model == <GetRetrofitableUnits>c__AnonStoreyA5A.candidateUnits[i].UnitDesign.Model);
-			if (unitDesign != null && <GetRetrofitableUnits>c__AnonStoreyA5A.candidateUnits[i].UnitDesign != unitDesign)
+			UnitDesign unitDesign = this.DepartmentOfDefense.UnitDesignDatabase.UserDefinedUnitDesigns.FirstOrDefault((UnitDesign design) => design.Model == <GetRetrofitableUnits>c__AnonStoreyA.candidateUnits[i].UnitDesign.Model);
+			if (unitDesign != null && <GetRetrofitableUnits>c__AnonStoreyA.candidateUnits[i].UnitDesign != unitDesign)
 			{
-				list.Add(<GetRetrofitableUnits>c__AnonStoreyA5A.candidateUnits[i]);
+				list.Add(<GetRetrofitableUnits>c__AnonStoreyA.candidateUnits[i]);
 			}
 		}
 		return list;
@@ -904,6 +904,15 @@ public class GameMilitaryScreen : GuiPlayerControllerScreen
 			this.ArmySellButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%ArmyLockedInBattleDescription");
 			this.ArmySellButton.AgeTransform.Enable = false;
 		}
+		if (ELCPUtilities.UseELCPUnitSelling)
+		{
+			Region region = base.GameService.Game.Services.GetService<IWorldPositionningService>().GetRegion(ArmyLine.CurrentArmy.WorldPosition);
+			if (region == null || region.Owner != ArmyLine.CurrentArmy.Empire)
+			{
+				this.ArmySellButton.AgeTransform.AgeTooltip.Content = AgeLocalizer.Instance.LocalizeString("%SellTabNotInOwnRegionDescription");
+				this.ArmySellButton.AgeTransform.Enable = false;
+			}
+		}
 	}
 
 	private void UpdateArmyHealButton()
@@ -990,17 +999,17 @@ public class GameMilitaryScreen : GuiPlayerControllerScreen
 	{
 		if (ArmyLine.CurrentArmy != null)
 		{
-			GameMilitaryScreen.<RetrofitArmy>c__AnonStoreyA5C <RetrofitArmy>c__AnonStoreyA5C = new GameMilitaryScreen.<RetrofitArmy>c__AnonStoreyA5C();
-			<RetrofitArmy>c__AnonStoreyA5C.units = ArmyLine.CurrentArmy.StandardUnits;
 			List<Unit> list = new List<Unit>();
+			int j;
 			int i;
-			for (i = 0; i < <RetrofitArmy>c__AnonStoreyA5C.units.Count; i++)
+			for (i = 0; i < ArmyLine.CurrentArmy.StandardUnits.Count; i = j + 1)
 			{
-				UnitDesign unitDesign = this.DepartmentOfDefense.UnitDesignDatabase.UserDefinedUnitDesigns.FirstOrDefault((UnitDesign design) => design.Model == <RetrofitArmy>c__AnonStoreyA5C.units[i].UnitDesign.Model);
-				if (<RetrofitArmy>c__AnonStoreyA5C.units[i].UnitDesign != unitDesign)
+				UnitDesign unitDesign = this.DepartmentOfDefense.UnitDesignDatabase.UserDefinedUnitDesigns.FirstOrDefault((UnitDesign design) => design.Model == ArmyLine.CurrentArmy.StandardUnits[i].UnitDesign.Model);
+				if (unitDesign != null && ArmyLine.CurrentArmy.StandardUnits[i].UnitDesign != unitDesign)
 				{
-					list.Add(<RetrofitArmy>c__AnonStoreyA5C.units[i]);
+					list.Add(ArmyLine.CurrentArmy.StandardUnits[i]);
 				}
+				j = i;
 			}
 			base.AgeTransform.Enable = false;
 			OrderRetrofitUnit order = new OrderRetrofitUnit(base.Empire.Index, list.ConvertAll<GameEntityGUID>((Unit unit) => unit.GUID).ToArray());

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MenuCreditScreen : GuiMenuScreen
 {
-	private Credits Credits { get; set; }
-
 	public override bool HandleCancelRequest()
 	{
 		base.GuiService.Show(typeof(MenuMainScreen), new object[0]);
@@ -19,10 +17,10 @@ public class MenuCreditScreen : GuiMenuScreen
 		yield return base.OnHide(instant);
 		for (int i = 0; i < this.CreditsContent.GetChildren().Count; i++)
 		{
-			CreditImageItem creditImageItem = this.CreditsContent.GetChildren()[i].GetComponent<CreditImageItem>();
-			if (creditImageItem != null && creditImageItem.ImagePrimitive != null)
+			CreditImageItem component = this.CreditsContent.GetChildren()[i].GetComponent<CreditImageItem>();
+			if (component != null && component.ImagePrimitive != null)
 			{
-				AgeManager.Instance.ReleaseDynamicTexture(creditImageItem.ImagePrimitive.name);
+				AgeManager.Instance.ReleaseDynamicTexture(component.ImagePrimitive.name);
 			}
 		}
 		this.CreditsContent.DestroyAllChildren();
@@ -40,20 +38,20 @@ public class MenuCreditScreen : GuiMenuScreen
 		yield return base.OnShow(parameters);
 		this.CreditsContent.Visible = false;
 		yield return null;
-		TextAsset creditsFile = this.CreditsFile;
-		string chineseLanguage;
-		if (global::Application.ResolveChineseLanguage(out chineseLanguage))
+		TextAsset textAsset = this.CreditsFile;
+		string a;
+		if (global::Application.ResolveChineseLanguage(out a))
 		{
-			if (chineseLanguage == "schinese")
+			if (a == "schinese")
 			{
-				creditsFile = this.SChineseCreditsFile;
+				textAsset = this.SChineseCreditsFile;
 			}
-			else if (chineseLanguage == "tchinese")
+			else if (a == "tchinese")
 			{
-				creditsFile = this.TChineseCreditsFile;
+				textAsset = this.TChineseCreditsFile;
 			}
 		}
-		this.Credits = Credits.Deserialize(creditsFile);
+		this.Credits = Credits.Deserialize(textAsset);
 		this.currentY = 0f;
 		if (this.Credits != null && this.Credits.Elements != null)
 		{
@@ -100,8 +98,7 @@ public class MenuCreditScreen : GuiMenuScreen
 	private void AddCreditHeader(string headerText, Transform prefab)
 	{
 		AgeTransform ageTransform = this.CreditsContent.InstanciateChild(prefab, "CreditItem");
-		CreditHeaderItem component = ageTransform.GetComponent<CreditHeaderItem>();
-		component.HeaderTitle.Text = headerText;
+		ageTransform.GetComponent<CreditHeaderItem>().HeaderTitle.Text = headerText;
 		this.PlaceItem(ageTransform);
 	}
 
@@ -151,6 +148,8 @@ public class MenuCreditScreen : GuiMenuScreen
 		this.HandleCancelRequest();
 		yield break;
 	}
+
+	private Credits Credits { get; set; }
 
 	public const int ScrollSpeed = 30;
 

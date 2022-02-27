@@ -24,40 +24,54 @@ public class PanelFeatureNodeCost : GuiPanelFeature
 
 	protected override IEnumerator OnShow(params object[] parameters)
 	{
-		ConstructibleTooltipData data = this.context as ConstructibleTooltipData;
-		if (data != null && data.Empire != null && data.Constructible != null)
+		ConstructibleTooltipData constructibleTooltipData = this.context as ConstructibleTooltipData;
+		if (constructibleTooltipData != null && constructibleTooltipData.Empire != null && constructibleTooltipData.Constructible != null)
 		{
-			DepartmentOfTheTreasury departmentOfTheTreasury = data.Empire.GetAgency<DepartmentOfTheTreasury>();
-			string costString = string.Empty;
-			int turn;
-			PanelFeatureCost.ComputeCostAndTurn(this.guiService, data.Constructible, departmentOfTheTreasury, data.Empire, out costString, out turn);
-			costString = ((!(costString == "-")) ? costString : string.Empty);
-			CreepingNodeImprovementDefinition definition = data.Constructible as CreepingNodeImprovementDefinition;
-			int foodCost = 0;
-			SimulationObject dummyNode = new SimulationObject("DummyNode");
-			SimulationDescriptor classNodeDescriptor = null;
-			if (this.simulationDescriptorDatabase.TryGetValue("ClassCreepingNode", out classNodeDescriptor))
+			DepartmentOfTheTreasury agency = constructibleTooltipData.Empire.GetAgency<DepartmentOfTheTreasury>();
+			DepartmentOfTheInterior agency2 = constructibleTooltipData.Empire.GetAgency<DepartmentOfTheInterior>();
+			string text = string.Empty;
+			if (agency2.MainCity != null)
 			{
-				dummyNode.AddDescriptor(classNodeDescriptor);
+				int num;
+				PanelFeatureCost.ComputeCostAndTurn(this.guiService, constructibleTooltipData.Constructible, agency, agency2.MainCity, out text, out num);
+			}
+			else
+			{
+				int num2;
+				PanelFeatureCost.ComputeCostAndTurn(this.guiService, constructibleTooltipData.Constructible, agency, constructibleTooltipData.Empire, out text, out num2);
+			}
+			text = ((!(text == "-")) ? text : string.Empty);
+			CreepingNodeImprovementDefinition creepingNodeImprovementDefinition = constructibleTooltipData.Constructible as CreepingNodeImprovementDefinition;
+			SimulationObject simulationObject = new SimulationObject("DummyNode");
+			SimulationDescriptor descriptor = null;
+			if (this.simulationDescriptorDatabase.TryGetValue("ClassCreepingNode", out descriptor))
+			{
+				simulationObject.AddDescriptor(descriptor);
 			}
 			else
 			{
 				Diagnostics.LogError("Could not find the class creeping node descriptor");
 			}
-			float nodeBaseCost = dummyNode.GetPropertyBaseValue(definition.BaseCostPropertyName);
-			float costIncrement = dummyNode.GetPropertyBaseValue(SimulationProperties.NodeCostIncrement);
-			float numberOfNodes = data.Empire.GetPropertyValue(SimulationProperties.NumberOfCreepingNodes);
-			float numberOfFinishedNodes = data.Empire.GetPropertyValue(SimulationProperties.NumberOfFinishedCreepingNodes);
-			foodCost = (int)(nodeBaseCost + costIncrement * (2f * numberOfNodes - numberOfFinishedNodes + 1f));
-			float gameSpeed = data.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
-			int turns = (int)Math.Max(0.0, Math.Ceiling((double)((float)definition.ConstructionTurns * gameSpeed)));
-			string foodCostLoc = string.Format(AgeLocalizer.Instance.LocalizeString("%FeaturePanelNodeCost"), foodCost.ToString(), turns.ToString());
-			costString = costString + " " + foodCostLoc;
-			bool canAffordFood = this.CanAfforFoodCost(data.Empire, definition);
-			if (!string.IsNullOrEmpty(costString))
+			float propertyBaseValue = simulationObject.GetPropertyBaseValue(creepingNodeImprovementDefinition.BaseCostPropertyName);
+			float num3 = simulationObject.GetPropertyBaseValue(SimulationProperties.NodeCostIncrement);
+			float propertyValue = constructibleTooltipData.Empire.GetPropertyValue(SimulationProperties.NodeCostIncrementModifier);
+			num3 *= propertyValue;
+			if (creepingNodeImprovementDefinition.SubCategory == "SubCategoryVillage")
 			{
-				this.CostValue.Text = costString;
-				this.CostValue.TintColor = ((!canAffordFood) ? this.CantAffordColor : this.CanAffordColor);
+				num3 *= constructibleTooltipData.Empire.GetPropertyValue(SimulationProperties.NodeOvergrownVillageCostModifier);
+			}
+			float propertyValue2 = constructibleTooltipData.Empire.GetPropertyValue(SimulationProperties.NumberOfCreepingNodes);
+			float propertyValue3 = constructibleTooltipData.Empire.GetPropertyValue(SimulationProperties.NumberOfFinishedCreepingNodes);
+			int num4 = Mathf.CeilToInt(propertyBaseValue + num3 * (2f * propertyValue2 - propertyValue3 + 1f));
+			float propertyValue4 = constructibleTooltipData.Empire.GetPropertyValue(SimulationProperties.GameSpeedMultiplier);
+			int num5 = (int)Math.Max(0.0, Math.Ceiling((double)((float)creepingNodeImprovementDefinition.ConstructionTurns * propertyValue4)));
+			string str = string.Format(AgeLocalizer.Instance.LocalizeString("%FeaturePanelNodeCost"), num4.ToString(), num5.ToString());
+			text = text + " " + str;
+			bool flag = this.CanAfforFoodCost(constructibleTooltipData.Empire, creepingNodeImprovementDefinition);
+			if (!string.IsNullOrEmpty(text))
+			{
+				this.CostValue.Text = text;
+				this.CostValue.TintColor = ((!flag) ? this.CantAffordColor : this.CanAffordColor);
 				if (this.CostValue.AgeTransform.PixelMarginTop == this.CostTitle.AgeTransform.PixelMarginTop)
 				{
 					this.CostValue.AgeTransform.PixelMarginLeft = 2f * this.CostTitle.AgeTransform.PixelMarginLeft + this.CostTitle.Font.ComputeTextWidth(AgeLocalizer.Instance.LocalizeString(this.CostTitle.Text), this.CostTitle.ForceCaps, false);
